@@ -26,7 +26,7 @@ const PORTALS = {
     type: 'react',
     sentryProject: 'children-portal',
     port: 5193,
-    entryHtml: 'willow-portal.html',
+    entryHtml: 'index.html',
     manualChunks: ['src/lib/cognitive.ts', 'src/lib/registerTools.ts', 'src/lib/webmcp.ts'],
   },
   parent: {
@@ -36,7 +36,7 @@ const PORTALS = {
     type: 'react',
     sentryProject: 'parent-portal',
     port: 5194,
-    entryHtml: 'tetra-ops.html',
+    entryHtml: 'index.html',
     manualChunks: ['src/lib/cognitive.ts', 'src/lib/registerTools.ts', 'src/lib/webmcp.ts'],
   },
   teen: {
@@ -46,7 +46,7 @@ const PORTALS = {
     type: 'react',
     sentryProject: 'teen-portal',
     port: 5195,
-    entryHtml: 'p31-portal.html',
+    entryHtml: 'index.html',
     manualChunks: ['src/lib/cognitive.ts', 'src/lib/registerTools.ts', 'src/lib/webmcp.ts'],
   },
   meatspace: {
