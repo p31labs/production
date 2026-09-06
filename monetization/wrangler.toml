@@ -1,0 +1,35 @@
+name = "p31-monetization"
+main = "src/worker.ts"
+compatibility_date = "2026-09-02"
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+
+[[services]]
+binding = "REVENUE_LEDGER"
+service = "revenue-ledger"
+
+[[services]]
+binding = "ENTITLEMENT"
+service = "entitlement"
+
+[[services]]
+binding = "AUTO_COMPOUNDER"
+service = "p31-auto-compounder"
+
+[[services]]
+binding = "MEV_ARBITRAGE"
+service = "mev-arbitrage"
+
+[[services]]
+binding = "YIELD_VAULT"
+service = "yield-vault"
+
+[[services]]
+binding = "ALLOCATOR"
+service = "capital-allocator"
+
+[[services]]
+binding = "CONFIG_GATEWAY"
+service = "config-gateway"

@@ -1,0 +1,46 @@
+{
+  "extends": "../template/package.json",
+  "name": "@p31-portals/meatspace",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "wrangler pages deploy dist --project-name p31-portal-meatspace --commit-dirty=true",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@p31/design-core": "^2.1.0",
+    "@p31/sovereign-core": "^0.1.0",
+    "@p31/ui": "^1.3.0",
+    "@sentry/browser": "^9.47.1",
+    "@sentry/core": "^9.47.1",
+    "@sentry/react": "^9.47.1",
+    "ethers": "^6.17.0",
+    "peerjs": "^1.5.5",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@sentry/vite-plugin": "^4.9.1",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^4.7.0",
+    "eslint": "^10.8.1",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.67.0",
+    "vite": "^6.4.2",
+    "vitest": "^3.0.0",
+    "jsdom": "^30.0.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/jest-dom": "^6.6.3"
+  }
+}

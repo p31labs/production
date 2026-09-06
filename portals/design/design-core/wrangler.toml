@@ -1,0 +1,11 @@
+name = "p31-design-mcp"
+main = "src/mcp/http-worker.ts"
+compatibility_date = "2026-08-21"
+compatibility_flags = ["nodejs_compat"]
+
+# Canonical source moved to production/portals/design/design-core.
+# Same worker name + URL — clients (portals/design McpConsole) unaffected.
+# Custom domain mcp.design.p31ca.org is dashboard-attached (token lacks zone scope).
+
+[observability]
+enabled = true

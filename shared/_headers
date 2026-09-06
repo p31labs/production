@@ -1,0 +1,10 @@
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), midi=(), sync-xhr=(), usb=(), magnetometer=(), gyroscope=(), interest-cohort=(), tools=(self)
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/*
+  Cache-Control: public, max-age=86400, immutable

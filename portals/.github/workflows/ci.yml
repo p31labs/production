@@ -1,0 +1,42 @@
+name: Portals CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        portal: [children, parent, teen, meatspace, design]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install portal dependencies
+        run: pnpm install
+        working-directory: portals/${{ matrix.portal }}
+
+      - name: Build portal
+        run: pnpm run build
+        working-directory: portals/${{ matrix.portal }}
+
+      - name: Run smoke tests
+        run: pnpm test
+        working-directory: portals/${{ matrix.portal }}
+
+      - name: Verify _headers present in dist
+        run: test -f dist/_headers
+        working-directory: portals/${{ matrix.portal }}
+
+      - name: Verify index.html exists in dist
+        run: test -f dist/index.html
+        working-directory: portals/${{ matrix.portal }}

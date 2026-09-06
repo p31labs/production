@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en" data-brand="phosphorus31" data-spoons="3" data-active-tab="dashboard" data-a2ui-component="Portal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Phosphorus 31 — Unlocking Neurodivergent Potential</title>
+  <meta name="description" content="Phosphorus 31 is a 501(c)(3) nonprofit research lab building sovereign assistive technology, chemistry education, and agent-native tools for neurodivergent families.">
+  <meta name="keywords" content="phosphorus31, nonprofit, 501c3, neurodivergent, assistive technology, open source, STEM, chemistry education, BONDING">
+  <meta name="author" content="Phosphorus 31, a P31 Labs initiative">
+  <meta name="theme-color" content="#f5eedd">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <link rel="preconnect" href="https://render.phosporus31.org">
+  <link rel="dns-prefetch" href="https://render.phosporus31.org">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="/assets/components.css">
+
+<style>
+/* P31 Sovereign Design System — auto-generated from tokens.yml */
+/* DO NOT EDIT DIRECTLY — edit tokens.yml and rebuild */
+
+:root {
+  /* Base unit — all scale/spacing/typography derives from this */
+  --p31-base: 16px;
+
+  /* Void tiers */
+  --p31-bg: oklch(10% 0.01 240);
+  --p31-surface: oklch(15% 0.015 240);
+  --p31-surface2: oklch(22% 0.02 240);
+
+  /* Accent colours */
+  --p31-accent: oklch(65% 0.18 195);
+  --p31-accent-alt: oklch(65% 0.18 285);
+  --p31-accent-violet: oklch(65% 0.18 285);
+  --p31-accent-gold: oklch(65% 0.18 15);
+  --p31-accent-green: oklch(65% 0.18 105);
+  --p31-accent-red: oklch(65% 0.18 20);
+  --p31-accent-iris: oklch(65% 0.18 270);
+
+  /* Text */
+  --p31-text: oklch(96% 0.005 240);
+  --p31-text-secondary: oklch(75% 0.01 240);
+  --p31-text-tertiary: oklch(55% 0.01 240);
+
+  /* Glass */
+  --p31-glass-bg: oklch(100% 0.01 240 / 0.04);
+  --p31-glass-border: oklch(100% 0.01 240 / 0.08);
+  --p31-glass-border-hover: oklch(100% 0.01 240 / 0.15);
+  --p31-glass-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  --p31-glass-blur: blur(12px);
+  --p31-glow-cyan: 0 0 20px rgba(0,240,255,0.25);
+
+  /* Scale progression */
+  --p31-scale-xs: calc(var(--p31-base) * 0.75);
+  --p31-scale-sm: var(--p31-base);
+  --p31-scale-md: calc(var(--p31-base) * 1.3333);
+  --p31-scale-lg: calc(var(--p31-base) * 1.7777);
+  --p31-scale-xl: calc(var(--p31-base) * 2.3703);
+  --p31-scale-2xl: calc(var(--p31-base) * 3.1604);
+  --p31-scale-3xl: calc(var(--p31-base) * 4.2139);
+  --p31-scale-4xl: calc(var(--p31-base) * 5.6186);
+
+  /* Typography sizes */
+  --p31-type-caption: clamp(var(--p31-scale-xs), 0.8vw, var(--p31-scale-sm));
+  --p31-type-body: clamp(calc(var(--p31-base) * 0.95), 1vw + 0.5rem, var(--p31-scale-sm));
+  --p31-type-label: var(--p31-scale-sm);
+  --p31-type-h3: clamp(var(--p31-scale-md), 2vw, var(--p31-scale-lg));
+  --p31-type-h2: clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl));
+  --p31-type-h1: clamp(var(--p31-scale-xl), 5.6vw, var(--p31-scale-2xl));
+  --p31-type-display: clamp(var(--p31-scale-2xl), 7vw, var(--p31-scale-3xl));
+
+  /* Font families */
+  --p31-font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --p31-font-mono: ui-monospace, SFMono-Regular, 'Fira Code', 'Fira Mono', 'Roboto Mono', 'JetBrains Mono', Menlo, Monaco, Consolas, monospace;
+  --p31-font-display: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  /* Animation */
+  --p31-duration-fast: 100ms;
+  --p31-duration-normal: 300ms;
+  --p31-duration-slow: 500ms;
+  --p31-easing-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --p31-easing-snappy: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --p31-easing-linear: linear;
+  --p31-speed-factor: 1;
+
+  /* Starfield */
+  --p31-starfield-hearth: oklch(55% 0.15 35);
+  --p31-starfield-teal: oklch(60% 0.08 185);
+  --p31-starfield-remembrance: oklch(95% 0.01 80);
+  --p31-starfield-particle-teal: oklch(70% 0.12 185 / 0.6);
+  --p31-starfield-particle-coral: oklch(65% 0.14 40 / 0.5);
+
+  /* Blur */
+  --p31-blur-subtle: 8px;
+  --p31-blur-standard: 12px;
+  --p31-blur-strong: 24px;
+
+  /* Spacing */
+  --p31-space-xs: clamp(var(--p31-scale-xs), 1vw, var(--p31-scale-sm));
+  --p31-space-sm: clamp(var(--p31-scale-sm), 1.5vw, var(--p31-scale-md));
+  --p31-space-md: clamp(var(--p31-scale-md), 2.5vw, var(--p31-scale-lg));
+  --p31-space-lg: clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl));
+  --p31-space-xl: clamp(var(--p31-scale-xl), 5vw, var(--p31-scale-2xl));
+  --p31-space-2xl: clamp(var(--p31-scale-2xl), 6.5vw, var(--p31-scale-3xl));
+  --p31-space-3xl: 64px;
+
+  /* Radii */
+  --p31-radius-sm: calc(var(--p31-scale-sm) / 2);
+  --p31-radius-md: calc(var(--p31-scale-md) / 2);
+  --p31-radius-lg: calc(var(--p31-scale-lg) / 2);
+  --p31-radius-xl: calc(var(--p31-scale-xl) / 2);
+  --p31-radius-full: 9999px;
+
+  /* Touch targets */
+  --p31-touch-min: 48px;
+  --p31-touch-recommended: 56px;
+  --p31-touch-large: 64px;
+
+  /* Z-index layers */
+  --p31-z-starfield: 0;
+  --p31-z-topbar: 10;
+  --p31-z-toast: 9999;
+  --p31-z-crisis: 99999;
+  --p31-z-skip-link: 100;
+
+  /* Legacy namespace aliases (backward compat) */
+  --p31-space-xs-legacy: 4px;
+  --p31-space-sm-legacy: 8px;
+  --p31-space-md-legacy: 16px;
+  --p31-space-lg-legacy: 24px;
+  --p31-space-xl-legacy: 32px;
+  --p31-space-2xl-legacy: 48px;
+  --p31-space-3xl-legacy: 64px;
+  --p31-duration-fast-legacy: 100ms;
+  --p31-duration-normal-legacy: 300ms;
+  --p31-duration-slow-legacy: 500ms;
+  --p31-ease-out-legacy: cubic-bezier(0.4, 0, 0.2, 1);
+  --p31-ease-in-out-legacy: linear;
+}
+
+/* Brand-specific site-* alias layer */
+:root {
+  --site-bg: var(--p31-bg);
+  --site-surface: var(--p31-surface);
+  --site-accent: var(--p31-accent);
+  --site-accent-alt: var(--p31-accent-alt);
+  --site-accent-gold: var(--p31-accent-gold);
+  --site-success: var(--p31-accent-green);
+  --site-error: var(--p31-accent-red);
+  --site-glass: var(--p31-glass-bg);
+  --site-glass-hover: var(--p31-glass-border-hover);
+  --site-border: var(--p31-glass-border);
+  --site-border-strong: var(--p31-glass-border-hover);
+  --site-text: var(--p31-text);
+  --site-text-dim: var(--p31-text-secondary);
+  --site-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  --site-glow: radial-gradient(circle at 50% 30%, var(--site-accent) 0%, transparent 60%);
+}
+
+/* Brand-specific overrides */
+[data-brand="p31ca"] {
+  --p31-glass-bg: oklch(14% 0.02 260 / 0.35);
+  --p31-glass-border: oklch(100% 0.01 240 / 0.12);
+  --p31-glass-border-hover: oklch(100% 0.01 240 / 0.25);
+  --p31-glass-blur: blur(24px);
+}
+[data-brand="phosphorus31"] {
+  --p31-glass-bg: oklch(100% 0.01 85 / 0.08);
+  --p31-glass-border: oklch(80% 0.02 75 / 0.2);
+  --p31-glass-border-hover: oklch(70% 0.03 70 / 0.3);
+  --p31-glass-blur: blur(12px);
+}
+[data-brand="willow"] {
+  --p31-glass-bg: rgba(255, 248, 240, 0.7);
+  --p31-glass-border: rgba(200, 180, 160, 0.25);
+  --p31-glass-blur: blur(16px);
+  --p31-text: oklch(25% 0.02 80);
+  --p31-text-secondary: oklch(55% 0.02 75);
+  --p31-accent: oklch(65% 0.18 45);
+  --p31-accent-alt: oklch(60% 0.15 200);
+  --p31-accent-gold: oklch(72% 0.14 80);
+  --p31-accent-green: oklch(70% 0.12 120);
+  --p31-accent-red: oklch(62% 0.15 10);
+  --p31-font-sans: "Comic Sans MS", "Chalkboard SE", cursive, sans-serif;
+  --p31-font-display: "Comic Sans MS", "Chalkboard SE", cursive;
+  --p31-radius-sm: 12px;
+  --p31-radius-md: 20px;
+  --p31-radius-lg: 28px;
+  --p31-radius-xl: 40px;
+  --p31-radius-full: 9999px;
+  --p31-space-xs: 0.5rem;
+  --p31-space-sm: 0.75rem;
+  --p31-space-md: 1.25rem;
+  --p31-space-lg: 2rem;
+  --p31-space-xl: 2.5rem;
+  --p31-space-2xl: 4rem;
+  --p31-duration-fast: 200ms;
+  --p31-duration-normal: 400ms;
+  --p31-duration-slow: 600ms;
+  --p31-easing-smooth: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --p31-touch-min: 56px;
+  --p31-touch-recommended: 64px;
+}
+
+/* Spoon-aware speed factor */
+[data-spoons="0"] { --p31-speed-factor: 0; --p31-glass-blur: none; }
+[data-spoons="1"] { --p31-speed-factor: 0; --p31-glass-blur: none; }
+[data-spoons="2"] { --p31-speed-factor: 0.25; --p31-glass-blur: blur(8px); }
+[data-spoons="3"] { --p31-speed-factor: 0.5; }
+[data-spoons="4"] { --p31-speed-factor: 0.75; }
+[data-spoons="5"] { --p31-speed-factor: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --p31-speed-factor: 0; }
+}
+
+/* Dark mode overrides */
+[data-dark-mode="true"] {
+  --p31-glass-bg: rgba(30, 28, 26, 0.8);
+  --p31-glass-border: rgba(80, 75, 70, 0.3);
+  --p31-text: oklch(90% 0.01 80);
+  --p31-text-secondary: oklch(65% 0.02 80);
+}
+
+/* Light theme overrides */
+html[data-theme="light"] {
+  --p31-bg: #F8FAFC;
+  --p31-surface: #FFFFFF;
+  --p31-surface2: #F1F5F9;
+  --p31-text: #0F172A;
+  --p31-text-secondary: rgba(15,23,42,0.6);
+  --p31-text-tertiary: rgba(15,23,42,0.3);
+  --p31-glass-bg: rgba(0,0,0,0.03);
+  --p31-glass-border: rgba(0,0,0,0.08);
+  --p31-glass-border-hover: rgba(0,0,0,0.15);
+}
+
+/* tool: renderGlassPanel */
+/* Glass panels */
+.glass-panel {
+  background: oklch(100% 0.01 240 / 0.04);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-xl);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+
+.glass-card {
+  background: var(--p31-glass-bg);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-xl);
+  padding: var(--p31-space-lg);
+  box-shadow: var(--p31-glass-shadow);
+  transition: all var(--p31-duration-normal) var(--p31-easing-smooth);
+}
+.glass-card:hover {
+  border-color: var(--p31-glass-border-hover);
+  background: rgba(255,255,255,0.06);
+}
+
+.glass-strong {
+  background: oklch(100% 0.01 240 / 0.08);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: calc(var(--p31-scale-xl) / 2);
+}
+
+.glass-subtle {
+  background: oklch(100% 0.01 240 / 0.03);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: calc(var(--p31-scale-xl) / 2);
+}
+
+/* tool: renderButton */
+/* Buttons */
+.btn-primary {
+  background: oklch(65% 0.18 195);
+  color: oklch(10% 0.01 240);
+  font-weight: 700;
+  padding: clamp(var(--p31-scale-sm), 1.5vw, var(--p31-scale-md)) clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl));
+  border-radius: calc(var(--p31-scale-md) / 2);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 0 20px rgba(0,240,255,0.25);
+  transition: all var(--p31-duration-fast) var(--p31-easing-smooth);
+  font-size: 14px;
+}
+.btn-primary:hover {
+  box-shadow: 0 0 30px rgba(0,240,255,0.4);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.06);
+  color: oklch(96% 0.005 240);
+  font-weight: 600;
+  padding: clamp(var(--p31-scale-sm), 1.5vw, var(--p31-scale-md)) clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl));
+  border-radius: calc(var(--p31-scale-md) / 2);
+  border: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--p31-duration-fast) var(--p31-easing-smooth);
+  font-size: 14px;
+}
+.btn-secondary:hover {
+  border-color: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.1);
+}
+
+.btn-ghost {
+  color: oklch(75% 0.01 240);
+  font-weight: 600;
+  padding: clamp(var(--p31-scale-sm), 1.5vw, var(--p31-scale-md)) clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl));
+  border-radius: calc(var(--p31-scale-md) / 2);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--p31-duration-fast) var(--p31-easing-smooth);
+  font-size: 14px;
+}
+.btn-ghost:hover {
+  color: var(--p31-text);
+  background: rgba(255,255,255,0.05);
+}
+
+/* Link glow */
+.link-glow { transition: all var(--p31-duration-normal) var(--p31-easing-smooth); }
+
+/* tool: renderStarfield */
+/* Starfield container */
+.starfield-container {
+  position: fixed;
+  inset: 0;
+  z-index: var(--p31-z-starfield);
+  pointer-events: none;
+  background: oklch(8% 0.01 240);
+}
+.starfield-container canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* tool: renderCard */
+/* Portal card component */
+.card {
+  background: var(--p31-glass-bg);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  padding: var(--p31-space-lg);
+  transition: all var(--p31-duration-normal) var(--p31-easing-smooth);
+  display: flex;
+  flex-direction: column;
+}
+.card:hover {
+  border-color: var(--p31-glass-border-hover);
+  background: var(--p31-glass-bg);
+  transform: translateY(-2px);
+  box-shadow: var(--p31-glass-shadow);
+}
+.card-header {
+  font-size: var(--p31-type-caption);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--p31-text-secondary);
+  margin-bottom: var(--p31-space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-value {
+  font-size: 2.25rem;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  font-family: var(--p31-font-mono);
+  color: var(--p31-text);
+}
+.card-value span { color: var(--p31-accent); }
+
+/* Portal button */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--p31-space-sm) var(--p31-space-lg);
+  background: var(--p31-accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--p31-radius-md);
+  font-weight: 600;
+  font-size: var(--p31-type-caption);
+  cursor: pointer;
+  transition: all var(--p31-duration-fast) var(--p31-easing-smooth);
+  min-height: var(--p31-touch-min);
+  min-width: var(--p31-touch-min);
+  gap: var(--p31-space-sm);
+  text-decoration: none;
+  font-family: var(--p31-font-sans);
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+.btn:active { transform: scale(0.97); }
+.btn.secondary { background: var(--p31-glass-bg); color: var(--p31-text); border: 1px solid var(--p31-glass-border); }
+.btn.secondary:hover { background: var(--p31-glass-border-hover); border-color: var(--p31-text-secondary); box-shadow: none; }
+.btn.outline { background: transparent; color: var(--p31-accent); border: 2px solid var(--p31-accent); }
+.btn.outline:hover { background: var(--p31-accent); color: #fff; }
+
+/* tool: showToast */
+/* Toast notification */
+.toast {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 500px;
+  width: 90%;
+  margin: 0 auto;
+  background: var(--p31-glass-bg);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  border: 1px solid var(--p31-glass-border);
+  border-left: 4px solid var(--p31-accent);
+  border-radius: var(--p31-radius-lg);
+  padding: var(--p31-space-md) var(--p31-space-lg);
+  font-size: var(--p31-type-body);
+  z-index: var(--p31-z-toast);
+  animation: slideUp var(--p31-duration-normal) var(--p31-easing-smooth);
+  pointer-events: none;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+}
+.toast.error { border-left-color: var(--p31-accent-red); }
+.toast.success { border-left-color: var(--p31-accent-green); }
+@keyframes slideUp {
+  from { transform: translateX(-50%) translateY(60px) scale(0.95); opacity: 0; }
+  to { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+}
+
+/* tool: companionCard */
+/* Companion card (willow) */
+.companion-card {
+  background: var(--p31-glass-bg);
+  backdrop-filter: var(--p31-glass-blur);
+  border: 2px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  padding: var(--p31-space-lg);
+  transition: all var(--p31-duration-normal) var(--p31-easing-smooth);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.02);
+  min-height: 80px;
+}
+
+/* tool: crisisOverlay */
+/* Crisis overlay */
+.crisis-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--p31-glass-bg);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--p31-space-2xl);
+  z-index: var(--p31-z-crisis);
+}
+html[data-spoons="0"] .crisis-overlay { display: flex; }
+
+/* tool: crisisOverlay */
+/* Breathing circle */
+.breathing-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--p31-accent), var(--p31-accent-red));
+  opacity: 0.4;
+  animation: breathe 5s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+}
+
+</style>
+
+  <style>
+    :root {
+      --p31-ref-cream: oklch(96% 0.01 85);
+      --p31-ref-warm-bg: oklch(93% 0.015 80);
+      --p31-ref-card: oklch(100% 0 0 / 0.7);
+      --p31-ref-border-warm: oklch(80% 0.02 75 / 0.4);
+      --p31-ref-border-strong-warm: oklch(70% 0.03 70 / 0.5);
+      --p31-ref-text-warm: oklch(20% 0.02 80);
+      --p31-ref-text-dim-warm: oklch(45% 0.03 75);
+      --p31-ref-orange: oklch(65% 0.18 45);
+      --p31-ref-terracotta: oklch(55% 0.15 35);
+      --p31-ref-gold: oklch(72% 0.14 85);
+      --p31-ref-forest: oklch(45% 0.12 135);
+      --p31-ref-rose: oklch(60% 0.13 15);
+
+      --site-bg: var(--p31-ref-cream);
+      --site-surface: var(--p31-ref-warm-bg);
+      --site-accent: var(--p31-ref-orange);
+      --site-accent-alt: var(--p31-ref-terracotta);
+      --site-accent-gold: var(--p31-ref-gold);
+      --site-success: var(--p31-ref-forest);
+      --site-error: var(--p31-ref-rose);
+      --site-glass: var(--p31-ref-card);
+      --site-glass-hover: oklch(100% 0 0 / 0.85);
+      --site-border: var(--p31-ref-border-warm);
+      --site-border-strong: var(--p31-ref-border-strong-warm);
+      --site-text: var(--p31-ref-text-warm);
+      --site-text-dim: var(--p31-ref-text-dim-warm);
+      --site-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      --site-glow: radial-gradient(circle at 50% 30%, rgba(234, 160, 30, 0.08) 0%, transparent 60%);
+    }
+
+    :root {
+      --p31-font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --p31-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --p31-space-xs: 4px;
+      --p31-space-sm: 8px;
+      --p31-space-md: 16px;
+      --p31-space-lg: 24px;
+      --p31-space-xl: 32px;
+      --p31-space-2xl: 48px;
+      --p31-space-3xl: 64px;
+      --p31-radius-sm: 6px;
+      --p31-radius-md: 12px;
+      --p31-radius-lg: 16px;
+      --p31-radius-xl: 24px;
+      --p31-radius-full: 9999px;
+      --p31-duration-fast: 150ms;
+      --p31-duration-normal: 300ms;
+      --p31-duration-slow: 500ms;
+      --p31-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --p31-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-spoons="0"] { --glass-blur: 0px; --anim-speed: 0ms; --bg-opacity: 0; --mesh-display: none; }
+    [data-spoons="1"] { --glass-blur: 4px;  --anim-speed: 0ms; --bg-opacity: 0.2; --mesh-display: block; }
+    [data-spoons="2"] { --glass-blur: 12px; --anim-speed: 150ms; --bg-opacity: 0.6; --mesh-display: block; }
+    [data-spoons="3"] { --glass-blur: 20px; --anim-speed: 300ms; --bg-opacity: 1; --mesh-display: block; }
+    [data-spoons="4"] { --glass-blur: 24px; --anim-speed: 300ms; --bg-opacity: 1; --mesh-display: block; }
+    [data-spoons="5"] { --glass-blur: 28px; --anim-speed: 300ms; --bg-opacity: 1; --mesh-display: block; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: var(--p31-font-sans); background: var(--site-bg); color: var(--site-text); scroll-behavior: smooth; }
+    body { min-height: 100vh; background: var(--site-bg); display: flex; flex-direction: column; overflow: hidden; -webkit-font-smoothing: antialiased; }
+    a { color: var(--site-accent); text-decoration: none; transition: color var(--p31-duration-normal) var(--p31-ease-out); }
+    a:hover { color: var(--site-accent-alt); }
+    ::selection { background: var(--site-accent); color: #fff; }
+    img { max-width: 100%; display: block; }
+
+    .skip-link { position: absolute; top: -40px; left: 0; background: var(--site-accent); color: #fff; padding: var(--p31-space-md); z-index: 100; font-weight: 600; }
+    .skip-link:focus { top: 0; }
+    *:focus-visible { outline: 2px solid var(--site-accent); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+    .app-shell { display: flex; flex-direction: column; height: 100vh; position: relative; z-index: 10; }
+
+    .topbar {
+      height: 64px; padding: 0 var(--p31-space-lg);
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--p31-ref-card);
+      backdrop-filter: blur(var(--glass-blur, 12px));
+      border-bottom: 1px solid var(--site-border);
+      flex-shrink: 0;
+      transition: background var(--p31-duration-normal) var(--p31-ease-out);
+    }
+    .topbar-left { display: flex; align-items: center; gap: var(--p31-space-md); font-weight: 600; font-size: 1.1rem; }
+    .topbar-left span { color: var(--site-accent); }
+    .topbar-center { display: flex; align-items: center; gap: var(--p31-space-md); }
+    .topbar-right { display: flex; align-items: center; gap: var(--p31-space-md); }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: var(--p31-space-xs);
+      padding: var(--p31-space-xs) var(--p31-space-md);
+      background: var(--site-glass); border: 1px solid var(--site-border);
+      border-radius: var(--p31-radius-full);
+      font-size: 0.75rem; font-family: var(--p31-font-mono);
+      color: var(--site-text-dim);
+    }
+    .badge strong { color: var(--site-text); font-weight: 500; }
+    .badge.accent { border-color: var(--site-accent); color: var(--site-accent); background: rgba(234, 160, 30, 0.08); }
+
+    .spoon-dial {
+      display: flex; background: rgba(0,0,0,0.04);
+      border: 1px solid var(--site-border); border-radius: var(--p31-radius-full);
+      padding: 4px; gap: 4px;
+    }
+    .spoon-btn {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 600;
+      color: var(--site-text-dim); background: transparent; border: none; cursor: pointer;
+      transition: all var(--p31-duration-fast) var(--p31-ease-out);
+    }
+    .spoon-btn:hover { background: var(--site-glass); color: var(--site-text); }
+    .spoon-btn.active { background: var(--site-accent); color: #fff; box-shadow: 0 0 12px rgba(234, 160, 30, 0.4); }
+
+    .viewport { flex: 1; overflow-y: auto; overflow-x: hidden; padding: var(--p31-space-lg); scroll-behavior: smooth; padding-bottom: 80px; }
+    .page { display: none; animation: fadeIn var(--anim-speed, 300ms) var(--p31-ease-out) forwards; max-width: 1200px; margin: 0 auto; }
+    [data-active-tab="dashboard"] #page-dashboard { display: block; }
+    [data-active-tab="mission"] #page-mission { display: block; }
+    [data-active-tab="involved"] #page-involved { display: block; }
+    [data-active-tab="bonding"] #page-bonding { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--p31-space-md); }
+    .col-span-full { grid-column: span 12; }
+    .col-span-half { grid-column: span 6; }
+    .col-span-third { grid-column: span 4; }
+    .col-span-two-thirds { grid-column: span 8; }
+
+    .card {
+      background: var(--p31-glass-bg);
+      backdrop-filter: blur(var(--p31-glass-blur));
+      -webkit-backdrop-filter: blur(var(--p31-glass-blur));
+      border: 1px solid var(--p31-glass-border);
+      border-radius: var(--p31-radius-lg);
+      padding: var(--p31-space-lg);
+      box-shadow: var(--p31-glass-shadow);
+      transition: all var(--p31-duration-normal) var(--p31-easing-smooth);
+      display: flex; flex-direction: column;
+    }
+    .card:hover {
+      border-color: var(--p31-glass-border-hover);
+      background: rgba(255,255,255,0.06);
+      transform: translateY(-2px);
+      box-shadow: var(--p31-glass-shadow);
+    }
+    .card-header { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--site-text-dim); margin-bottom: var(--p31-space-md); display: flex; align-items: center; justify-content: space-between; }
+    .card-value { font-size: 2.25rem; font-weight: 300; letter-spacing: -0.02em; font-family: var(--p31-font-mono); color: var(--site-text); }
+    .card-value span { color: var(--site-accent); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: var(--p31-space-sm) var(--p31-space-lg);
+      background: var(--site-accent); color: #fff;
+      border: none; border-radius: var(--p31-radius-md);
+      font-weight: 600; font-size: 0.85rem; cursor: pointer;
+      transition: all var(--p31-duration-fast) var(--p31-ease-out);
+      min-height: 44px; min-width: 44px; gap: var(--p31-space-sm);
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(234, 160, 30, 0.3); }
+    .btn:active { transform: scale(0.97); }
+    .btn.secondary { background: var(--site-glass); color: var(--site-text); border: 1px solid var(--site-border); }
+    .btn.secondary:hover { background: var(--site-glass-hover); border-color: var(--site-text-dim); box-shadow: none; }
+    .btn.outline { background: transparent; color: var(--site-accent); border: 2px solid var(--site-accent); }
+    .btn.outline:hover { background: var(--site-accent); color: #fff; }
+
+    .hero-card {
+      min-height: 280px;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(234, 160, 30, 0.05), transparent, rgba(180, 100, 60, 0.03));
+    }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: var(--p31-space-md); }
+
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
+      background: var(--p31-ref-card);
+      backdrop-filter: blur(var(--glass-blur, 12px));
+      border-top: 1px solid var(--site-border);
+      display: flex; justify-content: center; gap: 4px;
+      padding: 0 var(--p31-space-sm); z-index: 100;
+    }
+    .nav-item {
+      flex: 1; max-width: 100px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+      color: var(--site-text-dim); border-radius: var(--p31-radius-md);
+      background: transparent; border: none; cursor: pointer;
+      transition: all var(--p31-duration-fast) var(--p31-ease-out);
+      padding: var(--p31-space-xs); min-height: 48px;
+      font-family: var(--p31-font-sans); font-size: 0.65rem;
+    }
+    .nav-item:hover { background: var(--site-glass); color: var(--site-text); }
+    [data-active-tab="dashboard"] .nav-item[data-target="dashboard"],
+    [data-active-tab="mission"] .nav-item[data-target="mission"],
+    [data-active-tab="involved"] .nav-item[data-target="involved"],
+    [data-active-tab="bonding"] .nav-item[data-target="bonding"] { color: var(--site-accent); }
+    .nav-item svg { width: 20px; height: 20px; opacity: 0.7; transition: all var(--p31-duration-fast) var(--p31-ease-out); }
+    .nav-item.active svg { opacity: 1; transform: translateY(-2px); }
+
+    #{toast-container} {
+      position: fixed; bottom: 80px; right: var(--p31-space-lg); z-index: 9999;
+      display: flex; flex-direction: column; gap: var(--p31-space-sm);
+    }
+    .toast {
+      background: #fff; border: 1px solid var(--site-border-strong);
+      border-left: 4px solid var(--site-accent);
+      padding: var(--p31-space-md); border-radius: var(--p31-radius-md);
+      font-size: 0.8rem; font-family: var(--p31-font-mono);
+      color: var(--site-text);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      animation: slideInRight 300ms var(--p31-ease-out) forwards;
+      max-width: 360px;
+    }
+    .toast.error { border-left-color: var(--site-error); }
+    .toast.success { border-left-color: var(--site-success); }
+    @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
+
+    @media (max-width: 700px) {
+      .topbar { padding: 0 var(--p31-space-md); }
+      .topbar-center .badge { display: none; }
+      .viewport { padding: var(--p31-space-md); }
+      .card { padding: var(--p31-space-md); }
+      .bottom-nav { gap: 0; }
+      .nav-item span { font-size: 0.55rem; }
+    }
+    @media (max-width: 450px) {
+      .topbar { height: 56px; }
+      .topbar-left { font-size: 0.9rem; }
+      .spoon-btn { width: 24px; height: 24px; font-size: 0.6rem; }
+    }
+
+    @media (max-width: 320px) {
+      .bento-grid { grid-template-columns: 1fr !important; }
+      .col-span-full, .col-span-half, .col-span-third, .col-span-two-thirds { grid-column: span 1 !important; }
+      .bottom-nav { gap: 0; }
+      .nav-item { max-width: 60px; font-size: 0.5rem; }
+      .nav-item svg, .nav-item .nav-icon { width: 16px; height: 16px; }
+      .spoon-row { gap: 2px; }
+      .spoon, .spoon-btn { width: 24px; height: 24px; min-width: 24px; min-height: 24px; font-size: 0.6rem; }
+      .topbar-metrics { gap: 4px; flex-wrap: wrap; }
+      .metric-badge { font-size: 0.6rem; padding: 2px 6px; }
+      .topbar { height: 48px; padding: 0 8px; }
+      .topbar-left { font-size: 0.8rem; }
+      .topbar-right .badge { display: none; }
+      .viewport { padding: 8px; }
+      .glass-card { padding: 12px; }
+      .card-value { font-size: 1.5rem; }
+      h1 { font-size: 1.5rem !important; }
+      h2 { font-size: 1.2rem !important; }
+      .mood-grid { grid-template-columns: repeat(3, 1fr) !important; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr !important; }
+      .stat-grid { grid-template-columns: 1fr 1fr !important; }
+      .team-card { margin: 0 !important; }
+      .map-wrapper { min-height: 200px !important; }
+      #left-rail, #right-rail { display: none !important; }
+    }
+
+    #mesh-container {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;
+      opacity: var(--bg-opacity, 1);
+      display: var(--mesh-display, block);
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 30%, rgba(234, 160, 30, 0.04) 0%, transparent 60%);
+    }
+    #mesh-container canvas { display: block; width: 100%; height: 100%; }
+
+    .badge-501 { display: inline-flex; align-items: center; gap: var(--p31-space-xs); padding: var(--p31-space-xs) var(--p31-space-sm); background: var(--site-accent); color: #fff; border-radius: var(--p31-radius-full); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .team-avatar {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--site-surface); border: 2px solid var(--site-border);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 1.1rem; color: var(--site-accent);
+      flex-shrink: 0;
+    }
+    .team-card { display: flex; flex-direction: row; align-items: center; gap: var(--p31-space-md); }
+    .team-card-info { flex: 1; }
+    .team-card-name { font-weight: 600; font-size: 0.95rem; }
+    .team-card-role { font-size: 0.8rem; color: var(--site-text-dim); }
+
+    .donate-meter {
+      background: var(--site-surface); border-radius: var(--p31-radius-full);
+      height: 12px; overflow: hidden; margin: var(--p31-space-md) 0;
+    }
+    .donate-meter-fill {
+      height: 100%; border-radius: var(--p31-radius-full);
+      background: linear-gradient(90deg, var(--site-accent), var(--site-accent-gold));
+      transition: width 1s var(--p31-ease-out);
+    }
+    .donate-toggle {
+      display: inline-flex; gap: 0;
+      border: 1px solid var(--site-border); border-radius: var(--p31-radius-md);
+      overflow: hidden;
+    }
+    .donate-toggle button {
+      padding: var(--p31-space-sm) var(--p31-space-lg);
+      background: transparent; border: none; cursor: pointer;
+      font-weight: 600; font-size: 0.85rem; color: var(--site-text-dim);
+      transition: all var(--p31-duration-fast) var(--p31-ease-out);
+      min-height: 44px; font-family: var(--p31-font-sans);
+    }
+    .donate-toggle button.active { background: var(--site-accent); color: #fff; }
+    .donate-toggle button:not(.active):hover { background: var(--site-glass); }
+
+    .grant-footer {
+      margin-top: var(--p31-space-3xl);
+      padding: var(--p31-space-xl) 0;
+      border-top: 1px solid var(--site-border);
+      text-align: center;
+    }
+    .grant-footer-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--site-text-dim); margin-bottom: var(--p31-space-md); }
+    .grant-badges { display: flex; flex-wrap: wrap; gap: var(--p31-space-sm); justify-content: center; }
+    .grant-badge {
+      display: inline-flex; align-items: center; gap: var(--p31-space-xs);
+      padding: var(--p31-space-xs) var(--p31-space-md);
+      background: var(--site-glass); border: 1px solid var(--site-border);
+      border-radius: var(--p31-radius-full);
+      font-size: 0.75rem; font-family: var(--p31-font-mono); color: var(--site-text-dim);
+    }
+
+    .newsletter-form {
+      display: flex; gap: var(--p31-space-sm); flex-wrap: wrap;
+      margin-top: var(--p31-space-md);
+    }
+    .newsletter-input {
+      flex: 1; min-width: 200px;
+      padding: var(--p31-space-sm) var(--p31-space-md);
+      background: var(--site-glass); border: 1px solid var(--site-border);
+      border-radius: var(--p31-radius-md); font-size: 0.85rem;
+      color: var(--site-text); min-height: 44px;
+      font-family: var(--p31-font-sans);
+    }
+    .newsletter-input::placeholder { color: var(--site-text-dim); }
+    .newsletter-input:focus { outline: none; border-color: var(--site-accent); }
+
+    [data-active-tab="team"] #page-team,
+    [data-active-tab="donate"] #page-donate { display: block; }
+
+    [data-active-tab="team"] .nav-item[data-target="team"],
+    [data-active-tab="donate"] .nav-item[data-target="donate"] { color: var(--site-accent); }
+  </style>
+  <meta property="og:title" content="Phosphorus 31 — Unlocking Neurodivergent Potential">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="Phosphorus 31 is a 501(c)(3) nonprofit research lab building sovereign assistive technology for neurodivergent families.">
+  <meta property="og:url" content="https://phosphorus31.org">
+  <meta property="og:image" content="https://phosphorus31.org/og-image.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Phosphorus 31, a P31 Labs initiative",
+    "url": "https://phosphorus31.org",
+    "description": "Phosphorus 31 is a 501(c)(3) nonprofit research lab building sovereign assistive technology for neurodivergent families."
+  }
+  </script>
+</head>
+<body>
+
+  <a href="#main" class="skip-link" role="skip-link">Skip to main content</a>
+
+  <div id="mesh-container" data-a2ui-component="MeshCanvas">
+    <canvas id="jitterbugCanvas" data-a2ui-component="JitterbugCanvas"></canvas>
+  </div>
+
+  <div class="app-shell">
+
+    <header class="topbar" role="banner">
+      <div class="topbar-left"><span>P</span>31</div>
+      <div class="topbar-center">
+        <div class="badge"><strong>501(c)(3)</strong> EIN: 42-1888158</div>
+      </div>
+      <div class="topbar-right">
+        <div class="spoon-dial" role="radiogroup" aria-label="Cognitive load" data-a2ui-component="SpoonDial">
+          <button class="spoon-btn" data-action="set-spoons" data-level="1" role="radio" aria-checked="false">1</button>
+          <button class="spoon-btn" data-action="set-spoons" data-level="2" role="radio" aria-checked="false">2</button>
+          <button class="spoon-btn active" data-action="set-spoons" data-level="3" role="radio" aria-checked="true">3</button>
+          <button class="spoon-btn" data-action="set-spoons" data-level="0" role="radio" aria-checked="false" title="Quiet mode">🧘</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="viewport" id="main" role="main">
+
+      <!-- DASHBOARD / HOME PAGE -->
+      <section id="page-dashboard" class="page" role="tabpanel" aria-labelledby="tab-dashboard">
+        <div class="bento-grid">
+
+          <div class="card hero-card col-span-two-thirds">
+            <span class="badge-501" style="margin-bottom: var(--p31-space-md);">501(c)(3) Nonprofit</span>
+            <h1 style="font-size: 2.5rem; font-weight: 300; margin-bottom: var(--p31-space-sm);">Unlocking <span style="color: var(--site-accent);">Neurodivergent Potential</span>.</h1>
+            <p style="color: var(--site-text-dim); max-width: 480px; margin-bottom: var(--p31-space-md); font-size: 1.05rem; line-height: 1.6;">
+              Phosphorus 31 is a nonprofit research lab building sovereign, open-source assistive technology — chemistry education, agent-native tools, and multiplayer games designed for how your brain works.
+            </p>
+            <div style="display: flex; gap: var(--p31-space-sm); flex-wrap: wrap;">
+              <button class="btn" data-action="navigate" data-target="mission">Our Mission</button>
+              <button class="btn outline" data-action="navigate" data-target="involved">Get Involved</button>
+            </div>
+          </div>
+
+          <div class="card col-span-third">
+            <div class="card-header">Impact Metrics</div>
+            <p style="color:var(--site-text-dim);font-size:0.85rem;line-height:1.6;margin-bottom:var(--p31-space-md);">
+              Impact metrics coming soon — we're building the measurement infrastructure.
+            </p>
+            <div style="font-size:0.75rem;color:var(--site-text-dim);font-family:var(--p31-font-mono);">
+              🔗 <a href="https://love-ledger.p31ca.org" target="_blank" style="color:var(--site-accent);">love-ledger.p31ca.org</a>
+            </div>
+          </div>
+
+          <div class="card col-span-third">
+            <div class="card-header">Open Source</div>
+            <div class="card-value"><span>100%</span></div>
+            <p style="color: var(--site-text-dim); font-size: 0.8rem; margin-top: auto;">Apache 2.0 · No telemetry by default</p>
+          </div>
+
+          <div class="card col-span-third">
+            <div class="card-header">Community</div>
+            <div class="card-value"><span>∞</span></div>
+            <p style="color: var(--site-text-dim); font-size: 0.8rem; margin-top: auto;">Funded by families, for families</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- MISSION PAGE -->
+      <section id="page-mission" class="page" role="tabpanel" aria-labelledby="tab-mission">
+        <div class="bento-grid">
+          <div class="card col-span-full">
+            <div class="card-header">Our Mission</div>
+            <h2 style="font-size: 1.5rem; font-weight: 400; margin-bottom: var(--p31-space-md);">Building the infrastructure for a <span style="color: var(--site-accent);">neurodivergent-led care economy</span>.</h2>
+            <p style="color: var(--site-text-dim); line-height: 1.7; max-width: 700px; margin-bottom: var(--p31-space-lg);">
+              P31 Labs builds open-source, neurodivergent-first assistive technology because the tools we need don't exist yet — and the ones that do weren't made for us. Our name comes from the tetrahedron: four vertices, six edges, four faces — the simplest possible volume, grounding sovereign data structures, peer-to-peer care networks, and post-quantum cryptography.
+            </p>
+            <p style="color: var(--site-text-dim); line-height: 1.7; max-width: 700px; margin-bottom: var(--p31-space-lg);">
+              We create technology that amplifies human potential, fosters genuine community connections, and builds a more equitable and accessible digital future — with no data collection, no ads, and no gatekeepers.
+            </p>
+            <div class="stat-grid">
+              <div class="card" style="padding: var(--p31-space-md); text-align: center;">
+                <div style="font-size: 2rem; font-weight: 200; color: var(--site-accent);">100%</div>
+                <div style="font-size: 0.75rem; color: var(--site-text-dim);">Open Source</div>
+              </div>
+              <div class="card" style="padding: var(--p31-space-md); text-align: center;">
+                <div style="font-size: 2rem; font-weight: 200; color: var(--site-accent);">0</div>
+                <div style="font-size: 0.75rem; color: var(--site-text-dim);">Data Collected</div>
+              </div>
+              <div class="card" style="padding: var(--p31-space-md); text-align: center;">
+                <div style="font-size: 2rem; font-weight: 200; color: var(--site-accent);">∞</div>
+                <div style="font-size: 0.75rem; color: var(--site-text-dim);">Accessibility</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TEAM PAGE -->
+      <section id="page-team" class="page" role="tabpanel" aria-labelledby="tab-team">
+        <div class="bento-grid">
+          <div class="card col-span-full">
+            <div class="card-header">Our Team</div>
+            <div style="display:flex;flex-direction:column;gap:var(--p31-space-md);">
+              <div class="card" style="padding:var(--p31-space-md);background:var(--p31-glass-bg);backdrop-filter:blur(var(--p31-glass-blur));">
+                <div style="display:flex;align-items:center;gap:var(--p31-space-md);flex-wrap:wrap;">
+                  <div class="team-avatar">WJ</div>
+                  <div>
+                    <div class="team-card-name">William R. Johnson</div>
+                    <div class="team-card-role">Founder &amp; Executive Director</div>
+                    <div style="font-size:0.7rem;color:var(--site-text-dim);font-family:var(--p31-font-mono);">
+                      willyj1587@gmail.com
+                    </div>
+                      <a href="https://orcid.org/0009-0002-2492-9079" target="_blank" style="color:var(--site-accent);">ORCID 0009-0002-2492-9079</a>
+                    </div>
+                  </div>
+                </div>
+                <p style="margin-top:var(--p31-space-sm);font-size:0.85rem;color:var(--site-text-dim);line-height:1.6;">
+                  Built in SE Georgia by a family, for families. Phosphorus 31 is a solo-founded nonprofit building sovereign assistive technology for neurodivergent families.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GET INVOLVED PAGE -->
+      <section id="page-involved" class="page" role="tabpanel" aria-labelledby="tab-involved">
+        <div class="bento-grid">
+          <div class="card col-span-full">
+            <div class="card-header">Get Involved</div>
+            <p style="color: var(--site-text-dim); margin-bottom: var(--p31-space-lg); max-width: 600px;">
+              Phosphorus 31 is funded entirely by donations and grants. Every contribution goes directly to building tools that empower neurodivergent families.
+            </p>
+          </div>
+
+          <div class="card col-span-half">
+            <div class="card-header">Donate</div>
+            <h3 style="font-size: 1.2rem; font-weight: 500; margin-bottom: var(--p31-space-sm);">Support the mission.</h3>
+            <p style="color: var(--site-text-dim); font-size: 0.85rem; margin-bottom: var(--p31-space-lg);">
+              Your donation funds free, open-source assistive technology for neurodivergent families.
+            </p>
+            <div style="display: flex; gap: var(--p31-space-sm); flex-wrap: wrap;">
+              <a href="https://ko-fi.com/trimtab69420" target="_blank" class="btn" style="text-decoration:none;">☕ Support on Ko-fi</a>
+              <a href="https://gumroad.com/p31labs" target="_blank" rel="noopener" class="btn outline" style="text-decoration:none;">🛒 Digital Goods</a>
+              <button class="btn outline" data-action="donate" data-provider="stripe">💳 Donate with Card</button>
+            </div>
+          </div>
+
+          <div class="card col-span-half">
+            <div class="card-header">Contribute</div>
+            <h3 style="font-size: 1.2rem; font-weight: 500; margin-bottom: var(--p31-space-sm);">We are open source.</h3>
+            <p style="color: var(--site-text-dim); font-size: 0.85rem; margin-bottom: var(--p31-space-lg);">
+              All code is on GitHub. Fork it, file issues, submit PRs, or join our community Discord.
+            </p>
+            <div style="display: flex; gap: var(--p31-space-sm); flex-wrap: wrap;">
+              <button class="btn secondary" data-action="navigate-external" data-url="https://github.com/p31labs">GitHub</button>
+              <button class="btn secondary" data-action="navigate-external" data-url="https://discord.gg/p31labs">Discord</button>
+            </div>
+          </div>
+
+          <div class="card col-span-full">
+            <div class="card-header">Stay Connected</div>
+            <div style="display:flex;align-items:center;gap:var(--p31-space-md);flex-wrap:wrap;">
+              <div>
+                <h3 style="font-size:1.1rem;font-weight:500;margin-bottom:var(--p31-space-sm);">
+                  <a href="https://thegeodesicself.substack.com" target="_blank" style="color:var(--site-accent);text-decoration:none;">
+                    The Geodesic Self
+                  </a>
+                </h3>
+                <p style="color:var(--site-text-dim);font-size:0.85rem;max-width:400px;">
+                  Essays on technology, neurodivergence, and sovereign tools. No spam — ever.
+                </p>
+              </div>
+              <a href="https://thegeodesicself.substack.com/subscribe" target="_blank" class="btn" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
+                📬 Subscribe
+              </a>
+            </div>
+            <div style="display: flex; gap: var(--p31-space-sm); flex-wrap: wrap; margin-top: var(--p31-space-md);">
+              <a href="https://gumroad.com/p31labs" target="_blank" rel="noopener" class="btn secondary" style="text-decoration:none;">🛒 Digital Goods on Gumroad</a>
+              <a href="https://ko-fi.com/trimtab69420" target="_blank" rel="noopener" class="btn secondary" style="text-decoration:none;">☕ Ko-fi Shop</a>
+            </div>
+            <div style="margin-top:var(--p31-space-sm);font-size:0.7rem;color:var(--site-text-dim);font-family:var(--p31-font-mono);">
+              🔗 <a href="https://thegeodesicself.substack.com/feed" target="_blank" style="color:var(--site-text-dim);">RSS feed</a> ·
+              Published via Substack · Powered by <a href="https://github.com/p31labs" target="_blank" style="color:var(--site-text-dim);">P31 Labs</a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- BONDING PAGE -->
+      <section id="page-bonding" class="page" role="tabpanel" aria-labelledby="tab-bonding">
+        <div class="bento-grid">
+          <div class="card col-span-full">
+            <div class="card-header">BONDING: Chemistry for Every Mind</div>
+            <p style="color: var(--site-text-dim); margin-bottom: var(--p31-space-md);">
+              Build molecules, earn LOVE, and learn chemistry at your own pace. No pressure. No tracking.
+            </p>
+            <div class="molecule-display" id="ui-molecule">-</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--p31-space-sm);">
+              <div style="font-size: 0.8rem; color: var(--site-text-dim);">Select atoms to build stable compounds.</div>
+              <div style="display: flex; gap: var(--p31-space-sm);">
+                <button class="btn secondary" data-action="clear-molecule">Clear</button>
+                <button class="btn" data-action="submit-molecule">Synthesize</button>
+              </div>
+            </div>
+            <div class="atom-palette">
+              <button class="atom-btn" data-action="select-atom" data-atom="H">H</button>
+              <button class="atom-btn" data-action="select-atom" data-atom="C">C</button>
+              <button class="atom-btn" data-action="select-atom" data-atom="N">N</button>
+              <button class="atom-btn" data-action="select-atom" data-atom="O">O</button>
+              <button class="atom-btn" data-action="select-atom" data-atom="P" style="color: var(--site-accent); border-color: rgba(234, 160, 30, 0.3);">P</button>
+              <button class="atom-btn" data-action="select-atom" data-atom="Ca">Ca</button>
+              <button class="atom-btn" data-action="select-atom" data-atom="S">S</button>
+              <button class="atom-btn" data-action="select-atom" data-atom="Fe">Fe</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DONATE PAGE -->
+      <section id="page-donate" class="page" role="tabpanel" aria-labelledby="tab-donate">
+        <div class="bento-grid">
+          <div class="card col-span-full hero-card" style="min-height: auto;">
+            <div class="card-header">Support Our Mission</div>
+            <h2 style="font-size: 1.8rem; font-weight: 300; margin-bottom: var(--p31-space-sm);">Every contribution <span style="color: var(--site-accent);">builds freedom</span>.</h2>
+            <p style="color: var(--site-text-dim); max-width: 500px; line-height: 1.6; margin-bottom: var(--p31-space-lg);">
+              Your donation goes directly to open-source assistive technology, STEM education tools, and community support for neurodivergent families — no data collection, no ads, no gatekeepers.
+            </p>
+          </div>
+
+          <div class="card col-span-half">
+            <div class="card-header">Impact Metrics</div>
+            <p style="color:var(--site-text-dim);font-size:0.85rem;line-height:1.6;">
+              Impact metrics coming soon — we're building the measurement infrastructure. Every contribution is trackable on the LOVE Ledger.
+            </p>
+            <div style="display:flex;gap:var(--p31-space-sm);flex-wrap:wrap;margin-top:var(--p31-space-md);">
+              <a href="https://love-ledger.p31ca.org" target="_blank" class="btn secondary" style="text-decoration:none;">🔗 LOVE Ledger</a>
+            </div>
+          </div>
+
+          <div class="card col-span-half">
+            <div class="card-header">Support with LOVE</div>
+            <p style="color:var(--site-text-dim);font-size:0.85rem;line-height:1.6;margin-bottom:var(--p31-space-md);">
+              Phosphorus 31 is powered by the LOVE economy — a care credit system with soulbound tokens. Every contribution builds free, open-source assistive technology for neurodivergent families.
+            </p>
+            <div style="display:flex;flex-direction:column;gap:var(--p31-space-md);">
+              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--p31-space-sm);padding:var(--p31-space-md);border-radius:var(--p31-radius-md);background:var(--p31-glass-bg);backdrop-filter:blur(var(--p31-glass-blur));border:1px solid var(--p31-glass-border);">
+                <div>
+                  <div style="font-weight:600;">💎 LOVE Credits</div>
+                  <div style="font-size:0.75rem;color:var(--site-text-dim);">Soulbound tokens · Care economy</div>
+                </div>
+                <a href="https://love-ledger.p31ca.org" target="_blank" class="btn" style="min-width:120px;text-decoration:none;">Donate LOVE</a>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--p31-space-sm);padding:var(--p31-space-md);border-radius:var(--p31-radius-md);background:var(--p31-glass-bg);backdrop-filter:blur(var(--p31-glass-blur));border:1px solid var(--p31-glass-border);">
+                <div>
+                  <div style="font-weight:600;">🪙 Crypto Donation</div>
+                  <div style="font-size:0.75rem;color:var(--site-text-dim);">Direct wallet transfer · LOVE or stablecoins</div>
+                </div>
+                <button class="btn" data-action="donate-crypto" style="min-width:120px;">Show Wallet</button>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--p31-space-sm);padding:var(--p31-space-md);border-radius:var(--p31-radius-md);background:var(--p31-glass-bg);backdrop-filter:blur(var(--p31-glass-blur));border:1px solid var(--p31-glass-border);">
+                <div>
+                  <div style="font-weight:600;">☕ Ko-fi</div>
+                  <div style="font-size:0.75rem;color:var(--site-text-dim);">One-time or monthly support</div>
+                </div>
+                <a href="https://ko-fi.com/trimtab69420" target="_blank" class="btn" style="min-width:120px;text-decoration:none;">Support</a>
+              </div>
+            </div>
+            <p style="color:var(--site-text-dim);font-size:0.75rem;margin-top:var(--p31-space-md);">
+              Phosphorus 31 is a 501(c)(3) nonprofit · EIN 42-1888158
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SUPPORT -->
+      <div class="grant-footer">
+        <div class="grant-footer-title">Funded By</div>
+        <div class="grant-badges">
+          <span class="grant-badge">💚 Community Donors</span>
+          <span class="grant-badge">☕ Ko-fi Supporters</span>
+        </div>
+        <div style="margin-top:var(--p31-space-md);padding:var(--p31-space-md);border-radius:var(--p31-radius-md);background:var(--p31-glass-bg);backdrop-filter:var(--p31-glass-blur);border:1px solid var(--p31-glass-border);">
+          <div style="font-weight:600;font-size:0.8rem;color:var(--p31-text-secondary);margin-bottom:var(--p31-space-xs);">In Development</div>
+          <div style="display:flex;gap:var(--p31-space-sm);flex-wrap:wrap;">
+            <span class="grant-badge">🔬 NGI TALER</span>
+            <span class="grant-badge">🔬 Fediversity</span>
+            <span class="grant-badge">🔬 eIDAS</span>
+          </div>
+          <p style="color:var(--site-text-dim);font-size:0.7rem;margin-top:var(--p31-space-xs);">Grant applications in progress — no funding received yet.</p>
+        </div>
+        <p style="color: var(--site-text-dim); font-size: 0.7rem; margin-top: var(--p31-space-md);">
+          No corporate sponsors. Funded by families, for families.<br>
+          Phosphorus 31 is a 501(c)(3) nonprofit · EIN 42-1888158
+        </p>
+      </div>
+
+    </main>
+
+    <nav class="bottom-nav" role="tablist" aria-label="Main navigation" data-a2ui-component="TabBar">
+      <button class="nav-item" data-action="navigate" data-target="dashboard" role="tab" aria-selected="true" id="tab-dashboard">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" data-action="navigate" data-target="mission" role="tab" aria-selected="false" id="tab-mission">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span>Mission</span>
+      </button>
+      <button class="nav-item" data-action="navigate" data-target="team" role="tab" aria-selected="false" id="tab-team">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Team</span>
+      </button>
+      <button class="nav-item" data-action="navigate" data-target="involved" role="tab" aria-selected="false" id="tab-involved">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Involve</span>
+      </button>
+      <button class="nav-item" data-action="navigate" data-target="bonding" role="tab" aria-selected="false" id="tab-bonding">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <span>BONDING</span>
+      </button>
+      <button class="nav-item" data-action="navigate" data-target="donate" role="tab" aria-selected="false" id="tab-donate">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <span>Donate</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <div id="toast-container" data-a2ui-component="Toast"></div>
+
+  <script nonce="{{NONCE}}">
+    'use strict';
+
+    const rawState = {
+      tab: 'dashboard',
+      spoons: 3,
+      loveBalance: null,
+      currentMolecule: []
+    };
+
+    let cacheTimeout;
+    const persistData = (key, val) => {
+      clearTimeout(cacheTimeout);
+      cacheTimeout = setTimeout(() => {
+        try { localStorage.setItem(`p31:${key}`, JSON.stringify(val)); } catch(e) {}
+      }, 300);
+    };
+
+    window.state = new Proxy(rawState, {
+      set(target, prop, value) {
+        target[prop] = value;
+        persistData(prop, value);
+        if (prop === 'spoons') {
+          document.documentElement.dataset.spoons = value;
+          document.querySelectorAll('.spoon-btn').forEach(b => {
+            const active = parseInt(b.dataset.level) === value;
+            b.classList.toggle('active', active);
+            b.setAttribute('aria-checked', active);
+          });
+        }
+        if (prop === 'tab') {
+          document.documentElement.dataset.activeTab = value;
+          document.querySelectorAll('.nav-item').forEach(b => {
+            b.classList.toggle('active', b.dataset.target === value);
+            b.setAttribute('aria-selected', b.dataset.target === value);
+          });
+        }
+        if (prop === 'currentMolecule') {
+          document.getElementById('ui-molecule').textContent = value.length ? value.join('') : '-';
+        }
+        return true;
+      }
+    });
+
+    try {
+      ['loveBalance', 'spoons'].forEach(key => {
+        const v = localStorage.getItem(`p31:${key}`);
+        if (v !== null) window.state[key] = JSON.parse(v);
+      });
+    } catch(e) {}
+
+    function showToast(msg, type) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      if (type) toast.classList.add(type);
+      toast.textContent = msg;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.animation = 'fadeOut 300ms forwards';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    document.addEventListener('click', (e) => {
+      const el = e.target.closest('[data-action]');
+      if (!el) return;
+      const action = el.dataset.action;
+      if (action === 'navigate') { window.state.tab = el.dataset.target; }
+      if (action === 'set-spoons') { window.state.spoons = parseInt(el.dataset.level); }
+      if (action === 'navigate-external') { window.open(el.dataset.url, '_blank', 'noopener,noreferrer'); }
+      if (action === 'donate-monthly') { window.open('https://ko-fi.com/trimtab69420', '_blank', 'noopener,noreferrer'); }
+      if (action === 'donate-once') { window.open('https://ko-fi.com/trimtab69420', '_blank', 'noopener,noreferrer'); }
+      if (action === 'select-atom') { window.state.currentMolecule = [...window.state.currentMolecule, el.dataset.atom]; }
+      if (action === 'clear-molecule') { window.state.currentMolecule = []; }
+      if (action === 'submit-molecule') {
+        if (!window.state.currentMolecule.length) return;
+        const formula = window.state.currentMolecule.join('');
+        const score = window.state.currentMolecule.length * 2;
+        window.state.loveBalance += score;
+        showToast(` ${formula} synthesized! +${score} LOVE`, 'success');
+        window.state.currentMolecule = [];
+      }
+      if (action === 'donate-toggle') {
+        document.querySelectorAll('[data-action="donate-toggle"]').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-checked', 'false');
+        });
+        el.classList.add('active');
+        el.setAttribute('aria-checked', 'true');
+      }
+      if (action === 'donate-amount') {
+        document.querySelectorAll('[data-action="donate-amount"]').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+      }
+      if (action === 'donate') {
+        const provider = el.dataset.provider;
+        if (provider === 'kofi') { window.open('https://ko-fi.com/trimtab69420', '_blank', 'noopener,noreferrer'); }
+        else { showToast('Card payments coming soon. Use Ko-fi in the meantime!', 'success'); }
+      }
+      if (action === 'donate-crypto') {
+        showToast('Wallet address: coming soon. Contact us on Ko-fi for direct wallet transfer instructions.', 'success');
+      }
+    });
+
+    const canvas = document.getElementById('jitterbugCanvas');
+    const ctx = canvas.getContext('2d');
+    let time = 0;
+
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const baseVerts = [
+      {x: 1, y: 1, z: 0}, {x: -1, y: 1, z: 0}, {x: 1, y: -1, z: 0}, {x: -1, y: -1, z: 0},
+      {x: 1, y: 0, z: 1}, {x: -1, y: 0, z: 1}, {x: 1, y: 0, z: -1}, {x: -1, y: 0, z: -1},
+      {x: 0, y: 1, z: 1}, {x: 0, y: -1, z: 1}, {x: 0, y: 1, z: -1}, {x: 0, y: -1, z: -1}
+    ];
+    const edges = [
+      [0,4],[0,6],[0,8],[0,10],[1,5],[1,7],[1,8],[1,10],
+      [2,4],[2,6],[2,9],[2,11],[3,5],[3,7],[3,9],[3,11],
+      [4,8],[4,9],[5,8],[5,9],[6,10],[6,11],[7,10],[7,11]
+    ];
+    function rotate3D(v, pitch, yaw, roll) {
+      let y = v.y * Math.cos(pitch) - v.z * Math.sin(pitch);
+      let z = v.y * Math.sin(pitch) + v.z * Math.cos(pitch);
+      let x = v.x;
+      let x2 = x * Math.cos(yaw) + z * Math.sin(yaw);
+      let z2 = -x * Math.sin(yaw) + z * Math.cos(yaw);
+      let x3 = x2 * Math.cos(roll) - y * Math.sin(roll);
+      let y3 = x2 * Math.sin(roll) + y * Math.cos(roll);
+      return { x: x3, y: y3, z: z2 };
+    }
+    function renderJitterbug() {
+      requestAnimationFrame(renderJitterbug);
+      if (window.state.spoons === 0) return;
+      time += (window.state.spoons >= 3) ? 0.003 : 0.001;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width / 2, cy = canvas.height / 2;
+      const scale = Math.min(cx, cy) * 0.5;
+      const morph = (Math.sin(time * 2) + 1) / 2;
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = `rgba(234, 160, 30, ${0.06 + morph * 0.10})`;
+      ctx.beginPath();
+      edges.forEach(edge => {
+        const v1 = rotate3D({...baseVerts[edge[0]], x: baseVerts[edge[0]].x * (1 - morph * 0.3), y: baseVerts[edge[0]].y * (1 - morph * 0.3), z: baseVerts[edge[0]].z * (1 - morph * 0.3)}, time * 0.5, time * 0.8, time * 0.3);
+        const v2 = rotate3D({...baseVerts[edge[1]], x: baseVerts[edge[1]].x * (1 - morph * 0.3), y: baseVerts[edge[1]].y * (1 - morph * 0.3), z: baseVerts[edge[1]].z * (1 - morph * 0.3)}, time * 0.5, time * 0.8, time * 0.3);
+        ctx.moveTo(cx + v1.x * scale, cy + v1.y * scale);
+        ctx.lineTo(cx + v2.x * scale, cy + v2.y * scale);
+      });
+      ctx.stroke();
+      ctx.fillStyle = `rgba(180, 100, 60, ${0.15 + morph * 0.25})`;
+      baseVerts.forEach(v => {
+        const vt = rotate3D({...v, x: v.x * (1 - morph * 0.3), y: v.y * (1 - morph * 0.3), z: v.z * (1 - morph * 0.3)}, time * 0.5, time * 0.8, time * 0.3);
+        ctx.beginPath(); ctx.arc(cx + vt.x * scale, cy + vt.y * scale, 2, 0, Math.PI * 2); ctx.fill();
+      });
+    }
+    renderJitterbug();
+
+    window.__p31MCPTools = {};
+
+    function registerTool(name, version, schema, handler) {
+      window.__p31MCPTools[name] = {
+        version, description: schema.description || '',
+        inputSchema: schema.inputSchema || { type: 'object', properties: {}, additionalProperties: false },
+        outputSchema: schema.outputSchema || { type: 'object', properties: { status: { type: 'string' } } },
+        timeout: schema.timeout || 5000, retryCount: schema.retryCount || 0,
+        idempotent: schema.idempotent || false, readOnlyHint: schema.readOnlyHint || false,
+        execute: async (params) => {
+          let attempts = 0; const max = schema.retryCount !== undefined ? schema.retryCount + 1 : 1;
+          while (attempts < max) {
+            try {
+              return await Promise.race([handler(params), new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), schema.timeout || 5000))]);
+            } catch (err) {
+              if (++attempts >= max) return { status: 'error', error: err.message || 'Execution failed', attempts };
+              await new Promise(r => setTimeout(r, Math.pow(2, attempts) * 100));
+            }
+          }
+        }
+      };
+      if (navigator.modelContext && navigator.modelContext.registerTool) {
+        try { navigator.modelContext.registerTool({ name, description: schema.description || '', inputSchema: schema.inputSchema || {}, execute: window.__p31MCPTools[name].execute, annotations: { readOnlyHint: schema.readOnlyHint || false } }); } catch (_) {}
+      }
+    }
+
+    registerTool('navigate', '2.0.0', {
+      description: 'Navigate to a page or section.',
+      inputSchema: { type: 'object', properties: { target: { type: 'string' }, smooth: { type: 'boolean', default: true } }, required: ['target'], additionalProperties: false },
+      outputSchema: { oneOf: [{ type: 'object', properties: { status: { const: 'ok' }, target: { type: 'string' } }, required: ['status', 'target'] }, { type: 'object', properties: { status: { const: 'error' }, error: { type: 'string' } }, required: ['status', 'error'] }] },
+      timeout: 5000, retryCount: 0
+    }, ({ target, smooth = true }) => {
+      if (target.startsWith('#')) { const el = document.querySelector(target); if (el) { el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto' }); return { status: 'ok', target }; } return { status: 'error', error: 'Selector not found' }; }
+      else { window.location.href = target; return { status: 'ok', target }; }
+    });
+    registerTool('setSpoonLevel', '2.0.0', {
+      description: 'Adjust cognitive load (0-5).',
+      inputSchema: { type: 'object', properties: { level: { type: 'integer', minimum: 0, maximum: 5 } }, required: ['level'], additionalProperties: false },
+      outputSchema: { type: 'object', properties: { status: { const: 'ok' }, spoons: { type: 'integer' } }, required: ['status', 'spoons'] },
+      timeout: 1000, retryCount: 0, readOnlyHint: false
+    }, ({ level }) => { window.state.spoons = level; return { status: 'ok', spoons: level }; });
+    registerTool('dashboardStats', '1.0.0', {
+      description: 'Get real-time metrics about the Phosphorus 31 nonprofit.',
+      inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+      outputSchema: { type: 'object', properties: { loveBalance: { type: 'number' }, spoons: { type: 'integer' }, toolsBuilt: { type: 'number' } }, required: ['loveBalance'] },
+      timeout: 3000, retryCount: 1, readOnlyHint: true
+    }, async () => ({ loveBalance: window.state.loveBalance, spoons: window.state.spoons, toolsBuilt: 4 }));
+    registerTool('buildMolecule', '1.0.0', {
+      description: 'Add atoms to the BONDING molecule builder.',
+      inputSchema: { type: 'object', properties: { atoms: { type: 'array', items: { type: 'string' } } }, required: ['atoms'], additionalProperties: false },
+      outputSchema: { type: 'object', properties: { status: { const: 'building' }, formula: { type: 'string' } }, required: ['status', 'formula'] },
+      timeout: 5000, retryCount: 0
+    }, ({ atoms }) => { window.state.currentMolecule = atoms; return { status: 'building', formula: atoms.join('') }; });
+    registerTool('submitMolecule', '1.0.0', {
+      description: 'Submit molecule and earn LOVE.',
+      inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+      outputSchema: { type: 'object', properties: { status: { const: 'submitted' }, loveEarned: { type: 'number' }, formula: { type: 'string' } }, required: ['status', 'loveEarned'] },
+      timeout: 3000, retryCount: 0
+    }, async () => {
+      const atoms = window.state.currentMolecule;
+      if (!atoms.length) return { status: 'error', error: 'No atoms' };
+      const formula = atoms.join(''); const score = atoms.length * 2;
+      window.state.loveBalance += score; window.state.currentMolecule = [];
+      return { status: 'submitted', loveEarned: score, formula };
+    });
+    registerTool('getMission', '1.0.0', {
+      description: 'Get the Phosphorus 31 mission statement.',
+      inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+      outputSchema: { type: 'object' },
+      timeout: 2000, retryCount: 0, readOnlyHint: true
+    }, async () => ({ mission: 'Sovereign technology for every mind.', tagline: 'Unlocking neurodivergent potential.', status: '501(c)(3) nonprofit', tools: ['BONDING', 'WILLOW', 'PHOS', 'ARCADE'] }));
+
+    console.log(`[P31] ${Object.keys(window.__p31MCPTools).length} MCP tools registered.`);
+  </script>
+
+  <script nonce="{{NONCE}}">
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    });
+  }
+  </script>
+<script src="/assets/state-sync.js"></script>
+<link rel="stylesheet" href="/assets/p31-ui.umd.css">
+<script crossorigin nonce="{{NONCE}}" src="https://unpkg.com/react@19/umd/react.production.min.js"></script>
+<script crossorigin nonce="{{NONCE}}" src="https://unpkg.com/react-dom@19/umd/react-dom.production.min.js"></script>
+<script src="/assets/p31-ui.umd.js"></script>
+<div id="p31-chat-widget" data-room="default" data-persona="nonprofit"></div>
+<div id="p31-mesh-status" data-room="default"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof P31UI === 'undefined') { console.warn('[P31] UI components not loaded'); return; }
+  var chatEl = document.getElementById('p31-chat-widget');
+  if (chatEl) {
+    P31UI.ChatWidget(chatEl, {
+      roomId: chatEl.dataset.room || 'default',
+      persona: chatEl.dataset.persona || 'friend',
+      placeholder: chatEl.dataset.placeholder || 'Say something...',
+      title: chatEl.dataset.title || 'Mesh Chat'
+    });
+  }
+  var meshEl = document.getElementById('p31-mesh-status');
+  if (meshEl) {
+    P31UI.MeshStatus(meshEl, {
+      roomId: meshEl.dataset.room || 'default',
+      refreshInterval: parseInt(meshEl.dataset.refresh) || 5000
+    });
+  }
+  document.addEventListener('p31-chat-send', function(e) {
+    var detail = e.detail || {};
+    var input = document.querySelector('#p31-chat-widget input');
+    var button = document.querySelector('#p31-chat-widget button');
+    if (input && button) { input.value = detail.message || ''; button.click(); }
+  });
+});
+</script>
+
+  <footer class="site-footer" style="padding: 2rem; text-align: center; border-top: 1px solid var(--p31-glass-border); margin-top: 3rem;">
+    <p style="color: var(--p31-text-tertiary); font-size: 0.8rem; margin-bottom: 0.75rem;">
+      P31 Labs — Building the infrastructure for a neurodivergent-led care economy. Open source, zero telemetry.
+    </p>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem;">
+      <a href="https://ko-fi.com/trimtab69420" target="_blank" rel="noopener" class="btn" style="text-decoration:none; font-size: 0.8rem;">☕ Ko-fi</a>
+      <a href="https://thegeodesicself.substack.com" target="_blank" rel="noopener" class="btn outline" style="text-decoration:none; font-size: 0.8rem;">📰 Substack</a>
+      <a href="https://gumroad.com/p31labs" target="_blank" rel="noopener" class="btn secondary" style="text-decoration:none; font-size: 0.8rem;">🛒 Gumroad</a>
+      <a href="https://github.com/p31labs" target="_blank" rel="noopener" class="btn secondary" style="text-decoration:none; font-size: 0.8rem;">GitHub</a>
+      <a href="https://discord.gg/p31labs" target="_blank" rel="noopener" class="btn secondary" style="text-decoration:none; font-size: 0.8rem;">Discord</a>
+    </div>
+  </footer>
+
+ </body>
+</html>

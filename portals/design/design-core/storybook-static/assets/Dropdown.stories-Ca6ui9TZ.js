@@ -1,0 +1,16 @@
+import{j as t}from"./jsx-runtime-D_zvdyIk.js";import{r as i}from"./iframe-DUMvxUKi.js";import{B as w}from"./Button-CQbWVZ_Y.js";import"./preload-helper-Dp1pzeXC.js";function f({trigger:r,items:g,onSelect:v,align:b="left",ariaLabel:h="Menu",className:y=""}){const[a,n]=i.useState(!1),l=i.useRef(null);return i.useEffect(()=>{if(!a)return;const e=s=>{var d;(d=l.current)!=null&&d.contains(s.target)||n(!1)},u=s=>{s.key==="Escape"&&n(!1)};return document.addEventListener("mousedown",e),document.addEventListener("keydown",u),()=>{document.removeEventListener("mousedown",e),document.removeEventListener("keydown",u)}},[a]),t.jsxs("div",{ref:l,className:`dropdown ${y}`.trim(),children:[t.jsx("div",{onClick:()=>n(e=>!e),"aria-haspopup":"menu","aria-expanded":a,style:{display:"inline-flex"},children:r({open:a})}),a&&t.jsx("div",{role:"menu","aria-label":h,className:`dropdown-menu ${b==="right"?"dropdown-menu-right":""}`,children:g.map(e=>t.jsx("button",{role:"menuitem",className:"dropdown-item",disabled:e.disabled,onClick:()=>{n(!1),v(e.value)},children:e.label},e.value))})]})}f.__docgenInfo={description:`Menu with click-outside dismissal and Escape handling.
+Items are buttons — keyboard focus works without a custom trap.`,methods:[],displayName:"Dropdown",props:{trigger:{required:!0,tsType:{name:"signature",type:"function",raw:"(props: { open: boolean }) => ReactNode",signature:{arguments:[{type:{name:"signature",type:"object",raw:"{ open: boolean }",signature:{properties:[{key:"open",value:{name:"boolean",required:!0}}]}},name:"props"}],return:{name:"ReactNode"}}},description:"Render your own trigger; receives open state for chevrons/aria"},items:{required:!0,tsType:{name:"unknown"},description:""},onSelect:{required:!0,tsType:{name:"signature",type:"function",raw:"(value: string) => void",signature:{arguments:[{type:{name:"string"},name:"value"}],return:{name:"void"}}},description:""},align:{required:!1,tsType:{name:"union",raw:"'left' | 'right'",elements:[{name:"literal",value:"'left'"},{name:"literal",value:"'right'"}]},description:"Right-align the menu to the trigger",defaultValue:{value:"'left'",computed:!1}},ariaLabel:{required:!1,tsType:{name:"string"},description:"Accessible name for the menu",defaultValue:{value:"'Menu'",computed:!1}},className:{required:!1,tsType:{name:"string"},description:"",defaultValue:{value:"''",computed:!1}}}};const q={title:"Primitives/Dropdown",tags:["autodocs"]},o={render:()=>t.jsx(f,{ariaLabel:"Actions",trigger:({open:r})=>t.jsxs(w,{variant:"secondary",children:[r?"▲":"▼"," Actions"]}),items:[{value:"edit",label:"Edit"},{value:"share",label:"Share"},{value:"del",label:"Delete",disabled:!0}],onSelect:r=>console.log(r)})};var c,p,m;o.parameters={...o.parameters,docs:{...(c=o.parameters)==null?void 0:c.docs,source:{originalSource:`{
+  render: () => <Dropdown ariaLabel="Actions" trigger={({
+    open
+  }) => <Button variant="secondary">{open ? '▲' : '▼'} Actions</Button>} items={[{
+    value: 'edit',
+    label: 'Edit'
+  }, {
+    value: 'share',
+    label: 'Share'
+  }, {
+    value: 'del',
+    label: 'Delete',
+    disabled: true
+  }]} onSelect={v => console.log(v)} />
+}`,...(m=(p=o.parameters)==null?void 0:p.docs)==null?void 0:m.source}}};const D=["Menu"];export{o as Menu,D as __namedExportsOrder,q as default};

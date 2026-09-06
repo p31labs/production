@@ -1,0 +1,10 @@
+packages:
+  - design-core
+
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
+
+patchedDependencies:
+  '@p31/ui@1.3.0': patches/@p31__ui@1.3.0.patch

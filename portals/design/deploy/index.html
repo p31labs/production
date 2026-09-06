@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en" data-spoons="3" data-theme="dark" data-a2ui-component="Portal" data-brand="design">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>P31 Design System — Token &amp; Component Dashboard</title>
+  <meta name="description" content="Live design system dashboard for P31 Labs. Color swatches, component catalog, token reference." />
+  <meta name="theme-color" content="#0A0A0F" />
+  <meta property="og:url" content="https://design.p31ca.org" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<style>
+/* P31 Sovereign Design System — auto-generated from tokens.yml */
+/* DO NOT EDIT DIRECTLY — edit tokens.yml and rebuild */
+
+:root {
+  /* Base unit — all scale/spacing/typography derives from this */
+  --p31-base: 16px;
+
+  /* Void tiers */
+  --p31-bg: oklch(10% 0.01 240);
+  --p31-surface: oklch(15% 0.015 240);
+  --p31-surface2: oklch(22% 0.02 240);
+
+  /* Accent colours */
+  --p31-accent: oklch(65% 0.18 195);
+  --p31-accent-alt: oklch(65% 0.18 285);
+  --p31-accent-violet: oklch(65% 0.18 285);
+  --p31-accent-gold: oklch(65% 0.18 15);
+  --p31-accent-green: oklch(65% 0.18 105);
+  --p31-accent-red: oklch(65% 0.18 20);
+  --p31-accent-iris: oklch(65% 0.18 270);
+
+  /* Text */
+  --p31-text: oklch(96% 0.005 240);
+  --p31-text-secondary: oklch(75% 0.01 240);
+  --p31-text-tertiary: oklch(55% 0.01 240);
+
+  /* Glass */
+  --p31-glass-bg: oklch(100% 0.01 240 / 0.04);
+  --p31-glass-border: oklch(100% 0.01 240 / 0.08);
+  --p31-glass-border-hover: oklch(100% 0.01 240 / 0.15);
+  --p31-glass-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  --p31-glass-blur: blur(12px);
+  --p31-glow-cyan: 0 0 20px rgba(0,240,255,0.25);
+
+  /* Scale progression */
+  --p31-scale-xs: calc(var(--p31-base) * 0.75);
+  --p31-scale-sm: var(--p31-base);
+  --p31-scale-md: calc(var(--p31-base) * 1.3333);
+  --p31-scale-lg: calc(var(--p31-base) * 1.7777);
+  --p31-scale-xl: calc(var(--p31-base) * 2.3703);
+  --p31-scale-2xl: calc(var(--p31-base) * 3.1604);
+  --p31-scale-3xl: calc(var(--p31-base) * 4.2139);
+  --p31-scale-4xl: calc(var(--p31-base) * 5.6186);
+
+  /* Typography sizes */
+  --p31-type-caption: clamp(var(--p31-scale-xs), 0.8vw, var(--p31-scale-sm));
+  --p31-type-body: clamp(calc(var(--p31-base) * 0.95), 1vw + 0.5rem, var(--p31-scale-sm));
+  --p31-type-label: var(--p31-scale-sm);
+  --p31-type-h3: clamp(var(--p31-scale-md), 2vw, var(--p31-scale-lg));
+  --p31-type-h2: clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl));
+  --p31-type-h1: clamp(var(--p31-scale-xl), 5.6vw, var(--p31-scale-2xl));
+  --p31-type-display: clamp(var(--p31-scale-2xl), 7vw, var(--p31-scale-3xl));
+
+  /* Font families */
+  --p31-font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --p31-font-mono: ui-monospace, SFMono-Regular, 'Fira Code', 'Fira Mono', 'Roboto Mono', 'JetBrains Mono', Menlo, Monaco, Consolas, monospace;
+  --p31-font-display: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  /* Animation */
+  --p31-duration-fast: 100ms;
+  --p31-duration-normal: 300ms;
+  --p31-duration-slow: 500ms;
+  --p31-easing-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --p31-easing-snappy: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --p31-easing-linear: linear;
+  --p31-speed-factor: 1;
+
+  /* Starfield */
+  --p31-starfield-hearth: oklch(55% 0.15 35);
+  --p31-starfield-teal: oklch(60% 0.08 185);
+  --p31-starfield-remembrance: oklch(95% 0.01 80);
+  --p31-starfield-particle-teal: oklch(70% 0.12 185 / 0.6);
+  --p31-starfield-particle-coral: oklch(65% 0.14 40 / 0.5);
+
+  /* Blur */
+  --p31-blur-subtle: 8px;
+  --p31-blur-standard: 12px;
+  --p31-blur-strong: 24px;
+
+  /* Spacing */
+  --p31-space-xs: clamp(var(--p31-scale-xs), 1vw, var(--p31-scale-sm));
+  --p31-space-sm: clamp(var(--p31-scale-sm), 1.5vw, var(--p31-scale-md));
+  --p31-space-md: clamp(var(--p31-scale-md), 2.5vw, var(--p31-scale-lg));
+  --p31-space-lg: clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl));
+  --p31-space-xl: clamp(var(--p31-scale-xl), 5vw, var(--p31-scale-2xl));
+  --p31-space-2xl: clamp(var(--p31-scale-2xl), 6.5vw, var(--p31-scale-3xl));
+  --p31-space-3xl: 64px;
+
+  /* Radii */
+  --p31-radius-sm: calc(var(--p31-scale-sm) / 2);
+  --p31-radius-md: calc(var(--p31-scale-md) / 2);
+  --p31-radius-lg: calc(var(--p31-scale-lg) / 2);
+  --p31-radius-xl: calc(var(--p31-scale-xl) / 2);
+  --p31-radius-full: 9999px;
+
+  /* Touch targets */
+  --p31-touch-min: 48px;
+  --p31-touch-recommended: 56px;
+  --p31-touch-large: 64px;
+
+  /* Z-index layers */
+  --p31-z-starfield: 0;
+  --p31-z-topbar: 10;
+  --p31-z-toast: 9999;
+  --p31-z-crisis: 99999;
+  --p31-z-skip-link: 100;
+
+  /* Legacy namespace aliases (backward compat) */
+  --p31-space-xs-legacy: 4px;
+  --p31-space-sm-legacy: 8px;
+  --p31-space-md-legacy: 16px;
+  --p31-space-lg-legacy: 24px;
+  --p31-space-xl-legacy: 32px;
+  --p31-space-2xl-legacy: 48px;
+  --p31-space-3xl-legacy: 64px;
+  --p31-duration-fast-legacy: 100ms;
+  --p31-duration-normal-legacy: 300ms;
+  --p31-duration-slow-legacy: 500ms;
+  --p31-ease-out-legacy: cubic-bezier(0.4, 0, 0.2, 1);
+  --p31-ease-in-out-legacy: linear;
+}
+
+/* Brand-specific site-* alias layer */
+:root {
+  --site-bg: var(--p31-bg);
+  --site-surface: var(--p31-surface);
+  --site-accent: var(--p31-accent);
+  --site-accent-alt: var(--p31-accent-alt);
+  --site-accent-gold: var(--p31-accent-gold);
+  --site-success: var(--p31-accent-green);
+  --site-error: var(--p31-accent-red);
+  --site-glass: var(--p31-glass-bg);
+  --site-glass-hover: var(--p31-glass-border-hover);
+  --site-border: var(--p31-glass-border);
+  --site-border-strong: var(--p31-glass-border-hover);
+  --site-text: var(--p31-text);
+  --site-text-dim: var(--p31-text-secondary);
+  --site-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  --site-glow: radial-gradient(circle at 50% 30%, var(--site-accent) 0%, transparent 60%);
+}
+
+/* Brand-specific overrides */
+[data-brand="p31ca"] {
+  --p31-glass-bg: oklch(14% 0.02 260 / 0.35);
+  --p31-glass-border: oklch(100% 0.01 240 / 0.12);
+  --p31-glass-border-hover: oklch(100% 0.01 240 / 0.25);
+  --p31-glass-blur: blur(24px);
+}
+[data-brand="phosphorus31"] {
+  --p31-glass-bg: oklch(99% 0.01 85 / 0.55);
+  --p31-glass-border: oklch(80% 0.02 75 / 0.3);
+  --p31-glass-border-hover: oklch(70% 0.03 70 / 0.4);
+  --p31-glass-blur: blur(16px);
+}
+[data-brand="willow"] {
+  --p31-glass-bg: rgba(255, 248, 240, 0.7);
+  --p31-glass-border: rgba(200, 180, 160, 0.25);
+  --p31-glass-blur: blur(16px);
+  --p31-text: oklch(25% 0.02 80);
+  --p31-text-secondary: oklch(55% 0.02 75);
+  --p31-accent: oklch(65% 0.18 45);
+  --p31-accent-alt: oklch(60% 0.15 200);
+  --p31-accent-gold: oklch(72% 0.14 80);
+  --p31-accent-green: oklch(70% 0.12 120);
+  --p31-accent-red: oklch(62% 0.15 10);
+  --p31-font-sans: "Comic Sans MS", "Chalkboard SE", cursive, sans-serif;
+  --p31-font-display: "Comic Sans MS", "Chalkboard SE", cursive;
+  --p31-radius-sm: 12px;
+  --p31-radius-md: 20px;
+  --p31-radius-lg: 28px;
+  --p31-radius-xl: 40px;
+  --p31-radius-full: 9999px;
+  --p31-space-xs: 0.5rem;
+  --p31-space-sm: 0.75rem;
+  --p31-space-md: 1.25rem;
+  --p31-space-lg: 2rem;
+  --p31-space-xl: 2.5rem;
+  --p31-space-2xl: 4rem;
+  --p31-duration-fast: 200ms;
+  --p31-duration-normal: 400ms;
+  --p31-duration-slow: 600ms;
+  --p31-easing-smooth: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --p31-touch-min: 56px;
+  --p31-touch-recommended: 64px;
+}
+
+/* Spoon-aware speed factor */
+[data-spoons="0"] { --p31-speed-factor: 0; --p31-glass-blur: none; }
+[data-spoons="1"] { --p31-speed-factor: 0; --p31-glass-blur: none; }
+[data-spoons="2"] { --p31-speed-factor: 0.25; --p31-glass-blur: blur(8px); }
+[data-spoons="3"] { --p31-speed-factor: 0.5; }
+[data-spoons="4"] { --p31-speed-factor: 0.75; }
+[data-spoons="5"] { --p31-speed-factor: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --p31-speed-factor: 0; }
+}
+
+/* Dark mode overrides */
+[data-dark-mode="true"] {
+  --p31-glass-bg: rgba(30, 28, 26, 0.8);
+  --p31-glass-border: rgba(80, 75, 70, 0.3);
+  --p31-text: oklch(90% 0.01 80);
+  --p31-text-secondary: oklch(65% 0.02 80);
+}
+
+/* Light theme overrides */
+html[data-theme="light"] {
+  --p31-bg: #F8FAFC;
+  --p31-surface: #FFFFFF;
+  --p31-surface2: #F1F5F9;
+  --p31-text: #0F172A;
+  --p31-text-secondary: rgba(15,23,42,0.6);
+  --p31-text-tertiary: rgba(15,23,42,0.3);
+  --p31-glass-bg: rgba(0,0,0,0.03);
+  --p31-glass-border: rgba(0,0,0,0.08);
+  --p31-glass-border-hover: rgba(0,0,0,0.15);
+}
+
+/* tool: renderGlassPanel */
+/* Glass panels */
+.glass-panel {
+  background: oklch(100% 0.01 240 / 0.04);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-card-radius, var(--p31-radius-xl));
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+
+.glass-card {
+  background: var(--p31-glass-bg);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-card-radius, var(--p31-radius-xl));
+  padding: var(--p31-space-lg);
+  box-shadow: var(--p31-glass-shadow);
+  transition: all var(--p31-duration-normal) var(--p31-easing-smooth);
+}
+.glass-card:hover {
+  border-color: var(--p31-glass-border-hover);
+  background: rgba(255,255,255,0.06);
+}
+
+.glass-strong {
+  background: oklch(100% 0.01 240 / 0.08);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--p31-card-radius, var(--p31-radius-xl));
+}
+
+.glass-subtle {
+  background: oklch(100% 0.01 240 / 0.03);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--p31-card-radius, var(--p31-radius-xl));
+}
+
+/* tool: renderButton */
+/* Buttons */
+.btn-primary {
+  background: oklch(65% 0.18 195);
+  color: oklch(10% 0.01 240);
+  font-weight: 700;
+  padding: clamp(var(--p31-scale-sm), 1.5vw, var(--p31-scale-md)) clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl));
+  border-radius: calc(var(--p31-scale-md) / 2);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 0 20px rgba(0,240,255,0.25);
+  transition: all var(--p31-duration-fast) var(--p31-easing-smooth);
+  font-size: 14px;
+}
+.btn-primary:hover {
+  box-shadow: 0 0 30px rgba(0,240,255,0.4);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.06);
+  color: oklch(96% 0.005 240);
+  font-weight: 600;
+  padding: clamp(var(--p31-scale-sm), 1.5vw, var(--p31-scale-md)) clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl));
+  border-radius: calc(var(--p31-scale-md) / 2);
+  border: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--p31-duration-fast) var(--p31-easing-smooth);
+  font-size: 14px;
+}
+.btn-secondary:hover {
+  border-color: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.1);
+}
+
+.btn-ghost {
+  color: oklch(75% 0.01 240);
+  font-weight: 600;
+  padding: clamp(var(--p31-scale-sm), 1.5vw, var(--p31-scale-md)) clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl));
+  border-radius: calc(var(--p31-scale-md) / 2);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--p31-duration-fast) var(--p31-easing-smooth);
+  font-size: 14px;
+}
+.btn-ghost:hover {
+  color: var(--p31-text);
+  background: rgba(255,255,255,0.05);
+}
+
+/* Link glow */
+.link-glow { transition: all var(--p31-duration-normal) var(--p31-easing-smooth); }
+
+/* tool: renderStarfield */
+/* Starfield container */
+.starfield-container {
+  position: fixed;
+  inset: 0;
+  z-index: var(--p31-z-starfield);
+  pointer-events: none;
+  background: oklch(8% 0.01 240);
+}
+.starfield-container canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* tool: renderCard */
+/* Portal card component */
+.card {
+  background: var(--p31-glass-bg);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  padding: var(--p31-space-lg);
+  transition: all var(--p31-duration-normal) var(--p31-easing-smooth);
+  display: flex;
+  flex-direction: column;
+}
+.card:hover {
+  border-color: var(--p31-glass-border-hover);
+  background: var(--p31-glass-bg);
+  transform: translateY(-2px);
+  box-shadow: var(--p31-glass-shadow);
+}
+.card-header {
+  font-size: var(--p31-type-caption);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--p31-text-secondary);
+  margin-bottom: var(--p31-space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-value {
+  font-size: 2.25rem;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  font-family: var(--p31-font-mono);
+  color: var(--p31-text);
+}
+.card-value span { color: var(--p31-accent); }
+
+/* Portal button */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--p31-space-sm) var(--p31-space-lg);
+  background: var(--p31-accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--p31-radius-md);
+  font-weight: 600;
+  font-size: var(--p31-type-caption);
+  cursor: pointer;
+  transition: all var(--p31-duration-fast) var(--p31-easing-smooth);
+  min-height: var(--p31-touch-min);
+  min-width: var(--p31-touch-min);
+  gap: var(--p31-space-sm);
+  text-decoration: none;
+  font-family: var(--p31-font-sans);
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+.btn:active { transform: scale(0.97); }
+.btn.secondary { background: var(--p31-glass-bg); color: var(--p31-text); border: 1px solid var(--p31-glass-border); }
+.btn.secondary:hover { background: var(--p31-glass-border-hover); border-color: var(--p31-text-secondary); box-shadow: none; }
+.btn.outline { background: transparent; color: var(--p31-accent); border: 2px solid var(--p31-accent); }
+.btn.outline:hover { background: var(--p31-accent); color: #fff; }
+
+/* tool: showToast */
+/* Toast notification */
+.toast {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 500px;
+  width: 90%;
+  margin: 0 auto;
+  background: var(--p31-glass-bg);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  border: 1px solid var(--p31-glass-border);
+  border-left: 4px solid var(--p31-accent);
+  border-radius: var(--p31-radius-lg);
+  padding: var(--p31-space-md) var(--p31-space-lg);
+  font-size: var(--p31-type-body);
+  z-index: var(--p31-z-toast);
+  animation: slideUp var(--p31-duration-normal) var(--p31-easing-smooth);
+  pointer-events: none;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+}
+.toast.error { border-left-color: var(--p31-accent-red); }
+.toast.success { border-left-color: var(--p31-accent-green); }
+@keyframes slideUp {
+  from { transform: translateX(-50%) translateY(60px) scale(0.95); opacity: 0; }
+  to { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+}
+
+/* tool: companionCard */
+/* Companion card (willow) */
+.companion-card {
+  background: var(--p31-glass-bg);
+  backdrop-filter: var(--p31-glass-blur);
+  border: 2px solid var(--p31-glass-border);
+  border-radius: var(--p31-card-radius, var(--p31-radius-xl));
+  padding: var(--p31-space-lg);
+  transition: all var(--p31-duration-normal) var(--p31-easing-smooth);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.02);
+  min-height: 80px;
+}
+
+/* tool: crisisOverlay */
+/* Crisis overlay */
+.crisis-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--p31-glass-bg);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--p31-space-2xl);
+  z-index: var(--p31-z-crisis);
+}
+html[data-spoons="0"] .crisis-overlay { display: flex; }
+
+/* tool: crisisOverlay */
+/* Breathing circle */
+.breathing-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--p31-accent), var(--p31-accent-red));
+  opacity: 0.4;
+  animation: breathe 5s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+}
+
+</style>
+  <style>
+    :root { --p31-card-radius: 32px; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--p31-font-sans); background: var(--p31-bg); color: var(--p31-text-secondary); line-height: 1.6; min-height: 100vh; overflow-x: hidden; }
+    a { color: var(--p31-accent); text-decoration: none; }
+    h1, h2, h3 { color: var(--p31-text); }
+    #starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .skip-link { position: fixed; top: -100%; left: 0; z-index: 9999; padding: 0.75rem 1.5rem; background: var(--p31-accent); color: var(--p31-bg); font-family: var(--p31-font-mono); font-size: 0.875rem; text-decoration: none; border-radius: 0 0 8px 0; }
+    .skip-link:focus { top: 0; }
+
+    /* Portal Shell */
+    .app-shell { display: flex; flex-direction: column; height: 100vh; position: relative; z-index: 10; }
+    .topbar { height: 64px; padding: 0 var(--p31-space-lg); display: flex; align-items: center; justify-content: space-between; background: rgba(6,6,8,0.6); backdrop-filter: blur(24px); border-bottom: 1px solid var(--p31-glass-border); flex-shrink: 0; }
+    .topbar-left { display: flex; align-items: center; gap: var(--p31-space-md); font-weight: 600; font-size: 1.1rem; }
+    .topbar-left span { color: var(--p31-accent); }
+    .topbar-center { display: flex; align-items: center; gap: var(--p31-space-md); flex: 1; justify-content: center; }
+    .topbar-right { display: flex; align-items: center; gap: var(--p31-space-md); }
+    .badge { display: inline-flex; align-items: center; gap: var(--p31-space-xs); padding: var(--p31-space-xs) var(--p31-space-md); background: var(--p31-glass-bg); border: 1px solid var(--p31-glass-border); border-radius: var(--p31-radius-full); font-size: 0.75rem; font-family: var(--p31-font-mono); color: var(--p31-text-secondary); }
+    .badge strong { color: var(--p31-text); font-weight: 500; }
+    .badge.accent { border-color: var(--p31-accent); color: var(--p31-accent); background: rgba(56,189,248,0.08); }
+
+    .spoon-dial { display: flex; background: rgba(0,0,0,0.5); border: 1px solid var(--p31-glass-border); border-radius: var(--p31-radius-full); padding: 4px; gap: 4px; }
+    .spoon-btn { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--p31-text-secondary); background: transparent; border: none; cursor: pointer; transition: all 0.15s ease; }
+    .spoon-btn svg { width: 16px; height: 16px; fill: currentColor; }
+    .spoon-btn:hover { background: var(--p31-glass-bg); color: var(--p31-text); }
+    .spoon-btn.active { background: var(--p31-accent); color: #000; box-shadow: 0 0 12px rgba(56,189,248,0.4); }
+
+    .neuro-toggle { background: var(--p31-glass-bg); border: 1px solid var(--p31-glass-border); color: var(--p31-text); cursor: pointer; font-size: 1rem; width: 32px; height: 32px; border-radius: var(--p31-radius-full,50%); display: flex; align-items: center; justify-content: center; transition: border-color 0.3s, background 0.3s; flex-shrink: 0; }
+    .neuro-toggle:hover { border-color: var(--p31-glass-border-hover); }
+    .neuro-toggle.active { background: rgba(0,240,255,0.15); border-color: var(--p31-accent); color: var(--p31-accent); }
+    #font-size-control { display: flex; gap: 2px; }
+    #font-size-control button { background: transparent; border: 1px solid transparent; color: var(--p31-text-tertiary); cursor: pointer; font-size: 0.75rem; width: 24px; height: 24px; border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    #font-size-control button.active { color: var(--p31-accent); border-color: var(--p31-glass-border); background: var(--p31-glass-bg); }
+    #font-size-control button:hover { color: var(--p31-text); }
+
+    .viewport { flex: 1; overflow-y: auto; overflow-x: hidden; padding: var(--p31-space-lg); scroll-behavior: smooth; padding-bottom: 80px; }
+    .page { display: block; animation: fadeIn 300ms ease forwards; max-width: 1200px; margin: 0 auto; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--p31-space-md); }
+    .col-span-full { grid-column: span 12; }
+
+    .swatch { width: 64px; height: 64px; border-radius: var(--p31-card-radius); border: 1px solid var(--p31-glass-border); display: flex; align-items: flex-end; justify-content: center; padding: 4px; font-size: 9px; font-family: var(--p31-font-mono); }
+    .swatch-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+    .comp-card { cursor: pointer; }
+    .token-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--p31-glass-border); font-size: 13px; }
+    .token-name { font-family: var(--p31-font-mono); color: var(--p31-accent-violet); min-width: 280px; font-size: 12px; }
+    .token-value { font-family: var(--p31-font-mono); color: var(--p31-text-secondary); font-size: 11px; }
+    .token-preview { width: 24px; height: 24px; border-radius: 4px; flex-shrink: 0; border: 1px solid var(--p31-glass-border); }
+    @media (max-width: 640px) { .token-name { min-width: 180px; font-size: 10px; } }
+    .preset-btn { padding: 6px 14px; border-radius: 8px; background: var(--p31-glass-bg); border: 1px solid var(--p31-glass-border); color: var(--p31-text-secondary); cursor: pointer; font-size: 11px; font-family: var(--p31-font-mono); transition: all 0.2s; }
+    .preset-btn:hover { border-color: var(--p31-glass-border-hover); color: var(--p31-text); }
+    @media (max-width: 640px) { #play-grid { grid-template-columns: 1fr !important; } }
+
+    @media (max-width: 320px) {
+      .bento-grid { grid-template-columns: 1fr !important; }
+      .col-span-full, .col-span-half, .col-span-third, .col-span-two-thirds { grid-column: span 1 !important; }
+      .bottom-nav { gap: 0; }
+      .nav-item { max-width: 60px; font-size: 0.5rem; }
+      .nav-item svg, .nav-item .nav-icon { width: 16px; height: 16px; }
+      .spoon-row { gap: 2px; }
+      .spoon, .spoon-btn { width: 24px; height: 24px; min-width: 24px; min-height: 24px; font-size: 0.6rem; }
+      .topbar-metrics { gap: 4px; flex-wrap: wrap; }
+      .metric-badge { font-size: 0.6rem; padding: 2px 6px; }
+      .topbar { height: 48px; padding: 0 8px; }
+      .topbar-left { font-size: 0.8rem; }
+      .topbar-right .badge { display: none; }
+      .viewport { padding: 8px; }
+      .glass-card { padding: 12px; }
+      .card-value { font-size: 1.5rem; }
+      h1 { font-size: 1.5rem !important; }
+      h2 { font-size: 1.2rem !important; }
+      .mood-grid { grid-template-columns: repeat(3, 1fr) !important; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr !important; }
+      .stat-grid { grid-template-columns: 1fr 1fr !important; }
+      .team-card { margin: 0 !important; }
+      .map-wrapper { min-height: 200px !important; }
+      #left-rail, #right-rail { display: none !important; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+    /* Bottom nav */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 64px; background: rgba(6,6,8,0.8); backdrop-filter: blur(24px); border-top: 1px solid var(--p31-glass-border); display: flex; justify-content: center; gap: 4px; padding: 0 var(--p31-space-sm); z-index: 100; }
+    .nav-item { flex: 1; max-width: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: var(--p31-text-secondary); border-radius: var(--p31-radius-md); background: transparent; border: none; cursor: pointer; transition: all 0.15s ease; padding: var(--p31-space-xs); min-height: 48px; font-family: var(--p31-font-sans); font-size: 0.65rem; }
+    .nav-item:hover { background: var(--p31-glass-bg); color: var(--p31-text); }
+    .nav-item.active { color: var(--p31-accent); }
+    .nav-item svg { width: 20px; height: 20px; opacity: 0.7; transition: all 0.15s; }
+    .nav-item.active svg { opacity: 1; transform: translateY(-2px); }
+
+    /* Notification Panel */
+    .ntrig-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+    .ntrig-btn { display: flex; align-items: center; padding: 12px; border-radius: var(--p31-radius-md); border: 1px solid var(--p31-glass-border); background: var(--p31-glass-bg); color: var(--p31-text); cursor: pointer; font-size: 13px; text-align: left; transition: all 0.15s; }
+    .ntrig-btn:hover { border-color: var(--p31-glass-border-hover); background: rgba(255,255,255,0.06); }
+    .ntrig-btn .nic { font-size: 20px; margin-right: 10px; flex-shrink: 0; }
+    .ntrig-btn .ntt { font-weight: 600; font-size: 13px; }
+    .ntrig-btn .nds { font-size: 11px; color: var(--p31-text-secondary); margin-top: 2px; }
+    .nnotif-item { padding: 14px; border-radius: var(--p31-radius-md); background: var(--p31-surface); border: 1px solid var(--p31-glass-border); margin-bottom: 8px; display: flex; gap: 10px; align-items: flex-start; animation: nslideIn 0.3s ease; }
+    .nnotif-item .nic { font-size: 18px; flex-shrink: 0; }
+    .nnotif-item .nb { flex: 1; }
+    .nnotif-item .nt { font-size: 13px; font-weight: 600; color: var(--p31-text); }
+    .nnotif-item .nx { font-size: 11px; color: var(--p31-text-secondary); margin-top: 2px; }
+    .nnotif-item .na { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+    .nnotif-btn { padding: 4px 10px; border-radius: 6px; border: none; cursor: pointer; font-size: 11px; font-weight: 600; font-family: var(--p31-font-sans); }
+    .nnotif-btn.primary { color: #000; }
+    .nnotif-btn.secondary { background: var(--p31-glass-bg); color: var(--p31-text); border: 1px solid var(--p31-glass-border); }
+    .nnotif-btn.dismiss { background: transparent; border: 1px solid var(--p31-glass-border); color: var(--p31-text-secondary); }
+    @keyframes nslideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+    .notif-history { margin-top: 24px; }
+    .notif-history summary { cursor: pointer; font-size: 13px; color: var(--p31-text-secondary); margin-bottom: 8px; }
+    .notif-history-item { display: flex; gap: 8px; font-size: 12px; padding: 6px 8px; border-radius: 6px; background: var(--p31-glass-bg); margin-bottom: 4px; color: var(--p31-text-secondary); }
+    .notif-opt-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+    .notif-opt-row label { display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: var(--p31-text-secondary); }
+    .notif-opt-row label:hover { color: var(--p31-text); }
+    .notif-empty { font-size: 12px; color: var(--p31-text-tertiary); padding: 16px; text-align: center; }
+    .notif-rules { font-size: 11px; color: var(--p31-text-tertiary); line-height: 1.6; margin-top: 16px; padding: 14px; border-radius: var(--p31-radius-md); background: var(--p31-glass-bg); border: 1px solid var(--p31-glass-border); }
+    .notif-rules ul { padding-left: 16px; margin: 8px 0 0; }
+    .notif-rules li { margin-bottom: 4px; }
+    .nspoon-dial { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+    .nspoon-btn { width: 32px; height: 32px; border-radius: 50%; border: none; cursor: pointer; background: var(--p31-glass-bg); color: var(--p31-text-secondary); font-size: 12px; font-weight: 600; font-family: var(--p31-font-sans); display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+    .nspoon-btn svg { width: 16px; height: 16px; fill: currentColor; }
+    .nspoon-btn:hover { background: rgba(255,255,255,0.08); color: var(--p31-text); }
+    .nspoon-btn.active { background: var(--p31-accent); color: #000; box-shadow: var(--p31-glow-cyan); }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+  <canvas id="starfield" aria-hidden="true"></canvas>
+
+  <div class="app-shell">
+    <header class="topbar" role="banner">
+      <div class="topbar-left"><span>Ⓟ</span>31 Design</div>
+      <div class="topbar-center">
+        <div class="badge">💎 <strong id="ui-love-balance">—</strong> LOVE</div>
+        <div class="badge accent">⬡ Design System</div>
+      </div>
+      <div class="topbar-right">
+        <div class="spoon-dial" role="radiogroup" aria-label="Cognitive load">
+          <button class="spoon-btn" data-action="set-spoons" data-level="1" role="radio" aria-checked="false"><svg viewBox="0 0 200 200" width="16" height="16"><path d="M100 30 Q96 80 100 110 Q100 120 100 145" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="100" cy="145" rx="16" ry="26" fill="currentColor"/><circle cx="100" cy="30" r="6" fill="currentColor"/></svg></button>
+          <button class="spoon-btn" data-action="set-spoons" data-level="2" role="radio" aria-checked="false"><svg viewBox="0 0 200 200" width="16" height="16"><path d="M100 30 Q96 80 100 110 Q100 120 100 145" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="100" cy="145" rx="16" ry="26" fill="currentColor"/><circle cx="100" cy="30" r="6" fill="currentColor"/></svg></button>
+          <button class="spoon-btn active" data-action="set-spoons" data-level="3" role="radio" aria-checked="true"><svg viewBox="0 0 200 200" width="16" height="16"><path d="M100 30 Q96 80 100 110 Q100 120 100 145" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="100" cy="145" rx="16" ry="26" fill="currentColor"/><circle cx="100" cy="30" r="6" fill="currentColor"/></svg></button>
+          <button class="spoon-btn" data-action="set-spoons" data-level="4" role="radio" aria-checked="false"><svg viewBox="0 0 200 200" width="16" height="16"><path d="M100 30 Q96 80 100 110 Q100 120 100 145" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="100" cy="145" rx="16" ry="26" fill="currentColor"/><circle cx="100" cy="30" r="6" fill="currentColor"/></svg></button>
+          <button class="spoon-btn" data-action="set-spoons" data-level="5" role="radio" aria-checked="false"><svg viewBox="0 0 200 200" width="16" height="16"><path d="M100 30 Q96 80 100 110 Q100 120 100 145" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="100" cy="145" rx="16" ry="26" fill="currentColor"/><circle cx="100" cy="30" r="6" fill="currentColor"/></svg></button>
+          <button class="spoon-btn" data-action="set-spoons" data-level="0" role="radio" aria-checked="false" title="Sensory rest mode">🧘</button>
+        </div>
+        <button class="neuro-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">🌙</button>
+        <button class="neuro-toggle" id="motion-toggle" aria-label="Toggle reduced motion" title="Reduce Motion">⟳</button>
+        <button class="neuro-toggle" id="focus-mode-toggle" aria-label="Toggle focus mode" title="Focus Mode">⊞</button>
+        <div id="font-size-control">
+          <button class="neuro-toggle" id="font-decrease" aria-label="Decrease font size" title="Font Size -">A−</button>
+          <button class="neuro-toggle" id="font-increase" aria-label="Increase font size" title="Font Size +">A+</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="viewport" id="main" role="main" data-a2ui-component="Main">
+      <section class="page" id="page-index">
+
+        <div class="bento-grid">
+
+          <!-- Hero -->
+          <div class="card col-span-full" style="text-align:center;padding:40px 24px;margin-bottom:8px;">
+            <div style="font-family:var(--p31-font-mono);font-size:10px;letter-spacing:0.2em;color:var(--p31-text-tertiary);text-transform:uppercase;margin-bottom:12px;">Design System Dashboard</div>
+            <h1 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:800;margin-bottom:8px;">Sovereign <span style="background:linear-gradient(135deg,var(--p31-accent),var(--p31-accent-violet),var(--p31-accent-green));-webkit-background-clip:text;background-clip:text;color:transparent;">Design Tokens</span></h1>
+            <p style="color:var(--p31-text-secondary);max-width:600px;margin:0 auto;">DTCG 2.0 compatible. 27 components. 40+ tokens. Single source of truth at <code style="font-family:var(--p31-font-mono);background:var(--p31-glass-bg);padding:2px 6px;border-radius:4px;font-size:12px;">cli/tokens/tokens.yml</code>.</p>
+          </div>
+
+          <!-- Color Swatches -->
+          <div class="card col-span-full" data-a2ui-component="ColorSwatches">
+            <div class="card-header">Color Tokens</div>
+            <div id="color-swatches" class="swatch-grid"></div>
+          </div>
+
+          <!-- Component Catalog -->
+          <div class="card col-span-full" data-a2ui-component="ComponentCatalog">
+            <div class="card-header">Component Catalog</div>
+            <div id="component-catalog" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
+          </div>
+
+          <!-- Layout Playground -->
+          <div class="card col-span-full">
+            <div class="card-header">Layout Playground</div>
+            <p style="color:var(--p31-text-secondary);font-size:12px;margin-bottom:16px;">Paste A2UI JSON — see it rendered live with P31 glass components. Click any component above to load its preview.</p>
+            <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;" id="play-presets">
+              <button class="preset-btn" onclick="loadPlayPreset('hero')">Hero</button>
+              <button class="preset-btn" onclick="loadPlayPreset('tetra')">Tetra Grid</button>
+              <button class="preset-btn" onclick="loadPlayPreset('cards')">Card Grid</button>
+              <button class="preset-btn" onclick="loadPlayPreset('cta')">CTA Block</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" id="play-grid">
+              <textarea id="play-input" style="width:100%;min-height:300px;background:var(--p31-surface);color:var(--p31-text);border:1px solid var(--p31-glass-border);border-radius:var(--p31-radius-md);padding:12px;font-family:var(--p31-font-mono);font-size:11px;resize:vertical;" placeholder='{"component":"Hero","properties":{},"children":[...]}'></textarea>
+              <div id="play-preview" style="background:var(--p31-surface);border:1px solid var(--p31-glass-border);border-radius:var(--p31-radius-md);padding:16px;min-height:300px;overflow:auto;" data-a2ui-component="PlayPreview"></div>
+            </div>
+          </div>
+
+          <!-- Icon Gallery -->
+          <div class="card col-span-full">
+            <div class="card-header">Icon Pack</div>
+            <p style="color:var(--p31-text-secondary);font-size:12px;margin-bottom:16px;">12 SVGs (8 regular + 4 advanced). Embedded CSS animations, reduced-motion fallback, ARIA labels.</p>
+            <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;" id="icon-filters">
+              <button class="preset-btn" data-filter="all">All</button>
+              <button class="preset-btn" data-filter="regular">Regular</button>
+              <button class="preset-btn" data-filter="advanced">Advanced</button>
+            </div>
+            <div id="icon-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;" data-a2ui-component="IconGrid"></div>
+          </div>
+
+          <!-- Notification Demo -->
+          <div class="card col-span-full">
+            <div class="card-header">Smart Notifications</div>
+            <p style="color:var(--p31-text-secondary);font-size:12px;margin-bottom:12px;">Spoon-aware, respectful, opt-in notification system. Agent-callable via MCP.</p>
+            
+            <div class="notif-opt-row" id="nopts"></div>
+            
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;align-items:center;">
+              <span style="font-size:12px;color:var(--p31-text-secondary);">Spoons:</span>
+              <div class="nspoon-dial" id="nspoon-dial"></div>
+            </div>
+            
+            <h4 style="font-size:12px;font-weight:600;color:var(--p31-text-secondary);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Trigger</h4>
+            <div class="ntrig-grid" id="ntrigs"></div>
+            
+            <div id="nlist" style="margin-top:16px;"></div>
+            
+            <details class="notif-history" id="nhist-details" style="margin-top:24px;">
+              <summary>Notification History</summary>
+              <div id="nhist-list"><div class="notif-empty">No activity yet.</div></div>
+            </details>
+            
+            <div class="notif-rules">
+              <strong style="color:var(--p31-text);">Rules</strong>
+              <ul>
+                <li>No badges or sound by default</li>
+                <li>Tone is warm, factual, never demanding</li>
+                <li>Respects Spoon level (mutes at 🧘 0)</li>
+                <li>Offer choices ("when you're ready")</li>
+                <li>High priority persists; low auto-dismisses</li>
+                <li>History persisted locally (last 20 events)</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+        
+        <div style="text-align:center;padding:40px;font-family:var(--p31-font-mono);font-size:11px;color:var(--p31-text-tertiary);">
+          Rebuild: <code>node cli/tokens/build-sovereign.mjs</code> · Served from <code>production/portals/design/index.html</code>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" role="tablist" aria-label="Main navigation" data-a2ui-component="TabBar">
+      <button class="nav-item active" data-action="navigate" data-target="design" role="tab" aria-selected="true">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span>Design</span>
+      </button>
+    </nav>
+  </div>
+
+  <script src="/assets/state-sync.js"></script>
+  <script>
+    var htmlEl = document.documentElement;
+    var toggleBtn = document.getElementById('theme-toggle');
+
+    // Theme toggle
+    (function() {
+      var saved = localStorage.getItem('p31:theme');
+      if (saved === 'light' || saved === 'dark') htmlEl.setAttribute('data-theme', saved);
+    })();
+    function updateToggleIcon() {
+      toggleBtn.innerHTML = htmlEl.getAttribute('data-theme') === 'light' ? '\u2600\uFE0F' : '\uD83C\uDF19';
+      document.querySelector('meta[name="theme-color"]').setAttribute('content',
+        htmlEl.getAttribute('data-theme') === 'light' ? '#F8FAFC' : '#0A0A0F');
+    }
+    updateToggleIcon();
+    toggleBtn.addEventListener('click', function() {
+      var newTheme = htmlEl.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      htmlEl.setAttribute('data-theme', newTheme);
+      localStorage.setItem('p31:theme', newTheme);
+      updateToggleIcon();
+    });
+
+    // Spoon Dial (portal shell)
+    (function() {
+      var buttons = document.querySelectorAll('.spoon-btn');
+      var saved = localStorage.getItem('p31:spoons');
+      var current = saved !== null ? parseInt(saved, 10) : parseInt(htmlEl.getAttribute('data-spoons') || '3', 10);
+      function updateSpoons(lvl) {
+        current = lvl;
+        htmlEl.setAttribute('data-spoons', String(lvl));
+        buttons.forEach(function(btn) {
+          var val = parseInt(btn.getAttribute('data-level'), 10);
+          btn.classList.toggle('active', val === lvl);
+          btn.setAttribute('aria-checked', val === lvl ? 'true' : 'false');
+        });
+        localStorage.setItem('p31:spoons', String(lvl));
+        if (window.p31SyncState) window.p31SyncState({ spoonLevel: lvl });
+      }
+      buttons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          updateSpoons(parseInt(this.getAttribute('data-level'), 10));
+        });
+      });
+      updateSpoons(current);
+    })();
+
+    // Jitterbug Starfield Engine
+    (function() {
+      var canvas = document.getElementById('starfield');
+      var ctx = canvas.getContext('2d');
+      var W = 0, H = 0, time = 0;
+
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      var BASE_VERTS = [
+        {x: 1, y: 1, z: 0}, {x: -1, y: 1, z: 0}, {x: 1, y: -1, z: 0}, {x: -1, y: -1, z: 0},
+        {x: 1, y: 0, z: 1}, {x: -1, y: 0, z: 1}, {x: 1, y: 0, z: -1}, {x: -1, y: 0, z: -1},
+        {x: 0, y: 1, z: 1}, {x: 0, y: -1, z: 1}, {x: 0, y: 1, z: -1}, {x: 0, y: -1, z: -1}
+      ];
+      var EDGE_INDICES = [
+        [0,4],[0,6],[0,8],[0,10],[1,5],[1,7],[1,8],[1,10],
+        [2,4],[2,6],[2,9],[2,11],[3,5],[3,7],[3,9],[3,11],
+        [4,8],[4,9],[5,8],[5,9],[6,10],[6,11],[7,10],[7,11]
+      ];
+
+      function rotate3D(v, pitch, yaw, roll) {
+        var ay = v.y * Math.cos(pitch) - v.z * Math.sin(pitch);
+        var az = v.y * Math.sin(pitch) + v.z * Math.cos(pitch);
+        var ax = v.x;
+        var ax2 = ax * Math.cos(yaw) + az * Math.sin(yaw);
+        var az2 = -ax * Math.sin(yaw) + az * Math.cos(yaw);
+        var ax3 = ax2 * Math.cos(roll) - ay * Math.sin(roll);
+        var ay3 = ax2 * Math.sin(roll) + ay * Math.cos(roll);
+        return { x: ax3, y: ay3, z: az2 };
+      }
+
+      function makeLayer(count, rMin, rMax, oMin, oMax, driftSpeed) {
+        var stars = [];
+        for (var i = 0; i < count; i++) {
+          stars.push({
+            x: Math.random(), y: Math.random(),
+            r: rMin + Math.random() * (rMax - rMin),
+            o: oMin + Math.random() * (oMax - oMin),
+            tw: 0.3 + Math.random() * 1.2,
+            phase: Math.random() * Math.PI * 2,
+            drift: (Math.random() - 0.5) * driftSpeed
+          });
+        }
+        return stars;
+      }
+
+      var STAR_LAYERS = [
+        makeLayer(160, 0.3, 0.7, 0.10, 0.28, 0.0015),
+        makeLayer(90,  0.6, 1.3, 0.20, 0.45, 0.003),
+        makeLayer(40,  1.0, 2.0, 0.35, 0.65, 0.005)
+      ];
+
+      var BRIGHT_STARS = [];
+      for (var bi = 0; bi < 7; bi++) {
+        BRIGHT_STARS.push({
+          x: Math.random(), y: Math.random(),
+          r: 1.6 + Math.random() * 1.2,
+          tw: 0.4 + Math.random() * 0.6,
+          phase: Math.random() * Math.PI * 2,
+          drift: (Math.random() - 0.5) * 0.006
+        });
+      }
+
+      function drawStars(t) {
+        for (var li = 0; li < STAR_LAYERS.length; li++) {
+          var layer = STAR_LAYERS[li];
+          for (var si = 0; si < layer.length; si++) {
+            var star = layer[si];
+            var twinkle = 0.55 + 0.45 * Math.sin(t * star.tw + star.phase);
+            var driftX = (star.x + t * star.drift) % 1;
+            if (driftX < 0) driftX += 1;
+            var px = ((driftX * W) % W + W) % W;
+            var py = ((star.y * H) % H + H) % H;
+            ctx.globalAlpha = star.o * twinkle;
+            ctx.fillStyle = '#c8dcff';
+            ctx.beginPath();
+            ctx.arc(px, py, star.r, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+        ctx.globalAlpha = 1;
+
+        for (var gi = 0; gi < BRIGHT_STARS.length; gi++) {
+          var g = BRIGHT_STARS[gi];
+          var tw = 0.6 + 0.4 * Math.sin(t * g.tw + g.phase);
+          var driftX = (g.x + t * g.drift) % 1;
+          if (driftX < 0) driftX += 1;
+          var px = ((driftX * W) % W + W) % W;
+          var py = ((g.y * H) % H + H) % H;
+          var glowR = g.r * 6;
+          var grad = ctx.createRadialGradient(px, py, 0, px, py, glowR);
+          grad.addColorStop(0, 'rgba(200, 225, 255, ' + (0.5 * tw) + ')');
+          grad.addColorStop(0.5, 'rgba(120, 170, 255, ' + (0.12 * tw) + ')');
+          grad.addColorStop(1, 'rgba(120, 170, 255, 0)');
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(px, py, glowR, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = 'rgba(255, 255, 255, ' + tw + ')';
+          ctx.beginPath();
+          ctx.arc(px, py, g.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function render() {
+        requestAnimationFrame(render);
+        var spoons = parseInt(htmlEl.getAttribute('data-spoons'), 10) || 3;
+        if (spoons === 0) { ctx.clearRect(0, 0, W, H); return; }
+
+        var speed = 0.001 + (spoons / 5) * 0.004;
+        time += speed;
+
+        ctx.clearRect(0, 0, W, H);
+        drawStars(time);
+
+        var cx = W / 2, cy = H / 2;
+        var scale = Math.min(cx, cy) * 0.45;
+
+        var morph = (Math.sin(time * 2) + 1) / 2;
+        var pitch = time * 0.5;
+        var yaw = time * 0.8;
+        var roll = time * 0.3;
+        var morphScale = 1 + morph * 0.2;
+
+        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = 'rgba(56, 189, 248, ' + (0.08 + morph * 0.10) + ')';
+        ctx.beginPath();
+        EDGE_INDICES.forEach(function(edge) {
+          var v1 = rotate3D({x: BASE_VERTS[edge[0]].x * morphScale, y: BASE_VERTS[edge[0]].y * morphScale, z: BASE_VERTS[edge[0]].z * morphScale}, pitch, yaw, roll);
+          var v2 = rotate3D({x: BASE_VERTS[edge[1]].x * morphScale, y: BASE_VERTS[edge[1]].y * morphScale, z: BASE_VERTS[edge[1]].z * morphScale}, pitch, yaw, roll);
+          ctx.moveTo(cx + v1.x * scale, cy + v1.y * scale);
+          ctx.lineTo(cx + v2.x * scale, cy + v2.y * scale);
+        });
+        ctx.stroke();
+
+        var vertexRadius = 3;
+        var glowRadius = 10;
+        BASE_VERTS.forEach(function(v) {
+          var vt = rotate3D({x: v.x * morphScale, y: v.y * morphScale, z: v.z * morphScale}, pitch, yaw, roll);
+          var vx = cx + vt.x * scale, vy = cy + vt.y * scale;
+
+          var pulseA = 0.06 + 0.04 * Math.sin(time * 3 + v.x * 10);
+          var grad = ctx.createRadialGradient(vx, vy, vertexRadius * 0.5, vx, vy, glowRadius);
+          grad.addColorStop(0, 'rgba(167, 139, 250, 0.30)');
+          grad.addColorStop(0.5, 'rgba(167, 139, 250, ' + pulseA + ')');
+          grad.addColorStop(1, 'rgba(167, 139, 250, 0)');
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(vx, vy, glowRadius, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = 'rgba(200, 180, 255, ' + (0.4 + morph * 0.25) + ')';
+          ctx.beginPath();
+          ctx.arc(vx, vy, vertexRadius, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      render();
+    })();
+
+    // Smart Notifications Engine
+    (function() {
+      var N = { spoons: 3, opts: { meds: true, movement: true, social: true, bonding: true, grants: true } };
+      var nlist = document.getElementById('nlist');
+      var nhistList = document.getElementById('nhist-list');
+
+      var T = {
+        meds:     { i: '\u23F0', t: 'Morning meds',       b: 'Vitamin D, L-theanine.',       c: '#F59E0B', p: 'high', a: [{ l: 'Mark Taken', x: true }, { l: 'Snooze' }] },
+        movement: { i: '\u2615', t: '90min focus',         b: 'Take a break. Walk, stretch.', c: '#10B981', p: 'low',  a: [{ l: 'Take Break', x: true }, { l: 'Snooze' }] },
+        social:   { i: '\uD83D\uDC64', t: 'Bash sent a message', b: '"Free to play?"',              c: '#8B5CF6', p: 'low',  a: [{ l: 'Open Chat', x: true }, { l: 'Snooze' }] },
+        bonding:  { i: '\uD83C\uDFAE', t: 'Bash in BONDING',     b: 'Want to build together?',      c: '#00F0FF', p: 'med',  a: [{ l: 'Join',      x: true }, { l: 'Snooze' }] },
+        grants:   { i: '\uD83D\uDCDD', t: 'ASAN grant due',      b: 'Draft 90% done. Finalize?',    c: '#F43F5E', p: 'high', a: [{ l: 'View',      x: true }, { l: 'Snooze' }] }
+      };
+      var OL = { meds: 'Medication', movement: 'Movement breaks', social: 'Social messages', bonding: 'BONDING', grants: 'Grants' };
+
+      function logHistory(trigger, action) {
+        var empty = nhistList.querySelector('.notif-empty');
+        if (empty) empty.remove();
+        var item = document.createElement('div');
+        item.className = 'notif-history-item';
+        var ts = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        item.innerHTML = '<span>' + trigger.i + '</span><span>' + trigger.t + ' \u2014 ' + action + ' <span style="color:var(--p31-text-tertiary);margin-left:auto;">' + ts + '</span></span>';
+        nhistList.prepend(item);
+        while (nhistList.children.length > 20) nhistList.lastChild.remove();
+      }
+
+      var sd = document.getElementById('nspoon-dial');
+      for (var ns = 1; ns <= 5; ns++) {
+        (function(l) {
+          var b = document.createElement('button');
+          b.className = 'nspoon-btn' + (l === 3 ? ' active' : '');
+          b.dataset.level = String(l);
+          b.innerHTML = '<svg viewBox="0 0 200 200" width="16" height="16"><path d="M100 30 Q96 80 100 110 Q100 120 100 145" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="100" cy="145" rx="16" ry="26" fill="currentColor"/><circle cx="100" cy="30" r="6" fill="currentColor"/></svg>';
+          b.onclick = function() { N.spoons = l; sd.querySelectorAll('.nspoon-btn').forEach(function(x) { x.classList.toggle('active', x.dataset.level === String(l)); }); };
+          sd.appendChild(b);
+        })(ns);
+      }
+      (function() {
+        var b = document.createElement('button');
+        b.className = 'nspoon-btn'; b.dataset.level = '0'; b.innerHTML = '\uD83E\uDDD8'; b.style.fontSize = '14px';
+        b.onclick = function() { N.spoons = 0; sd.querySelectorAll('.nspoon-btn').forEach(function(x) { x.classList.toggle('active', x.dataset.level === '0'); }); };
+        sd.appendChild(b);
+      })();
+
+      var orow = document.getElementById('nopts');
+      Object.keys(OL).forEach(function(k) {
+        var l = document.createElement('label');
+        l.innerHTML = '<input type="checkbox" id="nopt-' + k + '" checked style="accent-color:var(--p31-accent)"> <span>' + OL[k] + '</span>';
+        l.querySelector('input').onchange = function(e) { N.opts[k] = e.target.checked; };
+        orow.appendChild(l);
+      });
+
+      var tgrid = document.getElementById('ntrigs');
+      Object.keys(T).forEach(function(k) {
+        var t = T[k], b = document.createElement('button');
+        b.className = 'ntrig-btn'; b.style.borderLeft = '3px solid ' + t.c;
+        b.innerHTML = '<div class="nic">' + t.i + '</div><div><div class="ntt">' + t.t + '</div><div class="nds">' + t.b + '</div></div>';
+        b.onclick = function() {
+          if (!N.opts[k] || N.spoons === 0) return;
+          var id = k + '-' + Date.now(), el = document.createElement('div');
+          el.className = 'nnotif-item'; el.id = id;
+          el.style.borderLeft = '3px solid ' + t.c;
+          var ah = '';
+          t.a.forEach(function(a) {
+            ah += '<button class="nnotif-btn ' + (a.x ? 'primary' : 'secondary') + '" data-action="' + a.l + '" style="background:' + (a.x ? t.c : '') + '">' + a.l + '</button>';
+          });
+          el.innerHTML = '<div class="nic">' + t.i + '</div><div class="nb"><div class="nt">' + t.t + '</div><div class="nx">' + t.b + '</div><div class="na">' + ah + '<button class="nnotif-btn dismiss" data-action="Dismissed">Dismiss</button></div></div>';
+          el.querySelectorAll('.na button').forEach(function(btn) {
+            btn.onclick = function() { logHistory(t, btn.dataset.action); el.remove(); };
+          });
+          nlist.prepend(el);
+          if (t.p !== 'high') {
+            setTimeout(function() {
+              var e = document.getElementById(id);
+              if (e) { logHistory(t, 'Auto-dismissed'); e.remove(); }
+            }, (t.p === 'low' ? 6 : 10) * Math.max(1, 6 - N.spoons) * 1000);
+          }
+        };
+        tgrid.appendChild(b);
+      });
+    })();
+
+    // Color swatches — read from CSS custom properties
+    var colorTokens = [
+      { name:'--p31-bg', label:'Background' },
+      { name:'--p31-surface', label:'Surface' },
+      { name:'--p31-surface2', label:'Surface 2' },
+      { name:'--p31-accent', label:'Accent (Cyan)' },
+      { name:'--p31-accent-violet', label:'Accent Violet' },
+      { name:'--p31-accent-gold', label:'Accent Gold' },
+      { name:'--p31-accent-green', label:'Accent Green' },
+      { name:'--p31-accent-red', label:'Accent Red' },
+      { name:'--p31-accent-iris', label:'Accent Iris' },
+      { name:'--p31-text', label:'Text Primary' },
+      { name:'--p31-text-secondary', label:'Text Secondary' },
+      { name:'--p31-text-tertiary', label:'Text Tertiary' },
+    ];
+    var swatchGrid = document.getElementById('color-swatches');
+    var styles = getComputedStyle(document.documentElement);
+    colorTokens.forEach(function(t) {
+      var val = styles.getPropertyValue(t.name).trim();
+      var div = document.createElement('div');
+      div.style.textAlign = 'center';
+      div.innerHTML = '<div class="swatch" style="background:'+val+'"></div><div style="font-size:10px;font-family:var(--p31-font-mono);color:var(--p31-text-tertiary);margin-top:4px;max-width:64px;overflow:hidden;text-overflow:ellipsis;">'+t.label+'</div><div style="font-size:9px;font-family:var(--p31-font-mono);color:var(--p31-text-tertiary);">'+val+'</div>';
+      swatchGrid.appendChild(div);
+    });
+
+    // Component catalog — static data (27 components)
+    var components = [
+      { name:'GlassPanel', desc:'Glassmorphic elevated surface with backdrop blur.', tokens:'glass-surface, glass-border', css:'glass-panel', tool:'renderGlassPanel', a2ui:'{"component":"Section","properties":{},"children":[{"component":"Label","properties":{"text":"GlassPanel Example"}}]}' },
+      { name:'GlassCard', desc:'Compact glassmorphic card with padding.', tokens:'glass-surface, glass-border, glass-border-hover', css:'glass-card', tool:'renderGlassCard', a2ui:'{"component":"GlassCard","properties":{"title":"GlassCard","description":"A compact glass card with padding.","color":"accent"}}' },
+      { name:'GlassStrong', desc:'High-opacity glass with strong blur. Use for navbars.', tokens:'glass-surface-strong, blur-strong', css:'glass-strong', tool:'renderGlassStrong', a2ui:'{"component":"Section","properties":{},"children":[{"component":"Label","properties":{"text":"GlassStrong Example"}}]}' },
+      { name:'GlassSubtle', desc:'Low-opacity glass with subtle blur.', tokens:'glass-surface-subtle, blur-subtle', css:'glass-subtle', tool:'renderGlassSubtle', a2ui:'{"component":"Section","properties":{},"children":[{"component":"Label","properties":{"text":"GlassSubtle Example"}}]}' },
+      { name:'Button', desc:'Button with primary/secondary/ghost variants.', tokens:'accent, void, shadow-glow', css:'btn-primary / btn-secondary / btn-ghost', tool:'renderButton', a2ui:'{"component":"ButtonRow","properties":{"buttons":[{"label":"Primary","variant":"primary"},{"label":"Secondary","variant":"secondary"},{"label":"Ghost","variant":"ghost"}]}}' },
+      { name:'SpoonMeter', desc:'Cognitive load indicator (0-5). localStorage persisted.', tokens:'accent, text-tertiary', css:'spoon-meter', tool:'renderSpoonMeter', a2ui:'{"component":"Meter","properties":{"value":3,"max":5,"label":"3/5","icon":"🥄"}}' },
+      { name:'SpoonDial', desc:'Icon-mode spoon meter for compact header placement.', tokens:'accent, text-tertiary, spoon-icon', css:'spoon-dial', tool:'setSpoonLevel', a2ui:'{"component":"Section","properties":{},"children":[{"component":"Label","properties":{"text":"SpoonDial Example"}}]}' },
+      { name:'TetraGrid', desc:'4-column responsive grid for tetrahedral layouts.', tokens:'—', css:'tetra-grid', tool:'renderTetraGrid', a2ui:'{"component":"TetraGrid","children":[{"component":"GlassCard","properties":{"title":"Item 1","description":"First item","color":"accent"}},{"component":"GlassCard","properties":{"title":"Item 2","description":"Second item","color":"violet"}},{"component":"GlassCard","properties":{"title":"Item 3","description":"Third item","color":"gold"}},{"component":"GlassCard","properties":{"title":"Item 4","description":"Fourth item","color":"green"}}]}' },
+      { name:'HonestLabel', desc:'Disclaimer badge for contested-science content.', tokens:'font-mono, text-tertiary', css:'honest-label', tool:'renderHonestLabel', a2ui:'{"component":"Badge","properties":{"text":"HonestLabel","variant":"warning"}}' },
+      { name:'StatusBadge', desc:'Live/Beta/Research status indicator.', tokens:'green, cyan, violet', css:'status-badge-live / -beta / -research', tool:'renderStatusBadge', a2ui:'{"component":"Badge","properties":{"text":"Live","variant":"success"}}' },
+      { name:'CrisisOverlay', desc:'Full-screen breathing overlay at spoons=0.', tokens:'bg', css:'crisis-overlay', tool:'crisisOverlay', a2ui:'{"component":"Section","properties":{},"children":[{"component":"Label","properties":{"text":"CrisisOverlay (spoons=0)"}}]}' },
+      { name:'Starfield', desc:'3-layer parallax jitterbug cuboctahedron starfield. 290 stars + 7 bright anchors.', tokens:'—', css:'#starfield', tool:'renderStarfield', a2ui:'{"component":"Section","properties":{},"children":[{"component":"Label","properties":{"text":"Jitterbug Starfield"}}]}' },
+      { name:'ThemeToggle', desc:'Dark/light toggle with localStorage persistence.', tokens:'bg, light-background', css:'#theme-toggle', tool:'themeToggle', a2ui:'{"component":"Section","properties":{},"children":[{"component":"Label","properties":{"text":"ThemeToggle Example"}}]}' },
+      { name:'CandyHeader', desc:'Canonical candy-pill header bar with glass styling.', tokens:'header-candy, crown-xs, spoon-icon', css:'candy-header', tool:'renderCandyHeader', a2ui:'{"component":"Section","properties":{},"children":[{"component":"Label","properties":{"text":"CandyHeader Example"}}]}' },
+      { name:'Crown', desc:'Animated tetrahedral crown brand glyph.', tokens:'crown-xs, cyan, violet, gold, green, iris', css:'crown', tool:'renderCrown', a2ui:'{"component":"Section","properties":{},"children":[{"component":"Label","properties":{"text":"Crown Example"}}]}' },
+      { name:'Card', desc:'Generic glass card for content containers.', tokens:'glass-surface, glass-border, radius-lg, shadow-glass', css:'card', tool:'renderCard', a2ui:'{"component":"Card","properties":{"title":"Card","content":"Generic glass card for content containers."}}' },
+      { name:'Topbar', desc:'Portal top navigation bar with glass effect.', tokens:'glass-surface, void, spacing-lg', css:'topbar', tool:'renderTopbar', a2ui:'{"component":"Section","properties":{},"children":[{"component":"Label","properties":{"text":"Topbar Example"}}]}' },
+      { name:'BottomNav', desc:'Fixed bottom tab navigation for mobile layouts.', tokens:'glass-surface, void, spacing-sm', css:'bottom-nav', tool:'navigate', a2ui:'{"component":"Section","properties":{},"children":[{"component":"Label","properties":{"text":"BottomNav Example"}}]}' },
+      { name:'Badge', desc:'Compact status or metric badge with dot indicator.', tokens:'glass-surface, glass-border, radius-full', css:'badge', tool:'renderBadge', a2ui:'{"component":"Badge","properties":{"text":"Badge","variant":"info"}}' },
+      { name:'CompanionCard', desc:'Child-friendly glass card for willow companion.', tokens:'glass-surface, glass-border, radius-xl', css:'companion-card', tool:'companionCard', a2ui:'{"component":"CompanionCard","properties":{"title":"CompanionCard","content":"Child-friendly glass card for willow companion."}}' },
+      { name:'MoodBtn', desc:'Mood selection button for companion mood grid.', tokens:'radius-full, font-display', css:'mood-btn', tool:'moodBtn', a2ui:'{"component":"Button","label":"😊 Happy"}' },
+      { name:'GameCard', desc:'Game selection card for arcade/play sections.', tokens:'glass-surface, glass-border, radius-lg', css:'game-card', tool:'gameCard', a2ui:'{"component":"GameCard","title":"Game","content":"Game description"}' },
+      { name:'ChatBubble', desc:'Chat message bubble for companion chat interface.', tokens:'radius-lg, surface2, void-deep', css:'chat-bubble', tool:'chatBubble', a2ui:'{"component":"ChatBubble","message":"Hello, Willow!","sender":"companion"}' },
+      { name:'PinKey', desc:'PIN pad key for child lock/unlock overlay.', tokens:'radius-full, font-display', css:'pin-key', tool:'pinKey', a2ui:'{"component":"Button","label":"1"}' },
+      { name:'Toggle', desc:'Binary toggle switch for settings pages.', tokens:'radius-full, glass-surface, surface2', css:'toggle', tool:'renderToggle', a2ui:'{"component":"Toggle","checked":true}' },
+      { name:'BreakOverlay', desc:'Full-screen break timer overlay for companion.', tokens:'void-deep, surface2, font-display', css:'break-overlay', tool:'breakOverlay', a2ui:'{"component":"Section","properties":{},"children":[{"component":"Label","properties":{"text":"BreakOverlay Example"}}]}' },
+      { name:'Toast', desc:'Transient notification toast for feedback.', tokens:'glass-surface, glass-border-strong, radius-md', css:'toast', tool:'showToast', a2ui:'{"component":"Toast","message":"This is a toast notification!","variant":"success"}' },
+    ];
+    var catalog = document.getElementById('component-catalog');
+    components.forEach(function(c) {
+      var div = document.createElement('div');
+      div.className = 'glass-card comp-card'; div.dataset.a2ui = c.a2ui;
+      div.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><h3 style="font-size:14px;">'+c.name+'</h3><code style="font-size:10px;font-family:var(--p31-font-mono);color:var(--p31-accent);background:var(--p31-glass-bg);padding:2px 6px;border-radius:4px;">'+c.css+'</code></div><div style="font-size:9px;font-family:var(--p31-font-mono);color:var(--p31-accent-iris);margin-bottom:8px;">MCP tool: '+c.tool+'</div><p style="font-size:12px;color:var(--p31-text-secondary);line-height:1.5;">'+c.desc+'</p><div style="margin-top:8px;font-size:10px;font-family:var(--p31-font-mono);color:var(--p31-text-tertiary);">Tokens: '+c.tokens+'</div><button class="preset-btn" style="margin-top:12px;width:100%;">Load in Playground</button>';
+      catalog.appendChild(div);
+    });
+
+    catalog.addEventListener('click', function(e) {
+      var btn = e.target.closest('.preset-btn');
+      if (!btn) return;
+      var card = btn.closest('.comp-card');
+      if (!card) return;
+      var a2ui = card.dataset.a2ui;
+      if (a2ui) {
+        var input = document.getElementById('play-input');
+        input.value = a2ui;
+        input.dispatchEvent(new Event('input'));
+        document.getElementById('play-grid').scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    // ─── A2UI Playground Renderer ─────────────────────────────────────────
+    var COLS = {accent:'var(--p31-accent)',violet:'var(--p31-accent-violet)',gold:'var(--p31-accent-gold)',green:'var(--p31-accent-green)',red:'var(--p31-accent-red)'};
+    function renderNode(n) {
+      if (!n || !n.component) return document.createTextNode('');
+      var el;
+      switch (n.component) {
+        case 'Hero': el = document.createElement('section'); el.style.cssText = 'text-align:center;padding:40px 24px;'; break;
+        case 'Heading': el = document.createElement(n.properties&&n.properties.level===1?'h1':'h2'); el.style.cssText = 'color:var(--p31-text);font-weight:700;'+(n.properties&&n.properties.level===1?'font-size:clamp(2rem,5vw,3rem);text-align:center;margin-bottom:12px;':'font-size:clamp(1.25rem,3vw,1.75rem);text-align:center;margin-bottom:8px;'); el.textContent = (n.properties||{}).text||''; return el;
+        case 'Text': el = document.createElement('p'); var v = (n.properties||{}).variant; el.style.cssText = v==='subtitle'?'font-size:1rem;color:var(--p31-text-secondary);text-align:center;max-width:600px;margin:0 auto 24px;':v==='description'?'color:var(--p31-text-secondary);text-align:center;max-width:600px;margin:0 auto 20px;':'color:var(--p31-text-secondary);'; el.textContent = (n.properties||{}).text||''; return el;
+        case 'Label': el = document.createElement('div'); el.className = 'glass-subtle'; el.style.cssText = 'display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:32px;margin-bottom:16px;'; el.textContent = (n.properties||{}).text||''; return el;
+        case 'ButtonRow': el = document.createElement('div'); el.style.cssText = 'display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;'; ((n.properties||{}).buttons||[]).forEach(function(b){var a=document.createElement('a');a.className='btn-'+(b.variant==='secondary'?'secondary':b.variant==='ghost'?'ghost':'primary');a.href=b.href||'#';a.style.cssText='display:inline-flex;align-items:center;gap:8px;';a.textContent=b.label||'';el.appendChild(a);}); return el;
+        case 'StatRow': el = document.createElement('div'); el.style.cssText = 'display:flex;gap:20px;justify-content:center;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;'; ((n.properties||{}).stats||[]).forEach(function(s){var d=document.createElement('div');d.className='glass-subtle';d.style.cssText='padding:12px 16px;text-align:center;min-width:80px;';d.innerHTML='<div style="font-size:20px;font-weight:700;color:var(--p31-text);">'+(s.value||'')+'</div><div style="font-size:10px;color:var(--p31-text-tertiary);text-transform:uppercase;">'+(s.label||'')+'</div>';el.appendChild(d);}); return el;
+        case 'TetraGrid': el = document.createElement('div'); el.className = 'tetra-grid'; el.style.cssText = 'display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:12px 0;'; break;
+        case 'Grid': el = document.createElement('div'); el.style.cssText = 'display:grid;grid-template-columns:repeat('+((n.properties||{}).columns||3)+',1fr);gap:12px;'; break;
+        case 'GlassCard': el = document.createElement('div'); var c = (n.properties||{}).color||'accent'; el.className = 'glass-card'; var border = 'border-left:2px solid '+(COLS[c]||COLS.accent)+';'; el.style.cssText = border; el.innerHTML = ((n.properties||{}).title?'<h3 style="color:var(--p31-text);font-size:13px;font-weight:700;">'+(n.properties||{}).title+'</h3>':'')+((n.properties||{}).description?'<p style="color:var(--p31-text-secondary);font-size:11px;line-height:1.5;">'+(n.properties||{}).description+'</p>':''); return el;
+        case 'Section': el = document.createElement('section'); el.style.cssText = 'padding:24px;max-width:1280px;margin:0 auto;'; break;
+        case 'CTABlock': el = document.createElement('div'); el.className = 'glass-strong'; el.style.cssText = 'padding:40px 24px;text-align:center;max-width:640px;margin:0 auto;border-radius:var(--p31-radius-xl);'; var h = (n.properties||{}).heading||''; var d = (n.properties||{}).description||''; var btns = ((n.properties||{}).buttons||[]).map(function(b){return '<a href="'+(b.href||'#')+'" class="btn-'+(b.variant==='secondary'?'secondary':b.variant==='ghost'?'ghost':'primary')+'">'+(b.label||'')+'</a>';}).join(''); el.innerHTML = '<h2 style="font-size:clamp(1.25rem,3vw,1.75rem);font-weight:700;color:var(--p31-text);margin-bottom:12px;">'+h+'</h2>'+(d?'<p style="color:var(--p31-text-secondary);margin-bottom:20px;">'+d+'</p>':'')+(btns?'<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">'+btns+'</div>':''); return el;
+        default: el = document.createElement('div'); el.textContent = '?'+n.component; el.style.cssText = 'color:var(--p31-text-tertiary);font-family:var(--p31-font-mono);font-size:10px;'; return el;
+      }
+      if (n.children) n.children.forEach(function(c){el.appendChild(renderNode(c));});
+      return el;
+    }
+    function renderPlayA2UI(json) {
+      var preview = document.getElementById('play-preview');
+      try {
+        var d = typeof json === 'string' ? JSON.parse(json) : json;
+        if (d.a2ui && d.a2ui.root) d = d.a2ui.root;
+        if (d.root && !d.component) d = d.root;
+        preview.innerHTML = '';
+        preview.appendChild(renderNode(d));
+      } catch (e) { preview.innerHTML = '<div style="color:var(--p31-accent-red);font-family:var(--p31-font-mono);font-size:11px;">Error: '+e.message+'</div>'; }
+    }
+    var playInput = document.getElementById('play-input');
+    playInput.addEventListener('input', function(){ if (this.value.trim()) renderPlayA2UI(this.value.trim()); });
+    var PPRESETS = {
+      hero:'{"component":"Hero","children":['+
+        '{"component":"Label","properties":{"text":"501(c)(3) Nonprofit","variant":"badge"}},'+
+        '{"component":"Heading","properties":{"text":"Sovereign Care","level":1}},'+
+        '{"component":"Text","properties":{"text":"Open-source assistive technology.","variant":"subtitle"}},'+
+        '{"component":"ButtonRow","properties":{"buttons":['+
+          '{"label":"Enter PHOS","href":"https://phos.p31ca.org","variant":"primary"},'+
+          '{"label":"Research","variant":"ghost"}]}},'+
+        '{"component":"StatRow","properties":{"stats":['+
+          '{"value":"—","label":"Families"},{"value":"—","label":"LOVE"},{"value":"—","label":"Apps"}]}}'+
+      ']}',
+      tetra:'{"component":"TetraGrid","children":['+
+        '{"component":"GlassCard","properties":{"title":"Quantum Core","description":"SIC-POVM d=2","color":"accent"}},'+
+        '{"component":"GlassCard","properties":{"title":"Care Economy","description":"LOVE Ledger","color":"violet"}},'+
+        '{"component":"GlassCard","properties":{"title":"Research","description":"22 Papers","color":"gold"}},'+
+        '{"component":"GlassCard","properties":{"title":"Impact","description":"18 Families","color":"green"}}]}',
+      cards:'{"component":"Section","properties":{"variant":"grid"},"children":['+
+        '{"component":"Heading","properties":{"text":"Research Papers","level":2}},'+
+        '{"component":"Text","properties":{"text":"Open-access publications.","variant":"description"}},'+
+        '{"component":"Grid","properties":{"columns":3},"children":['+
+          '{"component":"GlassCard","properties":{"title":"K4","description":"Graph theory","color":"accent","href":"https://zenodo.org"}},'+
+          '{"component":"GlassCard","properties":{"title":"SIC-POVM","description":"Posner geometry","color":"violet"}},'+
+          '{"component":"GlassCard","properties":{"title":"Spoon-Aware UI","description":"Design framework","color":"gold"}}]}]}',
+      cta:'{"component":"CTABlock","properties":{"heading":"Support Sovereign Care","description":"P31 Labs is community-funded.","buttons":[{"label":"Donate","href":"#","variant":"primary"},{"label":"GitHub","href":"https://github.com/p31labs","variant":"secondary"},{"label":"Discord","href":"https://discord.gg/uYW5rTCuZ","variant":"ghost"}]}}',
+    };
+    window.loadPlayPreset = function(k) { var input = document.getElementById('play-input'); input.value = PPRESETS[k]||''; input.dispatchEvent(new Event('input')); };
+    loadPlayPreset('hero');
+
+    // Icon gallery
+    (function() {
+      var grid = document.getElementById('icon-grid');
+      var filterBtns = document.querySelectorAll('#icon-filters .preset-btn');
+      var currentFilter = 'all';
+      var catalog = {
+        'k4-tetrahedron': { family: 'regular', colors: ['--p31-accent', '--p31-accent-violet', '--p31-text'], animated: true, description: 'Foundational structure, sovereignty' },
+        'molecule': { family: 'regular', colors: ['--p31-accent-green', '--p31-accent-violet', '--p31-text'], animated: true, description: 'Bonding, quantum mechanics, care connections' },
+        'signal': { family: 'regular', colors: ['--p31-accent', '--p31-accent-violet', '--p31-text'], animated: true, description: 'Coordination, communication, mesh signalling' },
+        'mesh-node': { family: 'regular', colors: ['--p31-accent-red', '--p31-accent-violet', '--p31-text'], animated: true, description: 'Mesh infrastructure, distributed nodes' },
+        'spoon': { family: 'regular', colors: ['--p31-accent-iris', '--p31-accent-violet', '--p31-text'], animated: true, description: 'Cognitive capacity, spoon-aware design' },
+        'p31-wordmark': { family: 'regular', colors: ['--p31-accent-red', '--p31-accent-violet', '--p31-text'], animated: true, description: 'Sovereign brand identity' },
+        'love-heart': { family: 'regular', colors: ['--p31-accent', '--p31-accent-violet', '--p31-text'], animated: true, description: 'Care economy, LOVE ledger' },
+        '863hz-resonance': { family: 'regular', colors: ['--p31-accent-gold', '--p31-accent-violet', '--p31-text'], animated: true, description: 'Phosphorus-31 Larmor frequency, quantum resonance' },
+        'sovereign-crown': { family: 'advanced', colors: ['--p31-accent', '--p31-accent-violet', '--p31-accent-gold', '--p31-accent-green', '--p31-accent-iris', '--p31-accent-red'], animated: true, description: 'Sovereign authority, six-faceted leadership' },
+        'prism-fold': { family: 'advanced', colors: ['--p31-accent', '--p31-accent-violet', '--p31-accent-gold', '--p31-accent-green', '--p31-accent-iris', '--p31-accent-red'], animated: true, description: 'Geometric transformation, multi-facet perspective' },
+        'nebula-burst': { family: 'advanced', colors: ['--p31-accent', '--p31-accent-violet', '--p31-accent-gold', '--p31-accent-green', '--p31-accent-red', '--p31-accent-iris'], animated: true, description: 'Emergence, chaos to structure, generative particles' },
+        'comet-orb': { family: 'advanced', colors: ['--p31-accent', '--p31-accent-violet', '--p31-accent-gold', '--p31-accent-green', '--p31-accent-red', '--p31-accent-iris'], animated: true, description: 'Swirling energy, harmonized orbital motion' },
+      };
+      var SVGS = {
+        'k4-tetrahedron': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="K4 Tetrahedron animated icon"><title>K4 Tetrahedron</title><desc>A regular tetrahedron with glowing pulsing nodes representing sovereign foundational structure.</desc><style>.k4-edge-p { stroke: var(--p31-accent, #00F0FF); stroke-width: 2; opacity: 0.4; stroke-dasharray: 200; stroke-dashoffset: 200; animation: edgeReveal 3s ease-out forwards; } .k4-node-p { fill: var(--p31-accent, #00F0FF); } .k4-node-s { fill: var(--p31-accent-violet, #A78BFA); } .k4-node-n { fill: var(--p31-text, #F5F5F7); opacity: 0.9; } .k4-center-p { fill: var(--p31-accent, #00F0FF); transform-origin: 100px 105px; animation: centerPulse 4s infinite ease-in-out; } .k4-group { transform-origin: 100px 105px; animation: slowRotate 30s infinite linear; } @keyframes edgeReveal { to { stroke-dashoffset: 0; opacity: 0.7; } } @keyframes centerPulse { 0%, 100% { transform: scale(0.9); opacity: 0.6; filter: drop-shadow(0 0 4px var(--p31-accent, #00F0FF)); } 50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 14px var(--p31-accent, #00F0FF)); } } @keyframes slowRotate { to { transform: rotate(360deg); } } @media (prefers-reduced-motion: reduce) { .k4-edge-p { animation: none; stroke-dashoffset: 0; opacity: 0.5; } .k4-center-p, .k4-group { animation: none; } .k4-center-p { transform: scale(1); opacity: 0.8; } }</style><g class="k4-group"><line x1="100" y1="35" x2="40" y2="145" class="k4-edge-p"/><line x1="100" y1="35" x2="160" y2="145" class="k4-edge-p"/><line x1="100" y1="35" x2="100" y2="145" class="k4-edge-p"/><line x1="40" y1="145" x2="160" y2="145" class="k4-edge-p"/><line x1="40" y1="145" x2="100" y2="145" class="k4-edge-p"/><line x1="160" y1="145" x2="100" y2="145" class="k4-edge-p"/><circle cx="100" cy="35" r="5" class="k4-node-p"/><circle cx="40" cy="145" r="5" class="k4-node-s"/><circle cx="160" cy="145" r="5" class="k4-node-n"/><circle cx="100" cy="105" r="8" class="k4-center-p"/></g></svg>',
+        'molecule': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="Molecule animated icon"><title>Molecule / Atom</title><desc>A central nucleus with elliptical orbits and rotating electrons representing bonding and quantum mechanics.</desc><style>.mo-orb-s { fill: none; stroke: var(--p31-accent-violet, #A78BFA); stroke-width: 1.5; opacity: 0.35; } .mo-sys { transform-origin: 100px 100px; animation: moSpin 30s infinite linear; } .mo-core-p { fill: var(--p31-accent-green, #34D399); transform-origin: 100px 100px; animation: moPulse 2.5s infinite alternate ease-in-out; } .mo-elec-n { fill: var(--p31-text, #F5F5F7); opacity: 0.9; filter: drop-shadow(0 0 4px var(--p31-accent-green, #34D399)); } @keyframes moSpin { to { transform: rotate(360deg); } } @keyframes moPulse { 0% { transform: scale(0.9); filter: drop-shadow(0 0 4px var(--p31-accent-green, #34D399)); } 100% { transform: scale(1.12); filter: drop-shadow(0 0 14px var(--p31-accent-green, #34D399)); } } @media (prefers-reduced-motion: reduce) { .mo-sys, .mo-core-p { animation: none; } .mo-core-p { transform: scale(1); opacity: 0.8; } }</style><g class="mo-sys"><ellipse cx="100" cy="100" rx="75" ry="25" class="mo-orb-s"/><ellipse cx="100" cy="100" rx="75" ry="25" class="mo-orb-s" transform="rotate(60 100 100)"/><ellipse cx="100" cy="100" rx="75" ry="25" class="mo-orb-s" transform="rotate(120 100 100)"/><circle cx="175" cy="100" r="4.5" class="mo-elec-n"/><circle cx="62" cy="35" r="4.5" class="mo-elec-n"/><circle cx="62" cy="165" r="4.5" class="mo-elec-n"/></g><circle cx="100" cy="100" r="14" class="mo-core-p"/></svg>',
+        'signal': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="Signal animated icon"><title>Signal</title><desc>Radiating care signal with concentric elliptical waves representing coordination and communication in the P31 mesh.</desc><style>.sg-wave { fill: none; stroke-width: 2; stroke-linecap: round; opacity: 0; } .sg-wave-p { stroke: var(--p31-accent, #00F0FF); } .sg-wave-s { stroke: var(--p31-accent-violet, #A78BFA); } .sg-wave-n { stroke: var(--p31-text, #F5F5F7); opacity: 0.5; } .sg-w1 { animation: sgRipple 4s infinite 0s; } .sg-w2 { animation: sgRipple 4s infinite 0.8s; } .sg-w3 { animation: sgRipple 4s infinite 1.6s; } .sg-w4 { animation: sgRipple 4s infinite 2.4s; } .sg-core-p { fill: var(--p31-accent, #00F0FF); transform-origin: 100px 100px; animation: sgCore 2.5s infinite alternate ease-in-out; } @keyframes sgRipple { 0% { transform: scale(0.1); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 0; } } @keyframes sgCore { 0% { transform: scale(0.85); filter: drop-shadow(0 0 2px var(--p31-accent, #00F0FF)); } 100% { transform: scale(1.15); filter: drop-shadow(0 0 16px var(--p31-accent, #00F0FF)); } } @media (prefers-reduced-motion: reduce) { .sg-wave, .sg-core-p { animation: none; } .sg-wave { opacity: 0.15; transform: scale(0.5); } .sg-core-p { transform: scale(1); } }</style><ellipse cx="100" cy="100" rx="20" ry="50" class="sg-wave sg-wave-p sg-w1"/><ellipse cx="100" cy="100" rx="40" ry="70" class="sg-wave sg-wave-s sg-w2"/><ellipse cx="100" cy="100" rx="60" ry="90" class="sg-wave sg-wave-n sg-w3"/><ellipse cx="100" cy="100" rx="80" ry="110" class="sg-wave sg-wave-s sg-w4"/><circle cx="100" cy="100" r="10" class="sg-core-p"/></svg>',
+        'mesh-node': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="Mesh Node animated icon"><title>Mesh Node</title><desc>Interconnected nodes with streaming connections representing the distributed sovereign mesh infrastructure.</desc><style>.ms-line-s { stroke: var(--p31-accent-violet, #A78BFA); stroke-width: 1.5; opacity: 0.4; stroke-dasharray: 8 6; animation: msStream 15s infinite linear; } .ms-line-d { stroke: var(--p31-accent-violet, #A78BFA); stroke-width: 1; opacity: 0.15; } .ms-node-n { fill: var(--p31-text, #F5F5F7); animation: msBlink 4s infinite alternate ease-in-out; } .ms-center-p { fill: var(--p31-accent-red, #FB7185); transform-origin: 100px 100px; animation: msAura 2s infinite alternate ease-in-out; } .nd-1 { animation-delay: 0s; } .nd-2 { animation-delay: 0.5s; } .nd-3 { animation-delay: 1s; } .nd-4 { animation-delay: 1.5s; } .nd-5 { animation-delay: 2s; } @keyframes msStream { to { stroke-dashoffset: 200; } } @keyframes msBlink { 0% { r: 3; opacity: 0.4; } 100% { r: 5; opacity: 1; filter: drop-shadow(0 0 5px var(--p31-text, #F5F5F7)); } } @keyframes msAura { 0% { r: 9; filter: drop-shadow(0 0 4px var(--p31-accent-red, #FB7185)); } 100% { r: 12; filter: drop-shadow(0 0 20px var(--p31-accent-red, #FB7185)); } } @media (prefers-reduced-motion: reduce) { .ms-line-s, .ms-node-n, .ms-center-p { animation: none; } .ms-center-p { r: 10; opacity: 0.8; } .ms-node-n { r: 4; opacity: 0.7; } }</style><line x1="100" y1="100" x2="30" y2="50" class="ms-line-s"/><line x1="100" y1="100" x2="160" y2="40" class="ms-line-s"/><line x1="100" y1="100" x2="170" y2="150" class="ms-line-s"/><line x1="100" y1="100" x2="50" y2="160" class="ms-line-s"/><line x1="100" y1="100" x2="100" y2="20" class="ms-line-s"/><line x1="30" y1="50" x2="100" y2="20" class="ms-line-d"/><line x1="160" y1="40" x2="100" y2="20" class="ms-line-d"/><line x1="50" y1="160" x2="170" y2="150" class="ms-line-d"/><circle cx="30" cy="50" r="3" class="ms-node-n nd-1"/><circle cx="160" cy="40" r="3" class="ms-node-n nd-2"/><circle cx="170" cy="150" r="3" class="ms-node-n nd-3"/><circle cx="50" cy="160" r="3" class="ms-node-n nd-4"/><circle cx="100" cy="20" r="3" class="ms-node-n nd-5"/><circle cx="100" cy="100" r="10" class="ms-center-p"/></svg>',
+        'spoon': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="Spoon animated icon"><title>Spoon</title><desc>An elegant spoon swaying slightly with a glowing bowl, representing cognitive capacity and spoon-aware design.</desc><style>.sp-group { transform-origin: 100px 30px; animation: spSway 8s infinite ease-in-out; } .sp-bowl-p { fill: var(--p31-accent-iris, #818CF8); animation: spGlow 3s infinite alternate ease-in-out; } .sp-handle-s { stroke: var(--p31-accent-violet, #A78BFA); stroke-width: 5; stroke-linecap: round; fill: none; } .sp-rip { fill: none; stroke: var(--p31-accent-violet, #A78BFA); opacity: 0; transform-origin: 100px 145px; } .sp-rip-1 { animation: spExpand 5s infinite ease-out; } .sp-rip-2 { animation: spExpand 5s infinite ease-out; animation-delay: 2.5s; } .sp-finial-n { fill: var(--p31-text, #F5F5F7); opacity: 0.8; } @keyframes spSway { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } } @keyframes spGlow { 0% { filter: drop-shadow(0 0 4px var(--p31-accent-iris, #818CF8)); opacity: 0.7; } 100% { filter: drop-shadow(0 0 16px var(--p31-accent-iris, #818CF8)); opacity: 1; } } @keyframes spExpand { 0% { transform: scale(0.5); opacity: 0.8; stroke-width: 4; } 70% { transform: scale(2); opacity: 0; stroke-width: 1; } 100% { opacity: 0; } } @media (prefers-reduced-motion: reduce) { .sp-group, .sp-bowl-p, .sp-rip { animation: none; } .sp-group { transform: rotate(0deg); } .sp-bowl-p { opacity: 0.8; } }</style><g class="sp-group"><ellipse cx="100" cy="145" rx="22" ry="32" class="sp-rip sp-rip-1"/><ellipse cx="100" cy="145" rx="22" ry="32" class="sp-rip sp-rip-2"/><path d="M 100 30 Q 96 80 100 110" class="sp-handle-s"/><path d="M 100 110 Q 100 120 100 145" class="sp-handle-s" style="stroke-width:3"/><ellipse cx="100" cy="145" rx="16" ry="26" class="sp-bowl-p"/><circle cx="100" cy="30" r="6" class="sp-finial-n"/></g></svg>',
+        'p31-wordmark': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="P31 Wordmark animated icon"><title>P31 Wordmark</title><desc>Stylized P31 text surrounded by counter-rotating geometric rings representing sovereign brand identity.</desc><style>.wm-text-p { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; font-weight: 800; font-size: 64px; fill: var(--p31-accent-red, #FB7185); letter-spacing: -2px; } .wm-glow { animation: wmGlow 3s infinite alternate ease-in-out; } .wm-ring-o { fill: none; stroke: var(--p31-accent-red, #FB7185); stroke-width: 2; stroke-dasharray: 40 20; transform-origin: 100px 100px; animation: wmFwd 20s infinite linear; } .wm-ring-i { fill: none; stroke: var(--p31-accent-violet, #A78BFA); stroke-width: 1.5; stroke-dasharray: 10 10; opacity: 0.5; transform-origin: 100px 100px; animation: wmRev 15s infinite linear; } .wm-dot-n { fill: var(--p31-text, #F5F5F7); opacity: 0.7; } @keyframes wmFwd { to { transform: rotate(360deg); } } @keyframes wmRev { to { transform: rotate(-360deg); } } @keyframes wmGlow { 0% { filter: drop-shadow(0 0 3px var(--p31-accent-red, #FB7185)); opacity: 0.85; } 100% { filter: drop-shadow(0 0 18px var(--p31-accent-red, #FB7185)); opacity: 1; } } @media (prefers-reduced-motion: reduce) { .wm-ring-o, .wm-ring-i, .wm-glow { animation: none; } .wm-ring-o, .wm-ring-i { stroke-dashoffset: 0; } .wm-glow { opacity: 0.9; } }</style><circle cx="100" cy="100" r="85" class="wm-ring-o"/><circle cx="100" cy="100" r="72" class="wm-ring-i"/><text x="100" y="122" text-anchor="middle" class="wm-text-p wm-glow">P31</text><circle cx="100" cy="45" r="3" class="wm-dot-n"/><circle cx="100" cy="155" r="3" class="wm-dot-n"/></svg>',
+        'love-heart': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="LOVE Heart animated icon"><title>LOVE Heart</title><desc>A geometric pulsing heart with an infinity-loop outline representing the care economy.</desc><style>.lv-path-s { fill: none; stroke: var(--p31-accent, #00F0FF); stroke-width: 2; stroke-linecap: round; } .lv-dash { stroke-dasharray: 12 16; animation: lvFlow 20s infinite linear; } .lv-glow-p { fill: var(--p31-accent-violet, #A78BFA); transform-origin: 100px 100px; animation: lvBreath 4s infinite alternate ease-in-out; } .lv-dot-n { fill: var(--p31-text, #F5F5F7); opacity: 0.8; } @keyframes lvBreath { 0% { transform: scale(0.92); opacity: 0.6; filter: drop-shadow(0 0 4px var(--p31-accent-violet, #A78BFA)); } 100% { transform: scale(1.04); opacity: 0.95; filter: drop-shadow(0 0 20px var(--p31-accent-violet, #A78BFA)); } } @keyframes lvFlow { to { stroke-dashoffset: 400; } } @media (prefers-reduced-motion: reduce) { .lv-glow-p, .lv-dash { animation: none; } .lv-glow-p { transform: scale(1); opacity: 0.8; } .lv-dash { stroke-dashoffset: 0; } }</style><path d="M100 165 C 100 165, 20 100, 20 50 C 20 15, 70 10, 100 45 C 130 10, 180 15, 180 50 C 180 100, 100 165, 100 165 Z" class="lv-path-s lv-dash" opacity="0.6"/><path d="M100 150 C 100 150, 40 95, 40 55 C 40 30, 65 20, 100 50 C 135 20, 160 30, 160 55 C 160 95, 100 150, 100 150 Z" class="lv-glow-p"/><circle cx="100" cy="45" r="4" class="lv-dot-n"/><circle cx="100" cy="155" r="3" fill="var(--p31-accent, #00F0FF)" opacity="0.6"/></svg>',
+        '863hz-resonance': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="863 Hz Resonance animated icon"><title>863 Hz Resonance</title><desc>Concentric expanding rings with crossing sine waves representing the Larmor frequency of phosphorus-31.</desc><style>.res-ring-p { fill: none; stroke: var(--p31-accent-gold, #FBBF24); stroke-width: 1.5; opacity: 0; transform-origin: 100px 100px; animation: ringPulse 6s infinite ease-out; } .res-ring-1 { animation-delay: 0s; } .res-ring-2 { animation-delay: 2s; } .res-ring-3 { animation-delay: 4s; } .res-wave-s { fill: none; stroke: var(--p31-accent-violet, #A78BFA); stroke-width: 2; stroke-linecap: round; opacity: 0.5; } .res-wave-1 { transform-origin: 100px 100px; animation: waveOscillate 8s infinite ease-in-out; } .res-wave-2 { transform-origin: 100px 100px; animation: waveOscillate 8s infinite ease-in-out reverse; } .res-core-p { fill: var(--p31-accent-gold, #FBBF24); transform-origin: 100px 100px; animation: coreOscillate 3s infinite alternate ease-in-out; } .res-dot-n { fill: var(--p31-text, #F5F5F7); opacity: 0.8; } @keyframes ringPulse { 0% { transform: scale(0.1); opacity: 1; stroke-width: 4; } 100% { transform: scale(1.05); opacity: 0; stroke-width: 1; } } @keyframes waveOscillate { 0%, 100% { opacity: 0.3; transform: rotate(-3deg); } 50% { opacity: 0.7; transform: rotate(3deg); } } @keyframes coreOscillate { 0% { filter: drop-shadow(0 0 2px var(--p31-accent-gold, #FBBF24)); opacity: 0.7; r: 8; } 100% { filter: drop-shadow(0 0 16px var(--p31-accent-gold, #FBBF24)); opacity: 1; r: 11; } } @media (prefers-reduced-motion: reduce) { .res-ring-p { animation: none; opacity: 0.15; transform: scale(0.5); } .res-wave-1, .res-wave-2 { animation: none; opacity: 0.4; } .res-core-p { animation: none; opacity: 0.8; r: 9; } }</style><circle cx="100" cy="100" r="90" class="res-ring-p res-ring-1"/><circle cx="100" cy="100" r="90" class="res-ring-p res-ring-2"/><circle cx="100" cy="100" r="90" class="res-ring-p res-ring-3"/><path d="M 10 130 Q 50 80 100 130 T 190 130" class="res-wave-s res-wave-1"/><path d="M 10 150 Q 50 100 100 150 T 190 150" class="res-wave-s res-wave-2"/><circle cx="100" cy="100" r="9" class="res-core-p"/><circle cx="100" cy="190" r="3" class="res-dot-n"/></svg>',
+        'sovereign-crown': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="Sovereign Crown animated icon"><title>Sovereign Crown</title><desc>A six-pointed sovereign crown with rotating accents, lighting nodes, and a radiant central jewel. 6-color palette.</desc><style>.cr-crown { stroke: rgba(255,255,255,0.1); stroke-width: 0.75; stroke-linejoin: round; } .cr-c1 { fill: var(--p31-accent, #00F0FF); } .cr-c2 { fill: var(--p31-accent-violet, #A78BFA); } .cr-c3 { fill: var(--p31-accent-gold, #FBBF24); } .cr-c4 { fill: var(--p31-accent-green, #34D399); } .cr-c5 { fill: var(--p31-accent-iris, #818CF8); } .cr-c6 { fill: var(--p31-accent-red, #FB7185); } .cr-master { transition: filter 0.6s ease-in-out, opacity 0.6s ease-in-out; } .cr-jewel { filter: drop-shadow(0 0 4px currentColor); transform-origin: 100px 100px; } .cr-j1 { animation: crOrbit 16s infinite linear; } .cr-j3 { animation: crOrbit 16s infinite linear; animation-delay: -5.33s; } .cr-j5 { animation: crOrbit 16s infinite linear; animation-delay: -10.67s; } .cr-core { fill: var(--p31-accent, #00F0FF); transform-origin: 100px 100px; animation: crCore 3s infinite alternate ease-in-out; } .cr-band { fill: none; stroke-width: 1.5; stroke-linecap: round; } .cr-ring { fill: none; stroke-width: 1; opacity: 0.2; transform-origin: 100px 100px; } .cr-b1 { stroke: var(--p31-accent, #00F0FF); animation: crBand 8s infinite linear; } .cr-b2 { stroke: var(--p31-accent-violet, #A78BFA); animation: crBand 8s infinite linear reverse; } .cr-b3 { stroke: var(--p31-accent-gold, #FBBF24); animation: crBand 8s infinite linear; } @keyframes crOrbit { to { transform: rotate(360deg); } } @keyframes crCore { 0% { transform: scale(0.85); filter: drop-shadow(0 0 4px var(--p31-accent, #00F0FF)); } 100% { transform: scale(1.1); filter: drop-shadow(0 0 20px var(--p31-accent, #00F0FF)); } } @keyframes crBand { to { stroke-dashoffset: 400; } } .cr-rotate { transform-origin: 100px 100px; animation: crSpin 48s infinite linear; } @keyframes crSpin { to { transform: rotate(360deg); } } @media (prefers-reduced-motion: reduce) { .cr-jewel, .cr-core, .cr-band, .cr-rotate { animation: none; } .cr-core { transform: scale(1); } .cr-band { stroke-dashoffset: 0; } }</style><g class="cr-rotate"><path d="M 100 20 L 180 60 L 160 100 L 180 140 L 100 180 L 20 140 L 40 100 L 20 60 Z" class="cr-crown cr-c1"/><path d="M 100 20 L 100 55 L 20 60 Z" class="cr-crown cr-c2"/><path d="M 100 20 L 100 55 L 180 60 Z" class="cr-crown cr-c3"/><path d="M 180 60 L 160 100 L 100 55 Z" class="cr-crown cr-c4"/><path d="M 20 60 L 40 100 L 100 55 Z" class="cr-crown cr-c5"/><path d="M 40 100 L 100 180 L 100 55 Z" class="cr-crown cr-c6"/><path d="M 160 100 L 100 180 L 100 55 Z" class="cr-crown cr-c1"/><circle cx="100" cy="100" r="14" class="cr-core"/><circle cx="100" cy="48" r="5" class="cr-jewel cr-j1" style="color:var(--p31-accent, #00F0FF)"/><circle cx="145" cy="120" r="5" class="cr-jewel cr-j3" style="color:var(--p31-accent-gold, #FBBF24)"/><circle cx="55" cy="120" r="5" class="cr-jewel cr-j5" style="color:var(--p31-accent-red, #FB7185)"/></g></svg>',
+        'prism-fold': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="Prism Fold animated icon"><title>Prism Fold</title><desc>A 3D geometric hexagon with six triangular facets that unfold and refold. 6-color palette, center pivot.</desc><style>.pf-facet { stroke: rgba(255,255,255,0.1); stroke-width: 0.75; stroke-linejoin: round; } .pf-c1 { fill: var(--p31-accent, #00F0FF); } .pf-c2 { fill: var(--p31-accent-violet, #A78BFA); } .pf-c3 { fill: var(--p31-accent-gold, #FBBF24); } .pf-c4 { fill: var(--p31-accent-green, #34D399); } .pf-c5 { fill: var(--p31-accent-iris, #818CF8); } .pf-c6 { fill: var(--p31-accent-red, #FB7185); } .pf-group { transform-origin: 100px 100px; animation: pfRotate 30s infinite linear; } .pf-fold { transform-origin: var(--fx, 100px) var(--fy, 100px); animation: pfFold 4s infinite alternate ease-in-out; } .pf-1 { --fx: 116px; --fy: 78px; animation-delay: 0s; } .pf-2 { --fx: 100px; --fy: 72px; animation-delay: 0.5s; } .pf-3 { --fx: 84px; --fy: 78px; animation-delay: 1s; } .pf-4 { --fx: 87px; --fy: 110px; animation-delay: 1.5s; } .pf-5 { --fx: 100px; --fy: 115px; animation-delay: 2s; } .pf-6 { --fx: 113px; --fy: 110px; animation-delay: 2.5s; } .pf-master { transition: opacity 0.4s ease, filter 0.4s ease; } .pf-inner { fill: var(--p31-accent, #00F0FF); opacity: 0.1; transform-origin: 100px 100px; animation: pfInner 4s infinite alternate ease-in-out; } @keyframes pfFold { 0% { transform: rotateX(0deg) rotateY(0deg); opacity: 0.55; stroke-width: 0.75; } 60% { transform: rotateX(35deg) rotateY(25deg); opacity: 1; stroke-width: 0.75; } 100% { transform: rotateX(25deg) rotateY(40deg); opacity: 0.55; stroke-width: 0.75; } } @keyframes pfInner { 0% { transform: scale(0.85); opacity: 0.05; } 100% { transform: scale(1.15); opacity: 0.16; } } @keyframes pfRotate { to { transform: rotate(360deg); } } @keyframes pfPulse { 0%, 100% { r: 46; opacity: 0.1; } 50% { r: 50; opacity: 0.2; } } .pf-outer { fill: none; stroke: var(--p31-accent, #00F0FF); stroke-width: 0.5; opacity: 0.15; transform-origin: 100px 100px; animation: pfRotate 30s infinite linear reverse; } @media (prefers-reduced-motion: reduce) { .pf-fold, .pf-group, .pf-inner, .pf-outer { animation: none; } .pf-fold { transform: none; opacity: 0.6; } }</style><g><circle cx="100" cy="100" r="46" class="pf-outer"/><circle cx="100" cy="100" r="42" class="pf-inner"/><g class="pf-group"><path d="M 116 78 L 100 72 L 84 78 L 87 110 L 100 115 L 113 110 Z" class="pf-facet pf-c1 pf-fold pf-1"/><path d="M 100 72 L 84 78 L 100 100 Z" class="pf-facet pf-c2 pf-fold pf-2"/><path d="M 84 78 L 87 110 L 100 100 Z" class="pf-facet pf-c3 pf-fold pf-3"/><path d="M 87 110 L 113 110 L 100 100 Z" class="pf-facet pf-c4 pf-fold pf-4"/><path d="M 113 110 L 116 78 L 100 100 Z" class="pf-facet pf-c5 pf-fold pf-5"/><path d="M 116 78 L 100 72 L 100 100 Z" class="pf-facet pf-c6 pf-fold pf-6"/></g></g></svg>',
+        'nebula-burst': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="Nebula Burst animated icon"><title>Nebula Burst</title><desc>A generative particle cloud with expanding wave rings, representing emergence and structure from chaos. 6-color palette.</desc><style>.nb-ripple { fill: none; stroke-width: 1.5; stroke-linecap: round; opacity: 0; transform-origin: 100px 100px; } .nb-r1 { stroke: var(--p31-accent, #00F0FF); animation: nbRipple 6s infinite ease-out; } .nb-r2 { stroke: var(--p31-accent-violet, #A78BFA); animation: nbRipple 6s infinite ease-out 2s; } .nb-r3 { stroke: var(--p31-accent-gold, #FBBF24); animation: nbRipple 6s infinite ease-out 4s; } .nb-r4 { stroke: var(--p31-accent-green, #34D399); animation: nbRipple 6s infinite ease-out 6s; } @keyframes nbRipple { 0% { transform: scale(0.05); opacity: 0.7; stroke-width: 4; } 100% { transform: scale(1); opacity: 0; stroke-width: 1; } } .nb-dot { r: 2.5; animation: nbDrift var(--d, 8s) infinite alternate ease-in-out; } .nb-dot:nth-child(6n+1) { fill: var(--p31-accent, #00F0FF); } .nb-dot:nth-child(6n+2) { fill: var(--p31-accent-violet, #A78BFA); } .nb-dot:nth-child(6n+3) { fill: var(--p31-accent-gold, #FBBF24); } .nb-dot:nth-child(6n+4) { fill: var(--p31-accent-green, #34D399); } .nb-dot:nth-child(6n+5) { fill: var(--p31-accent-red, #FB7185); } .nb-dot:nth-child(6n+6) { fill: var(--p31-accent-iris, #818CF8); } @keyframes nbDrift { 0% { transform: translate(0, 0); opacity: 0.3; } 100% { transform: translate(var(--tx, 20px), var(--ty, -20px)); opacity: 0.9; } } .nb-master { transition: opacity 0.4s ease, filter 0.4s ease; } .nb-cluster { transform-origin: 100px 100px; animation: nbCluster 28s infinite ease-in-out; } @keyframes nbCluster { 0%, 100% { transform: rotate(0deg) scale(1); } 25% { transform: rotate(3deg) scale(1.02); } 75% { transform: rotate(-3deg) scale(0.98); } } @media (prefers-reduced-motion: reduce) { .nb-ripple, .nb-dot, .nb-cluster { animation: none; } .nb-ripple { opacity: 0.05; } .nb-dot { opacity: 0.5; } }</style><g class="nb-master"><circle cx="100" cy="100" r="80" class="nb-ripple nb-r1"/><circle cx="100" cy="100" r="80" class="nb-ripple nb-r2"/><circle cx="100" cy="100" r="80" class="nb-ripple nb-r3"/><circle cx="100" cy="100" r="80" class="nb-ripple nb-r4"/><g class="nb-cluster"><circle cx="140" cy="70" class="nb-dot" style="--d:11s;--tx:15px;--ty:-10px"/><circle cx="60" cy="130" class="nb-dot" style="--d:9s;--tx:-12px;--ty:8px"/><circle cx="120" cy="140" class="nb-dot" style="--d:13s;--tx:10px;--ty:-8px"/><circle cx="80" cy="60" class="nb-dot" style="--d:10s;--tx:-8px;--ty:12px"/><circle cx="150" cy="110" class="nb-dot" style="--d:12s;--tx:5px;--ty:-15px"/><circle cx="50" cy="90" class="nb-dot" style="--d:8s;--tx:-14px;--ty:5px"/><circle cx="130" cy="50" class="nb-dot" style="--d:14s;--tx:20px;--ty:-12px"/><circle cx="70" cy="150" class="nb-dot" style="--d:9s;--tx:-10px;--ty:10px"/><circle cx="160" cy="80" class="nb-dot" style="--d:11s;--tx:8px;--ty:-18px"/><circle cx="40" cy="110" class="nb-dot" style="--d:10s;--tx:-15px;--ty:6px"/></g></g></svg>',
+        'comet-orb': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="Comet Orb animated icon"><title>Comet Orb</title><desc>Swirling energy orb with harmonized elliptical rings and orbiting particles. 6-color palette, 48s sync cycle.</desc><style>.co-ring { fill: none; stroke-width: 1.5; stroke-linecap: round; } .co-orbit-1 { transform-origin: 100px 100px; animation: coCw 16s infinite linear; } .co-orbit-2 { transform-origin: 100px 100px; animation: coCcw 12s infinite linear; } .co-orbit-3 { transform-origin: 100px 100px; animation: coCw 16s infinite linear; } .co-orbit-4 { transform-origin: 100px 100px; animation: coCcw 12s infinite linear; } .co-r1 { stroke: var(--p31-accent, #00F0FF); stroke-dasharray: 44 156; animation: coDash 4s infinite linear; } .co-r2 { stroke: var(--p31-accent-violet, #A78BFA); stroke-dasharray: 39 141; animation: coDash 4s infinite linear; } .co-r3 { stroke: var(--p31-accent-gold, #FBBF24); stroke-dasharray: 50 150; animation: coDash 4s infinite linear reverse; } .co-r4 { stroke: var(--p31-accent-green, #34D399); stroke-dasharray: 27 153; animation: coDash 4s infinite linear reverse; } .co-c1 { fill: var(--p31-accent, #00F0FF); } .co-c2 { fill: var(--p31-accent-violet, #A78BFA); } .co-c3 { fill: var(--p31-accent-gold, #FBBF24); } .co-c4 { fill: var(--p31-accent-green, #34D399); } .co-c5 { fill: var(--p31-accent-red, #FB7185); } .co-c6 { fill: var(--p31-accent-iris, #818CF8); } .co-particle { filter: drop-shadow(0 0 3px currentColor); } .co-p1 { animation: coCw 16s infinite linear; } .co-p2 { animation: coCcw 12s infinite linear; } .co-p3 { animation: coCw 16s infinite linear; } .co-p4 { animation: coCcw 12s infinite linear; } .co-p5 { animation: coCw 16s infinite linear; animation-delay: 8s; } .co-p6 { animation: coCcw 12s infinite linear; animation-delay: 6s; } .co-master { transition: filter 0.6s ease-in-out; } .co-core { fill: var(--p31-accent, #00F0FF); transform-origin: 100px 100px; animation: coPulse 3s infinite alternate ease-in-out; } @keyframes coCw { to { transform: rotate(360deg); } } @keyframes coCcw { to { transform: rotate(-360deg); } } @keyframes coDash { to { stroke-dashoffset: -400; } } @keyframes coPulse { 0% { transform: scale(0.85); filter: drop-shadow(0 0 6px var(--p31-accent, #00F0FF)); } 100% { transform: scale(1.15); filter: drop-shadow(0 0 24px var(--p31-accent, #00F0FF)); } } @media (prefers-reduced-motion: reduce) { .co-orbit-1, .co-orbit-2, .co-orbit-3, .co-orbit-4, .co-particle, .co-core, .co-r1, .co-r2, .co-r3, .co-r4 { animation: none; } .co-core { transform: scale(1); } }</style><g class="co-master"><circle cx="100" cy="100" r="60" class="co-ring co-r1"/><circle cx="100" cy="100" r="50" class="co-ring co-r2"/><circle cx="100" cy="100" r="40" class="co-ring co-r3"/><circle cx="100" cy="100" r="30" class="co-ring co-r4"/><circle cx="100" cy="100" r="12" class="co-core"/><g class="co-orbit-1"><circle cx="100" cy="30" r="5" class="co-particle co-c1"/></g><g class="co-orbit-2"><circle cx="140" cy="100" r="4" class="co-particle co-c2"/></g><g class="co-orbit-3"><circle cx="100" cy="150" r="3" class="co-particle co-c3"/></g><g class="co-orbit-4"><circle cx="60" cy="100" r="6" class="co-particle co-c4"/></g><g class="co-orbit-1"><circle cx="100" cy="170" r="4" class="co-particle co-c5"/></g><g class="co-orbit-2"><circle cx="170" cy="100" r="5" class="co-particle co-c6"/></g></g></svg>',
+      };
+      var names = Object.keys(catalog);
+      function renderIcons(filter) {
+        grid.innerHTML = '';
+        var filtered = filter === 'all' ? names : names.filter(function(n) { return catalog[n].family === filter; });
+        filtered.forEach(function(id) {
+          var meta = catalog[id];
+          var card = document.createElement('div');
+          card.className = 'glass-card';
+          card.style.padding = '16px';
+          card.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><code style="font-size:10px;font-family:var(--p31-font-mono);color:var(--p31-accent);background:var(--p31-glass-bg);padding:2px 6px;border-radius:4px;">'+id+'</code><span style="font-size:9px;font-family:var(--p31-font-mono);color:var(--p31-text-tertiary);text-transform:uppercase;">'+meta.family+'</span></div><div style="display:flex;align-items:center;justify-content:center;height:80px;margin-bottom:12px;">'+(SVGS[id]||'')+'</div><div style="font-size:11px;color:var(--p31-text-secondary);margin-bottom:8px;line-height:1.4;">'+meta.description+'</div><div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;">'+meta.colors.map(function(c){return '<span style="font-size:8px;font-family:var(--p31-font-mono);color:var(--p31-text-tertiary);">'+c+'</span>';}).join(' ')+'</div><button class="preset-btn" data-copy="'+id+'" style="width:100%;">Copy SVG</button>';
+          grid.appendChild(card);
+        });
+        grid.querySelectorAll('[data-copy]').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var id = btn.getAttribute('data-copy');
+            var svg = SVGS[id];
+            if (!svg) return;
+            navigator.clipboard.writeText(svg).then(function() {
+              btn.textContent = 'Copied';
+              setTimeout(function() { btn.textContent = 'Copy SVG'; }, 1500);
+            }).catch(function() {
+              btn.textContent = 'Failed';
+              setTimeout(function() { btn.textContent = 'Copy SVG'; }, 1500);
+            });
+          });
+        });
+      }
+      renderIcons('all');
+      filterBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          currentFilter = btn.getAttribute('data-filter') || 'all';
+          filterBtns.forEach(function(b) { b.style.borderColor = b === btn ? 'var(--p31-glass-border-hover)' : 'var(--p31-glass-border)'; b.style.color = b === btn ? 'var(--p31-text)' : 'var(--p31-text-secondary)'; });
+          renderIcons(currentFilter);
+        });
+    });
+   })();
+
+    // Neuro Toggles
+    (function() {
+      var htmlEl = document.documentElement;
+      var motionToggle = document.getElementById('motion-toggle');
+      var focusToggle = document.getElementById('focus-mode-toggle');
+      var fontDecrease = document.getElementById('font-decrease');
+      var fontIncrease = document.getElementById('font-increase');
+
+      // Initialize from localStorage
+      var motionReduced = localStorage.getItem('p31:motion-reduced') === 'true';
+      var focusMode = localStorage.getItem('p31:focus-mode') === 'true';
+      var fontSize = parseInt(localStorage.getItem('p31:font-size') || '0');
+
+      if (motionReduced) {
+        htmlEl.setAttribute('data-reduced-motion', 'true');
+        motionToggle.classList.add('active');
+      }
+      if (focusMode) {
+        htmlEl.setAttribute('data-focus-mode', 'true');
+        focusToggle.classList.add('active');
+      }
+      if (fontSize !== 0) {
+        htmlEl.setAttribute('data-font-size', fontSize.toString());
+        if (fontSize < 0) fontDecrease.classList.add('active');
+        if (fontSize > 0) fontIncrease.classList.add('active');
+      }
+
+      // Motion toggle
+      if (motionToggle) {
+        motionToggle.addEventListener('click', function() {
+          var reduced = !motionReduced;
+          motionReduced = reduced;
+          if (reduced) {
+            htmlEl.setAttribute('data-reduced-motion', 'true');
+            this.classList.add('active');
+          } else {
+            htmlEl.removeAttribute('data-reduced-motion');
+            this.classList.remove('active');
+          }
+          localStorage.setItem('p31:motion-reduced', reduced);
+        });
+      }
+
+      // Focus mode toggle
+      if (focusToggle) {
+        focusToggle.addEventListener('click', function() {
+          var enabled = !focusMode;
+          focusMode = enabled;
+          if (enabled) {
+            htmlEl.setAttribute('data-focus-mode', 'true');
+            this.classList.add('active');
+          } else {
+            htmlEl.removeAttribute('data-focus-mode');
+            this.classList.remove('active');
+          }
+          localStorage.setItem('p31:focus-mode', enabled);
+        });
+      }
+
+      // Font size controls
+      if (fontDecrease && fontIncrease) {
+        fontDecrease.addEventListener('click', function() {
+          fontSize--;
+          localStorage.setItem('p31:font-size', fontSize);
+          if (fontSize < 0) {
+            htmlEl.setAttribute('data-font-size', fontSize.toString());
+            this.classList.add('active');
+            fontIncrease.classList.remove('active');
+          } else if (fontSize === 0) {
+            htmlEl.removeAttribute('data-font-size');
+            this.classList.remove('active');
+            fontIncrease.classList.remove('active');
+          }
+        });
+
+        fontIncrease.addEventListener('click', function() {
+          fontSize++;
+          localStorage.setItem('p31:font-size', fontSize);
+          if (fontSize > 0) {
+            htmlEl.setAttribute('data-font-size', fontSize.toString());
+            this.classList.add('active');
+            fontDecrease.classList.remove('active');
+          } else if (fontSize === 0) {
+            htmlEl.removeAttribute('data-font-size');
+            this.classList.remove('active');
+            fontDecrease.classList.remove('active');
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

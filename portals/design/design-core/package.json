@@ -1,0 +1,69 @@
+{
+  "name": "@p31/design-core",
+  "version": "2.2.0",
+  "private": true,
+  "type": "module",
+  "description": "P31 Unified Design System \u2014 tokens, primitives, compositions, recipes, MCP server, agentic intent pipeline. Canonical source: production/portals/design.",
+  "author": "P31 Labs <hello@p31ca.org>",
+  "license": "AGPL-3.0",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./compositions": "./src/compositions/index.ts",
+    "./primitives": "./src/primitives/index.ts",
+    "./tokens": "./src/tokens/index.ts",
+    "./starfield": "./src/starfield.ts",
+    "./crisis-overlay": "./src/crisis-overlay.ts",
+    "./css/all.css": "./src/css/all.css",
+    "./css/recipes.css": "./src/css/recipes.css",
+    "./css/base.css": "./src/css/base.css",
+    "./css/tokens.css": "./src/css/tokens.css",
+    "./themes/rebel.css": "./src/themes/theme-p31ca.css",
+    "./themes/caretaker.css": "./src/themes/theme-phosphorus31.css",
+    "./mcp/server": "./src/mcp/server.ts",
+    "./mcp/tool-registry": "./src/mcp/tool-registry.ts",
+    "./starfield/jitterbug": "./src/starfield/jitterbug.ts",
+    "./theming/theme-store": "./src/theming/theme-store.ts",
+    "./css/canon.css": "./src/css/canon.css",
+    "./mcp/data": "./src/mcp/data.ts",
+    "./agentic": "./src/agentic/index.ts",
+    "./agentic/orchestrate": "./src/agentic/orchestrate.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "gen:tokens": "tsx scripts/gen-tokens.mts",
+    "mcp:dev": "wrangler dev src/mcp/http-worker.ts",
+    "mcp:deploy": "wrangler deploy",
+    "storybook": "storybook dev -p 6006",
+    "build:storybook": "storybook build"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.1",
+    "culori": "^4.0.2",
+    "yaml": "^2.9.0",
+    "zod": "^4.4.3",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@storybook/react": "^10.5.10",
+    "@storybook/react-vite": "^10.5.10",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.2",
+    "@types/culori": "^4.0.1",
+    "@types/node": "^20.0.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.4",
+    "axe-core": "^4.13.0",
+    "jsdom": "^30.0.1",
+    "storybook": "^10.5.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0",
+    "wrangler": "^4.0.0"
+  }
+}

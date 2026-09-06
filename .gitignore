@@ -1,0 +1,34 @@
+# Separate build trees (own git repos)
+/shell/
+/shell-host/
+
+# Dependencies & build output
+node_modules/
+dist/
+.next/
+
+# Env files — keep examples only
+.env
+.env.*
+!.env.example
+!.env.local.example
+!.env.go-live.example
+
+# Secrets & admin tokens
+.admin_token
+*.token
+credentials.json
+secret*
+
+# Logs, caches, OS noise
+npm-debug.log*
+.pnpm-debug.log*
+*.log
+.cache/
+.tmp/
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.idea/
+.vscode/
