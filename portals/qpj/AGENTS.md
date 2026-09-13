@@ -71,6 +71,8 @@ pnpm v:gate      # asserts @p31/design-core @ 2.3.0 + @p31/ui @ 1.3.1 from vendo
 - `docs/13-COMMANDS-AND-FLOOR.md` — command palette + crisis floor design doc
 - `docs/14-LOVE-LEDGER.md` — dual currency: LOVE ledger + care score (Paper XI micro)
 - `docs/15-DIVERGENCES.md` — living register of every intentional design-core fork
+- `docs/16-MASTER-PROMPT-SUBSTRATE.md` — Track A: per-passport Worker + DO + Sandbox substrate
+- `docs/16-MASTER-PROMPT-TRIAD-UI.md` — Triad cognition: DeepSeek/Claude/Gemini UI polish collaboration
 - `deploy-unified.mjs` registration lives in `/home/p31/production/portals/`
 
 Detailed docs: `docs/01-ARCHITECTURE.md` … `docs/08-DEPLOYMENT.md`.
