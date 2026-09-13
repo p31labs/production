@@ -1,2 +1,9 @@
+allowBuilds:
+  '@sentry/cli': true
+  esbuild: true
+  sharp: true
+  workerd: true
+
 packages:
   - '.'
+
