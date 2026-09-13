@@ -471,7 +471,6 @@ export const useQpjStore = create<QpjState>()(
       }),
       merge: (persisted, current) => mergePersistedQpj(persisted, current),
       storage: (() => {
-        const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
         return getSubstrateUrl() ? substrateStorage : undefined;
       })(),
     }

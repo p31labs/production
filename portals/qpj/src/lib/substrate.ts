@@ -24,39 +24,15 @@ export interface SubstrateStatusResult {
   error?: string;
 }
 
-// Internal: allows tests to override getSubstrateUrl return value.
-// import.meta.env is frozen at module load time in vitest, so runtime
-// env mutation cannot simulate edge mode. This override enables tests
-// to exercise edge-mode code paths without changing the environment.
-let _getSubstrateUrlOverride: (() => string | null) | null = null;
-
-export function _setGetSubstrateUrlOverride(fn: (() => string | null) | null): void {
-  _getSubstrateUrlOverride = fn;
-}
-
 export function getSubstrateUrl(): string | null {
-  if (_getSubstrateUrlOverride) {
-    return _getSubstrateUrlOverride();
-  }
-  const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
-  return env.VITE_P31_SUBSTRATE_URL ?? null;
+  return import.meta.env?.VITE_P31_SUBSTRATE_URL ?? null;
 }
 
 export function isEdgeMode(): boolean {
   return getSubstrateUrl() !== null;
 }
 
-// Internal: allows tests to override edge mode detection.
-// import.meta.env is frozen at module load time in vitest, so runtime
-// env mutation cannot simulate edge mode. This override enables tests
-// to exercise edge-mode code paths without changing the environment.
-let _isEdgeMode: () => boolean = isEdgeMode;
-
-export function _setEdgeModeOverride(fn: () => boolean): void {
-  _isEdgeMode = fn;
-}
-
-const DISPATCH_URL = (import.meta as unknown as { env?: Record<string, string | undefined> }).env?.VITE_DISPATCH_URL
+const DISPATCH_URL = import.meta.env?.VITE_DISPATCH_URL
   ?? 'https://qpj-dispatch.p31ca.org';
 
 export function getSubstrateConfig(): SubstrateConfig {
@@ -79,7 +55,7 @@ export async function submitGoal(
     subRequests?: number;
   } = {},
 ): Promise<SubstrateGoalResult> {
-  if (!_isEdgeMode()) {
+  if (!isEdgeMode()) {
     return { ok: false, deferred: false, error: 'substrate disabled — set VITE_P31_SUBSTRATE_URL' };
   }
 

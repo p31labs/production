@@ -7,8 +7,30 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   test: {
     environment: 'jsdom',
-    include: ['src/**/*.test.{ts,tsx}'],
     setupFiles: ['src/__tests__/setup.ts'],
+    projects: [
+      {
+        test: {
+          name: 'qpj:local',
+          environment: 'jsdom',
+          env: {},
+          setupFiles: ['src/__tests__/setup.ts'],
+          include: ['src/**/*.test.{ts,tsx}'],
+          exclude: ['src/lib/substrate.edge.test.ts'],
+        },
+      },
+      {
+        test: {
+          name: 'qpj:edge',
+          environment: 'jsdom',
+          env: {
+            VITE_P31_SUBSTRATE_URL: 'https://p31-dispatch.example.workers.dev',
+          },
+          setupFiles: ['src/__tests__/setup.ts'],
+          include: ['src/lib/substrate.edge.test.ts'],
+        },
+      },
+    ],
   },
   resolve: {
     alias: {

@@ -1,4 +1,4 @@
-import { getSubstrateConfig, isEdgeMode, type SubstrateConfig } from './substrate';
+import { getSubstrateConfig, isEdgeMode } from './substrate';
 import { createJSONStorage } from 'zustand/middleware';
 
 export const substrateStorage = createJSONStorage(() => ({
@@ -7,7 +7,7 @@ export const substrateStorage = createJSONStorage(() => ({
       return localStorage.getItem(name);
     }
     try {
-      const config = getConfig();
+      const config = getSubstrateConfig();
       const response = await fetch(`${config.dispatchUrl}/api/store`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -27,7 +27,7 @@ export const substrateStorage = createJSONStorage(() => ({
     localStorage.setItem(name, value);
     if (!isEdgeMode()) return;
     try {
-      const config = getConfig();
+      const config = getSubstrateConfig();
       await fetch(`${config.dispatchUrl}/api/store`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -42,7 +42,7 @@ export const substrateStorage = createJSONStorage(() => ({
     localStorage.removeItem(name);
     if (!isEdgeMode()) return;
     try {
-      const config = getConfig();
+      const config = getSubstrateConfig();
       await fetch(`${config.dispatchUrl}/api/store`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },

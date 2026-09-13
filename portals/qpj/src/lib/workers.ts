@@ -1,4 +1,4 @@
-const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
+const env = (import.meta.env as Record<string, string | undefined>) ?? {};
 
 const pick = (key: string, fallback: string): string => env[key] || fallback;
 
