@@ -55,7 +55,7 @@ export const WORKSHOP_LEVELS: WorkshopLevelDef[] = [
   },
 ];
 
-export function getVisibleTabs(level: WorkshopLevel): Array<'studio' | 'tokens' | 'recipes' | 'components' | 'playground' | 'brands' | 'contrast'> {
+export function getVisibleTabs(level: WorkshopLevel): TabId[] {
   return WORKSHOP_LEVELS[level]?.tabs ?? ['studio'];
 }
 

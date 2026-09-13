@@ -27,6 +27,8 @@ import { EntryPage } from './pages/EntryPage';
 import { CraftPage } from './pages/CraftPage';
 import { WorkshopPage } from './pages/workshop/WorkshopPage';
 import { SwitchPage } from './pages/SwitchPage';
+import { SitePage } from './pages/SitePage';
+import { WorkerPage } from './pages/WorkerPage';
 
 export default function App() {
   const { route } = useHashRoute();
@@ -132,6 +134,8 @@ export default function App() {
           </ModeGuard>
         )}
         {route === 'you' && <YouPage />}
+        {route === 'site' && <SitePage />}
+        {route === 'worker' && <WorkerPage />}
         {route === 'switch' && <SwitchPage />}
       </div>
 

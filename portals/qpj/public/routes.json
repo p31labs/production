@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-13T13:38:09.596Z",
+  "generatedAt": "2026-09-13T13:56:25.416Z",
   "routes": [
     {
       "hash": "#/",
@@ -12,19 +12,29 @@
       "label": "street"
     },
     {
+      "hash": "#/site",
+      "minMode": "spark",
+      "label": "site"
+    },
+    {
+      "hash": "#/worker",
+      "minMode": "spark",
+      "label": "worker"
+    },
+    {
       "hash": "#/talk",
       "minMode": "spark",
       "label": "talk"
     },
     {
-      "hash": "#/craft",
-      "minMode": "maker",
-      "label": "craft"
-    },
-    {
       "hash": "#/you",
       "minMode": "spark",
       "label": "you"
+    },
+    {
+      "hash": "#/craft",
+      "minMode": "maker",
+      "label": "craft"
     },
     {
       "hash": "#/workshop",

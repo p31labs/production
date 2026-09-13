@@ -26,6 +26,9 @@
   --p31-border: oklch(30% 0.03 75);
   --p31-border-strong: oklch(38% 0.035 75);
   --p31-muted: oklch(20% 0.022 75);
+  --p31-text-muted: var(--p31-text-tertiary);
+  --p31-interactive: var(--p31-accent);
+  --p31-interactive-text: var(--p31-accent-contrast);
   --p31-scrim: oklch(12% 0.02 75 / 0.62);
 
   --p31-accent: oklch(57% 0.115 75);
