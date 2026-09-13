@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "env": {
+        "BROWSER_BASE_URL": "http://localhost:5173"
+      }
+    },
+    "blazediff": {
+      "command": "npx",
+      "args": ["@blazediff/agent", "mcp"]
+    }
+  }
+}

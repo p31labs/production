@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useState } from 'react';
 import { GlassPanel } from '@p31/design-core/compositions';
 
 const MCP_URL = 'https://p31-design-mcp.trimtab-signal.workers.dev/mcp';
@@ -12,9 +12,9 @@ const TOOLS = [
   { name: 'generate_component', description: 'Generate component code', args: { name: 'GlassPanel', framework: 'react' } },
   { name: 'list_recipes', description: 'List all CSS recipes', args: {} },
   { name: 'get_recipe', description: 'Get recipe CSS', args: { name: 'glass-panel' } },
-  { name: 'convert_component', description: 'Convert between frameworks', args: { source: 'react', target: 'astro', code: '<div class=\"glass-panel\">Hello</div>', componentName: 'Test' } },
-  { name: 'audit_css', description: 'Audit CSS for compliance', args: { content: '.test { color: red; }', strict: false } },
-  { name: 'validate_parity', description: 'Validate component parity', args: { sourceContent: '<div class=\"glass-panel\">A</div>', targetContent: '<div class=\"glass-panel\">B</div>' } },
+  { name: 'convert_component', description: 'Convert between frameworks', args: { source: 'react', target: 'astro', code: '<div class="glass-panel">Hello</div>', componentName: 'Test' } },
+  { name: 'audit_css', description: 'Audit CSS for compliance', args: { content: '.test { color: var(--p31-accent-red); }', strict: false } },
+  { name: 'validate_parity', description: 'Validate component parity', args: { sourceContent: '<div class="glass-panel">A</div>', targetContent: '<div class="glass-panel">B</div>' } },
   { name: 'get_ui_principles', description: 'Get P31 UI principles', args: {} },
   { name: 'get_review_rules', description: 'Get automated review rules', args: {} },
 ];
@@ -90,7 +90,7 @@ function McpConsole() {
             className="px-4 py-2 rounded-lg border-none cursor-pointer font-semibold text-xs transition-all"
             style={{
               background: 'var(--p31-accent)',
-              color: '#0a0e14',
+              color: 'var(--p31-void)',
               opacity: loading ? 0.7 : 1,
             }}
           >

@@ -17,12 +17,58 @@ const TIER_PLANS: TierPlan[] = [
   { id: 'enterprise', name: 'Enterprise', price: '500', allowance: '500', calls: 10000, feature: '5x burst, dedicated allocation' },
 ];
 
+const COINBASE_APP_ID = import.meta.env.VITE_COINBASE_ONRAMP_APP_ID || '';
+const TRANSAK_API_KEY = import.meta.env.VITE_TRANSAK_API_KEY || '';
+
+function coinbaseUrl(wallet: string, amount?: string): string | null {
+  if (!COINBASE_APP_ID) return null;
+  const url = new URL('https://pay.coinbase.com/buy/select-asset');
+  url.searchParams.set('appId', COINBASE_APP_ID);
+  if (wallet.startsWith('0x')) {
+    url.searchParams.set('addresses', JSON.stringify({ [wallet]: ['base', 'ethereum'] }));
+  }
+  url.searchParams.set('assets', JSON.stringify(['USDC']));
+  if (amount) url.searchParams.set('presetFiatAmount', amount);
+  url.searchParams.set('fiatCurrency', 'USD');
+  return url.toString();
+}
+
+function transakUrl(wallet: string, amount?: string): string | null {
+  if (!TRANSAK_API_KEY) return null;
+  const url = new URL('https://global.transak.com/');
+  url.searchParams.set('apiKey', TRANSAK_API_KEY);
+  url.searchParams.set('referrerDomain', window.location.hostname);
+  url.searchParams.set('cryptoCurrencyCode', 'USDC');
+  url.searchParams.set('network', 'base');
+  url.searchParams.set('productsAvailed', 'BUY');
+  url.searchParams.set('themeColor', '00F0FF');
+  if (wallet.startsWith('0x')) {
+    url.searchParams.set('walletAddress', wallet);
+    url.searchParams.set('disableWalletAddressForm', 'true');
+  }
+  if (amount) url.searchParams.set('defaultFiatAmount', amount);
+  url.searchParams.set('defaultFiatCurrency', 'USD');
+  return url.toString();
+}
+
 export default function Billing() {
   const [did, setDid] = useState('');
   const [selected, setSelected] = useState('pro');
   const [status, setStatus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [fundAmount, setFundAmount] = useState('50');
+
+  const openOnramp = (provider: 'coinbase' | 'transak') => {
+    const url = provider === 'coinbase' ? coinbaseUrl(did, fundAmount) : transakUrl(did, fundAmount);
+    if (!url) {
+      setError(provider === 'coinbase'
+        ? 'Coinbase Onramp not configured (VITE_COINBASE_ONRAMP_APP_ID).'
+        : 'Transak not configured (VITE_TRANSAK_API_KEY).');
+      return;
+    }
+    window.open(url, '_blank', 'noopener');
+  };
 
   const subscribe = async () => {
     if (!did) {
@@ -92,6 +138,35 @@ export default function Billing() {
             {busy ? 'Subscribing…' : 'Subscribe'}
           </button>
         </div>
+      </GlassCard>
+
+      <GlassCard title="Fund Wallet" variant="gold">
+        <p className="billing-intro">
+          Buy USDC on Base with a card or bank transfer, sent straight to your wallet.
+          US-based? Coinbase Onramp. Elsewhere? Transak covers 150+ countries.
+        </p>
+        <div className="billing-did-field">
+          <label>Amount (USD)</label>
+          <input
+            type="text"
+            inputMode="decimal"
+            placeholder="50"
+            value={fundAmount}
+            onChange={(e) => { setFundAmount(e.target.value); setError(''); }}
+          />
+        </div>
+        {error && <div className="page-error">{error}</div>}
+        <div className="page-actions">
+          <button className="btn btn-primary" onClick={() => openOnramp('coinbase')} disabled={!did.startsWith('0x') && !did.startsWith('did:')}>
+            Fund via Coinbase
+          </button>
+          <button className="btn" onClick={() => openOnramp('transak')} disabled={!did.startsWith('0x') && !did.startsWith('did:')}>
+            Fund via Transak
+          </button>
+        </div>
+        <p className="billing-intro" style={{ marginTop: 8 }}>
+          Enter your <code>0x…</code> wallet above (DID also accepted for tier gating).
+        </p>
       </GlassCard>
     </div>
   );

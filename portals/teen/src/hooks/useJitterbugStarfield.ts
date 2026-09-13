@@ -9,6 +9,8 @@ declare global {
   }
 }
 
+type MeshNodeLike = { did?: string; status?: string; spoons?: number; role?: string };
+
 interface UseJitterbugStarfieldOptions {
   spoons?: number;
   voltage?: 'GREEN' | 'AMBER' | 'RED' | 'BLUE';
@@ -71,12 +73,12 @@ export function useJitterbugStarfield(options: UseJitterbugStarfieldOptions = {}
     const build = () => {
       const inst = instanceRef.current;
       if (!inst) return;
-      const nodes = mesh?.nodes
-        ? mesh.nodes instanceof Map
-          ? Array.from(mesh.nodes.values())
-          : Object.values(mesh.nodes)
-        : [];
-      const online = nodes.filter((n) => n.status === 'online');
+const nodes = (mesh?.nodes
+  ? mesh.nodes instanceof Map
+    ? Array.from(mesh.nodes.values())
+    : Object.values(mesh.nodes)
+  : []) as MeshNodeLike[];
+const online = nodes.filter((n) => n.status === 'online');
       const local = mesh?.localDid
         ? { did: mesh.localDid, spoons: options.spoons ?? 3, role: profile?.role ?? 'guest', status: 'online' as const }
         : null;
@@ -145,7 +147,7 @@ export function useJitterbugStarfield(options: UseJitterbugStarfieldOptions = {}
 
   function onlineIds(): string {
     if (!mesh?.nodes) return '';
-    const nodeEntries = mesh.nodes instanceof Map ? Array.from(mesh.nodes.values()) : Object.values(mesh.nodes);
+    const nodeEntries = (mesh.nodes instanceof Map ? Array.from(mesh.nodes.values()) : Object.values(mesh.nodes)) as MeshNodeLike[];
     return nodeEntries
       .filter((n) => n.status === 'online')
       .map((n) => n.did)

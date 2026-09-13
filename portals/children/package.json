@@ -11,14 +11,16 @@
     "deploy": "wrangler pages deploy dist --project-name p31-portal-children --commit-dirty=true",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
-    "test": "vitest run"
+    "test": "vitest run",
+    "sync:vendor": "node /home/p31/production/tools/portal-vendor-sync/sync-vendor.mjs --target /home/p31/production/portals/children",
+    "v:gate": "node /home/p31/production/tools/portal-vendor-sync/v-gate.mjs --target /home/p31/production/portals/children"
   },
   "dependencies": {
-    "@p31/design-core": "^2.1.0",
+    "@p31/design-core": "file:vendor/p31-design-core-2.2.0.tgz",
     "@p31/game-engine": "^0.2.0-alpha.0",
     "@p31/gamification": "^1.0.0",
     "@p31/sovereign-core": "^0.1.0",
-    "@p31/ui": "^1.3.0",
+    "@p31/ui": "file:vendor/p31-ui-1.3.1.tgz",
     "@sentry/browser": "^9.47.1",
     "@sentry/core": "^9.47.1",
     "@sentry/react": "^9.47.1",

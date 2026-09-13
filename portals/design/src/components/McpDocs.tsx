@@ -58,12 +58,12 @@ function McpDocs() {
           component definitions, CSS recipes, and framework conversions. Two deployment modes:
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="p-4 rounded-xl" style={{ background: 'rgba(0,240,255,0.05)', border: '1px solid rgba(0,240,255,0.15)' }}>
+          <div className="p-4 rounded-xl" style={{ background: 'color-mix(in srgb, var(--p31-accent) 5%, transparent)', border: '1px solid color-mix(in srgb, var(--p31-accent) 15%, transparent)' }}>
             <div className="text-sm font-semibold mb-1" style={{ color: 'var(--p31-accent)' }}>Local (stdio)</div>
             <div className="text-xs text-text-secondary mb-2">For Claude Code, Cursor, Gemini CLI running locally</div>
             <CodeBlock>{ENDPOINTS.local}</CodeBlock>
           </div>
-          <div className="p-4 rounded-xl" style={{ background: 'rgba(167,139,250,0.05)', border: '1px solid rgba(167,139,250,0.15)' }}>
+          <div className="p-4 rounded-xl" style={{ background: 'color-mix(in srgb, var(--p31-accent-violet) 5%, transparent)', border: '1px solid color-mix(in srgb, var(--p31-accent-violet) 15%, transparent)' }}>
             <div className="text-sm font-semibold mb-1" style={{ color: 'var(--p31-accent-violet)' }}>Remote (HTTP)</div>
             <div className="text-xs text-text-secondary mb-2">For any MCP-compatible agent over the network</div>
             <CodeBlock>{ENDPOINTS.remote}</CodeBlock>
@@ -110,7 +110,7 @@ function McpDocs() {
             ['get_ui_principles', 'Get 10 P31 UI/UX design principles'],
             ['get_review_rules', 'Get 8 automated review rules'],
           ].map(([name, desc]) => (
-            <div key={name} className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--p31-glass-border)' }}>
+            <div key={name} className="p-3 rounded-lg" style={{ background: 'var(--p31-glass-bg)', border: '1px solid var(--p31-glass-border)' }}>
               <div className="text-xs font-mono font-semibold mb-1" style={{ color: 'var(--p31-accent)' }}>{name}</div>
               <div className="text-[11px] text-text-secondary">{desc}</div>
             </div>
@@ -125,12 +125,12 @@ function McpDocs() {
             '"List all color tokens and their values"',
             '"Generate a GlassPanel component in React"',
             '"Convert this React button to Astro: <button className=\'btn btn-primary\'>Click</button>"',
-            '"Audit this CSS for hardcoded colors: .card { color: #fff; background: red; }"',
+            '"Audit this CSS for hardcoded colors: .card { color: var(--p31-text); background: var(--p31-accent-red); }"',
             '"What are the P31 UI principles?"',
             '"Get the CSS for the glass-panel recipe"',
             '"Validate parity between these two components..."',
           ].map((prompt, i) => (
-            <div key={i} className="text-xs text-text-secondary p-2 rounded" style={{ background: 'rgba(255,255,255,0.02)' }}>
+            <div key={i} className="text-xs text-text-secondary p-2 rounded" style={{ background: 'var(--p31-glass-bg)' }}>
               {prompt}
             </div>
           ))}

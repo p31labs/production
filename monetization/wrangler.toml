@@ -33,3 +33,7 @@ service = "capital-allocator"
 [[services]]
 binding = "CONFIG_GATEWAY"
 service = "config-gateway"
+
+[[services]]
+binding = "BTCPAY_GATEWAY"
+service = "btcpay-gateway"

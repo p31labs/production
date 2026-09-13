@@ -1,0 +1,41 @@
+{
+  "component": "ArtifactPane",
+  "system": "p31-portals/chat",
+  "semantic_parts": [
+    "root",
+    "header",
+    "tabs",
+    "body",
+    "footer"
+  ],
+  "token_contract": {
+    "surface": [
+      "surface.default",
+      "border.glass"
+    ],
+    "space": [
+      "space.1",
+      "space.2",
+      "space.3",
+      "space.4"
+    ]
+  },
+  "required_aria": [
+    "aria-label on tabs",
+    "aria-pressed on tab buttons"
+  ],
+  "interaction_states": [
+    "default",
+    "loading",
+    "error"
+  ],
+  "spoon_contract": {
+    "loading_overlay": "glass surface, blur 16px, z-index 10",
+    "error_dismiss": "keyboard accessible, aria-label=Dismiss"
+  },
+  "forbidden_patterns": [
+    "glass pane background",
+    "backdrop-filter on content",
+    "inline layout styles"
+  ]
+}

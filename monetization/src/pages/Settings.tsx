@@ -139,6 +139,7 @@ export default function Settings() {
     crossChain: 'Cross-chain bridge monitoring',
     love: 'LOVE token harvest and gating',
     autoCompound: 'Auto-compounder positions and yield',
+    btc: 'BTC payments via BTCPay',
   };
 
   return (

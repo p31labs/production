@@ -38,6 +38,27 @@ export interface AllocatorStatus {
   roi_30d: string;
 }
 
+export interface BtcpayInvoice {
+  id: string;
+  amount: string;
+  currency: string;
+  status: string;
+  checkoutLink?: string;
+  createdTime?: string;
+  paymentMethods?: any[];
+}
+
+export interface BtcpayDonation {
+  id: string;
+  invoice_id: string;
+  amount: string;
+  currency: string;
+  order_id?: string;
+  status: string;
+  swept: number;
+  created_at: number;
+}
+
 export interface EntitlementResult {
   allowed: boolean;
   reason?: string;
@@ -90,5 +111,29 @@ export const api = {
     const res = await fetch(proxyUrl('allocator/health'));
     if (!res.ok) throw new Error('Allocator status failed');
     return res.json();
+  },
+
+  async createInvoice(amount: string, currency: string, orderId?: string): Promise<BtcpayInvoice> {
+    const url = new URL('/api/btcpay/invoice', 'https://p31-monetization.trimtab-signal.workers.dev');
+    url.searchParams.set('amount', amount);
+    url.searchParams.set('currency', currency);
+    if (orderId) url.searchParams.set('order_id', orderId);
+    const res = await fetch(url.toString());
+    if (!res.ok) throw new Error('Invoice creation failed');
+    const json = await res.json();
+    return json.data || json;
+  },
+
+  async getDonations(): Promise<{ donations: BtcpayDonation[] }> {
+    const res = await fetch(proxyUrl('btcpay/donations'));
+    if (!res.ok) throw new Error('Failed to fetch donations');
+    return res.json();
+  },
+
+  async sweepDonations(): Promise<{ swept: boolean; count: number; totalBTC: string }> {
+    const res = await fetch(proxyUrl('btcpay/sweep'), { method: 'POST' });
+    if (!res.ok) throw new Error('Sweep failed');
+    const json = await res.json();
+    return json.data || json;
   },
 };

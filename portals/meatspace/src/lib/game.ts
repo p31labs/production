@@ -98,7 +98,7 @@ export function fillGhosts(atoms: Atom[]): Atom[] {
   return filled;
 }
 
-export function computeSymmetry(nodes: import('./tetrahedron').NodeData[]): number {
+export function computeSymmetry(nodes: Array<{ spoons: number; role?: string }>): number {
   const total = nodes.length;
   if (total === 0) return 0;
   const active = nodes.filter(n => n.spoons > 0 && n.role !== 'ghost').length;

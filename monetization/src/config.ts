@@ -6,6 +6,7 @@ export interface P31Config {
     yieldVault: string;
     mevArbitrage: string;
     autoCompounder: string;
+    btcpayGateway: string;
   };
   features: {
     x402: boolean;
@@ -13,6 +14,7 @@ export interface P31Config {
     crossChain: boolean;
     love: boolean;
     autoCompound: boolean;
+    btc: boolean;
   };
   theme: {
     primary: string;
@@ -29,6 +31,7 @@ export const defaultConfig: P31Config = {
     yieldVault: 'https://yield-vault.trimtab-signal.workers.dev',
     mevArbitrage: 'https://mev-arbitrage.trimtab-signal.workers.dev',
     autoCompounder: 'https://p31-auto-compounder.trimtab-signal.workers.dev',
+    btcpayGateway: 'https://btcpay-gateway.trimtab-signal.workers.dev',
   },
   features: {
     x402: true,
@@ -36,6 +39,7 @@ export const defaultConfig: P31Config = {
     crossChain: true,
     love: true,
     autoCompound: true,
+    btc: true,
   },
   theme: {
     primary: 'quantum-cyan',
@@ -53,6 +57,7 @@ export function loadConfig(): P31Config {
       yieldVault: import.meta.env.VITE_YIELD_VAULT_URL || defaultConfig.workers.yieldVault,
       mevArbitrage: import.meta.env.VITE_MEV_ARBITRAGE_URL || defaultConfig.workers.mevArbitrage,
       autoCompounder: import.meta.env.VITE_AUTO_COMPOUNDER_URL || defaultConfig.workers.autoCompounder,
+      btcpayGateway: import.meta.env.VITE_BTCPAY_URL || defaultConfig.workers.btcpayGateway,
     },
     features: {
       x402: import.meta.env.VITE_FEATURE_X402 === 'true',
@@ -60,6 +65,7 @@ export function loadConfig(): P31Config {
       crossChain: import.meta.env.VITE_FEATURE_CROSS_CHAIN === 'true',
       love: import.meta.env.VITE_FEATURE_LOVE_TOKEN === 'true',
       autoCompound: import.meta.env.VITE_FEATURE_AUTO_COMPOUND === 'true',
+      btc: import.meta.env.VITE_FEATURE_BTC === 'true',
     },
     theme: {
       primary: import.meta.env.VITE_PRIMARY_THEME || defaultConfig.theme.primary,

@@ -1,0 +1,12 @@
+{
+  "viewport": {
+    "width": 960,
+    "height": 500
+  },
+  "pages": [
+    {
+      "name": "home",
+      "url": "http://localhost:5173"
+    }
+  ]
+}

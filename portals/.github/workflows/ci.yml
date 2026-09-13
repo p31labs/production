@@ -40,3 +40,21 @@ jobs:
       - name: Verify index.html exists in dist
         run: test -f dist/index.html
         working-directory: portals/${{ matrix.portal }}
+
+  qpj-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install QPJ dependencies
+        run: pnpm install
+        working-directory: portals/qpj
+
+      - name: Run gate
+        run: pnpm gate
+        working-directory: portals/qpj

@@ -1,0 +1,1 @@
+{"mcpServers": {"vlm-diff": {"command": "node", "args": ["/home/p31/P31-local-workspace/tools/visual-mcp/node_modules/vlm-diff/dist/mcp/server.js"], "env": {"VLM_PROVIDER": "openai"}}}}

@@ -14,11 +14,15 @@ export default function Dashboard() {
   const { data: opportunitiesData, refetch: refetchOpportunities, lastUpdated: oppUpdated } = usePolling(api.getOpportunities, 30000);
   const { data: loveStats, refetch: refetchLove, lastUpdated: loveUpdated } = usePolling(api.getLoveHarvest, 30000);
   const { data: allocator, refetch: refetchAllocator, lastUpdated: allocUpdated } = usePolling(api.getAllocatorStatus, 30000);
+  const { data: btcRevenue, refetch: refetchBtc, lastUpdated: btcUpdated } = usePolling(
+    () => api.getRevenueSummary().then((r) => ({ total: r.total_usdc, count: r.count })),
+    30000
+  );
 
   const positions = positionsData?.positions ?? [];
   const opportunities = opportunitiesData?.opportunities ?? [];
   const totalDeposited = positions.reduce((sum, p) => sum + parseFloat(p.amount || '0'), 0);
-  const recentUpdated = [revUpdated, posUpdated, oppUpdated, loveUpdated, allocUpdated]
+  const recentUpdated = [revUpdated, posUpdated, oppUpdated, loveUpdated, allocUpdated, btcUpdated]
     .filter((d): d is Date => !!d)
     .sort((a, b) => b.getTime() - a.getTime())[0];
 
@@ -79,6 +83,14 @@ export default function Dashboard() {
           </GlassCard>
         )}
 
+        {config.features.btc && btcRevenue && (
+          <GlassCard title="BTC Revenue" variant="iris">
+            <div className="metric-value accent-iris">${formatCurrency(btcRevenue.total)}</div>
+            <div className="metric-sub">{btcRevenue.count} payments via BTCPay</div>
+            <div className="metric-graph" />
+          </GlassCard>
+        )}
+
         {config.features.crossChain && (
           <GlassCard title="Cross-Chain" variant="iris">
             <div className="metric-value accent-iris">Monitoring</div>
@@ -128,6 +140,7 @@ export default function Dashboard() {
           refetchOpportunities();
           refetchLove();
           refetchAllocator();
+          refetchBtc();
         }}>
           Refresh All
         </button>

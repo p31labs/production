@@ -20,11 +20,11 @@ interface NotificationHistory {
 }
 
 const TEMPLATES: Record<string, Omit<Notification, 'id'>> = {
-  meds: { icon: '⏰', title: 'Time for your morning meds', body: 'Vitamin D, L-theanine. Take with food.', color: '#F59E0B', priority: 'high', actions: [{ label: 'Mark Taken', primary: true }, { label: 'Snooze 30m' }] },
-  movement: { icon: '☕', title: "You've been focused for 90min", body: 'A 10-minute break helps. Walk, stretch.', color: '#10B981', priority: 'low', actions: [{ label: 'Take Break', primary: true }, { label: 'Snooze 30m' }] },
-  social: { icon: '👤', title: 'Bash sent you a message', body: 'Read when ready.', color: '#8B5CF6', priority: 'low', actions: [{ label: 'Open Chat', primary: true }, { label: 'Snooze' }] },
-  bonding: { icon: '🎮', title: 'Bash is in BONDING', body: 'Want to build something together?', color: '#00F0FF', priority: 'medium', actions: [{ label: 'Join Game', primary: true }, { label: 'Snooze 1h' }] },
-  grants: { icon: '📝', title: 'ASAN grant due in 3 days', body: 'Your draft is 90% done. Finalize today?', color: '#F43F5E', priority: 'high', actions: [{ label: 'View Draft', primary: true }, { label: 'Snooze' }] },
+  meds: { icon: '⏰', title: 'Time for your morning meds', body: 'Vitamin D, L-theanine. Take with food.', color: 'var(--p31-notif-gold)', priority: 'high', actions: [{ label: 'Mark Taken', primary: true }, { label: 'Snooze 30m' }] },
+  movement: { icon: '☕', title: "You've been focused for 90min", body: 'A 10-minute break helps. Walk, stretch.', color: 'var(--p31-notif-green)', priority: 'low', actions: [{ label: 'Take Break', primary: true }, { label: 'Snooze 30m' }] },
+  social: { icon: '👤', title: 'Bash sent you a message', body: 'Read when ready.', color: 'var(--p31-notif-violet)', priority: 'low', actions: [{ label: 'Open Chat', primary: true }, { label: 'Snooze' }] },
+  bonding: { icon: '🎮', title: 'Bash is in BONDING', body: 'Want to build something together?', color: 'var(--p31-notif-cyan)', priority: 'medium', actions: [{ label: 'Join Game', primary: true }, { label: 'Snooze 1h' }] },
+  grants: { icon: '📝', title: 'ASAN grant due in 3 days', body: 'Your draft is 90% done. Finalize today?', color: 'var(--p31-notif-rose)', priority: 'high', actions: [{ label: 'View Draft', primary: true }, { label: 'Snooze' }] },
 };
 
 const OPT_IN_KEYS = ['meds', 'movement', 'social', 'bonding', 'grants'];
@@ -122,8 +122,8 @@ function NotificationDemoPanel() {
             onClick={() => setSpoons(s)}
             className="px-4 py-2 rounded-lg border-none cursor-pointer font-medium text-xs transition-all"
             style={{
-              background: spoons === s ? 'var(--p31-accent)' : 'rgba(255,255,255,0.06)',
-              color: spoons === s ? '#0a0e14' : 'var(--p31-text)',
+              background: spoons === s ? 'var(--p31-accent)' : 'var(--p31-glass-bg)',
+              color: spoons === s ? 'var(--p31-void)' : 'var(--p31-text)',
               fontWeight: spoons === s ? 600 : 400,
             }}
           >
@@ -133,7 +133,7 @@ function NotificationDemoPanel() {
       </div>
 
       {spoons === 0 && (
-        <div className="p-4 rounded-xl border border-accent-red/20 text-xs" style={{ background: 'rgba(251,113,133,0.1)', color: 'var(--p31-accent-red)' }}>
+        <div className="p-4 rounded-xl border border-accent-red/20 text-xs" style={{ background: 'color-mix(in srgb, var(--p31-accent-red) 10%, transparent)', color: 'var(--p31-accent-red)' }}>
           🧘 Sensory rest active. Notifications muted. Background subdued.
         </div>
       )}
@@ -159,7 +159,7 @@ function NotificationDemoPanel() {
             onClick={() => trigger(key)}
             className="p-3 rounded-lg border-none cursor-pointer text-left text-xs transition-all"
             style={{
-              background: 'rgba(255,255,255,0.04)',
+              background: 'var(--p31-glass-bg)',
               color: 'var(--p31-text)',
               borderLeft: `3px solid ${t.color}`,
             }}
@@ -176,11 +176,11 @@ function NotificationDemoPanel() {
               key={n.id}
               className="p-3 rounded-lg"
               style={{
-                background: 'rgba(255,255,255,0.04)',
+                background: 'var(--p31-glass-bg)',
                 borderLeft: `4px solid ${n.color}`,
-                borderTop: '1px solid rgba(255,255,255,0.06)',
-                borderRight: '1px solid rgba(255,255,255,0.06)',
-                borderBottom: '1px solid rgba(255,255,255,0.06)',
+                borderTop: '1px solid var(--p31-glass-border)',
+                borderRight: '1px solid var(--p31-glass-border)',
+                borderBottom: '1px solid var(--p31-glass-border)',
               }}
             >
               <div className="flex gap-2 items-start">
@@ -195,8 +195,8 @@ function NotificationDemoPanel() {
                         onClick={() => close(n.id)}
                         className="px-2 py-1 rounded-md border-none cursor-pointer text-[11px] font-semibold"
                         style={{
-                          background: a.primary ? n.color : 'rgba(255,255,255,0.06)',
-                          color: a.primary ? '#0A0A0F' : 'var(--p31-text)',
+                          background: a.primary ? n.color : 'var(--p31-glass-bg)',
+                          color: a.primary ? 'var(--p31-void)' : 'var(--p31-text)',
                         }}
                       >
                         {a.label}
@@ -221,7 +221,7 @@ function NotificationDemoPanel() {
           <summary className="cursor-pointer text-xs text-text-secondary mb-2">📋 Notification History ({history.length})</summary>
           <div className="flex flex-col gap-1">
             {history.slice(-10).reverse().map(h => (
-              <div key={h.id} className="flex gap-2 items-center text-xs p-2 rounded-md" style={{ background: 'rgba(255,255,255,0.02)' }}>
+              <div key={h.id} className="flex gap-2 items-center text-xs p-2 rounded-md" style={{ background: 'var(--p31-glass-bg)' }}>
                 <span>{h.icon}</span>
                 <span className="text-text">{h.title}</span>
                 <span className="text-text-tertiary ml-auto font-mono">{h.time}</span>
@@ -231,7 +231,7 @@ function NotificationDemoPanel() {
         </details>
       )}
 
-      <div className="p-3 rounded-xl text-xs text-text-tertiary leading-relaxed" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="p-3 rounded-xl text-xs text-text-tertiary leading-relaxed" style={{ background: 'var(--p31-glass-bg)', border: '1px solid var(--p31-glass-border)' }}>
         <div className="font-semibold text-text mb-1">Notification Rules</div>
         <ul className="list-disc list-inside space-y-1">
           <li>No badges or sound by default</li>

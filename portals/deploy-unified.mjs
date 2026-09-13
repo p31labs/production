@@ -69,6 +69,16 @@ const PORTALS = {
     entryHtml: 'index.html',
     manualChunks: [],
   },
+  qpj: {
+    subdir: 'qpj',
+    domain: 'qpj.p31ca.org',
+    project: 'p31-portal-qpj',
+    type: 'react',
+    sentryProject: 'qpj-portal',
+    port: 5196,
+    entryHtml: 'index.html',
+    manualChunks: ['src/machines/modeGate.ts', 'src/store/useQpjStore.ts', 'src/lib/routes.ts'],
+  },
   // developer and institutional archived — source of truth is now apps/p31ca and apps/phosphorus31
 };
 

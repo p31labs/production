@@ -1,0 +1,50 @@
+{
+  "component": "ChatMessage",
+  "system": "p31-portals/chat",
+  "semantic_parts": [
+    "root",
+    "bubble",
+    "content",
+    "tools",
+    "timestamp"
+  ],
+  "token_contract": {
+    "color": [
+      "color.semantic.text",
+      "color.semantic.textSecondary",
+      "color.semantic.textTertiary"
+    ],
+    "space": [
+      "space.1",
+      "space.2",
+      "space.3"
+    ],
+    "typography": [
+      "scale.xs",
+      "scale.sm"
+    ]
+  },
+  "required_aria": [
+    "role=log on transcript",
+    "aria-live=polite",
+    "aria-atomic=false",
+    "aria-busy during streaming"
+  ],
+  "interaction_states": [
+    "default",
+    "streaming"
+  ],
+  "ownership": {
+    "user": "right-aligned bubble, max-width 75%",
+    "assistant": "full-width content, max-width 70ch, no bubble chrome"
+  },
+  "spoon_contract": {
+    "timestamp_visibility": "always visible, never hover-gated",
+    "streaming_cursor": "aria-hidden, blink animation respects prefers-reduced-motion"
+  },
+  "forbidden_patterns": [
+    "assistant in bubble",
+    "narrow column for markdown",
+    "emoji timestamps"
+  ]
+}

@@ -7,8 +7,10 @@ import Opportunities from './pages/Opportunities';
 import Billing from './pages/Billing';
 import Usage from './pages/Usage';
 import Settings from './pages/Settings';
+import Invoices from './pages/Invoices';
+import Donations from './pages/Donations';
 
-export type Tab = 'dashboard' | 'revenue' | 'positions' | 'opportunities' | 'billing' | 'usage' | 'settings';
+export type Tab = 'dashboard' | 'revenue' | 'positions' | 'opportunities' | 'billing' | 'usage' | 'settings' | 'invoices' | 'donations';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
@@ -35,6 +37,10 @@ export default function App() {
         return <Positions />;
       case 'opportunities':
         return <Opportunities />;
+      case 'invoices':
+        return <Invoices />;
+      case 'donations':
+        return <Donations />;
       case 'billing':
         return <Billing />;
       case 'usage':

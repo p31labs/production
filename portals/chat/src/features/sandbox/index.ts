@@ -1,0 +1,13 @@
+export { useSandboxStore } from './sandboxStore';
+export * from './types';
+export { isSandboxFlagEnabled, SANDBOX_FLAGS } from './sandboxFeatureFlags';
+export type { SandboxFlag } from './sandboxFeatureFlags';
+export { useSandboxPersistence } from './useSandboxPersistence';
+export { detectAmbiguities, resolveClarify } from './clarify';
+export type { ClarifyQuestion } from './clarify';
+export { validateHtml, runRubric, buildRepairPrompt, makeStep, repairLoop, selectNextIssue, RUBRIC_BUCKETS } from './pipeline';
+export type { PipelineStep, ContractIssue, RubricReport, RubricBucket, Severity, ClarifyOption, RepairRound, RepairLoopInput, RepairLoopOutput } from './pipeline';
+export { tileRegions, verifyVisual } from './visual';
+export type { RegionTile } from './visual';
+export { normalizeDom, hashString, captureAndDiff, analyzeDomDiff, visualDiffVerdictToIssue } from './visualDiff';
+export type { VisualDiffResult, DiffRegion, DiffChangeType, DiffVerdict } from './visualDiff';

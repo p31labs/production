@@ -1,0 +1,64 @@
+.crisis {
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  display: grid;
+  place-items: center;
+  padding: clamp(12px, 3vw, 24px);
+  background: var(--p31-glass-bg);
+  backdrop-filter: blur(var(--p31-glass-blur));
+  animation: crisis-fade var(--p31-duration-standard) var(--p31-easing-standard);
+}
+
+.crisis__card {
+  max-width: 380px;
+  padding: 22px 22px 18px;
+  border-radius: var(--p31-radius-lg);
+  background: var(--p31-glass-bg-strong);
+  border: 1px solid var(--p31-glass-border);
+  box-shadow: var(--p31-glass-shadow);
+}
+
+.crisis__kicker {
+  margin: 0 0 6px;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--p31-accent-red);
+}
+
+.crisis__title {
+  margin: 0 0 8px;
+  color: var(--p31-text);
+  font-size: 1.15rem;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.crisis__text {
+  margin: 0 0 16px;
+  color: var(--p31-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.crisis__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@keyframes crisis-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crisis {
+    animation: none;
+  }
+}

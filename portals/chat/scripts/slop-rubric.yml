@@ -1,0 +1,55 @@
+# P31 Slop Detection Rubric
+# Used by scripts/slop-eval.mjs — scores design outputs against P31 invariants.
+# Categories 1-3 = likely acceptable; 4-5 = likely slop; 6+ = definitely slop.
+# Thresholds: acceptable ≤7, likely-slop 8-11, definitely-slop ≥12
+
+categories:
+  - id: brand_identity
+    label: "Brand Identity"
+    description: "Does the output respect P31 quantum-leap visual identity?"
+    checks:
+      - id: accent_usage
+        description: "Cyan (#00F0FF) accent used in hero/primary CTAs"
+        severity: hard
+      - id: void_deep
+        description: "Void-deep background (#0a0e1a) in primary surfaces"
+        severity: hard
+      - id: glass_hierarchy
+        description: "Glass surfaces use correct blur hierarchy (sm/md/lg)"
+        severity: soft
+    max_score: 3
+
+  - id: design_system
+    label: "Design System"
+    description: "Are P31 tokens and components used correctly?"
+    checks:
+      - id: token_usage
+        description: "Colors use var(--p31-*) tokens, zero hardcoded hex"
+        severity: hard
+      - id: component_usage
+        description: "P31 components used (not custom re-implementations)"
+        severity: soft
+      - id: spoon_awareness
+        description: "Spoon level respected (glass surface count ≤5 per viewport)"
+        severity: soft
+    max_score: 3
+
+  - id: accessibility
+    label: "Accessibility"
+    description: "WCAG 2.2 AA / neuroinclusive defaults"
+    checks:
+      - id: color_contrast
+        description: "WCAG AA 4.5:1 contrast minimum on all text pairs"
+        severity: hard
+      - id: touch_targets
+        description: "Touch targets ≥ 44px"
+        severity: hard
+      - id: reduced_motion
+        description: "prefers-reduced-motion respected"
+        severity: soft
+    max_score: 3
+
+thresholds:
+  acceptable: 7
+  likely_slop: 8
+  definitely_slop: 12

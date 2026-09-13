@@ -1,0 +1,136 @@
+.love-ledger {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-radius: var(--p31-radius-lg);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+}
+
+.love-ledger__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.love-ledger__sub {
+  margin: 0;
+  color: var(--p31-text-tertiary);
+  font-size: 0.82rem;
+}
+
+.love-pools {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.love-pool {
+  display: grid;
+  gap: 2px;
+  padding: 12px;
+  border-radius: var(--p31-radius-md);
+  background: var(--p31-surface);
+  border: 1px solid var(--p31-border);
+}
+
+.love-pool__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p31-text-tertiary);
+}
+
+.love-pool__value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--p31-accent-violet);
+  font-variant-numeric: tabular-nums;
+}
+
+.love-pool--spend .love-pool__value {
+  color: var(--p31-lantern);
+}
+
+.love-score {
+  display: grid;
+  gap: 6px;
+}
+
+.love-score__label {
+  font-size: 0.78rem;
+  color: var(--p31-text-secondary);
+}
+
+.love-score__track {
+  height: 6px;
+  border-radius: var(--p31-radius-candy);
+  background: var(--p31-muted);
+  overflow: hidden;
+}
+
+.love-score__fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--p31-radius-candy);
+  background: var(--p31-accent-green);
+}
+
+.love-ledger__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.love-ledger__note {
+  font-size: 0.78rem;
+  color: var(--p31-text-tertiary);
+}
+
+.love-ledger__log {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+
+.love-log-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 10px;
+  padding-block: 8px;
+  border-top: 1px solid var(--p31-border);
+  font-size: 0.84rem;
+  color: var(--p31-text-secondary);
+}
+
+.love-log-row__delta {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--p31-accent-green);
+}
+
+.love-log-row__delta--spend {
+  color: var(--p31-lantern);
+}
+
+.love-log-row__time {
+  font-size: 0.72rem;
+  color: var(--p31-text-tertiary);
+}
+
+.love-ledger__empty {
+  font-size: 0.84rem;
+  color: var(--p31-text-tertiary);
+  padding-block: 4px;
+}
+
+@media (max-width: 560px) {
+  .love-pools {
+    grid-template-columns: 1fr;
+  }
+}

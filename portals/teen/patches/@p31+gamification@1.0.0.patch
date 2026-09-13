@@ -1,0 +1,29 @@
+diff --git a/src/confetti.ts b/src/confetti.ts
+--- a/src/confetti.ts
++++ b/src/confetti.ts
+@@ -1,7 +1,7 @@
+ // src/engine/confetti.ts
+ // Lightweight CSS confetti — no canvas, no dependencies.
+ // Enhanced: 3D rotation, shape variety, gravity curve.
+ 
+-import { CONFETTI } from '../config/easterEggs';
++import { CONFETTI } from './config/easterEggs';
+ 
+ let styleInjected = false;
+diff --git a/src/config/easterEggs.ts b/src/config/easterEggs.ts
+new file mode 100644
+--- /dev/null
++++ b/src/config/easterEggs.ts
+@@ -0,0 +1,12 @@
++export const CONFETTI = {
++  normalCount: 80,
++  duration: 2500,
++  colors: [
++    '#00F0FF',
++    '#A78BFA',
++    '#FBBF24',
++    '#34D399',
++    '#F87171',
++    '#7DD3FC',
++  ],
++} as const;

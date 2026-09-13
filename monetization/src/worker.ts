@@ -11,6 +11,7 @@ interface Env {
   YIELD_VAULT: any;
   ALLOCATOR: any;
   CONFIG_GATEWAY: any;
+  BTCPAY_GATEWAY: any;
 }
 
 const routes: Record<string, { service: keyof Env; path: string }> = {
@@ -26,6 +27,9 @@ const routes: Record<string, { service: keyof Env; path: string }> = {
   'config/validate': { service: 'CONFIG_GATEWAY', path: '/api/config/validate' },
   'config/flags': { service: 'CONFIG_GATEWAY', path: '/api/config/flags' },
   'usage': { service: 'CONFIG_GATEWAY', path: '/api/usage' },
+  'btcpay/invoice': { service: 'BTCPAY_GATEWAY', path: '/invoice' },
+  'btcpay/donations': { service: 'BTCPAY_GATEWAY', path: '/donations' },
+  'btcpay/sweep': { service: 'BTCPAY_GATEWAY', path: '/sweep' },
 };
 
 function trackUsage(env: Env, ctx: ExecutionContext, endpoint: string, method: string, status: number, latencyMs: number) {

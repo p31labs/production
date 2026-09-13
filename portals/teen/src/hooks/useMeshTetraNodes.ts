@@ -29,7 +29,7 @@ export function useMeshTetraNodes(): { nodes: NodeData[]; peers: MeshPeer[] } {
       lastSeen: data.lastSeen || Date.now(),
     }));
 
-    const nodes: NodeData[] = peers.slice(0, 4).map(p => ({
+    const nodes: Array<NodeData & { love?: number }> = peers.slice(0, 4).map(p => ({
       id: p.did,
       label: p.name,
       spoons: p.spoons,

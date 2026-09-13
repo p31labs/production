@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-09-13T13:38:09.596Z",
+  "routes": [
+    {
+      "hash": "#/",
+      "minMode": "spark",
+      "label": "street"
+    },
+    {
+      "hash": "#/street",
+      "minMode": "spark",
+      "label": "street"
+    },
+    {
+      "hash": "#/talk",
+      "minMode": "spark",
+      "label": "talk"
+    },
+    {
+      "hash": "#/craft",
+      "minMode": "maker",
+      "label": "craft"
+    },
+    {
+      "hash": "#/you",
+      "minMode": "spark",
+      "label": "you"
+    },
+    {
+      "hash": "#/workshop",
+      "minMode": "workshop",
+      "label": "workshop"
+    },
+    {
+      "hash": "#/switch",
+      "minMode": "spark",
+      "label": "switch"
+    },
+    {
+      "hash": "#/entry",
+      "minMode": "spark",
+      "label": "entry"
+    }
+  ]
+}

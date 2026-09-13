@@ -34,7 +34,7 @@ export default function RightRail({ tab, onNavigate }: RightRailProps) {
         <button
           className="button secondary"
           style={{ width: '100%', marginTop: 'var(--p31-space-xs)', fontSize: '11px' }}
-          onClick={() => onNavigate?.('market')}
+          onClick={() => onNavigate?.('home')}
         >
           🛒 Browse
         </button>

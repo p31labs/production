@@ -1,0 +1,2 @@
+{"ts":"2026-09-11T10:43:23.936Z","action":"baseline","overwritten":false,"pages":[{"name":"home","url":"http://localhost:5173"}]}
+{"ts":"2026-09-11T10:43:32.204Z","action":"check","exitCode":0,"pages":[{"name":"home","changed":false,"changeType":null,"severity":null}]}

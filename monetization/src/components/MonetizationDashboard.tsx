@@ -9,7 +9,7 @@ import { loadConfig } from '../config';
 
 const config = loadConfig();
 
-export type Tab = 'dashboard' | 'revenue' | 'positions' | 'opportunities' | 'billing' | 'usage' | 'settings';
+export type Tab = 'dashboard' | 'revenue' | 'positions' | 'opportunities' | 'billing' | 'usage' | 'settings' | 'invoices' | 'donations';
 
 interface MonetizationDashboardProps {
   activeTab: Tab;
@@ -36,6 +36,8 @@ export default function MonetizationDashboard({
     { id: 'revenue', label: 'Revenue', icon: '💰' },
     { id: 'positions', label: 'Positions', icon: '📈' },
     { id: 'opportunities', label: 'Opportunities', icon: '⚡' },
+    { id: 'invoices', label: 'Invoices', icon: '📄' },
+    { id: 'donations', label: 'Donations', icon: '🎁' },
     { id: 'billing', label: 'Billing', icon: '💳' },
     { id: 'usage', label: 'Usage', icon: '📶' },
     { id: 'settings', label: 'Settings', icon: '⚙️' },

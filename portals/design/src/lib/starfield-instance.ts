@@ -6,14 +6,6 @@ import type { JitterbugStarfieldInstance } from '@p31/design-core/starfield/jitt
  */
 export const starfieldInstance: { current: JitterbugStarfieldInstance | null } = { current: null };
 
-export function drivePhase(p: number): void {
-  starfieldInstance.current?.setPhase(p);
-}
-
-export function driveMorphSpeed(m: number): void {
-  starfieldInstance.current?.setMorphSpeed(m);
-}
-
 export function resumeAutoplay(spoons: number): void {
   starfieldInstance.current?.setSpoons(spoons);
 }

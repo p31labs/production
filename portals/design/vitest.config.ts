@@ -11,6 +11,7 @@ export default defineConfig({
     setupFiles: ['src/__tests__/setup.ts'],
   },
   resolve: {
+    dedupe: ['react', 'react-dom'],
     alias: {
       react: path.resolve(__dirname, 'node_modules/react'),
       'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
@@ -19,7 +20,10 @@ export default defineConfig({
   },
   server: {
     deps: {
-      inline: [/^@p31\//, /^zustand/, /^@sentry/],
+      inline: [/^@p31\//, /^@sentry/],
+    },
+    ssr: {
+      noExternal: [],
     },
   },
 });

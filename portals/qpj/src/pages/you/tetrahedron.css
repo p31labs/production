@@ -1,0 +1,131 @@
+/* ── K₄ Mesh (barely-there) ───────────────────────────── */
+
+.mesh {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mesh__edge {
+  stroke: var(--p31-border);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  transition: stroke var(--p31-duration-fast, 200ms);
+}
+.mesh__edge--w2 { stroke: var(--p31-accent);       stroke-dasharray: none; }
+.mesh__edge--w1 { stroke: var(--p31-text-tertiary); stroke-dasharray: 4 4; }
+.mesh__edge--w0 { stroke: var(--p31-border);        stroke-dasharray: 2 6; }
+
+.mesh__node-ring {
+  fill: var(--p31-surface);
+  stroke: var(--p31-border);
+  stroke-width: 1.5;
+}
+.mesh__node.is-online .mesh__node-ring {
+  stroke: var(--p31-accent);
+  stroke-width: 2;
+}
+
+.mesh__node-emoji {
+  font-size: 20px;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.mesh__node-name {
+  font-size: 11px;
+  font-weight: 500;
+  text-anchor: middle;
+  fill: var(--p31-text-secondary);
+}
+
+/* ── Pickle Placeholder ─────────────────────────────────── */
+
+.pickle-placeholder {
+  border: 1px dashed var(--p31-border);
+  border-radius: var(--p31-radius-sm, 8px);
+  padding: 16px;
+  color: var(--p31-text-tertiary);
+  font-size: 13px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.pickle-placeholder__jar {
+  font-size: 18px;
+  opacity: 0.5;
+}
+.pickle-placeholder__reason {
+  opacity: 0.7;
+}
+
+/* ── Existing tetrahedron styles ────────────────────────── */
+
+.card__tetrahedron {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.card__tetrahedron__vertex {
+  padding: 0.75rem;
+  border: 1px solid var(--p31-border);
+  border-radius: var(--p31-radius-sm);
+  background: var(--p31-surface);
+}
+
+.card__tetrahedron__vertex h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--p31-muted);
+  margin: 0 0 0.4rem;
+}
+
+.card__tetrahedron__value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+  word-break: break-all;
+}
+
+.card__tetrahedron__meta {
+  font-size: 0.8rem;
+  color: var(--p31-muted);
+  margin: 0.2rem 0 0;
+}
+
+.card__tetrahedron__copy {
+  background: none;
+  border: 1px solid var(--p31-border);
+  border-radius: var(--p31-radius-candy);
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  color: var(--p31-accent);
+  cursor: pointer;
+  margin-top: 0.3rem;
+}
+
+.you__passport {
+  margin-top: 0.5rem;
+}
+
+.you__passport-export {
+  margin-top: 0.75rem;
+}
+
+.you__passport-export summary {
+  cursor: pointer;
+  color: var(--p31-accent);
+  font-size: 0.85rem;
+}
+
+.you__passport-json {
+  background: var(--p31-bg-deep);
+  padding: 0.75rem;
+  border-radius: var(--p31-radius-sm);
+  font-size: 0.75rem;
+  overflow-x: auto;
+  max-height: 300px;
+  overflow-y: auto;
+  margin: 0.5rem 0 0;
+}

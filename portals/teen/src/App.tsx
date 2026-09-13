@@ -103,7 +103,7 @@ export default function App() {
   useEffect(() => {
     if (!BASH_ENABLED || !did) return;
     const mesh = new HeartbeatMesh(did, (meshState) => {
-      updateMesh(meshState);
+      updateMesh(meshState as Parameters<typeof updateMesh>[0]);
     });
     meshRef.current = mesh;
     mesh.connect('0.peerjs.com').then((peerId) => {
