@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { HeartbeatMesh, type MeshState } from '@p31/sovereign-core';
+import { substrateStorage } from '../lib/substrate-storage';
 import type { Preferences } from '@p31/sovereign-core';
 import type { Identity, IdentityStatus } from '../lib/identity';
 import { useNotifStore } from './useNotifStore';
@@ -468,6 +469,18 @@ export const useQpjStore = create<QpjState>()(
         love: state.love,
       }),
       merge: (persisted, current) => mergePersistedQpj(persisted, current),
+      storage: (() => {
+        const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
+        return env.VITE_SUBSTRATE_ENABLED === 'true' ? substrateStorage : undefined;
+      })(),
     }
   )
 );
+
+export function useSubstrate() {
+  const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
+  return {
+    mode: env.VITE_SUBSTRATE_ENABLED === 'true' ? 'edge' : 'local' as const,
+    ready: env.VITE_SUBSTRATE_ENABLED === 'true',
+  };
+}
