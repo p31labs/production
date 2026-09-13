@@ -2,15 +2,9 @@ name = "p31-dispatch"
 main = "src/index.ts"
 compatibility_date = "2026-07-29"
 
-[observability]
-enabled = true
-
 [vars]
 SUBSTRATE_ENABLED = "false"
 PASSPORT_WORKER_NAMESPACE = "qpj-passport"
-
-[[dispatch_namespaces]]
-bounding_service = "p31-dispatch"
 
 [limits]
 cpu_ms = 5000

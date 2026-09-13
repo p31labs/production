@@ -29,6 +29,12 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
+# Workers runtime artifacts
+worker-configuration.d.ts
+
+# Workers node_modules (symlinks)
+**/workers/*/node_modules/
+
 # Editor / IDE
 .idea/
 .vscode/

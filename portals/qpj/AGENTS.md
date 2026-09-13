@@ -73,6 +73,15 @@ pnpm v:gate      # asserts @p31/design-core @ 2.3.0 + @p31/ui @ 1.3.1 from vendo
 - `docs/15-DIVERGENCES.md` — living register of every intentional design-core fork
 - `docs/16-MASTER-PROMPT-SUBSTRATE.md` — Track A: per-passport Worker + DO + Sandbox substrate
 - `docs/16-MASTER-PROMPT-TRIAD-UI.md` — Triad cognition: DeepSeek/Claude/Gemini UI polish collaboration
+- `docs/17-WORKFLOW-REFERENCE.md` — field cards for Narrator/Mechanic/Architect
+- `docs/17-PROMPT-UPGRADES.md` — copy-paste ready prompt upgrade sections
+- `docs/17-UPGRADE-RATIONALE.md` — why each operational gap matters
+- `docs/17-DEPLOYMENT.md` — phased rollout checklist
+- `docs/18-SUBSTRATE-RESEARCH.md` — substrate research synthesis (dispatch, DO, Sandbox, limits)
+- `workers/p31-dispatch/` — dispatch Worker (hostname routing, custom limits, verification)
+- `workers/p31-passport/` — per-persona Worker + PassportDO (SQLite, hibernation)
+- `src/lib/substrate.ts` — client bridge (feature-flag-gated fetch to dispatch)
+- `src/features/worker/substrate-bridge.ts` — bridge integration with worker store
 - `deploy-unified.mjs` registration lives in `/home/p31/production/portals/`
 
 Detailed docs: `docs/01-ARCHITECTURE.md` … `docs/08-DEPLOYMENT.md`.

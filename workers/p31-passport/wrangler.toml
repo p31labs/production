@@ -2,15 +2,16 @@ name = "p31-passport"
 main = "src/index.ts"
 compatibility_date = "2026-07-29"
 
-[observability]
-enabled = true
+[vars]
+SANDBOX_ENABLED = "false"
 
 [[durable_objects.bindings]]
 class_name = "PassportDO"
 name = "PASSPORT_DO"
 
-[[sandboxes.bindings]]
-name = "Sandbox"
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["PassportDO"]
 
 [limits]
 cpu_ms = 5000

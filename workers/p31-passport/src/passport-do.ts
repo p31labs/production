@@ -15,7 +15,7 @@ interface ExecuteInput {
   sessionId: string;
 }
 
-export default class PassportDO implements DurableObject {
+export class PassportDO implements DurableObject {
   private state: DurableObjectState;
   private db: SqlStorage;
 
