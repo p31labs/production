@@ -1,8 +1,3 @@
-const SUBSTRATE_ENABLED = (import.meta as unknown as { env?: Record<string, string | undefined> }).env?.VITE_SUBSTRATE_ENABLED === 'true';
-
-const DISPATCH_URL = (import.meta as unknown as { env?: Record<string, string | undefined> }).env?.VITE_DISPATCH_URL
-  ?? 'https://qpj-dispatch.p31ca.org';
-
 const DEFAULT_CPU_MS = 5000;
 const DEFAULT_SUB_REQUESTS = 50;
 
@@ -29,10 +24,19 @@ export interface SubstrateStatusResult {
   error?: string;
 }
 
+export function getSubstrateUrl(): string | null {
+  const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
+  return env.VITE_P31_SUBSTRATE_URL ?? null;
+}
+
+export function isEdgeMode(): boolean {
+  return getSubstrateUrl() !== null;
+}
+
 export function getSubstrateConfig(): SubstrateConfig {
   return {
-    enabled: SUBSTRATE_ENABLED,
-    dispatchUrl: DISPATCH_URL,
+    enabled: isEdgeMode(),
+    dispatchUrl: getSubstrateUrl() ?? 'https://qpj-dispatch.p31ca.org',
     cpuMs: DEFAULT_CPU_MS,
     subRequests: DEFAULT_SUB_REQUESTS,
   };
@@ -49,8 +53,8 @@ export async function submitGoal(
     subRequests?: number;
   } = {},
 ): Promise<SubstrateGoalResult> {
-  if (!SUBSTRATE_ENABLED) {
-    return { ok: false, deferred: false, error: 'substrate disabled — set VITE_SUBSTRATE_ENABLED=true' };
+  if (!isEdgeMode()) {
+    return { ok: false, deferred: false, error: 'substrate disabled — set VITE_P31_SUBSTRATE_URL' };
   }
 
   if (opts.cpuMs && opts.cpuMs > DEFAULT_CPU_MS) {

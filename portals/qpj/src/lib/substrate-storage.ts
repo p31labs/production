@@ -1,14 +1,5 @@
-import { getSubstrateConfig, type SubstrateConfig } from './substrate';
+import { getSubstrateConfig, isEdgeMode, type SubstrateConfig } from './substrate';
 import { createJSONStorage } from 'zustand/middleware';
-
-function isEdgeMode(): boolean {
-  const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
-  return env.VITE_SUBSTRATE_ENABLED === 'true';
-}
-
-function getConfig(): SubstrateConfig {
-  return getSubstrateConfig();
-}
 
 export const substrateStorage = createJSONStorage(() => ({
   async getItem(name: string): Promise<string | null> {
