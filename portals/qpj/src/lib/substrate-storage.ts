@@ -40,7 +40,7 @@ export const substrateStorage = createJSONStorage(() => ({
       await fetch(`${config.dispatchUrl}/api/store`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ key: name, value }),
+        body: JSON.stringify({ key: name, value, source: 'local-write' }),
       });
     } catch {
       /* localStorage already updated */

@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getSubstrateConfig, submitGoal, verifyPassport, checkStatus } from './substrate';
 import { useSubstrate } from '../store/useQpjStore';
+import { substrateStorage } from './substrate-storage';
 
 describe('substrate', () => {
   beforeEach(() => {
@@ -11,6 +12,13 @@ describe('substrate', () => {
     const { mode, ready } = useSubstrate();
     expect(mode).toBe('local');
     expect(ready).toBe(true);
+  });
+
+  it('does not dual-write when edge is disabled', async () => {
+    const fetchSpy = vi.spyOn(global, 'fetch');
+    await substrateStorage.setItem('qpj:test', 'value');
+    expect(fetchSpy).not.toHaveBeenCalled();
+    fetchSpy.mockRestore();
   });
 
   describe('getSubstrateConfig', () => {
