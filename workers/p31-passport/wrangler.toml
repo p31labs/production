@@ -1,0 +1,17 @@
+name = "p31-passport"
+main = "src/index.ts"
+compatibility_date = "2026-07-29"
+
+[observability]
+enabled = true
+
+[[durable_objects.bindings]]
+class_name = "PassportDO"
+name = "PASSPORT_DO"
+
+[[sandboxes.bindings]]
+name = "Sandbox"
+
+[limits]
+cpu_ms = 5000
+sub_requests = 50
