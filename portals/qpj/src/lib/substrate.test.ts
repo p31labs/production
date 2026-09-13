@@ -1,9 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getSubstrateConfig, submitGoal, verifyPassport, checkStatus } from './substrate';
+import { useSubstrate } from '../store/useQpjStore';
 
 describe('substrate', () => {
   beforeEach(() => {
     vi.restoreAllMocks();
+  });
+
+  it('useSubstrate returns ready:true in local mode', () => {
+    const { mode, ready } = useSubstrate();
+    expect(mode).toBe('local');
+    expect(ready).toBe(true);
   });
 
   describe('getSubstrateConfig', () => {

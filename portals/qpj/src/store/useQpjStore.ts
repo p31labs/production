@@ -471,16 +471,14 @@ export const useQpjStore = create<QpjState>()(
       merge: (persisted, current) => mergePersistedQpj(persisted, current),
       storage: (() => {
         const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
-        return env.VITE_SUBSTRATE_ENABLED === 'true' ? substrateStorage : undefined;
+        return env.VITE_P31_SUBSTRATE_URL ? substrateStorage : undefined;
       })(),
     }
   )
 );
 
-export function useSubstrate() {
+export function useSubstrate(): { mode: 'local' | 'edge'; ready: boolean } {
   const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
-  return {
-    mode: env.VITE_SUBSTRATE_ENABLED === 'true' ? 'edge' : 'local' as const,
-    ready: env.VITE_SUBSTRATE_ENABLED === 'true',
-  };
+  const mode = env.VITE_P31_SUBSTRATE_URL ? 'edge' : 'local';
+  return { mode, ready: true };
 }
