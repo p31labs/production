@@ -78,6 +78,7 @@ pnpm v:gate      # asserts @p31/design-core @ 2.3.0 + @p31/ui @ 1.3.1 from vendo
 - `docs/17-UPGRADE-RATIONALE.md` — why each operational gap matters
 - `docs/17-DEPLOYMENT.md` — phased rollout checklist
 - `docs/18-SUBSTRATE-RESEARCH.md` — substrate research synthesis (dispatch, DO, Sandbox, limits)
+- `docs/19-OPERATIONS-GUIDE.md` — deployment post-mortem, failure analysis, hardened operations guide, handoff payload
 - `workers/p31-dispatch/` — dispatch Worker (hostname routing, custom limits, verification)
 - `workers/p31-passport/` — per-persona Worker + PassportDO (SQLite, hibernation)
 - `src/lib/substrate.ts` — client bridge (feature-flag-gated fetch to dispatch)
