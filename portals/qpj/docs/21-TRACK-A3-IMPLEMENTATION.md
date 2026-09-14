@@ -411,3 +411,36 @@ dispatch still returns 503 until `SUBSTRATE_ENABLED=true`.
 - Do not assume sandbox state persists across sleep. Write to R2 before the container sleeps.
 - Do not use `blockConcurrencyWhile()` for anything other than schema init.
 - Do not use `runFiber()` in PassportDO unless subclassing Agent.
+
+## Activation runbook
+
+Follow only after the hardening paths land (dispatch `/ws` proxy, shared-secret
+gate on passport POST, status returns the real `passportId`, `resolveWsBaseUrl`
+tested, gate verified live: 401/401/503 while `SUBSTRATE_ENABLED=false`).
+
+1. **Confirm the shared secret is provisioned.** `P31_DISPATCH_SECRET` must be
+   set (same value) on **both** workers via `wrangler secret put` from stdin —
+   never committed. The gate is inert while the secret is absent (POST is
+   allowed, which is the pre-hardening behavior) and active the moment it lands.
+2. **Deploy `p31-passport` first, then `p31-dispatch`.** Dispatch forward all
+   POSTs through the binding with `X-P31-Dispatch-Secret`; passport verifies it
+   timing-safely (SHA-256 compare). A 401 anywhere means the secret drifted.
+3. **Flip `SUBSTRATE_ENABLED="true"` in `p31-dispatch` and redeploy.** This
+   lifts the 503 gate on `/api/build` (the last rollout gate).
+4. **Point the portal at the dispatch.** Set `VITE_P31_SUBSTRATE_URL` to the
+   dispatch URL (e.g. `https://p31-dispatch.trimtab-signal.workers.dev`) and,
+   optionally, `VITE_P31_WS_BASE` to override the WS base (defaults to the
+   dispatch URL, whose `/ws` now proxies to passport). Rebuild + deploy the
+   portal. The client bridge becomes live when `isEdgeMode()` flips true.
+5. **Smoke the full loop through the portal path** — three-code passport:
+   - dispatch `GET /health` → 200; passport `GET /health` → 200.
+   - dispatch `POST /api/build` with `{passportId, buildId, code, filename}`
+     → 202 → poll `GET /api/status?passportId=…` → build `complete`.
+   - `GET /api/artifacts/{passportId}/{buildId}/{filename}` via dispatch → 200
+     and the bundled JS body; same URL directly on passport → 200.
+   - `wss://<dispatch>/ws?passportId=smoke`: `ping`→`pong`, `status` →
+     `result.passportId === "smoke"`.
+6. **Rollback:** on any 401 storm, delete `P31_DISPATCH_SECRET` off **both**
+   workers (gate returns to inert); on any PASSPORT error 1042, redeploy the
+   prior dispatch version; to halt traffic entirely set
+   `SUBSTRATE_ENABLED="false"` (503 again) and unset the portal env vars.
