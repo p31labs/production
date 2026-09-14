@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { getSubstrateConfig, submitGoal, verifyPassport, checkStatus } from './substrate';
+import { getSubstrateConfig, submitGoal, verifyPassport, checkStatus, executeBuild } from './substrate';
 import { useSubstrate } from '../store/useQpjStore';
 import { substrateStorage } from './substrate-storage';
 
@@ -73,6 +73,22 @@ describe('substrate (local mode)', () => {
       vi.spyOn(global, 'fetch').mockRejectedValue(new Error('network error'));
       const result = await checkStatus('dillpickle', '/api/status');
       expect(result.ok).toBe(false);
+    });
+  });
+
+  describe('executeBuild', () => {
+    it('returns error when substrate disabled', async () => {
+      const result = await executeBuild('dillpickle', 'build-1', 'export const x = 1;', 'artifact.js');
+      expect(result.ok).toBe(false);
+      expect(result.buildId).toBe('build-1');
+      expect(result.error).toContain('substrate disabled');
+    });
+
+    it('returns error when dispatch is unreachable', async () => {
+      vi.spyOn(global, 'fetch').mockRejectedValue(new Error('network error'));
+      const result = await executeBuild('dillpickle', 'build-2', 'export const x = 1;', 'artifact.js');
+      expect(result.ok).toBe(false);
+      expect(result.error).toBeDefined();
     });
   });
 });

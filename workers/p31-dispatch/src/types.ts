@@ -1,16 +1,19 @@
 export interface DispatchRequest {
-  type: 'goal' | 'status' | 'health' | 'verify';
+  type: 'goal' | 'status' | 'health' | 'verify' | 'build';
   passportId: string;
   sessionId?: string;
   goal?: string;
   mode?: string;
   autonomy?: string;
+  buildId?: string;
+  code?: string;
+  filename?: string;
   payload?: Record<string, unknown>;
 }
 
 export interface DispatchResponse {
   ok: boolean;
-  type: 'goal' | 'status' | 'health' | 'verify';
+  type: 'goal' | 'status' | 'health' | 'verify' | 'build';
   passportId: string;
   result?: unknown;
   error?: string;

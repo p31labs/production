@@ -1,17 +1,37 @@
 name = "p31-passport"
 main = "src/index.ts"
 compatibility_date = "2026-07-29"
+compatibility_flags = ["nodejs_compat"]
 
 [vars]
 SANDBOX_ENABLED = "false"
+
+[[containers]]
+class_name = "Sandbox"
+image = "./Dockerfile"
+instance_type = "lite"
+max_instances = 1
 
 [[durable_objects.bindings]]
 class_name = "PassportDO"
 name = "PASSPORT_DO"
 
+[[durable_objects.bindings]]
+class_name = "Sandbox"
+name = "Sandbox"
+
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["PassportDO"]
+
+[[migrations]]
+tag = "v2"
+new_sqlite_classes = ["Sandbox"]
+
+[[r2_buckets]]
+binding = "ARTIFACTS_BUCKET"
+bucket_name = "p31-artifacts"
+preview_bucket_name = "p31-artifacts-preview"
 
 [limits]
 cpu_ms = 5000

@@ -9,6 +9,9 @@
     "typecheck": "wrangler types && tsc --noEmit",
     "types": "wrangler types"
   },
+  "dependencies": {
+    "@cloudflare/sandbox": "0.13.0-next.751.1"
+  },
   "devDependencies": {
     "typescript": "^5.7.0",
     "wrangler": "4.131.0"

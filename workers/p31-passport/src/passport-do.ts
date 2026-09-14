@@ -1,5 +1,8 @@
 import { DurableObject } from 'cloudflare:workers';
+import { getSandbox } from '@cloudflare/sandbox';
 import type {
+  ExecuteBuildInput,
+  ExecuteBuildResult,
   ExecuteInput,
   ExecuteResult,
   IdentityRecord,
@@ -57,6 +60,28 @@ export class PassportDO extends DurableObject<Env> {
         value TEXT NOT NULL
       )
     `);
+    this.ctx.storage.sql.exec(`
+      CREATE TABLE IF NOT EXISTS builds (
+        id TEXT PRIMARY KEY,
+        passport_id TEXT NOT NULL,
+        status TEXT NOT NULL,
+        artifact_key TEXT,
+        created_at TEXT NOT NULL DEFAULT (datetime('now')),
+        updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+      )
+    `);
+    this.ctx.storage.sql.exec(`
+      CREATE TABLE IF NOT EXISTS artifacts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        build_id TEXT NOT NULL,
+        filename TEXT NOT NULL,
+        content_type TEXT,
+        size INTEGER,
+        r2_key TEXT NOT NULL,
+        created_at TEXT NOT NULL DEFAULT (datetime('now')),
+        FOREIGN KEY (build_id) REFERENCES builds(id)
+      )
+    `);
   }
 
   async fetch(request: Request): Promise<Response> {
@@ -65,6 +90,8 @@ export class PassportDO extends DurableObject<Env> {
     switch (body.type) {
       case 'execute':
         return this.handleExecute(body as Partial<ExecuteInput>);
+      case 'build':
+        return this.handleBuild(body);
       case 'store':
         return this.handleStore(body);
       case 'recall':
@@ -104,6 +131,75 @@ export class PassportDO extends DurableObject<Env> {
       error: 'sandbox execution not configured (Track A.3)',
       deferred: false,
     };
+  }
+
+  async executeBuild(input: ExecuteBuildInput): Promise<ExecuteBuildResult> {
+    const { buildId, code, filename } = input;
+    const passportId = this.ctx.id.toString();
+
+    this.ctx.storage.sql.exec(
+      'INSERT INTO builds (id, passport_id, status) VALUES (?, ?, ?)',
+      buildId,
+      passportId,
+      'running',
+    );
+
+    let sandbox: ReturnType<typeof getSandbox> | null = null;
+    try {
+      sandbox = getSandbox(this.env.Sandbox, passportId, {
+        sleepAfter: '5m',
+        keepAlive: false,
+      });
+
+      await sandbox.writeFile(`/workspace/${filename}`, code);
+      await sandbox.setKeepAlive(true);
+
+      const process = await sandbox.exec(
+        ['npx', 'esbuild', '--bundle', `--outfile=dist/${filename}`, filename],
+        { cwd: '/workspace' },
+      );
+      const exit = await process.waitForExit({ timeout: 120_000 });
+      const output = await process.output({ encoding: 'utf8' });
+
+      if (!exit || output.exitCode !== 0) {
+        throw new Error(
+          output.stderr ? `build failed: ${output.stderr}` : `build failed with exit code ${output.exitCode}`,
+        );
+      }
+
+      const artifact = await sandbox.readFile(`dist/${filename}`);
+      const r2Key = `passports/${passportId}/${buildId}/${filename}`;
+      await this.env.ARTIFACTS_BUCKET.put(r2Key, artifact.content, {
+        httpMetadata: { contentType: 'application/javascript' },
+      });
+
+      await sandbox.setKeepAlive(false);
+
+      this.ctx.storage.sql.exec(
+        'INSERT INTO artifacts (build_id, filename, content_type, size, r2_key) VALUES (?, ?, ?, ?, ?)',
+        buildId,
+        filename,
+        'application/javascript',
+        artifact.size ?? artifact.content.length,
+        r2Key,
+      );
+      this.ctx.storage.sql.exec(
+        'UPDATE builds SET status = ?, artifact_key = ?, updated_at = datetime(\'now\') WHERE id = ?',
+        'complete',
+        r2Key,
+        buildId,
+      );
+
+      return { ok: true, buildId, artifactKey: r2Key };
+    } catch (e) {
+      await sandbox?.setKeepAlive(false).catch(() => undefined);
+      this.ctx.storage.sql.exec(
+        'UPDATE builds SET status = ?, updated_at = datetime(\'now\') WHERE id = ?',
+        'failed',
+        buildId,
+      );
+      return { ok: false, buildId, error: errMsg(e) };
+    }
   }
 
   async store(data: Record<string, unknown>): Promise<StoreResult> {
@@ -161,6 +257,15 @@ export class PassportDO extends DurableObject<Env> {
     };
     void this.execute(input);
     return Response.json({ deferred: true, sandboxId: input.sessionId });
+  }
+
+  private async handleBuild(body: Record<string, unknown>): Promise<Response> {
+    const input: ExecuteBuildInput = {
+      buildId: String(body['buildId'] ?? `build-${Date.now()}`),
+      code: String(body['code'] ?? ''),
+      filename: String(body['filename'] ?? 'artifact.js'),
+    };
+    return Response.json(await this.executeBuild(input));
   }
 
   private handleStore(body: Record<string, unknown>): Response {
@@ -249,3 +354,7 @@ export class PassportDO extends DurableObject<Env> {
 }
 
 type SqlStorageRow = Record<string, string | number | null>;
+
+function errMsg(e: unknown, fallback = 'sandbox build failed'): string {
+  return e instanceof Error ? e.message : String(e ?? fallback);
+}

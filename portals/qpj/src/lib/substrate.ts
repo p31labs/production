@@ -24,6 +24,14 @@ export interface SubstrateStatusResult {
   error?: string;
 }
 
+export interface SubstrateBuildResult {
+  ok: boolean;
+  buildId: string;
+  artifactKey?: string;
+  error?: string;
+  statusUrl?: string;
+}
+
 export function getSubstrateUrl(): string | null {
   return import.meta.env?.VITE_P31_SUBSTRATE_URL ?? null;
 }
@@ -97,6 +105,36 @@ export async function submitGoal(
     };
   } catch (e) {
     return { ok: false, deferred: false, error: String((e as Error)?.message ?? 'submitGoal failed') };
+  }
+}
+
+export async function executeBuild(
+  passportId: string,
+  buildId: string,
+  code: string,
+  filename: string,
+): Promise<SubstrateBuildResult> {
+  if (!isEdgeMode()) {
+    return { ok: false, buildId, error: 'substrate disabled — set VITE_P31_SUBSTRATE_URL' };
+  }
+
+  try {
+    const response = await fetch(`${DISPATCH_URL}/api/build`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'build', passportId, buildId, code, filename }),
+    });
+
+    const data = (await response.json()) as SubstrateBuildResult & { ok: boolean };
+    return {
+      ok: data.ok,
+      buildId: data.buildId ?? buildId,
+      artifactKey: data.artifactKey,
+      error: data.error,
+      statusUrl: `/api/build?passportId=${passportId}&buildId=${buildId}`,
+    };
+  } catch (e) {
+    return { ok: false, buildId, error: String((e as Error)?.message ?? 'executeBuild failed') };
   }
 }
 

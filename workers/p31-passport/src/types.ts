@@ -1,10 +1,13 @@
 export interface PassportRequest {
-  type: 'execute' | 'store' | 'recall' | 'identity' | 'preferences';
+  type: 'execute' | 'store' | 'recall' | 'identity' | 'preferences' | 'build';
   passportId: string;
   sessionId?: string;
   goal?: string;
   mode?: string;
   autonomy?: string;
+  buildId?: string;
+  code?: string;
+  filename?: string;
   data?: Record<string, unknown>;
 }
 
@@ -12,6 +15,8 @@ export interface PassportResponse {
   ok: boolean;
   type: string;
   passportId?: string;
+  buildId?: string;
+  artifactKey?: string;
   result?: unknown;
   error?: string;
   sandboxId?: string;
@@ -24,6 +29,19 @@ export interface ExecuteInput {
   mode: string;
   autonomy: string;
   sessionId: string;
+}
+
+export interface ExecuteBuildInput {
+  buildId: string;
+  code: string;
+  filename: string;
+}
+
+export interface ExecuteBuildResult {
+  ok: boolean;
+  buildId: string;
+  artifactKey?: string;
+  error?: string;
 }
 
 export interface ExecuteResult {

@@ -1,7 +1,8 @@
 # 21 — Track A.3 Implementation Spec
 
-Status: draft. No implementation yet. This document is the implementation-ready
-spec for Track A.3. It assumes Track A.2 is merged and the gate is green.
+Status: **implemented** (commit-world: worker RPC, sandbox client bridge, tests).
+The verification gate is green. This document records the implementation and the
+spec that produced it.
 
 ## Scope
 
@@ -79,7 +80,11 @@ name = "Sandbox"
 
 [[migrations]]
 tag = "v1"
-new_sqlite_classes = ["PassportDO", "Sandbox"]
+new_sqlite_classes = ["PassportDO"]
+
+[[migrations]]
+tag = "v2"
+new_sqlite_classes = ["Sandbox"]
 
 [[r2_buckets]]
 binding = "ARTIFACTS_BUCKET"
@@ -91,6 +96,10 @@ cpu_ms = 5000
 sub_requests = 50
 ```
 
+Note: the Sandbox DO gets its own migration **tag** (`v2`) rather than being appended
+to the existing `v1` tag. Migrations are immutable once applied; `v1` already declares
+`PassportDO`. Never edit an applied tag.
+
 Create the R2 buckets:
 ```bash
 pnpm wrangler r2 bucket create p31-artifacts
@@ -99,7 +108,7 @@ pnpm wrangler r2 bucket create p31-artifacts-preview
 
 Create the container image (`workers/p31-passport/Dockerfile`):
 ```dockerfile
-FROM node:22-slim
+FROM docker.io/cloudflare/sandbox:0.7.0
 RUN npm install -g esbuild typescript
 WORKDIR /workspace
 CMD ["sleep", "infinity"]
@@ -257,24 +266,35 @@ The binding name `Sandbox` and container `class_name = "Sandbox"` must match bet
 
 ## Step 5 — Add `executeBuild` route to `p31-passport` Worker
 
-In `workers/p31-passport/src/index.ts`, add:
+The worker's fetch handler routes `type: 'build'` to the PassportDO stub:
 
 ```ts
-app.post('/api/build/:passportId', async (c) => {
-  const passportId = c.req.param('passportId');
-  const { buildId, code, filename } = await c.req.json<ExecuteBuildInput>();
+case 'build': return handleBuild(stub, body);
 
-  // Route to PassportDO
-  const passportDO = c.env.PASSPORT.get(passportId, { id: passportId });
-  const result = await passportDO.executeBuild({ buildId, code, filename });
-
-  return c.json(result, result.ok ? 200 : 500);
-});
+async function handleBuild(stub: PassportStub, body: PassportRequest): Promise<Response> {
+  try {
+    const result = await stub.executeBuild({
+      buildId: body.buildId ?? `build-${Date.now()}`,
+      code: body.code ?? '',
+      filename: body.filename ?? 'artifact.js',
+    });
+    return Response.json({ ok: result.ok, type: 'build', passportId: body.passportId, buildId: result.buildId, artifactKey: result.artifactKey, error: result.error }, { status: result.ok ? 200 : 500 });
+  } catch (e) {
+    return Response.json({ ok: false, type: 'build', passportId: body.passportId, error: String(e) }, { status: 500 });
+  }
+}
 ```
+
+The `p31-dispatch` worker proxies `POST /api/build` to the per-passport worker
+(`https://{passportId}.{PASSPORT_WORKER_NAMESPACE}.workers.dev`) with the same
+substrate/verification gates as `/api/goal`. The rerun of `wrangler types`
+regenerates the `Sandbox` (Durable Object + Container) and `ARTIFACTS_BUCKET`
+(R2) environment bindings.
 
 ## Step 6 — Update client bridge
 
-In `src/lib/substrate.ts`, add:
+In `src/lib/substrate.ts`, `executeBuild` posts to the dispatch `/api/build`
+route (substrate flag-gated like `submitGoal`):
 
 ```ts
 export async function executeBuild(
@@ -282,26 +302,27 @@ export async function executeBuild(
   buildId: string,
   code: string,
   filename: string,
-): Promise<SubstrateGoalResult> {
+): Promise<SubstrateBuildResult> {
   if (!isEdgeMode()) {
-    return { ok: false, deferred: false, error: 'substrate disabled — set VITE_P31_SUBSTRATE_URL' };
+    return { ok: false, buildId, error: 'substrate disabled — set VITE_P31_SUBSTRATE_URL' };
   }
 
   try {
-    const config = getSubstrateConfig();
-    const response = await fetch(`${config.dispatchUrl}/api/build/${passportId}`, {
+    const response = await fetch(`${DISPATCH_URL}/api/build`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ buildId, code, filename }),
+      body: JSON.stringify({ type: 'build', passportId, buildId, code, filename }),
     });
-    const data = (await response.json()) as ExecuteBuildResult & { ok: boolean };
+    const data = (await response.json()) as SubstrateBuildResult & { ok: boolean };
     return {
       ok: data.ok,
+      buildId: data.buildId ?? buildId,
+      artifactKey: data.artifactKey,
       error: data.error,
-      statusUrl: `/api/build/${passportId}/${buildId}`,
+      statusUrl: `/api/build?passportId=${passportId}&buildId=${buildId}`,
     };
   } catch (e) {
-    return { ok: false, error: String((e as Error)?.message ?? 'executeBuild failed') };
+    return { ok: false, buildId, error: String((e as Error)?.message ?? 'executeBuild failed') };
   }
 }
 ```

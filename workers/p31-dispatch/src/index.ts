@@ -16,6 +16,10 @@ export default {
       return handleGoal(request, env);
     }
 
+    if (url.pathname === '/api/build') {
+      return handleBuild(request, env);
+    }
+
     if (url.pathname === '/api/status') {
       return handleStatus(request, env);
     }
@@ -121,6 +125,77 @@ async function handleGoal(request: Request, env: Env): Promise<Response> {
   }
 }
 
+async function handleBuild(request: Request, env: Env): Promise<Response> {
+  let body: DispatchRequest;
+  try {
+    body = await request.json();
+  } catch {
+    return Response.json({ error: 'invalid JSON body' }, { status: 400 });
+  }
+
+  if (!body.passportId) {
+    return Response.json({ error: "passportId required" }, { status: 400 });
+  }
+  if (!body.buildId || !body.code || !body.filename) {
+    return Response.json({ error: 'buildId, code, and filename are required' }, { status: 400 });
+  }
+
+  if (String(env.SUBSTRATE_ENABLED) !== 'true') {
+    return Response.json({
+      ok: false,
+      type: 'build',
+      passportId: body.passportId,
+      error: 'substrate disabled — set SUBSTRATE_ENABLED=true to activate',
+    }, { status: 503 });
+  }
+
+  const verification = await verifyRequest(body);
+  if (!verification.passed) {
+    return Response.json({
+      ok: false,
+      type: 'build',
+      passportId: body.passportId,
+      error: 'verification failed',
+      auditIssues: verification.issues,
+    }, { status: 403 });
+  }
+
+  const targetUrl = `https://${body.passportId}.${env.PASSPORT_WORKER_NAMESPACE}.workers.dev`;
+  try {
+    const response = await fetch(targetUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 'build',
+        passportId: body.passportId,
+        buildId: body.buildId,
+        code: body.code,
+        filename: body.filename,
+      }),
+    });
+    const data = (await response.json()) as { ok: boolean; artifactKey?: string; error?: string };
+    return Response.json(
+      {
+        ok: data.ok,
+        type: 'build',
+        passportId: body.passportId,
+        buildId: body.buildId,
+        artifactKey: data.artifactKey,
+        error: data.error,
+      },
+      { status: data.ok ? 200 : response.status },
+    );
+  } catch (e) {
+    return Response.json({
+      ok: false,
+      type: 'build',
+      passportId: body.passportId,
+      buildId: body.buildId,
+      error: errMsg(e, 'build dispatch failed'),
+    }, { status: 502 });
+  }
+}
+
 async function handleStatus(request: Request, env: Env): Promise<Response> {
   const url = new URL(request.url);
   const passportId = url.searchParams.get('passportId') ?? '';
@@ -169,7 +244,7 @@ async function verifyRequest(body: DispatchRequest): Promise<{ passed: boolean; 
     issues.push('goal exceeds maximum length (10000)');
   }
 
-  if (body.type !== 'goal' && body.type !== 'verify') {
+  if (body.type !== 'goal' && body.type !== 'verify' && body.type !== 'build') {
     issues.push(`unsupported request type: ${body.type}`);
   }
 

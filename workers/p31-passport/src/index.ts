@@ -1,5 +1,7 @@
 import { PassportDO } from './passport-do';
 import type {
+  ExecuteBuildInput,
+  ExecuteBuildResult,
   ExecuteInput,
   ExecuteResult,
   IdentityRecord,
@@ -11,6 +13,7 @@ import type {
 } from './types';
 
 export { PassportDO };
+export { Sandbox } from '@cloudflare/sandbox';
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -33,6 +36,7 @@ export default {
     const stub = env.PASSPORT_DO.getByName(body.passportId);
     switch (body.type) {
       case 'execute': return handleExecute(stub, body, env);
+      case 'build': return handleBuild(stub, body);
       case 'store': return handleStore(stub, body);
       case 'recall': return handleRecall(stub, body);
       case 'identity': return handleIdentity(stub, body);
@@ -67,6 +71,33 @@ async function handleExecute(stub: PassportStub, body: PassportRequest, env: Env
   } catch (e) {
     return passportJson<PassportResponse>(
       { ok: false, type: 'execute', passportId: body.passportId, error: errMsg(e, 'execute failed'), sandboxId: sessionId },
+      500,
+    );
+  }
+}
+
+async function handleBuild(stub: PassportStub, body: PassportRequest): Promise<Response> {
+  try {
+    const input: ExecuteBuildInput = {
+      buildId: body.buildId ?? `build-${Date.now()}`,
+      code: body.code ?? '',
+      filename: body.filename ?? 'artifact.js',
+    };
+    const result = await stub.executeBuild(input);
+    return passportJson<PassportResponse>(
+      {
+        ok: result.ok,
+        type: 'build',
+        passportId: body.passportId,
+        buildId: result.buildId,
+        artifactKey: result.artifactKey,
+        error: result.error,
+      },
+      result.ok ? 200 : 500,
+    );
+  } catch (e) {
+    return passportJson<PassportResponse>(
+      { ok: false, type: 'build', passportId: body.passportId, buildId: body.buildId, error: errMsg(e, 'build failed') },
       500,
     );
   }
@@ -127,6 +158,8 @@ function errMsg(e: unknown, fallback: string): string {
 }
 
 export type {
+  ExecuteBuildInput,
+  ExecuteBuildResult,
   ExecuteInput,
   ExecuteResult,
   IdentityRecord,
