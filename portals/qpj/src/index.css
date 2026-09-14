@@ -1096,7 +1096,7 @@ a.btn {
   border-radius: var(--p31-radius-candy);
   border: 1px solid var(--p31-border-strong);
   background: var(--p31-accent-soft);
-  color: var(--p31-accent);
+  color: var(--p31-text);
   font-weight: 800;
   cursor: pointer;
   transition:
@@ -1656,7 +1656,7 @@ a.btn {
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--p31-text-tertiary);
+  color: var(--p31-text);
 }
 .switch-card__mode {
   font-size: 0.84rem;

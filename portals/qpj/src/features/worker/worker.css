@@ -41,7 +41,7 @@
 .worker-chat__mode.is-active {
   border-color: var(--p31-interactive);
   background: var(--p31-interactive);
-  color: var(--p31-interactive-text);
+  color: var(--p31-text);
 }
 
 .worker-chat__composer {
