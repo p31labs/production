@@ -138,6 +138,12 @@ export async function executeBuild(
   }
 }
 
+export function getArtifactUrl(passportId: string, buildId: string, filename: string): string | null {
+  if (!isEdgeMode()) return null;
+  const enc = encodeURIComponent;
+  return `${DISPATCH_URL}/api/artifacts/${enc(passportId)}/${enc(buildId)}/${enc(filename)}`;
+}
+
 export async function checkStatus(
   passportId: string,
   statusUrl: string,

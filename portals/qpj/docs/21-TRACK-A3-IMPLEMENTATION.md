@@ -332,6 +332,13 @@ export async function executeBuild(
 - Default: `keepAlive: false`. Container sleeps after 5 minutes of idle.
 - Long builds: call `sandbox.setKeepAlive(true)` before the build, then
   `sandbox.setKeepAlive(false)` after.
+- While `keepAlive: true` the `sleepAfter` option is **ignored** — the container
+  will not sleep. It stays warm until you call `setKeepAlive(false)` (then the
+  idle timer starts) or `sandbox.destroy()` (immediate, full stop). A hung
+  `exec()` is still bounded by `waitForExit`'s timeout, so the keepAlive window
+  cannot run unbounded.
+- `setKeepAlive(true)` only needs to be sent once; the flag persists across DO
+  hibernation and wakeup cycles.
 - `runFiber()` is NOT available in the Sandbox SDK. It is an Agents SDK method
   for making Durable Object eviction survivable. The PassportDO is not an Agent
   subclass. For crash recovery across DO eviction, implement a SQLite-backed

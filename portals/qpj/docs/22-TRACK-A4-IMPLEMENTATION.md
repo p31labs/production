@@ -67,6 +67,15 @@ No new bindings or migrations. `wrangler types` output is unchanged.
 - `portals/qpj`: `pnpm typecheck`, `pnpm lint`, `pnpm test` (28 files / 233
   tests, +11 ws-protocol), `pnpm build`, `pnpm v:gate` — all green
 
+## Deferred — Track A.5 build-status polling
+
+The `subscribe` protocol and the `buildUpdated` fan-out (via
+`notifyBuildUpdate`) already exist from A.4. A.5 would let a client launch a
+long build via a deferred HTTP response and track completion over a subscribed
+socket instead of blocking behind `waitForExit`. Deferred until a build type
+genuinely exceeds the 120-second `waitForExit` timeout (current esbuild bundles
+complete in seconds).
+
 ## Constraints
 
 - Do not use the standard WebSocket API (`ws.accept()`). Hibernation only

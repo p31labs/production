@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { getSubstrateConfig, submitGoal, verifyPassport, checkStatus, executeBuild } from './substrate';
+import { getSubstrateConfig, submitGoal, verifyPassport, checkStatus, executeBuild, getArtifactUrl } from './substrate';
 import { useSubstrate } from '../store/useQpjStore';
 import { substrateStorage } from './substrate-storage';
 
@@ -89,6 +89,26 @@ describe('substrate (local mode)', () => {
       const result = await executeBuild('dillpickle', 'build-2', 'export const x = 1;', 'artifact.js');
       expect(result.ok).toBe(false);
       expect(result.error).toBeDefined();
+    });
+  });
+
+  describe('getArtifactUrl', () => {
+    it('returns null when substrate disabled', () => {
+      expect(getArtifactUrl('dillpickle', 'build-1', 'artifact.js')).toBeNull();
+    });
+
+    it('builds the dispatch URL when substrate enabled', () => {
+      vi.stubEnv('VITE_P31_SUBSTRATE_URL', 'https://p31-dispatch.example.workers.dev');
+      expect(getArtifactUrl('dillpickle', 'build-1', 'artifact.js')).toBe(
+        'https://qpj-dispatch.p31ca.org/api/artifacts/dillpickle/build-1/artifact.js',
+      );
+    });
+
+    it('encodes path segments', () => {
+      vi.stubEnv('VITE_P31_SUBSTRATE_URL', 'https://p31-dispatch.example.workers.dev');
+      expect(getArtifactUrl('dill pickle', 'b/1', 'a.js')).toBe(
+        'https://qpj-dispatch.p31ca.org/api/artifacts/dill%20pickle/b%2F1/a.js',
+      );
     });
   });
 });

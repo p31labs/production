@@ -32,6 +32,9 @@ export default {
       const stub = env.PASSPORT_DO.getByName(passportId);
       return stub.fetch(request);
     }
+    if (url.pathname.startsWith('/api/artifacts/') && request.method === 'GET') {
+      return handleArtifact(request, env);
+    }
     let body: PassportRequest;
     try {
       body = await request.json();
@@ -154,6 +157,31 @@ async function handleStatus(request: Request, env: Env): Promise<Response> {
     return new Response(response.body, { status: response.status, headers: response.headers });
   } catch (e) {
     return Response.json({ error: errMsg(e, 'status check failed') }, { status: 502 });
+  }
+}
+
+async function handleArtifact(request: Request, env: Env): Promise<Response> {
+  const parts = new URL(request.url).pathname.split('/');
+  const passportId = parts[3] ? decodeURIComponent(parts[3]) : '';
+  const buildId = parts[4] ? decodeURIComponent(parts[4]) : '';
+  const filename = parts.slice(5).map(decodeURIComponent).join('/');
+  if (!passportId || !buildId || !filename) {
+    return Response.json({ error: 'passportId, buildId, and filename required' }, { status: 400 });
+  }
+  const r2Key = `passports/${passportId}/${buildId}/${filename}`;
+  try {
+    const object = await env.ARTIFACTS_BUCKET.get(r2Key);
+    if (!object) {
+      return Response.json({ error: 'artifact not found' }, { status: 404 });
+    }
+    return new Response(object.body, {
+      headers: {
+        'Content-Type': object.httpMetadata?.contentType ?? 'application/octet-stream',
+        'Cache-Control': 'private, max-age=3600',
+      },
+    });
+  } catch (e) {
+    return Response.json({ error: errMsg(e, 'artifact fetch failed') }, { status: 502 });
   }
 }
 

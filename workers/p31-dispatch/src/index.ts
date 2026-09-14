@@ -28,6 +28,10 @@ export default {
       return handleVerify(request, env);
     }
 
+    if (url.pathname.startsWith('/api/artifacts/') && request.method === 'GET') {
+      return handleArtifactProxy(request, env);
+    }
+
     return Response.json({ error: 'not found' }, { status: 404 });
   },
 };
@@ -209,6 +213,24 @@ async function handleStatus(request: Request, env: Env): Promise<Response> {
     return new Response(response.body, { status: response.status, headers: response.headers });
   } catch (e) {
     return Response.json({ error: errMsg(e, 'status check failed') }, { status: 502 });
+  }
+}
+
+async function handleArtifactProxy(request: Request, env: Env): Promise<Response> {
+  const parts = new URL(request.url).pathname.split('/');
+  const passportId = parts[3] ? decodeURIComponent(parts[3]) : '';
+  const rest = parts.slice(4).map(decodeURIComponent).join('/');
+  if (!passportId || !rest) {
+    return Response.json({ error: 'passportId, buildId, and filename required' }, { status: 400 });
+  }
+  const targetUrl = `https://${passportId}.${env.PASSPORT_WORKER_NAMESPACE}.workers.dev/api/artifacts/${passportId}/${rest}`;
+  try {
+    const response = await fetch(targetUrl, {
+      headers: { Accept: request.headers.get('Accept') ?? '*/*' },
+    });
+    return new Response(response.body, { status: response.status, headers: response.headers });
+  } catch (e) {
+    return Response.json({ error: errMsg(e, 'artifact fetch failed') }, { status: 502 });
   }
 }
 
