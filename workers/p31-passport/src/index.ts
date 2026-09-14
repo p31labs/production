@@ -153,7 +153,12 @@ async function handleStatus(request: Request, env: Env): Promise<Response> {
   const passportId = url.searchParams.get('passportId') ?? '';
   if (!passportId) return Response.json({ error: 'passportId required' }, { status: 400 });
   try {
-    const response = await fetch(`https://${passportId}.qpj-passport.workers.dev/api/status?${url.searchParams.toString()}`);
+    const stub = env.PASSPORT_DO.getByName(passportId);
+    const response = await stub.fetch('https://passport.invalid/status', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'status' }),
+    });
     return new Response(response.body, { status: response.status, headers: response.headers });
   } catch (e) {
     return Response.json({ error: errMsg(e, 'status check failed') }, { status: 502 });

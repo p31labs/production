@@ -4,7 +4,11 @@ compatibility_date = "2026-07-29"
 
 [vars]
 SUBSTRATE_ENABLED = "false"
-PASSPORT_WORKER_NAMESPACE = "qpj-passport"
+PASSPORT_WORKER_URL = "https://p31-passport.trimtab-signal.workers.dev"
+
+[[services]]
+binding = "PASSPORT_WORKER"
+service = "p31-passport"
 
 [limits]
 cpu_ms = 5000

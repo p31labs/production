@@ -106,6 +106,8 @@ export class PassportDO extends DurableObject<Env> {
         return this.handleIdentity();
       case 'preferences':
         return this.handlePreferences();
+      case 'status':
+        return this.handleStatus();
       default:
         return Response.json({ error: `unsupported type: ${String(body.type)}` }, { status: 400 });
     }
@@ -189,6 +191,7 @@ export class PassportDO extends DurableObject<Env> {
   async executeBuild(input: ExecuteBuildInput): Promise<ExecuteBuildResult> {
     const { buildId, code, filename } = input;
     const passportId = this.ctx.id.toString();
+    const sandboxId = await this.sandboxId();
 
     this.ctx.storage.sql.exec(
       'INSERT INTO builds (id, passport_id, status) VALUES (?, ?, ?)',
@@ -199,7 +202,7 @@ export class PassportDO extends DurableObject<Env> {
 
     let sandbox: ReturnType<typeof getSandbox> | null = null;
     try {
-      sandbox = getSandbox(this.env.Sandbox, passportId, {
+      sandbox = getSandbox(this.env.Sandbox, sandboxId, {
         sleepAfter: '5m',
         keepAlive: false,
       });
@@ -255,6 +258,14 @@ export class PassportDO extends DurableObject<Env> {
       this.notifyBuildUpdate(buildId, 'failed');
       return { ok: false, buildId, error: errMsg(e) };
     }
+  }
+
+  private async sandboxId(): Promise<string> {
+    const digest = await crypto.subtle.digest(
+      'SHA-256',
+      new TextEncoder().encode(this.ctx.id.toString()),
+    );
+    return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('').slice(0, 40);
   }
 
   async store(data: Record<string, unknown>): Promise<StoreResult> {
@@ -339,6 +350,10 @@ export class PassportDO extends DurableObject<Env> {
 
   private handlePreferences(): Response {
     return Response.json(this.getPreferences());
+  }
+
+  private handleStatus(): Response {
+    return Response.json({ ok: true, type: 'status', result: this.wsStatus() });
   }
 
   private createTask(prompt: string): TaskRecord {

@@ -81,20 +81,21 @@ async function handleGoal(request: Request, env: Env): Promise<Response> {
     }, { status: 403 });
   }
 
-  const targetUrl = `https://${body.passportId}.${env.PASSPORT_WORKER_NAMESPACE}.workers.dev`;
+  const targetUrl = `${env.PASSPORT_WORKER_URL}`;
+  const bodyToForward = JSON.stringify({
+    type: 'execute',
+    passportId: body.passportId,
+    goal: body.goal,
+    mode: body.mode,
+    autonomy: body.autonomy,
+    sessionId: body.sessionId,
+  });
 
   try {
-    const response = await fetch(targetUrl, {
+    const response = await env.PASSPORT_WORKER.fetch(targetUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        type: 'execute',
-        passportId: body.passportId,
-        goal: body.goal,
-        mode: body.mode,
-        autonomy: body.autonomy,
-        sessionId: body.sessionId,
-      }),
+      body: bodyToForward,
     });
 
     const result = (await response.json()) as { ok: boolean; deferred?: boolean; statusUrl?: string };
@@ -164,9 +165,9 @@ async function handleBuild(request: Request, env: Env): Promise<Response> {
     }, { status: 403 });
   }
 
-  const targetUrl = `https://${body.passportId}.${env.PASSPORT_WORKER_NAMESPACE}.workers.dev`;
+  const targetUrl = `${env.PASSPORT_WORKER_URL}`;
   try {
-    const response = await fetch(targetUrl, {
+    const response = await env.PASSPORT_WORKER.fetch(targetUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -207,9 +208,9 @@ async function handleStatus(request: Request, env: Env): Promise<Response> {
     return Response.json({ error: 'passportId required' }, { status: 400 });
   }
 
-  const targetUrl = `https://${passportId}.${env.PASSPORT_WORKER_NAMESPACE}.workers.dev`;
+  const passportWorkerUrl = `${env.PASSPORT_WORKER_URL}`;
   try {
-    const response = await fetch(`${targetUrl}/api/status?${url.searchParams.toString()}`);
+    const response = await env.PASSPORT_WORKER.fetch(`${passportWorkerUrl}/api/status?${url.searchParams.toString()}`);
     return new Response(response.body, { status: response.status, headers: response.headers });
   } catch (e) {
     return Response.json({ error: errMsg(e, 'status check failed') }, { status: 502 });
@@ -223,9 +224,9 @@ async function handleArtifactProxy(request: Request, env: Env): Promise<Response
   if (!passportId || !rest) {
     return Response.json({ error: 'passportId, buildId, and filename required' }, { status: 400 });
   }
-  const targetUrl = `https://${passportId}.${env.PASSPORT_WORKER_NAMESPACE}.workers.dev/api/artifacts/${passportId}/${rest}`;
+  const targetUrl = `${env.PASSPORT_WORKER_URL}/api/artifacts/${passportId}/${rest}`;
   try {
-    const response = await fetch(targetUrl, {
+    const response = await env.PASSPORT_WORKER.fetch(targetUrl, {
       headers: { Accept: request.headers.get('Accept') ?? '*/*' },
     });
     return new Response(response.body, { status: response.status, headers: response.headers });

@@ -1,6 +1,5 @@
-FROM docker.io/cloudflare/sandbox:0.7.0
+FROM docker.io/cloudflare/sandbox:next
 
 RUN npm install -g esbuild typescript
 
-WORKDIR /workspace
-CMD ["sleep", "infinity"]
+EXPOSE 8080

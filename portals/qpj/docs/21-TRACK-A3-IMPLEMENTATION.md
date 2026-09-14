@@ -285,11 +285,16 @@ async function handleBuild(stub: PassportStub, body: PassportRequest): Promise<R
 }
 ```
 
-The `p31-dispatch` worker proxies `POST /api/build` to the per-passport worker
-(`https://{passportId}.{PASSPORT_WORKER_NAMESPACE}.workers.dev`) with the same
-substrate/verification gates as `/api/goal`. The rerun of `wrangler types`
-regenerates the `Sandbox` (Durable Object + Container) and `ARTIFACTS_BUCKET`
-(R2) environment bindings.
+The `p31-dispatch` worker proxies `POST /api/build` to the passport worker
+through a **service binding** (`PASSPORT_WORKER` → `p31-passport`) with the same
+substrate/verification gates as `/api/goal`. Hostname-based routing
+(`https://{passportId}.{PASSPORT_WORKER_NAMESPACE}.workers.dev`) was retired at
+deploy time: this account has no Workers-for-Platforms dispatch namespace, and
+the single `p31-passport` worker hosts every `PassportDO` by name, so the `R2`
+artifact key (`passports/{passportId}/{buildId}/{filename}`) keys on the
+passport id instead. The rerun of `wrangler types` regenerates the `Sandbox`
+(Durable Object + Container), `ARTIFACTS_BUCKET` (R2), and `PASSPORT_WORKER`
+(service binding) environment bindings.
 
 ## Step 6 — Update client bridge
 
@@ -367,6 +372,42 @@ export async function executeBuild(
 
 - Do not flip `substrate: true` in the deployed portal.
 - Do not use `process.env` in Worker code — use `import { env } from 'cloudflare:workers'`.
+
+## Deploy-time corrections (2026-09-13)
+
+Live verification caught three platform realities that changed the design:
+
+1. **Worker→worker `fetch()` is blocked on the same account (error 1042).**
+   `p31-dispatch` originally proxied to `https://p31-passport.trimtab-signal.workers.dev`
+   with `fetch()`; the runtime returns `error code: 1042` for same-zone worker
+   to worker requests. Fix: **service binding** `[[services]] PASSPORT_WORKER →
+   p31-passport`. `PASSPORT_WORKER_URL` is still used to construct target URLs,
+   but the host is discarded by the binding. Client-side fetches (portal → dispatch)
+   are unaffected.
+2. **Sandbox SDK `@next` must pair with the `:next` container image.**
+   The SDK is `@cloudflare/sandbox@0.13.0-next.*`; the Dockerfile pinned the
+   stable `docker.io/cloudflare/sandbox:0.7.0` base, which speaks a different
+   control protocol — `exec()` failed with "The requested endpoint was not
+   found" even though writeFile/setKeepAlive reported `Ok`. Also the Dockerfile's
+   `CMD ["sleep","infinity"]` overrode the base image's sandbox-agent entrypoint.
+   Current Dockerfile: `FROM docker.io/cloudflare/sandbox:next` + a `npm install
+   -g esbuild typescript` layer + `EXPOSE 8080` (no CMD override).
+3. **Sandbox IDs must be 1–63 characters.** `executeBuild` was passing
+   `this.ctx.id.toString()` (the serialized DO id, 64 hex chars) to
+   `getSandbox()`, which rejects it. Fix: `sandboxId()` derives a deterministic
+   40-char SHA-256 hex hash of `ctx.id`, stable across DO instances/hibernation.
+4. **Stale per-passport hostname routing removed everywhere.** `/api/status` on
+   both workers previously forwarded to `https://{passportId}.qpj-passport.workers.dev`;
+   that namespace does not exist (`error 1016`). `p31-passport /api/status` now
+   queries its own `PassportDO` directly (`{type:'status'}` RPC returning the
+   same shape as the WS `onStatus`), and `p31-dispatch /api/status` forwards via
+   the service binding.
+
+Verified live: health on both workers, WS `ping`→`pong`, artifact 404 on both,
+a real `POST {type:'build'}` (esbuild bundle in the sandbox container → R2
+`passports/{pid}/{buildId}/smoke.js` → `GET /api/artifacts/...` 200 via direct
+and via dispatch), and `/api/status` 200 on both. The `/api/build` gate on
+dispatch still returns 503 until `SUBSTRATE_ENABLED=true`.
 - Do not assume sandbox state persists across sleep. Write to R2 before the container sleeps.
 - Do not use `blockConcurrencyWhile()` for anything other than schema init.
 - Do not use `runFiber()` in PassportDO unless subclassing Agent.
