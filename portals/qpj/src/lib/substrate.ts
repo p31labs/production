@@ -1,3 +1,5 @@
+import { resolveWsBaseUrl } from './substrate-ws-url';
+
 const DEFAULT_CPU_MS = 5000;
 const DEFAULT_SUB_REQUESTS = 50;
 
@@ -41,8 +43,10 @@ export function isEdgeMode(): boolean {
 }
 
 export function getSubstrateWsBaseUrl(): string | null {
-  const base = import.meta.env?.VITE_P31_WS_BASE ?? getSubstrateUrl();
-  return base ?? null;
+  return resolveWsBaseUrl(
+    import.meta.env?.VITE_P31_SUBSTRATE_URL ?? null,
+    import.meta.env?.VITE_P31_WS_BASE ?? null,
+  );
 }
 
 const DISPATCH_URL = import.meta.env?.VITE_DISPATCH_URL
