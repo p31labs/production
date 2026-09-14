@@ -1,14 +1,8 @@
-import { dispatchRoute, type DispatchRequest } from './router';
+import type { DispatchRequest } from './types';
 
 const dispatchNamespace = 'qpj-dispatch';
 const DEFAULT_CPU_MS = 5000;
 const DEFAULT_SUB_REQUESTS = 50;
-
-interface Env {
-  qpj_dispatch: Fetches;
-  SUBSTRATE_ENABLED: string;
-  PASSPORT_WORKER_NAMESPACE: string;
-}
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -58,7 +52,7 @@ async function handleGoal(request: Request, env: Env): Promise<Response> {
     }, { status: 429 });
   }
 
-  if (env.SUBSTRATE_ENABLED !== 'true') {
+  if (String(env.SUBSTRATE_ENABLED) !== 'true') {
     return Response.json({
       ok: false,
       type: 'goal',
@@ -122,7 +116,7 @@ async function handleGoal(request: Request, env: Env): Promise<Response> {
       ok: false,
       type: 'goal',
       passportId: body.passportId,
-      error: String(e?.message ?? 'dispatch failed'),
+      error: errMsg(e, 'dispatch failed'),
     }, { status: 502 });
   }
 }
@@ -139,8 +133,12 @@ async function handleStatus(request: Request, env: Env): Promise<Response> {
     const response = await fetch(`${targetUrl}/api/status?${url.searchParams.toString()}`);
     return new Response(response.body, { status: response.status, headers: response.headers });
   } catch (e) {
-    return Response.json({ error: String(e?.message ?? 'status check failed') }, { status: 502 });
+    return Response.json({ error: errMsg(e, 'status check failed') }, { status: 502 });
   }
+}
+
+function errMsg(e: unknown, fallback: string): string {
+  return e instanceof Error ? e.message : String(e ?? fallback);
 }
 
 async function handleVerify(request: Request, env: Env): Promise<Response> {

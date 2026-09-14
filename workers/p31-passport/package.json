@@ -6,10 +6,10 @@
   "scripts": {
     "deploy": "npx wrangler deploy",
     "dev": "npx wrangler dev",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "wrangler types && tsc --noEmit",
+    "types": "wrangler types"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250718.0",
     "typescript": "^5.7.0",
     "wrangler": "4.131.0"
   }

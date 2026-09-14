@@ -1,32 +1,24 @@
+import { DurableObject } from 'cloudflare:workers';
 import type {
-  PassportDOState,
-  IdentityRecord,
-  TaskRecord,
-  MemoryRecord,
+  ExecuteInput,
   ExecuteResult,
+  IdentityRecord,
+  MemoryRecord,
   RecallResult,
   StoreResult,
+  TaskRecord,
 } from './types';
 
-interface ExecuteInput {
-  goal: string;
-  mode: string;
-  autonomy: string;
-  sessionId: string;
-}
-
-export class PassportDO implements DurableObject {
-  private state: DurableObjectState;
-  private db: SqlStorage;
-
-  constructor(state: DurableObjectState) {
-    this.state = state;
-    this.db = state.storage.sqlite;
-    this.initSchema();
+export class PassportDO extends DurableObject<Env> {
+  constructor(ctx: DurableObjectState, env: Env) {
+    super(ctx, env);
+    this.ctx.blockConcurrencyWhile(async () => {
+      this.initSchema();
+    });
   }
 
   private initSchema(): void {
-    this.db.exec(`
+    this.ctx.storage.sql.exec(`
       CREATE TABLE IF NOT EXISTS tasks (
         id TEXT PRIMARY KEY,
         prompt TEXT NOT NULL,
@@ -36,7 +28,7 @@ export class PassportDO implements DurableObject {
         updated_at INTEGER NOT NULL
       )
     `);
-    this.db.exec(`
+    this.ctx.storage.sql.exec(`
       CREATE TABLE IF NOT EXISTS memory (
         id TEXT PRIMARY KEY,
         kind TEXT NOT NULL,
@@ -47,7 +39,7 @@ export class PassportDO implements DurableObject {
         UNIQUE(kind, key)
       )
     `);
-    this.db.exec(`
+    this.ctx.storage.sql.exec(`
       CREATE TABLE IF NOT EXISTS identities (
         passport_id TEXT PRIMARY KEY,
         did TEXT NOT NULL,
@@ -59,7 +51,7 @@ export class PassportDO implements DurableObject {
         pickle_name TEXT NOT NULL
       )
     `);
-    this.db.exec(`
+    this.ctx.storage.sql.exec(`
       CREATE TABLE IF NOT EXISTS preferences (
         key TEXT PRIMARY KEY,
         value TEXT NOT NULL
@@ -68,12 +60,11 @@ export class PassportDO implements DurableObject {
   }
 
   async fetch(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const body = await request.json().catch(() => ({}));
+    const body = (await request.json().catch(() => ({}) as Record<string, unknown>)) as Record<string, unknown>;
 
     switch (body.type) {
       case 'execute':
-        return this.handleExecute(body);
+        return this.handleExecute(body as Partial<ExecuteInput>);
       case 'store':
         return this.handleStore(body);
       case 'recall':
@@ -83,18 +74,18 @@ export class PassportDO implements DurableObject {
       case 'preferences':
         return this.handlePreferences();
       default:
-        return Response.json({ error: `unsupported type: ${body.type}` }, { status: 400 });
+        return Response.json({ error: `unsupported type: ${String(body.type)}` }, { status: 400 });
     }
   }
 
   async execute(input: ExecuteInput): Promise<ExecuteResult> {
     const { goal, mode, autonomy, sessionId } = input;
-    const sandboxId = `${input.sessionId}`;
+    const sandboxId = sessionId;
 
     const task = this.createTask(goal);
     this.updateTaskStatus(task.id, 'thinking');
 
-    const memory = this.recallMemory('task-outcome', goal);
+    this.recallMemory('task-outcome', goal);
 
     if (autonomy === 'advisory') {
       this.updateTaskStatus(task.id, 'done');
@@ -106,31 +97,13 @@ export class PassportDO implements DurableObject {
       };
     }
 
-    this.updateTaskStatus(task.id, 'working');
-
-    try {
-      const sandbox = this.state.ctx.env.Sandbox;
-      const result = await sandbox.exec(sandboxId, goal, { mode, autonomy });
-
-      this.updateTaskResult(task.id, 'done', result?.stdout ?? '');
-      this.storeMemory('task-outcome', task.id, result?.stdout ?? goal);
-
-      return {
-        ok: true,
-        sandboxId,
-        result: result?.stdout ?? '',
-        deferred: false,
-      };
-    } catch (e) {
-      const errorMsg = String(e?.message ?? 'sandbox execution failed');
-      this.updateTaskResult(task.id, 'error', errorMsg);
-      return {
-        ok: false,
-        sandboxId,
-        error: errorMsg,
-        deferred: false,
-      };
-    }
+    this.updateTaskStatus(task.id, 'error');
+    return {
+      ok: false,
+      sandboxId,
+      error: 'sandbox execution not configured (Track A.3)',
+      deferred: false,
+    };
   }
 
   async store(data: Record<string, unknown>): Promise<StoreResult> {
@@ -141,115 +114,138 @@ export class PassportDO implements DurableObject {
   }
 
   async recall(kind: string): Promise<RecallResult> {
-    const entries = this.recallMemory(kind as any, '');
+    const entries = this.recallMemory(kind, '');
     return { entries, total: entries.length };
   }
 
   async getIdentity(): Promise<IdentityRecord | null> {
-    const row = this.db.prepare('SELECT * FROM identities WHERE passport_id = ?').bind(this.state.id).first();
-    return row as IdentityRecord | null;
+    const rows = this.ctx.storage.sql
+      .exec('SELECT * FROM identities WHERE passport_id = ?', this.ctx.id.toString())
+      .toArray() as SqlStorageRow[];
+    return (rows[0] as unknown as IdentityRecord | undefined) ?? null;
   }
 
   async getPreferences(): Promise<Record<string, unknown>> {
-    const rows = this.db.prepare('SELECT key, value FROM preferences').all();
+    const rows = this.ctx.storage.sql.exec('SELECT key, value FROM preferences').toArray() as SqlStorageRow[];
     const prefs: Record<string, unknown> = {};
-    for (const row of rows as { key: string; value: string }[]) {
+    for (const row of rows) {
       try {
-        prefs[row.key] = JSON.parse(row.value);
+        prefs[String(row.key)] = JSON.parse(String(row.value));
       } catch {
-        prefs[row.key] = row.value;
+        prefs[String(row.key)] = row.value;
       }
     }
     return prefs;
   }
 
   async storeIdentity(record: IdentityRecord): Promise<void> {
-    this.db.prepare(
+    this.ctx.storage.sql.exec(
       'INSERT OR REPLACE INTO identities (passport_id, did, name, avatar, accent_hue, created_at, verified, pickle_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-    )
-      .bind(record.passportId, record.did, record.name, record.avatar, record.accentHue, record.createdAt, record.verified ? 1 : 0, record.pickleName)
-      .run();
+      record.passportId,
+      record.did,
+      record.name,
+      record.avatar,
+      record.accentHue,
+      record.createdAt,
+      record.verified ? 1 : 0,
+      record.pickleName,
+    );
   }
 
-  private handleExecute(body: { goal?: string; mode?: string; autonomy?: string; sessionId?: string }): Response {
+  private handleExecute(body: Partial<ExecuteInput>): Response {
     const input: ExecuteInput = {
       goal: body.goal ?? '',
       mode: body.mode ?? 'workshop',
       autonomy: body.autonomy ?? 'advisory',
       sessionId: body.sessionId ?? `${Date.now()}`,
     };
-    this.execute(input).then(() => undefined).catch(() => undefined);
+    void this.execute(input);
     return Response.json({ deferred: true, sandboxId: input.sessionId });
   }
 
-  private handleStore(body: { data?: Record<string, unknown> }): Response {
-    const result = this.store(body.data ?? {});
-    return Response.json(result);
+  private handleStore(body: Record<string, unknown>): Response {
+    const data = (body['data'] ?? {}) as Record<string, unknown>;
+    return Response.json(this.store(data));
   }
 
-  private handleRecall(body: { kind?: string }): Response {
-    const result = this.recall(body.kind ?? 'task-outcome');
-    return Response.json(result);
+  private handleRecall(body: Record<string, unknown>): Response {
+    const kind = String(body['kind'] ?? 'task-outcome');
+    return Response.json(this.recall(kind));
   }
 
   private handleIdentity(): Response {
-    const result = this.getIdentity();
-    return Response.json(result);
+    return Response.json(this.getIdentity());
   }
 
   private handlePreferences(): Response {
-    const result = this.getPreferences();
-    return Response.json(result);
+    return Response.json(this.getPreferences());
   }
 
   private createTask(prompt: string): TaskRecord {
     const id = `task-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
     const now = Date.now();
-    this.db.prepare(
+    this.ctx.storage.sql.exec(
       'INSERT INTO tasks (id, prompt, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
-    )
-      .bind(id, prompt, 'queued', now, now)
-      .run();
+      id,
+      prompt,
+      'queued',
+      now,
+      now,
+    );
     return { id, prompt, status: 'queued', createdAt: now, updatedAt: now };
   }
 
   private updateTaskStatus(taskId: string, status: string): void {
-    const now = Date.now();
-    this.db.prepare('UPDATE tasks SET status = ?, updated_at = ? WHERE id = ?').bind(status, now, taskId).run();
+    this.ctx.storage.sql.exec(
+      'UPDATE tasks SET status = ?, updated_at = ? WHERE id = ?',
+      status,
+      Date.now(),
+      taskId,
+    );
   }
 
   private updateTaskResult(taskId: string, status: string, result: string): void {
-    const now = Date.now();
-    this.db.prepare('UPDATE tasks SET status = ?, result = ?, updated_at = ? WHERE id = ?').bind(status, result, now, taskId).run();
+    this.ctx.storage.sql.exec(
+      'UPDATE tasks SET status = ?, result = ?, updated_at = ? WHERE id = ?',
+      status,
+      result,
+      Date.now(),
+      taskId,
+    );
   }
 
   private storeMemory(kind: string, key: string, value: string): void {
     const now = Date.now();
-    this.db.prepare(
+    this.ctx.storage.sql.exec(
       'INSERT INTO memory (id, kind, key, value, created_at, hit_count) VALUES (?, ?, ?, ?, ?, 1) ' +
-      'ON CONFLICT(kind, key) DO UPDATE SET value = excluded.value, hit_count = hit_count + 1, created_at = excluded.created_at',
-    )
-      .bind(`${kind}:${key}:${now}`, kind, key, value, now)
-      .run();
+        'ON CONFLICT(kind, key) DO UPDATE SET value = excluded.value, hit_count = hit_count + 1, created_at = excluded.created_at',
+      `${kind}:${key}:${now}`,
+      kind,
+      key,
+      value,
+      now,
+    );
   }
 
-  private recallMemory(kind: string, key: string): MemoryRecord[] {
-    const rows = this.db.prepare(
-      kind ? 'SELECT * FROM memory WHERE kind = ? ORDER BY created_at DESC' : 'SELECT * FROM memory ORDER BY created_at DESC',
-    )
-      .bind(kind)
-      .all() as { id: string; kind: string; key: string; value: string; created_at: number; hit_count: number }[];
+  private recallMemory(kind: string, _key: string): MemoryRecord[] {
+    const sql = kind
+      ? 'SELECT * FROM memory WHERE kind = ? ORDER BY created_at DESC'
+      : 'SELECT * FROM memory ORDER BY created_at DESC';
+    const rows = (kind
+      ? this.ctx.storage.sql.exec(sql, kind)
+      : this.ctx.storage.sql.exec(sql)
+    ).toArray() as SqlStorageRow[];
     return rows.map((r) => ({
-      id: r.id,
-      kind: r.kind,
-      key: r.key,
-      value: r.value,
-      createdAt: r.created_at,
-      hitCount: r.hit_count,
+      id: String(r.id),
+      kind: String(r.kind) as MemoryRecord['kind'],
+      key: String(r.key),
+      value: String(r.value),
+      createdAt: Number(r.created_at),
+      hitCount: Number(r.hit_count),
     }));
   }
 
-  async sleep(): Promise<void> {
-    // Durable Object hibernates — state persists in SQLite automatically
-  }
+  async sleep(): Promise<void> {}
 }
+
+type SqlStorageRow = Record<string, string | number | null>;
