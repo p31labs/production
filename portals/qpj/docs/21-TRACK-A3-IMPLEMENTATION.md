@@ -66,6 +66,8 @@ compatibility_flags = ["nodejs_compat"]
 [[containers]]
 class_name = "Sandbox"
 image = "./Dockerfile"
+instance_type = "lite"
+max_instances = 1
 
 [[durable_objects.bindings]]
 class_name = "PassportDO"
