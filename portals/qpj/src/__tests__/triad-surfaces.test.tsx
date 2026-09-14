@@ -43,7 +43,7 @@ describe('triad — WorkerChat', () => {
       expect(empty).toBeTruthy();
       expect(empty!.className).toMatch(/worker-chat__empty/);
       expect(empty!.querySelector('[data-empty-icon]')).toBeTruthy();
-      expect(empty!.querySelector('h2')).toBeTruthy();
+      expect(empty!.querySelector('h3')).toBeTruthy();
       expect(empty!.querySelector('[data-empty-suggestion]')).toBeTruthy();
     });
   });

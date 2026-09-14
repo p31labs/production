@@ -102,3 +102,32 @@
 .worker-task--error {
   border-color: var(--p31-accent-soft);
 }
+
+.worker-chat__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-2);
+  text-align: center;
+  color: var(--p31-text-muted);
+}
+
+.worker-chat__empty-icon {
+  display: grid;
+  place-items: center;
+  color: var(--p31-text-muted);
+}
+
+.worker-chat__empty-title {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--p31-text);
+}
+
+.worker-chat__empty-copy {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  max-width: 32ch;
+}
