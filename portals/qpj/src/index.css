@@ -588,49 +588,6 @@ a.btn {
   cursor: not-allowed;
 }
 
-/* qpj raw buttons */
-.button {
-  appearance: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: var(--p31-touch);
-  padding: 12px 20px;
-  border-radius: var(--p31-radius-candy);
-  border: 1px solid transparent;
-  font-weight: 700;
-  cursor: pointer;
-  transition:
-    background var(--p31-duration-fast) var(--p31-easing-standard),
-    color var(--p31-duration-fast) var(--p31-easing-standard),
-    border-color var(--p31-duration-fast) var(--p31-easing-standard),
-    transform var(--p31-duration-fast) var(--p31-easing-standard);
-}
-.button:active {
-  transform: scale(0.985);
-}
-.button--primary {
-  background: var(--p31-accent);
-  color: var(--p31-accent-contrast);
-}
-.button--primary:hover {
-  background: var(--p31-accent-hover);
-}
-.button--ghost {
-  background: transparent;
-  border-color: var(--p31-border-strong);
-  color: var(--p31-text-secondary);
-}
-.button--ghost:hover {
-  background: var(--p31-surface2);
-  color: var(--p31-text);
-}
-.button[disabled] {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
 /* ═══════════════════════════ Battery ring ═══════════════════════════ */
 .battery-ring {
   position: relative;
