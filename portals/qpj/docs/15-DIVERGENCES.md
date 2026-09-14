@@ -149,6 +149,30 @@ reintroduced.
   add it — a signed token in the query string, verified by the passport worker
   before `acceptWebSocket`.
 
+## Token namespace split — `--space-*` vs `--p31-space-*`
+
+- **What design-core ships:** the 8pt `--space-1` through `--space-7` scale.
+- **What QPJ uses:** `--space-*` on SiteShell/WorkerChat surfaces (design-core
+  namespace) and `--p31-space-*` on Workshop/pin-* surfaces (QPJ-local
+  namespace). Both scales resolve to the same 8pt values.
+- **Why product:** the split predates design-core adoption; both are canonical
+  on their own surfaces. Unifying would touch every surface.
+- **Cost managed by:** `token-audit.test.ts` verifies both namespaces resolve.
+  A surface reading from the wrong namespace fails the guard.
+
+## SwitchPage — no design-core Card/PageHeader analog confirmed
+
+- **What design-core ships:** SpoonDial, ChatShell, Button, GlassPanel,
+  PageHeader, StatusBadge, and the chrome primitives.
+- **What SwitchPage uses:** 5 raw `<button>` cards with `switch-card*` CSS.
+- **Why product:** SwitchPage is a passport-switching surface with a
+  card-shaped interaction. The closest design-core composition is
+  `GlassPanel`, but it is a container, not an interactive card. Migration
+  requires either a new composition in design-core or a QPJ-local
+  `SwitchCard` reusing `GlassPanel` internally.
+- **Cost managed by:** deferred. Recorded so the next polish pass doesn't
+  re-open this without a design-core-side decision.
+
 ## Service-binding routing replaces per-passport hostnames
 
 - **Design-core assumption:** `*.{namespace}.workers.dev` routing via Workers
@@ -160,3 +184,23 @@ reintroduced.
   dispatch `/ws`, `/api/build`, `/api/status`, `/api/artifacts` routes can
   switch to `env.DISPATCHER.get(passportId).fetch(request)` without changing
   the passport worker.
+
+## Substrate HTTP API is dormant; bridgeSubmitGoal is not dead code
+
+- **What exists:** `src/lib/substrate.ts` exports `submitGoal`,
+  `executeBuild`, `checkStatus`, `verifyPassport`, `getArtifactUrl`,
+  all gated by `isEdgeMode()`. `src/features/worker/substrate-bridge.ts`
+  exports `bridgeSubmitGoal` which calls `submitGoal` then updates
+  `useWorkerStore`.
+- **Reality:** zero imports of `bridgeSubmitGoal` anywhere in `src/`.
+  The only live substrate surface integration is
+  `useSubstrateWebSocket` (App.tsx), which drives build-status toasts.
+  WorkerChat uses `delegateGoal` (in-memory) as its live path.
+- **Why product:** the substrate is deliberately dormant. The HTTP API
+  is wired but unused, waiting on activation. WorkerChat's in-memory
+  delegation works without it.
+- **Cost managed by:** the activation runbook (`docs/21` § Activation
+  runbook) documents how to make it live. Until then, do not delete
+  `bridgeSubmitGoal` — it is the entry point the runbook expects. It
+  is dormant, not dead; deletion requires a separate activation
+  decision.
