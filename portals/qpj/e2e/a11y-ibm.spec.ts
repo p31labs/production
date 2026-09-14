@@ -2,6 +2,8 @@ import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 const baseline = JSON.parse(readFileSync(new URL('./a11y-ibm-baseline.json', import.meta.url), 'utf-8'));
 
+test.describe.configure({ mode: 'serial', timeout: 60_000 });
+
 // e2e/a11y-ibm.spec.ts — IBM Equal Access second engine (second opinion).
 // Runs against the production build (dist/, served by pnpm preview on port 4173).
 // Dist/ is used instead of dev server because IBM's deep DOM analysis

@@ -50,8 +50,13 @@ Playwright E2E (3 critical journeys). Run: `npx playwright test`. Tests live in 
 ## a11y
 
 Two Playwright specs run per route (#/entry through #/worker) against the
-**production build** (`dist/`, served by `pnpm preview`). The gate includes
-`pnpm build` so `dist/` is current before tests.
+**production build** (`dist/`, served by `pnpm preview`). The main gate
+(TC/LINT/test/v:gate) does not include these specs — run them before merge:
+
+    pnpm build && npx playwright test a11y.spec.ts a11y-ibm.spec.ts
+
+The a11y specs run sequentially within each file (`test.describe.configure({ mode: 'serial' })` on the IBM spec)
+because IBM's deep DOM analysis is CPU-heavy and fails under parallel load.
 
 | File | Engine | Target |
 |---|---|---|
