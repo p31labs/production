@@ -12,6 +12,10 @@ export default {
       return Response.json({ ok: true, service: dispatchNamespace, timestamp: Date.now() });
     }
 
+    if (url.pathname === '/ws') {
+      return env.PASSPORT_WORKER.fetch(request);
+    }
+
     if (url.pathname === '/api/goal') {
       return handleGoal(request, env);
     }
