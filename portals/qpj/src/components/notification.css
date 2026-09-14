@@ -67,6 +67,8 @@
 .notif__close {
   margin-inline-start: auto;
   padding: 2px 4px;
+  min-height: 24px;
+  min-width: 24px;
   background: none;
   border: none;
   color: var(--p31-text-tertiary);

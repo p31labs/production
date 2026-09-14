@@ -1,5 +1,5 @@
 import { Button } from '@p31/design-core/compositions';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export interface PinDialogProps {
   title: string;
@@ -31,9 +31,39 @@ export function PinDialog({
     }
   };
 
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const trigger = document.activeElement as HTMLElement | null;
+    const panel = panelRef.current;
+    if (!panel) return;
+    const focusables = panel.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    first.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    panel.addEventListener('keydown', onKey);
+    return () => {
+      panel.removeEventListener('keydown', onKey);
+      trigger?.focus();
+    };
+  }, []);
+
   return (
     <div className="pin-dialog" role="dialog" aria-modal="true" aria-label={title}>
-      <div className="pin-dialog__panel" data-error={error || undefined}>
+      <div className="pin-dialog__panel" data-error={error || undefined} ref={panelRef}>
         <h2 className="pin-dialog__title">{title}</h2>
         <p className="pin-dialog__desc">{description}</p>
         <input
