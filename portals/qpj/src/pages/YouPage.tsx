@@ -139,8 +139,7 @@ export function YouPage() {
             return (
               <div key={tier.label}>
                 <dt>{tier.label}</dt>
-                <dd>{value}</dd>
-                <p className="you__stat-desc">{tier.description}</p>
+                <dd>{value}<p className="you__stat-desc">{tier.description}</p></dd>
               </div>
             );
           })}
