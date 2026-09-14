@@ -85,8 +85,7 @@ export function WorkerChat({ passportId }: WorkerChatProps) {
       {recent.length === 0 && (
         <div className="worker-chat__empty" role="region" aria-labelledby="worker-empty-title">
           <span className="worker-chat__empty-icon" data-empty-icon aria-hidden="true">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-              <title>Quiet room</title>
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <circle cx="12" cy="12" r="8" />
               <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
             </svg>
