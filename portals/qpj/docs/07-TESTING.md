@@ -46,3 +46,42 @@ Playwright E2E (3 critical journeys). Run: `npx playwright test`. Tests live in 
   truth for style. Running `npx prettier` against source files outside the
   project's config breaks the quote/style convention and muddies surface
   commits — fix formatting only via the lint config.
+
+## a11y
+
+Two Playwright specs run per route (#/entry through #/worker) against the
+**production build** (`dist/`, served by `pnpm preview`). The gate includes
+`pnpm build` so `dist/` is current before tests.
+
+| File | Engine | Target |
+|---|---|---|
+| `e2e/a11y.spec.ts` | axe-core (via @axe-core/playwright) | dist/ |
+| `e2e/a11y-ibm.spec.ts` | IBM Equal Access (accessibility-checker) | dist/ |
+| `e2e/contrast.mjs` | WCAG 2.x + APCA (apca-w3) | Manual: `node e2e/contrast.mjs` |
+
+Both specs share the same target (dist/). Dev server (5193) is used by other
+e2e specs (entry-gate, talk-nudge, persona-switch) but not by a11y specs.
+
+### Build-script allowlist
+
+`pnpm-workspace.yaml` `allowBuilds` controls which packages may run
+postinstall scripts during `pnpm install`. Current state:
+
+- `accessibility-checker: false` — postinstall is `ibmtelemetry` (IBM usage
+  telemetry). Denied: the checker works without it (verified by running
+  `e2e/a11y-ibm.spec.ts` with this setting). If the checker errors on run,
+  revisit; it won't.
+- `chromedriver: false`, `puppeteer: false` — transitive deps of
+  accessibility-checker; not needed (IBM checker uses its own engine;
+  Playwright handles browser for the spec).
+- `esbuild: true` — required for Vite builds.
+- `sharp: true`, `workerd: true` — required by other dependencies.
+- `@sentry/cli: true` — required for Sentry upload during build.
+
+### IBM spec baseline
+
+`e2e/a11y-ibm-baseline.json` is a curated snapshot of IBM findings per route.
+Each rule is dispositioned as `accepted` (reasoning provided) or `needs-fix`
+(reasoning provided). The spec fails on any rule count increase (new findings)
+or partial scan (total < 50% of baseline). Baseline updates require review —
+update the classification, not just the count.
