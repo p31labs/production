@@ -1,5 +1,7 @@
 import { DurableObject } from 'cloudflare:workers';
 import { getSandbox } from '@cloudflare/sandbox';
+import { createWsMeta, handleWsMessage } from './ws-protocol';
+import type { WsMeta } from './ws-protocol';
 import type {
   ExecuteBuildInput,
   ExecuteBuildResult,
@@ -85,6 +87,10 @@ export class PassportDO extends DurableObject<Env> {
   }
 
   async fetch(request: Request): Promise<Response> {
+    if (request.headers.get('Upgrade')?.toLowerCase() === 'websocket') {
+      return this.handleWebSocketUpgrade(request);
+    }
+
     const body = (await request.json().catch(() => ({}) as Record<string, unknown>)) as Record<string, unknown>;
 
     switch (body.type) {
@@ -103,6 +109,53 @@ export class PassportDO extends DurableObject<Env> {
       default:
         return Response.json({ error: `unsupported type: ${String(body.type)}` }, { status: 400 });
     }
+  }
+
+  private handleWebSocketUpgrade(_request: Request): Response {
+    const pair = new WebSocketPair();
+    const [client, server] = Object.values(pair);
+    server.serializeAttachment(createWsMeta(Date.now()));
+    this.ctx.acceptWebSocket(server);
+    return new Response(null, { status: 101, webSocket: client });
+  }
+
+  async webSocketMessage(ws: WebSocket, message: string | ArrayBuffer): Promise<void> {
+    handleWsMessage(message, ws, {
+      now: () => Date.now(),
+      onStatus: () => this.wsStatus(),
+    });
+  }
+
+  webSocketClose(ws: WebSocket, _code: number, _reason: string, _wasClean: boolean): void {
+    ws.close();
+  }
+
+  webSocketError(_ws: WebSocket, _error: unknown): void {}
+
+  async alarm(): Promise<void> {
+    return;
+  }
+
+  private notifyBuildUpdate(buildId: string, status: string, artifactKey?: string): void {
+    const payload = JSON.stringify({ type: 'buildUpdated', buildId, status, artifactKey });
+    for (const socket of this.ctx.getWebSockets()) {
+      const meta = socket.deserializeAttachment() as WsMeta | null;
+      if (meta?.subscribed) {
+        socket.send(payload);
+      }
+    }
+  }
+
+  private wsStatus(): Record<string, unknown> {
+    const builds = this.ctx.storage.sql
+      .exec('SELECT id, status, created_at FROM builds ORDER BY created_at DESC LIMIT 5')
+      .toArray() as SqlStorageRow[];
+    return {
+      passportId: this.ctx.id.toString(),
+      sockets: this.ctx.getWebSockets().length,
+      builds: builds.map((r) => ({ id: String(r.id), status: String(r.status), createdAt: r.created_at })),
+      ts: Date.now(),
+    };
   }
 
   async execute(input: ExecuteInput): Promise<ExecuteResult> {
@@ -190,6 +243,7 @@ export class PassportDO extends DurableObject<Env> {
         buildId,
       );
 
+      this.notifyBuildUpdate(buildId, 'complete', r2Key);
       return { ok: true, buildId, artifactKey: r2Key };
     } catch (e) {
       await sandbox?.setKeepAlive(false).catch(() => undefined);
@@ -198,6 +252,7 @@ export class PassportDO extends DurableObject<Env> {
         'failed',
         buildId,
       );
+      this.notifyBuildUpdate(buildId, 'failed');
       return { ok: false, buildId, error: errMsg(e) };
     }
   }

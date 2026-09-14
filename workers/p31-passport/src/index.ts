@@ -24,6 +24,14 @@ export default {
     if (url.pathname === '/api/status') {
       return handleStatus(request, env);
     }
+    if (url.pathname === '/ws') {
+      const passportId = url.searchParams.get('passportId') ?? '';
+      if (!passportId) {
+        return new Response('passportId required', { status: 400 });
+      }
+      const stub = env.PASSPORT_DO.getByName(passportId);
+      return stub.fetch(request);
+    }
     let body: PassportRequest;
     try {
       body = await request.json();
