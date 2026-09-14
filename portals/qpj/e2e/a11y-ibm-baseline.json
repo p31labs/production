@@ -1,0 +1,532 @@
+{
+  "entry": {
+    "total": 40,
+    "rules": {
+      "style_color_misuse": {
+        "status": "needs-fix",
+        "reason": "IBM flags inline color styles; QPJ token-audit guard prevents most but specific elements need review per route",
+        "count": 1
+      },
+      "style_viewport_resizable": {
+        "status": "accepted",
+        "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
+        "count": 2
+      },
+      "aria_content_in_landmark": {
+        "status": "needs-fix",
+        "reason": "QPJ renders content outside landmark elements (header/footer/nav); IBM wants content within landmarks for navigation context",
+        "count": 2
+      },
+      "element_tabbable_visible": {
+        "status": "needs-fix",
+        "reason": "At least one tabbable element is visually hidden or zero-size; IBM requires tabbables to be visible to assistive tech",
+        "count": 1
+      },
+      "style_focus_visible": {
+        "status": "needs-fix",
+        "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
+        "count": 15
+      },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 8
+      },
+      "aria_keyboard_handler_exists": {
+        "status": "accepted",
+        "reason": "Design-core compositions (Button, ChatShell) include keyboard handlers; IBM flags custom elements with interactive role but no handler",
+        "count": 1
+      },
+      "widget_tabbable_single": {
+        "status": "accepted",
+        "reason": "Design-core widgets intentionally manage their own single tabbable children",
+        "count": 1
+      },
+      "input_label_visible": {
+        "status": "needs-fix",
+        "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
+        "count": 7
+      },
+      "text_sensory_misuse": {
+        "status": "needs-fix",
+        "reason": "QPJ uses color as sole indicator in places (status dots, mode indicators); needs text/symbol alternative per WCAG 1.4.1",
+        "count": 2
+      }
+    }
+  },
+  "street": {
+    "total": 48,
+    "rules": {
+      "style_color_misuse": {
+        "status": "needs-fix",
+        "reason": "IBM flags inline color styles; QPJ token-audit guard prevents most but specific elements need review per route",
+        "count": 1
+      },
+      "style_viewport_resizable": {
+        "status": "accepted",
+        "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
+        "count": 2
+      },
+      "aria_content_in_landmark": {
+        "status": "needs-fix",
+        "reason": "QPJ renders content outside landmark elements (header/footer/nav); IBM wants content within landmarks for navigation context",
+        "count": 2
+      },
+      "element_tabbable_visible": {
+        "status": "needs-fix",
+        "reason": "At least one tabbable element is visually hidden or zero-size; IBM requires tabbables to be visible to assistive tech",
+        "count": 1
+      },
+      "style_focus_visible": {
+        "status": "needs-fix",
+        "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
+        "count": 16
+      },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 11
+      },
+      "aria_keyboard_handler_exists": {
+        "status": "accepted",
+        "reason": "Design-core compositions (Button, ChatShell) include keyboard handlers; IBM flags custom elements with interactive role but no handler",
+        "count": 1
+      },
+      "widget_tabbable_single": {
+        "status": "accepted",
+        "reason": "Design-core widgets intentionally manage their own single tabbable children",
+        "count": 1
+      },
+      "input_label_visible": {
+        "status": "needs-fix",
+        "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
+        "count": 7
+      },
+      "label_name_visible": {
+        "status": "needs-fix",
+        "reason": "Form labels not programmatically associated or visually hidden; IBM wants accessible names visible",
+        "count": 6
+      }
+    }
+  },
+  "talk": {
+    "total": 38,
+    "rules": {
+      "style_color_misuse": {
+        "status": "needs-fix",
+        "reason": "IBM flags inline color styles; QPJ token-audit guard prevents most but specific elements need review per route",
+        "count": 1
+      },
+      "style_viewport_resizable": {
+        "status": "accepted",
+        "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
+        "count": 2
+      },
+      "aria_content_in_landmark": {
+        "status": "needs-fix",
+        "reason": "QPJ renders content outside landmark elements (header/footer/nav); IBM wants content within landmarks for navigation context",
+        "count": 2
+      },
+      "element_tabbable_visible": {
+        "status": "needs-fix",
+        "reason": "At least one tabbable element is visually hidden or zero-size; IBM requires tabbables to be visible to assistive tech",
+        "count": 1
+      },
+      "style_focus_visible": {
+        "status": "needs-fix",
+        "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
+        "count": 13
+      },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 8
+      },
+      "aria_keyboard_handler_exists": {
+        "status": "accepted",
+        "reason": "Design-core compositions (Button, ChatShell) include keyboard handlers; IBM flags custom elements with interactive role but no handler",
+        "count": 1
+      },
+      "widget_tabbable_single": {
+        "status": "accepted",
+        "reason": "Design-core widgets intentionally manage their own single tabbable children",
+        "count": 1
+      },
+      "input_label_visible": {
+        "status": "needs-fix",
+        "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
+        "count": 8
+      },
+      "label_name_visible": {
+        "status": "needs-fix",
+        "reason": "Form labels not programmatically associated or visually hidden; IBM wants accessible names visible",
+        "count": 1
+      }
+    }
+  },
+  "you": {
+    "total": 53,
+    "rules": {
+      "html_skipnav_exists": {
+        "status": "accepted",
+        "reason": "QPJ anchor-based skip link satisfies keyboard-bypass intent; IBM prefers HTML5 nav variant but intent is met",
+        "count": 1
+      },
+      "style_color_misuse": {
+        "status": "needs-fix",
+        "reason": "IBM flags inline color styles; QPJ token-audit guard prevents most but specific elements need review per route",
+        "count": 1
+      },
+      "style_viewport_resizable": {
+        "status": "accepted",
+        "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
+        "count": 2
+      },
+      "aria_content_in_landmark": {
+        "status": "needs-fix",
+        "reason": "QPJ renders content outside landmark elements (header/footer/nav); IBM wants content within landmarks for navigation context",
+        "count": 2
+      },
+      "element_tabbable_visible": {
+        "status": "needs-fix",
+        "reason": "At least one tabbable element is visually hidden or zero-size; IBM requires tabbables to be visible to assistive tech",
+        "count": 1
+      },
+      "style_focus_visible": {
+        "status": "needs-fix",
+        "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
+        "count": 20
+      },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 8
+      },
+      "aria_keyboard_handler_exists": {
+        "status": "accepted",
+        "reason": "Design-core compositions (Button, ChatShell) include keyboard handlers; IBM flags custom elements with interactive role but no handler",
+        "count": 2
+      },
+      "widget_tabbable_single": {
+        "status": "accepted",
+        "reason": "Design-core widgets intentionally manage their own single tabbable children",
+        "count": 2
+      },
+      "input_label_visible": {
+        "status": "needs-fix",
+        "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
+        "count": 9
+      },
+      "text_sensory_misuse": {
+        "status": "needs-fix",
+        "reason": "QPJ uses color as sole indicator in places (status dots, mode indicators); needs text/symbol alternative per WCAG 1.4.1",
+        "count": 1
+      },
+      "text_block_heading": {
+        "status": "needs-fix",
+        "reason": "Heading hierarchy issues in text blocks — check h1-h6 ordering on pages where IBM flags it",
+        "count": 4
+      }
+    }
+  },
+  "switch": {
+    "total": 42,
+    "rules": {
+      "style_color_misuse": {
+        "status": "needs-fix",
+        "reason": "IBM flags inline color styles; QPJ token-audit guard prevents most but specific elements need review per route",
+        "count": 1
+      },
+      "style_viewport_resizable": {
+        "status": "accepted",
+        "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
+        "count": 2
+      },
+      "aria_content_in_landmark": {
+        "status": "needs-fix",
+        "reason": "QPJ renders content outside landmark elements (header/footer/nav); IBM wants content within landmarks for navigation context",
+        "count": 2
+      },
+      "element_tabbable_visible": {
+        "status": "needs-fix",
+        "reason": "At least one tabbable element is visually hidden or zero-size; IBM requires tabbables to be visible to assistive tech",
+        "count": 1
+      },
+      "style_focus_visible": {
+        "status": "needs-fix",
+        "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
+        "count": 14
+      },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 8
+      },
+      "aria_keyboard_handler_exists": {
+        "status": "accepted",
+        "reason": "Design-core compositions (Button, ChatShell) include keyboard handlers; IBM flags custom elements with interactive role but no handler",
+        "count": 1
+      },
+      "widget_tabbable_single": {
+        "status": "accepted",
+        "reason": "Design-core widgets intentionally manage their own single tabbable children",
+        "count": 1
+      },
+      "input_label_visible": {
+        "status": "needs-fix",
+        "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
+        "count": 7
+      },
+      "aria_descendant_valid": {
+        "status": "needs-fix",
+        "reason": "IBM flags invalid ARIA descendant relationships (aria-describedby/aria-labelledby targets may reference dynamically hidden elements)",
+        "count": 5
+      }
+    }
+  },
+  "craft": {
+    "total": 45,
+    "rules": {
+      "html_skipnav_exists": {
+        "status": "accepted",
+        "reason": "QPJ anchor-based skip link satisfies keyboard-bypass intent; IBM prefers HTML5 nav variant but intent is met",
+        "count": 1
+      },
+      "style_color_misuse": {
+        "status": "needs-fix",
+        "reason": "IBM flags inline color styles; QPJ token-audit guard prevents most but specific elements need review per route",
+        "count": 1
+      },
+      "style_viewport_resizable": {
+        "status": "accepted",
+        "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
+        "count": 2
+      },
+      "aria_content_in_landmark": {
+        "status": "needs-fix",
+        "reason": "QPJ renders content outside landmark elements (header/footer/nav); IBM wants content within landmarks for navigation context",
+        "count": 2
+      },
+      "element_tabbable_visible": {
+        "status": "needs-fix",
+        "reason": "At least one tabbable element is visually hidden or zero-size; IBM requires tabbables to be visible to assistive tech",
+        "count": 1
+      },
+      "element_tabbable_unobscured": {
+        "status": "needs-fix",
+        "reason": "Tabbable elements may be obscured by overlays/modals; check z-index and focus management on routes with modal interactions",
+        "count": 9
+      },
+      "style_focus_visible": {
+        "status": "needs-fix",
+        "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
+        "count": 11
+      },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 8
+      },
+      "aria_keyboard_handler_exists": {
+        "status": "accepted",
+        "reason": "Design-core compositions (Button, ChatShell) include keyboard handlers; IBM flags custom elements with interactive role but no handler",
+        "count": 1
+      },
+      "widget_tabbable_single": {
+        "status": "accepted",
+        "reason": "Design-core widgets intentionally manage their own single tabbable children",
+        "count": 1
+      },
+      "input_label_visible": {
+        "status": "needs-fix",
+        "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
+        "count": 7
+      },
+      "text_sensory_misuse": {
+        "status": "needs-fix",
+        "reason": "QPJ uses color as sole indicator in places (status dots, mode indicators); needs text/symbol alternative per WCAG 1.4.1",
+        "count": 1
+      }
+    }
+  },
+  "workshop": {
+    "total": 44,
+    "rules": {
+      "html_skipnav_exists": {
+        "status": "accepted",
+        "reason": "QPJ anchor-based skip link satisfies keyboard-bypass intent; IBM prefers HTML5 nav variant but intent is met",
+        "count": 1
+      },
+      "style_color_misuse": {
+        "status": "needs-fix",
+        "reason": "IBM flags inline color styles; QPJ token-audit guard prevents most but specific elements need review per route",
+        "count": 1
+      },
+      "style_viewport_resizable": {
+        "status": "accepted",
+        "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
+        "count": 2
+      },
+      "aria_content_in_landmark": {
+        "status": "needs-fix",
+        "reason": "QPJ renders content outside landmark elements (header/footer/nav); IBM wants content within landmarks for navigation context",
+        "count": 2
+      },
+      "element_tabbable_visible": {
+        "status": "needs-fix",
+        "reason": "At least one tabbable element is visually hidden or zero-size; IBM requires tabbables to be visible to assistive tech",
+        "count": 1
+      },
+      "element_tabbable_unobscured": {
+        "status": "needs-fix",
+        "reason": "Tabbable elements may be obscured by overlays/modals; check z-index and focus management on routes with modal interactions",
+        "count": 9
+      },
+      "style_focus_visible": {
+        "status": "needs-fix",
+        "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
+        "count": 11
+      },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 8
+      },
+      "aria_keyboard_handler_exists": {
+        "status": "accepted",
+        "reason": "Design-core compositions (Button, ChatShell) include keyboard handlers; IBM flags custom elements with interactive role but no handler",
+        "count": 1
+      },
+      "widget_tabbable_single": {
+        "status": "accepted",
+        "reason": "Design-core widgets intentionally manage their own single tabbable children",
+        "count": 1
+      },
+      "input_label_visible": {
+        "status": "needs-fix",
+        "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
+        "count": 7
+      }
+    }
+  },
+  "site": {
+    "total": 51,
+    "rules": {
+      "style_color_misuse": {
+        "status": "needs-fix",
+        "reason": "IBM flags inline color styles; QPJ token-audit guard prevents most but specific elements need review per route",
+        "count": 1
+      },
+      "style_viewport_resizable": {
+        "status": "accepted",
+        "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
+        "count": 2
+      },
+      "aria_content_in_landmark": {
+        "status": "needs-fix",
+        "reason": "QPJ renders content outside landmark elements (header/footer/nav); IBM wants content within landmarks for navigation context",
+        "count": 2
+      },
+      "element_tabbable_visible": {
+        "status": "needs-fix",
+        "reason": "At least one tabbable element is visually hidden or zero-size; IBM requires tabbables to be visible to assistive tech",
+        "count": 1
+      },
+      "style_focus_visible": {
+        "status": "needs-fix",
+        "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
+        "count": 13
+      },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 11
+      },
+      "aria_keyboard_handler_exists": {
+        "status": "accepted",
+        "reason": "Design-core compositions (Button, ChatShell) include keyboard handlers; IBM flags custom elements with interactive role but no handler",
+        "count": 2
+      },
+      "widget_tabbable_single": {
+        "status": "accepted",
+        "reason": "Design-core widgets intentionally manage their own single tabbable children",
+        "count": 2
+      },
+      "input_label_visible": {
+        "status": "needs-fix",
+        "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
+        "count": 8
+      },
+      "text_sensory_misuse": {
+        "status": "needs-fix",
+        "reason": "QPJ uses color as sole indicator in places (status dots, mode indicators); needs text/symbol alternative per WCAG 1.4.1",
+        "count": 1
+      },
+      "aria_descendant_valid": {
+        "status": "needs-fix",
+        "reason": "IBM flags invalid ARIA descendant relationships (aria-describedby/aria-labelledby targets may reference dynamically hidden elements)",
+        "count": 4
+      },
+      "element_tabbable_role_valid": {
+        "status": "accepted",
+        "reason": "QPJ tabbables use valid ARIA roles per design-core compositions",
+        "count": 4
+      }
+    }
+  },
+  "worker": {
+    "total": 40,
+    "rules": {
+      "style_color_misuse": {
+        "status": "needs-fix",
+        "reason": "IBM flags inline color styles; QPJ token-audit guard prevents most but specific elements need review per route",
+        "count": 1
+      },
+      "style_viewport_resizable": {
+        "status": "accepted",
+        "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
+        "count": 2
+      },
+      "aria_content_in_landmark": {
+        "status": "needs-fix",
+        "reason": "QPJ renders content outside landmark elements (header/footer/nav); IBM wants content within landmarks for navigation context",
+        "count": 2
+      },
+      "element_tabbable_visible": {
+        "status": "needs-fix",
+        "reason": "At least one tabbable element is visually hidden or zero-size; IBM requires tabbables to be visible to assistive tech",
+        "count": 1
+      },
+      "style_focus_visible": {
+        "status": "needs-fix",
+        "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
+        "count": 13
+      },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 8
+      },
+      "aria_keyboard_handler_exists": {
+        "status": "accepted",
+        "reason": "Design-core compositions (Button, ChatShell) include keyboard handlers; IBM flags custom elements with interactive role but no handler",
+        "count": 2
+      },
+      "widget_tabbable_single": {
+        "status": "accepted",
+        "reason": "Design-core widgets intentionally manage their own single tabbable children",
+        "count": 2
+      },
+      "input_label_visible": {
+        "status": "needs-fix",
+        "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
+        "count": 8
+      },
+      "text_sensory_misuse": {
+        "status": "needs-fix",
+        "reason": "QPJ uses color as sole indicator in places (status dots, mode indicators); needs text/symbol alternative per WCAG 1.4.1",
+        "count": 1
+      }
+    }
+  }
+}

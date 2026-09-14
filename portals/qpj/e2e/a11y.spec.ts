@@ -13,6 +13,8 @@ const ROUTES = [
   { hash: '#/worker', name: 'worker' },
 ];
 
+const DIST = 'http://localhost:4173';
+
 // design-core vendored selectors (exact class match — no substrings).
 const VENDOR_NODE_TARGETS = new Set([
   '.btn', '.btn-primary', '.btn-secondary', '.btn-ghost', '.btn-sm', '.btn-lg',
@@ -35,7 +37,7 @@ const isVendor = (v: { id: string; nodes: { target: string[] }[] }) =>
 
 for (const route of ROUTES) {
   test(`a11y: ${route.name}`, async ({ page }) => {
-    await page.goto(route.hash);
+    await page.goto(DIST + route.hash);
     await page.waitForLoadState('networkidle');
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag22aa'])
