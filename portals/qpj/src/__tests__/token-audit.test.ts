@@ -68,3 +68,39 @@ describe('design-core token audit', () => {
     expect(defs.has('--p31-accent-gold')).toBe(true);
   });
 });
+
+function listSrcTsx(dir: string): string[] {
+  const out: string[] = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const p = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      out.push(...listSrcTsx(p));
+    } else if (entry.name.endsWith('.tsx')) {
+      out.push(p);
+    }
+  }
+  return out;
+}
+
+describe('design-system surface guards', () => {
+  it('no raw button--* classes in TSX (design-core Button is canonical)', () => {
+    const offenders = listSrcTsx('src').filter((f) =>
+      /className="[^"]*button--(primary|secondary|ghost)/.test(readFileSync(f, 'utf8')),
+    );
+    expect(offenders).toEqual([]);
+  });
+
+  it('inline style={{ var(--p31-*) }} reads resolve to definitions', () => {
+    const reads: string[] = [];
+    for (const f of listSrcTsx('src')) {
+      const src = readFileSync(f, 'utf8');
+      for (const m of src.matchAll(/style=\{\{[\s\S]*?\}\}/g)) {
+        for (const t of m[0].matchAll(/var\(--p31-[a-z0-9-]+/g)) {
+          reads.push(t[0].slice(4, -1));
+        }
+      }
+    }
+    const { defs } = readForAudit();
+    expect(reads.filter((r) => !defs.has(r))).toEqual([]);
+  });
+});
