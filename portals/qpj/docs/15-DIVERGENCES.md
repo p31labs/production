@@ -133,3 +133,30 @@ reintroduced.
   (runs in `qpj:local` project) and `substrate.edge.test.ts` (runs in
   `qpj:edge` project). No runtime env patching, no `vi.resetModules`, no dynamic
   `import()`.
+## WebSocket endpoints are read-only and unauthenticated
+
+- **Design-core assumption:** per-passport isolation implies per-passport auth.
+- **QPJ reality:** `wss://p31-dispatch.trimtab-signal.workers.dev/ws?passportId=X`
+  is public. The dispatch `/ws` route forwards to the passport worker without
+  the shared secret; the WS protocol (`ws-protocol.ts`) only exposes `ping`,
+  `echo`, `subscribe`, `status`. `status` returns the last 5 builds for the
+  passport in the URL.
+- **Why product:** the substrate is family-scale; passport ids are semi-public
+  (they appear in portal routes). Build IDs, statuses, and artifact keys are
+  not secrets. The POST endpoints (which write to R2) remain gated by the
+  shared secret.
+- **Cost managed by:** if auth is needed later, the WS upgrade is the place to
+  add it — a signed token in the query string, verified by the passport worker
+  before `acceptWebSocket`.
+
+## Service-binding routing replaces per-passport hostnames
+
+- **Design-core assumption:** `*.{namespace}.workers.dev` routing via Workers
+  for Platforms dispatch namespace.
+- **QPJ reality:** the account has no Workers for Platforms plan (`error 10121`).
+  One `p31-passport` worker hosts every `PassportDO` via `getByName(passportId)`.
+  Dispatch proxies to it via a `[[services]]` binding.
+- **Cost managed by:** when/if Workers for Platforms is provisioned, the
+  dispatch `/ws`, `/api/build`, `/api/status`, `/api/artifacts` routes can
+  switch to `env.DISPATCHER.get(passportId).fetch(request)` without changing
+  the passport worker.
