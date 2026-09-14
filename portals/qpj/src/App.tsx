@@ -6,6 +6,7 @@ import { useModeEffects } from './hooks/useModeEffects';
 import { useThemeEffects } from './hooks/useThemeEffects';
 import { useSensorySync } from './hooks/useSensorySync';
 import { useSBT } from './hooks/useSBT';
+import { useSubstrateWebSocket } from './hooks/useSubstrateWebSocket';
 import { MeshBridge } from './hooks/MeshBridge';
 import { getPassport, MODE_LABELS } from './lib/passports';
 import { BRAND } from './lib/brand';
@@ -43,6 +44,7 @@ export default function App() {
   useThemeEffects();
   useSensorySync();
   useSBT();
+  useSubstrateWebSocket(passportId);
 
   const passport = useMemo(() => getPassport(passportId), [passportId]);
 

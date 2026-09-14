@@ -40,6 +40,11 @@ export function isEdgeMode(): boolean {
   return getSubstrateUrl() !== null;
 }
 
+export function getSubstrateWsBaseUrl(): string | null {
+  const base = import.meta.env?.VITE_P31_WS_BASE ?? getSubstrateUrl();
+  return base ?? null;
+}
+
 const DISPATCH_URL = import.meta.env?.VITE_DISPATCH_URL
   ?? 'https://qpj-dispatch.p31ca.org';
 
