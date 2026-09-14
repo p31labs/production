@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
     "test": "vitest run",
+    "a11y": "pnpm build && playwright test --project=chromium a11y.spec.ts a11y-ibm.spec.ts",
     "sync:vendor": "node /home/p31/production/tools/portal-vendor-sync/sync-vendor.mjs --target .",
     "v:gate": "node /home/p31/production/tools/portal-vendor-sync/v-gate.mjs --target .",
     "gate": "pnpm typecheck && pnpm lint && pnpm test && pnpm build && pnpm v:gate"
