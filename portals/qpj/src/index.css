@@ -1677,7 +1677,7 @@ a.btn {
   display: grid;
   place-items: center;
   padding: 20px;
-  background: oklch(20% 0.03 75 / 0.55);
+  background: var(--p31-scrim);
   backdrop-filter: var(--p31-glass-blur);
   -webkit-backdrop-filter: var(--p31-glass-blur);
   animation: fade-in var(--p31-duration-standard) var(--p31-easing-standard);

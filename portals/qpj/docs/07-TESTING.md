@@ -42,3 +42,7 @@ Playwright E2E (3 critical journeys). Run: `npx playwright test`. Tests live in 
   so cross-file hydration doesn't leak state.
 - **One render per workspace assertion**: `cleanup()` between renders or `getByRole`
   trips on duplicate mounts of the same WorkshopPage.
+- **No ad-hoc external formatters.** `pnpm lint` is the single source of
+  truth for style. Running `npx prettier` against source files outside the
+  project's config breaks the quote/style convention and muddies surface
+  commits — fix formatting only via the lint config.

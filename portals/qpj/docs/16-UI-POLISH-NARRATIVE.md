@@ -93,12 +93,18 @@ The locked gate is the `pin-dialog` overlay (`PinDialog.tsx`).
 
 ### Decided during the Triad pass (2 fixes landed)
 
-1. **Gate overlay blur → tokenized.** `.pin-dialog` overlay at `index.css:1672-1673`
-   now uses `var(--p31-glass-blur)`. The identical pattern on `.nudge-backdrop`
-   (`index.css:1837-1838`, identity nudge modal on `TalkPage.tsx`) was tokenized
-   in the same change — same mechanical rule, same tokens, no new surface.
-   `pages/workshop/studio.css:2094` still uses raw `blur(6px)` (the live session
-   overlay on the Studio tab) — that is a different surface element, left alone.
+1. **Gate overlay blur → tokenized.** `.pin-dialog` overlay at
+   `index.css:1672-1673` now uses `var(--p31-glass-blur)`, and its
+   `background` was aligned to the app-wide `var(--p31-scrim)`
+   (it previously held a raw `oklch(20% 0.03 75 / 0.55)` literal —
+   slightly lighter than `--p31-scrim`; the gate overlay now matches
+   the rest of the app). The identical backdrop pattern on
+   `.nudge-backdrop` (`index.css:1837-1838`, identity nudge modal
+   on `TalkPage.tsx`) was tokenized in the same change — same
+   mechanical rule, same tokens, no new surface.
+   `pages/workshop/studio.css:2094` still uses raw `blur(6px)` (the
+   live session overlay on the Studio tab) — that is a different
+   surface element, left alone.
 2. **PIN entry container.** `.pin-change__form` (`PinChangeCard.tsx:58`) was a
    bare flex column. It now sits inside a `.pin-change__panel` wrapper styled
    with existing tokens (`--p31-border`, `--p31-radius-md`, `--p31-surface`,

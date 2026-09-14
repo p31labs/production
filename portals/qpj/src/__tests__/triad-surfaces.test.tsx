@@ -39,11 +39,11 @@ describe('triad — WorkerChat', () => {
     render(<WorkerChat passportId="smoke" />);
 
     await waitFor(() => {
-      const empty = screen.queryByRole('status');
+      const empty = screen.queryByRole('region', { name: /nothing to review/i });
       expect(empty).toBeTruthy();
       expect(empty!.className).toMatch(/worker-chat__empty/);
       expect(empty!.querySelector('[data-empty-icon]')).toBeTruthy();
-      expect(empty!.querySelector('h3')).toBeTruthy();
+      expect(empty!.querySelector('h2')).toBeTruthy();
       expect(empty!.querySelector('[data-empty-suggestion]')).toBeTruthy();
     });
   });
