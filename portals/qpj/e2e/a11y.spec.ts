@@ -13,16 +13,25 @@ const ROUTES = [
   { hash: '#/worker', name: 'worker' },
 ];
 
+// design-core vendored selectors (exact class match — no substrings).
+const VENDOR_NODE_TARGETS = new Set([
+  '.btn', '.btn-primary', '.btn-secondary', '.btn-ghost', '.btn-sm', '.btn-lg',
+]);
 const VENDOR_VIOLATION_IDS = new Set([
-  // design-core SpoonDia toggle buttons use aria-checked (vendored markup,
-  // documented in docs/24-DESIGN-SYSTEM-AUDIT.md — do not patch locally).
+  // SpoonDial `aria-checked` on toggle buttons — vendored markup,
+  // documented in docs/24-DESIGN-SYSTEM-AUDIT.md (do not patch locally).
   'aria-allowed-attr',
 ]);
 
-// design-core Button owns .btn/.btn-sm color-contrast (vendored recipes,
-// documented in docs/24 — QPJ does not own these). Filter by node target.
-const isVendorNode = (target: string[]) =>
-  target.some((t) => t.includes('btn') || t.includes('aria-checked'));
+const isVendorNode = (node: { target: string[] }) =>
+  node.target.some((t) => {
+    const cls = t.split(' > ').pop()!.split(':')[0];
+    return VENDOR_NODE_TARGETS.has(cls);
+  });
+
+const isVendor = (v: { id: string; nodes: { target: string[] }[] }) =>
+  VENDOR_VIOLATION_IDS.has(v.id) ||
+  (v.id === 'color-contrast' && v.nodes.every(isVendorNode));
 
 for (const route of ROUTES) {
   test(`a11y: ${route.name}`, async ({ page }) => {
@@ -31,11 +40,15 @@ for (const route of ROUTES) {
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag22aa'])
       .analyze();
-    const remaining = results.violations.filter((v) => {
-      if (VENDOR_VIOLATION_IDS.has(v.id)) return false;
-      if (v.id === 'color-contrast' && v.nodes.every((n) => isVendorNode(n.target))) return false;
-      return true;
-    });
-    expect(remaining).toEqual([]);
+
+    // QPJ owns zero violations per route — fails loudly on any QPJ-owned issue.
+    const qpwOwned = results.violations.filter((v) => !isVendor(v));
+    expect(qpwOwned).toEqual([]);
+
+    // Vendor counts are pinned (axe groups by rule, not node).
+    // A change signals design-core changed (revisit docs/24).
+    const vendorCount = results.violations.filter(isVendor).length;
+    const expectedVendorCount = route.hash === '#/entry' || route.hash === '#/you' ? 2 : 1;
+    expect(vendorCount).toBe(expectedVendorCount);
   });
 }
