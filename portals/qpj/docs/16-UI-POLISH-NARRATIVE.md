@@ -88,3 +88,43 @@ The locked gate is the `pin-dialog` overlay (`PinDialog.tsx`).
 - **There is no tab bar in QPJ.** The original narrative's "active tab
   indicator" item described a UI primitive QPJ doesn't use; nav is a topbar
   with route links. The item is scored STALE, not silently deleted.
+
+## Review
+
+### Decided during the Triad pass (2 fixes landed)
+
+1. **Gate overlay blur → tokenized.** `.pin-dialog` overlay at `index.css:1672-1673`
+   now uses `var(--p31-glass-blur)`. The identical pattern on `.nudge-backdrop`
+   (`index.css:1837-1838`, identity nudge modal on `TalkPage.tsx`) was tokenized
+   in the same change — same mechanical rule, same tokens, no new surface.
+   `pages/workshop/studio.css:2094` still uses raw `blur(6px)` (the live session
+   overlay on the Studio tab) — that is a different surface element, left alone.
+2. **PIN entry container.** `.pin-change__form` (`PinChangeCard.tsx:58`) was a
+   bare flex column. It now sits inside a `.pin-change__panel` wrapper styled
+   with existing tokens (`--p31-border`, `--p31-radius-md`, `--p31-surface`,
+   `--space-3`). Kept visual only — no semantic role change (the group's
+   `aria-label="New caregiver PIN"` stays on the form itself; the panel is a
+   visual container, not a dialog).
+
+### Deliberately left alone (STALE, guards only)
+
+- SiteShell outer padding (`.shell` clamp at `index.css:313`), ThemeCharm
+  anchored in `qpj-topbar__right` (`App.tsx:84`), absence of a tab bar in QPJ —
+  all already match the narrative; the regression guards pass.
+- `wbench__powers` grid gap — already a grid with `gap: var(--p31-space-3)`.
+- Token namespace split (SiteShell/WorkerChat `--space-*` vs Workshop
+  `--p31-space-*`) — recorded in Divergences, not a delta.
+- No status/color tokens were changed; no `--p31-*` read unresolved
+  (`token-audit` still green).
+
+### Scope discipline kept
+
+- No new tokens, components, hooks, or dependencies.
+- Zero hex/rgb introduced (all existing vars).
+- Single-quote TS/TSX style preserved (no external formatter run).
+- Substrate stayed dormant — no worker or substrate code touched.
+
+### Pending
+
+None — the Triad pass is complete. See `docs/23-TRIAD-ACCEPTANCE.md`
+for the acceptance checklist and sign-off.
