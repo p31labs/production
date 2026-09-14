@@ -1,16 +1,10 @@
 import type { DispatchRequest } from './types';
 
+import { passthroughHeaders } from './headers';
+
 const dispatchNamespace = 'qpj-dispatch';
 const DEFAULT_CPU_MS = 5000;
 const DEFAULT_SUB_REQUESTS = 50;
-
-function passthroughHeaders(request: Request, env: Env): Headers {
-  const headers = new Headers(request.headers);
-  if (env.P31_DISPATCH_SECRET) {
-    headers.set('X-P31-Dispatch-Secret', env.P31_DISPATCH_SECRET);
-  }
-  return headers;
-}
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
