@@ -25,6 +25,7 @@ export default defineConfig({
           environment: 'jsdom',
           env: {
             VITE_P31_SUBSTRATE_URL: 'https://p31-dispatch.example.workers.dev',
+            VITE_P31_SUBSTRATE_ENABLED: 'true',
           },
           setupFiles: ['src/__tests__/setup.ts'],
           include: ['src/lib/substrate.edge.test.ts'],

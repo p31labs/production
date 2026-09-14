@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { HeartbeatMesh, type MeshState } from '@p31/sovereign-core';
 import { substrateStorage } from '../lib/substrate-storage';
-import { getSubstrateUrl } from '../lib/substrate';
+import { isEdgeMode } from '../lib/substrate';
 import type { Preferences } from '@p31/sovereign-core';
 import type { Identity, IdentityStatus } from '../lib/identity';
 import { useNotifStore } from './useNotifStore';
@@ -471,12 +471,12 @@ export const useQpjStore = create<QpjState>()(
       }),
       merge: (persisted, current) => mergePersistedQpj(persisted, current),
       storage: (() => {
-        return getSubstrateUrl() ? substrateStorage : undefined;
+        return isEdgeMode() ? substrateStorage : undefined;
       })(),
     }
   )
 );
 
 export function useSubstrate(): { mode: 'local' | 'edge'; ready: boolean } {
-  return { mode: getSubstrateUrl() ? 'edge' : 'local', ready: true };
+  return { mode: isEdgeMode() ? 'edge' : 'local', ready: true };
 }

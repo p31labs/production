@@ -22,7 +22,7 @@ describe('secureEqual (passport auth gate)', () => {
 });
 
 describe('passthroughHeaders (dispatch gate)', () => {
-  function env(secret?: string): Env {
+  function env(secret?: string): { P31_DISPATCH_SECRET?: string } {
     return { P31_DISPATCH_SECRET: secret };
   }
 

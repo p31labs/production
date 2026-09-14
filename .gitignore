@@ -13,6 +13,7 @@ dist/
 !.env.example
 !.env.local.example
 !.env.go-live.example
+!.env.production
 
 # Secrets & admin tokens
 .admin_token

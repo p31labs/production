@@ -99,6 +99,7 @@ describe('substrate (local mode)', () => {
 
     it('builds the dispatch URL when substrate enabled', () => {
       vi.stubEnv('VITE_P31_SUBSTRATE_URL', 'https://p31-dispatch.example.workers.dev');
+      vi.stubEnv('VITE_P31_SUBSTRATE_ENABLED', 'true');
       expect(getArtifactUrl('dillpickle', 'build-1', 'artifact.js')).toBe(
         'https://qpj-dispatch.p31ca.org/api/artifacts/dillpickle/build-1/artifact.js',
       );
@@ -106,6 +107,7 @@ describe('substrate (local mode)', () => {
 
     it('encodes path segments', () => {
       vi.stubEnv('VITE_P31_SUBSTRATE_URL', 'https://p31-dispatch.example.workers.dev');
+      vi.stubEnv('VITE_P31_SUBSTRATE_ENABLED', 'true');
       expect(getArtifactUrl('dill pickle', 'b/1', 'a.js')).toBe(
         'https://qpj-dispatch.p31ca.org/api/artifacts/dill%20pickle/b%2F1/a.js',
       );

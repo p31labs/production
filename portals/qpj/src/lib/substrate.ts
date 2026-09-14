@@ -39,7 +39,7 @@ export function getSubstrateUrl(): string | null {
 }
 
 export function isEdgeMode(): boolean {
-  return getSubstrateUrl() !== null;
+  return getSubstrateUrl() !== null && import.meta.env?.VITE_P31_SUBSTRATE_ENABLED === 'true';
 }
 
 export function getSubstrateWsBaseUrl(): string | null {
@@ -73,7 +73,7 @@ export async function submitGoal(
   } = {},
 ): Promise<SubstrateGoalResult> {
   if (!isEdgeMode()) {
-    return { ok: false, deferred: false, error: 'substrate disabled — set VITE_P31_SUBSTRATE_URL' };
+    return { ok: false, deferred: false, error: 'substrate disabled — set VITE_P31_SUBSTRATE_URL and VITE_P31_SUBSTRATE_ENABLED' };
   }
 
   if (opts.cpuMs && opts.cpuMs > DEFAULT_CPU_MS) {
@@ -124,7 +124,7 @@ export async function executeBuild(
   filename: string,
 ): Promise<SubstrateBuildResult> {
   if (!isEdgeMode()) {
-    return { ok: false, buildId, error: 'substrate disabled — set VITE_P31_SUBSTRATE_URL' };
+    return { ok: false, buildId, error: 'substrate disabled — set VITE_P31_SUBSTRATE_URL and VITE_P31_SUBSTRATE_ENABLED' };
   }
 
   try {
