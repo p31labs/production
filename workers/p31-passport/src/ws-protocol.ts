@@ -7,6 +7,7 @@ export interface WsSocketLike {
 export interface WsMeta {
   connectedAt: number;
   subscribed: boolean;
+  passportId?: string;
 }
 
 export interface WsMessageHandlers {
@@ -14,8 +15,8 @@ export interface WsMessageHandlers {
   onStatus?: () => Record<string, unknown>;
 }
 
-export function createWsMeta(now: number): WsMeta {
-  return { connectedAt: now, subscribed: false };
+export function createWsMeta(now: number, passportId?: string): WsMeta {
+  return { connectedAt: now, subscribed: false, passportId };
 }
 
 export function parseWsMessage(raw: string | ArrayBuffer): { type: string; data?: unknown } | null {

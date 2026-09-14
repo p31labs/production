@@ -107,24 +107,27 @@ export class PassportDO extends DurableObject<Env> {
       case 'preferences':
         return this.handlePreferences();
       case 'status':
-        return this.handleStatus();
+        return this.handleStatus(body.passportId as string | undefined);
       default:
         return Response.json({ error: `unsupported type: ${String(body.type)}` }, { status: 400 });
     }
   }
 
-  private handleWebSocketUpgrade(_request: Request): Response {
+  private handleWebSocketUpgrade(request: Request): Response {
+    const url = new URL(request.url);
+    const passportId = url.searchParams.get('passportId') ?? undefined;
     const pair = new WebSocketPair();
     const [client, server] = Object.values(pair);
-    server.serializeAttachment(createWsMeta(Date.now()));
+    server.serializeAttachment(createWsMeta(Date.now(), passportId));
     this.ctx.acceptWebSocket(server);
     return new Response(null, { status: 101, webSocket: client });
   }
 
   async webSocketMessage(ws: WebSocket, message: string | ArrayBuffer): Promise<void> {
+    const meta = ws.deserializeAttachment() as WsMeta | null;
     handleWsMessage(message, ws, {
       now: () => Date.now(),
-      onStatus: () => this.wsStatus(),
+      onStatus: () => this.wsStatus(meta?.passportId),
     });
   }
 
@@ -148,12 +151,12 @@ export class PassportDO extends DurableObject<Env> {
     }
   }
 
-  private wsStatus(): Record<string, unknown> {
+  private wsStatus(passportId?: string): Record<string, unknown> {
     const builds = this.ctx.storage.sql
       .exec('SELECT id, status, created_at FROM builds ORDER BY created_at DESC LIMIT 5')
       .toArray() as SqlStorageRow[];
     return {
-      passportId: this.ctx.id.toString(),
+      passportId: passportId ?? this.ctx.id.toString(),
       sockets: this.ctx.getWebSockets().length,
       builds: builds.map((r) => ({ id: String(r.id), status: String(r.status), createdAt: r.created_at })),
       ts: Date.now(),
@@ -352,8 +355,8 @@ export class PassportDO extends DurableObject<Env> {
     return Response.json(this.getPreferences());
   }
 
-  private handleStatus(): Response {
-    return Response.json({ ok: true, type: 'status', result: this.wsStatus() });
+  private handleStatus(passportId?: string): Response {
+    return Response.json({ ok: true, type: 'status', result: this.wsStatus(passportId) });
   }
 
   private createTask(prompt: string): TaskRecord {

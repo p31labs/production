@@ -87,8 +87,11 @@ describe('ws-protocol (Track A.4 hibernation protocol)', () => {
   });
 
   it('createWsMeta defaults subscribed to false', () => {
-    const meta = createWsMeta(42);
-    expect(meta).toEqual({ connectedAt: 42, subscribed: false });
+    expect(createWsMeta(42)).toEqual({ connectedAt: 42, subscribed: false });
+  });
+
+  it('createWsMeta carries the passportId through', () => {
+    expect(createWsMeta(42, 'smoke')).toEqual({ connectedAt: 42, subscribed: false, passportId: 'smoke' });
   });
 
   it('does not send when protocol dispatch has no reply', () => {

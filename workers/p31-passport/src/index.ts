@@ -164,7 +164,7 @@ async function handleStatus(request: Request, env: Env): Promise<Response> {
     const response = await stub.fetch('https://passport.invalid/status', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'status' }),
+      body: JSON.stringify({ type: 'status', passportId }),
     });
     return new Response(response.body, { status: response.status, headers: response.headers });
   } catch (e) {
