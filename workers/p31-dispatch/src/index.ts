@@ -4,6 +4,14 @@ const dispatchNamespace = 'qpj-dispatch';
 const DEFAULT_CPU_MS = 5000;
 const DEFAULT_SUB_REQUESTS = 50;
 
+function passthroughHeaders(request: Request, env: Env): Headers {
+  const headers = new Headers(request.headers);
+  if (env.P31_DISPATCH_SECRET) {
+    headers.set('X-P31-Dispatch-Secret', env.P31_DISPATCH_SECRET);
+  }
+  return headers;
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -96,11 +104,9 @@ async function handleGoal(request: Request, env: Env): Promise<Response> {
   });
 
   try {
-    const response = await env.PASSPORT_WORKER.fetch(targetUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: bodyToForward,
-    });
+    const response = await env.PASSPORT_WORKER.fetch(
+      new Request(targetUrl, { method: 'POST', headers: passthroughHeaders(request, env), body: bodyToForward }),
+    );
 
     const result = (await response.json()) as { ok: boolean; deferred?: boolean; statusUrl?: string };
 
@@ -171,17 +177,19 @@ async function handleBuild(request: Request, env: Env): Promise<Response> {
 
   const targetUrl = `${env.PASSPORT_WORKER_URL}`;
   try {
-    const response = await env.PASSPORT_WORKER.fetch(targetUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        type: 'build',
-        passportId: body.passportId,
-        buildId: body.buildId,
-        code: body.code,
-        filename: body.filename,
+    const response = await env.PASSPORT_WORKER.fetch(
+      new Request(targetUrl, {
+        method: 'POST',
+        headers: passthroughHeaders(request, env),
+        body: JSON.stringify({
+          type: 'build',
+          passportId: body.passportId,
+          buildId: body.buildId,
+          code: body.code,
+          filename: body.filename,
+        }),
       }),
-    });
+    );
     const data = (await response.json()) as { ok: boolean; artifactKey?: string; error?: string };
     return Response.json(
       {
@@ -214,7 +222,11 @@ async function handleStatus(request: Request, env: Env): Promise<Response> {
 
   const passportWorkerUrl = `${env.PASSPORT_WORKER_URL}`;
   try {
-    const response = await env.PASSPORT_WORKER.fetch(`${passportWorkerUrl}/api/status?${url.searchParams.toString()}`);
+    const response = await env.PASSPORT_WORKER.fetch(
+      new Request(`${passportWorkerUrl}/api/status?${url.searchParams.toString()}`, {
+        headers: passthroughHeaders(request, env),
+      }),
+    );
     return new Response(response.body, { status: response.status, headers: response.headers });
   } catch (e) {
     return Response.json({ error: errMsg(e, 'status check failed') }, { status: 502 });
@@ -230,9 +242,9 @@ async function handleArtifactProxy(request: Request, env: Env): Promise<Response
   }
   const targetUrl = `${env.PASSPORT_WORKER_URL}/api/artifacts/${passportId}/${rest}`;
   try {
-    const response = await env.PASSPORT_WORKER.fetch(targetUrl, {
-      headers: { Accept: request.headers.get('Accept') ?? '*/*' },
-    });
+    const response = await env.PASSPORT_WORKER.fetch(
+      new Request(targetUrl, { headers: passthroughHeaders(request, env) }),
+    );
     return new Response(response.body, { status: response.status, headers: response.headers });
   } catch (e) {
     return Response.json({ error: errMsg(e, 'artifact fetch failed') }, { status: 502 });

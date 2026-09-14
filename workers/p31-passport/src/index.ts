@@ -21,6 +21,13 @@ export default {
     if (url.pathname === '/health') {
       return Response.json({ ok: true, service: 'p31-passport', timestamp: Date.now() });
     }
+    if (
+      request.method === 'POST' &&
+      env.P31_DISPATCH_SECRET &&
+      !(await secureEqual(request.headers.get('X-P31-Dispatch-Secret'), env.P31_DISPATCH_SECRET))
+    ) {
+      return Response.json({ error: 'unauthorized' }, { status: 401 });
+    }
     if (url.pathname === '/api/status') {
       return handleStatus(request, env);
     }
@@ -196,6 +203,20 @@ function passportJson<T>(value: T, status = 200): Response {
 
 function errMsg(e: unknown, fallback: string): string {
   return e instanceof Error ? e.message : String(e ?? fallback);
+}
+
+async function secureEqual(a: string | null, b: string): Promise<boolean> {
+  if (!a) return false;
+  const enc = new TextEncoder();
+  const [da, db] = await Promise.all([
+    crypto.subtle.digest('SHA-256', enc.encode(a)),
+    crypto.subtle.digest('SHA-256', enc.encode(b)),
+  ]);
+  const va = new Uint8Array(da);
+  const vb = new Uint8Array(db);
+  let diff = 0;
+  for (let i = 0; i < va.length; i++) diff |= va[i] ^ vb[i];
+  return diff === 0;
 }
 
 export type {
