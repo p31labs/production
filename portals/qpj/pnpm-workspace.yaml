@@ -1,9 +1,16 @@
+# Build scripts for e2e a11y tooling:
+# - accessibility-checker: postinstall is ibmtelemetry (IBM usage telemetry, not a build step).
+#   Denied — the checker works without it (verified by running e2e/a11y-ibm.spec.ts with this setting).
+# - chromedriver/puppeteer: transitive deps of accessibility-checker; not needed
+#   (IBM checker uses its own engine; Playwright handles browser for the spec).
 allowBuilds:
   '@sentry/cli': true
+  accessibility-checker: false
+  chromedriver: false
   esbuild: true
+  puppeteer: false
   sharp: true
   workerd: true
 
 packages:
   - '.'
-
