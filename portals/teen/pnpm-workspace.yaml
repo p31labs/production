@@ -1,5 +1,0 @@
-allowBuilds:
-  '@sentry/cli': true
-  esbuild: true
-patchedDependencies:
-  '@p31/gamification@1.0.0': patches/@p31+gamification@1.0.0.patch

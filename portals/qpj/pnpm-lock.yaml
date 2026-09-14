@@ -18,8 +18,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
       '@p31/sovereign-core':
-        specifier: ^0.1.0
-        version: 0.1.0(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
+        specifier: file:vendor/p31-sovereign-core-0.1.0.tgz
+        version: file:vendor/p31-sovereign-core-0.1.0.tgz(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
       '@p31/ui':
         specifier: file:vendor/p31-ui-1.3.1.tgz
         version: file:vendor/p31-ui-1.3.1.tgz(use-sync-external-store@1.7.0(react@19.3.0))
@@ -940,8 +940,9 @@ packages:
   '@p31/quantum-core@0.1.0':
     resolution: {integrity: sha512-Oci0AbegMb9KKNnSaL837inOQZGR1ltL69sZVnmzcH+iBjYmQuKqceQLGnW0k72kntFZRCl8uDasv+gq9eLJBA==}
 
-  '@p31/sovereign-core@0.1.0':
-    resolution: {integrity: sha512-U2f5dW+fqSFL0mDlpzLXUKGDykT/aVzf5BZlrGADIedv4sG9Qr81+4I5TINuiWMJdC297MY4gfn/subwLyYDdw==}
+  '@p31/sovereign-core@file:vendor/p31-sovereign-core-0.1.0.tgz':
+    resolution: {integrity: sha512-i3tEexUFwxJmIzQobJKrTfA4EJpr1qLb632NQkWBX/51xtrKyNSCFUkoie+4xGBMC9tdm91NzEmIynRN1UBggA==, tarball: file:vendor/p31-sovereign-core-0.1.0.tgz}
+    version: 0.1.0
     peerDependencies:
       react: ^19.2.0
 
@@ -4874,7 +4875,7 @@ snapshots:
 
   '@p31/quantum-core@0.1.0': {}
 
-  '@p31/sovereign-core@0.1.0(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))':
+  '@p31/sovereign-core@file:vendor/p31-sovereign-core-0.1.0.tgz(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))':
     dependencies:
       ethers: 6.17.0
       peerjs: 1.5.5

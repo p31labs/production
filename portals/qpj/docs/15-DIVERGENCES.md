@@ -100,3 +100,36 @@ QPJ's studio CSS read `--p31-status-warn` (a schema drift); design-core's
 canonical token is `--p31-status-warning`. Aligned during the token audit —
 `studio.css` now reads the canonical token. Kept here so the drift isn't
 reintroduced.
+
+## sovereign-core — vendored tarball, not registry
+
+- **What the registry ships:** `@p31/sovereign-core@0.1.0` from npm (stale copy
+  in the root pnpm store, missing `motionScale`, `soundScale`, `contrastTarget`,
+  `density`, `breathPattern`, `zeitgeber`).
+- **What QPJ uses:** `vendor/p31-sovereign-core-0.1.0.tgz`, packed from
+  `/home/p31/P31-local-workspace/packages/sovereign-core` (the canonical source).
+- **Why product:** the canonical source is actively developed alongside QPJ and
+  other portals. A registry publish would lag. The `link:` protocol was tried but
+  is fragile across fresh clones and `pnpm install` runs. The vendored tarball
+  matches the existing pattern used for `@p31/design-core` and `@p31/ui`.
+- **Cost managed by:** `sync:vendor` script regenerates the tarball from the
+  canonical source. `v:gate` asserts the vendored version matches expectations.
+  Update the tarball with `pnpm pack --pack-destination vendor/` in the canonical
+  source, then re-commit.
+
+## Env access — `import.meta.env` is canonical, `test.env` for edge tests
+
+- **What design-core ships:** `import.meta.env` for Vite env vars.
+- **What QPJ uses:** `import.meta.env` for Vite env vars. `process.env` is NOT
+  used for env reads because Vite does not replace `process.env.VITE_*` at build
+  time without an explicit `define` block, and Cloudflare Workers do not expose
+  `process.env` at module scope.
+- **Why product:** `import.meta.env` is statically replaced by Vite at transform
+  time with literal values — the correct pattern for browser bundles and Worker
+  deployments. Edge-mode tests use Vitest `test.env` projects in
+  `vitest.config.ts` to set `VITE_P31_SUBSTRATE_URL` before module transform,
+  enabling `vi.stubEnv`-free testing.
+- **Cost managed by:** substrate tests split into `substrate.local.test.ts`
+  (runs in `qpj:local` project) and `substrate.edge.test.ts` (runs in
+  `qpj:edge` project). No runtime env patching, no `vi.resetModules`, no dynamic
+  `import()`.
