@@ -12,9 +12,10 @@ surfaces: SiteShell chrome, WorkerChat, WorkshopPage.
    composer spacing is `var(--space-2)`, worker task rows use spacing
    tokens. `token-audit` (see `docs/15`) still green.
 2. **Does every surface handle its empty/boundary state gracefully?**
-   Yes — WorkerChat now renders a tokenized empty state (`role="status"`,
-   icon with `<title>`, heading, suggestion) when a worker has no tasks.
-   PIN entry is in a bordered container inside the hub card.
+   Yes — WorkerChat now renders a tokenized empty state (`role="region"`,
+   labeled landmark, decorative SVG icon, heading, suggestion) when a
+   worker has no tasks. PIN entry is in a bordered container inside the
+   hub card.
 3. **Did the pass touch substrate or the mode gate?**
    No — substrate stayed dormant (`SUBSTRATE_ENABLED=false`,
    `VITE_P31_SUBSTRATE_ENABLED` unset on the app; the `qpj:edge` vitest
@@ -26,9 +27,12 @@ surfaces: SiteShell chrome, WorkerChat, WorkshopPage.
 | Check | Result |
 |-------|--------|
 | `src/__tests__/triad-surfaces.test.tsx` | 8/8 pass (3 fail-today → green after Path C1/C2) |
+| `pnpm test` | 271 pass / 32 files |
 | `pnpm typecheck` | 0 |
 | `pnpm lint` | 0 |
 | `pnpm build` | 0 |
+| `pnpm v:gate` | @p31/design-core 2.3.0 + @p31/ui 1.3.1 |
+| Button migration (Track A/B) | zero raw `button--*` classes in TSX |
 | `token-audit` guard | green (no unresolved `--p31-*`, no hex/rgb) |
 | Substrate code touched | none |
 | New tokens/components/deps | none |

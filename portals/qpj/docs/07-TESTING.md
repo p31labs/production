@@ -1,6 +1,6 @@
 # 07 — Testing
 
-Vitest + jsdom + @testing-library. Run: `pnpm test`. **209 tests / 25 files.**
+Vitest + jsdom + @testing-library. Run: `pnpm test`. **271 tests / 32 files.**
 
 Playwright E2E (3 critical journeys). Run: `npx playwright test`. Tests live in `e2e/`, config in `playwright.config.ts`.
 
