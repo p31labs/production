@@ -114,15 +114,15 @@ export function WorkshopPage() {
 
       <nav className="wbench__tabs" aria-label="Workshop sections">
         {visibleTabs.map((id) => (
-          <button
-            key={id}
+          <Button
+            variant="ghost"
             type="button"
             className={`wbench__tab${tab === id ? ' is-active' : ''}`}
             onClick={() => selectTab(id)}
             aria-current={tab === id ? 'page' : undefined}
           >
             {TAB_LABELS[id]}
-          </button>
+          </Button>
         ))}
       </nav>
 

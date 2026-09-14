@@ -81,8 +81,8 @@ export function TalkPage() {
               const person = getPassport(id);
               const online = Boolean(presence[id]?.online);
               return (
-                <button
-                  key={id}
+                <Button
+                  variant="ghost"
                   type="button"
                   className={`talk-drawer-item${talkTarget === id ? ' talk-drawer-item--active' : ''}`}
                   onClick={() => useQpjStore.setState({ talkTarget: id })}
@@ -90,7 +90,7 @@ export function TalkPage() {
                   <span aria-hidden="true">{person.emoji}</span>
                   <span>{person.pickledName}</span>
                   <span className="lantern-dot" data-lit={online ? 'true' : undefined} aria-hidden="true" />
-                </button>
+                </Button>
               );
             })}
           </div>
