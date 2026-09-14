@@ -1143,6 +1143,15 @@ a.btn {
   flex-direction: column;
   gap: 12px;
 }
+.pin-change__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: var(--space-3);
+  border: 1px solid var(--p31-border);
+  border-radius: var(--p31-radius-md);
+  background: var(--p31-surface);
+}
 .pin-change__actions {
   display: flex;
   align-items: center;
@@ -1669,8 +1678,8 @@ a.btn {
   place-items: center;
   padding: 20px;
   background: oklch(20% 0.03 75 / 0.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
   animation: fade-in var(--p31-duration-standard) var(--p31-easing-standard);
 }
 @keyframes fade-in {
@@ -1834,8 +1843,8 @@ a.btn {
   place-items: center;
   padding: 20px;
   background: var(--p31-scrim);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
   animation: fade-in var(--p31-duration-standard) var(--p31-easing-standard);
 }
 .nudge {

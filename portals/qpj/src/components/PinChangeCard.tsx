@@ -55,7 +55,8 @@ export function PinChangeCard() {
       </div>
 
       {step === 'new' ? (
-        <div className="pin-change__form" role="group" aria-label="New caregiver PIN">
+        <div className="pin-change__panel">
+          <div className="pin-change__form" role="group" aria-label="New caregiver PIN">
           <input
             ref={inputRef}
             className="pin-dialog__input"
@@ -100,6 +101,7 @@ export function PinChangeCard() {
             </p>
           )}
         </div>
+      </div>
       ) : (
         <button type="button" className="button button--secondary" onClick={() => setStep('verify')}>
           Change caregiver PIN
