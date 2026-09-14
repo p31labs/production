@@ -1,3 +1,4 @@
+import { Button } from '@p31/design-core/compositions';
 import { useEffect, useRef } from 'react';
 import { useNotifStore, type Notification } from '../store/useNotifStore';
 import './notification.css';
@@ -19,14 +20,9 @@ function NotifCard({
         <p className="notif__title">{n.title}</p>
         {n.body ? <p className="notif__text">{n.body}</p> : null}
       </div>
-      <button
-        type="button"
-        className="notif__close"
-        onClick={() => onDismiss(n.id)}
-        aria-label="Dismiss notification"
-      >
+      <Button type="button" className="notif__close" onClick={() => onDismiss(n.id)} aria-label="Dismiss notification">
         ×
-      </button>
+      </Button>
     </div>
   );
 }

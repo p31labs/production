@@ -1,3 +1,4 @@
+import { Button } from '@p31/design-core/compositions';
 import { useRef, useState } from 'react';
 
 export interface PinDialogProps {
@@ -58,17 +59,17 @@ export function PinDialog({
           autoFocus
         />
         <div className="pin-dialog__actions">
-          <button type="button" className="button button--ghost" onClick={onCancel}>
+          <Button type="button" variant="ghost" onClick={onCancel}>
             Back to the street
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
-            className="button button--primary"
+            variant="primary"
             disabled={value.length < pinLength}
             onClick={() => submit(value)}
           >
             Unlock
-          </button>
+          </Button>
         </div>
         {error && (
           <p className="pin-dialog__error" role="alert">

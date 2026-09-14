@@ -1,3 +1,4 @@
+import { Button } from '@p31/design-core/compositions';
 import { useState } from 'react';
 import { useQpjStore } from '../store/useQpjStore';
 import { useSimulatedPresence } from '../hooks/useSimulatedPresence';
@@ -96,13 +97,14 @@ export function StreetPage() {
             <span aria-hidden="true">🔑</span> Set up your shelf to keep what you make — keys stay on this device.
           </p>
 
-          <button
+          <Button
             type="button"
-            className="button button--secondary button--sm"
+            variant="secondary"
+            size="sm"
             onClick={openEntry}
           >
             Set up your shelf →
-          </button>
+          </Button>
         </section>
       )}
 

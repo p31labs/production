@@ -1,3 +1,4 @@
+import { Button } from '@p31/design-core/compositions';
 import { useRef, useState } from 'react';
 import { useQpjStore } from '../store/useQpjStore';
 import { PinDialog } from './PinDialog';
@@ -79,21 +80,17 @@ export function PinChangeCard() {
             autoFocus
           />
           <p className="pin-change__actions">
-            <button
-              type="button"
-              className="button button--ghost"
-              onClick={() => setStep('idle')}
-            >
+            <Button type="button" variant="ghost" onClick={() => setStep('idle')}>
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="button button--primary"
+              variant="primary"
               disabled={newPin.length < 4}
               onClick={() => submitNew(newPin)}
             >
               Set new PIN
-            </button>
+            </Button>
           </p>
           {error && (
             <p className="pin-dialog__error" role="alert">
@@ -103,9 +100,9 @@ export function PinChangeCard() {
         </div>
       </div>
       ) : (
-        <button type="button" className="button button--secondary" onClick={() => setStep('verify')}>
+        <Button type="button" variant="secondary" onClick={() => setStep('verify')}>
           Change caregiver PIN
-        </button>
+        </Button>
       )}
     </section>
   );

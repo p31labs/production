@@ -1,3 +1,4 @@
+import { Button } from '@p31/design-core/compositions';
 import { useQpjStore } from '../store/useQpjStore';
 
 export function Toast() {
@@ -9,14 +10,9 @@ export function Toast() {
   return (
     <div className={`toast toast--${toast.type ?? 'info'}`} role="status" aria-live="polite">
       <span className="toast__message">{toast.message}</span>
-      <button
-        type="button"
-        className="toast__close"
-        onClick={clearToast}
-        aria-label="Dismiss notification"
-      >
+      <Button type="button" className="toast__close" onClick={clearToast} aria-label="Dismiss notification">
         ×
-      </button>
+      </Button>
     </div>
   );
 }

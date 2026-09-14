@@ -1,3 +1,4 @@
+import { Button } from '@p31/design-core/compositions';
 import { useQpjStore } from '../store/useQpjStore';
 import { getPassport } from '../lib/passports';
 import { navigateTo } from '../lib/routes';
@@ -225,9 +226,9 @@ export function YouPage() {
           wait on the other side of this door.
         </p>
         <div className="you__hatch-actions">
-          <button type="button" className="button button--primary" onClick={() => navigateTo('workshop')}>
+          <Button type="button" variant="primary" onClick={() => navigateTo('workshop')}>
             Open the hatch
-          </button>
+          </Button>
         </div>
       </section>
     </main>
