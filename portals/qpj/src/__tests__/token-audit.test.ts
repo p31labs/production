@@ -103,4 +103,16 @@ describe('design-system surface guards', () => {
     const { defs } = readForAudit();
     expect(reads.filter((r) => !defs.has(r))).toEqual([]);
   });
+
+  it('TSX string literals var(--p31-*) resolve to definitions', () => {
+    const reads: string[] = [];
+    for (const f of listSrcTsx('src')) {
+      const src = readFileSync(f, 'utf8');
+      for (const m of src.matchAll(/['"`]var\(--p31-[a-z0-9-]+\)['"`]/g)) {
+        reads.push(m[0].slice(5, -2));
+      }
+    }
+    const { defs } = readForAudit();
+    expect(reads.filter((r) => !defs.has(r))).toEqual([]);
+  });
 });
