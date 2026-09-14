@@ -45,10 +45,12 @@ for (const route of ROUTES) {
     const qpwOwned = results.violations.filter((v) => !isVendor(v));
     expect(qpwOwned).toEqual([]);
 
-    // Vendor counts are pinned (axe groups by rule, not node).
-    // A change signals design-core changed (revisit docs/24).
-    const vendorCount = results.violations.filter(isVendor).length;
-    const expectedVendorCount = route.hash === '#/entry' || route.hash === '#/you' ? 2 : 1;
-    expect(vendorCount).toBe(expectedVendorCount);
+    // Vendor IDs are pinned — a change (vendor fixed, added, or removed) fails loudly.
+    const vendorIds = results.violations.filter(isVendor).map((v) => v.id).sort();
+    const expectedVendorIds =
+      route.hash === '#/entry' || route.hash === '#/you'
+        ? ['aria-allowed-attr', 'color-contrast']
+        : ['aria-allowed-attr'];
+    expect(vendorIds).toEqual(expectedVendorIds);
   });
 }
