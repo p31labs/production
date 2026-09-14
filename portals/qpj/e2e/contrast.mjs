@@ -1,14 +1,18 @@
 import { chromium } from 'playwright';
+import { APCAcontrast, sRGBtoY } from 'apca-w3';
 
-// e2e/contrast.mjs — WCAG 2.x contrast verification with parent-chain bg resolution.
+// e2e/contrast.mjs — WCAG 2.x + APCA contrast verification with parent-chain bg resolution.
 // Usage: node e2e/contrast.mjs [--route #/entry] [--selectors .btn,.btn-sm]
-//   Without --selectors: runs self-test (.btn on #/entry must equal 1.68:1).
+//   Without --selectors: runs self-test (.btn on #/entry must equal 1.68:1 WCAG).
 //
 // For each selector: resolves effective background by walking the parent chain
 // (transparent elements inherit the nearest opaque ancestor's background; falls
 // back to rgb(255,255,255) — the browser default — if none found). Computes the
 // WCAG ratio as (L_higher+0.05)/(L_lower+0.05) where L is relative luminance from
 // sRGB (or OKLCH converted via OKLab). Prints ratio + AA pass/fail at 4.5:1.
+// Also computes APCA Lc via apca-w3 (W3C APCA, by Myndex): directional contrast
+// from -108 to +106 (positive = dark text on light bg; negative = light on dark).
+// APCA thresholds: |Lc| ≥ 60 body, |Lc| ≥ 45 large, |Lc| ≥ 75 small text.
 //
 // Known gaps (results unreliable if any apply, see docs/24):
 //   - background-image (gradients, images)
@@ -19,6 +23,9 @@ import { chromium } from 'playwright';
 
 const AA_THRESHOLD = 4.5;
 const LARGE_TEXT_THRESHOLD = 3.0;
+const APCA_BODY = 60;
+const APCA_LARGE = 45;
+const APCA_SMALL = 75;
 
 function parseColor(s) {
   const rgb = s.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
@@ -55,6 +62,14 @@ function relLum(rgb) {
       return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
     })
     .reduce((acc, v, i) => acc + [0.2126, 0.7152, 0.0722][i] * v, 0);
+}
+
+// Real APCA via apca-w3 (W3C APCA, by Myndex). Returns directional Lc
+// (-108 to +106) or null if colors can't be parsed.
+function apcaLc(fg, bg) {
+  const fp = parseColor(fg), bp = parseColor(bg);
+  if (!fp || !bp) return null;
+  return APCAcontrast(sRGBtoY(fp), sRGBtoY(bp));
 }
 
 function effectiveBg(page, el) {
@@ -98,11 +113,13 @@ async function run(page, route, selectors) {
     });
     const effBg = await effectiveBg(page, el);
     const r = ratio(info.color, effBg);
-    const passesAA = r !== null && r >= AA_THRESHOLD;
+    const lc = apcaLc(info.color, effBg);
     const sizeNum = parseFloat(info.fontSize);
     const isBold = parseInt(info.fontWeight) >= 600;
     // WCAG large text: ≥24px normal OR ≥18.66px bold (14pt = 18.66px)
     const isLargeText = sizeNum >= 24 || (sizeNum >= 18.66 && isBold);
+    const isSmallText = !isLargeText && sizeNum < 16;
+    const passesAA = r !== null && r >= AA_THRESHOLD;
     const passesAAIfLarge = r !== null && r >= LARGE_TEXT_THRESHOLD;
     const verdict = passesAA
       ? 'AA ✅'
@@ -111,8 +128,14 @@ async function run(page, route, selectors) {
         : passesAAIfLarge
           ? 'AA large-only ⚠️ (normal text fails)'
           : 'AA ❌';
+    // APCA Lc thresholds: |Lc|≥60 body, |Lc|≥45 large, |Lc|≥75 small
+    const absLc = lc !== null ? Math.abs(lc) : 0;
+    const apcaThreshold = isSmallText ? APCA_SMALL : isLargeText ? APCA_LARGE : APCA_BODY;
+    const passesLc = lc !== null && absLc >= apcaThreshold;
+    const polarity = lc !== null ? (lc > 0 ? 'dark-on-light' : lc < 0 ? 'light-on-dark' : 'neutral') : '?';
+    const apcaVerdict = passesLc ? 'APCA ✅' : `APCA ❌ (need |Lc|≥${apcaThreshold}, got ${lc !== null ? lc.toFixed(1) : 'N/A'})`;
     results.push(
-      `${info.sel} "${info.text}" | ${info.fontSize}/${info.fontWeight} | fg=${info.color} effBg=${effBg} | ${r !== null ? r.toFixed(2) + ':1' : 'N/A'} | ${verdict}`
+      `${info.sel} "${info.text}" | ${info.fontSize}/${info.fontWeight} | fg=${info.color} effBg=${effBg} | WCAG=${r !== null ? r.toFixed(2) + ':1' : 'N/A'} APCA Lc=${lc !== null ? lc.toFixed(1) : 'N/A'} (${polarity}) | ${verdict} ${apcaVerdict}`
     );
   }
   return results;
@@ -146,7 +169,7 @@ async function selfTest(page) {
     const selectors = args[selIdx + 1].split(',');
     const results = await run(page, route, selectors);
     for (const line of results) console.log(line);
-    console.log(`Threshold: ${AA_THRESHOLD}:1 (AA normal), ${LARGE_TEXT_THRESHOLD}:1 (AA large)`);
+    console.log(`Thresholds: WCAG ${AA_THRESHOLD}:1 (AA), ${LARGE_TEXT_THRESHOLD}:1 (AA large) | APCA |Lc|≥${APCA_BODY} body, ${APCA_LARGE} large, ${APCA_SMALL} small`);
   }
   await browser.close();
 })();
