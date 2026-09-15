@@ -1,3 +1,5 @@
+export const ARTIFACT_QUOTA_BYTES = 10 * 1024 * 1024;
+
 export interface PassportRequest {
   type: 'execute' | 'store' | 'recall' | 'identity' | 'preferences' | 'build';
   passportId: string;
@@ -42,6 +44,7 @@ export interface ExecuteBuildResult {
   buildId: string;
   artifactKey?: string;
   error?: string;
+  quota?: { used: number; limit: number };
 }
 
 export interface ExecuteResult {

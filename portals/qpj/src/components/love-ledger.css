@@ -36,10 +36,11 @@
 }
 
 .love-pool__label {
-  font-size: 0.72rem;
+  font-size: 1.25rem;
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--p31-text-tertiary);
+  color: var(--p31-text);
 }
 
 .love-pool__value {

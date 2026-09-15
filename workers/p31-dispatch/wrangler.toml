@@ -10,6 +10,14 @@ PASSPORT_WORKER_URL = "https://p31-passport.trimtab-signal.workers.dev"
 binding = "PASSPORT_WORKER"
 service = "p31-passport"
 
+[[durable_objects.bindings]]
+class_name = "RateLimitDO"
+name = "RATE_LIMITER"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["RateLimitDO"]
+
 [limits]
 cpu_ms = 5000
 sub_requests = 50

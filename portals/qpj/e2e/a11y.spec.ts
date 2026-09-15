@@ -17,7 +17,7 @@ const DIST = 'http://localhost:4173';
 
 // design-core vendored selectors (exact class match — no substrings).
 const VENDOR_NODE_TARGETS = new Set([
-  '.btn', '.btn-primary', '.btn-secondary', '.btn-ghost', '.btn-sm', '.btn-lg',
+  '.btn', '.btn-primary', '.btn-secondary', '.btn-ghost', '.btn-sm', '.btn-md', '.btn-lg',
 ]);
 const VENDOR_VIOLATION_IDS = new Set([
   // SpoonDial `aria-checked` on toggle buttons — vendored markup,

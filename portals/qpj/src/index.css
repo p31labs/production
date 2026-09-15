@@ -476,8 +476,13 @@ a.btn {
 }
 .bottom-nav__button--active {
   background: var(--p31-accent-soft);
-  color: var(--p31-accent);
+  color: var(--p31-accent-bright);
   font-weight: 700;
+}
+/* Lantern: accent-bright (63%) on accent-soft (93%) drops to 2.90:1 —
+   keep the warmer accent here (3.70:1, opt-in theme, non-gated). */
+html[data-qpj-theme='lantern'] .bottom-nav__button--active {
+  color: var(--p31-accent);
 }
 .bottom-nav__glyph {
   position: relative;
@@ -578,6 +583,7 @@ a.btn {
 .btn.btn-ghost {
   color: var(--p31-text-secondary);
   border-color: var(--p31-border);
+  background: transparent;
 }
 .btn.btn-ghost:hover {
   color: var(--p31-text);
@@ -1323,7 +1329,7 @@ a.btn {
   border: 1px solid var(--p31-border);
   border-radius: var(--p31-radius-md);
   background: var(--p31-surface);
-  color: var(--p31-text-secondary);
+  color: var(--p31-text);
   font-weight: 600;
   cursor: pointer;
   transition:

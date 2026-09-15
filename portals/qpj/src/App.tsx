@@ -70,11 +70,11 @@ export default function App() {
           <span className="qpj-brand__name">{BRAND.name}</span>
         </button>
         <div className="qpj-topbar__right">
-          <span className="qpj-mode-chip" data-mode={mode} aria-label={`Mode: ${MODE_LABELS[mode]}`}>
+          <span className="qpj-mode-chip" data-mode={mode} role="status">
             <span className="qpj-mode-chip__dot" aria-hidden="true" />
             {MODE_LABELS[mode]}
           </span>
-          <span className="qpj-topbar__spoons" aria-label={`${spoons} of 5 spoons`}>
+          <span className="qpj-topbar__spoons" role="status">
             <span className="sr-only">{spoons} of 5 spoons</span>
             <SpoonDial level={spoons} onChange={(n) => setSpoons(n)} className="qpj-spoons" />
           </span>

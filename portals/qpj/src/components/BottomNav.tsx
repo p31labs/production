@@ -40,7 +40,7 @@ export function BottomNav({ active, onNavigate, mode }: BottomNavProps) {
           </button>
         );
       })}
-      <div className="bottom-nav__mode" aria-label={`Mode: ${modeLabel}`}>
+      <div className="bottom-nav__mode" role="status" aria-live="polite">
         <span className="bottom-nav__mode-dot" aria-hidden="true" />
         <span className="bottom-nav__mode-label">{modeLabel}</span>
       </div>

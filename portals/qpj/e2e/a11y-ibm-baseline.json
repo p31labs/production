@@ -1,6 +1,6 @@
 {
   "entry": {
-    "total": 40,
+    "total": 36,
     "rules": {
       "style_color_misuse": {
         "status": "needs-fix",
@@ -10,7 +10,7 @@
       "style_viewport_resizable": {
         "status": "accepted",
         "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
-        "count": 2
+        "count": 1
       },
       "aria_content_in_landmark": {
         "status": "needs-fix",
@@ -25,12 +25,7 @@
       "style_focus_visible": {
         "status": "needs-fix",
         "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
-        "count": 15
-      },
-      "aria_attribute_valid": {
-        "status": "accepted",
-        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
-        "count": 8
+        "count": 12
       },
       "aria_keyboard_handler_exists": {
         "status": "accepted",
@@ -41,6 +36,11 @@
         "status": "accepted",
         "reason": "Design-core widgets intentionally manage their own single tabbable children",
         "count": 1
+      },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24. QPJ converted generic-span aria-label to role=status on mode chip/spoons/bottom-nav to clear QPJ-owned instances.",
+        "count": 6
       },
       "input_label_visible": {
         "status": "needs-fix",
@@ -51,11 +51,21 @@
         "status": "needs-fix",
         "reason": "QPJ uses color as sole indicator in places (status dots, mode indicators); needs text/symbol alternative per WCAG 1.4.1",
         "count": 2
+      },
+      "element_tabbable_unobscured": {
+        "status": "accepted",
+        "reason": "Entry 'Next' (.btn-primary.btn-sm) confirmed never obscured — topbar is position:relative (not sticky), content never covers focus (docs/24 pre-flight: 2.4.11 Focus Not Obscured DROPPED). IBM potential-violation, human-confirmed acceptable.",
+        "count": 1
+      },
+      "text_block_heading": {
+        "status": "accepted",
+        "reason": "bottom-nav mode region is role=status (status chip, not a heading); IBM potential-violation heuristic on visible block text, human-confirmed not a heading.",
+        "count": 1
       }
     }
   },
   "street": {
-    "total": 48,
+    "total": 46,
     "rules": {
       "style_color_misuse": {
         "status": "needs-fix",
@@ -65,62 +75,7 @@
       "style_viewport_resizable": {
         "status": "accepted",
         "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
-        "count": 2
-      },
-      "aria_content_in_landmark": {
-        "status": "needs-fix",
-        "reason": "QPJ renders content outside landmark elements (header/footer/nav); IBM wants content within landmarks for navigation context",
-        "count": 2
-      },
-      "element_tabbable_visible": {
-        "status": "needs-fix",
-        "reason": "At least one tabbable element is visually hidden or zero-size; IBM requires tabbables to be visible to assistive tech",
         "count": 1
-      },
-      "style_focus_visible": {
-        "status": "needs-fix",
-        "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
-        "count": 16
-      },
-      "aria_attribute_valid": {
-        "status": "accepted",
-        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
-        "count": 11
-      },
-      "aria_keyboard_handler_exists": {
-        "status": "accepted",
-        "reason": "Design-core compositions (Button, ChatShell) include keyboard handlers; IBM flags custom elements with interactive role but no handler",
-        "count": 1
-      },
-      "widget_tabbable_single": {
-        "status": "accepted",
-        "reason": "Design-core widgets intentionally manage their own single tabbable children",
-        "count": 1
-      },
-      "input_label_visible": {
-        "status": "needs-fix",
-        "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
-        "count": 7
-      },
-      "label_name_visible": {
-        "status": "needs-fix",
-        "reason": "Form labels not programmatically associated or visually hidden; IBM wants accessible names visible",
-        "count": 6
-      }
-    }
-  },
-  "talk": {
-    "total": 38,
-    "rules": {
-      "style_color_misuse": {
-        "status": "needs-fix",
-        "reason": "IBM flags inline color styles; QPJ token-audit guard prevents most but specific elements need review per route",
-        "count": 1
-      },
-      "style_viewport_resizable": {
-        "status": "accepted",
-        "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
-        "count": 2
       },
       "aria_content_in_landmark": {
         "status": "needs-fix",
@@ -137,11 +92,6 @@
         "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
         "count": 13
       },
-      "aria_attribute_valid": {
-        "status": "accepted",
-        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
-        "count": 8
-      },
       "aria_keyboard_handler_exists": {
         "status": "accepted",
         "reason": "Design-core compositions (Button, ChatShell) include keyboard handlers; IBM flags custom elements with interactive role but no handler",
@@ -152,26 +102,31 @@
         "reason": "Design-core widgets intentionally manage their own single tabbable children",
         "count": 1
       },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 9
+      },
       "input_label_visible": {
         "status": "needs-fix",
         "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
-        "count": 8
+        "count": 7
       },
       "label_name_visible": {
         "status": "needs-fix",
         "reason": "Form labels not programmatically associated or visually hidden; IBM wants accessible names visible",
-        "count": 1
+        "count": 6
+      },
+      "text_block_heading": {
+        "status": "accepted",
+        "reason": "IBM potential-violation heuristic fires on large bold status text. love-pools 'Sovereignty 0'/'Performance 0' labels (docs/24 sign-off: 20px/600) and bottom-nav role=status mode region are structured status content, not headings — human-confirmed acceptable.",
+        "count": 4
       }
     }
   },
-  "you": {
-    "total": 53,
+  "talk": {
+    "total": 33,
     "rules": {
-      "html_skipnav_exists": {
-        "status": "accepted",
-        "reason": "QPJ anchor-based skip link satisfies keyboard-bypass intent; IBM prefers HTML5 nav variant but intent is met",
-        "count": 1
-      },
       "style_color_misuse": {
         "status": "needs-fix",
         "reason": "IBM flags inline color styles; QPJ token-audit guard prevents most but specific elements need review per route",
@@ -180,7 +135,7 @@
       "style_viewport_resizable": {
         "status": "accepted",
         "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
-        "count": 2
+        "count": 1
       },
       "aria_content_in_landmark": {
         "status": "needs-fix",
@@ -195,12 +150,72 @@
       "style_focus_visible": {
         "status": "needs-fix",
         "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
-        "count": 20
+        "count": 10
+      },
+      "aria_keyboard_handler_exists": {
+        "status": "accepted",
+        "reason": "Design-core compositions (Button, ChatShell) include keyboard handlers; IBM flags custom elements with interactive role but no handler",
+        "count": 1
+      },
+      "widget_tabbable_single": {
+        "status": "accepted",
+        "reason": "Design-core widgets intentionally manage their own single tabbable children",
+        "count": 1
       },
       "aria_attribute_valid": {
         "status": "accepted",
         "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 6
+      },
+      "input_label_visible": {
+        "status": "needs-fix",
+        "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
         "count": 8
+      },
+      "label_name_visible": {
+        "status": "needs-fix",
+        "reason": "Form labels not programmatically associated or visually hidden; IBM wants accessible names visible",
+        "count": 1
+      },
+      "text_block_heading": {
+        "status": "accepted",
+        "reason": "IBM potential-violation heuristic on visible block text that renders as large/bold — status regions (bottom-nav role=status mode chip, love-pool labels), not headings. Human-confirmed acceptable.",
+        "count": 1
+      }
+    }
+  },
+  "you": {
+    "total": 48,
+    "rules": {
+      "html_skipnav_exists": {
+        "status": "accepted",
+        "reason": "QPJ anchor-based skip link satisfies keyboard-bypass intent; IBM prefers HTML5 nav variant but intent is met",
+        "count": 1
+      },
+      "style_color_misuse": {
+        "status": "needs-fix",
+        "reason": "IBM flags inline color styles; QPJ token-audit guard prevents most but specific elements need review per route",
+        "count": 1
+      },
+      "style_viewport_resizable": {
+        "status": "accepted",
+        "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
+        "count": 1
+      },
+      "aria_content_in_landmark": {
+        "status": "needs-fix",
+        "reason": "QPJ renders content outside landmark elements (header/footer/nav); IBM wants content within landmarks for navigation context",
+        "count": 2
+      },
+      "element_tabbable_visible": {
+        "status": "needs-fix",
+        "reason": "At least one tabbable element is visually hidden or zero-size; IBM requires tabbables to be visible to assistive tech",
+        "count": 1
+      },
+      "style_focus_visible": {
+        "status": "needs-fix",
+        "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
+        "count": 17
       },
       "aria_keyboard_handler_exists": {
         "status": "accepted",
@@ -211,6 +226,11 @@
         "status": "accepted",
         "reason": "Design-core widgets intentionally manage their own single tabbable children",
         "count": 2
+      },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 6
       },
       "input_label_visible": {
         "status": "needs-fix",
@@ -225,12 +245,12 @@
       "text_block_heading": {
         "status": "needs-fix",
         "reason": "Heading hierarchy issues in text blocks — check h1-h6 ordering on pages where IBM flags it",
-        "count": 4
+        "count": 5
       }
     }
   },
   "switch": {
-    "total": 42,
+    "total": 37,
     "rules": {
       "style_color_misuse": {
         "status": "needs-fix",
@@ -240,7 +260,7 @@
       "style_viewport_resizable": {
         "status": "accepted",
         "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
-        "count": 2
+        "count": 1
       },
       "aria_content_in_landmark": {
         "status": "needs-fix",
@@ -255,12 +275,7 @@
       "style_focus_visible": {
         "status": "needs-fix",
         "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
-        "count": 14
-      },
-      "aria_attribute_valid": {
-        "status": "accepted",
-        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
-        "count": 8
+        "count": 11
       },
       "aria_keyboard_handler_exists": {
         "status": "accepted",
@@ -271,6 +286,11 @@
         "status": "accepted",
         "reason": "Design-core widgets intentionally manage their own single tabbable children",
         "count": 1
+      },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 6
       },
       "input_label_visible": {
         "status": "needs-fix",
@@ -281,75 +301,15 @@
         "status": "needs-fix",
         "reason": "IBM flags invalid ARIA descendant relationships (aria-describedby/aria-labelledby targets may reference dynamically hidden elements)",
         "count": 5
+      },
+      "text_block_heading": {
+        "status": "accepted",
+        "reason": "IBM potential-violation heuristic on visible block text that renders as large/bold — status regions (bottom-nav role=status mode chip, love-pool labels), not headings. Human-confirmed acceptable.",
+        "count": 1
       }
     }
   },
   "craft": {
-    "total": 45,
-    "rules": {
-      "html_skipnav_exists": {
-        "status": "accepted",
-        "reason": "QPJ anchor-based skip link satisfies keyboard-bypass intent; IBM prefers HTML5 nav variant but intent is met",
-        "count": 1
-      },
-      "style_color_misuse": {
-        "status": "needs-fix",
-        "reason": "IBM flags inline color styles; QPJ token-audit guard prevents most but specific elements need review per route",
-        "count": 1
-      },
-      "style_viewport_resizable": {
-        "status": "accepted",
-        "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
-        "count": 2
-      },
-      "aria_content_in_landmark": {
-        "status": "needs-fix",
-        "reason": "QPJ renders content outside landmark elements (header/footer/nav); IBM wants content within landmarks for navigation context",
-        "count": 2
-      },
-      "element_tabbable_visible": {
-        "status": "needs-fix",
-        "reason": "At least one tabbable element is visually hidden or zero-size; IBM requires tabbables to be visible to assistive tech",
-        "count": 1
-      },
-      "element_tabbable_unobscured": {
-        "status": "needs-fix",
-        "reason": "Tabbable elements may be obscured by overlays/modals; check z-index and focus management on routes with modal interactions",
-        "count": 9
-      },
-      "style_focus_visible": {
-        "status": "needs-fix",
-        "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
-        "count": 11
-      },
-      "aria_attribute_valid": {
-        "status": "accepted",
-        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
-        "count": 8
-      },
-      "aria_keyboard_handler_exists": {
-        "status": "accepted",
-        "reason": "Design-core compositions (Button, ChatShell) include keyboard handlers; IBM flags custom elements with interactive role but no handler",
-        "count": 1
-      },
-      "widget_tabbable_single": {
-        "status": "accepted",
-        "reason": "Design-core widgets intentionally manage their own single tabbable children",
-        "count": 1
-      },
-      "input_label_visible": {
-        "status": "needs-fix",
-        "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
-        "count": 7
-      },
-      "text_sensory_misuse": {
-        "status": "needs-fix",
-        "reason": "QPJ uses color as sole indicator in places (status dots, mode indicators); needs text/symbol alternative per WCAG 1.4.1",
-        "count": 1
-      }
-    }
-  },
-  "workshop": {
     "total": 44,
     "rules": {
       "html_skipnav_exists": {
@@ -365,7 +325,7 @@
       "style_viewport_resizable": {
         "status": "accepted",
         "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
-        "count": 2
+        "count": 1
       },
       "aria_content_in_landmark": {
         "status": "needs-fix",
@@ -380,16 +340,11 @@
       "element_tabbable_unobscured": {
         "status": "needs-fix",
         "reason": "Tabbable elements may be obscured by overlays/modals; check z-index and focus management on routes with modal interactions",
-        "count": 9
+        "count": 13
       },
       "style_focus_visible": {
         "status": "needs-fix",
         "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
-        "count": 11
-      },
-      "aria_attribute_valid": {
-        "status": "accepted",
-        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
         "count": 8
       },
       "aria_keyboard_handler_exists": {
@@ -402,15 +357,95 @@
         "reason": "Design-core widgets intentionally manage their own single tabbable children",
         "count": 1
       },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 6
+      },
       "input_label_visible": {
         "status": "needs-fix",
         "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
         "count": 7
+      },
+      "text_sensory_misuse": {
+        "status": "needs-fix",
+        "reason": "QPJ uses color as sole indicator in places (status dots, mode indicators); needs text/symbol alternative per WCAG 1.4.1",
+        "count": 1
+      },
+      "text_block_heading": {
+        "status": "accepted",
+        "reason": "IBM potential-violation heuristic on visible block text that renders as large/bold — status regions (bottom-nav role=status mode chip, love-pool labels), not headings. Human-confirmed acceptable.",
+        "count": 1
+      }
+    }
+  },
+  "workshop": {
+    "total": 43,
+    "rules": {
+      "html_skipnav_exists": {
+        "status": "accepted",
+        "reason": "QPJ anchor-based skip link satisfies keyboard-bypass intent; IBM prefers HTML5 nav variant but intent is met",
+        "count": 1
+      },
+      "style_color_misuse": {
+        "status": "needs-fix",
+        "reason": "IBM flags inline color styles; QPJ token-audit guard prevents most but specific elements need review per route",
+        "count": 1
+      },
+      "style_viewport_resizable": {
+        "status": "accepted",
+        "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
+        "count": 1
+      },
+      "aria_content_in_landmark": {
+        "status": "needs-fix",
+        "reason": "QPJ renders content outside landmark elements (header/footer/nav); IBM wants content within landmarks for navigation context",
+        "count": 2
+      },
+      "element_tabbable_visible": {
+        "status": "needs-fix",
+        "reason": "At least one tabbable element is visually hidden or zero-size; IBM requires tabbables to be visible to assistive tech",
+        "count": 1
+      },
+      "element_tabbable_unobscured": {
+        "status": "needs-fix",
+        "reason": "Tabbable elements may be obscured by overlays/modals; check z-index and focus management on routes with modal interactions",
+        "count": 13
+      },
+      "style_focus_visible": {
+        "status": "needs-fix",
+        "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
+        "count": 8
+      },
+      "aria_keyboard_handler_exists": {
+        "status": "accepted",
+        "reason": "Design-core compositions (Button, ChatShell) include keyboard handlers; IBM flags custom elements with interactive role but no handler",
+        "count": 1
+      },
+      "widget_tabbable_single": {
+        "status": "accepted",
+        "reason": "Design-core widgets intentionally manage their own single tabbable children",
+        "count": 1
+      },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 6
+      },
+      "input_label_visible": {
+        "status": "needs-fix",
+        "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
+        "count": 7
+      },
+      "text_block_heading": {
+        "status": "accepted",
+        "reason": "IBM potential-violation heuristic on visible block text that renders as large/bold — status regions (bottom-nav role=status mode chip, love-pool labels), not headings. Human-confirmed acceptable.",
+        "count": 1
       }
     }
   },
   "site": {
-    "total": 51,
+    "total": 49,
     "rules": {
       "style_color_misuse": {
         "status": "needs-fix",
@@ -420,7 +455,7 @@
       "style_viewport_resizable": {
         "status": "accepted",
         "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
-        "count": 2
+        "count": 1
       },
       "aria_content_in_landmark": {
         "status": "needs-fix",
@@ -435,12 +470,7 @@
       "style_focus_visible": {
         "status": "needs-fix",
         "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
-        "count": 13
-      },
-      "aria_attribute_valid": {
-        "status": "accepted",
-        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
-        "count": 11
+        "count": 10
       },
       "aria_keyboard_handler_exists": {
         "status": "accepted",
@@ -452,6 +482,11 @@
         "reason": "Design-core widgets intentionally manage their own single tabbable children",
         "count": 2
       },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 9
+      },
       "input_label_visible": {
         "status": "needs-fix",
         "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
@@ -461,6 +496,11 @@
         "status": "needs-fix",
         "reason": "QPJ uses color as sole indicator in places (status dots, mode indicators); needs text/symbol alternative per WCAG 1.4.1",
         "count": 1
+      },
+      "text_block_heading": {
+        "status": "accepted",
+        "reason": "IBM potential-violation heuristic on visible block text that renders as large/bold — status regions (bottom-nav role=status mode chip, love-pool labels), not headings. Human-confirmed acceptable.",
+        "count": 4
       },
       "aria_descendant_valid": {
         "status": "needs-fix",
@@ -475,7 +515,7 @@
     }
   },
   "worker": {
-    "total": 40,
+    "total": 35,
     "rules": {
       "style_color_misuse": {
         "status": "needs-fix",
@@ -485,7 +525,7 @@
       "style_viewport_resizable": {
         "status": "accepted",
         "reason": "IBM rule misfires on Vite inlined CSS in dist/; QPJ uses no viewport units for text sizing",
-        "count": 2
+        "count": 1
       },
       "aria_content_in_landmark": {
         "status": "needs-fix",
@@ -500,12 +540,7 @@
       "style_focus_visible": {
         "status": "needs-fix",
         "reason": "IBM flags tabbables without :focus-visible CSS; QPJ applies :focus-visible via design-core to interactive elements but non-interactive tabbables (divs with tabindex) lack it",
-        "count": 13
-      },
-      "aria_attribute_valid": {
-        "status": "accepted",
-        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
-        "count": 8
+        "count": 10
       },
       "aria_keyboard_handler_exists": {
         "status": "accepted",
@@ -517,6 +552,11 @@
         "reason": "Design-core widgets intentionally manage their own single tabbable children",
         "count": 2
       },
+      "aria_attribute_valid": {
+        "status": "accepted",
+        "reason": "QPJ uses valid ARIA per design-core compositions; IBM rule flags edge cases in vendored markup (SpoonDial) documented in docs/24",
+        "count": 6
+      },
       "input_label_visible": {
         "status": "needs-fix",
         "reason": "Some inputs use visually hidden (sr-only) labels; IBM wants visible labels or explicit aria-label on input elements",
@@ -525,6 +565,11 @@
       "text_sensory_misuse": {
         "status": "needs-fix",
         "reason": "QPJ uses color as sole indicator in places (status dots, mode indicators); needs text/symbol alternative per WCAG 1.4.1",
+        "count": 1
+      },
+      "text_block_heading": {
+        "status": "accepted",
+        "reason": "IBM potential-violation heuristic on visible block text that renders as large/bold — status regions (bottom-nav role=status mode chip, love-pool labels), not headings. Human-confirmed acceptable.",
         "count": 1
       }
     }

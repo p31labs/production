@@ -1,6 +1,7 @@
 import { DurableObject } from 'cloudflare:workers';
 import { getSandbox } from '@cloudflare/sandbox';
 import { createWsMeta, handleWsMessage } from './ws-protocol';
+import { ARTIFACT_QUOTA_BYTES } from './types';
 import type { WsMeta } from './ws-protocol';
 import type {
   ExecuteBuildInput,
@@ -227,6 +228,25 @@ export class PassportDO extends DurableObject<Env> {
       }
 
       const artifact = await sandbox.readFile(`dist/${filename}`);
+      const size = artifact.size ?? artifact.content.length;
+      const usage = this.artifactUsageBytes();
+      const quotaLimit = Number(this.ctx.storage.sql
+        .exec("SELECT value FROM preferences WHERE key = 'artifact_quota_limit'")
+        .toArray()[0]?.value ?? ARTIFACT_QUOTA_BYTES);
+      if (size + usage > quotaLimit) {
+        await sandbox.setKeepAlive(false);
+        this.ctx.storage.sql.exec(
+          "UPDATE builds SET status = 'failed', updated_at = datetime('now') WHERE id = ?",
+          buildId,
+        );
+        this.notifyBuildUpdate(buildId, 'failed');
+        return {
+          ok: false,
+          buildId,
+          error: `artifact quota exceeded — used ${usage} bytes of ${quotaLimit} limit`,
+          quota: { used: usage, limit: quotaLimit },
+        };
+      }
       const r2Key = `passports/${passportId}/${buildId}/${filename}`;
       await this.env.ARTIFACTS_BUCKET.put(r2Key, artifact.content, {
         httpMetadata: { contentType: 'application/javascript' },
@@ -239,7 +259,7 @@ export class PassportDO extends DurableObject<Env> {
         buildId,
         filename,
         'application/javascript',
-        artifact.size ?? artifact.content.length,
+        size,
         r2Key,
       );
       this.ctx.storage.sql.exec(
@@ -261,6 +281,13 @@ export class PassportDO extends DurableObject<Env> {
       this.notifyBuildUpdate(buildId, 'failed');
       return { ok: false, buildId, error: errMsg(e) };
     }
+  }
+
+  private artifactUsageBytes(): number {
+    const rows = this.ctx.storage.sql
+      .exec('SELECT COALESCE(SUM(size), 0) AS total FROM artifacts')
+      .toArray() as SqlStorageRow[];
+    return Number(rows[0]?.total ?? 0);
   }
 
   private async sandboxId(): Promise<string> {

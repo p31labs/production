@@ -1,10 +1,32 @@
 import type { DispatchRequest } from './types';
 
 import { passthroughHeaders } from './headers';
+import { RateLimitDO } from './rate-limiter';
+
+export { RateLimitDO };
 
 const dispatchNamespace = 'qpj-dispatch';
 const DEFAULT_CPU_MS = 5000;
 const DEFAULT_SUB_REQUESTS = 50;
+const MAX_CODE_CHARS = 500_000;
+const MAX_FILENAME_CHARS = 128;
+const MAX_BUILD_ID_CHARS = 128;
+const RATE_GOAL_MAX = 20;
+const RATE_BUILD_MAX = 10;
+
+async function rateLimit(env: Env, key: string, max: number): Promise<boolean> {
+  const id = env.RATE_LIMITER.idFromName(`${key}:${max}`);
+  const stub = env.RATE_LIMITER.get(id);
+  try {
+    const res = await stub.fetch(
+      new Request(`https://rate-limiter.invalid/check?max=${max}`, { method: 'POST' }),
+    );
+    const data = (await res.json()) as { allowed: boolean };
+    return data.allowed;
+  } catch {
+    return true;
+  }
+}
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -52,6 +74,15 @@ async function handleGoal(request: Request, env: Env): Promise<Response> {
 
   if (!body.passportId) {
     return Response.json({ error: 'passportId required' }, { status: 400 });
+  }
+
+  if (!await rateLimit(env, `goal:${body.passportId}`, RATE_GOAL_MAX)) {
+    return Response.json({
+      ok: false,
+      type: 'goal',
+      passportId: body.passportId,
+      error: 'rate limit exceeded — retry in 60s',
+    }, { status: 429 });
   }
 
   const limitCheck = checkCustomLimits(body);
@@ -148,6 +179,24 @@ async function handleBuild(request: Request, env: Env): Promise<Response> {
   if (!body.buildId || !body.code || !body.filename) {
     return Response.json({ error: 'buildId, code, and filename are required' }, { status: 400 });
   }
+  if (body.buildId.length > MAX_BUILD_ID_CHARS) {
+    return Response.json({ error: `buildId exceeds maximum length (${MAX_BUILD_ID_CHARS})` }, { status: 413 });
+  }
+  if (body.code.length > MAX_CODE_CHARS) {
+    return Response.json({ error: `code exceeds maximum length (${MAX_CODE_CHARS})` }, { status: 413 });
+  }
+  if (body.filename.length > MAX_FILENAME_CHARS) {
+    return Response.json({ error: `filename exceeds maximum length (${MAX_FILENAME_CHARS})` }, { status: 413 });
+  }
+
+  if (!await rateLimit(env, `build:${body.passportId}`, RATE_BUILD_MAX)) {
+    return Response.json({
+      ok: false,
+      type: 'build',
+      passportId: body.passportId,
+      error: 'rate limit exceeded — retry in 60s',
+    }, { status: 429 });
+  }
 
   if (String(env.SUBSTRATE_ENABLED) !== 'true') {
     return Response.json({
@@ -184,7 +233,7 @@ async function handleBuild(request: Request, env: Env): Promise<Response> {
         }),
       }),
     );
-    const data = (await response.json()) as { ok: boolean; artifactKey?: string; error?: string };
+    const data = (await response.json()) as { ok: boolean; artifactKey?: string; error?: string; quota?: { used: number; limit: number } };
     return Response.json(
       {
         ok: data.ok,
@@ -193,6 +242,7 @@ async function handleBuild(request: Request, env: Env): Promise<Response> {
         buildId: body.buildId,
         artifactKey: data.artifactKey,
         error: data.error,
+        quota: data.quota,
       },
       { status: data.ok ? 200 : response.status },
     );

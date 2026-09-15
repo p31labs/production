@@ -3,7 +3,7 @@ import { APCAcontrast, sRGBtoY } from 'apca-w3';
 
 // e2e/contrast.mjs — WCAG 2.x + APCA contrast verification with parent-chain bg resolution.
 // Usage: node e2e/contrast.mjs [--route #/entry] [--selectors .btn,.btn-sm]
-//   Without --selectors: runs self-test (.btn on #/entry must equal 1.68:1 WCAG).
+//   Without --selectors: runs self-test (.btn on #/entry must equal 4.37:1 WCAG).
 //
 // For each selector: resolves effective background by walking the parent chain
 // (transparent elements inherit the nearest opaque ancestor's background; falls
@@ -48,10 +48,12 @@ function oklabToRgb(L, a, b) {
   let R = +4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s;
   let G = -1.2684380046 * l + 2.6097574011 * m - 0.341319593 * s;
   let B = -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s;
+  // linear RGB -> sRGB gamma encode (missing previously; produced wrong colors)
+  const enc = (v) => (v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(v, 1 / 2.4) - 0.055);
   return [
-    Math.round(Math.max(0, Math.min(1, R)) * 255),
-    Math.round(Math.max(0, Math.min(1, G)) * 255),
-    Math.round(Math.max(0, Math.min(1, B)) * 255),
+    Math.round(Math.max(0, Math.min(1, enc(R))) * 255),
+    Math.round(Math.max(0, Math.min(1, enc(G))) * 255),
+    Math.round(Math.max(0, Math.min(1, enc(B))) * 255),
   ];
 }
 
@@ -147,7 +149,7 @@ async function selfTest(page) {
   const match = line.match(/([\d.]+):1/);
   if (!match) throw new Error(`self-test: could not parse ratio from: ${line}`);
   const v = parseFloat(match[1]);
-  if (Math.abs(v - 1.68) > 0.02) throw new Error(`self-test: expected 1.68:1, got ${v}:1 — formula incorrect`);
+  if (Math.abs(v - 4.37) > 0.02) throw new Error(`self-test: expected 4.37:1, got ${v}:1 — formula incorrect`);
   return line;
 }
 
@@ -164,7 +166,7 @@ async function selfTest(page) {
     // Self-test mode: verify .btn on #/entry
     const line = await selfTest(page);
     console.log(`self-test: ${line}`);
-    console.log('self-test: PASS (formula verified, .btn = 1.68:1)');
+    console.log('self-test: PASS (formula verified, .btn = 4.37:1)');
   } else {
     const selectors = args[selIdx + 1].split(',');
     const results = await run(page, route, selectors);

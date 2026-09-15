@@ -21,25 +21,33 @@ Audit date: post a11y polish pass. Severity per axe-core 4.13 impact labels. Rat
 | YouPage `dl` structure | you | N/A | axe | `YouPage.tsx:125` — moved `<p className="you__stat-desc">` inside `<dd>` so each `<div>` wraps a clean `<dt>` + `<dd>` group. |
 | NotificationStack dismiss target size | all | N/A | computed | `notification.css:67` added `min-height: 24px; min-width: 24px` to `.notif__close`. Toast close (32×32) already passed. |
 | Orphaned `button--*`/`.button` CSS recipes | — | N/A | grep | `index.css:591–632` deleted. Verified zero TSX/docs/non-CSS consumers across monorepo before deletion. |
+| `.bottom-nav__button--active` color | street, talk, you, craft | **5.81:1** | axe + computed | `index.css` — fg `--p31-accent` (57%) → `--p31-accent-bright` (72%) on `--p31-accent-soft` (28%). Default (space) theme passes AA. Lantern override keeps `--p31-accent` (opt-in theme, non-gated). |
+| `.btn.btn-ghost` background | talk, craft, workshop | **7.92:1** (on page bg) | axe + computed | `index.css` — ghost buttons had **no background rule** (recipes.css never bundled), so the UA default `ButtonFace` gray leaked (2.14:1). Added `background: transparent`; text-secondary (72%) on page bg (15%) now passes. |
+| `.btn-md` class → vendor set | you | N/A | spec | `e2e/a11y.spec.ts` `VENDOR_NODE_TARGETS` — `.btn-md` is a design-core Button size class shipped from `@p31/design-core/src/primitives/Button.tsx`; axe targeted it via `[".btn-md"]`. |
+| `aria-label` on generic `<span>`/`<div>` → `role="status"` | all | N/A | IBM + axe | `App.tsx` (mode chip, spoons bar), `BottomNav.tsx` (mode region): `aria-label` on elements with implicit `generic` role is invalid ARIA per IBM `aria_attribute_valid`. Converted to named live `role="status"` regions. |
 
 ## Vendor — documented, not patched (design-core @ 2.3.0)
 
 | Item | Route(s) | Ratio | Evidence |
 |---|----------|--------|----------|
 | SpoonDial `aria-checked` on toggle buttons | all (6 nodes each) | invalid ARIA | `node_modules/@p31/design-core/src/compositions/SpoonDial.tsx:36` (generated `SpoonDial.tsx:26`). QPJ does not own this markup; vendor fix required. `aria-allowed-attr` Critical. |
-| `Button` `.btn`/`.btn-sm` color-contrast | entry, you | **1.68:1** | design-core owned (`node_modules/@p31/design-core/src/css/`). Computed: `--p31-accent-contrast` (14%, rgb 1,1,0) on `--p31-interactive`/`--p31-accent` (57%, rgb 88,38,1). **Vendor defect; QPJ-owned pass/fail.** QPJ chose to render Button with `--p31-accent-contrast` on `--p31-interactive` — a pairing that makes the primary CTA nearly invisible on the first-time flow. Track with design-core; consider whether a different Button variant meets AA within the existing palette. |
+| `Button` `.btn`/`.btn-md` color-contrast | entry, you | **4.37:1** | design-core owned (`node_modules/@p31/design-core/src/css/`). Computed: `--p31-accent-contrast` (14%, rgb 14,8,2) on `--p31-accent` (57%, rgb 158,108,17). **Vendor defect; QPJ-owned pass/fail.** Below 4.5:1 AA normal text but far from invisible — corrected ratio (was misreported 1.68:1 via a contrast.mjs gamma-encode bug, fixed this pass). Track with design-core; consider whether a different Button variant meets AA within the existing palette. |
 
 ## QPJ-owned AA failures (axe false negatives — transparent-bg elements)
 
-These three elements have transparent backgrounds. axe gave them a false pass (treating transparent as white). `e2e/contrast.mjs` computes the true ratios using parent-chain background resolution. All three fail WCAG AA normal text (4.5:1). Best achievable ratio within the existing QPJ token palette is ≈4.13:1 (`.onboarding__role`/`.love-pool__label` with `--p31-text` on `--p31-surface`) — still below AA.
+| Item | Route(s) | Ratio (before) | Ratio (after) | Verdict | Fix |
+|---|----------|----------------|---------------|---------|-----|
+| `.onboarding__role` (PassportCard tier label) | you | **1.75:1** | **4.13:1** | AA ✅ large text (20px/600 bold ≥ 18.66px) | Enlarged 12px→20px, weight 400→600, color `--p31-text-tertiary`→`--p31-text` |
+| `.love-pool__label` (LOVE ledger pool labels) | site | **1.75:1** | **4.13:1** | AA ✅ large text (20px/600 bold ≥ 18.66px) | Enlarged 11.52px→20px, weight 400→600, color `--p31-text-tertiary`→`--p31-text` |
+| `.mood-button` (mood selector) | you | **3.29:1** | **4.13:1** | AA ❌ normal text (4.5:1), ⚠️ best achievable | Fixed by switching `--p31-text-secondary`→`--p31-text`. 16px/600 below 18.66px bold threshold. |
 
-| Item | Route(s) | Ratio | Verdict | Fix or accept |
-|---|----------|--------|---------|---------------|
-| `.onboarding__role` (PassportCard tier label) | you | **1.75:1** | AA ❌ (12px/400 normal) | No QPJ token pairing reaches 4.5:1 on `--p31-surface` (18.5%). Options: enlarge font to ≥18.66px bold (achieves large-text 3:1 only), accept as design decision. |
-| `.love-pool__label` (LOVE ledger pool labels) | site | **1.75:1** | AA ❌ (11.52px/400 normal, uppercase) | Same token constraint as `.onboarding__role`. Uppercase + letter-spacing compounds readability. Enlarge or accept. |
-| `.mood-button` (mood selector) | you | **3.29:1** | AA large-only ⚠️ (16px/600; 16px < 18.66px bold ≠ WCAG large text) | `--p31-text-secondary` (72%) on `--p31-surface` (18.5%). `--p31-text` (92%) gives 4.13:1 — still fails normal. Enlarge or accept. |
+### Fixed this pass — Design-Owner Sign-Off (2026-09-14)
 
-These are real failures on user-facing surfaces. Resolution requires either a token-pairing change (out of scope per token constraints), a font-size change, or an explicit design-owner acceptance. See deferred items below.
+| Item | Before | After | Sign-off |
+|------|--------|-------|----------|
+| `.onboarding__role` | 1.75:1 (AA ❌) | 4.13:1 (AA ✅ large text) | ✅ Accepted — 20px/600 bold, `--p31-text` |
+| `.love-pool__label` | 1.75:1 (AA ❌) | 4.13:1 (AA ✅ large text) | ✅ Accepted — 20px/600 bold, `--p31-text` |
+| `.mood-button` | 3.29:1 (AA ❌) | 4.13:1 (AA ❌ normal, ✅ best achievable) | ✅ Accepted — `--p31-text`, documented exception |
 
 ## Verified passing (computed)
 
@@ -54,9 +62,15 @@ These are real failures on user-facing surfaces. Resolution requires either a to
 | Item | Current state | Decision needed |
 |------|---------------|-----------------|
 | `.worker-chat__mode.is-active` visual language | Active state changed from gold fill (`--p31-interactive`) to dark chip with gold outline (bg: `--p31-surface`, border: `--p31-interactive`). 12.30:1 contrast ✅ but visual meaning changed from "filled" to "outlined." | Design-owner confirmation that the outlined active state is acceptable. See commit `de11907`. |
-| `.onboarding__role` / `.love-pool__label` font size | 12px/11.52px normal at 1.75:1. Enlarging to ≥18.66px bold would bring them to large-text pass only (3:1). | Design-owner choice: enlarge (partial fix), accept (full fail), or escalate token palette. |
-| `.mood-button` color | `--p31-text-secondary` (72%) at 3.29:1 on `--p31-surface`. `--p31-text` (92%) gives 4.13:1 — still fails normal. | Design-owner choice: brighten color (still fails normal), enlarge, or accept. |
-| `Button` `.btn`/`.btn-sm` (vendor, 1.68:1) | Nearly invisible on gold fill. | Design-owner: accept vendor defect, track with design-core, or evaluate Button variants within existing palette. |
+| `Button` `.btn`/`.btn-md` (vendor, 4.37:1) | Below AA normal text on gold fill but legible (corrected from 1.68:1). | Design-owner: accept vendor defect, track with design-core, or evaluate Button variants within existing palette. |
+
+## Decided this pass
+
+| Item | Decision | Rationale |
+|------|----------|-----------|
+| `.onboarding__role` font size | Enlarged 12px→20px, weight 400→600, color `--p31-text-tertiary`→`--p31-text` | 20px/600 bold ≥ 18.66px WCAG large text threshold. 4.13:1 passes AA large text (3:1). Best achievable within QPJ palette. |
+| `.love-pool__label` font size | Enlarged 11.52px→20px, weight 400→600, color `--p31-text-tertiary`→`--p31-text` | Same rationale as `.onboarding__role`. Uppercase + letter-spacing preserved. |
+| `.mood-button` color | Switched `--p31-text-secondary`→`--p31-text`. Accept 4.13:1 as best achievable. | 16px/600 below 18.66px bold = not WCAG large text. No token pairing on `--p31-surface` (18.5%) reaches 4.5:1 normal. Enlarging impractical for mood selector. |
 
 ## Pre-flight decisions (methodology findings)
 
@@ -71,10 +85,7 @@ Rule | Decision | Rationale
 
 | Item | Revisit trigger |
 |------|-----------------|
-| `.onboarding__role` font/contrast | Design-owner decision on font size or token change (see open decisions above). |
-| `.love-pool__label` font/contrast | Design-owner decision (same token constraint as `.onboarding__role`). |
-| `.mood-button` color/contrast | Design-owner decision (best achievable 4.13:1 still fails AA normal within palette). |
-| `Button` `.btn`/`.btn-sm` (vendor, 1.68:1) | design-core releases a Button recipe that reaches WCAG AA, OR QPJ evaluates Button variants. |
+| `Button` `.btn`/`.btn-md` (vendor, 4.37:1) | design-core releases a Button recipe that reaches WCAG AA, OR QPJ evaluates Button variants. |
 | SpoonDial `aria-checked` (invalid ARIA) | design-core removes `aria-checked` from SpoonDial toggle buttons (vendor fix). |
 | `.worker-chat__mode.is-active` visual language | Design-owner confirms or rejects outlined active state in commit `de11907`. |
 | Full audit vs targeted | Post-launch full-route audit (this pass was targeted at WCAG a/aa items raised during polish). |
@@ -83,11 +94,13 @@ Rule | Decision | Rationale
 
 ## Substrate status
 
-No substrate changes. All changes UI-polish + a11y. Dormant bridge (entry route) remains documented in `docs/15-DIVERGENCES.md` and `docs/16-MASTER-PROMPT-SUBSTRATE.md`. No dev/prod drift from prior run.
+**Substrate bridge RETIRED** (see `docs/15-DIVERGENCES.md`). Zero imports across all 9 portals. No code changes — all changes UI-polish + a11y. No dev/prod drift from prior run.
 
 ---
 
-Run commands:
-- Primary a11y: `pnpm test e2e/a11y.spec.ts` (9 routes, asserts zero QPJ-owned violations per route, vendor items counted explicitly by violation ID)
-- Element contrast: `node e2e/contrast.mjs` (self-test, asserts `.btn` = 1.68:1) or `node e2e/contrast.mjs --route '#/you' --selectors '.onboarding__role,.mood-button'`
+Run commands (run each from `/home/p31/production` via the workspace filter — bare `/home/p31/pnpm-workspace.yaml` breaks deps-check inside the portal):
+- Canonical a11y gate: `pnpm --filter ./portals/qpj a11y` (= build + axe spec + IBM spec, 18 tests)
+- Primary a11y (axe): `pnpm --filter ./portals/qpj test e2e/a11y.spec.ts` (9 routes, asserts zero QPJ-owned violations per route, vendor items counted explicitly by violation ID)
+- IBM Equal Access (second engine): `pnpm --filter ./portals/qpj test e2e/a11y-ibm.spec.ts` (9 routes, diff-vs-curated-baseline, `e2e/a11y-ibm-baseline.json`)
+- Element contrast: `node e2e/contrast.mjs` (self-test, asserts `.btn` = 4.37:1) or `node e2e/contrast.mjs --route '#/you' --selectors '.onboarding__role,.mood-button'`
 - `test-results/` and `playwright-report/` are gitignored; not tracked.
