@@ -1,0 +1,26 @@
+name: P31 Production
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  production:
+    name: Production Gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Hardcoded hex gate (AGENTS.md design gate)
+        run: |
+          if grep -rEn '#[0-9a-fA-F]{3,8}\b' portals --include='*.tsx' --include='*.astro' --include='*.css' --include='*.html' --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=.wrangler --exclude-dir=vendor 2>/dev/null; then
+            echo "❌ Hardcoded hex colors found in portals src (use var(--p31-*) tokens)"
+            exit 1
+          fi
+      - name: Install portal dependencies
+        run: cd portals/design && pnpm install --frozen-lockfile
+      - name: v:gate (portal vendor versions)
+        run: cd portals/design && pnpm v:gate
