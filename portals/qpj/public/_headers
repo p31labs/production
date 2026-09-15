@@ -1,13 +1,6 @@
 /*
-  P31 Portals — Security Headers
-  Matches shell pattern: HSTS, nosniff, X-Frame-Options, Referrer-Policy,
-  Permissions-Policy, CSP (Report-Only + Enforced), Trusted Types.
-*/
-
-/*
-  Global headers — apply to all routes
-*/
-/* CSP allows Google Fonts for portals that use them */
+Origin-Trial: A3QM4uvLcgyK4QZHzgTE0VPzYaR73dFbaZixrIq7eIq1PuxvEm+LxlyrgJYUm0JRAhMzhHOvLS7j5wevh2IV2gYAAABweyJvcmlnaW4iOiJodHRwczovL3AzMWNhLm9yZzo0NDMiLCJmZWF0dXJlIjoiV2ViTUNQIiwiZXhwaXJ5IjoxNzk0ODczNjAwLCJpc1N1YmRkb21haW4iOnRydWUsImlzVGhpc1RhcnB5Ijp0cnVlfQ==
+Origin-Agent-Cluster: ?1
 Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.p31ca.org https://*.trimtab-signal.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self';
 Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.p31ca.org https://*.trimtab-signal.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self';
 Strict-Transport-Security: max-age=31536000; includeSubDomains; preload

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { SpoonDial, MetricBadge } from '@p31/design-core/compositions';
 import { useQpjStore } from './store/useQpjStore';
 import { useHashRoute } from './hooks/useHashRoute';
@@ -11,6 +11,8 @@ import { MeshBridge } from './hooks/MeshBridge';
 import { getPassport, MODE_LABELS } from './lib/passports';
 import { BRAND } from './lib/brand';
 import { navigateTo, type QpjRoute } from './lib/routes';
+import { registerPortalWebMCPTools } from './lib/registerTools';
+import { isWebMCPAvailable } from './lib/webmcp';
 import { BottomNav } from './components/BottomNav';
 import { AvatarMenu } from './components/AvatarMenu';
 import { VerifiedBadge } from './components/topbar/VerifiedBadge';
@@ -45,6 +47,22 @@ export default function App() {
   useSensorySync();
   useSBT();
   useSubstrateWebSocket(passportId);
+
+  useEffect(() => {
+    if (!import.meta.env.PROD || !isWebMCPAvailable()) return;
+    let controller: AbortController | null = null;
+    let disposed = false;
+
+    void registerPortalWebMCPTools().then((ac) => {
+      if (disposed) ac.abort();
+      else controller = ac;
+    });
+
+    return () => {
+      disposed = true;
+      controller?.abort();
+    };
+  }, []);
 
   const passport = useMemo(() => getPassport(passportId), [passportId]);
 
