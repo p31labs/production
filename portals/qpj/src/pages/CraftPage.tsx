@@ -41,7 +41,9 @@ export function CraftPage() {
     setLaunched((n) => n + 1);
     showToast(`“${finalName}” launched`, 'success');
     window.setTimeout(() => {
-      window.location.hash = LAUNCH_ROOMS[Math.floor(Math.random() * LAUNCH_ROOMS.length)];
+      // The street-song opens the spatial music maker (the instrument); other
+      // artifacts return to the family rooms.
+      window.location.hash = artifact.id === 'song' ? '#/song' : LAUNCH_ROOMS[Math.floor(Math.random() * LAUNCH_ROOMS.length)];
     }, 1800);
   };
 

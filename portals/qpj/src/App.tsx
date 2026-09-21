@@ -28,6 +28,7 @@ import { TalkPage } from './pages/TalkPage';
 import { YouPage } from './pages/YouPage';
 import { EntryPage } from './pages/EntryPage';
 import { CraftPage } from './pages/CraftPage';
+import { SongPage } from './pages/SongPage';
 import { WorkshopPage } from './pages/workshop/WorkshopPage';
 import { SwitchPage } from './pages/SwitchPage';
 import { SitePage } from './pages/SitePage';
@@ -140,6 +141,17 @@ export default function App() {
             onRedirected={() => undefined}
           >
             <CraftPage />
+          </ModeGuard>
+        )}
+        {route === 'song' && (
+          <ModeGuard
+            required="maker"
+            title="The street-song is on the maker side"
+            description="Little lights can wander the street — but the instrument opens when a caregiver is here to play along."
+            onElevated={() => undefined}
+            onRedirected={() => undefined}
+          >
+            <SongPage />
           </ModeGuard>
         )}
         {route === 'workshop' && (

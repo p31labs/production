@@ -1,6 +1,6 @@
 import type { PortalMode } from './passports';
 
-export type QpjRoute = 'entry' | 'street' | 'site' | 'worker' | 'talk' | 'you' | 'craft' | 'workshop' | 'switch';
+export type QpjRoute = 'entry' | 'street' | 'site' | 'worker' | 'talk' | 'you' | 'craft' | 'song' | 'workshop' | 'switch';
 
 export interface RouteSpec {
   hash: string;
@@ -17,11 +17,12 @@ export const ROUTES: Record<QpjRoute, RouteSpec> = {
   talk: { hash: '#/talk', path: '/talk', label: 'Talk', minMode: 'spark' },
   you: { hash: '#/you', path: '/you', label: 'You', minMode: 'spark' },
   craft: { hash: '#/craft', path: '/craft', label: 'Craft', minMode: 'maker' },
+  song: { hash: '#/song', path: '/song', label: 'Street-song', minMode: 'maker' },
   workshop: { hash: '#/workshop', path: '/workshop', label: 'Workshop', minMode: 'workshop' },
   switch: { hash: '#/switch', path: '/switch', label: 'Switch', minMode: 'spark' },
 };
 
-export const ROUTE_ORDER: QpjRoute[] = ['street', 'site', 'worker', 'talk', 'you', 'craft', 'workshop', 'switch', 'entry'];
+export const ROUTE_ORDER: QpjRoute[] = ['street', 'site', 'worker', 'talk', 'you', 'craft', 'song', 'workshop', 'switch', 'entry'];
 
 export const DEFAULT_HASH = ROUTES.street.hash;
 

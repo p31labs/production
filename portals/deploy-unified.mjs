@@ -79,7 +79,16 @@ const PORTALS = {
     entryHtml: 'index.html',
     manualChunks: ['src/machines/modeGate.ts', 'src/store/useQpjStore.ts', 'src/lib/routes.ts'],
   },
-  // developer and institutional archived — source of truth is now apps/p31ca and apps/phosphorus31
+  chat: {
+    subdir: 'chat',
+    domain: 'chat.p31ca.org',
+    project: 'p31-portal-chat',
+    type: 'react',
+    sentryProject: null,
+    port: 5197,
+    entryHtml: 'index.html',
+    manualChunks: [],
+  },
 };
 
 function log(msg) {
@@ -144,6 +153,15 @@ function stagePortal(portal, dryRun = false) {
         const src = path.join(srcDir, entry.name);
         fs.cpSync(src, path.join(stagingDir, entry.name), { recursive: true });
       }
+    }
+    // Pages Functions (if a portal defines functions/) ride along into the
+    // deploy output — Cloudflare Pages auto-detects a functions/ dir at the
+    // deploy root. Used by qpj for the /api/instrument/* proxy to the music
+    // maker worker (same-origin identity + WS).
+    const functionsDir = path.join(srcDir, 'functions');
+    if (fs.existsSync(functionsDir)) {
+      fs.cpSync(functionsDir, path.join(stagingDir, 'functions'), { recursive: true });
+      log(`  + Pages Functions: ${functionsDir} -> ${path.join(stagingDir, 'functions')}`);
     }
   } else {
     for (const entry of fs.readdirSync(srcDir, { withFileTypes: true })) {

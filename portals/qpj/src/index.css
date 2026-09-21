@@ -1843,3 +1843,45 @@ html[data-qpj-theme='lantern'] .bottom-nav__button--active {
   flex-wrap: wrap;
   margin-block-start: 10px;
 }
+/* ─── The street-song (the spatial music maker) ───────────────────────────
+   The instrument is embedded same-origin; QPJ supplies the frame. Token-only,
+   barely-there chrome — the instrument is the surface, not the wrapper. */
+.song.page {
+  padding: var(--p31-space-md);
+  gap: var(--p31-space-md);
+  min-height: 100dvh;
+}
+.song__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--p31-space-md);
+  flex-wrap: wrap;
+}
+.song__title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--p31-text);
+}
+.song__subtitle {
+  margin: 4px 0 0;
+  color: var(--p31-text-secondary);
+  font-size: 0.95rem;
+}
+.song__stage {
+  flex: 1;
+  min-height: 0;
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  overflow: hidden;
+  background: var(--p31-bg);
+}
+.song__frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 60vh;
+  border: 0;
+  background: transparent;
+}

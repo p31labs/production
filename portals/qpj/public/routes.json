@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-14T03:18:25.342Z",
+  "generatedAt": "2026-09-21T19:52:35.558Z",
   "routes": [
     {
       "hash": "#/",
@@ -35,6 +35,11 @@
       "hash": "#/craft",
       "minMode": "maker",
       "label": "craft"
+    },
+    {
+      "hash": "#/song",
+      "minMode": "maker",
+      "label": "song"
     },
     {
       "hash": "#/workshop",
