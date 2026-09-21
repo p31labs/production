@@ -944,7 +944,7 @@ packages:
     resolution: {integrity: sha512-Mmh0wkguGKQokSYBwynm4g2esHmGYebVpoTvgQKBUqkkmYFwX3wNQfSmX6l9TZKeiSgs57Jo6Rzxyz0m3oUsdA==}
 
   '@p31/design-core@file:vendor/p31-design-core-2.3.0.tgz':
-    resolution: {integrity: sha512-e7C7cPmBw7zV/X0pMEd9kOsnz6/jExtfjGS3aN508ahwL4Z1J39u9mzG2Qe6CmG/qiafjPNRVRsqElTmquO8NA==, tarball: file:vendor/p31-design-core-2.3.0.tgz}
+    resolution: {integrity: sha512-KEACQMQThISk1xQRNW/uKXx6azTFhKXml7AFgM6GQ27JdJK0iqHUn4Q5rnKW/N817uwRKx43XzX6LVzOsqi/bA==, tarball: file:vendor/p31-design-core-2.3.0.tgz}
     version: 2.3.0
     peerDependencies:
       react: '>=18.0.0'

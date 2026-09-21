@@ -10,6 +10,18 @@
  * @see https://developer.chrome.com/docs/ai/webmcp/imperative-api
  */
 
+/** WebMCP origin trial expiry. After this date, registration is a graceful
+ *  no-op (the trial has concluded; the tool surface should not attempt it).
+ *  Kept as a named constant so the date is a single, greppable line. */
+export const WEBMCP_TRIAL_EXPIRY = new Date('2026-11-16T00:00:00Z');
+
+/** True while the WebMCP origin trial is active. After the expiry, tools
+ *  degrade to a no-op — the app keeps working; the browser tool surface
+ *  simply is not registered. */
+export function webmcpTrialActive(now = new Date()): boolean {
+  return now < WEBMCP_TRIAL_EXPIRY;
+}
+
 export interface WebMCPInputSchemaProperty {
   type: string;
   description?: string;
@@ -117,6 +129,15 @@ export async function registerWebMCPTools(
   options: { exposedTo?: string[] } = {},
 ): Promise<AbortController> {
   const master = new AbortController();
+
+  // Graceful trial-expiry degradation: after 2026-11-16 the browser tool
+  // surface is not registered (the trial has concluded). The portal itself
+  // keeps working; only the WebMCP registration no-ops. Callers that hold the
+  // returned controller can still abort (no-op) without error.
+  if (!webmcpTrialActive()) {
+    master.abort();
+    return master;
+  }
 
   const results = await Promise.allSettled(
     tools.map((tool) => registerWebMCPTool(tool, options)),

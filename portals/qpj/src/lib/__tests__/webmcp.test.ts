@@ -96,3 +96,25 @@ describe('webmcp spec-backed registration', () => {
     expect(webmcp.isWebMCPAvailable()).toBe(true);
   });
 });
+describe('webmcp trial expiry', () => {
+  it('is active before the 2026-11-16 expiry', () => {
+    expect(webmcp.webmcpTrialActive(new Date('2026-10-01T00:00:00Z'))).toBe(true);
+  });
+
+  it('is inactive after the 2026-11-16 expiry (graceful degradation)', () => {
+    expect(webmcp.webmcpTrialActive(new Date('2026-12-01T00:00:00Z'))).toBe(false);
+    expect(webmcp.webmcpTrialActive(new Date('2026-11-16T00:00:01Z'))).toBe(false);
+  });
+
+  it('registration degrades to a no-op after expiry (already-aborted controller)', async () => {
+    // Fake the clock past the 2026-11-16 trial expiry so the internal
+    // webmcpTrialActive() check no-ops registration.
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-12-01T00:00:00Z'));
+    const controller = await webmcp.registerWebMCPTools(
+      [{ name: 'post_expiry', description: 'x', inputSchema: { type: 'object', properties: {} }, execute: () => null, annotations: { readOnlyHint: true } }],
+    );
+    expect(controller.signal.aborted).toBe(true);
+    vi.useRealTimers();
+  });
+});

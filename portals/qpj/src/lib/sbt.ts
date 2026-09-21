@@ -1,5 +1,6 @@
 import { getProfile, updateTetrahedronVertex, addSBTMilestone, computeTetrahedronHash } from '@p31/sovereign-core';
 import type { SBT, Reputation } from '@p31/sovereign-core';
+import { anchorSbt } from './sbt-anchor';
 
 export type SBTKind = 'achievement' | 'credential' | 'affiliation' | 'guardian';
 
@@ -85,6 +86,10 @@ export async function appendSBT(
   chain.blocks.push(record);
   chain.headHash = hash;
   saveChain(chain);
+
+  // Fire the server anchor — makes this block server-authoritative via the
+  // Loom. Never blocks the UI: on failure it queues and retries (offline-safe).
+  void anchorSbt(did, record);
 
   return record;
 }
