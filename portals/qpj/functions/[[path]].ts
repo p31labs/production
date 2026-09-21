@@ -12,11 +12,16 @@
  * uses relative /api/music/* paths and a WS upgrade to /api/music/stream, so
  * same-origin is what makes them work. Identity (the Cloudflare Access cookie,
  * when wired) is carried server-side to the worker's room-key derivation.
+ *
+ * IMPORTANT: derive the URL from request.url — the Pages Function context does
+ * not pass a `url` prop; referencing it crashes the worker (error 1101).
  */
 
 const WORKER = 'https://music-presence.trimtab-signal.workers.dev';
 
-export const onRequest: PagesFunction = async ({ request, url }) => {
+export const onRequest: PagesFunction = async ({ request }) => {
+  const url = new URL(request.url);
+
   // SPA entry: the instrument's own index.html at /song.html.
   if (url.pathname === '/song.html') {
     return fetch(new URL('/', WORKER));

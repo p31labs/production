@@ -154,14 +154,29 @@ function stagePortal(portal, dryRun = false) {
         fs.cpSync(src, path.join(stagingDir, entry.name), { recursive: true });
       }
     }
-    // Pages Functions (if a portal defines functions/) ride along into the
-    // deploy output — Cloudflare Pages auto-detects a functions/ dir at the
-    // deploy root. Used by qpj for the /api/instrument/* proxy to the music
-    // maker worker (same-origin identity + WS).
-    const functionsDir = path.join(srcDir, 'functions');
+    // Pages Functions (if a portal defines functions/) are compiled to a single
+// _worker.js at the deploy root — the reliable way to serve a same-origin
+// proxy (used by qpj for the /api/music/* + /song.html + /assets/* proxy to
+// the music maker worker). The functions/ dir alone is not auto-compiled for
+// every deploy path; _worker.js is.
+const functionsDir = path.join(srcDir, 'functions');
     if (fs.existsSync(functionsDir)) {
       fs.cpSync(functionsDir, path.join(stagingDir, 'functions'), { recursive: true });
-      log(`  + Pages Functions: ${functionsDir} -> ${path.join(stagingDir, 'functions')}`);
+      try {
+        const out = path.join(stagingDir, 'functions-build');
+        fs.rmSync(out, { recursive: true, force: true });
+        execSync(
+          `npx wrangler pages functions build --build-output-directory "${stagingDir}" --outdir "${out}"`,
+          { stdio: 'pipe', cwd: srcDir },
+        );
+        // Pages serves a single _worker.js at the deploy root; the functions
+        // build emits index.js, so rename it.
+        fs.copyFileSync(path.join(out, 'index.js'), path.join(stagingDir, '_worker.js'));
+        fs.rmSync(out, { recursive: true, force: true });
+        log('  + Pages Functions compiled to _worker.js');
+      } catch (e) {
+        log(`  ⚠ Pages Functions compile failed: ${String(e?.message ?? e).slice(0, 200)}`);
+      }
     }
   } else {
     for (const entry of fs.readdirSync(srcDir, { withFileTypes: true })) {
