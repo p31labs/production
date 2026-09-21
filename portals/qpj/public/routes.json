@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-21T19:52:35.558Z",
+  "generatedAt": "2026-09-21T21:28:28.002Z",
   "routes": [
     {
       "hash": "#/",
@@ -38,7 +38,7 @@
     },
     {
       "hash": "#/song",
-      "minMode": "maker",
+      "minMode": "spark",
       "label": "song"
     },
     {

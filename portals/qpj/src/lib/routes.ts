@@ -17,7 +17,7 @@ export const ROUTES: Record<QpjRoute, RouteSpec> = {
   talk: { hash: '#/talk', path: '/talk', label: 'Talk', minMode: 'spark' },
   you: { hash: '#/you', path: '/you', label: 'You', minMode: 'spark' },
   craft: { hash: '#/craft', path: '/craft', label: 'Craft', minMode: 'maker' },
-  song: { hash: '#/song', path: '/song', label: 'Street-song', minMode: 'maker' },
+  song: { hash: '#/song', path: '/song', label: 'Street-song', minMode: 'spark' },
   workshop: { hash: '#/workshop', path: '/workshop', label: 'Workshop', minMode: 'workshop' },
   switch: { hash: '#/switch', path: '/switch', label: 'Switch', minMode: 'spark' },
 };

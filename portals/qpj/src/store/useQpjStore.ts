@@ -1,8 +1,8 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { HeartbeatMesh, type MeshState } from '@p31/sovereign-core';
-import { substrateStorage } from '../lib/substrate-storage';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { substrateStorage, safeLocalStorage } from '../lib/substrate-storage';
 import { isEdgeMode } from '../lib/substrate';
+import { HeartbeatMesh, type MeshState } from '@p31/sovereign-core';
 import type { Preferences } from '@p31/sovereign-core';
 import type { Identity, IdentityStatus } from '../lib/identity';
 import { useNotifStore } from './useNotifStore';
@@ -388,13 +388,16 @@ export const useQpjStore = create<QpjState>()(
         if (typeof window === 'undefined') return;
 
         const passport = getPassport(passportId);
-        const did = `qpj:${passportId}:${state.presenceRoom.replace(/[^a-z0-9.-]/gi, '')}`;
+        // PeerJS IDs cannot contain ':' — use '.' as the separator so the mesh
+        // actually connects (previously 'qpj:dillpickle:garden.lane' was
+        // rejected as an invalid ID and the mesh never worked).
+        const did = `qpj.${passportId}.${state.presenceRoom.replace(/[^a-z0-9.-]/gi, '')}`;
         set({ meshStatus: 'connecting' });
 
         const mesh = new HeartbeatMesh(did, (meshState) => {
           const nodes: Record<PassportId, PresenceNode> = { ...get().presence };
           meshState.nodes.forEach((node) => {
-            const pid = node.did.split(':')[1];
+            const pid = node.did.split('.')[1];
             if (pid && PASSENGER_IDS.includes(pid)) {
               nodes[pid] = {
                 did: node.did,
@@ -471,7 +474,10 @@ export const useQpjStore = create<QpjState>()(
       }),
       merge: (persisted, current) => mergePersistedQpj(persisted, current),
       storage: (() => {
-        return isEdgeMode() ? substrateStorage : undefined;
+        if (isEdgeMode()) return substrateStorage;
+        // Never-throw JSON storage over the safe local wrapper — in-memory
+        // fallback when the browser blocks storage (sandboxed iframe / CSP).
+        return createJSONStorage(() => safeLocalStorage);
       })(),
     }
   )

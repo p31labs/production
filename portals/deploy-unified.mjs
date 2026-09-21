@@ -213,7 +213,11 @@ const functionsDir = path.join(srcDir, 'functions');
   if (portal.type === 'react' && fs.existsSync(path.join(stagingDir, 'index.html'))) {
     let content = fs.readFileSync(path.join(stagingDir, 'index.html'), 'utf8');
     if (!content.includes('/assets/p31-ui.umd.js')) {
-      content = content.replace('</head>', `<script nonce="{{NONCE}}" src="/assets/p31-ui.umd.js"></script>\n</head>`);
+      // p31-ui.umd.js is a UMD bundle that references Node's `process` global.
+      // In a browser it crashes with "process is not defined". Shim it before
+      // the bundle loads so the vendor script (and everything after it) runs.
+      content = content.replace('</head>',
+        `<script>window.process = window.process || { env: {} };</script>\n<script nonce="{{NONCE}}" src="/assets/p31-ui.umd.js"></script>\n</head>`);
     }
     fs.writeFileSync(path.join(stagingDir, 'index.html'), content);
     fs.writeFileSync(path.join(stagingDir, 'wrangler.toml'), [

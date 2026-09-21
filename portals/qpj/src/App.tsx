@@ -144,15 +144,7 @@ export default function App() {
           </ModeGuard>
         )}
         {route === 'song' && (
-          <ModeGuard
-            required="maker"
-            title="The street-song is on the maker side"
-            description="Little lights can wander the street — but the instrument opens when a caregiver is here to play along."
-            onElevated={() => undefined}
-            onRedirected={() => undefined}
-          >
-            <SongPage />
-          </ModeGuard>
+          <SongPage />
         )}
         {route === 'workshop' && (
           <ModeGuard
