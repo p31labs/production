@@ -40,9 +40,29 @@ const LANTERN_TOKENS: Record<string, string> = {
   '--p31-glass-blur': '16px',
 };
 
+const QUANTUM_GLASS_TOKENS: Record<string, string> = {
+  '--p31-bg': 'oklch(6% 0.008 265)',
+  '--p31-bg-deep': 'oklch(4% 0.006 265)',
+  '--p31-surface': 'oklch(11% 0.012 265)',
+  '--p31-surface2': 'oklch(17% 0.02 265)',
+  '--p31-border': 'oklch(26% 0.03 265)',
+  '--p31-border-strong': 'oklch(34% 0.035 265)',
+  '--p31-muted': 'oklch(13% 0.014 265)',
+  '--p31-accent-bright': 'oklch(90% 0.13 195)',
+  '--p31-accent-glow': 'oklch(83% 0.16 195 / 0.55)',
+  '--p31-accent-soft': 'oklch(28% 0.045 195)',
+  '--p31-text': 'oklch(97% 0.003 265)',
+  '--p31-text-secondary': 'oklch(71% 0.01 265)',
+  '--p31-text-tertiary': 'oklch(51% 0.01 265)',
+  '--p31-lantern': 'oklch(83% 0.16 195)',
+  '--p31-star': 'oklch(82% 0.125 90)',
+  '--p31-glass-blur': '20px',
+};
+
 const PACK_TOKENS: Record<string, Record<string, string>> = {
   space: SPACE_TOKENS,
   lantern: LANTERN_TOKENS,
+  'quantum-glass': QUANTUM_GLASS_TOKENS,
 };
 
 function activePackTokens(): Record<string, string> {

@@ -251,7 +251,7 @@ export default function SandboxPage({ active }: SandboxPageProps) {
                   iframe.style.height = '100%';
                   iframe.style.border = 'none';
                   iframe.style.background = '#fff';
-                  iframe.srcdoc = `<html><body><script>try{${sandboxCode}}catch(e){document.body.innerText='Error: '+e.message}<\/script></body></html>`;
+                  iframe.srcdoc = `<html><body><script>try{${sandboxCode}}catch(e){document.body.innerText='Error: '+e.message}</script></body></html>`;
                   // Find the viewport panel and append
                   const vp = document.querySelector('.sandbox-center > div[style]');
                   if (vp) { vp.innerHTML = ''; vp.appendChild(iframe); }

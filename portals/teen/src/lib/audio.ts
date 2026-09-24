@@ -7,7 +7,7 @@ export function getAudioContext(): AudioContext | null {
       if (AudioCtx) {
         audioContext = new AudioCtx();
       }
-    } catch {}
+    } catch { /* noop */ }
   }
   return audioContext;
 }
@@ -27,7 +27,7 @@ export function playNote(freq = 440, type: OscillatorType = 'sine', duration = 0
     gain.connect(ctx.destination);
     osc.start();
     osc.stop(ctx.currentTime + duration);
-  } catch {}
+    } catch { /* noop */ }
 }
 
 export function closeAudioContext() {

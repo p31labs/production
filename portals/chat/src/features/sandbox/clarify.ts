@@ -90,7 +90,7 @@ export interface ClarifyResolution {
 
 export function resolveClarify(prompt: string, answers: Record<string, string>): ClarifyResolution {
   const notes: string[] = [];
-  let out = prompt.trim();
+  const out = prompt.trim();
 
   if (answers.intent && !out.toLowerCase().includes(answers.intent)) {
     notes.push(`intent: ${answers.intent}`);

@@ -22,6 +22,9 @@ export async function generateEd25519Did(): Promise<{ did: string; keyPair: Cryp
 }
 
 import { generatePickleName } from './pickleNames';
+import { generateHybridKeyMaterial, aesGcmWrap, aesGcmUnwrap, derivePinKey } from './pqcIdentity';
+import { base64urlEncode } from '@p31/sovereign-primitives';
+import type { B64KeyMaterial } from './pqcIdentity';
 
 const DB_NAME = 'qpj-identity';
 const DB_VERSION = 1;
@@ -95,6 +98,16 @@ async function encryptPrivate(keyPair: CryptoKeyPair): Promise<{ iv: string; cip
   return { iv: buf64(iv), ciphertext: buf64(new Uint8Array(ciphertext)) };
 }
 
+async function decryptPrivate(iv: string, ciphertext: string): Promise<Uint8Array<ArrayBuffer>> {
+  const deviceKey = await getOrCreateDeviceKey();
+  const pt = await crypto.subtle.decrypt(
+    { name: 'AES-GCM', iv: new Uint8Array(atob(iv).split('').map((c) => c.charCodeAt(0))) },
+    deviceKey,
+    new Uint8Array(atob(ciphertext).split('').map((c) => c.charCodeAt(0))),
+  );
+  return new Uint8Array(pt);
+}
+
 const RECORDS_KEY = (passportId: string) => `qpj:identity:${passportId}`;
 
 async function dbPut(record: IdentityRecord): Promise<void> {
@@ -115,6 +128,15 @@ export interface Identity {
   createdAt: number;
   verified: boolean;
   pickleName?: string;
+  /** Post-quantum key material bound to this identity (ML-DSA-65 + Ed25519). */
+  pqc?: {
+    ed25519Pub: string;
+    mldsa65Pub: string;
+    /** ML-DSA-65 secret key wrapped under the device (non-extractable) key. */
+    mldsa65PrivWrapped: { iv: string; ct: string } | null;
+    /** Same secret re-wrapped under a PIN-derived key (caregiver unlock). */
+    mldsa65PrivPinWrapped?: { iv: string; ct: string } | null;
+  };
 }
 
 interface IdentityRecord extends Identity {
@@ -139,6 +161,7 @@ export async function ensureIdentity(passportId: string): Promise<Identity | nul
     accentHue: existing.accentHue,
     createdAt: existing.createdAt,
     verified: existing.verified,
+    pqc: existing.pqc,
   };
 }
 
@@ -156,12 +179,22 @@ export async function createIdentity(
       createdAt: existing.createdAt,
       verified: existing.verified,
       pickleName: existing.pickleName,
+      pqc: existing.pqc,
     };
   }
   const { did, keyPair } = await generateEd25519Did();
   const { iv, ciphertext } = await encryptPrivate(keyPair);
   const now = Date.now();
   const pickleName = opts.pickleName ?? generatePickleName(passportId);
+
+  // Bind an ML-DSA-65 (FIPS 204) key to the Ed25519 did:key; the ML-DSA secret
+  // key is AES-GCM-wrapped under the device key (same pattern as the Ed25519
+  // private key). Callers may re-wrap it under a PIN-derived key for the
+  // caregiver unlock flow.
+  const hybrid = await generateHybridKeyMaterial();
+  const deviceKey = await getOrCreateDeviceKey();
+  const mldsa65PrivWrapped = await aesGcmWrap(hybrid.mldsa65Priv, deviceKey);
+
   const record: IdentityRecord = {
     passportId,
     did,
@@ -173,6 +206,11 @@ export async function createIdentity(
     pickleName,
     iv,
     ciphertext,
+    pqc: {
+      ed25519Pub: hybrid.ed25519Pub,
+      mldsa65Pub: hybrid.mldsa65Pub,
+      mldsa65PrivWrapped,
+    },
   };
   await dbPut(record);
   return {
@@ -183,6 +221,57 @@ export async function createIdentity(
     createdAt: now,
     verified: true,
     pickleName: record.pickleName,
+    pqc: record.pqc,
+  };
+}
+
+/** Reconstructs the full hybrid key material for a passport (device-unlocked). */
+export async function loadHybridKeyMaterial(passportId: string): Promise<B64KeyMaterial | null> {
+  const record = await dbGet(passportId);
+  if (!record?.pqc) return null;
+  const deviceKey = await getOrCreateDeviceKey();
+  const ed25519PrivPkcs8 = base64urlEncode(await decryptPrivate(record.iv, record.ciphertext));
+  const mldsa65Priv = record.pqc.mldsa65PrivWrapped
+    ? await aesGcmUnwrap(record.pqc.mldsa65PrivWrapped, deviceKey)
+    : '';
+  return {
+    ed25519Pub: record.pqc.ed25519Pub,
+    ed25519PrivPkcs8,
+    mldsa65Pub: record.pqc.mldsa65Pub,
+    mldsa65Priv,
+  };
+}
+
+/**
+ * Re-wraps the ML-DSA-65 secret under a PIN-derived key, giving the caregiver
+ * PIN a second unlock path (device-key + PIN defense in depth).
+ */
+export async function pinWrapMldsa65(passportId: string, pin: string): Promise<boolean> {
+  const record = await dbGet(passportId);
+  if (!record?.pqc?.mldsa65PrivWrapped) return false;
+  const deviceKey = await getOrCreateDeviceKey();
+  const secret = await aesGcmUnwrap(record.pqc.mldsa65PrivWrapped, deviceKey);
+  const pinKey = await derivePinKey(pin);
+  record.pqc.mldsa65PrivPinWrapped = await aesGcmWrap(secret, pinKey);
+  await dbPut(record);
+  return true;
+}
+
+/** Reconstructs hybrid key material via the PIN unlock path. */
+export async function loadHybridKeyMaterialWithPin(
+  passportId: string,
+  pin: string,
+): Promise<B64KeyMaterial | null> {
+  const record = await dbGet(passportId);
+  if (!record?.pqc?.mldsa65PrivPinWrapped) return null;
+  const pinKey = await derivePinKey(pin);
+  const mldsa65Priv = await aesGcmUnwrap(record.pqc.mldsa65PrivPinWrapped, pinKey);
+  const ed25519PrivPkcs8 = base64urlEncode(await decryptPrivate(record.iv, record.ciphertext));
+  return {
+    ed25519Pub: record.pqc.ed25519Pub,
+    ed25519PrivPkcs8,
+    mldsa65Pub: record.pqc.mldsa65Pub,
+    mldsa65Priv,
   };
 }
 
@@ -196,6 +285,7 @@ export async function loadIdentity(passportId: string): Promise<Identity | null>
     accentHue: record.accentHue,
     createdAt: record.createdAt,
     verified: record.verified,
+    pqc: record.pqc,
   };
 }
 
@@ -211,5 +301,6 @@ export async function setIdentityVerified(passportId: string): Promise<Identity 
     accentHue: record.accentHue,
     createdAt: record.createdAt,
     verified: true,
+    pqc: record.pqc,
   };
 }

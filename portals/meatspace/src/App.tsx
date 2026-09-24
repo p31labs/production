@@ -6,6 +6,7 @@ import BottomNav from './components/BottomNav';
 import MapPage from './components/MapPage';
 import TalkPage from './components/TalkPage';
 import ProfilePage from './components/ProfilePage';
+import CalendarSurface from './features/calendar/components/CalendarSurface';
 import { NotificationScreen } from '@p31/ui';
 import { RestOverlay } from '@p31/ui';
 import BreakOverlay from './components/BreakOverlay';
@@ -276,6 +277,7 @@ export default function App() {
       <main className="viewport" id="pages" role="main">
         <MapPage active={tab === 'map'} atoms={atoms} onCheckIn={handleCheckIn} onPing={handlePing} />
         <TalkPage active={tab === 'talk'} />
+        <CalendarSurface active={tab === 'calendar'} />
         <ProfilePage
           active={tab === 'profile'}
           atoms={atoms}

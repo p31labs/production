@@ -1,6 +1,23 @@
 import type { PortalMode } from './passports';
 
-export type QpjRoute = 'entry' | 'street' | 'site' | 'worker' | 'talk' | 'you' | 'craft' | 'song' | 'workshop' | 'switch';
+export type QpjRoute =
+  | 'entry'
+  | 'street'
+  | 'site'
+  | 'worker'
+  | 'talk'
+  | 'you'
+  | 'craft'
+  | 'docs'
+  | 'sheets'
+  | 'slides'
+  | 'song'
+  | 'workshop'
+  | 'switch'
+  | 'home'
+  | 'calendar'
+  | 'mail'
+  | 'drive';
 
 export interface RouteSpec {
   hash: string;
@@ -17,12 +34,33 @@ export const ROUTES: Record<QpjRoute, RouteSpec> = {
   talk: { hash: '#/talk', path: '/talk', label: 'Talk', minMode: 'spark' },
   you: { hash: '#/you', path: '/you', label: 'You', minMode: 'spark' },
   craft: { hash: '#/craft', path: '/craft', label: 'Craft', minMode: 'maker' },
+  docs: { hash: '#/docs', path: '/docs', label: 'Docs', minMode: 'maker' },
+  sheets: { hash: '#/sheets', path: '/sheets', label: 'Sheets', minMode: 'maker' },
+  slides: { hash: '#/slides', path: '/slides', label: 'Slides', minMode: 'maker' },
   song: { hash: '#/song', path: '/song', label: 'Street-song', minMode: 'spark' },
   workshop: { hash: '#/workshop', path: '/workshop', label: 'Workshop', minMode: 'workshop' },
   switch: { hash: '#/switch', path: '/switch', label: 'Switch', minMode: 'spark' },
+  home: { hash: '#/home', path: '/home', label: 'Home', minMode: 'spark' },
+  calendar: { hash: '#/calendar', path: '/calendar', label: 'Calendar', minMode: 'maker' },
+  mail: { hash: '#/mail', path: '/mail', label: 'Mail', minMode: 'maker' },
+  drive: { hash: '#/drive', path: '/drive', label: 'Drive', minMode: 'maker' },
 };
 
-export const ROUTE_ORDER: QpjRoute[] = ['street', 'site', 'worker', 'talk', 'you', 'craft', 'song', 'workshop', 'switch', 'entry'];
+export const ROUTE_ORDER: QpjRoute[] = [
+  'street',
+  'site',
+  'worker',
+  'talk',
+  'you',
+  'craft',
+  'docs',
+  'sheets',
+  'slides',
+  'song',
+  'workshop',
+  'switch',
+  'entry',
+];
 
 export const DEFAULT_HASH = ROUTES.street.hash;
 

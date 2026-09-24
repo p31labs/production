@@ -1,4 +1,4 @@
-export type LoveSource = 'talk' | 'milestone' | 'artifact' | 'identity' | 'mesh' | 'care';
+export type LoveSource = 'talk' | 'milestone' | 'artifact' | 'identity' | 'mesh' | 'care' | 'music';
 
 export interface LoveEntry {
   id: string;
@@ -17,7 +17,66 @@ export const LOVE_WEIGHTS: Record<LoveSource, number> = {
   identity: 3,
   mesh: 0.5,
   care: 1,
+  music: 1,
 };
+
+/** The ethical-gamification guards for the instrument. No streaks, no loss
+ *  aversion, no "come back tomorrow" — rewards are capped and cooldown-gated
+ *  so a child mashing zones cannot farm LOVE, and collaboration (playing a
+ *  zone someone else placed) is what earns, not solo grinding. */
+export const MUSIC_SESSION_WINDOW_MS = 30 * 60_000; // rewards reset each 30 min
+export const MUSIC_MAX_PER_SESSION = 4;
+export const MUSIC_ZONE_COOLDOWN_MS = 60_000; // same zone, no re-reward within a minute
+export const MUSIC_SPOONS_FLOOR = 2; // reward only when the player has ≥2 spoons
+export const CONSTELLATION_THRESHOLDS = [4, 8, 12, 16];
+
+export function sessionMusicEarned(
+  log: LoveEntry[],
+  by: string,
+  now: number,
+  windowMs = MUSIC_SESSION_WINDOW_MS,
+): number {
+  return log
+    .filter((e) => e.source === 'music' && e.kind === 'earn' && e.by === by && now - e.at < windowMs)
+    .reduce((s, e) => s + e.amount, 0);
+}
+
+/** Pure: has this zone been rewarded to `by` within the cooldown window? */
+export function musicZoneOnCooldown(
+  log: LoveEntry[],
+  by: string,
+  zoneId: string,
+  now: number,
+  cooldownMs = MUSIC_ZONE_COOLDOWN_MS,
+): boolean {
+  return log.some(
+    (e) => e.source === 'music' && e.kind === 'earn' && e.by === by && e.to === zoneId && now - e.at < cooldownMs,
+  );
+}
+
+/** Pure: the gated LOVE amount for playing a zone someone else placed.
+ *  Returns 0 when the player is at/below the spoons floor, over the session
+ *  cap, or re-triggering a zone inside its cooldown. */
+export function musicReward(
+  log: LoveEntry[],
+  by: string,
+  zoneId: string,
+  spoons: number,
+  now: number,
+): number {
+  if (spoons < MUSIC_SPOONS_FLOOR) return 0;
+  if (sessionMusicEarned(log, by, now) >= MUSIC_MAX_PER_SESSION) return 0;
+  if (musicZoneOnCooldown(log, by, zoneId, now)) return 0;
+  return LOVE_WEIGHTS.music;
+}
+
+/** Pure: which constellation threshold, if any, a zone count has just crossed
+ *  (a new threshold above the last awarded one). Monotonic — a threshold only
+ *  awards once. Returns the threshold, or 0. */
+export function constellationMilestoneHit(count: number, lastAwarded: number): number {
+  const next = CONSTELLATION_THRESHOLDS.find((t) => t <= count && t > lastAwarded);
+  return next ?? 0;
+}
 
 export const LOVE_CARE_FLOOR = 0.1;
 export const LOVE_CARE_MAX = 1;

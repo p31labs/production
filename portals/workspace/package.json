@@ -1,0 +1,44 @@
+{
+  "name": "@p31/portal-workspace",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "node /home/p31/production/portals/deploy-unified.mjs workspace",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "vitest run",
+    "token-audit": "node scripts/token-audit.mjs",
+    "sync:vendor": "node /home/p31/production/tools/portal-vendor-sync/sync-vendor.mjs --target .",
+    "v:gate": "node /home/p31/production/tools/portal-vendor-sync/v-gate.mjs --target .",
+    "gate": "pnpm typecheck && pnpm lint && pnpm test && pnpm build && pnpm v:gate"
+  },
+  "dependencies": {
+    "@p31/design-core": "file:vendor/p31-design-core-2.3.0.tgz",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "zustand": "^5.0.14",
+    "@p31/ui": "file:vendor/p31-ui-1.3.1.tgz",
+    "@p31/sovereign-primitives": "file:vendor/p31-sovereign-primitives-0.0.1.tgz",
+    "@p31/sovereign-core": "file:vendor/p31-sovereign-core-0.1.0.tgz"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^4.7.0",
+    "eslint": "^10.8.1",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "jsdom": "^30.0.1",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.67.0",
+    "vite": "^6.4.2",
+    "vitest": "^3.0.0"
+  }
+}

@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { substrateStorage, safeLocalStorage } from '../lib/substrate-storage';
 import { isEdgeMode } from '../lib/substrate';
 import { HeartbeatMesh, type MeshState } from '@p31/sovereign-core';
+import { verifyMeshPayload } from '../lib/pqcIdentity';
 import type { Preferences } from '@p31/sovereign-core';
 import type { Identity, IdentityStatus } from '../lib/identity';
 import { useNotifStore } from './useNotifStore';
@@ -55,7 +56,7 @@ export interface Toast {
 
 export const DEFAULT_SPOONS = 3;
 export const DEFAULT_CAREGIVER_PIN = '1234';
-export type QpjTheme = 'space' | 'lantern';
+export type QpjTheme = 'space' | 'lantern' | 'quantum-glass';
 const STORAGE_KEY = 'qpj:store';
 
 let msgSeq = 0;
@@ -388,36 +389,47 @@ export const useQpjStore = create<QpjState>()(
         if (typeof window === 'undefined') return;
 
         const passport = getPassport(passportId);
-        // PeerJS IDs cannot contain ':' — use '.' as the separator so the mesh
-        // actually connects (previously 'qpj:dillpickle:garden.lane' was
-        // rejected as an invalid ID and the mesh never worked).
-        const did = `qpj.${passportId}.${state.presenceRoom.replace(/[^a-z0-9.-]/gi, '')}`;
+        // PeerJS IDs must match /^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/ — colons
+        // AND dots are invalid. Both 'qpj:dillpickle:garden.lane' and the later
+        // 'qpj.dillpickle.garden.lane' were rejected, so the mesh never
+        // connected. Compose from lowercase alphanumerics + hyphens only.
+        const cleanSeg = (seg: string) => seg.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+        const did = [cleanSeg('qpj'), cleanSeg(passportId), cleanSeg(state.presenceRoom)].filter(Boolean).join('-');
         set({ meshStatus: 'connecting' });
 
-        const mesh = new HeartbeatMesh(did, (meshState) => {
-          const nodes: Record<PassportId, PresenceNode> = { ...get().presence };
-          meshState.nodes.forEach((node) => {
-            const pid = node.did.split('.')[1];
-            if (pid && PASSENGER_IDS.includes(pid)) {
-              nodes[pid] = {
-                did: node.did,
-                online: true,
-                mood: node.mood ?? null,
-                spoons: node.spoons,
-                verified: node.verified,
-                lastSeen: node.lastSeen,
-              };
-            }
-          });
-          set({
-            presence: nodes,
-            meshUniform: {
-              symmetry: meshState.symmetry,
-              curvature: meshState.curvature,
-              topology: meshState.topology,
-            },
-          });
-        });
+        const mesh = new HeartbeatMesh(
+          did,
+          (meshState) => {
+            const nodes: Record<PassportId, PresenceNode> = { ...get().presence };
+            meshState.nodes.forEach((node) => {
+              const pid = node.did.split('-')[1];
+              if (pid && PASSENGER_IDS.includes(pid)) {
+                nodes[pid] = {
+                  did: node.did,
+                  online: true,
+                  mood: node.mood ?? null,
+                  spoons: node.spoons,
+                  verified: node.verified,
+                  lastSeen: node.lastSeen,
+                };
+              }
+            });
+            set({
+              presence: nodes,
+              meshUniform: {
+                symmetry: meshState.symmetry,
+                curvature: meshState.curvature,
+                topology: meshState.topology,
+              },
+            });
+          },
+          // PQC peer verification: peers authenticate with a composite
+          // Ed25519 + ML-DSA-65 signature over `did:timestamp`. The verifier
+          // is wired; peers trigger it once they sign their presence (pending
+          // the sovereign-core vendor pipeline shipping the signer — see
+          // P31-local-workspace/packages/sovereign-core/src/mesh.ts).
+          (payload) => verifyMeshPayload(payload),
+        );
 
         const existing = get().meshInstance;
         const prevInstance = existing && existing !== mesh ? existing : null;

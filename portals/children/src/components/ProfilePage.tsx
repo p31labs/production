@@ -144,13 +144,7 @@ export default function ProfilePage({
         )}
       </div>
 
-      {/* DID hidden pending real identity setup */}
-      {false && did && (
-        <div className="companion-card" style={{ marginBottom: 'var(--p31-space-md)' }}>
-          <h3 style={{ fontFamily: 'var(--p31-font-display)', fontSize: 'var(--p31-type-h3)', marginBottom: 'var(--p31-space-sm)' }}>🔑 Your DID</h3>
-          <div className="profile-field" style={{ fontSize: 'var(--p31-type-caption)', wordBreak: 'break-all' }}>{did}</div>
-        </div>
-      )}
+      {/* DID hidden pending real identity setup — removed (dead code) */}
 
       <div style={{ marginBottom: 'var(--p31-space-md)' }}>
         <PassportIdentitySection />

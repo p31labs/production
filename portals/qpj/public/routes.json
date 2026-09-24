@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-21T21:28:28.002Z",
+  "generatedAt": "2026-09-23T19:53:52.319Z",
   "routes": [
     {
       "hash": "#/",
@@ -35,6 +35,21 @@
       "hash": "#/craft",
       "minMode": "maker",
       "label": "craft"
+    },
+    {
+      "hash": "#/docs",
+      "minMode": "maker",
+      "label": "docs"
+    },
+    {
+      "hash": "#/sheets",
+      "minMode": "maker",
+      "label": "sheets"
+    },
+    {
+      "hash": "#/slides",
+      "minMode": "maker",
+      "label": "slides"
     },
     {
       "hash": "#/song",

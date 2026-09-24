@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useMarketplaceStore } from '@/store/marketplaceStore'
 import { listPending, reviewServer } from '@/lib/registryClient'
-import { ROLE_LABEL } from '@/lib/auth'
+import { ROLE_LABEL, setPrincipal, getPrincipal } from '@/lib/auth'
 import { StatusBadge, ScanBadge, CapabilityBadge, CategoryChip } from '@/features/marketplace/components'
 import type { ServerSummary } from '@/types'
 
@@ -13,9 +13,11 @@ import type { ServerSummary } from '@/types'
  */
 export function ReviewQueueSurface() {
   const me = useMarketplaceStore((s) => s.me)
+  const loadMe = useMarketplaceStore((s) => s.loadMe)
   const [pending, setPending] = useState<ServerSummary[] | null>(null)
   const [busy, setBusy] = useState<string | null>(null)
   const [msg, setMsg] = useState<string | null>(null)
+  const [principalInput, setPrincipalInput] = useState(getPrincipal() ?? '')
 
   const load = async () => {
     if (!useMarketplaceStore.getState().me?.can.review) {
@@ -26,6 +28,12 @@ export function ReviewQueueSurface() {
     const p = await listPending()
     setPending(p)
     setMsg(null)
+  }
+
+  const setPrincipalSelf = async () => {
+    setPrincipal(principalInput.trim() || null)
+    await loadMe()
+    void load()
   }
 
   useEffect(() => {
@@ -55,9 +63,19 @@ export function ReviewQueueSurface() {
         </p>
       </section>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--p31-space-2)', marginBottom: 'var(--p31-space-3)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--p31-space-2)', marginBottom: 'var(--p31-space-3)', flexWrap: 'wrap' }}>
         <span className="chip" style={{ color: 'var(--p31-accent-violet)' }}>you: {me ? `${me.principal} · ${ROLE_LABEL[me.role]}` : '…'}</span>
         {canReview && <button type="button" className="btn-sm" onClick={() => void load()}>↻ refresh</button>}
+        <input
+          className="setup-input"
+          style={{ minWidth: 200, padding: '4px 10px', fontSize: 'var(--p31-text-xs)' }}
+          placeholder="set your principal (email / X-Principal)"
+          value={principalInput}
+          onChange={(e) => setPrincipalInput(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter') void setPrincipalSelf() }}
+          aria-label="Set identity principal for registry RBAC"
+        />
+        <button type="button" className="btn-sm" onClick={() => void setPrincipalSelf()}>apply identity</button>
         {msg && <span className="chip" style={{ color: 'var(--p31-accent-gold)' }}>{msg}</span>}
       </div>
 

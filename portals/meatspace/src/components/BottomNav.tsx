@@ -36,6 +36,19 @@ export default function BottomNav({ tab, onTabChange }: BottomNavProps) {
         <span>Talk</span>
       </button>
       <button
+        className={`nav-item${tab === 'calendar' ? ' active' : ''}`}
+        onClick={() => onTabChange('calendar')}
+        role="tab"
+        aria-selected={tab === 'calendar'}
+        id="tab-calendar"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <path d="M3 9h18M8 2v4M16 2v4" />
+        </svg>
+        <span>Calendar</span>
+      </button>
+      <button
         className={`nav-item${tab === 'profile' ? ' active' : ''}`}
         onClick={() => onTabChange('profile')}
         role="tab"

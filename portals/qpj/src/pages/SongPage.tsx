@@ -14,18 +14,21 @@
  * shell's tone carry into the frame via the shared canon tokens the instrument
  * already uses.
  */
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { useQpjStore } from '../store/useQpjStore';
 import { getPassport } from '../lib/passports';
 import { navigateTo } from '../lib/routes';
+import { useSongBridge } from '../hooks/useSongBridge';
 import { Button } from '@p31/design-core/compositions';
 
 export function SongPage() {
   const passportId = useQpjStore((s) => s.passportId);
   const me = getPassport(passportId);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const bridge = useSongBridge(iframeRef);
 
   const instrumentUrl = useMemo(() => {
-    // Same-origin iframe: the browser loads /song, and the app inside makes
+    // Same-origin iframe: the browser loads /song.html, and the app inside makes
     // relative /api/music/* calls that the Pages Function proxies to the
     // music-presence worker. ?room is omitted — the room derives from the
     // authenticated identity server-side.
@@ -43,14 +46,21 @@ export function SongPage() {
         </div>
         <Button variant="ghost" onClick={() => navigateTo('craft')}>← back to the shed</Button>
       </header>
+      {/* The collaborative live line — fed by the instrument's activity over the
+          bridge. The DO log is the source of truth; this is the live hint. */}
+      <p className="song__live" aria-live="polite">
+        {bridge.live ?? `${me.pickledName}'s instrument is waking up`}
+      </p>
       <div className="song__stage">
         <iframe
+          ref={iframeRef}
           className="song__frame"
           src={instrumentUrl}
           title="the spatial music maker"
           sandbox="allow-scripts allow-same-origin"
-          loading="lazy"
+          allow="autoplay"
           referrerPolicy="no-referrer"
+          onLoad={() => bridge.ping()}
         />
       </div>
     </main>

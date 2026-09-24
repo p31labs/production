@@ -1,15 +1,20 @@
 import { useQpjStore } from '../store/useQpjStore';
 
 const NAV_ITEMS = [
+  { route: 'home', glyph: '🏠', label: 'Home' },
   { route: 'street', glyph: '🏘️', label: 'Street' },
   { route: 'talk', glyph: '💬', label: 'Talk' },
-  { route: 'craft', glyph: '🧩', label: 'Craft' },
+  { route: 'docs', glyph: '📄', label: 'Docs' },
+  { route: 'sheets', glyph: '🧮', label: 'Sheets' },
+  { route: 'slides', glyph: '🖼️', label: 'Slides' },
   { route: 'you', glyph: '🪞', label: 'You' },
 ] as const;
 
+const LOCKED_ROUTES = new Set(['docs', 'sheets', 'slides']);
+
 export interface BottomNavProps {
   active: string;
-  onNavigate: (route: 'street' | 'talk' | 'craft' | 'you') => void;
+  onNavigate: (route: 'home' | 'street' | 'talk' | 'docs' | 'sheets' | 'slides' | 'you') => void;
   mode: string;
 }
 
@@ -20,7 +25,7 @@ export function BottomNav({ active, onNavigate, mode }: BottomNavProps) {
     <nav className="bottom-nav" aria-label="Primary">
       {NAV_ITEMS.map((item) => {
         const isActive = active === item.route;
-        const locked = item.route === 'craft' && mode === 'spark';
+        const locked = LOCKED_ROUTES.has(item.route) && mode === 'spark';
         return (
           <button
             key={item.route}

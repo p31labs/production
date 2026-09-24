@@ -33,6 +33,13 @@ import { WorkshopPage } from './pages/workshop/WorkshopPage';
 import { SwitchPage } from './pages/SwitchPage';
 import { SitePage } from './pages/SitePage';
 import { WorkerPage } from './pages/WorkerPage';
+import { DocsSurface } from './features/docs/components/DocsSurface';
+import { SheetsSurface } from './features/sheets/components/SheetsSurface';
+import { SlidesSurface } from './features/slides/components/SlidesSurface';
+import { HomeSurface } from './features/home/HomeSurface';
+import { CalendarSurface } from './features/calendar/CalendarSurface';
+import { MailSurface } from './features/mail/MailSurface';
+import { DriveSurface } from './features/drive/DriveSurface';
 
 export default function App() {
   const { route } = useHashRoute();
@@ -102,6 +109,9 @@ export default function App() {
           </span>
           <ThemeCharm />
           <VerifiedBadge passportId={passportId} />
+          <a href="https://p31ca.org/journey" className="qpj-journey" aria-label="Open the P31 journey" title="Open the P31 journey">
+            <span aria-hidden="true">🧭</span>
+          </a>
           <AvatarMenu
             passportId={passportId}
             open={menuOpen}
@@ -141,6 +151,73 @@ export default function App() {
             onRedirected={() => undefined}
           >
             <CraftPage />
+          </ModeGuard>
+        )}
+        {route === 'docs' && (
+          <ModeGuard
+            required="maker"
+            title="Docs live on the maker side"
+            description="Family documents are shared work — open them with a caregiver in the room."
+            onElevated={() => undefined}
+            onRedirected={() => undefined}
+          >
+            <DocsSurface />
+          </ModeGuard>
+        )}
+        {route === 'sheets' && (
+          <ModeGuard
+            required="maker"
+            title="Sheets live on the maker side"
+            description="Family grids are shared work — open them with a caregiver in the room."
+            onElevated={() => undefined}
+            onRedirected={() => undefined}
+          >
+            <SheetsSurface />
+          </ModeGuard>
+        )}
+        {route === 'slides' && (
+          <ModeGuard
+            required="maker"
+            title="Slides live on the maker side"
+            description="Family decks are shared work — open them with a caregiver in the room."
+            onElevated={() => undefined}
+            onRedirected={() => undefined}
+          >
+            <SlidesSurface />
+          </ModeGuard>
+        )}
+        {route === 'home' && <HomeSurface passportId={passportId} />}
+        {route === 'calendar' && (
+          <ModeGuard
+            required="maker"
+            title="Calendar lives on the maker side"
+            description="The family calendar is shared work — open it with a caregiver in the room."
+            onElevated={() => undefined}
+            onRedirected={() => undefined}
+          >
+            <CalendarSurface />
+          </ModeGuard>
+        )}
+        {route === 'mail' && (
+          <ModeGuard
+            required="maker"
+            title="Mail lives on the maker side"
+            description="Family mail is shared work — open it with a caregiver in the room."
+            onElevated={() => undefined}
+            onRedirected={() => undefined}
+          >
+            <MailSurface />
+          </ModeGuard>
+        )}
+        {route === 'drive' && (
+          <ModeGuard
+            required="maker"
+            title="Drive lives on the maker side"
+            description="Family files are shared work — open them with a caregiver in the room."
+            onElevated={() => undefined}
+            onRedirected={() => undefined}
+          >
+            <DriveSurface />
           </ModeGuard>
         )}
         {route === 'song' && (

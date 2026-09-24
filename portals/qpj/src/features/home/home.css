@@ -1,0 +1,177 @@
+.home-surface {
+  padding: var(--p31-space-6);
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-5);
+}
+
+.home-surface__hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--p31-space-5);
+  flex-wrap: wrap;
+}
+
+.home-surface__greeting {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--p31-text);
+  margin: 0 0 var(--p31-space-2);
+  background: linear-gradient(135deg, var(--p31-text) 30%, var(--p31-text-secondary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-surface__tagline {
+  color: var(--p31-text-secondary);
+  margin: 0;
+  max-width: 42ch;
+}
+
+.home-surface__family {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-4);
+  padding: var(--p31-space-3) var(--p31-space-5);
+  background: var(--p31-surface2);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+}
+
+.home-surface__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: color-mix(in oklab, var(--p31-accent-violet) 25%, transparent);
+  border: 2px solid var(--p31-glass-border);
+}
+
+.home-surface__family-label {
+  font-family: var(--p31-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--p31-text-tertiary);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.home-surface__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--p31-space-5);
+}
+
+.home-surface__card {
+  appearance: none;
+  text-align: left;
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  padding: var(--p31-space-5);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-3);
+  color: inherit;
+  transition: background var(--p31-duration-standard) var(--p31-easing-standard),
+              border-color var(--p31-duration-fast) var(--p31-easing-standard),
+              transform var(--p31-duration-standard) var(--p31-easing-standard);
+}
+
+.home-surface__card:hover,
+.home-surface__card:focus-visible {
+  background: var(--p31-glass-bg-strong);
+  border-color: var(--p31-glass-border-hover);
+  transform: translateY(-4px);
+  outline: 2px solid var(--p31-accent);
+  outline-offset: 2px;
+}
+
+.home-surface__card[data-locked='true'] {
+  opacity: 0.72;
+}
+
+.home-surface__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.home-surface__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--p31-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.home-surface__card[data-accent='docs'] .home-surface__icon { background: color-mix(in oklab, var(--p31-accent) 14%, transparent); }
+.home-surface__card[data-accent='sheets'] .home-surface__icon { background: color-mix(in oklab, var(--p31-accent-green) 14%, transparent); }
+.home-surface__card[data-accent='slides'] .home-surface__icon { background: color-mix(in oklab, var(--p31-accent-violet) 14%, transparent); }
+.home-surface__card[data-accent='calendar'] .home-surface__icon { background: color-mix(in oklab, var(--p31-accent-gold) 16%, transparent); }
+.home-surface__card[data-accent='mail'] .home-surface__icon { background: color-mix(in oklab, var(--p31-accent-violet) 14%, transparent); }
+.home-surface__card[data-accent='drive'] .home-surface__icon { background: color-mix(in oklab, var(--p31-accent-red) 14%, transparent); }
+.home-surface__card[data-accent='craft'] .home-surface__icon { background: color-mix(in oklab, var(--p31-accent) 14%, transparent); }
+
+.home-surface__badge {
+  font-family: var(--p31-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: var(--p31-radius-candy);
+  border: 1px solid currentColor;
+  color: var(--p31-text-tertiary);
+}
+
+.home-surface__badge[data-mode='spark'] { color: var(--p31-accent); background: color-mix(in oklab, var(--p31-accent) 12%, transparent); }
+.home-surface__badge[data-mode='maker'] { color: var(--p31-accent-violet); background: color-mix(in oklab, var(--p31-accent-violet) 12%, transparent); }
+.home-surface__badge[data-mode='workshop'] { color: var(--p31-accent-gold); background: color-mix(in oklab, var(--p31-accent-gold) 12%, transparent); }
+
+.home-surface__card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--p31-text);
+  margin: 0;
+}
+
+.home-surface__card-desc {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--p31-text-secondary);
+  margin: 0;
+}
+
+.home-surface__floor {
+  padding: var(--p31-space-6);
+  border: 1px dashed var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  text-align: center;
+}
+
+.home-surface__floor-text {
+  color: var(--p31-text-secondary);
+  font-size: 1rem;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .home-surface__greeting { font-size: 1.75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-surface__card { transition: none; }
+  .home-surface__card:hover { transform: none; }
+}

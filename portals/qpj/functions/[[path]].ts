@@ -77,6 +77,29 @@ export const onRequest: PagesFunction<{ ASSETS: Fetcher }> = async ({ request, e
     return fetch(target.toString(), init);
   }
 
+  // Forge proxy — QPJ Docs → P31 Forge (document generation).
+  // The browser posts same-origin to /api/forge/*; this function injects the
+  // Forge API key server-side (env.FORGE_API_KEY, a Pages secret) so the key
+  // never leaves the edge. Mirrors the p31-forge worker's /stylize + /compile.
+  if (url.pathname.startsWith('/api/forge/')) {
+    const forge = 'https://p31-forge.trimtab-signal.workers.dev';
+    const suffix = url.pathname.slice('/api/forge/'.length);
+    const target = new URL(`/${suffix}`, forge);
+    target.search = url.search;
+
+    const headers = new Headers(request.headers);
+    headers.delete('host');
+    const key = env.FORGE_API_KEY as string | undefined;
+    if (key) headers.set('X-Forge-Key', key);
+
+    const init: RequestInit = {
+      method: request.method,
+      headers,
+      body: ['GET', 'HEAD'].includes(request.method) ? undefined : await request.arrayBuffer(),
+    };
+    return fetch(target.toString(), init);
+  }
+
   // Everything else is QPJ's own app — serve its static assets (the SPA and
   // its routes). A catch-all _worker.js must pass through the portal's own
   // content or the whole site 404s.

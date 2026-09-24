@@ -17,6 +17,7 @@ const DOMAINS = [
   { project: 'p31-portal-developer',     domain: 'p31ca.org' },
   { project: 'p31-portal-institutional', domain: 'phosphorus31.org' },
   { project: 'p31-portal-design',        domain: 'design.p31ca.org' },
+  { project: 'p31-portal-workspace',     domain: 'workspace.p31ca.org' },
 ];
 
 async function addDomain(project, domain) {

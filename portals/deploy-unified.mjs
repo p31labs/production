@@ -77,7 +77,15 @@ const PORTALS = {
     sentryProject: 'qpj-portal',
     port: 5196,
     entryHtml: 'index.html',
-    manualChunks: ['src/machines/modeGate.ts', 'src/store/useQpjStore.ts', 'src/lib/routes.ts'],
+    manualChunks: [
+      'src/machines/modeGate.ts',
+      'src/store/useQpjStore.ts',
+      'src/lib/routes.ts',
+      'src/lib/pglite.ts',
+      'src/features/docs/lib/docStore.ts',
+      'src/features/sheets/lib/sheetStore.ts',
+      'src/features/slides/lib/slideStore.ts',
+    ],
   },
   chat: {
     subdir: 'chat',
@@ -88,6 +96,43 @@ const PORTALS = {
     port: 5197,
     entryHtml: 'index.html',
     manualChunks: [],
+  },
+  workspace: {
+    subdir: 'workspace',
+    domain: 'workspace.p31ca.org',
+    project: 'p31-portal-workspace',
+    type: 'react',
+    sentryProject: null,
+    port: 5198,
+    entryHtml: 'index.html',
+    manualChunks: [
+      'src/store/workspaceStore.ts',
+      'src/lib/routes.ts',
+      'src/features/kernel/kernel.ts',
+      'src/features/docs/DocsSurface.tsx',
+      'src/features/sheets/SheetsSurface.tsx',
+      'src/features/slides/SlidesSurface.tsx',
+      'src/features/calendar/CalendarSurface.tsx',
+      'src/features/mail/MailSurface.tsx',
+      'src/features/drive/DriveSurface.tsx',
+    ],
+  },
+  'mcp-marketplace': {
+    subdir: 'mcp-marketplace',
+    domain: 'mcp.p31ca.org',
+    project: 'p31-portal-mcp-marketplace',
+    type: 'react',
+    sentryProject: null,
+    port: 5199,
+    entryHtml: 'index.html',
+    // Imports @p31/ui from the vendored source — no legacy UMD global needed.
+    skipUmd: true,
+    manualChunks: [
+      'src/store/marketplaceStore.ts',
+      'src/lib/routes.ts',
+      'src/lib/registryClient.ts',
+      'src/features/playground/PlaygroundSurface.tsx',
+    ],
   },
 };
 
@@ -210,7 +255,7 @@ const functionsDir = path.join(srcDir, 'functions');
     }
   }
 
-  if (portal.type === 'react' && fs.existsSync(path.join(stagingDir, 'index.html'))) {
+  if (portal.type === 'react' && fs.existsSync(path.join(stagingDir, 'index.html')) && !portal.skipUmd) {
     let content = fs.readFileSync(path.join(stagingDir, 'index.html'), 'utf8');
     if (!content.includes('/assets/p31-ui.umd.js')) {
       // p31-ui.umd.js is a UMD bundle that references Node's `process` global.
