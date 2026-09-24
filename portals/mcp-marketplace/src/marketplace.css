@@ -1,0 +1,53 @@
+/* P31 MCP Marketplace — surface additions on top of workspace.css */
+
+/* The workspace uses tabbed `.surface-panel.active` panels (display:none by
+   default). Marketplace surfaces render standalone panels — always visible. */
+.surface-panel {
+  display: flex;
+}
+
+.flex-spacer {
+  flex: 1;
+}
+
+/* Sovereign identity chip */
+.identity-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--p31-radius-full);
+  border: 1px solid var(--p31-glass-border);
+  background: var(--p31-glass-bg);
+  color: var(--p31-text-primary);
+  cursor: pointer;
+  font-family: var(--p31-font-sans);
+}
+.identity-chip:hover {
+  border-color: var(--p31-glass-border-focus, var(--p31-accent));
+  background: var(--p31-glass-bg-hover);
+}
+
+.server-card {
+  cursor: pointer;
+}
+
+.server-card:hover {
+  border-color: var(--p31-glass-border-focus, var(--p31-accent));
+  transform: translateY(-2px);
+  box-shadow: var(--p31-glass-shadow);
+}
+
+/* Tool list / playground results keep the mono readout consistent. */
+.marketplace-mono {
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+}
+
+/* Respect reduced motion at the spoon level — the workspace already maps
+   spoon levels to --motion-scale; keep card hover subtle under motion. */
+@media (prefers-reduced-motion: reduce) {
+  .server-card {
+    transition: none;
+  }
+}
