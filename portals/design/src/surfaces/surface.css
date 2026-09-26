@@ -231,3 +231,13 @@
 .glass-panel {
   padding: var(--p31-space-5);
 }
+
+/* ── SurfaceCard head badge pin (the four-slot contract) ────────────────── */
+.surface-card__head > .badge,
+.surface-card__head > .chip {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.surface-card__head {
+  gap: var(--p31-space-4);
+}

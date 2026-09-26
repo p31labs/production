@@ -249,17 +249,15 @@ export const SAFE_PROPS: Record<string, RenderProps> = {
   SpoonDial: { level: 3 },
 };
 
-/** Token-preview tile — live stand-in for components without a safe render. */
+/** Token-preview tile — themed "no live preview" state for components without
+ *  a safe render. Distinct per component: its name, its cssClass applied to a
+ *  swatch surface, and its own token chips (not a shared 3-dot pattern). */
 export function TokenPreviewTile({ name, cssClass, tokens }: { name: string; cssClass: string; tokens: string[] }) {
   return (
     <div className="qm-token-tile" data-mcp-tool={`tokenPreview-${name.toLowerCase()}`} data-mcp-state="ready">
-      <span className="qm-token-tile__mono">{cssClass || name.toLowerCase()}</span>
-      <div className="qm-token-tile__swatches" aria-hidden="true">
-        <span className="qm-token-tile__swatch qm-token-tile__swatch--cyan" />
-        <span className="qm-token-tile__swatch qm-token-tile__swatch--violet" />
-        <span className="qm-token-tile__swatch qm-token-tile__swatch--gold" />
-        <span className="qm-token-tile__swatch qm-token-tile__swatch--glass" />
-      </div>
+      <span className={`qm-token-tile__swatch ${cssClass || ''}`} aria-hidden="true" />
+      <span className="qm-token-tile__mono">{name}</span>
+      <span className="qm-token-tile__tag">no live preview</span>
       {tokens.length > 0 && (
         <div className="meta-row qm-token-tile__chips">
           {tokens.slice(0, 4).map((t) => (
@@ -269,6 +267,7 @@ export function TokenPreviewTile({ name, cssClass, tokens }: { name: string; css
           ))}
         </div>
       )}
+      <span className="qm-token-tile__cssname">{cssClass || name.toLowerCase()}</span>
     </div>
   );
 }

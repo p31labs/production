@@ -261,3 +261,51 @@
 .marketplace-card > .meta-row:last-of-type {
   margin-top: auto;
 }
+
+/* ── Token preview tile (upgraded "no live preview" state) ───────────────────
+   Distinct per component: its cssClass swatch + name + token chips. The old
+   fixed 4-swatch row made every fallback look identical (the "3 dot" issue). */
+.qm-token-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--p31-space-2);
+  width: 100%;
+  min-height: 72px;
+  text-align: center;
+}
+.qm-token-tile__swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--p31-radius-md);
+  background: var(--p31-accent-dim);
+  border: 1px solid var(--p31-glass-border);
+  display: inline-block;
+}
+.qm-token-tile__mono {
+  font-family: var(--p31-font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--p31-text-primary);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.qm-token-tile__tag {
+  font-size: var(--p31-text-xs);
+  color: var(--p31-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.qm-token-tile__cssname {
+  font-family: var(--p31-font-mono);
+  font-size: 10px;
+  color: var(--p31-text-tertiary);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

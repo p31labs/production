@@ -185,3 +185,23 @@
   overflow: hidden;
   padding: var(--p31-space-4);
 }
+
+/* ── Launcher badge pin (polish 2026-09-27) ───────────────────────────────
+   FLAGSHIP/SUPPORT must hug the card's right edge (auto margin absorbs free
+   space on the main axis — the preferred technique over space-between) and
+   never crowd the icon. */
+.launcher-card .surface-card-header {
+  width: 100%;
+  gap: var(--p31-space-4);
+}
+.launcher-card .surface-card-header .badge {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* ── Motion demo chips — tighter label inside fixed demo cells ──────────── */
+.motion-tile .motion-chip {
+  font-size: 0.68rem;
+  padding: var(--p31-space-1) var(--p31-space-2);
+  line-height: 1.2;
+}

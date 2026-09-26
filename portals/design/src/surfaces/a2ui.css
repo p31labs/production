@@ -253,3 +253,13 @@
     .a2ui-pane--render { grid-column: auto; }
   }
 }
+/* ── Trust catalog badge — never wraps inside its pill (nowrap + clip) ──── */
+.a2ui-trust-badge {
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+}
