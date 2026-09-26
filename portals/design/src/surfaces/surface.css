@@ -210,3 +210,24 @@
     align-self: auto;
   }
 }
+/* ── Composition-class padding (WP verified fix, 2026-09-27) ────────────────
+   design-core GlassPanel emits p-4/p-6/p-8 for its size variants but never
+   defined them — every GlassPanel computed padding: 0 ("content riding the
+   edge"). Fixed in the design-core canon (recipes.css) + re-packed into the
+   vendor. Portal-specific compositions that also need padding get it here. */
+.a2ui-pane {
+  padding: var(--p31-space-5);
+}
+.glab-hero {
+  padding: var(--p31-space-6);
+}
+.glab-strip {
+  padding: var(--p31-space-3);
+}
+
+/* Raw .glass-panel composition class (used directly by some surfaces, e.g. the
+   Icons Import block) — design-core gives it bg/border but no padding. Pad it
+   like .glass-tile/.glass-strong so content never rides the edge. */
+.glass-panel {
+  padding: var(--p31-space-5);
+}

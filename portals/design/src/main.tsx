@@ -13,6 +13,8 @@ import './content.css';
 import './index.css';
 import './polish.css';
 import './surfaces/surface.css';
+import './utilities.css';
+import './surfaces/legacy-missing.css';
 import './surfaces/dome.css';
 import '@p31/p31ca-ambient/css/molecular-dome.css';
 import '@p31/p31ca-ambient/css/p31-style.css';

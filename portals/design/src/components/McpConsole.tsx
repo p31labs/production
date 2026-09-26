@@ -63,7 +63,7 @@ function McpConsole() {
           <button
             key={tool.name}
             onClick={() => handlePreset(tool)}
-            className={`px-3 py-1.5 rounded-lg border cursor-pointer text-xs transition-all ${selectedTool === tool.name ? 'border-accent text-accent' : 'border-glass-border text-text-secondary'}`}
+            className={`px-3 py-1.5 rounded-lg border cursor-pointer text-xs transition-all ${selectedTool === tool.name ? 'border-accent text-accent' : 'border-glass-border text-secondary'}`}
           >
             {tool.name}
           </button>
@@ -71,7 +71,7 @@ function McpConsole() {
       </div>
       <GlassPanel>
         <div className="text-sm font-semibold mb-2">{selectedTool}</div>
-        <div className="text-xs text-text-secondary mb-3">{TOOLS.find(t => t.name === selectedTool)?.description}</div>
+        <div className="text-xs text-secondary mb-3">{TOOLS.find(t => t.name === selectedTool)?.description}</div>
         <textarea
           value={args}
           onChange={(e) => setArgs(e.target.value)}
@@ -96,7 +96,7 @@ function McpConsole() {
           >
             {loading ? 'Calling...' : 'Call Tool'}
           </button>
-          <span className="text-[11px] text-text-tertiary font-mono">
+          <span className="text-[11px] text-tertiary font-mono">
             Endpoint: {MCP_URL}
           </span>
         </div>

@@ -16,7 +16,7 @@
     "design": "tsx node_modules/@p31ca/design-core/src/agentic/cli.ts",
     "gen:tokens": "tsx node_modules/@p31ca/design-core/scripts/gen-tokens.mts",
     "v:gate": "node /home/p31/production/tools/portal-vendor-sync/v-gate.mjs --target /home/p31/production/portals/design",
-    "build:pwa": "vite build && node scripts/token-presence.mjs && node scripts/contrast-audit.mjs && node scripts/spacing-audit.mjs && node scripts/surface-audit.mjs && node scripts/ambient-perf-audit.mjs && node scripts/css-integrity.mjs && node scripts/token-tier-audit.mjs && npx playwright test",
+    "build:pwa": "vite build && node scripts/token-presence.mjs && node scripts/contrast-audit.mjs && node scripts/spacing-audit.mjs && node scripts/surface-audit.mjs && node scripts/ambient-perf-audit.mjs && node scripts/css-integrity.mjs && node scripts/token-tier-audit.mjs && node scripts/undefined-class-audit.mjs && npx playwright test",
     "gate": "pnpm typecheck && pnpm lint && pnpm test && pnpm build:pwa && pnpm v:gate"
   },
   "dependencies": {

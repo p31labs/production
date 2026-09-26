@@ -1,0 +1,88 @@
+/* utilities.css — the missing utility layer (WP 2026-09-27).
+   The codebase has long used Tailwind-style utility classes (flex, gap-*,
+   mb-*, rounded-*, text-sm…) that were NEVER defined — every one rendered as a
+   no-op, breaking flex/gap/margin across surfaces (the recurring "same
+   sections" issues). This defines the set actually used, mapped to P31 tokens.
+   Guarded by scripts/undefined-class-audit.mjs (every className must be defined
+   or a dynamic/state token). Token stance: var(--p31-*) only. */
+
+/* Layout */
+.flex { display: flex; }
+.grid { display: grid; }
+.flex-col { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-end { justify-content: flex-end; }
+.flex-1 { flex: 1; }
+
+/* Gap */
+.gap-2 { gap: var(--p31-space-2); }
+.gap-3 { gap: var(--p31-space-3); }
+.gap-4 { gap: var(--p31-space-4); }
+
+/* Margin */
+.mt-3 { margin-top: var(--p31-space-3); }
+.mb-2 { margin-bottom: var(--p31-space-2); }
+.mb-3 { margin-bottom: var(--p31-space-3); }
+.mb-6 { margin-bottom: var(--p31-space-6); }
+
+/* Padding */
+.p-4 { padding: var(--p31-space-4); }
+.px-4 { padding-inline: var(--p31-space-4); }
+.py-2 { padding-block: var(--p31-space-2); }
+
+/* Size */
+.h-8 { height: 32px; }
+.h-40 { height: 160px; }
+.h-64 { height: 256px; }
+.w-8 { width: 32px; }
+.resize-y { resize: vertical; }
+
+/* Radius */
+.rounded-lg { border-radius: var(--p31-radius-md); }
+.rounded-xl { border-radius: 16px; }
+.rounded-full { border-radius: var(--p31-radius-full); }
+
+/* Typography */
+.text-xs { font-size: 0.75rem; }
+.text-sm { font-size: 0.875rem; }
+.font-mono { font-family: var(--p31-font-mono); }
+.font-semibold { font-weight: 600; }
+.break-words { overflow-wrap: anywhere; }
+
+/* Border */
+.border-none { border: none; }
+.border-2 { border-width: 2px; }
+.border-accent { border-color: var(--p31-accent); }
+.border-glass-border { border-color: var(--p31-glass-border); }
+.border-t-transparent { border-top-color: transparent; }
+
+/* Interaction + motion */
+.cursor-pointer { cursor: pointer; }
+.transition-all { transition: all var(--p31-transition-normal) var(--p31-ease-quantum); }
+.animate-spin { animation: p31-spin 1s linear infinite; }
+@keyframes p31-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive grid columns (used by surfaces) */
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Arbitrary value used in source: text-[11px] */
+.text-\[11px\] { font-size: 11px; }
+.w-full { width: 100%; }
+.whitespace-pre-wrap { white-space: pre-wrap; }
+.text-secondary { color: var(--p31-text-secondary); }
+.text-tertiary { color: var(--p31-text-tertiary); }
+
+/* Padding — design-core GlassPanel emits p-4/p-6/p-8 for its size variants;
+   the portal imports design-core css/index.css (not recipes.css), so these are
+   defined here. p-4=16px · p-6=24px · p-8=32px (Tailwind semantics). */
+.p-6 { padding: var(--p31-space-5); }
+.p-8 { padding: var(--p31-space-6); }

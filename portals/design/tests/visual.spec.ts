@@ -48,10 +48,22 @@ async function open(page: Page, route: string) {
   await page.goto('/');
   if (route !== '/') {
     const label = NAV_LABELS[route];
-    await page.locator('.sidebar .nav-item', { hasText: label }).first().click({ force: true });
+    // Native .click() dispatch works even when the sidebar is display:none
+    // (mobile) — Playwright's force-click does not navigate a hidden button.
+    await page.evaluate((lbl) => {
+      const btn = [...document.querySelectorAll('.sidebar .nav-item')].find((b) => b.textContent?.includes(lbl));
+      (btn as HTMLElement)?.click();
+    }, label);
   }
   await expect(page.locator('.surface-panel.active').first()).toBeVisible();
-  await page.addStyleTag({ content: '* { animation: none !important; transition: none !important; }' });
+  // Hide fixed/absolute chrome (ambient canvases, LED controller) — they
+  // repaint via WebGL/rAF and would make captures non-deterministic. They are
+  // z-0/absolute, so display:none does not shift the surface layout. The
+  // motion demos are content-area → masked instead.
+  await page.addStyleTag({ content: `
+    * { animation: none !important; transition: none !important; }
+    .starfield, .molecular-heart-layer, .devpanel { display: none !important; }
+  `});
 }
 
 for (const vp of VIEWPORTS) {
@@ -67,10 +79,37 @@ for (const vp of VIEWPORTS) {
         await expect(page.locator('#root')).toHaveScreenshot(name, {
           animations: 'disabled',
           mask: [
-            page.locator('.devpanel'),
             page.locator('.motion-strip'),
           ],
         });
+      });
+    }
+  });
+}
+
+// Tier 2 tripwire — the exact defect class: a composition card computing
+// padding: 0 (the undefined p-* utilities bug). Fails the moment a card
+// renders padding-less again, before the pixel diff can be ambiguous.
+for (const vp of VIEWPORTS) {
+  test.describe(`@${vp.name} · padding tripwire`, () => {
+    test.use({ viewport: { width: vp.width, height: vp.height } });
+    for (const route of ['/marketplace', '/catalog', '/glass', '/icons', '/a2ui']) {
+      test(`${route} cards have padding`, async ({ page }) => {
+        await open(page, route);
+        const panel = page.locator('.surface-panel.active').first();
+        // Wait for a composition card to actually render (lazy chunks can lag).
+        await expect(panel.locator('.glass-strong, .glass-panel, .a2ui-pane').first()).toBeAttached();
+        const pads = await panel.evaluate(() => {
+          const out = [];
+          for (const sel of ['.glass-strong', '.glass-panel', '.a2ui-pane', '.glab-hero', '.glab-strip']) {
+            document.querySelectorAll(sel).forEach((el) => {
+              const p = parseFloat(getComputedStyle(el).padding);
+              if (Number.isFinite(p) && p > 0) out.push(p);
+            });
+          }
+          return out;
+        });
+        expect(pads.length, 'at least one padded composition card').toBeGreaterThan(0);
       });
     }
   });
