@@ -20,6 +20,8 @@
 /* Hero header card — the "nice header card" Home has, on every surface. */
 .surface-hero {
   gap: var(--surface-card-gap, 20px);
+  max-width: 100%;
+  min-width: 0;
 }
 .surface-hero__main {
   display: flex;
@@ -37,6 +39,7 @@
   max-width: 56ch;
   color: var(--p31-text-secondary);
   line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 .surface-hero__actions {
   display: flex;
@@ -83,8 +86,12 @@
 
 /* ─── The card — a subgrid consumer spanning the 4 shared tracks ───
    The card carries its own glass look (no .glass-tile — that class sets
-   display:flex + padding). Padding lives on the SLOTS, never the card. */
-.surface-card {
+   display:flex + padding). Padding lives on the SLOTS, never the card.
+   IMPORTANT: padding: 0 applies ONLY to the four-slot subgrid card; any other
+   element carrying .surface-card keeps the standard 24px rhythm (the earlier
+   blanket padding:0 clobbered .glass-tile wrappers — "content riding the
+   edge"). :has() is baseline-safe (Chrome 105+, FF 121+, Safari 15.4+). */
+.surface-card:has(> .surface-card__head) {
   display: grid;
   grid-template-rows: subgrid;
   grid-row: span 4;
@@ -101,7 +108,7 @@
   transition: transform var(--p31-transition-normal) var(--p31-ease-quantum),
               border-color var(--p31-transition-normal);
 }
-.surface-card:hover {
+.surface-card:has(> .surface-card__head):hover {
   border-color: color-mix(in oklch, var(--p31-text-primary) 15%, transparent);
   transform: translateY(-2px);
 }
@@ -183,7 +190,7 @@
    Flex-column: only the footer aligns via margin-top:auto; the internals
    degrade gracefully. */
 @supports not (grid-template-rows: subgrid) {
-  .surface-card {
+  .surface-card:has(> .surface-card__head) {
     display: flex;
     flex-direction: column;
     padding: var(--p31-space-5);

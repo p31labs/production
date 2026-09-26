@@ -337,11 +337,13 @@ export default function McpConsole() {
 
   return (
     <div className="surface-panel active mc-page" data-mcp-tool="mcpConsoleSurface" data-mcp-state="ready">
-      <PageHeader
-        eyebrow="Agent-native · GenUI"
-        title="MCP Console"
-        lede="Describe the component you want — the console matches your intent against the 70-entry canon catalog, recommends the best fit, and hands you live code."
-      />
+      <div className="glass-tile surface-hero">
+        <PageHeader
+          eyebrow="Agent-native · GenUI"
+          title="MCP Console"
+          lede="Describe the component you want — the console matches your intent against the 70-entry canon catalog, recommends the best fit, and hands you live code."
+        />
+      </div>
 
       <motion.div className="mc-flow" initial="hidden" animate="visible" variants={staggerChildren(0.08)}>
         <motion.div className="mc-step" variants={slideUp}>

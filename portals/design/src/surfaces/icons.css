@@ -141,7 +141,6 @@
 }
 /* Grid layout (restored — the migration removed it while routes still use it). */
 .glass-tile.icon-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: var(--surface-card-gap, 20px);
+  display: block;
+  padding: var(--p31-space-5);
 }

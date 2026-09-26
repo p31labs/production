@@ -99,11 +99,13 @@ export default function Accessibility() {
 
   return (
     <div className="surface-panel active a11y-page" data-mcp-tool="accessibilitySurface" data-mcp-state="ready">
-      <PageHeader
-        eyebrow="Neuroinclusion"
-        title="Accessibility"
-        lede="The spoon ladder, keyboard interaction tables, ARIA patterns, and the reduced-motion floor — the priority order that shapes every P31 surface."
-      />
+      <div className="glass-tile surface-hero">
+        <PageHeader
+          eyebrow="Neuroinclusion"
+          title="Accessibility"
+          lede="The spoon ladder, keyboard interaction tables, ARIA patterns, and the reduced-motion floor — the priority order that shapes every P31 surface."
+        />
+      </div>
 
       <motion.div className="a11y-stack" initial="hidden" animate="visible" variants={staggerChildren(0.08)}>
         <motion.section className="a11y-tile" variants={slideUp} aria-labelledby="a11y-spoons-title">

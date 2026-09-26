@@ -61,11 +61,12 @@ for (const vp of VIEWPORTS) {
       test(`${route} matches baseline`, async ({ page }) => {
         await open(page, route);
         const name = `${vp.name}-${route.replace(/^\/+/, 'index').replace(/\//g, '-')}.png`;
+        // Preflight: always write the actual screenshot so breakages have
+        // instant visual evidence, regardless of pass/fail.
+        await page.screenshot({ path: `test-results/preflight/${name}`, animations: 'disabled' });
         await expect(page.locator('#root')).toHaveScreenshot(name, {
           animations: 'disabled',
           mask: [
-            page.locator('.starfield'),
-            page.locator('.molecular-heart-layer'),
             page.locator('.devpanel'),
             page.locator('.motion-strip'),
           ],
