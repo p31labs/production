@@ -183,7 +183,7 @@ export default function Showcase() {
               <button
                 key={s.path}
                 type="button"
-                className="surface-card"
+                className="launcher-card"
                 data-mcp-tool={MCP_TOOLS[s.path.replace('/', '')] ?? s.path.replace('/', '')}
                 data-mcp-state="ready"
                 onClick={() => go(s.path)}

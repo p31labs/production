@@ -98,7 +98,7 @@ export default function Accessibility() {
   const rank = SPOON_RANKS[spoons];
 
   return (
-    <div className="a11y-page" data-mcp-tool="accessibilitySurface" data-mcp-state="ready">
+    <div className="surface-panel active a11y-page" data-mcp-tool="accessibilitySurface" data-mcp-state="ready">
       <PageHeader
         eyebrow="Neuroinclusion"
         title="Accessibility"

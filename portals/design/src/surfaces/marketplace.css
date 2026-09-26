@@ -239,3 +239,25 @@
 .qm-empty {
   min-height: 120px;
 }
+/* ── Marketplace card (WP-2026-09-27) ────────────────────────────────────
+   A flex-column equal-height card for the shop grid (--tiles): fills its grid
+   cell so cards match per row; the action row pins to the bottom. Distinct
+   class (.marketplace-card) so it never collides with the subgrid contract. */
+.marketplace-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-3);
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+  padding: var(--p31-space-5);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  box-shadow: var(--p31-glass-shadow);
+}
+.marketplace-card > .meta-row:last-of-type {
+  margin-top: auto;
+}

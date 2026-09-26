@@ -351,7 +351,7 @@ export default function Marketplace() {
                 <span className="preview-box__text">No items match &quot;{query}&quot;.</span>
               </motion.div>
             ) : (
-              <SurfaceGrid columns={3}>
+              <SurfaceGrid columns={3} className="surface-grid--tiles">
                 <motion.div
                   variants={staggerChildren(0.06)}
                   initial="hidden"
@@ -401,7 +401,7 @@ export default function Marketplace() {
 
         <SurfaceSection title="Beyond the portal">
           <div className="glass-tile">
-            <SurfaceGrid columns={3}>
+            <SurfaceGrid columns={3} className="surface-grid--tiles">
               <a href="https://mcp.p31ca.org" target="_blank" rel="noopener noreferrer" className="surface-card">
                 <div className="surface-card-header">
                   <span className="surface-card-icon" style={{ background: 'var(--p31-accent-dim)' }}>

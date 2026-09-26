@@ -230,7 +230,7 @@ export default function Playground() {
 
             <SurfaceSection title="Live lab">
               <div className="glass-tile">
-                <SurfaceGrid columns={3}>
+                <SurfaceGrid columns={3} className="surface-grid--tiles">
                   <motion.div
                     variants={staggerChildren(0.06)}
                     initial="hidden"

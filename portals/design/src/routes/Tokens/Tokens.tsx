@@ -130,7 +130,7 @@ export default function Tokens() {
 
         <SurfaceSection title="Token swatches">
           <div className="glass-tile">
-            <SurfaceGrid columns={3}>
+            <SurfaceGrid columns={3} className="surface-grid--tiles">
               <motion.div
                 variants={staggerChildren(0.05)}
                 initial={reduced ? false : 'hidden'}

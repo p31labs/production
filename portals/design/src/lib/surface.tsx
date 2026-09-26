@@ -41,14 +41,56 @@ export function SurfaceSection({ title, children }: { title?: string; children: 
   );
 }
 
-/** SurfaceGrid — consistent card gap (20px), N columns. */
-export function SurfaceGrid({ columns = 2, children }: { columns?: number; children: ReactNode }) {
+/** SurfaceGrid — consistent card gap (20px), N columns. The parent declares
+ *  the shared 4 row tracks (head/body/meta/foot); SurfaceCards span them via
+ *  subgrid for equal-height, aligned cards per row. */
+export function SurfaceGrid({ columns = 2, className = '', children }: { columns?: number; className?: string; children: ReactNode }) {
   return (
     <div
-      className="surface-grid"
+      className={`surface-grid${className ? ` ${className}` : ''}`}
       style={{ '--surface-grid-cols': columns } as CSSProperties}
     >
       {children}
+    </div>
+  );
+}
+
+interface SurfaceCardProps {
+  /** Row 1 — icon, badge, title. Required. */
+  head: ReactNode;
+  /** Row 2 — description / preview. Optional. */
+  body?: ReactNode;
+  /** Row 3 — tags, import path, metadata. Optional. */
+  meta?: ReactNode;
+  /** Row 4 — actions. Aligns to the bottom. Optional. */
+  foot?: ReactNode;
+  /** Escape hatch for a full-bleed card (skips the 4-slot subgrid). */
+  bare?: boolean;
+  className?: string;
+}
+
+/** SurfaceCard — the four-slot card contract. Every card in a grid renders
+ *  through this primitive so slots align across each row (CSS subgrid) and
+ *  overflow is a contract, not an afterthought. The prop API is the contract:
+ *  exactly four slots; a fifth child is a type error. */
+export function SurfaceCard({ head, body, meta, foot, bare = false, className = '' }: SurfaceCardProps) {
+  const cls = `surface-card${bare ? ' surface-card--bare' : ''}${className ? ` ${className}` : ''}`;
+  if (bare) {
+    return (
+      <div className={cls}>
+        {head}
+        {body}
+        {meta}
+        {foot}
+      </div>
+    );
+  }
+  return (
+    <div className={cls}>
+      <div className="surface-card__head">{head}</div>
+      {body != null && <div className="surface-card__content">{body}</div>}
+      {meta != null && <div className="surface-card__meta">{meta}</div>}
+      {foot != null && <div className="surface-card__foot">{foot}</div>}
     </div>
   );
 }

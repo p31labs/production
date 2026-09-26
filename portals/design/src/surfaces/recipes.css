@@ -313,7 +313,6 @@
 }
 /* Grid layout (restored — migration removed the override). */
 .glass-tile.recipes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--surface-card-gap, 20px);
+  display: block;
+  padding: var(--p31-space-4);
 }

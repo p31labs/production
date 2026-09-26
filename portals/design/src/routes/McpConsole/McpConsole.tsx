@@ -336,7 +336,7 @@ export default function McpConsole() {
   const note = remoteNote(remote);
 
   return (
-    <div className="mc-page" data-mcp-tool="mcpConsoleSurface" data-mcp-state="ready">
+    <div className="surface-panel active mc-page" data-mcp-tool="mcpConsoleSurface" data-mcp-state="ready">
       <PageHeader
         eyebrow="Agent-native · GenUI"
         title="MCP Console"

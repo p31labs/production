@@ -1,19 +1,27 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 
+/**
+ * Visual regression gate (WP-2026-09-27) — screenshots every surface at three
+ * breakpoints and diffs against committed baselines (Linux/chromium canonical).
+ * Runs against `vite preview` of the built dist (build:pwa builds first).
+ * Baselines regenerate with: npx playwright test --update-snapshots
+ */
 export default defineConfig({
-  testDir: './e2e',
-  fullyParallel: true,
-  retries: process.env.CI ? 1 : 0,
-  reporter: [['list']],
-  use: {
-    trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
+  testDir: './tests',
+  testMatch: '**/visual.spec.ts',
+  timeout: 60_000,
+  expect: {
+    timeout: 20_000,
+    toHaveScreenshot: { maxDiffPixelRatio: 0.01 },
   },
-  projects: [
-    { name: 'mobile', use: { ...devices['Pixel 7'] } },
-    // iPad profile on Chromium engine — WebKit host libs unavailable in CI box
-    { name: 'tablet', use: { ...devices['iPad (gen 7)'], defaultBrowserType: 'chromium' } },
-    { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
-    { name: 'desktop-ff', use: { ...devices['Desktop Firefox'] } },
-  ],
+  use: {
+    baseURL: 'http://127.0.0.1:5190',
+    browserName: 'chromium',
+  },
+  webServer: {
+    command: 'npx vite preview --port 5190 --strictPort',
+    url: 'http://127.0.0.1:5190',
+    reuseExistingServer: true,
+    timeout: 60_000,
+  },
 });

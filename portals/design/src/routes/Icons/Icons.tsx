@@ -95,7 +95,7 @@ export default function Icons() {
 
         <SurfaceSection title="Glyphs">
           <motion.div className={`icon-grid icon-grid--${variant} glass-tile`} variants={staggerChildren(0.04)} initial="hidden" animate="visible">
-            <SurfaceGrid columns={6}>
+            <SurfaceGrid columns={6} className="surface-grid--tiles">
               {CURATED.map((name) => (
                 <motion.div
                   key={name}

@@ -203,7 +203,7 @@ export default function Brands() {
             initial="hidden"
             animate="visible"
           >
-            <SurfaceGrid columns={4}>
+            <SurfaceGrid columns={4} className="surface-grid--tiles">
               <motion.div variants={slideUp}>
                 <DemoCard label="GlassCard · surface">
                   <BrandCard

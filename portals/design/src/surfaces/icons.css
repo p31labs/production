@@ -38,12 +38,15 @@
   flex-direction: column;
   align-items: center;
   gap: var(--p31-space-3);
-  padding:var(--p31-space-4) var(--p31-space-3);
+  padding: var(--p31-space-4) var(--p31-space-3);
   border-radius: var(--p31-radius-md);
   background: var(--p31-glass-bg);
   border: 1px solid var(--p31-glass-border);
   backdrop-filter: var(--p31-glass-blur);
   transition: border-color var(--p31-transition-fast);
+  min-width: 0;                /* anti-blowout: the tile may shrink */
+  min-height: 0;
+  overflow: hidden;
 }
 
 .icon-tile:hover {
@@ -70,9 +73,14 @@
   font-family: var(--p31-font-mono);
   font-size: 11px;
   color: var(--p31-text-secondary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .icon-tile__copy {
+  flex-shrink: 0;              /* the copy button never shrinks/blows out */
   font-family: var(--p31-font-mono);
   font-size: 10px;
   color: var(--p31-accent);

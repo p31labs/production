@@ -274,7 +274,7 @@ export default function Recipes() {
             initial="hidden"
             animate="visible"
           >
-            <SurfaceGrid columns={3}>
+            <SurfaceGrid columns={3} className="surface-grid--tiles">
               {filtered.map((r) => (
                 <motion.div className="recipes-grid__item" variants={slideUp} key={r.id}>
                   <RecipeCard recipe={r} />

@@ -136,3 +136,51 @@
 .motion-strip.glass-tile > .motion-strip__head {
   margin-bottom:0;
 }
+/* ── Launcher grid (WP-2026-09-27) — equal-height clickable cards ──────── */
+.launcher-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--surface-card-gap, 20px);
+  align-items: stretch;
+}
+.launcher-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--p31-space-3);
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  text-align: left;
+  cursor: pointer;
+  padding: var(--p31-space-5);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  box-shadow: var(--p31-glass-shadow);
+  color: inherit;
+  font: inherit;
+  transition: transform var(--p31-transition-normal) var(--p31-ease-quantum),
+              border-color var(--p31-transition-normal);
+}
+.launcher-card:hover {
+  border-color: color-mix(in oklch, var(--p31-text-primary) 15%, transparent);
+  transform: translateY(-2px);
+}
+.launcher-card .surface-card-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* Motion demo tiles — fixed min-height + overflow so content never blows out. */
+.motion-tile {
+  min-height: 150px;
+  min-width: 0;
+  overflow: hidden;
+}

@@ -19,7 +19,7 @@ export default function MarketplaceCard({ item }: Props) {
   }
 
   return (
-    <div className="surface-card" data-mcp-tool={`shopItem-${item.name.toLowerCase()}`} data-mcp-state="ready">
+    <div className="marketplace-card" data-mcp-tool={`shopItem-${item.name.toLowerCase()}`} data-mcp-state="ready">
       <div className="surface-card-header">
         <span className="surface-card-title surface-card-title--mono">{item.name}</span>
         <StatusBadge
