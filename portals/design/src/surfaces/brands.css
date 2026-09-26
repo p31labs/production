@@ -1,0 +1,249 @@
+/* ==========================================================================
+   brands.css — CHAMELEON surface (owned by Brands.tsx).
+   Quantum Material stance: OKLCH + color-mix(in oklch, …) only. No raw hex.
+   Every color resolves through --p31-* tokens so writeToken() re-skins live.
+   ========================================================================== */
+
+/* ── Brand switcher ─────────────────────────────────────────────────────── */
+.brand-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-switcher__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--p31-font-mono, ui-monospace, monospace);
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--p31-text-secondary);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-full, 9999px);
+  padding:8px 16px;
+  transition: all var(--p31-transition-fast, 150ms) var(--p31-ease-quantum, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.brand-switcher__btn:hover {
+  color: var(--p31-text-primary);
+  border-color: color-mix(in oklch, white 22%, transparent);
+  transform: translateY(-1px);
+}
+
+.brand-switcher__btn--active {
+  color: var(--p31-accent);
+  border-color: color-mix(in oklch, var(--p31-accent) 50%, transparent);
+  background: color-mix(in oklch, var(--p31-accent) 15%, transparent);
+  box-shadow: 0 0 18px color-mix(in oklch, var(--p31-accent) 25%, transparent);
+}
+
+.brand-switcher__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px currentColor;
+}
+
+.brand-switcher__reset { margin-left:auto; }
+
+.brand-switcher__hint {
+  flex-basis: 100%;
+  font-size: 12px;
+  color: var(--p31-text-tertiary);
+}
+
+/* ── Chameleon stage ─────────────────────────────────────────────────────── */
+.chameleon-demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-4, 16px);
+  background: color-mix(in oklch, var(--p31-surface) 72%, transparent);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg, 24px);
+  padding:var(--p31-space-5, 24px);
+  backdrop-filter: var(--p31-glass-blur, blur(20px));
+}
+
+.chameleon-demo__label {
+  font-family: var(--p31-font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--p31-text-tertiary);
+}
+
+/* ── Local demo components (all token-wired) ────────────────────────────── */
+.chameleon-card__bar {
+  display: block;
+  width: 64px;
+  height: 4px;
+  border-radius: var(--p31-radius-full, 9999px);
+  background: linear-gradient(90deg, var(--p31-accent), var(--p31-accent-gold));
+  box-shadow: 0 0 12px color-mix(in oklch, var(--p31-accent) 55%, transparent);
+}
+
+.chameleon-card__title {
+  margin:0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--p31-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.chameleon-card__body {
+  margin:0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--p31-text-secondary);
+}
+
+.chameleon-btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--p31-font-sans);
+  font-weight: 600;
+  font-size: var(--p31-text-base, 1rem);
+  color: var(--p31-void);
+  background: var(--p31-accent);
+  border: 1px solid transparent;
+  border-radius: var(--p31-radius-sm, 8px);
+  min-height: 42px;
+  padding:8px 24px;
+  cursor: pointer;
+  box-shadow: 0 8px 22px color-mix(in oklch, var(--p31-accent) 32%, transparent);
+  transition: all var(--p31-transition-fast, 150ms) var(--p31-ease-quantum, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.chameleon-btn:hover {
+  background: color-mix(in oklch, var(--p31-accent) 88%, white 12%);
+  transform: translateY(-1px);
+}
+
+.chameleon-btn:active { transform: translateY(0) scale(0.97); }
+
+.chameleon-badge {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding:4px 16px;
+  border-radius: var(--p31-radius-full, 9999px);
+  font-size: 12px;
+  font-weight: 600;
+  color: color-mix(in oklch, var(--p31-accent) 80%, white 20%);
+  background: color-mix(in oklch, var(--p31-accent) 14%, transparent);
+  border: 1px solid color-mix(in oklch, var(--p31-accent) 32%, transparent);
+}
+
+.chameleon-badge__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--p31-accent);
+  box-shadow: 0 0 9px var(--p31-accent);
+}
+
+.chameleon-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: color-mix(in oklch, var(--p31-surface2) 80%, transparent);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-md, 12px);
+  padding:20px;
+}
+
+.chameleon-metric__value {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--p31-accent);
+}
+
+.chameleon-metric__label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--p31-text-tertiary);
+}
+
+/* ── Token delta ─────────────────────────────────────────────────────────── */
+.brand-delta__panel {
+  background: color-mix(in oklch, var(--p31-surface) 60%, transparent);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg, 24px);
+  padding:var(--p31-space-5, 24px);
+}
+
+.brand-delta__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom:16px;
+}
+
+.brand-delta__title {
+  margin:0;
+  font-size: var(--p31-text-lg, 1.125rem);
+  font-weight: 700;
+  color: var(--p31-text-primary);
+}
+
+.brand-delta__active {
+  font-family: var(--p31-font-mono, ui-monospace, monospace);
+  font-size: 12px;
+  color: var(--p31-accent);
+}
+
+.brand-delta__rows { display: flex; flex-direction: column; }
+
+.brand-delta__row {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding:8px 4px;
+  border-top: 1px solid var(--p31-glass-border);
+  font-family: var(--p31-font-mono, ui-monospace, monospace);
+  font-size: 12px;
+}
+
+.brand-delta__rows > .brand-delta__row:first-child { border-top: none; }
+
+.brand-delta__name { color: var(--p31-text-tertiary); }
+
+.brand-delta__value { color: var(--p31-accent); word-break: break-all; }
+
+.brand-delta__orig {
+  color: var(--p31-text-tertiary);
+  opacity: 0.6;
+  font-size: 11px;
+  text-align: right;
+  word-break: break-all;
+}
+
+/* ── Glass-tile framing (MCP/A11y density bar) ─────────────────────────────
+   .glass-tile forces flex-column; re-assert the layout classes so the
+   switcher stays a wrapping row and the stage stays a grid inside the tile. */
+.glass-tile.brand-switcher {
+  flex-direction: row;
+  gap: 10px;
+}
+/* Grid layout (restored — migration removed the override). */
+.glass-tile.chameleon-stage {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--surface-card-gap, 20px);
+}
+@media (max-width: 1100px) {
+  .glass-tile.chameleon-stage {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

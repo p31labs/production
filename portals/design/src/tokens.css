@@ -1,0 +1,143 @@
+/* ==========================================================================
+   P31 Quantum Material — OKLCH Design Tokens
+   Token-audit-safe: no raw hex. All values use oklch() or color-mix().
+   ========================================================================== */
+
+:root {
+  /* --- Primitives (immutable) --- */
+  --p31-void: oklch(0.08 0.005 270);
+  --p31-surface: oklch(0.14 0.008 270);
+  --p31-surface2: oklch(0.2 0.012 270);
+  --p31-surface3: oklch(0.28 0.015 270);
+  --p31-cloud: oklch(0.68 0.008 270);
+  --p31-text-primary: oklch(0.96 0.005 270);
+  --p31-text-muted: oklch(0.82 0.012 270);
+
+  /* Accents */
+  --p31-accent-cyan: oklch(0.78 0.18 195);
+  --p31-accent-violet: oklch(0.72 0.16 285);
+  --p31-accent-gold: oklch(0.82 0.16 85);
+  --p31-accent-green: oklch(0.76 0.14 155);
+  --p31-accent-red: oklch(0.68 0.18 15);
+  --p31-accent-iris: oklch(0.62 0.14 275);
+
+  /* Glass */
+  --p31-glass-bg: color-mix(in oklch, white 4%, transparent);
+  --p31-glass-bg-hover: color-mix(in oklch, white 7%, transparent);
+  --p31-glass-border: color-mix(in oklch, white 8%, transparent);
+  --p31-glass-border-focus: color-mix(in oklch, var(--p31-accent-cyan) 50%, transparent);
+  --p31-glass-blur: blur(20px);
+  --p31-glass-shadow: 0 12px 32px 0 color-mix(in oklch, black 45%, transparent);
+  --p31-scrim: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--p31-void) 85%, transparent) 0%,
+    color-mix(in oklch, var(--p31-void) 40%, transparent) 100%
+  );
+
+  /* Semantic mapping */
+  --p31-accent: var(--p31-accent-cyan);
+  --p31-accent-hover: oklch(0.84 0.16 195);
+  --p31-accent-dim: color-mix(in oklch, var(--p31-accent-cyan) 12%, transparent);
+
+  /* Ambient (p31ca MolecularHeart + Starfield) */
+  --p31-star: oklch(0.8 0.125 90);
+  --p31-heart-core: var(--p31-accent-cyan);
+  --p31-heart-plasma: var(--p31-accent-violet);
+  --p31-scene-rotation: 1;
+  --p31-scene-tilt: 0.18;
+  --p31-scene-scale: 2.2;
+  --p31-scene-density: 140;
+  --p31-scene-twinkle: 1;
+  --p31-scene-flare: 6;
+
+  /* Typography */
+  --p31-font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --p31-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --p31-text-xs: 0.75rem;
+  --p31-text-sm: 0.875rem;
+  --p31-text-base: 1rem;
+  --p31-text-lg: 1.125rem;
+  --p31-text-xl: 1.25rem;
+  --p31-text-h3: 1.5rem;
+  --p31-text-h2: 2rem;
+  --p31-text-h1: 3rem;
+
+  /* Spacing */
+  --p31-space-1: 4px;
+  --p31-space-2: 8px;
+  --p31-space-3: 12px;
+  --p31-space-4: 16px;
+  --p31-space-5: 24px;
+  --p31-space-6: 32px;
+  --p31-space-7: 48px;
+
+  /* Radius */
+  --p31-radius-sm: 8px;
+  --p31-radius-md: 12px;
+  --p31-radius-lg: 24px;
+  --p31-radius-full: 9999px;
+
+  /* Motion */
+  --motion-scale: 1;
+  --p31-transition-fast: calc(150ms * var(--motion-scale));
+  --p31-transition-normal: calc(250ms * var(--motion-scale));
+  --p31-transition-slow: calc(400ms * var(--motion-scale));
+  --p31-ease-quantum: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-scale: 0.1;
+  }
+}
+
+/* backdrop-filter is GPU-expensive on mid-range mobile — cap the blur. */
+@media (max-width: 768px) {
+  :root {
+    --p31-glass-blur: blur(10px);
+  }
+}
+
+/* prefers-reduced-transparency (Chrome 118+) — solid surfaces, no blur. */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --p31-glass-blur: none;
+    --p31-glass-bg: color-mix(in oklch, var(--p31-surface) 96%, transparent);
+    --p31-glass-bg-hover: var(--p31-surface2);
+  }
+}
+/* ── Quantum enterprise polish: component tier + surface hierarchy ──────────
+   Research bar: 4+ surface elevation levels, luminance-stepped 5-8%; component
+   tokens reference semantic (never primitives) so Chameleon theming is one-level. */
+:root {
+  /* Surface hierarchy — elevation by luminance (5-8% steps), not shadow. */
+  --p31-surface-deep: oklch(0.10 0.012 270);
+  --p31-surface-raised: oklch(0.19 0.016 270);
+  --p31-surface-overlay: oklch(0.24 0.022 270);
+  --p31-surface-modal: oklch(0.29 0.028 270);
+
+  /* Component tokens — scoped overrides (reference semantic, never primitives). */
+  --p31-button-bg: var(--p31-accent);
+  --p31-button-fg: var(--p31-void);
+  --p31-button-hover-bg: color-mix(in oklch, var(--p31-accent) 88%, white 12%);
+  --p31-card-bg: var(--p31-glass-bg);
+  --p31-card-border: var(--p31-glass-border);
+  --p31-badge-live-bg: color-mix(in oklch, var(--p31-accent-green) 16%, transparent);
+  --p31-badge-live-fg: var(--p31-accent-green);
+  --p31-input-bg: color-mix(in oklch, var(--p31-surface) 92%, transparent);
+  --p31-input-border: var(--p31-glass-border);
+  --p31-input-focus: var(--p31-accent);
+  --p31-code-bg: color-mix(in oklch, var(--p31-void) 70%, transparent);
+  --p31-code-fg: var(--p31-text-primary);
+}
+
+/* ── Enterprise surface layout tokens (M3 / Coinbase rhythm) ─────────────── */
+:root {
+  --surface-max-width: 960px;
+  --surface-gutter: 32px;
+  --surface-section-gap: 64px;
+  --surface-card-gap: 20px;
+  --surface-card-padding:32px;
+}

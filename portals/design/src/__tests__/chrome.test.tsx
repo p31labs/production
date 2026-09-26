@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { Topbar, StatusBadge, MetricBadge, SpoonDial, Chameleon, SectionStrip } from '@p31/design-core/compositions';
+import { Topbar, StatusBadge, MetricBadge, SpoonDial, Chameleon, SectionStrip } from '@p31ca/design-core/compositions';
 import { useSpoonsStore } from '../lib/useSpoonsStore';
 
 describe('Portal chrome', () => {

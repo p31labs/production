@@ -1,0 +1,25 @@
+{
+  "syncedAt": "2026-09-26T17:05:18.775Z",
+  "canon": "/home/p31/P31-local-workspace/apps/p31ca/src",
+  "files": [
+    "src/components/background/MolecularHeart.tsx",
+    "src/components/background/Starfield.tsx",
+    "src/components/LedController.tsx",
+    "src/stores/ledStore.ts",
+    "src/stores/effectsStore.ts",
+    "src/stores/sceneStore.ts",
+    "src/lib/geodesic.ts",
+    "src/lib/color.ts",
+    "src/lib/scenePresets.ts",
+    "src/lib/themeEnvironments.ts",
+    "src/lib/lumiIntent.ts",
+    "src/lib/starfield.ts",
+    "css/molecular-dome.css",
+    "css/p31-style.css",
+    "src/components/controller/Knob.tsx",
+    "src/components/controller/knobMath.ts",
+    "src/components/controller/types.ts",
+    "css/controls.css",
+    "src/stores/themeStore.ts"
+  ]
+}

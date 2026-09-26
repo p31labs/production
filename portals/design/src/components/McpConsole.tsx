@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GlassPanel } from '@p31/design-core/compositions';
+import { GlassPanel } from '@p31ca/design-core/compositions';
 
 const MCP_URL = 'https://p31-design-mcp.trimtab-signal.workers.dev/mcp';
 

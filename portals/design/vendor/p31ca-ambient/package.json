@@ -1,0 +1,26 @@
+{
+  "name": "@p31/p31ca-ambient",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./background/MolecularHeart": "./src/components/background/MolecularHeart.tsx",
+    "./background/Starfield": "./src/components/background/Starfield.tsx",
+    "./LedController": "./src/components/LedController.tsx",
+    "./stores/effectsStore": "./src/stores/effectsStore.ts",
+    "./stores/ledStore": "./src/stores/ledStore.ts",
+    "./stores/sceneStore": "./src/stores/sceneStore.ts",
+    "./stores/*": "./src/stores/*",
+    "./lib/starfield": "./src/lib/starfield.ts",
+    "./lib/*": "./src/lib/*",
+    "./css/molecular-dome.css": "./css/molecular-dome.css",
+    "./css/p31-style.css": "./css/p31-style.css",
+    "./css/controls.css": "./css/controls.css"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.186.0",
+    "zustand": "^5.0.0"
+  }
+}

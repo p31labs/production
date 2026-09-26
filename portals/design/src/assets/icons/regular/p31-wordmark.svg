@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="P31 Wordmark animated icon">
+  <title>P31 Wordmark</title>
+  <desc>Stylized P31 text surrounded by counter-rotating geometric rings representing sovereign brand identity.</desc>
+  <style>
+    .wm-text-p { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; font-weight: 800; font-size: 64px; fill: var(--p31-accent-red, #FB7185); letter-spacing: -2px; }
+    .wm-glow { animation: wmGlow 3s infinite alternate ease-in-out; }
+    .wm-ring-o { fill: none; stroke: var(--p31-accent-red, #FB7185); stroke-width: 2; stroke-dasharray: 40 20; transform-origin: 100px 100px; animation: wmFwd 20s infinite linear; }
+    .wm-ring-i { fill: none; stroke: var(--p31-accent-violet, #A78BFA); stroke-width: 1.5; stroke-dasharray: 10 10; opacity: 0.5; transform-origin: 100px 100px; animation: wmRev 15s infinite linear; }
+    .wm-dot-n { fill: var(--p31-text, #F5F5F7); opacity: 0.7; }
+    @keyframes wmFwd { to { transform: rotate(360deg); } }
+    @keyframes wmRev { to { transform: rotate(-360deg); } }
+    @keyframes wmGlow { 0% { filter: drop-shadow(0 0 3px var(--p31-accent-red, #FB7185)); opacity: 0.85; } 100% { filter: drop-shadow(0 0 18px var(--p31-accent-red, #FB7185)); opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .wm-ring-o, .wm-ring-i, .wm-glow { animation: none; } .wm-ring-o, .wm-ring-i { stroke-dashoffset: 0; } .wm-glow { opacity: 0.9; } }
+  </style>
+  <circle cx="100" cy="100" r="85" class="wm-ring-o"/>
+  <circle cx="100" cy="100" r="72" class="wm-ring-i"/>
+  <text x="100" y="122" text-anchor="middle" class="wm-text-p wm-glow">P31</text>
+  <circle cx="100" cy="45" r="3" class="wm-dot-n"/>
+  <circle cx="100" cy="155" r="3" class="wm-dot-n"/>
+</svg>

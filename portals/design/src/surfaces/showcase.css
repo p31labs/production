@@ -1,0 +1,138 @@
+/* ==========================================================================
+   Showcase motion strip — six motion-principles on real glass.
+   Tokenized: OKLCH / color-mix(in oklch, …) only, no raw hex/rgba.
+   All transitions respect --motion-scale (spoons + reduced-motion).
+   ========================================================================== */
+
+@layer suite {
+  .motion-strip__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--p31-space-4);
+    flex-wrap: wrap;
+    margin-bottom:var(--p31-space-4);
+  }
+
+  .motion-strip__head h2 {
+    font-size: var(--p31-text-h3);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--p31-text-primary);
+  }
+
+  .motion-strip__head p {
+    color: var(--p31-text-muted);
+    font-size: var(--p31-text-sm);
+    max-width: 46ch;
+  }
+
+  .motion-strip__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--p31-space-4);
+  }
+
+  .motion-tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--p31-space-3);
+    background: var(--p31-glass-bg);
+    border: 1px solid var(--p31-glass-border);
+    border-radius: var(--p31-radius-md);
+    padding:var(--p31-space-4);
+    backdrop-filter: var(--p31-glass-blur);
+  }
+
+  .motion-tile__stage {
+    min-height: 92px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed var(--p31-glass-border);
+    border-radius: var(--p31-radius-sm);
+    background: color-mix(in oklch, var(--p31-void) 45%, transparent);
+    overflow: hidden;
+  }
+
+  .motion-tile__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--p31-space-2);
+  }
+
+  .motion-tile__label {
+    font-family: var(--p31-font-mono, ui-monospace, monospace);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--p31-text-tertiary);
+  }
+
+  .btn-sm {
+    min-height: 32px;
+    padding:4px 16px;
+    font-size: var(--p31-text-sm);
+  }
+
+  /* ── Demo stage pieces ─────────────────────────────────────────────────── */
+  .motion-orb {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--p31-radius-full);
+    background: linear-gradient(
+      135deg,
+      var(--p31-accent-cyan),
+      color-mix(in oklch, var(--p31-accent-violet) 55%, var(--p31-accent-cyan))
+    );
+    box-shadow: 0 0 22px color-mix(in oklch, var(--p31-accent-cyan) 40%, transparent);
+  }
+
+  .motion-stagger { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .motion-chip {
+    font-size: var(--p31-text-xs);
+    font-weight: 600;
+    background: color-mix(in oklch, var(--p31-accent-violet) 15%, transparent);
+    color: var(--p31-accent-violet);
+    border: 1px solid color-mix(in oklch, var(--p31-accent-violet) 30%, transparent);
+    padding:4px 8px;
+    border-radius: var(--p31-radius-full);
+  }
+
+  .motion-layout { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; }
+  .motion-layout__block {
+    width: 100%;
+    height: 34px;
+    background: linear-gradient(
+      90deg,
+      var(--p31-accent-gold),
+      color-mix(in oklch, var(--p31-accent-cyan) 60%, var(--p31-accent-gold))
+    );
+    border-radius: var(--p31-radius-sm);
+  }
+
+  .motion-press { min-width: 116px; }
+  .motion-text { font-size: var(--p31-text-sm); color: var(--p31-cloud); text-align: center; }
+  .motion-glass-card {
+    background: var(--p31-glass-bg-hover);
+    border: 1px solid var(--p31-glass-border);
+    border-radius: var(--p31-radius-sm);
+    padding:var(--p31-space-3) var(--p31-space-4);
+    color: var(--p31-text-primary);
+    font-size: var(--p31-text-sm);
+  }
+}
+
+/* Unlayered so it outranks surface.css `.surface-hero` and polish.css
+   `.glass-tile` (flex column), keeping the row hero layout. */
+.glass-tile.surface-hero {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.motion-strip.glass-tile > .motion-strip__head {
+  margin-bottom:0;
+}

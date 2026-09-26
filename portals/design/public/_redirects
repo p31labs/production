@@ -1,0 +1,5 @@
+# SPA deep links (path → hash is handled client-side by the pre-hook).
+# NOTE: Pages _redirects does NOT support a 404 status code, so missing assets
+# fall through to index.html — the client is protected from HTML-poisoning by
+# the SW content-type guard (public/sw.js) + immutable /assets/* _headers.
+/* /index.html 200

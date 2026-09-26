@@ -1,0 +1,56 @@
+/* ambient.css — portal-specific overrides on the vendored @p31/p31ca-ambient
+   CSS. Imported AFTER the vendored CSS so these win at equal specificity.
+   Token stance: var(--p31-*) only (color-mix, no raw hex/rgba).
+
+   LED controller transparency: the open panel (.devpanel) is a 0.56–0.62
+   alpha gradient + 32px backdrop blur — it blocks the dome. We drop it to the
+   ~0.38–0.46 band + softer blur so the molecular heart reads through. The
+   internal chips/wells keep their own surfaces (we do NOT touch
+   --p31-panel-surface — lowering it would hurt readout readability).
+
+   A11y floor: at crisis (data-spoons 0–1) and prefers-reduced-motion the
+   panel goes back near-opaque — a see-through panel over a moving dome is a
+   vestibular hazard. Mirrors the ambient's own crisis-floor philosophy. */
+
+.devpanel {
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklch, var(--p31-surface2) 24%, transparent) 0%,
+    color-mix(in oklch, var(--p31-surface) 22%, transparent) 60%,
+    color-mix(in oklch, var(--p31-surface2) 24%, transparent) 100%
+  );
+  /* Lighten the internal chips/wells so the dome reads through them (the LCD
+     deep wells keep their solid surface for legibility). */
+  --p31-panel-surface: color-mix(in oklch, var(--p31-surface) 55%, transparent);
+}
+.devpanel::before {
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+}
+
+/* Crisis / calm — the panel becomes near-opaque for readability. */
+[data-spoons="0"] .devpanel,
+[data-spoons="1"] .devpanel {
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklch, var(--p31-surface2) 85%, transparent) 0%,
+    color-mix(in oklch, var(--p31-surface) 82%, transparent) 60%,
+    color-mix(in oklch, var(--p31-surface2) 85%, transparent) 100%
+  );
+}
+@media (prefers-reduced-motion: reduce) {
+  .devpanel {
+    background: linear-gradient(
+      160deg,
+      color-mix(in oklch, var(--p31-surface2) 85%, transparent) 0%,
+      color-mix(in oklch, var(--p31-surface) 82%, transparent) 60%,
+      color-mix(in oklch, var(--p31-surface2) 85%, transparent) 100%
+    );
+  }
+}
+
+/* The static SVG molecular-heart layer is removed from the vendored JSX; this
+   is a safety net so any stale copy can never paint over the dome. */
+.molecular-heart-svg {
+  display: none;
+}

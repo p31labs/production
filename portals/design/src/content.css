@@ -1,0 +1,118 @@
+/* ==========================================================================
+   P31 Design Portal — content classes (suite vocabulary only).
+   All surfaces render with suite classes (surface-card, chip, glass-panel,
+   badge, btn) plus the small helpers below. No legacy bespoke names.
+   ========================================================================== */
+
+/* ── Heading block ──────────────────────────────────────────────────────── */
+.surface-head { margin-bottom:20px; }
+.surface-head__eyebrow {
+  font-family: var(--p31-font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  color: var(--p31-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+}
+.surface-head h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin:8px 0 8px;
+  color: var(--p31-text);
+}
+.surface-head p {
+  color: var(--p31-text-secondary);
+  font-size: 15px;
+  max-width: 56ch;
+  margin:0;
+}
+
+/* ── Live preview stage ──────────────────────────────────────────────────── */
+.preview-box {
+  min-height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:16px;
+  border: 1px dashed var(--p31-glass-border);
+  border-radius: 12px;
+  background: color-mix(in oklch, var(--p31-void) 60%, transparent);
+}
+.preview-box--mini { min-height: 56px; padding:8px; }
+.preview-box--lab { min-height: 200px; }
+.preview-box__text { font-size: 12px; color: var(--p31-text-tertiary); text-align: center; line-height: 1.5; }
+
+/* ── Utility rows ──────────────────────────────────────────────────────────── */
+.meta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+
+/* ── Tiny label (replaces contract-block-label) ─────────────────────── */
+.label-tiny {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--p31-text-tertiary);
+  margin:0 0 8px;
+}
+
+/* ── Mono helper ────────────────────────────────────────────────────── */
+.mono { font-family: var(--p31-font-mono, ui-monospace, monospace); }
+
+/* ── Suite shell reset — neutralize design-core recipes pill topbar ─── */
+.topbar { margin:0; border-radius: 0; box-shadow: none; }
+
+/* ── Surface card fill gap: header icon row, dense desc ─────────────── */
+.surface-card .surface-card-header { gap: 8px; }
+.surface-card-title.surface-card-title--mono { font-family: var(--p31-font-mono, ui-monospace, monospace); font-size: 14px; }
+
+/* ── Code / toast / dyslexia helpers ───────────────────────────────── */
+.code-line {
+  font-family: var(--p31-font-mono, ui-monospace, monospace);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--p31-text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin:0;
+}
+.code-line + .code-line { margin-top:4px; }
+
+.portal-toast {
+  position: fixed;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  padding:8px 16px;
+  border-radius: 9999px;
+  background: var(--p31-surface);
+  border: 1px solid var(--p31-accent);
+  color: var(--p31-text);
+  font-size: 13px;
+  font-family: var(--p31-font-mono, ui-monospace, monospace);
+}
+
+.dyslexia-mode {
+  letter-spacing: 0.05em !important;
+  word-spacing: 0.05em !important;
+  line-height: 1.9 !important;
+  font-size: 105% !important;
+}
+
+/* ── Active surface-card (Brands) ───────────────────────────────────── */
+.surface-card--active {
+  border-color: var(--p31-accent);
+  background: color-mix(in oklch, var(--p31-accent) 10%, var(--p31-glass-bg));
+}
+
+/* ── QA gate result chips (Intent DSL) ──────────────────────────────── */
+.chip-ok { background: var(--p31-accent-green); color: var(--p31-void); }
+.chip-err { background: var(--p31-accent-red); color: var(--p31-void); }
+.chip-warn { background: var(--p31-accent-gold); color: var(--p31-void); }
+/* ── LivePreview component helpers ──────────────────────────────────── */
+.catalog-preview-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; }
+.catalog-preview-text { font-size: 12px; color: var(--p31-text-tertiary); text-align: center; line-height: 1.5; }
+.catalog-preview-text--muted { opacity: 0.7; }
+.catalog-preview-max { min-height: 80px; display: flex; align-items: center; justify-content: center; }
+.catalog-preview-cmdk { display: flex; flex-direction: column; gap: 4px; font-size: 11px; }

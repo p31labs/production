@@ -1,8 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import Showcase from '../routes/Showcase/Showcase';
+import Marketplace from '../routes/Marketplace/Marketplace';
+import Catalog from '../routes/Catalog/Catalog';
 import Tokens from '../routes/Tokens/Tokens';
-import Components from '../routes/Components/Components';
 import GlassLab from '../routes/GlassLab/GlassLab';
 import Brands from '../routes/Brands/Brands';
 import Recipes from '../routes/Recipes/Recipes';
@@ -12,6 +14,34 @@ import Accessibility from '../routes/Accessibility/Accessibility';
 import Icons from '../routes/Icons/Icons';
 
 describe('Routes', () => {
+  it('renders Showcase page', () => {
+    render(
+      <BrowserRouter>
+        <Showcase />
+      </BrowserRouter>
+    );
+    expect(screen.getByText('P31 Design System')).toBeDefined();
+  });
+
+  it('renders Marketplace page', () => {
+    render(
+      <BrowserRouter>
+        <Marketplace />
+      </BrowserRouter>
+    );
+    expect(screen.getByText('Marketplace')).toBeDefined();
+    expect(screen.getAllByText(/MCP marketplace/i).length).toBeGreaterThan(0);
+  });
+
+  it('renders Catalog page', () => {
+    render(
+      <BrowserRouter>
+        <Catalog />
+      </BrowserRouter>
+    );
+    expect(screen.getByText('Catalog')).toBeDefined();
+  });
+
   it('renders Tokens page', () => {
     render(
       <BrowserRouter>
@@ -19,15 +49,6 @@ describe('Routes', () => {
       </BrowserRouter>
     );
     expect(screen.getByText('Design Tokens')).toBeDefined();
-  });
-
-  it('renders Components page', () => {
-    render(
-      <BrowserRouter>
-        <Components />
-      </BrowserRouter>
-    );
-    expect(screen.getByText('Components')).toBeDefined();
   });
 
   it('renders GlassLab page', () => {
@@ -58,13 +79,14 @@ describe('Routes', () => {
     expect(screen.getByText('glass-panel')).toBeDefined();
   });
 
-  it('renders Playground page', () => {
+  it('renders Playground page with the live component lab', () => {
     render(
       <BrowserRouter>
         <Playground />
       </BrowserRouter>
     );
-    expect(screen.getByText('Run QA Gates')).toBeDefined();
+    expect(screen.getByText('Live components')).toBeDefined();
+    expect(screen.getByText('Intent DSL')).toBeDefined();
   });
 
   it('renders McpConsole page', () => {

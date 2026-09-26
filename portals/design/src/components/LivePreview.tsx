@@ -11,7 +11,7 @@ import {
   PageHeader,
   SpoonDial,
   Chameleon,
-} from '@p31/design-core/compositions';
+} from '@p31ca/design-core/compositions';
 
 type Renderer = () => React.ReactElement;
 

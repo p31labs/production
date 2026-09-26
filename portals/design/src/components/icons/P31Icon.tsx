@@ -158,6 +158,28 @@ const ICON_PATHS: Record<string, ReactNode> = {
       <path d="M4 17h16" />
     </>
   ),
+  marketplace: (
+    <>
+      <path d="M6 8h12l1.2 11a1.8 1.8 0 0 1-1.8 2H6.6a1.8 1.8 0 0 1-1.8-2L6 8z" />
+      <path d="M9 8V6.5a3 3 0 0 1 6 0V8" />
+      <circle cx="9.5" cy="13.5" r="0.6" />
+      <circle cx="14.5" cy="13.5" r="0.6" />
+    </>
+  ),
+  catalog: (
+    <>
+      <rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.5" />
+      <rect x="13" y="3.5" width="7.5" height="7.5" rx="1.5" />
+      <rect x="3.5" y="13" width="7.5" height="7.5" rx="1.5" />
+      <rect x="13" y="13" width="7.5" height="7.5" rx="1.5" />
+    </>
+  ),
+  crown: (
+    <>
+      <path d="M3 7l3.5 3.5L12 4l5.5 6.5L21 7l-1.5 10.5a2 2 0 0 1-2 1.8H6.5a2 2 0 0 1-2-1.8L3 7z" />
+      <path d="M5.5 21h13" />
+    </>
+  ),
 };
 
 export type IconName = keyof typeof ICON_PATHS;

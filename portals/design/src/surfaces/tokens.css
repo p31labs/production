@@ -1,0 +1,245 @@
+/* ==========================================================================
+   P31 Design Portal — Tokens surface (THE Token Lab).
+   Live swatch grid: edit an OKLCH token → writeToken() → the whole portal
+   recolors instantly. Export to CSS / JSON / DTCG via Blob download.
+   Token stance: var(--p31-*) only; OKLCH / color-mix(in oklch, …) only.
+   ========================================================================== */
+
+/* ── Lab toolbar (export + reset) ───────────────────────────────────────── */
+.tlab-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--p31-space-3);
+}
+
+.tlab-toolbar__status {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-2);
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+  color: var(--p31-text-muted);
+}
+
+.tlab-toolbar__status::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: var(--p31-radius-full);
+  background: var(--p31-accent-green);
+  box-shadow: 0 0 8px color-mix(in oklch, var(--p31-accent-green) 60%, transparent);
+}
+
+.tlab-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--p31-space-2);
+}
+
+.tlab-export {
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+  color: var(--p31-accent);
+  background: var(--p31-accent-dim);
+  border: 1px solid color-mix(in oklch, var(--p31-accent) 40%, transparent);
+}
+
+.tlab-export:hover:not(:disabled) {
+  background: color-mix(in oklch, var(--p31-accent) 18%, transparent);
+  border-color: var(--p31-accent);
+}
+
+.tlab-reset {
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+}
+
+/* ── Swatch grid ───────────────────────────────────────────────────────── */
+.tlab-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-3);
+  padding:var(--p31-space-4);
+  border-radius: var(--p31-radius-lg);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  backdrop-filter: var(--p31-glass-blur);
+  transition: all var(--p31-transition-normal) var(--p31-ease-quantum);
+}
+
+.tlab-card:hover {
+  background: var(--p31-glass-bg-hover);
+  border-color: color-mix(in oklch, white 20%, transparent);
+}
+
+.tlab-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--p31-space-2);
+}
+
+.tlab-card__name {
+  font-size: var(--p31-text-xs);
+  color: var(--p31-text-muted);
+  word-break: break-all;
+}
+
+.tlab-swatch {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--p31-radius-md);
+  border: 1px solid var(--p31-glass-border);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, white 6%, transparent);
+}
+
+.tlab-input {
+  width: 100%;
+  padding:var(--p31-space-2) var(--p31-space-3);
+  border-radius: var(--p31-radius-sm);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  color: var(--p31-text-primary);
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+  outline: none;
+  transition: border-color var(--p31-transition-fast) var(--p31-ease-quantum);
+}
+
+.tlab-input:focus {
+  border-color: var(--p31-accent);
+  box-shadow: 0 0 0 3px var(--p31-accent-dim);
+}
+
+.tlab-input--static {
+  display: block;
+  color: var(--p31-text-muted);
+  white-space: pre-wrap;
+  word-break: break-all;
+  cursor: default;
+}
+
+.tlab-card__meta {
+  font-size: 10px;
+  color: var(--p31-accent);
+}
+
+/* ── Live proof strip ──────────────────────────────────────────────────── */
+.tlab-proof {
+  padding:var(--p31-space-5);
+  border-radius: var(--p31-radius-lg);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  backdrop-filter: var(--p31-glass-blur);
+  box-shadow: var(--p31-glass-shadow);
+}
+
+.tlab-proof__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--p31-space-2);
+  margin-bottom:var(--p31-space-4);
+}
+
+.tlab-proof__title {
+  font-size: var(--p31-text-h3);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--p31-text-primary);
+  margin:0;
+}
+
+.tlab-proof__lede {
+  font-size: var(--p31-text-sm);
+  color: var(--p31-text-muted);
+  margin:0;
+}
+
+.tlab-proof__tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--p31-space-3);
+}
+
+.tlab-proof__tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-2);
+  padding:var(--p31-space-4);
+  border-radius: var(--p31-radius-md);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  backdrop-filter: var(--p31-glass-blur);
+}
+
+.tlab-proof__tile--bg {
+  background: var(--p31-glass-bg);
+}
+
+.tlab-proof__tile--surface {
+  background: var(--p31-glass-bg);
+}
+
+.tlab-proof__tile--accent {
+  background: color-mix(in oklch, var(--p31-accent) 18%, var(--p31-void));
+  border-color: color-mix(in oklch, var(--p31-accent) 45%, transparent);
+}
+
+.tlab-proof__label {
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+  color: var(--p31-text-muted);
+}
+
+.tlab-proof__value {
+  font-size: var(--p31-text-xl);
+  font-weight: 700;
+  color: var(--p31-text-primary);
+}
+
+.tlab-proof__sub {
+  font-size: var(--p31-text-xs);
+  color: var(--p31-text-muted);
+}
+
+.tlab-proof__bar {
+  height: 6px;
+  border-radius: var(--p31-radius-full);
+  background: var(--p31-accent);
+  box-shadow: 0 0 12px color-mix(in oklch, var(--p31-accent) 40%, transparent);
+}
+
+.tlab-proof__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding:4px 12px;
+  border-radius: var(--p31-radius-full);
+  font-size: var(--p31-text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--p31-accent);
+  background: color-mix(in oklch, var(--p31-accent) 14%, transparent);
+  border: 1px solid color-mix(in oklch, var(--p31-accent) 32%, transparent);
+}
+
+.tlab-proof__badge::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: var(--p31-radius-full);
+  background: var(--p31-accent);
+  box-shadow: 0 0 8px color-mix(in oklch, var(--p31-accent) 60%, transparent);
+}
+
+.tlab-proof__bar-row {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-3);
+}

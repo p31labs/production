@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -13,7 +12,6 @@ const HAS_DESIGN_ENTRY = fs.existsSync(DESIGN_ENTRY);
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(),
   ],
   server: { port: 5190, host: true },
   resolve: {
@@ -22,7 +20,7 @@ export default defineConfig({
   build: {
     sourcemap: 'hidden',
     chunkSizeWarningLimit: 800,
-    cssMinify: true,
+    cssMinify: false,
     ...(HAS_DESIGN_ENTRY ? {
       rollupOptions: {
         input: {
@@ -31,8 +29,9 @@ export default defineConfig({
         },
         output: {
           manualChunks: (id: string) => {
-            if (id.includes('react-dom') || id.includes('react/')) return 'vendor-react';
+            if (id.includes('p31ca-ambient')) return 'vendor-p31ca-ambient';
             if (id.includes('design-core')) return 'vendor-design-core';
+            if (id.includes('react-dom') || id.includes('react/')) return 'vendor-react';
             if (id.includes('src/design')) return 'design-route';
           },
         },

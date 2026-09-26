@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="Signal animated icon">
+  <title>Signal</title>
+  <desc>Radiating care signal with concentric elliptical waves representing coordination and communication in the P31 mesh.</desc>
+  <style>
+    .sg-wave { fill: none; stroke-width: 2; stroke-linecap: round; opacity: 0; }
+    .sg-wave-p { stroke: var(--p31-accent, #00F0FF); }
+    .sg-wave-s { stroke: var(--p31-accent-violet, #A78BFA); }
+    .sg-wave-n { stroke: var(--p31-text, #F5F5F7); opacity: 0.5; }
+    .sg-w1 { animation: sgRipple 4s infinite 0s; }
+    .sg-w2 { animation: sgRipple 4s infinite 0.8s; }
+    .sg-w3 { animation: sgRipple 4s infinite 1.6s; }
+    .sg-w4 { animation: sgRipple 4s infinite 2.4s; }
+    .sg-core-p { fill: var(--p31-accent, #00F0FF); transform-origin: 100px 100px; animation: sgCore 2.5s infinite alternate ease-in-out; }
+    @keyframes sgRipple { 0% { transform: scale(0.1); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 0; } }
+    @keyframes sgCore { 0% { transform: scale(0.85); filter: drop-shadow(0 0 2px var(--p31-accent, #00F0FF)); } 100% { transform: scale(1.15); filter: drop-shadow(0 0 16px var(--p31-accent, #00F0FF)); } }
+    @media (prefers-reduced-motion: reduce) { .sg-wave, .sg-core-p { animation: none; } .sg-wave { opacity: 0.15; transform: scale(0.5); } .sg-core-p { transform: scale(1); } }
+  </style>
+  <ellipse cx="100" cy="100" rx="20" ry="50" class="sg-wave sg-wave-p sg-w1"/>
+  <ellipse cx="100" cy="100" rx="40" ry="70" class="sg-wave sg-wave-s sg-w2"/>
+  <ellipse cx="100" cy="100" rx="60" ry="90" class="sg-wave sg-wave-n sg-w3"/>
+  <ellipse cx="100" cy="100" rx="80" ry="110" class="sg-wave sg-wave-s sg-w4"/>
+  <circle cx="100" cy="100" r="10" class="sg-core-p"/>
+</svg>

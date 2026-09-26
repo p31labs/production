@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react';
 import {
   mountJitterbugStarfield,
   type JitterbugStarfieldInstance,
-} from '@p31/design-core/starfield/jitterbug';
-import { useThemeStore } from '@p31/design-core/theming/theme-store';
+} from '@p31ca/design-core/starfield/jitterbug';
+import { useThemeStore } from '@p31ca/design-core/theming/theme-store';
 import { starfieldInstance } from '../lib/starfield-instance';
 
 interface Props {

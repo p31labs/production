@@ -1,0 +1,175 @@
+/*
+ * @p31/controls — controls.css
+ *
+ * The control primitives' visuals. Every value is a canon token; every
+ * transition multiplies by --motion-scale (spoons=0 and prefers-reduced-
+ * motion both zero it). The learn states paint the amber/green/red signal
+ * ring using the --p31-control-signal-* lamps.
+ */
+
+.p31-knob,
+.p31-fader,
+.p31-switch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--p31-space-1);
+  user-select: none;
+}
+
+/* ─── Knob ────────────────────────────────────────────────────────────── */
+.p31-knob__dial {
+  border-radius: 50%;
+  background: var(--p31-surface);
+  border: 1px solid var(--p31-glass-border);
+  cursor: ns-resize;
+  touch-action: none;
+  transition: box-shadow var(--p31-transition-fast) var(--p31-ease-quantum),
+              border-color var(--p31-transition-fast) var(--p31-ease-quantum);
+}
+
+.p31-knob__dial:focus-visible {
+  outline: 2px solid var(--p31-accent);
+  outline-offset: 2px;
+}
+
+.p31-knob__label {
+  font-size: var(--p31-text-xs);
+  color: var(--p31-cloud);
+  text-align: center;
+  max-width: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.p31-knob__readout {
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--p31-text-primary);
+}
+
+/* ─── Fader ───────────────────────────────────────────────────────────── */
+.p31-fader__track {
+  position: relative;
+  width: 8px;
+  height: var(--p31-control-fader-height, 88px);
+  background: var(--p31-surface);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-full);
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+.p31-fader__track:focus-visible {
+  outline: 2px solid var(--p31-accent);
+  outline-offset: 2px;
+}
+
+.p31-fader__fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--p31-accent-dim);
+  border-radius: var(--p31-radius-full);
+  pointer-events: none;
+}
+
+.p31-fader__handle {
+  position: absolute;
+  left: 50%;
+  width: 20px;
+  height: 8px;
+  margin-left: -10px;
+  margin-bottom: -4px;
+  background: var(--p31-text-primary);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.p31-fader__label {
+  font-size: var(--p31-text-xs);
+  color: var(--p31-cloud);
+  text-align: center;
+  max-width: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.p31-fader__readout {
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--p31-text-primary);
+}
+
+/* ─── Switch ──────────────────────────────────────────────────────────── */
+.p31-switch__rocker {
+  width: 40px;
+  height: 22px;
+  padding: 0;
+  border-radius: var(--p31-radius-full);
+  background: var(--p31-surface);
+  border: 1px solid var(--p31-glass-border);
+  cursor: pointer;
+  position: relative;
+  transition: background var(--p31-transition-fast) var(--p31-ease-quantum);
+}
+
+.p31-switch__rocker[aria-checked='true'] {
+  background: var(--p31-accent-dim);
+  border-color: var(--p31-accent);
+}
+
+.p31-switch__rocker:focus-visible {
+  outline: 2px solid var(--p31-accent);
+  outline-offset: 2px;
+}
+
+.p31-switch__knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--p31-text-primary);
+  transition: transform var(--p31-transition-fast) var(--p31-ease-quantum);
+}
+
+.p31-switch__rocker[aria-checked='true'] .p31-switch__knob {
+  transform: translateX(18px);
+}
+
+.p31-switch__label {
+  font-size: var(--p31-text-xs);
+  color: var(--p31-cloud);
+}
+
+.p31-switch__readout {
+  font-size: var(--p31-text-xs);
+  color: var(--p31-text-primary);
+}
+
+/* ─── Learn states — the amber/green/red ring ─────────────────────────── */
+.p31-knob--learning .p31-knob__dial,
+.p31-fader--learning .p31-fader__track,
+.p31-switch--learning .p31-switch__rocker {
+  border-color: var(--p31-control-signal-learning);
+  box-shadow: 0 0 0 2px color-mix(in oklch, var(--p31-control-signal-learning) 40%, transparent);
+}
+
+.p31-knob--bound .p31-knob__dial,
+.p31-fader--bound .p31-fader__track,
+.p31-switch--bound .p31-switch__rocker {
+  border-color: var(--p31-control-signal-bound);
+}
+
+.p31-knob--error .p31-knob__dial,
+.p31-fader--error .p31-fader__track,
+.p31-switch--error .p31-switch__rocker {
+  border-color: var(--p31-control-signal-error);
+}

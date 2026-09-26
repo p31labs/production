@@ -9,19 +9,20 @@ The design portal (`production/portals/design`) is a Vite + React 19 + TypeScrip
 ```
 production/portals/design/
 ├── vendor/
-│   ├── p31-design-core-2.2.0.tgz    # Vendored tarball (pinned)
-│   ├── p31-ui-1.3.1.tgz             # Fixed UI dependency
-│   └── .sha512                      # SHA512 manifest for sync-vendor
+│   ├── p31-design-core-3.0.0.tgz   # Vendored tarball (Quantum Material, OKLCH) — pinned
+│   ├── p31-ui-1.3.1.tgz            # Fixed UI dependency
+│   └── .sha512                     # SHA512 manifest for sync-vendor
 ├── src/
-│   ├── components/                  # Portal-specific components
-│   │   ├── chrome/                  # Topbar, BottomBar, SiteFooter, SiteTopbar
-│   │   ├── chrome/__tests__/        # Chrome component tests
-│   │   ├── catalog/                 # ComponentCatalog page
-│   │   └── icons/                   # P31Icon
-│   ├── routes/                      # Page routes (Home, Tokens, Components, etc.)
-│   ├── __tests__/                   # Portal tests + setup
-│   ├── App.tsx                      # Main app with CommandPalette + SectionStrip
-│   └── index.css                    # Portal-specific CSS
+│   ├── tokens.css                  # Portal-owned Quantum Material tokens (imported LAST)
+│   ├── components/                 # Portal-specific components
+│   │   ├── chrome/                 # Topbar, BottomBar, SiteFooter, SiteTopbar
+│   │   ├── chrome/__tests__/       # Chrome component tests
+│   │   ├── catalog/                # ComponentCatalog page
+│   │   └── icons/                  # P31Icon
+│   ├── routes/                     # Showcase, Marketplace, Catalog, Playground + supporting
+│   ├── __tests__/                  # Portal tests + setup
+│   ├── App.tsx                     # Main app with CommandPalette + SectionStrip
+│   └── index.css                   # Portal-specific CSS (imports tokens.css last)
 ├── pnpm-workspace.yaml              # Workspace config with vendored override
 ├── package.json
 ├── tsconfig.json
@@ -62,6 +63,19 @@ pnpm build       # Production build
 ```bash
 pnpm deploy      # Wrangler deploy to Cloudflare Pages
 ```
+
+## Related runbooks (reference consumers)
+
+The design canon is consumed by portal applications. Operational runbooks for the reference
+implementations live in their own repos:
+
+| Consumer | Live URL | Runbook |
+|---|---|---|
+| Quantum Material Workspace | `workspace.p31ca.org` | `production/portals/workspace/docs/AGENT_RUNBOOK.md` (roles, gates, incident S1–S4, recipes) |
+| Workspace architecture + build spec | — | `production/portals/workspace/docs/SYSTEM_ARCHITECTURE.md`, `docs/BUILD_SPEC.md` |
+
+Any design-core token/component change must be validated against the workspace (it is the reference
+consumer) before release — see `production/portals/workspace/docs/BUILD_SPEC.md` §3.
 
 ## Troubleshooting
 

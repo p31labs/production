@@ -1,0 +1,42 @@
+/* dome.css — dome surface + ambient background wrapper. Token stance: var(--p31-*) only.
+   The LED controller styling lives in the vendored @p31/p31ca-ambient CSS. */
+
+/* Portal-wide ambient wrapper (MolecularHeart is fixed z-0 + pointer-events none). */
+.dome-bg {
+  pointer-events: none;
+}
+.dome-bg canvas {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* /dome surface — full-bleed stage, no cards. Drag orbits the dome. */
+.dome-surface {
+  position: relative;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+}
+.dome-surface:active {
+  cursor: grabbing;
+}
+.dome-stage {
+  position: absolute;
+  inset: 0;
+  min-height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.dome-a11y {
+  position: absolute;
+  bottom: var(--p31-space-3);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--p31-text-xs);
+  color: var(--p31-text-tertiary);
+  z-index: 290;
+  max-width: 90%;
+  text-align: center;
+  pointer-events: none;
+}

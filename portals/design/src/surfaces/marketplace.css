@@ -1,0 +1,241 @@
+/* ==========================================================================
+   P31 Design Portal — Marketplace surface (Quantum Material design shop).
+   Live + filterable + searchable over the genui canon; spoon-/LOVE-priced.
+   Token stance: var(--p31-*) only; OKLCH / color-mix(in oklch, …) only.
+   ========================================================================== */
+
+/* ── Shared live-example chrome (self-sufficient on this route) ────────── */
+.live-example {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-3);
+  height: 100%;
+  padding:var(--p31-space-4);
+  border-radius: var(--p31-radius-md);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  backdrop-filter: var(--p31-glass-blur);
+}
+
+.live-example__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--p31-space-2);
+}
+
+.live-example__title {
+  font-size: var(--p31-text-lg);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--p31-text-primary);
+  margin:0;
+}
+
+.live-example__toggle {
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+  color: var(--p31-accent);
+  background: var(--p31-accent-dim);
+  border: 1px solid color-mix(in oklch, var(--p31-accent) 40%, transparent);
+  border-radius: var(--p31-radius-full);
+  padding:4px 12px;
+  cursor: pointer;
+  transition: all var(--p31-transition-fast) var(--p31-ease-quantum);
+}
+
+.live-example__toggle:hover {
+  background: color-mix(in oklch, var(--p31-accent) 20%, transparent);
+}
+
+.live-example__desc {
+  font-size: var(--p31-text-sm);
+  line-height: 1.5;
+  color: var(--p31-text-secondary);
+  margin:0;
+}
+
+.live-example__render {
+  flex: 1;
+  min-height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:var(--p31-space-3);
+  border: 1px dashed var(--p31-glass-border);
+  border-radius: var(--p31-radius-sm);
+  background: color-mix(in oklch, var(--p31-void) 60%, transparent);
+}
+
+.live-example__code {
+  flex: 1;
+  min-height: 96px;
+  margin:0;
+  padding:var(--p31-space-3);
+  border-radius: var(--p31-radius-sm);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  font-family: var(--p31-font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--p31-text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow: auto;
+}
+
+.live-example__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--p31-space-2) var(--p31-space-4);
+  padding-top:var(--p31-space-2);
+  border-top: 1px solid var(--p31-glass-border);
+}
+
+.live-example__control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--p31-font-mono);
+  font-size: 11px;
+  color: var(--p31-text-tertiary);
+}
+
+.live-example__control input[type='text'] {
+  width: 120px;
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-sm);
+  padding:4px 8px;
+  color: var(--p31-text-primary);
+  font-family: var(--p31-font-mono);
+  font-size: 11px;
+  outline: none;
+}
+
+.live-example__control input[type='text']:focus {
+  border-color: var(--p31-accent);
+}
+
+.live-example__control input[type='range'],
+.live-example__control input[type='checkbox'] {
+  accent-color: var(--p31-accent);
+}
+
+.live-example__control input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Token-preview tile (safe-render fallback) ─────────────────────────── */
+.qm-token-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--p31-space-2);
+  width: 100%;
+  min-height: 72px;
+}
+
+.qm-token-tile__mono {
+  font-family: var(--p31-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--p31-accent);
+}
+
+.qm-token-tile__swatches {
+  display: flex;
+  gap: var(--p31-space-1);
+}
+
+.qm-token-tile__swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--p31-radius-full);
+  border: 1px solid var(--p31-glass-border);
+}
+
+.qm-token-tile__swatch--cyan {
+  background: color-mix(in oklch, var(--p31-accent-cyan) 85%, var(--p31-void));
+}
+
+.qm-token-tile__swatch--violet {
+  background: color-mix(in oklch, var(--p31-accent-violet) 85%, var(--p31-void));
+}
+
+.qm-token-tile__swatch--gold {
+  background: color-mix(in oklch, var(--p31-accent-gold) 85%, var(--p31-void));
+}
+
+.qm-token-tile__swatch--glass {
+  background: var(--p31-glass-bg);
+}
+
+.qm-token-tile__chips {
+  justify-content: center;
+}
+
+.chip--micro {
+  padding:2px 8px;
+  font-size: 10px;
+}
+
+/* ── Toolbar ──────────────────────────────────────────────────────────── */
+.qm-shop-toolbar {
+  gap: var(--p31-space-2);
+}
+
+.qm-count {
+  opacity: 0.6;
+}
+
+.qm-shop-search {
+  max-width: 240px;
+  margin-left:auto;
+}
+
+/* ── Shop grid ─────────────────────────────────────────────────────────── */
+.qm-shop-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-3);
+}
+
+.qm-shop-tile__toggle {
+  align-self: stretch;
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--p31-accent);
+  background: color-mix(in oklch, var(--p31-accent) 6%, transparent);
+  border: 1px dashed var(--p31-glass-border);
+  border-radius: var(--p31-radius-sm);
+  padding:var(--p31-space-2);
+  cursor: pointer;
+  transition: all var(--p31-transition-fast) var(--p31-ease-quantum);
+}
+
+.qm-shop-tile__toggle:hover {
+  border-color: color-mix(in oklch, var(--p31-accent) 40%, transparent);
+  background: color-mix(in oklch, var(--p31-accent) 12%, transparent);
+}
+
+.qm-shop-tile__preview {
+  width: 100%;
+}
+
+.qm-preview-fill {
+  width: 100%;
+}
+
+.qm-preview-brand {
+  font-weight: 800;
+  color: var(--p31-accent);
+}
+
+.qm-empty {
+  min-height: 120px;
+}

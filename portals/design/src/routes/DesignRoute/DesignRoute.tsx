@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import { TOKEN_MAP, TOKENS_DATA } from '@p31/design-core/mcp/data';
-import { GlassPanel, GlassCard, PageHeader } from '@p31/design-core/compositions';
+import { TOKEN_MAP, TOKENS_DATA } from '@p31ca/design-core/mcp/data';
+import { GlassPanel, GlassCard, PageHeader } from '@p31ca/design-core/compositions';
 import TokenExplorer from '../../components/TokenExplorer';
 import { NAV_SECTIONS, type NavSection } from '../../lib/nav';
 

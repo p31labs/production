@@ -1,4 +1,4 @@
-import type { JitterbugStarfieldInstance } from '@p31/design-core/starfield/jitterbug';
+import type { JitterbugStarfieldInstance } from '@p31ca/design-core/starfield/jitterbug';
 
 /**
  * Shared mutable holder so ambient background + foreground controls can

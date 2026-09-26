@@ -1,0 +1,255 @@
+/* ==========================================================================
+   A2UI surface — generative-UI three-pane demo.
+   Tokenized: OKLCH / color-mix(in oklch, …) only, no raw hex/rgba.
+   All colors via var(--p31-*) tokens.
+   ========================================================================== */
+
+@layer suite {
+  .a2ui-shell {
+    display: grid;
+    grid-template-columns: 300px 1fr 1fr;
+    gap: var(--p31-space-4);
+    align-items: stretch;
+    flex: 1;
+    min-height: 480px;
+  }
+
+  .a2ui-pane {
+    display: flex;
+    flex-direction: column;
+    gap: var(--p31-space-3);
+    min-width: 0;
+    background: var(--p31-glass-bg);
+    border: 1px solid var(--p31-glass-border);
+    border-radius: var(--p31-radius-md);
+    padding:var(--p31-space-4);
+    backdrop-filter: var(--p31-glass-blur);
+  }
+
+  .a2ui-pane__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--p31-space-2);
+    padding-bottom:var(--p31-space-2);
+    border-bottom: 1px solid var(--p31-glass-border);
+  }
+
+  .a2ui-pane__label {
+    font-family: var(--p31-font-mono, ui-monospace, monospace);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--p31-text-tertiary);
+  }
+
+  .a2ui-trust-badge {
+    background: color-mix(in oklch, var(--p31-accent-cyan) 15%, transparent);
+    color: var(--p31-accent-cyan);
+    border: 1px solid color-mix(in oklch, var(--p31-accent-cyan) 30%, transparent);
+    border-radius: var(--p31-radius-full);
+    padding:2px 8px;
+    font-size: var(--p31-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .a2ui-textarea {
+    flex: 1;
+    min-height: 220px;
+    width: 100%;
+    background: color-mix(in oklch, var(--p31-void) 60%, transparent);
+    border: 1px solid var(--p31-glass-border);
+    border-radius: var(--p31-radius-sm);
+    color: var(--p31-text-primary);
+    font-family: var(--p31-font-mono, ui-monospace, monospace);
+    font-size: var(--p31-text-sm);
+    line-height: 1.55;
+    padding:var(--p31-space-3);
+    resize: vertical;
+  }
+
+  .a2ui-textarea:focus-visible {
+    outline: 2px solid var(--p31-accent-cyan);
+    outline-offset: 2px;
+  }
+
+  .a2ui-textarea.is-error {
+    border-color: color-mix(in oklch, var(--p31-accent-red) 60%, transparent);
+  }
+
+  .a2ui-textarea--intent { min-height: 96px; }
+  .a2ui-textarea--json { min-height: 320px; }
+
+  .a2ui-error {
+    color: var(--p31-accent-red);
+    font-size: var(--p31-text-sm);
+  }
+
+  .a2ui-generate { align-self: flex-start; }
+
+  .a2ui-seeds {
+    display: flex;
+    flex-direction: column;
+    gap: var(--p31-space-2);
+  }
+
+  .a2ui-seed {
+    text-align: left;
+    font-size: var(--p31-text-sm);
+    line-height: 1.4;
+    width: 100%;
+  }
+
+  .a2ui-stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--p31-space-3);
+    padding:var(--p31-space-3);
+    background: color-mix(in oklch, var(--p31-void) 40%, transparent);
+    border: 1px dashed var(--p31-glass-border);
+    border-radius: var(--p31-radius-sm);
+    overflow: auto;
+  }
+
+  /* ── Registry renderers (layout primitives) ────────────────────────────── */
+  .a2ui-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--a2ui-cols, 2), minmax(0, 1fr));
+    gap: var(--p31-space-3);
+  }
+  .a2ui-stack { display: flex; flex-direction: column; gap: var(--p31-space-3); }
+  .a2ui-row { display: flex; flex-wrap: wrap; gap: var(--p31-space-2); align-items: center; }
+  .a2ui-card { padding:var(--p31-space-4); }
+  .a2ui-card__title {
+    font-size: var(--p31-text-base);
+    font-weight: 600;
+    color: var(--p31-text-primary);
+    margin-bottom:var(--p31-space-2);
+  }
+  .a2ui-heading {
+    font-size: var(--p31-text-h3);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--p31-text-primary);
+  }
+  .a2ui-text { color: var(--p31-text-muted); font-size: var(--p31-text-sm); }
+  .a2ui-divider {
+    border: 0;
+    border-top: 1px solid var(--p31-glass-border);
+    margin:var(--p31-space-1) 0;
+  }
+  .a2ui-unknown {
+    font-size: var(--p31-text-xs);
+    color: var(--p31-accent-gold);
+    background: color-mix(in oklch, var(--p31-accent-gold) 12%, transparent);
+    padding:2px 8px;
+    border-radius: var(--p31-radius-full);
+  }
+
+  /* ── Metric tile (MetricBadge family) ──────────────────────────────────── */
+  .a2ui-metric {
+    display: flex;
+    flex-direction: column;
+    gap: var(--p31-space-1);
+    padding:var(--p31-space-4);
+  }
+  .a2ui-metric__label {
+    font-size: var(--p31-text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--p31-text-muted);
+  }
+  .a2ui-metric__value {
+    font-size: var(--p31-text-h3);
+    font-weight: 700;
+    color: var(--p31-text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+  .a2ui-metric__delta { font-size: var(--p31-text-xs); font-weight: 600; }
+  .a2ui-delta--up { color: var(--p31-accent-green); }
+  .a2ui-delta--down { color: var(--p31-accent-red); }
+
+  /* ── Badge / StatusBadge families ──────────────────────────────────────── */
+  .a2ui-badge { font-size: var(--p31-text-xs); text-transform: none; letter-spacing: 0.02em; }
+  .a2ui-badge--success { background: color-mix(in oklch, var(--p31-accent-green) 15%, transparent); color: var(--p31-accent-green); }
+  .a2ui-badge--warning { background: color-mix(in oklch, var(--p31-accent-gold) 15%, transparent); color: var(--p31-accent-gold); }
+  .a2ui-badge--error { background: color-mix(in oklch, var(--p31-accent-red) 15%, transparent); color: var(--p31-accent-red); }
+  .a2ui-badge--info { background: color-mix(in oklch, var(--p31-accent-cyan) 15%, transparent); color: var(--p31-accent-cyan); }
+  .a2ui-badge--neutral { background: color-mix(in oklch, white 8%, transparent); color: var(--p31-cloud); }
+
+  .a2ui-status { font-size: var(--p31-text-xs); text-transform: none; letter-spacing: 0.02em; }
+  .a2ui-status .status-dot { width: 6px; height: 6px; border-radius: var(--p31-radius-full); flex: none; }
+  .a2ui-status--online { background: color-mix(in oklch, var(--p31-accent-green) 15%, transparent); color: var(--p31-accent-green); }
+  .a2ui-status--online .status-dot { background: var(--p31-accent-green); }
+  .a2ui-status--busy { background: color-mix(in oklch, var(--p31-accent-gold) 15%, transparent); color: var(--p31-accent-gold); }
+  .a2ui-status--busy .status-dot { background: var(--p31-accent-gold); }
+  .a2ui-status--away { background: color-mix(in oklch, var(--p31-accent-violet) 15%, transparent); color: var(--p31-accent-violet); }
+  .a2ui-status--away .status-dot { background: var(--p31-accent-violet); }
+  .a2ui-status--offline { background: color-mix(in oklch, var(--p31-accent-red) 15%, transparent); color: var(--p31-accent-red); }
+  .a2ui-status--offline .status-dot { background: var(--p31-accent-red); }
+
+  /* ── List / progress ───────────────────────────────────────────────────── */
+  .a2ui-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--p31-space-2);
+    padding:0;
+    margin:0;
+  }
+  .a2ui-list__item {
+    display: flex;
+    align-items: center;
+    gap: var(--p31-space-2);
+    color: var(--p31-text-primary);
+    font-size: var(--p31-text-sm);
+  }
+  .a2ui-list__item.done {
+    color: var(--p31-text-muted);
+    text-decoration: line-through;
+    text-decoration-color: color-mix(in oklch, var(--p31-text-muted) 40%, transparent);
+  }
+  .a2ui-list__mark { color: var(--p31-accent-green); }
+
+  .a2ui-progress {
+    height: 6px;
+    border-radius: var(--p31-radius-full);
+    background: color-mix(in oklch, white 8%, transparent);
+    overflow: hidden;
+  }
+  .a2ui-progress__fill {
+    height: 100%;
+    border-radius: var(--p31-radius-full);
+    background: linear-gradient(
+      90deg,
+      var(--p31-accent-cyan),
+      color-mix(in oklch, var(--p31-accent-violet) 70%, var(--p31-accent-cyan))
+    );
+  }
+
+  /* ── Trust-catalog legend ──────────────────────────────────────────────── */
+  .a2ui-legend {
+    display: flex;
+    flex-direction: column;
+    gap: var(--p31-space-2);
+    margin-top:var(--p31-space-2);
+  }
+  .a2ui-legend__chip {
+    font-family: var(--p31-font-mono, ui-monospace, monospace);
+    font-size: 11px;
+    cursor: default;
+  }
+
+  @media (max-width: 1100px) {
+    .a2ui-shell { grid-template-columns: 1fr 1fr; }
+    .a2ui-pane--render { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 720px) {
+    .a2ui-shell { grid-template-columns: 1fr; min-height: 0; }
+    .a2ui-pane--render { grid-column: auto; }
+  }
+}

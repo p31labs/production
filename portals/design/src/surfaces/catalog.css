@@ -1,0 +1,197 @@
+/* ==========================================================================
+   P31 Design Portal — Catalog surface (canonical registry).
+   Groups every genui component by category; each card is a LiveExample.
+   Token stance: var(--p31-*) only; OKLCH / color-mix(in oklch, …) only.
+   ========================================================================== */
+
+/* ── Shared live-example chrome (self-sufficient on this route) ────────── */
+.live-example {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-3);
+  height: 100%;
+  padding:var(--p31-space-4);
+  border-radius: var(--p31-radius-md);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  backdrop-filter: var(--p31-glass-blur);
+}
+
+.live-example__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--p31-space-2);
+}
+
+.live-example__title {
+  font-size: var(--p31-text-lg);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--p31-text-primary);
+  margin:0;
+}
+
+.live-example__toggle {
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+  color: var(--p31-accent);
+  background: var(--p31-accent-dim);
+  border: 1px solid color-mix(in oklch, var(--p31-accent) 40%, transparent);
+  border-radius: var(--p31-radius-full);
+  padding:4px 12px;
+  cursor: pointer;
+  transition: all var(--p31-transition-fast) var(--p31-ease-quantum);
+}
+
+.live-example__toggle:hover {
+  background: color-mix(in oklch, var(--p31-accent) 20%, transparent);
+}
+
+.live-example__desc {
+  font-size: var(--p31-text-sm);
+  line-height: 1.5;
+  color: var(--p31-text-secondary);
+  margin:0;
+}
+
+.live-example__render {
+  flex: 1;
+  min-height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:var(--p31-space-3);
+  border: 1px dashed var(--p31-glass-border);
+  border-radius: var(--p31-radius-sm);
+  background: color-mix(in oklch, var(--p31-void) 60%, transparent);
+}
+
+.live-example__code {
+  flex: 1;
+  min-height: 96px;
+  margin:0;
+  padding:var(--p31-space-3);
+  border-radius: var(--p31-radius-sm);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  font-family: var(--p31-font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--p31-text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow: auto;
+}
+
+.live-example__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--p31-space-2) var(--p31-space-4);
+  padding-top:var(--p31-space-2);
+  border-top: 1px solid var(--p31-glass-border);
+}
+
+.live-example__control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--p31-font-mono);
+  font-size: 11px;
+  color: var(--p31-text-tertiary);
+}
+
+.live-example__control input[type='text'] {
+  width: 120px;
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-sm);
+  padding:4px 8px;
+  color: var(--p31-text-primary);
+  font-family: var(--p31-font-mono);
+  font-size: 11px;
+  outline: none;
+}
+
+.live-example__control input[type='text']:focus {
+  border-color: var(--p31-accent);
+}
+
+.live-example__control input[type='range'],
+.live-example__control input[type='checkbox'] {
+  accent-color: var(--p31-accent);
+}
+
+.live-example__control input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Toolbar ──────────────────────────────────────────────────────────── */
+.qm-cat-toolbar {
+  gap: var(--p31-space-2);
+}
+
+.qm-count {
+  opacity: 0.6;
+}
+
+.qm-cat-search {
+  max-width: 240px;
+  margin-left:auto;
+}
+
+/* ── Category groups ───────────────────────────────────────────────────── */
+.qm-cat-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-7);
+}
+
+.qm-cat-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-4);
+}
+
+.qm-cat-group-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--p31-space-2);
+  padding-bottom:var(--p31-space-2);
+  border-bottom: 1px solid var(--p31-glass-border);
+}
+
+.qm-cat-group-title {
+  font-size: var(--p31-text-h3);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+  color: var(--p31-text-primary);
+  margin:0;
+}
+
+.qm-cat-group-count {
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+  color: var(--p31-text-muted);
+}
+
+/* ── Component cards ───────────────────────────────────────────────────── */
+.qm-cat-card {
+  cursor: default;
+}
+
+.qm-cat-card .live-example {
+  margin-top:var(--p31-space-1);
+}
+
+.qm-cat-import {
+  font-size: 11px;
+  color: var(--p31-text-muted);
+  word-break: break-all;
+}
+
+.qm-empty {
+  min-height: 120px;
+}

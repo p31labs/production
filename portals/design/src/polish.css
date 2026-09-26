@@ -1,0 +1,311 @@
+/* polish.css — quantum enterprise polish layer.
+   Imported LAST in main.tsx. Token stance: var(--p31-*) / OKLCH only. */
+
+/* ── Surface sizing: constrain ALL surfaces to the MCP reference (960px, centered).
+     MCP + Accessibility already conform; this pulls every other surface to the
+     same density bar (dense hierarchy over wide minimalism). */
+/* Surface width is owned by the SurfaceLayout template (960px, the MCP bar). */
+
+/* Tighter vertical rhythm on shared shells. */
+.home-container {
+  max-width: 960px;
+}
+
+/* ── Sidebar / panel alignment ──────────────────────────────────────────── */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top:var(--p31-space-3);
+}
+.nav-item {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+.nav-item .lock-icon {
+  display: none;
+}
+
+/* ── Theme picker ───────────────────────────────────────────────────────── */
+.theme-picker {
+  position: relative;
+}
+.theme-picker__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--p31-space-2);
+  min-height: 40px;
+  padding:8px 8px;
+  background: color-mix(in oklch, var(--p31-surface) 80%, transparent);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-full);
+  color: var(--p31-text-primary);
+  cursor: pointer;
+  backdrop-filter: var(--p31-glass-blur);
+}
+.theme-picker__trigger:hover {
+  border-color: color-mix(in oklch, var(--p31-accent) 45%, transparent);
+}
+.theme-picker__swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid var(--p31-glass-border-strong);
+  display: inline-block;
+}
+.theme-picker__label {
+  font-size: var(--p31-text-sm);
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.theme-picker__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 176px;
+  padding:var(--p31-space-2);
+  background: color-mix(in oklch, var(--p31-surface2) 96%, transparent);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-md);
+  backdrop-filter: var(--p31-glass-blur);
+  box-shadow: var(--p31-glass-shadow);
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.theme-picker__item {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-3);
+  width: 100%;
+  padding:var(--p31-space-2) var(--p31-space-3);
+  background: none;
+  border: none;
+  border-radius: var(--p31-radius-sm);
+  color: var(--p31-text-primary);
+  cursor: pointer;
+  font-size: var(--p31-text-sm);
+}
+.theme-picker__item:hover {
+  background: color-mix(in oklch, var(--p31-accent) 12%, transparent);
+}
+.theme-picker__item.active {
+  background: color-mix(in oklch, var(--p31-accent) 18%, transparent);
+  color: var(--p31-accent);
+  font-weight: 600;
+}
+.theme-picker__check {
+  margin-left:auto;
+}
+
+/* ── Notification stack / toasts ───────────────────────────────────────── */
+.notif-stack {
+  position: fixed;
+  right: var(--p31-space-5);
+  bottom: var(--p31-space-5);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-2);
+  max-width: 360px;
+  pointer-events: none;
+}
+.notif-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--p31-space-3);
+  padding:var(--p31-space-3) var(--p31-space-4);
+  background: color-mix(in oklch, var(--p31-surface2) 92%, transparent);
+  border: 1px solid var(--p31-glass-border);
+  border-left: 3px solid var(--p31-accent);
+  border-radius: var(--p31-radius-md);
+  backdrop-filter: var(--p31-glass-blur);
+  box-shadow: var(--p31-glass-shadow);
+  animation: notif-in 0.24s var(--p31-ease-out, ease-out);
+}
+@keyframes notif-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .notif-toast {
+    animation: none;
+  }
+}
+.notif-toast__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top:4px;
+  flex-shrink: 0;
+}
+.notif-toast-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.notif-toast__title {
+  font-size: var(--p31-text-sm);
+  font-weight: 700;
+  color: var(--p31-text-primary);
+}
+.notif-toast__text {
+  font-size: var(--p31-text-xs);
+  color: var(--p31-text-tertiary);
+  line-height: 1.45;
+}
+.notif-toast__dismiss {
+  margin-left:auto;
+  background: none;
+  border: none;
+  color: var(--p31-text-tertiary);
+  cursor: pointer;
+  font-size: var(--p31-text-sm);
+  padding:0 2px;
+}
+.notif-toast__dismiss:hover {
+  color: var(--p31-text-primary);
+}
+/* ── Skeleton loading (component-shaped, not spinner) ────────────────────── */
+.surface-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-4);
+  padding:var(--p31-space-6);
+  width: 100%;
+  max-width: 960px;
+  margin:0 auto;
+}
+.skeleton-tile,
+.skeleton-row,
+.skeleton-card {
+  background: linear-gradient(90deg,
+    color-mix(in oklch, var(--p31-surface) 100%, transparent) 0%,
+    color-mix(in oklch, var(--p31-surface2) 100%, transparent) 50%,
+    color-mix(in oklch, var(--p31-surface) 100%, transparent) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s linear infinite;
+  border-radius: var(--p31-radius-md);
+}
+.skeleton-tile { height: 120px; }
+.skeleton-row { height: 48px; max-width: 420px; }
+.skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--p31-space-4); }
+.skeleton-card { height: 140px; }
+@keyframes skeleton-shimmer { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-tile, .skeleton-row, .skeleton-card { animation: none; }
+}
+
+/* ── Glass-tile framing (byte-identical to .mc-step / .a11y-tile) ──────────
+   The bordered glass panel that gives every surface the MCP/A11y look. */
+.glass-tile {
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  padding:var(--p31-space-5);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  box-shadow: var(--p31-glass-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-4);
+}
+
+/* ── Starfield transparency: the fixed starfield (z=0) sits behind. Every
+     chrome ancestor must be transparent so it shows through; surface content
+     uses the semi-transparent glass-bg (which lets it glow through too). */
+html,
+body,
+#root,
+.app-shell,
+.main-workspace,
+.surface-panel {
+  background: transparent !important;
+}
+
+/* ── Topbar: left cluster + portaled theme menu ─────────────────────────── */
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-3);
+  flex-shrink: 0;
+}
+
+.theme-picker__menu {
+  position: fixed;
+  z-index: 400;
+  min-width: 176px;
+  padding:var(--p31-space-2);
+  background: color-mix(in oklch, var(--p31-surface2) 96%, transparent);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-md);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  box-shadow: var(--p31-glass-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.theme-picker__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 399;
+  background: transparent;
+}
+
+/* ── Nested-glass fix: one frame, transparent inner wrappers ───────────────
+   Never stack glass on glass. Inside a .glass-tile, .live-example becomes a
+   transparent layout wrapper (no border/bg/blur/shadow) so only the card
+   frame renders — no triple borders or double padding on inner components
+   (GlassPanel / StatusBadge / MetricBadge / SpoonDial). */
+.glass-tile .live-example {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding:var(--p31-space-3);
+  gap: var(--p31-space-2);
+}
+.glass-tile .live-example__render {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:var(--p31-space-3);
+}
+.glass-tile .live-example__head {
+  padding-bottom:0;
+}
+
+/* ── Starfield: darker base + brighter stars (CSS-only, no engine edit) ── */
+html {
+  background: oklch(0.05 0.008 270) !important;
+}
+.starfield-bg canvas {
+  filter: brightness(var(--star-brightness, 1.6)) contrast(1.2) saturate(1.15);
+}
+.starfield-bg {
+  opacity: 0.9;
+}
+
+/* ── Theme picker menu: narrower (portaled, right of the logo) ─────────── */
+.theme-picker__menu {
+  min-width: 140px;
+  padding:var(--p31-space-1);
+}
+.theme-picker__item {
+  padding:var(--p31-space-1) var(--p31-space-2);
+  gap: var(--p31-space-2);
+  font-size: var(--p31-text-xs);
+}

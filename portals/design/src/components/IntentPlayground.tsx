@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { parseIntent, runQaGates } from '@p31/design-core/agentic';
+import { parseIntent, runQaGates } from '@p31ca/design-core/agentic';
+import { GlassPanel } from '@p31ca/design-core/compositions';
 
 const STARTER = `component: AffirmButton
 narrative: |
@@ -32,39 +33,47 @@ export default function IntentPlayground() {
   };
 
   return (
-    <div className="intent-playground">
-      <div className="intent-grid">
-        <div className="intent-editor">
-          <div className="recipe-preview-head"><span className="mono">intent.design.yml</span></div>
-          <textarea
-            className="intent-textarea"
-            value={yaml}
-            onChange={(e) => setYaml(e.target.value)}
-            spellCheck={false}
-            aria-label="Intent DSL editor"
-          />
-          <div className="explorer-toolbar" style={{ paddingTop: 12 }}>
-            <button className="btn btn-primary" onClick={run}>Run Opus gates</button>
+    <div data-mcp-tool="intentDsl" data-mcp-state="ready">
+      <GlassPanel strong>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div>
+            <h5 className="label-tiny">intent.design.yml</h5>
+            <textarea
+              className="input"
+              value={yaml}
+              onChange={(e) => setYaml(e.target.value)}
+              spellCheck={false}
+              aria-label="Intent DSL editor"
+              style={{ height: 320, resize: 'vertical', fontFamily: 'var(--p31-font-mono, ui-monospace, monospace)', fontSize: 12, lineHeight: 1.6 }}
+            />
+            <div className="meta-row" style={{ marginTop: 12 }}>
+              <button type="button" className="btn btn-primary" onClick={run}>Run Opus gates</button>
+            </div>
           </div>
-        </div>
-        <div className="intent-report" aria-live="polite">
-          <div className="recipe-preview-head">
-            <span className="mono">Opus QA report</span>
-            {result && (
-              <span className={`chip ${result.type === 'pass' ? 'chip-pass' : result.type === 'reject' ? 'chip-reject' : 'chip-warn'}`}>
-                {result.type === 'pass' ? 'APPROVED' : result.type === 'reject' ? 'REJECTED' : 'INVALID'}
-              </span>
+
+          <div aria-live="polite">
+            <div className="meta-row">
+              <h5 className="label-tiny">Opus QA report</h5>
+              {result && (
+                <span className={`chip ${result.type === 'pass' ? 'chip-ok' : result.type === 'reject' ? 'chip-err' : 'chip-warn'}`}>
+                  {result.type === 'pass' ? 'APPROVED' : result.type === 'reject' ? 'REJECTED' : 'INVALID'}
+                </span>
+              )}
+            </div>
+            {result ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontFamily: 'var(--p31-font-mono, ui-monospace, monospace)', fontSize: 12 }}>
+                {result.lines.map((l, i) => (
+                  <div key={i} style={{ color: 'var(--p31-text-secondary)', padding: '6px 10px', borderRadius: 8, background: 'var(--p31-glass-bg)' }}>{l}</div>
+                ))}
+              </div>
+            ) : (
+              <div className="preview-box" style={{ minHeight: 320 }}>
+                <span className="preview-box__text">Edit the intent and run the gates. WCAG-AAA, spoon ladder, touch targets, and LOVE semantics are enforced.</span>
+              </div>
             )}
           </div>
-          {result ? (
-            <div className="gate-report">
-              {result.lines.map((l, i) => <div key={i} className="gate-line">{l}</div>)}
-            </div>
-          ) : (
-            <div className="token-empty">Edit the intent and run the gates. WCAG-AAA, spoon ladder, touch targets, and LOVE semantics are enforced.</div>
-          )}
         </div>
-      </div>
+      </GlassPanel>
     </div>
-  );
+  )
 }

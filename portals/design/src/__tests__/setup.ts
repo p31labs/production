@@ -110,23 +110,24 @@ vi.mock('@sentry/react', () => ({
   reactRouterV6ErrorBoundaryIntegration: vi.fn(),
 }));
 
-vi.mock('@p31/design-core/theming/theme-store', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@p31/design-core/theming/theme-store')>();
+vi.mock('@p31ca/design-core/theming/theme-store', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@p31ca/design-core/theming/theme-store')>();
+  const state = {
+    theme: 'ocean' as const,
+    setTheme: vi.fn(),
+    age: 'adult' as const,
+    setAge: vi.fn(),
+    muted: false,
+    setMuted: vi.fn(),
+    warmLight: false,
+    setWarmLight: vi.fn(),
+    brand: null,
+    setBrand: vi.fn(),
+    applyTheme: vi.fn(),
+  };
   return {
     ...actual,
-    useThemeStore: () => ({
-      theme: 'ocean' as const,
-      setTheme: vi.fn(),
-      age: 'adult' as const,
-      setAge: vi.fn(),
-      muted: false,
-      setMuted: vi.fn(),
-      warmLight: false,
-      setWarmLight: vi.fn(),
-      brand: null,
-      setBrand: vi.fn(),
-      applyTheme: vi.fn(),
-    }),
+    useThemeStore: (selector?: (s: typeof state) => unknown) => (selector ? selector(state) : state),
     resolveBrandTokens: vi.fn(() => ({})),
   };
 });

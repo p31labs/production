@@ -1,0 +1,144 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin:0;
+  padding:0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: color-mix(in oklch, var(--p31-void) 92%, transparent);
+  color: var(--p31-text-primary);
+  font-family: var(--p31-font-sans);
+  font-size: var(--p31-text-base);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+:focus-visible {
+  outline: 2px solid var(--p31-accent);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--p31-space-4);
+  background: var(--p31-accent);
+  color: var(--p31-void);
+  padding:var(--p31-space-2) var(--p31-space-4);
+  border-radius: var(--p31-radius-sm);
+  font-weight: 600;
+  z-index: 9999;
+  transition: top var(--p31-transition-fast);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: var(--p31-space-4);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--p31-space-2);
+  min-height: 40px;
+  padding:var(--p31-space-2) var(--p31-space-4);
+  border-radius: var(--p31-radius-sm);
+  font-family: var(--p31-font-sans);
+  font-size: var(--p31-text-base);
+  font-weight: 500;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--p31-transition-fast) var(--p31-ease-quantum);
+  background: transparent;
+  color: var(--p31-text-primary);
+  text-decoration: none;
+  user-select: none;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--p31-accent);
+  color: var(--p31-void);
+  font-weight: 600;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--p31-accent-hover);
+  box-shadow: 0 0 16px color-mix(in oklch, var(--p31-accent) 35%, transparent);
+}
+
+.btn-glass {
+  background: var(--p31-glass-bg);
+  border-color: var(--p31-glass-border);
+  backdrop-filter: var(--p31-glass-blur);
+}
+
+.btn-glass:hover:not(:disabled) {
+  background: var(--p31-glass-bg-hover);
+  border-color: color-mix(in oklch, white 18%, transparent);
+}
+
+.glass-panel {
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  backdrop-filter: var(--p31-glass-blur);
+  border-radius: var(--p31-radius-md);
+  box-shadow: var(--p31-glass-shadow);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding:2px 8px;
+  border-radius: var(--p31-radius-full);
+  font-size: var(--p31-text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-spark {
+  background: color-mix(in oklch, var(--p31-accent-cyan) 15%, transparent);
+  color: var(--p31-accent-cyan);
+  border: 1px solid color-mix(in oklch, var(--p31-accent-cyan) 30%, transparent);
+}
+
+.badge-maker {
+  background: color-mix(in oklch, var(--p31-accent-violet) 15%, transparent);
+  color: var(--p31-accent-violet);
+  border: 1px solid color-mix(in oklch, var(--p31-accent-violet) 30%, transparent);
+}
+
+.badge-workshop {
+  background: color-mix(in oklch, var(--p31-accent-gold) 15%, transparent);
+  color: var(--p31-accent-gold);
+  border: 1px solid color-mix(in oklch, var(--p31-accent-gold) 30%, transparent);
+}

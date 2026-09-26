@@ -1,0 +1,293 @@
+/* ==========================================================================
+   P31 Design Portal — GlassLab surface (glass composition laboratory).
+   Hero glass panel bound to live tokens: edit --p31-glass-bg / -border /
+   -blur via writeToken() and the whole composition streams live.
+   Token stance: var(--p31-*) only; OKLCH / color-mix(in oklch, …) only.
+   ========================================================================== */
+
+/* ── Hero glass panel (live-bound composition) ─────────────────────────── */
+.glab-hero {
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  border-radius: var(--p31-radius-lg);
+  box-shadow: var(--p31-glass-shadow);
+}
+
+.glab-hero__grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: var(--p31-space-5);
+  align-items: center;
+}
+
+.glab-hero__title {
+  font-size: var(--p31-text-h2);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--p31-text-primary);
+  margin:var(--p31-space-2) 0;
+}
+
+.glab-hero__lede {
+  font-size: var(--p31-text-base);
+  line-height: 1.6;
+  color: var(--p31-cloud);
+  margin:0;
+}
+
+.glab-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-3);
+}
+
+.glab-control {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-2);
+}
+
+.glab-control__name {
+  flex: none;
+  width: 172px;
+  font-size: var(--p31-text-xs);
+  color: var(--p31-text-muted);
+  word-break: break-all;
+}
+
+.glab-control__input {
+  flex: 1;
+  min-width: 0;
+  padding:var(--p31-space-2) var(--p31-space-3);
+  border-radius: var(--p31-radius-sm);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  color: var(--p31-text-primary);
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+  outline: none;
+  transition: border-color var(--p31-transition-fast) var(--p31-ease-quantum);
+}
+
+.glab-control__input:focus {
+  border-color: var(--p31-accent);
+  box-shadow: 0 0 0 3px var(--p31-accent-dim);
+}
+
+.glab-swatch {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--p31-radius-sm);
+  border: 1px solid var(--p31-glass-border);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, white 6%, transparent);
+}
+
+.glab-swatch--blur {
+  background: var(--p31-glass-bg);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+}
+
+.glab-hero__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-2);
+  margin-top:var(--p31-space-2);
+}
+
+.glab-reset {
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+}
+
+/* ── Token strip (live glass values) ───────────────────────────────────── */
+.glab-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--p31-space-2);
+}
+
+.glab-strip__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--p31-space-2);
+  padding:var(--p31-space-2) var(--p31-space-3);
+  border-radius: var(--p31-radius-full);
+  background: color-mix(in oklch, var(--p31-glass-bg) 70%, var(--p31-surface2) 30%);
+  border: 1px solid var(--p31-glass-border);
+  font-size: var(--p31-text-xs);
+  color: var(--p31-cloud);
+  white-space: nowrap;
+}
+
+.glab-strip__dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--p31-radius-full);
+}
+
+/* ── LiveExample tiles (card / badge / input on live glass) ────────────── */
+.glab-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-2);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+}
+
+.glab-tile__label {
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+  color: var(--p31-accent);
+}
+
+.glab-tile__title {
+  font-size: var(--p31-text-lg);
+  font-weight: 700;
+  color: var(--p31-text-primary);
+}
+
+.glab-tile__sub {
+  font-size: var(--p31-text-xs);
+  line-height: 1.5;
+  color: var(--p31-text-muted);
+}
+
+.glab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding:4px 12px;
+  border-radius: var(--p31-radius-full);
+  font-size: var(--p31-text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--p31-accent);
+  background: color-mix(in oklch, var(--p31-accent) 14%, transparent);
+  border: 1px solid color-mix(in oklch, var(--p31-accent) 32%, transparent);
+}
+
+.glab-badge__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--p31-radius-full);
+  background: var(--p31-accent);
+  box-shadow: 0 0 8px color-mix(in oklch, var(--p31-accent) 60%, transparent);
+}
+
+.glab-input {
+  padding:var(--p31-space-2) var(--p31-space-3);
+  border-radius: var(--p31-radius-sm);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
+  color: var(--p31-text-primary);
+  font-size: var(--p31-text-sm);
+  outline: none;
+  transition: border-color var(--p31-transition-fast) var(--p31-ease-quantum);
+}
+
+.glab-input:focus {
+  border-color: var(--p31-accent);
+  box-shadow: 0 0 0 3px var(--p31-accent-dim);
+}
+
+/* ── Shared LiveExample chrome (self-sufficient on this route) ─────────── */
+.live-example {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-3);
+  height: 100%;
+  padding:var(--p31-space-4);
+  border-radius: var(--p31-radius-md);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  backdrop-filter: var(--p31-glass-blur);
+}
+
+.live-example__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--p31-space-2);
+}
+
+.live-example__title {
+  font-size: var(--p31-text-lg);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--p31-text-primary);
+  margin:0;
+}
+
+.live-example__toggle {
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+  color: var(--p31-accent);
+  background: var(--p31-accent-dim);
+  border: 1px solid color-mix(in oklch, var(--p31-accent) 40%, transparent);
+  border-radius: var(--p31-radius-full);
+  padding:4px 12px;
+  cursor: pointer;
+  transition: all var(--p31-transition-fast) var(--p31-ease-quantum);
+}
+
+.live-example__toggle:hover {
+  background: color-mix(in oklch, var(--p31-accent) 20%, transparent);
+}
+
+.live-example__desc {
+  font-size: var(--p31-text-sm);
+  line-height: 1.5;
+  color: var(--p31-text-secondary);
+  margin:0;
+}
+
+.live-example__render {
+  flex: 1;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:var(--p31-space-3);
+  border: 1px dashed var(--p31-glass-border);
+  border-radius: var(--p31-radius-sm);
+  background: color-mix(in oklch, var(--p31-void) 60%, transparent);
+}
+
+.live-example__code {
+  flex: 1;
+  min-height: 140px;
+  margin:0;
+  padding:var(--p31-space-3);
+  border-radius: var(--p31-radius-sm);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  font-family: var(--p31-font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--p31-text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow: auto;
+}
+
+/* ── Responsive hero ───────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .glab-hero__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .glab-control__name {
+    width: 120px;
+  }
+}

@@ -1,0 +1,139 @@
+/* ==========================================================================
+   P31 Design Portal — Icons surface (Quantum Material).
+   Icon-system browser: inline (solid) / stroked (outline) / glow (accent).
+   Token stance: var(--p31-*) only; OKLCH / color-mix(in oklch, …) only.
+   ========================================================================== */
+
+/* ── Controls rail ─────────────────────────────────────────────────────── */
+.icon-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-3);
+}
+
+.icon-size-row {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-3);
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-xs);
+  color: var(--p31-text-secondary);
+}
+
+.icon-range {
+  flex: 1;
+  max-width: 360px;
+  accent-color: var(--p31-accent);
+}
+
+.icon-size-val {
+  min-width: 48px;
+  color: var(--p31-text-primary);
+  font-weight: 600;
+}
+
+/* ── Icon grid ─────────────────────────────────────────────────────────── */
+.icon-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--p31-space-3);
+  padding:var(--p31-space-4) var(--p31-space-3);
+  border-radius: var(--p31-radius-md);
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  backdrop-filter: var(--p31-glass-blur);
+  transition: border-color var(--p31-transition-fast);
+}
+
+.icon-tile:hover {
+  border-color: color-mix(in oklch, var(--p31-accent) 40%, transparent);
+}
+
+.icon-tile__stage {
+  min-height: 72px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-tile__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--p31-space-2);
+  width: 100%;
+}
+
+.icon-tile__name {
+  font-family: var(--p31-font-mono);
+  font-size: 11px;
+  color: var(--p31-text-secondary);
+}
+
+.icon-tile__copy {
+  font-family: var(--p31-font-mono);
+  font-size: 10px;
+  color: var(--p31-accent);
+  background: var(--p31-accent-dim);
+  border: 1px solid color-mix(in oklch, var(--p31-accent) 40%, transparent);
+  border-radius: var(--p31-radius-full);
+  padding:4px 8px;
+  cursor: pointer;
+  transition: all var(--p31-transition-fast) var(--p31-ease-quantum);
+}
+
+.icon-tile__copy:hover {
+  background: color-mix(in oklch, var(--p31-accent) 18%, transparent);
+}
+
+/* ── Glyph variants ────────────────────────────────────────────────────── */
+.icon-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.icon-glyph--inline {
+  color: var(--p31-text-primary);
+}
+
+.icon-glyph--stroked {
+  color: var(--p31-text-secondary);
+}
+
+/* Glow — accent halo. SVG halo via drop-shadow, name halo via text-shadow. */
+.icon-tile[data-variant='glow'] {
+  --icon-glow-color: var(--p31-accent-cyan);
+  --icon-glow-blur: 12px;
+}
+
+.icon-tile[data-variant='glow'][data-accent='violet'] {
+  --icon-glow-color: var(--p31-accent-violet);
+}
+
+.icon-tile[data-variant='glow'][data-accent='gold'] {
+  --icon-glow-color: var(--p31-accent-gold);
+}
+
+.icon-tile[data-variant='glow'][data-accent='iris'] {
+  --icon-glow-color: var(--p31-accent-iris);
+}
+
+.icon-glyph--glow {
+  color: var(--icon-glow-color);
+  filter: drop-shadow(0 0 var(--icon-glow-blur) var(--icon-glow-color));
+}
+
+.icon-tile[data-variant='glow'] .icon-tile__name {
+  color: var(--icon-glow-color);
+  text-shadow: 0 0 var(--icon-glow-blur) var(--icon-glow-color);
+}
+/* Grid layout (restored — the migration removed it while routes still use it). */
+.glass-tile.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--surface-card-gap, 20px);
+}
