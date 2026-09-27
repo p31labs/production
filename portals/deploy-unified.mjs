@@ -68,6 +68,8 @@ const PORTALS = {
     port: 5190,
     entryHtml: 'index.html',
     manualChunks: [],
+    skipUmd: true, // @p31/ui UMD removed from the design portal — injecting it
+    // crashes ("__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED").
   },
   qpj: {
     subdir: 'qpj',
@@ -110,6 +112,8 @@ const PORTALS = {
       'src/lib/routes.ts',
       'src/features/kernel/kernel.ts',
       'src/features/docs/DocsSurface.tsx',
+      'src/features/forum/ForumSurface.tsx',
+      'src/features/life/LifeSurface.tsx',
       'src/features/sheets/SheetsSurface.tsx',
       'src/features/slides/SlidesSurface.tsx',
       'src/features/calendar/CalendarSurface.tsx',
@@ -176,6 +180,23 @@ function stagePortal(portal, dryRun = false) {
   const stagingDir = path.join(STAGING_BASE, portal.subdir);
 
   log(`Staging ${portal.project} (${portal.domain}) [${portal.type}]`);
+
+  /* Design portal gate enforcement — the precheck runs the full pnpm gate
+     (typecheck/lint/test/build:pwa/v:gate) and refuses to stage on failure.
+     This is the active enforcement layer (the GitHub workflow exists but the
+     repo has no remote). --skip-precheck bypasses for emergencies only. */
+  if (portal.subdir === 'design' && !dryRun) {
+    try {
+      execSync('node scripts/deploy-precheck.mjs', {
+        cwd: srcDir,
+        stdio: 'inherit',
+        timeout: 600000,
+      });
+    } catch (e) {
+      log(`  Design gate refused — ${portal.subdir} not staged.`);
+      return false;
+    }
+  }
 
   if (fs.existsSync(stagingDir)) fs.rmSync(stagingDir, { recursive: true });
   fs.mkdirSync(stagingDir, { recursive: true });

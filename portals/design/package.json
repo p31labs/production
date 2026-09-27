@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "wrangler pages deploy dist --project-name p31-portal-design --commit-dirty=true",
+    "deploy:precheck": "node scripts/deploy-precheck.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
     "test": "vitest run",
