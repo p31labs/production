@@ -53,7 +53,7 @@ portals (qpj, chat, design, template) currently pass. Tarballs live in each port
 
 | portal | domain | project |
 |---|---|---|
-| qpj | `qpj.p31ca.org` (bind pending) | `p31-portal-qpj` |
+| qpj | `qpj.p31ca.org` (bound) | `p31-portal-qpj` |
 | chat | — | `p31-portal-chat` |
 | design | `design.p31ca.org` | `p31-portal-design` |
 | willow/tetra/sixseven/meatspace | `.p31ca.org` | legacy persona portals |

@@ -30,7 +30,7 @@ parent/chat/design) into one codebase with progressive-disclosure "modes".
 ```bash
 pnpm typecheck   # tsc --noEmit
 pnpm lint        # eslint src/ (0 warnings exit-clean)
-pnpm test        # vitest run — 201 tests across 24 files
+pnpm test        # vitest run — 354 tests across 46 files
 pnpm build       # vite build; prebuild writes public/routes.json
 pnpm v:gate      # asserts @p31/design-core @ 2.3.0 + @p31/ui @ 1.3.1 from vendor tarballs
 ```
