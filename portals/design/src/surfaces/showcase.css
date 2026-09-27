@@ -166,10 +166,6 @@
   transition: transform var(--p31-transition-normal) var(--p31-ease-quantum),
               border-color var(--p31-transition-normal);
 }
-.launcher-card:hover {
-  border-color: color-mix(in oklch, var(--p31-text-primary) 15%, transparent);
-  transform: translateY(-2px);
-}
 .launcher-card .surface-card-desc {
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -224,14 +220,15 @@
 
 /* ── See-through glass hover — the card fades toward transparent and the
    backdrop blur boosts so the ambient dome reads through while text stays
-   legible. Scoped to .launcher-card (the homepage) in this pass; roll out per
-   surface after visual confirmation. ── */
-.launcher-card:hover {
+   legible. The launcher's specific treatment (backdrop boost); :focus-within
+   mirrors it for keyboard parity; motion respects --motion-scale. ── */
+.launcher-card:hover,
+.launcher-card:focus-within {
   background: color-mix(in oklch, var(--p31-glass-bg) 45%, transparent);
   backdrop-filter: blur(28px) saturate(150%);
   -webkit-backdrop-filter: blur(28px) saturate(150%);
   border-color: color-mix(in oklch, var(--p31-accent) 30%, transparent);
-  transform: translateY(-2px);
+  transform: translateY(calc(-2px * var(--motion-scale, 1)));
   transition: background var(--p31-transition-fast) var(--p31-ease-quantum),
               backdrop-filter var(--p31-transition-fast) var(--p31-ease-quantum),
               border-color var(--p31-transition-fast) var(--p31-ease-quantum);

@@ -106,11 +106,40 @@
   -webkit-backdrop-filter: var(--p31-glass-blur);
   box-shadow: var(--p31-glass-shadow);
   transition: transform var(--p31-transition-normal) var(--p31-ease-quantum),
-              border-color var(--p31-transition-normal);
+              border-color var(--p31-transition-normal) var(--p31-ease-quantum),
+              background var(--p31-transition-normal) var(--p31-ease-quantum),
+              box-shadow var(--p31-transition-normal) var(--p31-ease-quantum);
 }
-.surface-card:has(> .surface-card__head):hover {
-  border-color: color-mix(in oklch, var(--p31-text-primary) 15%, transparent);
-  transform: translateY(-2px);
+/* ── Reactive hover contract (2026-09-27e) ──────────────────────────────
+   One shared, neurodivergent-friendly affordance for every card class: a
+   soft bg fade + accent border + gentle lift, mirrored on :focus-within for
+   keyboard parity. No scale/rotation (vestibular safety). Motion respects
+   --motion-scale (spoons; 0.1 under prefers-reduced-motion). :is() takes the
+   max specificity of its arguments so the contract outranks each card's base
+   rule (a plain :where() would lose to .surface-card:has(...) 0-3-0). ── */
+:is(.surface-card:has(> .surface-card__head), .marketplace-card, .icon-tile,
+    .recipe-card, .tlab-card) {
+  transition: transform var(--p31-transition-normal) var(--p31-ease-quantum),
+              border-color var(--p31-transition-normal) var(--p31-ease-quantum),
+              background var(--p31-transition-normal) var(--p31-ease-quantum),
+              box-shadow var(--p31-transition-normal) var(--p31-ease-quantum);
+}
+:is(.surface-card:has(> .surface-card__head), .marketplace-card, .icon-tile,
+    .recipe-card, .tlab-card):hover,
+:is(.surface-card:has(> .surface-card__head), .marketplace-card, .icon-tile,
+    .recipe-card, .tlab-card):focus-within {
+  background: color-mix(in oklch, var(--p31-glass-bg) 45%, transparent);
+  border-color: color-mix(in oklch, var(--p31-accent) 30%, transparent);
+  box-shadow: 0 12px 32px 0 color-mix(in oklch, var(--p31-accent) 18%, transparent);
+  transform: translateY(calc(-2px * var(--motion-scale, 1)));
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.surface-card:has(> .surface-card__head), .marketplace-card, .icon-tile,
+      .recipe-card, .tlab-card):hover,
+  :is(.surface-card:has(> .surface-card__head), .marketplace-card, .icon-tile,
+      .recipe-card, .tlab-card):focus-within {
+    transform: none;
+  }
 }
 
 .surface-card__head {
@@ -120,6 +149,17 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--p31-space-3);
+  min-width: 0;
+}
+
+/* ── Card header row (title + badge) — flex children may shrink below their
+   content and wrap, so a tight 2-col card never pushes the badge past the
+   right edge (2026-09-27e). ── */
+.surface-card-header {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.surface-card-header > * {
   min-width: 0;
 }
 .surface-card__content {
@@ -176,6 +216,13 @@
 .surface-grid > * {
   min-width: 0;
   min-height: 0;
+}
+
+/* ── Card description — long generated paths/tokens must wrap, not spill
+   (2026-09-27e). Route surfaces may add line-clamps on top. ── */
+.surface-card-desc {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 /* ─── Bare escape hatch — a full-bleed card (skips the 4-slot subgrid) ─── */

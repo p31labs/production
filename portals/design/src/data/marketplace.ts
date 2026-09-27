@@ -76,7 +76,7 @@ function entryToItem(e: GenuiEntry): ShopItem {
     description: e.description,
     category,
     status: e.status ?? 'stable',
-    importPath: e.importPath ?? '@p31ca/design-core/generated',
+    importPath: e.importPath ?? '@p31ca/design-core',
     source: e.source ?? 'canonical',
     spoonCost: spoon,
     lovePrice: lovePrice(e.name, spoon, category),

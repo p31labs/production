@@ -69,11 +69,6 @@
   transition: all var(--p31-transition-normal) var(--p31-ease-quantum);
 }
 
-.tlab-card:hover {
-  background: var(--p31-glass-bg-hover);
-  border-color: color-mix(in oklch, white 20%, transparent);
-}
-
 .tlab-card__head {
   display: flex;
   align-items: center;

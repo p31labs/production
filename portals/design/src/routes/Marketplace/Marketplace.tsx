@@ -59,7 +59,7 @@ export type RenderProps = Record<string, unknown>;
 
 /** The real package specifier is @p31ca/design-core; the genui catalog emits @p31/… */
 function normalizeImport(path: string): string {
-  return path.replace(/^@p31\//, '@p31ca/');
+  return path.replace(/^@p31\//, '@p31ca/').replace(/\/generated$/, '');
 }
 
 const CATEGORY_ORDER = ['surface', 'navigation', 'action', 'feedback', 'accessibility', 'ambient'];

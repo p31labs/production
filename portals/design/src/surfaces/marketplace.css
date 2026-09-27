@@ -143,6 +143,11 @@
   font-size: 11px;
   letter-spacing: 0.04em;
   color: var(--p31-accent);
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .qm-token-tile__swatches {
@@ -292,6 +297,7 @@
   font-weight: 600;
   letter-spacing: 0.04em;
   color: var(--p31-text-primary);
+  min-width: 0;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;

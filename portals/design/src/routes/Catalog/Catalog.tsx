@@ -109,7 +109,7 @@ export default function Catalog() {
                       <h2 className="qm-cat-group-title">{cat}</h2>
                       <span className="qm-cat-group-count">{items.length}</span>
                     </div>
-                    <SurfaceGrid columns={3}>
+                    <SurfaceGrid columns={3} className="qm-cat-grid">
                       <motion.div variants={staggerChildren(0.04)} style={{ display: 'contents' }}>
                         {items.map((e) => (
                           <SurfaceCard

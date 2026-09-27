@@ -49,10 +49,6 @@
   overflow: hidden;
 }
 
-.icon-tile:hover {
-  border-color: color-mix(in oklch, var(--p31-accent) 40%, transparent);
-}
-
 .icon-tile__stage {
   min-height: 72px;
   width: 100%;
