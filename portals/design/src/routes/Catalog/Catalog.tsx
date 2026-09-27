@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { StatusBadge, GlassPanel } from '@p31ca/design-core/compositions';
 import { LiveExample } from '../../lib/livePreview';
 import { fadeIn, slideUp, staggerChildren, press } from '../../lib/motionPresets';
-import { SurfaceLayout, SurfaceHero, SurfaceSection, SurfaceGrid } from '../../lib/surface';
+import { SurfaceLayout, SurfaceHero, SurfaceSection, SurfaceGrid, SurfaceCard } from '../../lib/surface';
 import {
   CATALOG_ENTRIES,
   CATEGORIES,
@@ -112,26 +112,29 @@ export default function Catalog() {
                     <SurfaceGrid columns={3}>
                       <motion.div variants={staggerChildren(0.04)} style={{ display: 'contents' }}>
                         {items.map((e) => (
-                          <motion.div key={e.name} variants={slideUp}>
-                            <div
-                              className="surface-card qm-cat-card"
-                              data-mcp-tool={`catalogItem-${e.name.toLowerCase()}`}
-                              data-mcp-state="ready"
-                            >
+                          <SurfaceCard
+                            key={e.name}
+                            className="qm-cat-card"
+                            motionProps={{ variants: slideUp }}
+                            head={
                               <div className="surface-card-header">
                                 <span className="surface-card-title surface-card-title--mono">{e.name}</span>
                                 <StatusBadge status={badgeStatus(e.status)} label={e.status} />
                               </div>
-                              <p className="surface-card-desc">{e.description}</p>
-                              <LiveExample
-                                title="Live example"
-                                render={(props) => renderEntry(e, props)}
-                                initialProps={SAFE_PROPS[e.name] ?? {}}
-                                code={codeFor(e)}
-                              />
-                              <span className="qm-cat-import mono">{e.importPath}</span>
-                            </div>
-                          </motion.div>
+                            }
+                            body={
+                              <>
+                                <p className="surface-card-desc">{e.description}</p>
+                                <LiveExample
+                                  title="Live example"
+                                  render={(props) => renderEntry(e, props)}
+                                  initialProps={SAFE_PROPS[e.name] ?? {}}
+                                  code={codeFor(e)}
+                                />
+                              </>
+                            }
+                            foot={<span className="qm-cat-import mono">{e.importPath}</span>}
+                          />
                         ))}
                       </motion.div>
                     </SurfaceGrid>

@@ -5,6 +5,7 @@
  *   max-width 1200px · gutter 32px · section gap 64px · card gap 20px.
  */
 import { type ReactNode, type CSSProperties } from 'react';
+import { motion } from 'motion/react';
 
 export function SurfaceLayout({ children, className = '' }: { children: ReactNode; className?: string }) {
   return <div className={`surface-layout${className ? ` ${className}` : ''}`}>{children}</div>;
@@ -67,30 +68,34 @@ interface SurfaceCardProps {
   /** Escape hatch for a full-bleed card (skips the 4-slot subgrid). */
   bare?: boolean;
   className?: string;
+  /** Motion props spread onto the root (motion.div) — lets a SurfaceCard be
+   *  both a grid item AND the animated element (variants/initial/animate). */
+  motionProps?: React.ComponentProps<typeof motion.div>;
 }
 
 /** SurfaceCard — the four-slot card contract. Every card in a grid renders
  *  through this primitive so slots align across each row (CSS subgrid) and
  *  overflow is a contract, not an afterthought. The prop API is the contract:
  *  exactly four slots; a fifth child is a type error. */
-export function SurfaceCard({ head, body, meta, foot, bare = false, className = '' }: SurfaceCardProps) {
+export function SurfaceCard({ head, body, meta, foot, bare = false, className = '', motionProps }: SurfaceCardProps) {
   const cls = `surface-card${bare ? ' surface-card--bare' : ''}${className ? ` ${className}` : ''}`;
+  const Tag: any = motionProps ? motion.div : 'div';
   if (bare) {
     return (
-      <div className={cls}>
+      <Tag className={cls} {...(motionProps ?? {})}>
         {head}
         {body}
         {meta}
         {foot}
-      </div>
+      </Tag>
     );
   }
   return (
-    <div className={cls}>
+    <Tag className={cls} {...(motionProps ?? {})}>
       <div className="surface-card__head">{head}</div>
       {body != null && <div className="surface-card__content">{body}</div>}
       {meta != null && <div className="surface-card__meta">{meta}</div>}
       {foot != null && <div className="surface-card__foot">{foot}</div>}
-    </div>
+    </Tag>
   );
 }

@@ -269,7 +269,8 @@ body,
    transparent layout wrapper (no border/bg/blur/shadow) so only the card
    frame renders — no triple borders or double padding on inner components
    (GlassPanel / StatusBadge / MetricBadge / SpoonDial). */
-.glass-tile .live-example {
+.glass-tile .live-example,
+.surface-card .live-example {
   background: transparent;
   border: 0;
   box-shadow: none;
@@ -278,13 +279,15 @@ body,
   padding:var(--p31-space-3);
   gap: var(--p31-space-2);
 }
-.glass-tile .live-example__render {
+.glass-tile .live-example__render,
+.surface-card .live-example__render {
   display: flex;
   align-items: center;
   justify-content: center;
   padding:var(--p31-space-3);
 }
-.glass-tile .live-example__head {
+.glass-tile .live-example__head,
+.surface-card .live-example__head {
   padding-bottom:0;
 }
 

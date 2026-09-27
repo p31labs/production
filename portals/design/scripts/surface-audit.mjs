@@ -38,7 +38,7 @@ const hasActive = nestedVal && nestedVal.some((m) => {
   const v = m.slice(m.indexOf(':') + 1).trim();
   return v !== 'none' && v !== '0' && v !== 'transparent';
 });
-if (/\.glass-tile\s+\S/.test(sel) && hasActive) {
+if (/\.(glass-tile|surface-card)\s+\S/.test(sel) && hasActive) {
       console.error(`✗ ${f.replace(SRC, 'src')} — nested glass on ${sel.trim()}`);
       fail = 1;
     }

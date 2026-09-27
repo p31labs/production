@@ -195,3 +195,11 @@
 .qm-empty {
   min-height: 120px;
 }
+/* ── Catalog card (SurfaceCard) — the content slot is a live-render area,
+   not clamped text; override the __content clamp for the preview cards. ── */
+.qm-cat-card .surface-card__content {
+  display: block;
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: unset;
+  overflow: visible;
+}

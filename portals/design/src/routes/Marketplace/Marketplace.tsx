@@ -255,7 +255,6 @@ export const SAFE_PROPS: Record<string, RenderProps> = {
 export function TokenPreviewTile({ name, cssClass, tokens }: { name: string; cssClass: string; tokens: string[] }) {
   return (
     <div className="qm-token-tile" data-mcp-tool={`tokenPreview-${name.toLowerCase()}`} data-mcp-state="ready">
-      <span className={`qm-token-tile__swatch ${cssClass || ''}`} aria-hidden="true" />
       <span className="qm-token-tile__mono">{name}</span>
       <span className="qm-token-tile__tag">no live preview</span>
       {tokens.length > 0 && (
