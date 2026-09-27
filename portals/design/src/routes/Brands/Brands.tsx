@@ -1,88 +1,11 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { SurfaceLayout, SurfaceHero, SurfaceSection, SurfaceGrid } from '../../lib/surface';
-import { readToken, writeToken } from '../../lib/tokenLab';
+import { useThemeStore, THEME_LABELS, THEME_TOKENS, type ThemeId } from '@p31ca/design-core/theming/theme-store';
 import { fadeIn, slideUp, staggerChildren } from '../../lib/motionPresets';
 import '../../surfaces/brands.css';
 
-const TOKEN_KEYS = [
-  '--p31-accent',
-  '--p31-accent-gold',
-  '--p31-accent-cyan',
-  '--p31-bg',
-  '--p31-surface',
-] as const;
-
-type TokenKey = (typeof TOKEN_KEYS)[number];
-
-interface BrandPalette {
-  id: string;
-  name: string;
-  note: string;
-  accent: string;
-  tokens: Record<TokenKey, string>;
-}
-
-/**
- * CHAMELEON — four brand palettes defined as pure OKLCH token deltas.
- * Applying a brand calls writeToken() for every key so the whole portal
- * (and each demo component below) recolors live. One component library,
- * N brands, zero forks.
- */
-const BRANDS: BrandPalette[] = [
-  {
-    id: 'quantum',
-    name: 'Quantum Cyan',
-    note: 'Default resonance — cold cyan over the hue-240 void.',
-    accent: 'oklch(0.78 0.18 195)',
-    tokens: {
-      '--p31-accent': 'oklch(0.78 0.18 195)',
-      '--p31-accent-gold': 'oklch(0.82 0.16 85)',
-      '--p31-accent-cyan': 'oklch(0.78 0.18 195)',
-      '--p31-bg': 'oklch(0.1 0.008 240)',
-      '--p31-surface': 'oklch(0.14 0.012 240)',
-    },
-  },
-  {
-    id: 'solar',
-    name: 'Solar Gold',
-    note: 'Sunflower glow — warm gold over a dusk canvas.',
-    accent: 'oklch(0.8 0.16 80)',
-    tokens: {
-      '--p31-accent': 'oklch(0.8 0.16 80)',
-      '--p31-accent-gold': 'oklch(0.8 0.16 80)',
-      '--p31-accent-cyan': 'oklch(0.76 0.15 95)',
-      '--p31-bg': 'oklch(0.1 0.012 70)',
-      '--p31-surface': 'oklch(0.14 0.016 70)',
-    },
-  },
-  {
-    id: 'iris',
-    name: 'Iris Violet',
-    note: 'Deep violet — night-iris over the hue-275 nebula.',
-    accent: 'oklch(0.7 0.17 285)',
-    tokens: {
-      '--p31-accent': 'oklch(0.7 0.17 285)',
-      '--p31-accent-gold': 'oklch(0.78 0.15 60)',
-      '--p31-accent-cyan': 'oklch(0.72 0.16 265)',
-      '--p31-bg': 'oklch(0.09 0.012 275)',
-      '--p31-surface': 'oklch(0.13 0.016 275)',
-    },
-  },
-  {
-    id: 'moss',
-    name: 'Moss Green',
-    note: 'Soft earth — green calm for long focus sessions.',
-    accent: 'oklch(0.72 0.14 155)',
-    tokens: {
-      '--p31-accent': 'oklch(0.72 0.14 155)',
-      '--p31-accent-gold': 'oklch(0.76 0.14 95)',
-      '--p31-accent-cyan': 'oklch(0.7 0.13 175)',
-      '--p31-bg': 'oklch(0.1 0.012 150)',
-      '--p31-surface': 'oklch(0.14 0.016 150)',
-    },
-  },
-];
+const THEME_IDS = Object.keys(THEME_LABELS) as ThemeId[];
 
 function DemoCard({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -129,41 +52,20 @@ function BrandMetric({ value, label }: { value: string; label: string }) {
   );
 }
 
-/** CHAMELEON — one component library, N brand palettes, no fork. */
+/** CHAMELEON — one component library, N canonical themes, no fork. The switcher
+ *  consumes the canonical THEME_LABELS + THEME_TOKENS from design-core (the same
+ *  source the topbar theme picker uses) and applies via setTheme — no duplicate
+ *  palette list in the portal (the prior custom BRANDS array was the drift). */
 export default function Brands() {
-  const [active, setActive] = useState<BrandPalette>(BRANDS[0]);
-  const originals = useRef<Record<string, string>>({});
+  const theme = useThemeStore((s) => s.theme);
+  const setTheme = useThemeStore((s) => s.setTheme);
+  const applyTheme = useThemeStore((s) => s.applyTheme);
 
-  useEffect(() => {
-    for (const key of TOKEN_KEYS) originals.current[key] = readToken(key);
-    const tokens = BRANDS[0].tokens;
-    for (const [key, value] of Object.entries(tokens)) writeToken(key, value);
-  }, []);
-
-  useEffect(() => {
-    const captured = originals.current;
-    return () => {
-      for (const key of TOKEN_KEYS) {
-        const orig = captured[key];
-        if (orig) writeToken(key, orig);
-        else document.documentElement.style.removeProperty(key);
-      }
-    };
-  }, []);
-
-  const applyBrand = (brand: BrandPalette) => {
-    for (const [key, value] of Object.entries(brand.tokens)) writeToken(key, value);
-    setActive(brand);
+  const pick = (id: ThemeId) => {
+    setTheme(id);
+    applyTheme();
   };
-
-  const reset = () => {
-    for (const key of TOKEN_KEYS) {
-      const orig = originals.current[key];
-      if (orig) writeToken(key, orig);
-      else document.documentElement.style.removeProperty(key);
-    }
-    setActive(BRANDS[0]);
-  };
+  const reset = () => pick('ocean');
 
   return (
     <section className="surface-panel active" data-mcp-tool="brandsSurface" data-mcp-state="ready">
@@ -171,33 +73,37 @@ export default function Brands() {
         <SurfaceHero
           eyebrow="Chameleon · multi-brand"
           title="Brands"
-          lede="One component library, N brand palettes, zero forks. Switching hot-applies OKLCH token deltas via writeToken — every demo below recolors live."
+          lede="One component library, N canonical themes, zero forks. Switching hot-applies the canonical theme tokens (the same set the topbar picker uses) — every demo below recolors live."
         />
 
         <SurfaceSection title="Brand switcher">
           <div className="brand-switcher glass-tile">
-            {BRANDS.map((b) => (
+            {THEME_IDS.map((id) => (
               <button
-                key={b.id}
+                key={id}
                 type="button"
-                className={`brand-switcher__btn ${active.id === b.id ? 'brand-switcher__btn--active' : ''}`}
-                onClick={() => applyBrand(b)}
-                aria-pressed={active.id === b.id}
+                className={`brand-switcher__btn ${theme === id ? 'brand-switcher__btn--active' : ''}`}
+                onClick={() => pick(id)}
+                aria-pressed={theme === id}
               >
-                <span className="brand-switcher__swatch" style={{ background: b.accent }} aria-hidden="true" />
-                {b.name}
+                <span
+                  className="brand-switcher__swatch"
+                  style={{ background: THEME_TOKENS[id]?.['--p31-accent'] ?? 'oklch(0.73 0.18 195)' }}
+                  aria-hidden="true"
+                />
+                {THEME_LABELS[id]}
               </button>
             ))}
             <button type="button" className="brand-switcher__btn brand-switcher__reset" onClick={reset}>
               Reset
             </button>
-            <span className="brand-switcher__hint">{active.note}</span>
+            <span className="brand-switcher__hint">Canonical theme — matches the topbar theme picker.</span>
           </div>
         </SurfaceSection>
 
         <SurfaceSection title="Live demos">
           <motion.div
-            key={active.id}
+            key={theme}
             className="chameleon-stage glass-tile"
             variants={staggerChildren(0.07)}
             initial="hidden"
@@ -207,8 +113,8 @@ export default function Brands() {
               <motion.div variants={slideUp}>
                 <DemoCard label="GlassCard · surface">
                   <BrandCard
-                    title={active.name}
-                    body="The same card, re-skinned live by the active brand tokens. One component library."
+                    title={THEME_LABELS[theme]}
+                    body="The same card, re-skinned live by the canonical theme tokens. One component library."
                   />
                 </DemoCard>
               </motion.div>
@@ -237,15 +143,14 @@ export default function Brands() {
               <div className="brand-delta__head">
                 <h3 className="brand-delta__title">Token delta</h3>
                 <span className="brand-delta__active">
-                  {active.id} → {active.name}
+                  {theme} → {THEME_LABELS[theme]}
                 </span>
               </div>
               <div className="brand-delta__rows">
-                {TOKEN_KEYS.map((key) => (
+                {Object.keys(THEME_TOKENS[theme] ?? {}).slice(0, 5).map((key) => (
                   <div className="brand-delta__row" key={key}>
                     <span className="brand-delta__name">{key}</span>
-                    <span className="brand-delta__value">{active.tokens[key]}</span>
-                    <span className="brand-delta__orig">{originals.current[key] || '—'}</span>
+                    <span className="brand-delta__value">{THEME_TOKENS[theme]?.[key]}</span>
                   </div>
                 ))}
               </div>

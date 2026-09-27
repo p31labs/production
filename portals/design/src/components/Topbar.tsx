@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useSpoonsStore } from '../lib/useSpoonsStore';
 import { useNotifStore } from '../lib/useNotifStore';
-import { useThemeStore, THEME_TOKENS, type ThemeId } from '@p31ca/design-core/theming/theme-store';
+import { useThemeStore, THEME_TOKENS, THEME_LABELS, type ThemeId } from '@p31ca/design-core/theming/theme-store';
 
 interface TopbarProps {
   mode: 'spark' | 'maker' | 'workshop';
@@ -11,13 +11,12 @@ interface TopbarProps {
   onOpenPalette: () => void;
 }
 
-const THEMES: { id: ThemeId; label: string }[] = [
-  { id: 'garden', label: 'Garden' },
-  { id: 'ocean', label: 'Ocean' },
-  { id: 'aurora', label: 'Aurora' },
-  { id: 'zen', label: 'Zen' },
-  { id: 'volt', label: 'Volt' },
-];
+/** Canonical themes from design-core (THEME_LABELS) — the single source
+ *  both this picker and the /brands switcher consume. No portal-side list. */
+const THEMES: { id: ThemeId; label: string }[] = (Object.keys(THEME_LABELS) as ThemeId[]).map((id) => ({
+  id,
+  label: THEME_LABELS[id],
+}));
 
 /** ThemePicker — Chameleon switcher. The menu renders via a portal to
  *  document.body so it escapes the sticky + blurred topbar stacking context

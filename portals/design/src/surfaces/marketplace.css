@@ -201,10 +201,13 @@
   display: flex;
   flex-direction: column;
   gap: var(--p31-space-3);
+  height: 100%;
+  min-width: 0;
 }
 
 .qm-shop-tile__toggle {
   align-self: stretch;
+  margin-top: auto;
   font-family: var(--p31-font-mono);
   font-size: var(--p31-text-xs);
   letter-spacing: 0.06em;
@@ -247,7 +250,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--p31-space-3);
-  height: 100%;
+  flex: 1 1 auto;
   min-width: 0;
   overflow: hidden;
   padding: var(--p31-space-5);

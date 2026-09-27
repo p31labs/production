@@ -102,7 +102,7 @@ const MOTION_DEMOS: MotionDemo[] = [
         initial={reduced ? false : 'hidden'}
         animate="visible"
       >
-        Slide up
+        <span className="motion-tile__label">Slide up</span>
       </motion.div>
     ),
   },

@@ -205,3 +205,10 @@
   padding: var(--p31-space-1) var(--p31-space-2);
   line-height: 1.2;
 }
+
+/* ── Motion demo labels (slide) — smaller inside the fixed demo cell ────── */
+.motion-tile .motion-tile__label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
