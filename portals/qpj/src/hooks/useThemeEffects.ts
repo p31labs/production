@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useThemeStore } from '@p31/design-core/theming/theme-store';
+import { useThemeStore } from '@p31ca/design-core/theming/theme-store';
 import { useQpjStore } from '../store/useQpjStore';
 
 const SPACE_TOKENS: Record<string, string> = {

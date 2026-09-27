@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { SpoonDial, MetricBadge } from '@p31/design-core/compositions';
+import { SpoonDial, MetricBadge } from '@p31ca/design-core/compositions';
 import { useQpjStore } from './store/useQpjStore';
 import { useHashRoute } from './hooks/useHashRoute';
 import { useModeEffects } from './hooks/useModeEffects';

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Button } from '@p31/design-core/compositions';
-import { parseIntent, runQaGates } from '@p31/design-core/agentic';
+import { Button } from '@p31ca/design-core/compositions';
+import { parseIntent, runQaGates } from '@p31ca/design-core/agentic';
 
 const STARTER = `component: AffirmButton
 narrative: |

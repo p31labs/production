@@ -1,0 +1,4 @@
+Contact: https://p31ca.org/security
+Expires: 2027-12-31T23:59:59Z
+Preferred-Languages: en
+Canonical: https://qpj.p31ca.org/.well-known/security.txt

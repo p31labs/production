@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { GlassCard, Button } from '@p31/design-core/compositions';
+import { GlassCard, Button } from '@p31ca/design-core/compositions';
 import { useCollabSlides } from '../hooks/useCollabSlides';
 import { createDeck, deleteDeck, listDecks, renameDeck, type DeckMeta } from '../lib/slideStore';
 

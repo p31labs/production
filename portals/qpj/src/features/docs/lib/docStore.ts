@@ -20,7 +20,7 @@ import {
   generateCompositeKeyPair,
   mintCapabilityToken,
   type CompositeKeyPair,
-} from '@p31/sovereign-primitives';
+} from '@p31ca/sovereign-primitives';
 import { getDb, initDb } from '../../../lib/pglite';
 
 const RELAY_AUDIENCE = 'p31-doc-relay';

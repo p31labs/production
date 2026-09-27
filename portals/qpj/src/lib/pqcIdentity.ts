@@ -1,7 +1,7 @@
 /**
  * @file pqcIdentity.ts — QPJ hybrid (Ed25519 + ML-DSA-65) identity primitives.
  *
- * The client-side twin of @p31/sovereign-primitives (the canonical module this
+ * The client-side twin of @p31ca/sovereign-primitives (the canonical module this
  * portal vendors). The Ed25519 did:key stays the stable identifier; ML-DSA-65
  * (FIPS 204) is bound to it and used for post-quantum auth assertions and
  * capability tokens. The ML-DSA-65 secret key can be wrapped at rest under a
@@ -21,7 +21,7 @@ import {
   type CompositeKeyPair,
   type CompositePublicKey,
   type CompositeSignature,
-} from '@p31/sovereign-primitives';
+} from '@p31ca/sovereign-primitives';
 
 export interface B64KeyMaterial {
   ed25519Pub: string;

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useThemeStore, resolveBrandTokens, THEME_TOKENS, type ThemeId, type BrandId } from '@p31/design-core/theming/theme-store';
+import { useThemeStore, resolveBrandTokens, THEME_TOKENS, type ThemeId, type BrandId } from '@p31ca/design-core/theming/theme-store';
 import { useQpjStore } from '../store/useQpjStore';
 import type { QpjTheme } from '../store/useQpjStore';
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { GlassCard, Button } from '@p31/design-core/compositions';
+import { GlassCard, Button } from '@p31ca/design-core/compositions';
 import { useCollabText } from '../hooks/useCollabText';
 import { useDocOutline, scrollOutlineTo } from '../hooks/useDocOutline';
 import {

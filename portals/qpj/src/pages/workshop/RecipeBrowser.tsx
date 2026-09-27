@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { RECIPE_NAMES, RECIPE_MAP, RECIPE_CATEGORIES } from '@p31/design-core/mcp/data';
+import { RECIPE_NAMES, RECIPE_MAP, RECIPE_CATEGORIES } from '@p31ca/design-core/mcp/data';
 
 /** Browse all recipe classes with live CSS preview. */
 export function RecipeBrowser() {

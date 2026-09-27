@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 import { createIdentity } from '../../lib/identity';
 import { generatePickleName } from '../../lib/pickleNames';
 import { PASSENGERS } from '../../lib/passports';

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, cleanup, waitFor, fireEvent } from '@testing-library/react';
-import { Chameleon } from '@p31/design-core/compositions';
-import { useThemeStore } from '@p31/design-core/theming/theme-store';
+import { Chameleon } from '@p31ca/design-core/compositions';
+import { useThemeStore } from '@p31ca/design-core/theming/theme-store';
 import { useQpjStore } from '../store/useQpjStore';
 import { useThemeEffects } from '../hooks/useThemeEffects';
 import { ThemeCharm } from '../components/ThemeCharm';

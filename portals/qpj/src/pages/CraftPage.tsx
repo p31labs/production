@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQpjStore } from '../store/useQpjStore';
 import { getPassport } from '../lib/passports';
 import { Confetti } from '../components/Confetti';
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 
 const ARTIFACTS = [
   { id: 'star', emoji: '⭐', name: 'A pickle-star' },

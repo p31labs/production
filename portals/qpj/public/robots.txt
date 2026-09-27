@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://qpj.p31ca.org/sitemap.xml

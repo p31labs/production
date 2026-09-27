@@ -19,7 +19,7 @@ import { useQpjStore } from '../store/useQpjStore';
 import { getPassport } from '../lib/passports';
 import { navigateTo } from '../lib/routes';
 import { useSongBridge } from '../hooks/useSongBridge';
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 
 export function SongPage() {
   const passportId = useQpjStore((s) => s.passportId);

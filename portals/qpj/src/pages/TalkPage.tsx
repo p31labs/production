@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
-import { ChatShell } from '@p31/design-core/compositions';
+import { ChatShell } from '@p31ca/design-core/compositions';
 import { useQpjStore, type TalkMessage } from '../store/useQpjStore';
 import { getPassport, PASSENGER_IDS } from '../lib/passports';
 import { navigateTo } from '../lib/routes';
 import { useIdentityPrompt } from '../hooks/useIdentityPrompt';
 import { VoiceButton } from '../components/VoiceButton';
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 
 const BOT_REPLIES: Record<string, string[]> = {
   dillpickle: ['Ooh, tell me more! 🧸', 'Can we make it tomorrow too?', 'I put a star on the jar.'],

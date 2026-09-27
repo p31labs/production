@@ -1,4 +1,4 @@
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 import { useState } from 'react';
 import { useQpjStore } from '../store/useQpjStore';
 import { useSimulatedPresence } from '../hooks/useSimulatedPresence';

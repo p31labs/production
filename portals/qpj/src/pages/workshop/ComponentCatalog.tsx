@@ -8,7 +8,7 @@ import {
   GlassPanel,
   Topbar,
   PageHeader,
-} from '@p31/design-core/compositions';
+} from '@p31ca/design-core/compositions';
 import { useQpjStore } from '../../store/useQpjStore';
 
 const CATALOG: { name: string; tag: string; group: string; desc: string }[] = [
@@ -33,7 +33,7 @@ export function ComponentCatalog() {
   const [copied, setCopied] = useState(false);
 
   const copy = () => {
-    navigator.clipboard?.writeText('@p31/design-core/compositions');
+    navigator.clipboard?.writeText('@p31ca/design-core/compositions');
     setCopied(true);
     showToast('Copied the import path', 'success');
     window.setTimeout(() => setCopied(false), 1800);
@@ -45,7 +45,7 @@ export function ComponentCatalog() {
         <PageHeader
           eyebrow="Canonical catalog"
           title="Components"
-          lede="Live primitives from @p31/design-core — every one rendered with its canonical composition and recipes CSS."
+          lede="Live primitives from @p31ca/design-core — every one rendered with its canonical composition and recipes CSS."
         />
         <Button variant="secondary" size="md" onClick={copy}>
           <span aria-hidden="true">⎘</span> Copy package
@@ -132,7 +132,7 @@ export function ComponentCatalog() {
 
       {copied && (
         <p className="catalog__copied" role="status">
-          Copied @p31/design-core/compositions
+          Copied @p31ca/design-core/compositions
         </p>
       )}
     </div>

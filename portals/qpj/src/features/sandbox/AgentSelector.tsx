@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import type { AgentId } from './sandboxStore';
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 
 interface AgentDef {
   id: AgentId;

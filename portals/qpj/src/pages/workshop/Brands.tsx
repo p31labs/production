@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { resolveBrandTokens, type BrandId } from '@p31/design-core/theming/theme-store';
-import { StatusBadge, GlassPanel, PageHeader } from '@p31/design-core/compositions';
+import { resolveBrandTokens, type BrandId } from '@p31ca/design-core/theming/theme-store';
+import { StatusBadge, GlassPanel, PageHeader } from '@p31ca/design-core/compositions';
 import { BRAND } from '../../lib/brand';
 
 const BRANDS: BrandId[] = ['p31ca', 'phos', 'phosphorus31', 'willow', 'bonding'];

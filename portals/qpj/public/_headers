@@ -9,3 +9,23 @@ X-Frame-Options: SAMEORIGIN
 Referrer-Policy: strict-origin-when-cross-origin
 Permissions-Policy: bluetooth=(), camera=(), microphone=(), geolocation=(), tools=(self)
 Require-Trusted-Types-For: 'script'
+
+/manifest.webmanifest
+  Content-Type: application/manifest+json
+  Cache-Control: public, max-age=3600
+
+/sw.js
+  Content-Type: text/javascript
+  Cache-Control: no-cache
+
+/index.html
+  Cache-Control: no-cache
+
+/icons/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/.well-known/apple-app-site-association
+  Content-Type: application/json
+
+/.well-known/assetlinks.json
+  Content-Type: application/json

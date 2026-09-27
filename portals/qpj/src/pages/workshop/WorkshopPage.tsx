@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 import { useQpjStore } from '../../store/useQpjStore';
 import { getPassport } from '../../lib/passports';
 import { getVisibleTabs, getUnlockHint, getLevelName, type WorkshopLevel } from '../../lib/workshopLevels';

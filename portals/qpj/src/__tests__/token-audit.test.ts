@@ -16,7 +16,7 @@ const LOADED_DC_CSS = [
 
 function dcCssDir(): string {
   const req = createRequire(import.meta.url);
-  const tokens = req.resolve('@p31/design-core/css/tokens.css');
+  const tokens = req.resolve('@p31ca/design-core/css/tokens.css');
   return dirname(tokens);
 }
 

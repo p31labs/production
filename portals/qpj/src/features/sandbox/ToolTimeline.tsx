@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 import type { PipelineStep, ContractIssue } from './pipeline';
 
 const KIND_LABEL: Record<PipelineStep['kind'], string> = {

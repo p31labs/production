@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 import { useQpjStore } from '../store/useQpjStore';
 import { decayedCareScore, LOVE_CARE_MAX } from '../lib/love';
 import './love-ledger.css';

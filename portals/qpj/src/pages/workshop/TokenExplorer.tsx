@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { TOKEN_MAP } from '@p31/design-core/mcp/data';
+import { TOKEN_MAP } from '@p31ca/design-core/mcp/data';
 
 interface TokenRow {
   key: string;

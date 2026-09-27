@@ -1,4 +1,4 @@
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 import { useEffect, useRef, useState } from 'react';
 
 export interface PinDialogProps {

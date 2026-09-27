@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   CommandPalette as DesignCommandPalette,
   type CommandItem,
-} from '@p31/design-core/compositions';
+} from '@p31ca/design-core/compositions';
 import { useQpjStore } from '../store/useQpjStore';
 import { useNotifStore } from '../store/useNotifStore';
 import { ROUTES, ROUTE_ORDER, navigateTo, type QpjRoute } from '../lib/routes';
@@ -52,7 +52,7 @@ export function runQpjCommand(id: string): void {
 }
 
 /**
- * Shell bridge over @p31/design-core CommandPalette. The composition owns
+ * Shell bridge over @p31ca/design-core CommandPalette. The composition owns
  * filtering, keyboard nav, and the listbox; this shell owns the ⌘K trigger,
  * mode-filtered items, and what selecting an id means.
  */

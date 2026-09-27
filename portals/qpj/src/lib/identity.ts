@@ -23,7 +23,7 @@ export async function generateEd25519Did(): Promise<{ did: string; keyPair: Cryp
 
 import { generatePickleName } from './pickleNames';
 import { generateHybridKeyMaterial, aesGcmWrap, aesGcmUnwrap, derivePinKey } from './pqcIdentity';
-import { base64urlEncode } from '@p31/sovereign-primitives';
+import { base64urlEncode } from '@p31ca/sovereign-primitives';
 import type { B64KeyMaterial } from './pqcIdentity';
 
 const DB_NAME = 'qpj-identity';

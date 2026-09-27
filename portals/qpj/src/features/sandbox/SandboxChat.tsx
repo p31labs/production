@@ -13,7 +13,7 @@ import { localCompose } from './localCompose';
 import { detectAmbiguities, resolveClarify } from './clarify';
 import { validateHtml, runRubric, buildRepairPrompt, makeStep, repairLoop, type ContractIssue } from './pipeline';
 import { captureAndDiff, visualDiffVerdictToIssue } from './visualDiff';
-import { Button, GlassPanel } from '@p31/design-core/compositions';
+import { Button, GlassPanel } from '@p31ca/design-core/compositions';
 
 const VIRTUAL_THRESHOLD = 50;
 

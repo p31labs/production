@@ -10,7 +10,7 @@
  * hook never persists anything through it.
  */
 import { useCallback, useEffect, useState, type RefObject } from 'react';
-import { useThemeStore } from '@p31/design-core/theming/theme-store';
+import { useThemeStore } from '@p31ca/design-core/theming/theme-store';
 import { useQpjStore } from '../store/useQpjStore';
 import { getPassport } from '../lib/passports';
 import {

@@ -3,7 +3,7 @@ import { useSandboxStore, useSandboxPersistence } from '../../features/sandbox';
 import SandboxChat from '../../features/sandbox/SandboxChat';
 import ArtifactPane from '../../features/sandbox/ArtifactPane';
 import { useMediaQuery } from '../../lib/useMediaQuery';
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 import './studio.css';
 
 const STORAGE_KEY = 'qpj-sandbox-split';

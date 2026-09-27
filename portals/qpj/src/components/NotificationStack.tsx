@@ -1,4 +1,4 @@
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 import { useEffect, useRef } from 'react';
 import { useNotifStore, type Notification } from '../store/useNotifStore';
 import './notification.css';

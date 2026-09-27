@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 import { hasSBTMilestone } from '@p31/sovereign-core';
 import { useQpjStore } from '../store/useQpjStore';
 import { MILESTONE_CLAIMED_SPACE } from '../hooks/useSBT';
