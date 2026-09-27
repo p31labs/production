@@ -13,6 +13,12 @@ import {
   Footer,
   SpoonDial,
   Chameleon,
+  Badge,
+  Card,
+  Checkbox,
+  Crown,
+  CandyHeader,
+  Dropdown,
 } from '@p31ca/design-core/compositions';
 import { COMPONENT_CATALOG } from '@p31ca/design-core/genui/catalog';
 import { LiveExample } from '../../lib/livePreview';
@@ -235,6 +241,64 @@ const SAFE_RENDERERS: Record<string, (p: RenderProps) => ReactNode> = {
     />
   ),
   Chameleon: () => <Chameleon />,
+  Badge: (p) => (
+    <div className="catalog-preview-row">
+      <Badge tone={oneOf(p.tone, ['success', 'warning', 'error', 'info', 'neutral'] as const, 'success')}>
+        {String(p.label ?? 'online')}
+      </Badge>
+      <Badge tone="info">beta</Badge>
+      <Badge tone="neutral">stable</Badge>
+    </div>
+  ),
+  Card: (p) => (
+    <div className="qm-preview-fill">
+      <Card
+        padding={oneOf(p.padding, ['sm', 'md', 'lg'] as const, 'md')}
+        interactive={Boolean(p.interactive)}
+        title={String(p.title ?? 'Glass card')}
+        description={String(p.description ?? 'Elevated surface with an optional interactive affordance.')}
+      >
+        <span className="preview-box__text">{String(p.text ?? 'A card body — tokens, glass, and a quiet frame.')}</span>
+      </Card>
+    </div>
+  ),
+  Checkbox: (p) => (
+    <div className="catalog-preview-row">
+      <Checkbox
+        label={String(p.label ?? 'Subscribe to care digests')}
+        checked={Boolean(p.checked)}
+        indeterminate={Boolean(p.indeterminate)}
+      />
+    </div>
+  ),
+  Crown: (p) => (
+    <div className="catalog-preview-row">
+      <Crown label={String(p.label ?? 'P31')} />
+    </div>
+  ),
+  CandyHeader: (p) => (
+    <div className="qm-preview-fill">
+      <CandyHeader
+        eyebrow={String(p.eyebrow ?? 'System')}
+        title={String(p.title ?? 'Candy Header')}
+        lede={String(p.lede ?? 'A candy-rounded glass header for the sovereign stack.')}
+      />
+    </div>
+  ),
+  Dropdown: (p) => (
+    <div className="catalog-preview-row">
+      <Dropdown
+        label={String(p.label ?? 'Action')}
+        ariaLabel={String(p.label ?? 'Action')}
+        value="save"
+        options={[
+          { value: 'save', label: 'Save' },
+          { value: 'duplicate', label: 'Duplicate' },
+          { value: 'delete', label: 'Delete' },
+        ]}
+      />
+    </div>
+  ),
 };
 
 /** Editable props exposed by the LiveExample control strip for safe renders. */
@@ -247,6 +311,12 @@ export const SAFE_PROPS: Record<string, RenderProps> = {
   PageHeader: { eyebrow: 'System', title: 'Design Tokens', lede: 'Single source of truth for color, type, space, and motion.' },
   Footer: { brandLabel: 'P31 Labs' },
   SpoonDial: { level: 3 },
+  Badge: { tone: 'success', label: 'online' },
+  Card: { padding: 'md', interactive: true, title: 'Glass card', description: 'Elevated surface with an optional interactive affordance.', text: 'A card body — tokens, glass, and a quiet frame.' },
+  Checkbox: { label: 'Subscribe to care digests', checked: true, indeterminate: false },
+  Crown: { label: 'P31' },
+  CandyHeader: { eyebrow: 'System', title: 'Candy Header', lede: 'A candy-rounded glass header for the sovereign stack.' },
+  Dropdown: { label: 'Action' },
 };
 
 /** Token-preview tile — themed "no live preview" state for components without
