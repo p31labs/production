@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { GlassCard } from '@p31/design-core/generated/GlassCard';
+import { GlassCard } from '@p31ca/design-core/generated/GlassCard';
 
 const meta: Meta<typeof GlassCard> = { component: GlassCard, title: 'UI/GlassCard' };
 export default meta;

@@ -13,7 +13,7 @@ surface to product-grade quality.
    - Barely-there UI (no cream/beige, no fake luxury, no theatrical motion)
    - Progressive disclosure is a security posture (mode gates = privacy boundaries)
    - Per-person isolation is memory hygiene (no cross-person state leakage)
-   - Design-core is canonical (`@p31/design-core` compositions, never reimplement)
+   - Design-core is canonical (`@p31ca/design-core` compositions, never reimplement)
 
 2. `portals/qpj/src/index.css` — the single source of all `--p31-*` tokens.
    Every color in the system lives here. The starfield sky (dark, H=75) is the

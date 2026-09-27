@@ -16,7 +16,7 @@ export * from './FeedbackButton';
 export { ChatWidget } from '../chat';
 export type { ChatWidgetProps } from '../chat';
 
-export { Crown } from '@p31/design-core/generated/Crown';
-export type { CrownProps } from '@p31/design-core/generated/Crown';
-export { GlassCard } from '@p31/design-core/generated/GlassCard';
-export type { GlassCardProps } from '@p31/design-core/generated/GlassCard';
+export { Crown } from '@p31ca/design-core/generated/Crown';
+export type { CrownProps } from '@p31ca/design-core/generated/Crown';
+export { GlassCard } from '@p31ca/design-core/generated/GlassCard';
+export type { GlassCardProps } from '@p31ca/design-core/generated/GlassCard';

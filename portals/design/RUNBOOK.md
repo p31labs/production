@@ -2,7 +2,7 @@
 
 ## Overview
 
-The design portal (`production/portals/design`) is a Vite + React 19 + TypeScript application that consumes the canonical `@p31/design-core` as a vendored tarball.
+The design portal (`production/portals/design`) is a Vite + React 19 + TypeScript application that consumes the canonical `@p31ca/design-core` as a vendored tarball.
 
 ## Architecture
 
@@ -48,7 +48,7 @@ This:
 1. Packs canonical `design-core` and fixed `p31-ui` into `vendor/`
 2. Computes SHA512 of each tarball
 3. Compares against `vendor/.sha512` manifest
-4. If changed → runs `pnpm update @p31/design-core @p31/ui` to refresh lockfile
+4. If changed → runs `pnpm update @p31/design-core @p31ca/ui` to refresh lockfile
 5. Updates `vendor/.sha512` manifest
 
 ### 3. Verify

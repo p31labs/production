@@ -101,7 +101,7 @@ surface's route + shell wrapper.
 
 | Pitfall | Symptom | Fix |
 |---|---|---|
-| `@p31/design-core` import | build: css not exported | rename to `@p31ca/design-core` (canon name) |
+| `@p31ca/design-core` import | build: css not exported | rename to `@p31ca/design-core` (canon name) |
 | genui catalog ZodError at import | module crashes | re-pack canon (parse fix wraps array in envelope) |
 | stale `file:` tarball | fix not visible | `rm pnpm-lock.yaml && pnpm install --ignore-workspace` |
 | `workspace:*` resolution fails | install error | use `file:vendor/*.tgz` for design-core + ui |

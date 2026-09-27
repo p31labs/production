@@ -1,6 +1,6 @@
 # 15 — Design-core divergences register
 
-Status: living register. Every intentional fork QPJ keeps from `@p31/design-core`
+Status: living register. Every intentional fork QPJ keeps from `@p31ca/design-core`
 lives here, with three fields: **what design-core ships**, **what QPJ needs
 instead**, **why the difference is product, not laziness**. This is a review
 surface — anyone may read an entry and challenge it.
@@ -103,7 +103,7 @@ reintroduced.
 
 ## sovereign-core — vendored tarball, not registry
 
-- **What the registry ships:** `@p31/sovereign-core@0.1.0` from npm (stale copy
+- **What the registry ships:** `@p31ca/sovereign-core@0.1.0` from npm (stale copy
   in the root pnpm store, missing `motionScale`, `soundScale`, `contrastTarget`,
   `density`, `breathPattern`, `zeitgeber`).
 - **What QPJ uses:** `vendor/p31-sovereign-core-0.1.0.tgz`, packed from
@@ -111,7 +111,7 @@ reintroduced.
 - **Why product:** the canonical source is actively developed alongside QPJ and
   other portals. A registry publish would lag. The `link:` protocol was tried but
   is fragile across fresh clones and `pnpm install` runs. The vendored tarball
-  matches the existing pattern used for `@p31/design-core` and `@p31/ui`.
+  matches the existing pattern used for `@p31/design-core` and `@p31ca/ui`.
 - **Cost managed by:** `sync:vendor` script regenerates the tarball from the
   canonical source. `v:gate` asserts the vendored version matches expectations.
   Update the tarball with `pnpm pack --pack-destination vendor/` in the canonical
@@ -217,7 +217,7 @@ ships**, **what this portal needs instead**, **why**.
 - **Cost managed by:** `pnpm sync:vendor` in each portal regenerates the
   vendored tarball from canonical. `v:gate` asserts the version.
 
-## @p31/game-engine: dormant in QPJ and meatspace
+## @p31ca/game-engine: dormant in QPJ and meatspace
 
 - **What the family ships:** `@p31/game-engine@0.2.0-alpha.0` — Maxwell
   rigidity, jitterbug geometry, geodesic primitives, spoon-gated game runtime.
@@ -235,7 +235,7 @@ ships**, **what this portal needs instead**, **why**.
 - **Rejuvenation trigger:** decision needed — document dormancy with trigger condition,
   or adopt for workshop surface.
 
-## @p31/gamification: dormant in QPJ and meatspace
+## @p31ca/gamification: dormant in QPJ and meatspace
 
 - **What the family ships:** `@p31/gamification@1.0.0` — sound, confetti, haptics,
   achievements, growth rings, voice feedback, economy store.

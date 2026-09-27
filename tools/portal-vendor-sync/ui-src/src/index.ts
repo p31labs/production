@@ -1,5 +1,5 @@
-export { initStarfield, mountStarfield } from '@p31/design-core/starfield';
-export type { StarfieldConfig, StarfieldOptions, StarfieldInstance } from '@p31/design-core/starfield';
+export { initStarfield, mountStarfield } from '@p31ca/design-core/starfield';
+export type { StarfieldConfig, StarfieldOptions, StarfieldInstance } from '@p31ca/design-core/starfield';
 export { trackUiEvent, trackComponentUsage } from './telemetry';
 export { AdaptiveLayout } from './layout/AdaptiveLayout';
 export type { AdaptiveLayoutProps } from './layout/AdaptiveLayout';

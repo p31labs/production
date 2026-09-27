@@ -10,11 +10,11 @@ The ecosystem has two architectural paradigms and five @p31 shared packages. Not
 
 | Package | Purpose | Canonical source |
 |---|---|---|
-| `@p31/design-core` | Tokens, compositions, recipes, MCP data, agentic pipeline, starfield, crisis overlay, theming | `P31-local-workspace/packages/design-core` (v2.3.0) |
-| `@p31/sovereign-core` | Identity, profile, tetrahedron, SBT, mesh, love, crypto state | `P31-local-workspace/packages/sovereign-core` (v0.1.0) |
-| `@p31/game-engine` | Jitterbug geometry, geodesic primitives, spoon-gated game runtime, Roblox adapter | `P31-local-workspace/packages/game-engine` (v0.2.0-alpha.0) |
-| `@p31/gamification` | Sound, confetti, haptics, achievements, growth rings, voice feedback, economy store | `P31-local-workspace/packages/gamification` (v1.0.0) |
-| `@p31/ui` | Starfield, adaptive/GreyRock/NeuroAdapter, webmcp, passport templates, chrome, layout templates | `P31-local-workspace/packages/ui` (v1.3.1) |
+| `@p31ca/design-core` | Tokens, compositions, recipes, MCP data, agentic pipeline, starfield, crisis overlay, theming | `P31-local-workspace/packages/design-core` (v2.3.0) |
+| `@p31ca/sovereign-core` | Identity, profile, tetrahedron, SBT, mesh, love, crypto state | `P31-local-workspace/packages/sovereign-core` (v0.1.0) |
+| `@p31ca/game-engine` | Jitterbug geometry, geodesic primitives, spoon-gated game runtime, Roblox adapter | `P31-local-workspace/packages/game-engine` (v0.2.0-alpha.0) |
+| `@p31ca/gamification` | Sound, confetti, haptics, achievements, growth rings, voice feedback, economy store | `P31-local-workspace/packages/gamification` (v1.0.0) |
+| `@p31ca/ui` | Starfield, adaptive/GreyRock/NeuroAdapter, webmcp, passport templates, chrome, layout templates | `P31-local-workspace/packages/ui` (v1.3.1) |
 
 Additional @p31 packages used outside the portal SPAs: `@p31/shell-chrome`, `@p31/shared-identity` (p31ca only), `@p31/shared` (p31ca Tailwind preset).
 

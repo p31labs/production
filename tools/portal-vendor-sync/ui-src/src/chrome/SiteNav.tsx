@@ -11,7 +11,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Crown } from '@p31/design-core/generated/Crown';
+import { Crown } from '@p31ca/design-core/generated/Crown';
 import { SpoonDial } from './SpoonDial';
 
 export interface SiteNavLink {

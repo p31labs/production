@@ -71,7 +71,7 @@ stopgap (old bespoke portal classes overridden to suite-card look in `content`).
 | Package | Version | Source | Role |
 |---|---|---|---|
 | `@p31ca/design-core` | 3.0.0 | `vendor/p31-design-core-3.0.0.tgz` | Tokens, compositions, genui catalog, MCP server |
-| `@p31/ui` | 1.3.1 | `vendor/p31-ui-1.3.1.tgz` | Adaptive GreyRock + NeuroAdapter |
+| `@p31ca/ui` | 1.3.1 | `vendor/p31-ui-1.3.1.tgz` | Adaptive GreyRock + NeuroAdapter |
 | react / react-dom | 19.x | npm | UI runtime |
 | react-router-dom | 6.x | npm | Routing |
 
@@ -87,5 +87,5 @@ Vite chunks: `vendor-react`, `vendor-design-core`, `design-route` (`vite.config.
   genui catalog + MCP marketplace cross-link), Catalog (full genui registry with live previews), Playground
   (ComponentLab + Intent DSL tabs).
 - **Agent integration:** `data-mcp-tool` per surface via `src/lib/mcpTools.ts`; `portalShell` on the shell.
-- **Fix GAP-07:** `v-gate.mjs` no longer hardcodes `@p31/design-core` — it derives packages from the target
+- **Fix GAP-07:** `v-gate.mjs` no longer hardcodes `@p31ca/design-core` — it derives packages from the target
   manifest's `file:vendor` deps (unblocks both design + workspace portals).

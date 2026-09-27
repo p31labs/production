@@ -23,7 +23,7 @@ Audit date: post a11y polish pass. Severity per axe-core 4.13 impact labels. Rat
 | Orphaned `button--*`/`.button` CSS recipes | — | N/A | grep | `index.css:591–632` deleted. Verified zero TSX/docs/non-CSS consumers across monorepo before deletion. |
 | `.bottom-nav__button--active` color | street, talk, you, craft | **5.81:1** | axe + computed | `index.css` — fg `--p31-accent` (57%) → `--p31-accent-bright` (72%) on `--p31-accent-soft` (28%). Default (space) theme passes AA. Lantern override keeps `--p31-accent` (opt-in theme, non-gated). |
 | `.btn.btn-ghost` background | talk, craft, workshop | **7.92:1** (on page bg) | axe + computed | `index.css` — ghost buttons had **no background rule** (recipes.css never bundled), so the UA default `ButtonFace` gray leaked (2.14:1). Added `background: transparent`; text-secondary (72%) on page bg (15%) now passes. |
-| `.btn-md` class → vendor set | you | N/A | spec | `e2e/a11y.spec.ts` `VENDOR_NODE_TARGETS` — `.btn-md` is a design-core Button size class shipped from `@p31/design-core/src/primitives/Button.tsx`; axe targeted it via `[".btn-md"]`. |
+| `.btn-md` class → vendor set | you | N/A | spec | `e2e/a11y.spec.ts` `VENDOR_NODE_TARGETS` — `.btn-md` is a design-core Button size class shipped from `@p31ca/design-core/src/primitives/Button.tsx`; axe targeted it via `[".btn-md"]`. |
 | `aria-label` on generic `<span>`/`<div>` → `role="status"` | all | N/A | IBM + axe | `App.tsx` (mode chip, spoons bar), `BottomNav.tsx` (mode region): `aria-label` on elements with implicit `generic` role is invalid ARIA per IBM `aria_attribute_valid`. Converted to named live `role="status"` regions. |
 
 ## Vendor — documented, not patched (design-core @ 2.3.0)

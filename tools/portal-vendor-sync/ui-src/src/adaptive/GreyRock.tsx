@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import type { JSX } from 'react';
-import CognitivePassportSchema from '@p31/design-core/manifest.json';
+import CognitivePassportSchema from '@p31ca/design-core/manifest.json';
 import { useAdaptiveStore } from './adaptiveStore';
 
 export interface CognitivePassport {

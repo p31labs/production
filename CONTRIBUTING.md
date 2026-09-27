@@ -31,7 +31,7 @@ report privately to security@p31ca.org.
 
 When contribution channels open — timelines, a proper CONTRIBUTING guide with
 DCO/CLA expectations, and governance for the design system
-(`@p31/design-core`) and substrate — it will be announced clearly in this
+(`@p31ca/design-core`) and substrate — it will be announced clearly in this
 repository and on the project sites. Until that announcement, assume the
 project remains closed to external contributions.
 

@@ -1,6 +1,6 @@
 # 06 — Design system
 
-QPJ styles **against** `@p31/design-core` (v2.3.0); it does not fork it.
+QPJ styles **against** `@p31ca/design-core` (v2.3.0); it does not fork it.
 
 ## Load order (matters)
 

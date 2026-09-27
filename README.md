@@ -11,7 +11,7 @@ P31 is a family-first, privacy-first web platform built around progressive
 disclosure: a person's mode is their privacy boundary. Data lives on the
 device and per-person passports are isolated — switching passport tears down
 the mesh, clears session state, and never persists session state across
-persons. The design system (`@p31/design-core`) is the canonical source of all
+persons. The design system (`@p31ca/design-core`) is the canonical source of all
 visual and component decisions, from OKLCH design tokens to compositions like
 `ChatShell` and `Chameleon`.
 

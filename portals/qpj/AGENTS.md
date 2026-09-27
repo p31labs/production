@@ -6,7 +6,7 @@ parent/chat/design) into one codebase with progressive-disclosure "modes".
 
 ## Golden rules
 
-1. **Design-core is canonical.** Use `@p31/design-core` compositions (esp.
+1. **Design-core is canonical.** Use `@p31ca/design-core` compositions (esp.
    `ChatShell`, `SpoonDial`, `Button`) for every surface — never reimplement chat
    or chrome. The shell styles against its tokens, it doesn't own them.
 2. **Zero hardcoded colors.** No hex, no rgb. Everything via `var(--p31-*)` in
@@ -32,7 +32,7 @@ pnpm typecheck   # tsc --noEmit
 pnpm lint        # eslint src/ (0 warnings exit-clean)
 pnpm test        # vitest run — 354 tests across 46 files
 pnpm build       # vite build; prebuild writes public/routes.json
-pnpm v:gate      # asserts @p31/design-core @ 2.3.0 + @p31/ui @ 1.3.1 from vendor tarballs
+pnpm v:gate      # asserts @p31/design-core @ 2.3.0 + @p31ca/ui @ 1.3.1 from vendor tarballs
 ```
 
 `pnpm run build` also runs `prebuild` (`scripts/emit-route-list.mjs`) which writes

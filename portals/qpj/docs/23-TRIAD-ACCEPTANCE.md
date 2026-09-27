@@ -31,7 +31,7 @@ surfaces: SiteShell chrome, WorkerChat, WorkshopPage.
 | `pnpm typecheck` | 0 |
 | `pnpm lint` | 0 |
 | `pnpm build` | 0 |
-| `pnpm v:gate` | @p31/design-core 2.3.0 + @p31/ui 1.3.1 |
+| `pnpm v:gate` | @p31ca/design-core 2.3.0 + @p31ca/ui 1.3.1 |
 | Button migration (Track A/B) | zero raw `button--*` classes in TSX |
 | `token-audit` guard | green (no unresolved `--p31-*`, no hex/rgb) |
 | Substrate code touched | none |

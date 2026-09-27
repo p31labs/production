@@ -23,7 +23,7 @@ Decision framework for ecosystem alignment. Each dimension asks: rewrite (specif
 
 QPJ declares 3 @p31 packages it never imports. Per family rule: not dead, needs rejuvenation.
 
-### 2a: @p31/game-engine
+### 2a: @p31ca/game-engine
 
 | Signal | Rewrite | Refactor |
 |---|---|---|
@@ -31,7 +31,7 @@ QPJ declares 3 @p31 packages it never imports. Per family rule: not dead, needs 
 | Decision | **REFACTOR** — document why QPJ doesn't need it now, with a clear trigger for adoption. If QPJ's workshop needs Jitterbug geometry, adopt specification-first (define game mechanics spec before code). | |
 | Rejuvenation path | Option A: Adopt — add JitterbugGame to workshop, spec-first (what game mechanics does QPJ need?). Option B: Document — add entry to docs/15-DIVERGENCES explaining why QPJ doesn't use game-engine and what would trigger adoption. | |
 
-### 2b: @p31/gamification
+### 2b: @p31ca/gamification
 
 | Signal | Rewrite | Refactor |
 |---|---|---|
@@ -39,7 +39,7 @@ QPJ declares 3 @p31 packages it never imports. Per family rule: not dead, needs 
 | Decision | **REFACTOR** — QPJ's existing Confetti, voice, and LOVE ledger partially cover gamification's surface. Document the mapping: which gamification exports does QPJ already provide, which does it need, and which are intentionally out of scope. | |
 | Rejuvenation path | Option A: Adopt — replace QPJ's custom Confetti with gamification/confetti, adopt sound/haptic subsystems. Option B: Document — map QPJ's existing features to gamification's exports, mark the gap as future work. | |
 
-### 2c: @p31/ui
+### 2c: @p31ca/ui
 
 | Signal | Rewrite | Refactor |
 |---|---|---|
@@ -63,7 +63,7 @@ QPJ declares 3 @p31 packages it never imports. Per family rule: not dead, needs 
 |---|---|---|
 | Current state | 7 React SPAs (zustand, hash routing, design-core CSS) vs 2 Astro sites (Tailwind, no @p31 packages). They share zero technical infrastructure. | They are different products with different deployment models. Don't force convergence. |
 | Decision | **REFACTOR** — define a shared design contract (tokens, components, voice) that both paradigms adhere to, without forcing one onto the other. | |
-| Action | Define a "P31 design contract" spec: (1) token layer (how do Astro sites consume @p31/design-core tokens? Via Tailwind preset? Via CSS custom properties? Via DTCG?), (2) component contract (which components are shared across paradigms?), (3) brand voice / content alignment. | |
+| Action | Define a "P31 design contract" spec: (1) token layer (how do Astro sites consume @p31ca/design-core tokens? Via Tailwind preset? Via CSS custom properties? Via DTCG?), (2) component contract (which components are shared across paradigms?), (3) brand voice / content alignment. | |
 | Parallel | Yes — the contract definition is independent of portal-specific changes. | |
 | Design track | Critical for this dimension — p31ca and phos need design alignment for market. | |
 

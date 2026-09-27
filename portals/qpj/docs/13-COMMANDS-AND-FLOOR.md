@@ -6,7 +6,7 @@ Two guardrails that keep the jar calm-to-touch everywhere:
 
 ## Command palette — `src/components/CommandPalette.tsx`
 
-The surface **is** `@p31/design-core`'s `CommandPalette` composition — the
+The surface **is** `@p31ca/design-core`'s `CommandPalette` composition — the
 shell never reimplements chrome. `CommandPalette.tsx` is a thin *bridge*:
 it owns the ⌘K/Ctrl+K trigger, builds mode-filtered items, and dispatches
 selection; the composition owns filtering, keyboard nav, and the accessible

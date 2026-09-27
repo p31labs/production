@@ -45,7 +45,7 @@ wrangler pages deploy ./dist --project-name p31-portal-qpj --branch main
 ## Vendor gate
 
 `pnpm v:gate` → `tools/portal-vendor-sync/v-gate.mjs` asserts installed packages are
-canonical: `@p31/design-core@2.3.0`, `@p31/ui@1.3.1` (from `vendor/*.tgz`). All four
+canonical: `@p31ca/design-core@2.3.0`, `@p31ca/ui@1.3.1` (from `vendor/*.tgz`). All four
 portals (qpj, chat, design, template) currently pass. Tarballs live in each portal's
 `vendor/`; bump = copy new tarball → re-install (see `CLAUDE.md` gotchas).
 

@@ -30,7 +30,7 @@ production/portals/qpj/
     ├── pages/workshop/                 # PIN-gated builder home (workbench absorbed from design portal)
     │   ├── WorkshopPage.tsx            # tabs hub + #/workshop/{tab} sub-routing
     │   ├── Studio.tsx                    # Studio tab: sandboxed artifact studio (chat + offline composer)
-    │   ├── TokenExplorer.tsx           # TOKEN_MAP explorer (@p31/design-core/mcp/data)
+    │   ├── TokenExplorer.tsx           # TOKEN_MAP explorer (@p31ca/design-core/mcp/data)
     │   ├── RecipeBrowser.tsx           # RECIPE_MAP/NAMES/CATEGORIES browser
     │   ├── ComponentCatalog.tsx        # live @p31/design-core/compositions gallery
     │   ├── Playground.tsx              # Intent DSL → parseIntent + runQaGates (in-browser)
