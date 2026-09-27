@@ -10,7 +10,10 @@ import { NotificationStack } from './components/NotificationStack';
 import { useNotifStore } from './lib/useNotifStore';
 import { mcpToolForPath } from './lib/mcpTools';
 import { useSpoonsStore } from './lib/useSpoonsStore';
-import LedController from '@p31/p31ca-ambient/LedController';
+/* The ambient instrument is part of the 570KB vendor-p31ca-ambient chunk.
+   It stays lazy and mounts only after the load event (useAmbientReady), so
+   the ambient JS never blocks FCP/LCP on the surfaces. */
+const LedController = lazy(() => import('@p31/p31ca-ambient/LedController'));
 
 const Showcase = lazy(() => import('./routes/Showcase/Showcase'));
 const Marketplace = lazy(() => import('./routes/Marketplace/Marketplace'));
@@ -28,6 +31,28 @@ const Dome = lazy(() => import('./routes/Dome/Dome'));
 
 const MODES = ['spark', 'maker', 'workshop'] as const;
 type Mode = (typeof MODES)[number];
+
+/** Ambient deferral — the ambient bundle (570KB vendor chunk) mounts only
+ *  after the load event so FCP/LCP lock onto the surface, not the canvases.
+ *  Eager on /dome and /glass (the user is there for the ambient/glass).
+ *  load + setTimeout(0) — requestIdleCallback is not in Safari. */
+function useAmbientReady(eager: boolean): boolean {
+  const [ready, setReady] = useState(eager);
+  useEffect(() => {
+    if (eager) {
+      setReady(true);
+      return;
+    }
+    const go = () => setTimeout(() => setReady(true), 0);
+    if (document.readyState === 'complete') {
+      go();
+      return;
+    }
+    window.addEventListener('load', go, { once: true });
+    return () => window.removeEventListener('load', go);
+  }, [eager]);
+  return ready;
+}
 
 /** SurfaceSkeleton — component-shaped loading (not a spinner). */
 function SurfaceSkeleton() {
@@ -50,6 +75,9 @@ function AppShell() {
   const { pathname } = useLocation();
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [modeIdx, setModeIdx] = useState(0);
+
+  const ambientEager = pathname === '/dome' || pathname === '/glass';
+  const ambientReady = useAmbientReady(ambientEager);
 
   useEffect(() => {
     const scale = spoons >= 4 ? '1' : spoons === 3 ? '0.6' : spoons >= 1 ? '0.2' : '0';
@@ -81,15 +109,20 @@ function AppShell() {
   return (
     <>
       <a href="#main-content" className="skip-link">Skip to main content</a>
-      <DomeBackground orbitable={pathname === '/dome'} />
+      <DomeBackground orbitable={pathname === '/dome'} ready={ambientReady} />
       <Topbar
         mode={mode}
         onElevate={() => setModeIdx((i) => (i + 1) % MODES.length)}
         onOpenPalette={() => setPaletteOpen(true)}
       />
 
-      {/* p31ca.org LED dome controller — global, bottom-right chip. */}
-      <LedController />
+      {/* p31ca.org LED dome controller — global, bottom-right chip; mounts
+          with the ambient (after load, eager on /dome + /glass). */}
+      {ambientReady && (
+        <Suspense fallback={null}>
+          <LedController />
+        </Suspense>
+      )}
 
       <div className="app-shell">
         <SidebarNav />

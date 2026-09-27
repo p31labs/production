@@ -13,29 +13,43 @@
  * layer carries data-orbit="true".
  */
 import { lazy, Suspense, useEffect } from 'react';
-import { useEffectsStore } from '@p31/p31ca-ambient/stores/effectsStore';
 import { useSpoonsStore } from '../lib/useSpoonsStore';
 
 const Starfield = lazy(() => import('@p31/p31ca-ambient/background/Starfield'));
 const MolecularHeart = lazy(() => import('@p31/p31ca-ambient/background/MolecularHeart'));
 
-function useSpoonBridge() {
+/** Spoon bridge — syncs the portal spoons into the ambient's crisis floor.
+ *  The ambient store is imported dynamically and only after `ready` so the
+ *  vendor-p31ca-ambient chunk (570KB, three.js) stays OUT of the initial
+ *  graph — a static effectsStore import would load it eagerly. */
+function useSpoonBridge(ready: boolean) {
   useEffect(() => {
-    const sync = () => useEffectsStore.getState().setSpoons(useSpoonsStore.getState().spoons);
-    sync();
-    const unsub = useSpoonsStore.subscribe(sync);
-    return unsub;
-  }, []);
+    if (!ready) return;
+    let unsub: (() => void) | undefined;
+    let cancelled = false;
+    void import('@p31/p31ca-ambient/stores/effectsStore').then(({ useEffectsStore }) => {
+      if (cancelled) return;
+      const sync = () => useEffectsStore.getState().setSpoons(useSpoonsStore.getState().spoons);
+      sync();
+      unsub = useSpoonsStore.subscribe(sync);
+    });
+    return () => {
+      cancelled = true;
+      unsub?.();
+    };
+  }, [ready]);
 }
 
-export default function DomeBackground({ orbitable = false }: { orbitable?: boolean }) {
-  useSpoonBridge();
+export default function DomeBackground({ orbitable = false, ready = true }: { orbitable?: boolean; ready?: boolean }) {
+  useSpoonBridge(ready);
   return (
     <div className="starfield-bg dome-bg" data-orbit={orbitable ? 'true' : 'false'} aria-hidden="true">
-      <Suspense fallback={null}>
-        <Starfield />
-        <MolecularHeart />
-      </Suspense>
+      {ready && (
+        <Suspense fallback={null}>
+          <Starfield />
+          <MolecularHeart />
+        </Suspense>
+      )}
     </div>
   );
 }
