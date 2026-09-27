@@ -4,6 +4,7 @@ import { COMPONENT_CATALOG } from '@p31ca/design-core/genui/catalog';
 import { PageHeader } from '@p31ca/design-core/compositions';
 import { fadeIn, press, slideUp, staggerChildren } from '../../lib/motionPresets';
 import { LiveExample } from '../../lib/livePreview';
+import { useSessionStore } from '../../lib/useSessionStore';
 import '../../surfaces/mcpconsole.css';
 
 const MCP_URL = 'https://p31-design-mcp.trimtab-signal.workers.dev/mcp';
@@ -316,6 +317,7 @@ export default function McpConsole() {
 
   const copy = async (text: string) => {
     try {
+      useSessionStore.getState().countCopy();
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(text);
       } else {

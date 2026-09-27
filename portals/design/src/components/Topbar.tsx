@@ -9,6 +9,7 @@ interface TopbarProps {
   mode: 'spark' | 'maker' | 'workshop';
   onElevate: () => void;
   onOpenPalette: () => void;
+  onOpenSession: () => void;
 }
 
 /** Canonical themes from design-core (THEME_LABELS) — the single source
@@ -93,7 +94,7 @@ function ThemePicker() {
 }
 
 /** Topbar — suite chrome (crown brand, center search, theme + badge + spoon dial + avatar). */
-export function Topbar({ mode, onElevate, onOpenPalette }: TopbarProps) {
+export function Topbar({ mode, onElevate, onOpenPalette, onOpenSession }: TopbarProps) {
   const spoons = useSpoonsStore((s) => s.spoons);
   const setSpoons = useSpoonsStore((s) => s.setSpoons);
   const navigate = useNavigate();
@@ -119,6 +120,10 @@ export function Topbar({ mode, onElevate, onOpenPalette }: TopbarProps) {
       </div>
 
       <div className="topbar-right">
+        <button type="button" className="session-btn" onClick={onOpenSession} aria-label="Open session summary">
+          <span className="session-btn__icon" aria-hidden="true">◈</span>
+          <span className="session-btn__label">End session</span>
+        </button>
         <button type="button" className={`badge badge-${mode}`} onClick={onElevate} title="Elevate mode (demo)">
           {mode.toUpperCase()}
         </button>

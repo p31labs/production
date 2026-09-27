@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { StatusBadge } from '@p31ca/design-core/compositions';
 import type { ShopItem } from '../data/marketplace';
+import { useSessionStore } from '../lib/useSessionStore';
 
 interface Props {
   item: ShopItem;
@@ -14,6 +15,7 @@ export default function MarketplaceCard({ item }: Props) {
   const copyImport = async () => {
     const lines = [`import { ${item.name} } from '${item.importPath}'`, `// spoonCost: ${item.spoonCost} · LOVE ${item.lovePrice}`]
     await navigator.clipboard?.writeText(lines.join('\n'))
+    useSessionStore.getState().countCopy()
     setCopied(true)
     window.setTimeout(() => setCopied(false), 1500)
   }

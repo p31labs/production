@@ -1,0 +1,136 @@
+/* session.css — Session Summary slide-over (WP-2026-09-27f).
+   Token stance: var(--p31-*) only. The panel is a slide-over from the right
+   (not a modal) — it reads as a summary, never an interruption. */
+
+.session-summary {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  pointer-events: none;
+}
+
+.session-summary__scrim {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklch, var(--p31-void) 55%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  pointer-events: auto;
+  border: none;
+  cursor: default;
+}
+
+.session-summary__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(360px, 100vw);
+  pointer-events: auto;
+  border-radius: 0;
+  border-top-left-radius: var(--p31-radius-lg);
+  border-bottom-left-radius: var(--p31-radius-lg);
+  padding: var(--p31-space-6);
+  overflow-y: auto;
+  max-width: 100%;
+}
+
+.session-summary__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--p31-space-3);
+  flex-wrap: wrap;
+}
+
+.session-summary__title {
+  font-size: var(--p31-text-h3);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--p31-text-primary);
+  margin: 0;
+}
+
+.session-summary__clock {
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-sm);
+  color: var(--p31-text-muted);
+}
+
+.session-summary__intro {
+  margin: 0;
+  font-size: var(--p31-text-sm);
+  line-height: 1.5;
+  color: var(--p31-text-secondary);
+}
+
+.session-summary__stats {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-2);
+}
+
+.session-summary__stat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--p31-space-3);
+  padding: var(--p31-space-3) 0;
+  border-bottom: 1px solid var(--p31-glass-border);
+  min-width: 0;
+}
+
+.session-summary__stat dt {
+  font-size: var(--p31-text-sm);
+  color: var(--p31-text-secondary);
+}
+
+.session-summary__stat dd {
+  margin: 0;
+  font-family: var(--p31-font-mono);
+  font-size: var(--p31-text-base);
+  font-weight: 600;
+  color: var(--p31-text-primary);
+  min-width: 0;
+  text-align: right;
+}
+
+.session-summary__actions {
+  display: flex;
+  gap: var(--p31-space-3);
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+
+/* ── Topbar trigger — compact "End session" chip ─────────────────────── */
+.session-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--p31-space-2);
+  height: 36px;
+  padding: 0 var(--p31-space-3);
+  border-radius: var(--p31-radius-full);
+  border: 1px solid var(--p31-glass-border);
+  background: var(--p31-glass-bg);
+  color: var(--p31-text-secondary);
+  font-size: var(--p31-text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--p31-transition-fast) var(--p31-ease-quantum);
+}
+
+.session-btn:hover {
+  border-color: color-mix(in oklch, var(--p31-accent) 40%, transparent);
+  color: var(--p31-text-primary);
+}
+
+.session-btn__icon {
+  color: var(--p31-accent);
+}
+
+@media (max-width: 640px) {
+  .session-btn__label {
+    display: none;
+  }
+}

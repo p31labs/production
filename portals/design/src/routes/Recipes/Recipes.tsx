@@ -10,6 +10,7 @@ import {
 import { SurfaceLayout, SurfaceHero, SurfaceSection, SurfaceGrid } from '../../lib/surface';
 import { LiveExample } from '../../lib/livePreview';
 import { slideUp, staggerChildren } from '../../lib/motionPresets';
+import { useSessionStore } from '../../lib/useSessionStore';
 import '../../surfaces/recipes.css';
 
 interface Recipe {
@@ -183,6 +184,7 @@ const RECIPES: Recipe[] = [
 ];
 
 function copyText(text: string): void {
+  useSessionStore.getState().countCopy();
   if (navigator.clipboard?.writeText) {
     void navigator.clipboard.writeText(text);
   } else {

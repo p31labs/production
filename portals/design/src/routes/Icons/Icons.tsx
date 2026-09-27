@@ -3,6 +3,7 @@ import { GlassPanel } from '@p31ca/design-core/compositions';
 import { SurfaceLayout, SurfaceHero, SurfaceSection, SurfaceGrid } from '../../lib/surface';
 import P31Icon, { type IconName } from '../../components/P31Icon';
 import { motion } from 'motion/react';
+import { useSessionStore } from '../../lib/useSessionStore';
 import { slideUp, staggerChildren } from '../../lib/motionPresets';
 import '../../surfaces/icons.css';
 
@@ -45,6 +46,7 @@ export default function Icons() {
   const copy = (name: IconName) => {
     const snippet = `<P31Icon name="${name}" size={48} />`;
     navigator.clipboard?.writeText(snippet);
+    useSessionStore.getState().countCopy();
     setToast(snippet);
     window.setTimeout(() => setToast(null), 1600);
   };

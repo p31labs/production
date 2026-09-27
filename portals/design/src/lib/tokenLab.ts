@@ -3,6 +3,7 @@
  * The single most impressive surface: edit a --p31-* token → preview streams
  * live → export to standards. Mirrors the WaveMaker / Cadence model.
  */
+import { useSessionStore } from './useSessionStore';
 export interface TokenEdit {
   name: string; // '--p31-accent-cyan'
   original: string;
@@ -17,6 +18,7 @@ export function readToken(name: string): string {
 
 export function writeToken(name: string, value: string): void {
   document.documentElement.style.setProperty(name, value);
+  useSessionStore.getState().countTokenEdit();
 }
 
 export function resetToken(name: string): void {

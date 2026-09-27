@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'motion/react';
 import DomeBackground from './components/DomeBackground';
 import { Topbar } from './components/Topbar';
 import { SidebarNav } from './components/SidebarNav';
@@ -7,9 +8,12 @@ import { MobileBottomNav } from './components/MobileBottomNav';
 import { CommandPalette } from './components/CommandPalette';
 import { CalmOverlay } from './components/CalmOverlay';
 import { NotificationStack } from './components/NotificationStack';
+import { SessionTracker } from './components/SessionTracker';
+import { SessionSummary } from './components/SessionSummary';
 import { useNotifStore } from './lib/useNotifStore';
 import { mcpToolForPath } from './lib/mcpTools';
 import { useSpoonsStore } from './lib/useSpoonsStore';
+import './surfaces/session.css';
 /* The ambient instrument is part of the 570KB vendor-p31ca-ambient chunk.
    It stays lazy and mounts only after the load event (useAmbientReady), so
    the ambient JS never blocks FCP/LCP on the surfaces. */
@@ -74,6 +78,7 @@ function AppShell() {
   const spoons = useSpoonsStore((s) => s.spoons);
   const { pathname } = useLocation();
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const [sessionOpen, setSessionOpen] = useState(false);
   const [modeIdx, setModeIdx] = useState(0);
 
   const ambientEager = pathname === '/dome' || pathname === '/glass';
@@ -114,6 +119,7 @@ function AppShell() {
         mode={mode}
         onElevate={() => setModeIdx((i) => (i + 1) % MODES.length)}
         onOpenPalette={() => setPaletteOpen(true)}
+        onOpenSession={() => setSessionOpen(true)}
       />
 
       {/* p31ca.org LED dome controller — global, bottom-right chip; mounts
@@ -150,7 +156,11 @@ function AppShell() {
       </div>
 
       <MobileBottomNav />
+      <SessionTracker />
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+      <AnimatePresence>
+        {sessionOpen && <SessionSummary onClose={() => setSessionOpen(false)} />}
+      </AnimatePresence>
       <CalmOverlay />
       <NotificationStack />
     </>
