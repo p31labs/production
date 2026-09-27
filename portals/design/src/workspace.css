@@ -250,6 +250,7 @@
 .family-avatar {
   width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--p31-surface2);
   margin-right:-8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;
+  color: var(--p31-void);
 }
 .family-avatar.active { border-color: var(--p31-accent); box-shadow: 0 0 0 2px color-mix(in oklch, var(--p31-accent) 35%, transparent); }
 .family-avatar[data-accent='cyan'] { border-color: var(--p31-accent-cyan); }

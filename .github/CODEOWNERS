@@ -1,0 +1,24 @@
+# P31 design-system governance — who owns the files that encode design
+# judgment. On a solo-operating repo this documents intent; when combined with
+# branch protection + the CI gate it becomes the drift gatekeeper (WP-2026-09-30).
+# The mechanical protection is the p31-production.yml `pnpm gate` job.
+
+# Design-system governance files — changes require the design owner's review.
+# Changes should start with the owner, not reach them as a fait accompli.
+portals/design/src/surfaces/        @p31/design-owner
+portals/design/src/tokens.css       @p31/design-owner
+portals/design/src/workspace.css    @p31/design-owner
+portals/design/src/polish.css       @p31/design-owner
+portals/design/src/lib/surface.tsx  @p31/design-owner
+portals/design/tests/visual.spec.ts @p31/design-owner
+portals/design/tests/a11y.spec.ts   @p31/design-owner
+portals/design/vite.config.ts       @p31/design-owner
+portals/design/playwright.config.ts @p31/design-owner
+
+# Canon (design-core) token + composition sources.
+packages/design-core/src/tokens/     @p31/design-owner
+packages/design-core/src/compositions/ @p31/design-owner
+packages/design-core/src/recipes/    @p31/design-owner
+
+# CI/CD workflows that encode the gates — notify admins of changes.
+.github/workflows/                   @p31/design-owner

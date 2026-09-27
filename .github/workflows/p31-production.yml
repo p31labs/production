@@ -16,11 +16,35 @@ jobs:
           node-version: 20
       - name: Hardcoded hex gate (AGENTS.md design gate)
         run: |
-          if grep -rEn '#[0-9a-fA-F]{3,8}\b' portals --include='*.tsx' --include='*.astro' --include='*.css' --include='*.html' --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=.wrangler --exclude-dir=vendor 2>/dev/null; then
-            echo "❌ Hardcoded hex colors found in portals src (use var(--p31-*) tokens)"
+          if grep -rEn '#[0-9a-fA-F]{3,8}\b|rgba?\(' portals monetization --include='*.tsx' --include='*.astro' --include='*.css' --include='*.html' --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=.wrangler --exclude-dir=vendor 2>/dev/null; then
+            echo "❌ Hardcoded hex colors found in portals/monetization src (use var(--p31-*) tokens)"
             exit 1
           fi
       - name: Install portal dependencies
         run: cd portals/design && pnpm install --frozen-lockfile
+      - name: Install Playwright browsers
+        run: cd portals/design && npx playwright install chromium --with-deps
+      - name: Full design gate (typecheck, lint, test, build, audits, visual + a11y, v:gate)
+        run: cd portals/design && pnpm gate
+      - name: Upload visual/a11y artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-test-results
+          path: portals/design/test-results/
+          retention-days: 7
       - name: v:gate (portal vendor versions)
         run: cd portals/design && pnpm v:gate
+
+  monetization:
+    name: Monetization Gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install monetization dependencies
+        run: cd monetization && pnpm install --frozen-lockfile
+      - name: Full gate (token-audit, typecheck, lint, test, build, v:gate)
+        run: cd monetization && pnpm gate

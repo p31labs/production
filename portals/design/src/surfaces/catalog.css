@@ -139,7 +139,7 @@
 }
 
 .qm-count {
-  opacity: 0.6;
+  color: var(--p31-text-muted);
 }
 
 .qm-cat-search {

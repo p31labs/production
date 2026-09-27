@@ -114,3 +114,19 @@ for (const vp of VIEWPORTS) {
     }
   });
 }
+
+// Tier 3 tripwire — topbar affordances survive at every breakpoint. The
+// visual gate's 1% tolerance lets small-but-intentional chrome changes slip
+// through (the 0.3% End-session button); this asserts the affordance exists
+// directly, catching removals without false-positiving on pixels.
+for (const vp of VIEWPORTS) {
+  test.describe(`@${vp.name} · topbar affordance tripwire`, () => {
+    test.use({ viewport: { width: vp.width, height: vp.height } });
+    test('session + spoon + theme affordances are present', async ({ page }) => {
+      await open(page, '/');
+      await expect(page.locator('.session-btn')).toBeVisible();
+      await expect(page.locator('.spoon-dial')).toBeVisible();
+      await expect(page.locator('.theme-picker__trigger')).toBeVisible();
+    });
+  });
+}
