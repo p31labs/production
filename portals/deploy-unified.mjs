@@ -68,7 +68,7 @@ const PORTALS = {
     port: 5190,
     entryHtml: 'index.html',
     manualChunks: [],
-    skipUmd: true, // @p31/ui UMD removed from the design portal — injecting it
+    skipUmd: true, // @p31ca/ui UMD removed from the design portal — injecting it
     // crashes ("__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED").
   },
   qpj: {
@@ -129,7 +129,7 @@ const PORTALS = {
     sentryProject: null,
     port: 5199,
     entryHtml: 'index.html',
-    // Imports @p31/ui from the vendored source — no legacy UMD global needed.
+    // Imports @p31ca/ui from the vendored source — no legacy UMD global needed.
     skipUmd: true,
     manualChunks: [
       'src/store/marketplaceStore.ts',

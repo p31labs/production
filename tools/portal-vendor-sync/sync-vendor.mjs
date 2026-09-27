@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // P31 Design System — portal vendor sync (shared CLI)
 // Regenerates the pinned vendor tarballs for a portal from canonical sources:
-//   @p31/design-core -> P31-local-workspace/packages/design-core (canonical monorepo)
-//   @p31/ui (fixed)  -> ./ui-src (source tree with the JSX/useRef fixes baked in)
+//   @p31ca/design-core -> P31-local-workspace/packages/design-core (canonical monorepo)
+//   @p31ca/ui (fixed)  -> ./ui-src (source tree with the JSX/useRef fixes baked in)
 // Usage: node sync-vendor.mjs --target <portalRoot>
 // Run via `pnpm sync:vendor` in each portal (no postinstall bootstrapping; explicit by design).
 import { execSync } from 'node:child_process'
@@ -55,13 +55,13 @@ const prev = readManifest()
 const storedDes = new Map(Object.entries(prev))
 
 const tarballs = [
-  { key: 'design-core', path: path.join(vendor, 'p31-design-core-2.2.0.tgz'), pkg: '@p31/design-core' },
-  { key: 'ui', path: path.join(vendor, 'p31-ui-1.3.1.tgz'), pkg: '@p31/ui' },
+  { key: 'design-core', path: path.join(vendor, 'p31-design-core-3.0.0.tgz'), pkg: '@p31ca/design-core' },
+  { key: 'ui', path: path.join(vendor, 'p31ca-ui-1.3.1.tgz'), pkg: '@p31ca/ui' },
 ]
 
 pack(canonicalCore, '')
 pack(uiSrc, '')
-rmSync(path.join(vendor, '@p31-ui-1.3.1.tgz'), { force: true })
+rmSync(path.join(vendor, '@p31ca-ui-1.3.1.tgz'), { force: true })
 
 const next = {}
 for (const { key, path: tarball, pkg } of tarballs) {
