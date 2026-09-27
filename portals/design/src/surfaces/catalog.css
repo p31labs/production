@@ -203,3 +203,10 @@
   -webkit-box-orient: unset;
   overflow: visible;
 }
+
+/* ── Catalog card description — long generated-file paths must wrap, not
+   force the card (and grid) wide. ── */
+.qm-cat-card .surface-card-desc {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
