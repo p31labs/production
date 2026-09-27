@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type RefObject } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useSpoonsStore } from '../lib/useSpoonsStore';
@@ -10,6 +10,7 @@ interface TopbarProps {
   onElevate: () => void;
   onOpenPalette: () => void;
   onOpenSession: () => void;
+  sessionTriggerRef?: RefObject<HTMLButtonElement | null>;
 }
 
 /** Canonical themes from design-core (THEME_LABELS) — the single source
@@ -94,7 +95,7 @@ function ThemePicker() {
 }
 
 /** Topbar — suite chrome (crown brand, center search, theme + badge + spoon dial + avatar). */
-export function Topbar({ mode, onElevate, onOpenPalette, onOpenSession }: TopbarProps) {
+export function Topbar({ mode, onElevate, onOpenPalette, onOpenSession, sessionTriggerRef }: TopbarProps) {
   const spoons = useSpoonsStore((s) => s.spoons);
   const setSpoons = useSpoonsStore((s) => s.setSpoons);
   const navigate = useNavigate();
@@ -120,7 +121,7 @@ export function Topbar({ mode, onElevate, onOpenPalette, onOpenSession }: Topbar
       </div>
 
       <div className="topbar-right">
-        <button type="button" className="session-btn" onClick={onOpenSession} aria-label="Open session summary">
+        <button type="button" className="session-btn" ref={sessionTriggerRef} onClick={onOpenSession} aria-label="Open session summary">
           <span className="session-btn__icon" aria-hidden="true">◈</span>
           <span className="session-btn__label">End session</span>
         </button>

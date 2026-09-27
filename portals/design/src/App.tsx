@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'motion/react';
 import DomeBackground from './components/DomeBackground';
@@ -79,6 +79,7 @@ function AppShell() {
   const { pathname } = useLocation();
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [sessionOpen, setSessionOpen] = useState(false);
+  const sessionTriggerRef = useRef<HTMLButtonElement>(null);
   const [modeIdx, setModeIdx] = useState(0);
 
   const ambientEager = pathname === '/dome' || pathname === '/glass';
@@ -120,6 +121,7 @@ function AppShell() {
         onElevate={() => setModeIdx((i) => (i + 1) % MODES.length)}
         onOpenPalette={() => setPaletteOpen(true)}
         onOpenSession={() => setSessionOpen(true)}
+        sessionTriggerRef={sessionTriggerRef}
       />
 
       {/* p31ca.org LED dome controller — global, bottom-right chip; mounts
@@ -159,7 +161,7 @@ function AppShell() {
       <SessionTracker />
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
       <AnimatePresence>
-        {sessionOpen && <SessionSummary onClose={() => setSessionOpen(false)} />}
+        {sessionOpen && <SessionSummary onClose={() => setSessionOpen(false)} triggerRef={sessionTriggerRef} />}
       </AnimatePresence>
       <CalmOverlay />
       <NotificationStack />

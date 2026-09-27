@@ -18,12 +18,10 @@ interface SessionState {
   calmPresses: number;
   peakSpoons: number;
   startedAt: number;
-  dismissed: boolean;
   visit: (path: string) => void;
   countTokenEdit: () => void;
   countCopy: () => void;
   noteSpoons: (spoons: number) => void;
-  dismiss: () => void;
   end: () => void;
 }
 
@@ -48,7 +46,6 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   calmPresses: initial.calmPresses ?? 0,
   peakSpoons: initial.peakSpoons ?? 3,
   startedAt: initial.startedAt ?? Date.now(),
-  dismissed: initial.dismissed ?? false,
 
   visit: (path) => {
     const { routes } = get();
@@ -62,22 +59,21 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       calmPresses: s.calmPresses + (spoons === 0 ? 1 : 0),
       peakSpoons: Math.max(s.peakSpoons, spoons),
     })),
-  dismiss: () => set({ dismissed: true }),
   end: () => {
     try {
       sessionStorage.removeItem(KEY);
     } catch {
       /* storage unavailable */
     }
-    set({ routes: [], tokenEdits: 0, copies: 0, calmPresses: 0, peakSpoons: 3, startedAt: Date.now(), dismissed: false });
+    set({ routes: [], tokenEdits: 0, copies: 0, calmPresses: 0, peakSpoons: 3, startedAt: Date.now() });
   },
 }));
 
 /* Persist every mutation (session-scoped — reload keeps THIS session's data). */
 useSessionStore.subscribe((s) => {
   try {
-    const { routes, tokenEdits, copies, calmPresses, peakSpoons, startedAt, dismissed } = s;
-    sessionStorage.setItem(KEY, JSON.stringify({ routes, tokenEdits, copies, calmPresses, peakSpoons, startedAt, dismissed }));
+    const { routes, tokenEdits, copies, calmPresses, peakSpoons, startedAt } = s;
+    sessionStorage.setItem(KEY, JSON.stringify({ routes, tokenEdits, copies, calmPresses, peakSpoons, startedAt }));
   } catch {
     /* counters stay in memory */
   }

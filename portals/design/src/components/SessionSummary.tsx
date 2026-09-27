@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import { motion } from 'motion/react';
 import { useSessionStore } from '../lib/useSessionStore';
 import { useSpoonsStore } from '../lib/useSpoonsStore';
 
 interface Props {
   onClose: () => void;
+  /** The trigger that opened the panel — focus returns to it on close. */
+  triggerRef?: RefObject<HTMLButtonElement | null>;
 }
 
 const fmtDur = (ms: number) => {
@@ -19,21 +21,27 @@ const fmtDur = (ms: number) => {
  * session counters. Explicit-trigger only; Escape / scrim / Continue close it.
  * Radiant Patterns: competence ("what you did") + relatedness, never pressure.
  * Motion respects --motion-scale (spoons 0 → static panel, calm floor).
+ * Focus contract: opening moves focus into the panel; closing returns it to
+ * the trigger (keyboard parity).
  */
-export function SessionSummary({ onClose }: Props) {
+export function SessionSummary({ onClose, triggerRef }: Props) {
   const routes = useSessionStore((s) => s.routes);
   const tokenEdits = useSessionStore((s) => s.tokenEdits);
   const copies = useSessionStore((s) => s.copies);
   const calmPresses = useSessionStore((s) => s.calmPresses);
   const peakSpoons = useSessionStore((s) => s.peakSpoons);
   const startedAt = useSessionStore((s) => s.startedAt);
-  const dismiss = useSessionStore((s) => s.dismiss);
   const end = useSessionStore((s) => s.end);
   const spoons = useSpoonsStore((s) => s.spoons);
 
   const scale = spoons >= 4 ? 1 : spoons === 3 ? 0.6 : spoons >= 1 ? 0.2 : 0;
 
+  const panelRef = useRef<HTMLElement>(null);
   const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    panelRef.current?.focus();
+  }, []);
 
   useEffect(() => {
     const iv = setInterval(() => setNow(Date.now()), 1000);
@@ -42,18 +50,21 @@ export function SessionSummary({ onClose }: Props) {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key !== 'Escape') return;
+      triggerRef?.current?.focus();
+      onClose();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  }, [onClose, triggerRef]);
 
   const close = () => {
-    dismiss();
+    triggerRef?.current?.focus();
     onClose();
   };
 
   const finish = () => {
+    triggerRef?.current?.focus();
     end();
     onClose();
   };
@@ -62,6 +73,8 @@ export function SessionSummary({ onClose }: Props) {
     <div className="session-summary" role="dialog" aria-modal="false" aria-label="Session summary">
       <button type="button" className="session-summary__scrim" onClick={close} aria-label="Close session summary" tabIndex={-1} />
       <motion.aside
+        ref={panelRef}
+        tabIndex={-1}
         className="session-summary__panel glass-tile"
         initial={{ x: '110%' }}
         animate={{ x: 0 }}
