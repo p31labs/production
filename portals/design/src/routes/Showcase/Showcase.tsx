@@ -184,6 +184,7 @@ export default function Showcase() {
                 key={s.path}
                 type="button"
                 className="launcher-card"
+                data-path={s.path}
                 data-mcp-tool={MCP_TOOLS[s.path.replace('/', '')] ?? s.path.replace('/', '')}
                 data-mcp-state="ready"
                 onClick={() => go(s.path)}

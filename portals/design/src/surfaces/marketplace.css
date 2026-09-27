@@ -307,8 +307,8 @@
   font-family: var(--p31-font-mono);
   font-size: 10px;
   color: var(--p31-text-tertiary);
+  min-width: 0;
   max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }

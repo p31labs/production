@@ -189,7 +189,9 @@
 .qm-cat-import {
   font-size: 11px;
   color: var(--p31-text-muted);
-  word-break: break-all;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .qm-empty {

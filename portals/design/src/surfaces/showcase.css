@@ -212,3 +212,27 @@
   font-weight: 600;
   line-height: 1.2;
 }
+
+/* ── Dome card centering — when it's the trailing card on its own row (it is:
+   13 surfaces on a 3-4 col auto-fill grid), span + center so it sits under the
+   middle column. :last-child guards against future surface-count changes. ── */
+.launcher-card[data-path="/dome"]:last-child {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: min(360px, 100%);
+}
+
+/* ── See-through glass hover — the card fades toward transparent and the
+   backdrop blur boosts so the ambient dome reads through while text stays
+   legible. Scoped to .launcher-card (the homepage) in this pass; roll out per
+   surface after visual confirmation. ── */
+.launcher-card:hover {
+  background: color-mix(in oklch, var(--p31-glass-bg) 45%, transparent);
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  border-color: color-mix(in oklch, var(--p31-accent) 30%, transparent);
+  transform: translateY(-2px);
+  transition: background var(--p31-transition-fast) var(--p31-ease-quantum),
+              backdrop-filter var(--p31-transition-fast) var(--p31-ease-quantum),
+              border-color var(--p31-transition-fast) var(--p31-ease-quantum);
+}
