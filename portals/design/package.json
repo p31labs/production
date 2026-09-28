@@ -25,7 +25,8 @@
     "runbooks:check": "node ../../tools/runbooks-check.mjs",
     "audit:orphans": "node tests/acceptance/audit-orphans.mjs",
     "audit:derive": "node tests/acceptance/audit-derive.mjs",
-    "audit:orphan-ratchet": "node tests/acceptance/run-orphan-ratchet.mjs"
+    "audit:orphan-ratchet": "node tests/acceptance/run-orphan-ratchet.mjs",
+    "lessons:check": "node ../../tools/lessons-check.mjs"
   },
   "dependencies": {
     "@p31/p31ca-ambient": "file:vendor/p31ca-ambient",
