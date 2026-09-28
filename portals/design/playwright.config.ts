@@ -34,7 +34,11 @@ export default defineConfig({
     {
       name: 'legacy-visual',
       testMatch: /visual\.spec\.ts/,
-      // Default snapshot path → tests/visual.spec.ts-snapshots/
+      // CRITICAL: default snapshotPathTemplate appends {-projectName} to the arg
+      // (desktop-index-legacy-visual-linux.png). The committed baselines have NO
+      // project suffix. Pin the exact legacy template so we compare against the
+      // 39 committed images, not freshly-created suffixed copies.
+      snapshotPathTemplate: '{snapshotDir}/{testFileDir}/{testFileName}-snapshots/{arg}-linux{ext}',
     },
     {
       name: 'acceptance',
