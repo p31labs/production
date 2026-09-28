@@ -1,0 +1,70 @@
+{
+  "$comment": "Gate registry (Wave 0 proceduralization, P2/P3). Every gate has a negative control — a fixture or mutation that MUST make it exit non-zero. A gate that passes its own negative control is furniture (GATE IS FURNITURE). The self-test runs every gate's negative control and fails if any gate is furniture. States: OBSERVATIONAL (runs, no fail) | WARNING (annotates, no fail) | BLOCKING (fails CI).",
+  "contract": {
+    "negativeControl": "a fixture or mutation that makes the gate exit non-zero in under 30 seconds, with a message naming the gate ID",
+    "enforcementMoment": "each BLOCKING gate must name when it fires: pre-commit | CI | weekly",
+    "version": 1
+  },
+  "gates": [
+    {
+      "id": "canon-purity",
+      "command": "node /home/p31/P31-local-workspace/packages/design-core/scripts/canon-purity.mjs",
+      "state": "BLOCKING",
+      "owner": "design-core",
+      "scope": "design-core/src/** manifest.json tokens/",
+      "negativeControl": {
+        "type": "fixture",
+        "path": "tests/acceptance/fixtures/gate-self-test/nan.css",
+        "description": "a CSS file containing oklch(NaN NaN NaN) must make canon-purity exit non-zero",
+        "expected": "exit non-zero"
+      },
+      "enforcementMoment": "CI + deploy-precheck",
+      "remediation": "docs/RUNBOOKS.md#canonical-source"
+    },
+    {
+      "id": "token-audit",
+      "command": "node /home/p31/P31-local-workspace/packages/design-core/scripts/token-audit.mjs",
+      "state": "BLOCKING",
+      "owner": "design-core",
+      "scope": "design-core/src/** (non-allowlisted)",
+      "negativeControl": {
+        "type": "mutation",
+        "path": "tests/acceptance/fixtures/gate-self-test/raw-hex.css",
+        "description": "a source file containing a raw hex color must make token-audit exit non-zero",
+        "expected": "exit non-zero"
+      },
+      "enforcementMoment": "CI + build:pwa",
+      "remediation": "docs/RUNBOOKS.md#canonical-source"
+    },
+    {
+      "id": "image-distinctness",
+      "command": "node /home/p31/production/portals/design/tests/acceptance/check-image-distinctness.mjs",
+      "state": "BLOCKING",
+      "owner": "design-portal",
+      "scope": "tests/acceptance/__screenshots__/acceptance-freeze.spec.ts/*.png",
+      "negativeControl": {
+        "type": "fixture",
+        "path": "tests/acceptance/fixtures/gate-self-test/collapsed-dial/",
+        "description": "two identical s0/s3 snapshots must make the distinctness check exit non-zero",
+        "expected": "exit non-zero"
+      },
+      "enforcementMoment": "CI (acceptance project)",
+      "remediation": "docs/RUNBOOKS.md#gate-self-test"
+    },
+    {
+      "id": "acceptance-ratchet",
+      "command": "node /home/p31/production/portals/design/tests/acceptance/ratchet.mjs",
+      "state": "BLOCKING",
+      "owner": "design-portal",
+      "scope": "tests/acceptance/known-fails.json",
+      "negativeControl": {
+        "type": "mutation",
+        "path": "tests/acceptance/fixtures/gate-self-test/growth-count",
+        "description": "a count > baseline must make the ratchet exit non-zero",
+        "expected": "exit non-zero"
+      },
+      "enforcementMoment": "CI (acceptance project)",
+      "remediation": "docs/RUNBOOKS.md#ratchet-wiring"
+    }
+  ]
+}

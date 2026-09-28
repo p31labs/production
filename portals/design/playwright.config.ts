@@ -44,6 +44,11 @@ export default defineConfig({
       name: 'acceptance',
       testMatch: /acceptance-freeze\.spec\.ts/,
       snapshotPathTemplate: '{testDir}/acceptance/__screenshots__/{testFilePath}/{arg}{ext}',
+      // P2: centralize reduced-motion here so Path E (and any acceptance test)
+      // inherits the same rendering mode the freeze baselines were captured under.
+      // Playwright 1.62.1 supports testProject.use.reducedMotion (the 1.61.1
+      // silent-no-op bug is fixed).
+      use: { reducedMotion: 'reduce' },
     },
     {
       name: 'triage',
