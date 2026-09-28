@@ -3,7 +3,6 @@
  * var(--p31-accent-*) inside the SVGs). Vite `?raw` imports the source; we
  * inject it as inert HTML (safe — these are first-party static SVGs).
  */
-import { useId } from 'react';
 import spoon from '../assets/icons/regular/spoon.svg?raw';
 import molecule from '../assets/icons/regular/molecule.svg?raw';
 import loveHeart from '../assets/icons/regular/love-heart.svg?raw';
@@ -42,7 +41,6 @@ interface P31IconProps {
 }
 
 export function P31Icon({ name, size = 32, className, title }: P31IconProps) {
-  const uid = useId();
   const raw = ICON_MAP[name];
   const wrapped = raw
     .replace(/(<svg[^>]*)(>)/, `$1 data-icon="${name}" width="${size}" height="${size}"${className ? ` class="${className}"` : ''}$2`)

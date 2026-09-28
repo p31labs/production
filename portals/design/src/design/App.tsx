@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
 import { SuspenseLoader } from '../components/SuspenseLoader';
 import DesignRoute from '../routes/DesignRoute/DesignRoute';
 

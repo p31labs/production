@@ -34,7 +34,6 @@ const A2ui = lazy(() => import('./routes/A2ui/A2ui'));
 const Dome = lazy(() => import('./routes/Dome/Dome'));
 
 const MODES = ['spark', 'maker', 'workshop'] as const;
-type Mode = (typeof MODES)[number];
 
 /** Ambient deferral — the ambient bundle (570KB vendor chunk) mounts only
  *  after the load event so FCP/LCP lock onto the surface, not the canvases.

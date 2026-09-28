@@ -8,7 +8,7 @@ importers:
 
   .:
     dependencies:
-      '@p31/ui':
+      '@p31ca/ui':
         specifier: file:vendor/p31-ui-1.3.1.tgz
         version: file:vendor/p31-ui-1.3.1.tgz
       '@p31ca/design-core':
@@ -886,10 +886,10 @@ packages:
   '@oslojs/encoding@1.1.0':
     resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
 
-  '@p31/design-core@2.1.0':
+  '@p31ca/design-core@2.1.0':
     resolution: {integrity: sha512-Mmh0wkguGKQokSYBwynm4g2esHmGYebVpoTvgQKBUqkkmYFwX3wNQfSmX6l9TZKeiSgs57Jo6Rzxyz0m3oUsdA==}
 
-  '@p31/quantum-core@0.1.0':
+  '@p31ca/quantum-core@0.1.0':
     resolution: {integrity: sha512-Oci0AbegMb9KKNnSaL837inOQZGR1ltL69sZVnmzcH+iBjYmQuKqceQLGnW0k72kntFZRCl8uDasv+gq9eLJBA==}
 
   '@p31/ui@file:vendor/p31-ui-1.3.1.tgz':

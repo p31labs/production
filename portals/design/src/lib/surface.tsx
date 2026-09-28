@@ -4,7 +4,7 @@
  * ONCE, not per-page. Matches M3/Coinbase/Carbon rhythm:
  *   max-width 1200px · gutter 32px · section gap 64px · card gap 20px.
  */
-import { type ReactNode, type CSSProperties } from 'react';
+import { type ElementType, type ReactNode, type CSSProperties } from 'react';
 import { motion } from 'motion/react';
 
 export function SurfaceLayout({ children, className = '' }: { children: ReactNode; className?: string }) {
@@ -79,10 +79,11 @@ interface SurfaceCardProps {
  *  exactly four slots; a fifth child is a type error. */
 export function SurfaceCard({ head, body, meta, foot, bare = false, className = '', motionProps }: SurfaceCardProps) {
   const cls = `surface-card${bare ? ' surface-card--bare' : ''}${className ? ` ${className}` : ''}`;
-  const Tag: any = motionProps ? motion.div : 'div';
+  const Tag: ElementType = motionProps ? motion.div : 'div';
+  const tagProps = { className: cls, ...(motionProps ?? {}) } as Record<string, unknown>;
   if (bare) {
     return (
-      <Tag className={cls} {...(motionProps ?? {})}>
+      <Tag {...tagProps}>
         {head}
         {body}
         {meta}
@@ -91,7 +92,7 @@ export function SurfaceCard({ head, body, meta, foot, bare = false, className = 
     );
   }
   return (
-    <Tag className={cls} {...(motionProps ?? {})}>
+    <Tag {...tagProps}>
       <div className="surface-card__head">{head}</div>
       {body != null && <div className="surface-card__content">{body}</div>}
       {meta != null && <div className="surface-card__meta">{meta}</div>}
