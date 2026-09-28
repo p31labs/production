@@ -2,9 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0A0A0F" />
-    <meta
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0A0A0F" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="marketplace" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        <meta
       name="description"
       content="P31 MCP Marketplace — discover, probe, and play with the sovereign MCP server fleet. Live catalog, schema-driven playground, verified tools."
     />
@@ -17,8 +23,8 @@
     />
   <link rel="ard" href="https://mcp-registry.trimtab-signal.workers.dev/.well-known/ard.json" />
     <link rel="ai-catalog" href="https://mcp-registry.trimtab-signal.workers.dev/.well-known/ai-catalog.json" />
-  <!-- WS-3 WebMCP origin-trial slot (Chrome 149-156, expires 2026-11-17 00:00 UTC). No token yet. Insert here:
-       <meta http-equiv="origin-trial" content="TOKEN_FOR_https://mcp.p31ca.org"> -->
+  <!-- WS-3 WebMCP origin-trial (Chrome 149-156, expires 2026-11-17) — p31ca.org token, Match subdomains: yes (2026-09-27). -->
+  <meta http-equiv="origin-trial" content="A3QM4uvLcgyK4QZHzgTE0VPzYaR73dFbaZixrIq7eIq1PuxvEm+LxlyrgJYUm0JRAhMzhHOvLS7j5wevh2IV2gYAAABweyJvcmlnaW4iOiJodHRwczovL3AzMWNhLm9yZzo0NDMiLCJmZWF0dXJlIjoiV2ViTUNQIiwiZXhwaXJ5IjoxNzk0ODczNjAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ==" />
   </head>
   <body>
     <div id="root"></div>
