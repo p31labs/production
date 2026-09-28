@@ -1,24 +1,25 @@
 import { defineConfig } from '@playwright/test';
 
 /**
- * Visual regression gate (WP-2026-09-27) — screenshots every surface at three
- * breakpoints and diffs against committed baselines (Linux/chromium canonical).
- * Runs against `vite preview` of the built dist (build:pwa builds first).
- * Baselines regenerate with: npx playwright test --update-snapshots
+ * Visual regression config — TWO explicit projects, one config.
+ *
+ * 1. `legacy-visual` — the existing gate: 39 baselines in
+ *    tests/visual.spec.ts-snapshots/ (default snapshot path). Screenshots every
+ *    surface at three breakpoints. This is the shipped production gate.
+ * 2. `acceptance` — the Wave-0 freeze: baselines commit to
+ *    tests/acceptance/__screenshots__/ via a scoped snapshotPathTemplate.
+ *    Uses Playwright's built-in stability loop + reduced-motion emulation.
+ *
+ * Per-project snapshotPathTemplate keeps the two systems disjoint — the
+ * multi-truth problem, resolved by making each baseline's location explicit.
  */
 export default defineConfig({
   testDir: './tests',
-  testMatch: '**/*.spec.ts',
   timeout: 60_000,
   expect: {
     timeout: 20_000,
     toHaveScreenshot: { maxDiffPixelRatio: 0.01 },
   },
-  // Acceptance-freeze baselines commit under tests/acceptance/__screenshots__
-  // (source-controlled, per review) — distinct from the visual.spec.ts-snapshots
-  // legacy gate. Playwright's built-in stability wait (two consecutive identical
-  // captures) + animations:'disabled' is the determinism mechanism.
-  snapshotPathTemplate: '{testDir}/acceptance/__screenshots__/{testFilePath}/{arg}{ext}',
   use: {
     baseURL: 'http://127.0.0.1:5190',
     browserName: 'chromium',
@@ -29,4 +30,21 @@ export default defineConfig({
     reuseExistingServer: true,
     timeout: 60_000,
   },
+  projects: [
+    {
+      name: 'legacy-visual',
+      testMatch: /visual\.spec\.ts/,
+      // Default snapshot path → tests/visual.spec.ts-snapshots/
+    },
+    {
+      name: 'acceptance',
+      testMatch: /acceptance-freeze\.spec\.ts/,
+      snapshotPathTemplate: '{testDir}/acceptance/__screenshots__/{testFilePath}/{arg}{ext}',
+    },
+    {
+      name: 'triage',
+      testMatch: /acceptance-triage\.spec\.ts/,
+      // Read-only diagnostic — no baseline writes. Run: npx playwright test --project=triage
+    },
+  ],
 });

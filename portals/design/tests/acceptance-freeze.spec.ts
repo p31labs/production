@@ -66,8 +66,28 @@ const maskSel = (page: Page) => [
   page.locator('.dome-bg'),
   page.locator('.notif-stack'),
   page.locator('.notif-toast'),
-  page.locator('.devpanel'),
+  // Narrow mask: ONLY the rAF/timeout-driven elements. The LED mode readout
+  // (.devpanel__mode-readout) and seg-buttons are deterministic text/state and
+  // must remain visible so the freeze can catch LED-mode regressions.
+  page.locator('.devpanel__dot'),
 ];
+
+// Path F — compensating assertion: the LED mode readout is inside the CLOSED
+// devpanel (not rendered until opened). Open the chip, then assert the
+// deterministic mode text — the signal the freeze masks (dot) but must still
+// be able to verify via DOM, not pixels.
+for (const theme of THEMES) {
+  test(`${theme} led readout present (mask did not hide deterministic signal)`, async ({ page }) => {
+    await open(page, '/catalog', theme, 5);
+    const chip = page.locator('.devpanel__chip[aria-label="Open control instrument"]').first();
+    await expect(chip).toBeVisible();
+    await chip.click();
+    const readout = page.locator('.devpanel__mode-readout').first();
+    await expect(readout).toBeVisible();
+    const text = await readout.textContent();
+    expect(['CHASE', 'RAINBOW', 'BREATH', 'SOLID', 'GRADIENT', 'DUAL', 'OFF']).toContain(text!.trim());
+  });
+}
 
 for (const theme of THEMES) {
   for (const spoons of DIALS) {

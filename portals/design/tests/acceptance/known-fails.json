@@ -1,0 +1,42 @@
+{
+  "$comment": "Acceptance known-fails ratchet (Wave 0, Path R). This is the debt baseline the acceptance harness tolerates. RATCHET: the count may not exceed this baseline. When the count drops, the floor must be lowered in the same commit. Seeded from Path T confirmed defects at REFERENCE_SHA 0757e24.",
+  "reference": "0757e24044345dfbc2abc71ab439817e4b9115a2",
+  "baseline": 5,
+  "knownFails": [
+    {
+      "id": "KF-001",
+      "triage": "D3",
+      "title": "GlassCard text touches border (padding: 0)",
+      "detail": ".glass-card computed padding: 0px — the 'padded' claim in its contract/description is false",
+      "verifiedAt": "0757e24"
+    },
+    {
+      "id": "KF-002",
+      "triage": "D9",
+      "title": "/brands 'hue-240 void' copy is wrong",
+      "detail": "Actual void is oklch(0.05 0.008 270) — hue 270, C 0.008. Copy says hue-240.",
+      "verifiedAt": "0757e24"
+    },
+    {
+      "id": "KF-003",
+      "triage": "D10",
+      "title": "LED chip overlaps focusable 'Clear all' (WCAG 2.4.11)",
+      "detail": ".devpanel__chip overlaps the notification Clear-all button",
+      "verifiedAt": "0757e24"
+    },
+    {
+      "id": "KF-004",
+      "triage": "D13b",
+      "title": "Generated story paths leak into catalog descriptions",
+      "detail": "./src/generated/CandyHeader.stories.tsx etc. surface in UI copy",
+      "verifiedAt": "0757e24"
+    },
+    {
+      "id": "KF-005",
+      "triage": "D14",
+      "title": "Pluralization bug: '◆ 1 spoons'",
+      "detail": "Spoon cost renders '1 spoons' instead of '1 spoon'",
+      "verifiedAt": "0757e24"
+    }
+  ]
+}
