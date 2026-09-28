@@ -21,7 +21,11 @@
     "gate": "pnpm typecheck && pnpm lint && pnpm test && pnpm build:pwa && pnpm v:gate",
     "gate:self-test": "node tests/acceptance/gate-self-test.mjs",
     "check:image-distinctness": "node tests/acceptance/check-image-distinctness.mjs",
-    "acceptance:ratchet": "node tests/acceptance/ratchet.mjs 5"
+    "acceptance:ratchet": "node tests/acceptance/ratchet.mjs 5",
+    "runbooks:check": "node ../../tools/runbooks-check.mjs",
+    "audit:orphans": "node tests/acceptance/audit-orphans.mjs",
+    "audit:derive": "node tests/acceptance/audit-derive.mjs",
+    "audit:orphan-ratchet": "node tests/acceptance/run-orphan-ratchet.mjs"
   },
   "dependencies": {
     "@p31/p31ca-ambient": "file:vendor/p31ca-ambient",

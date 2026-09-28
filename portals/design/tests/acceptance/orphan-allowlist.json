@@ -1,0 +1,21 @@
+{
+  "$comment": "Orphan allowlist (P4). The debt ratchet for generated files with zero references. Seed = the 15 confirmed-zero-reference *.test.tsx from D12. This list can only shrink — a NEW orphan (not listed) fails audit-orphans. Removing an entry = deleting the file, a deliberate debt decision.",
+  "seed": "D12 findings at REFERENCE_SHA 0757e24 (all 15 confirmed zero-reference)",
+  "orphans": [
+    "src/generated/Button.test.tsx",
+    "src/generated/CandyHeader.test.tsx",
+    "src/generated/CrisisOverlay.test.tsx",
+    "src/generated/Crown.test.tsx",
+    "src/generated/GlassCard.test.tsx",
+    "src/generated/GlassPanel.test.tsx",
+    "src/generated/GlassStrong.test.tsx",
+    "src/generated/GlassSubtle.test.tsx",
+    "src/generated/HonestLabel.test.tsx",
+    "src/generated/SpoonDial.test.tsx",
+    "src/generated/SpoonMeter.test.tsx",
+    "src/generated/Starfield.test.tsx",
+    "src/generated/StatusBadge.test.tsx",
+    "src/generated/TetraGrid.test.tsx",
+    "src/generated/ThemeToggle.test.tsx"
+  ]
+}
