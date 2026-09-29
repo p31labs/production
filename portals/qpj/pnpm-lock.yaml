@@ -11,24 +11,24 @@ importers:
       '@electric-sql/pglite':
         specifier: ^0.5.3
         version: 0.5.8
-      '@p31/game-engine':
-        specifier: ^0.2.0-alpha.0
-        version: 0.2.0-alpha.0
-      '@p31/gamification':
-        specifier: ^1.0.0
-        version: 1.0.0(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
-      '@p31/sovereign-core':
-        specifier: file:vendor/p31-sovereign-core-0.1.0.tgz
-        version: file:vendor/p31-sovereign-core-0.1.0.tgz(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
-      '@p31/ui':
-        specifier: file:vendor/p31-ui-1.3.1.tgz
-        version: file:vendor/p31-ui-1.3.1.tgz(use-sync-external-store@1.7.0(react@19.3.0))
       '@p31ca/design-core':
         specifier: file:vendor/p31-design-core-3.0.0.tgz
         version: file:vendor/p31-design-core-3.0.0.tgz(@types/node@22.20.2)(idb-keyval@6.3.0)(react@19.3.0)(rollup@4.63.1)(typescript@5.9.3)(use-sync-external-store@1.7.0(react@19.3.0))
+      '@p31ca/game-engine':
+        specifier: ^0.2.0-alpha.0
+        version: 0.2.0-alpha.0
+      '@p31ca/gamification':
+        specifier: ^1.0.0
+        version: 1.0.0(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
+      '@p31ca/sovereign-core':
+        specifier: file:vendor/p31ca-sovereign-core-0.1.0.tgz
+        version: file:vendor/p31ca-sovereign-core-0.1.0.tgz(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
       '@p31ca/sovereign-primitives':
-        specifier: file:vendor/p31-sovereign-primitives-0.0.1.tgz
-        version: '@p31/sovereign-primitives@file:vendor/p31-sovereign-primitives-0.0.1.tgz'
+        specifier: file:vendor/p31ca-sovereign-primitives-0.0.2.tgz
+        version: file:vendor/p31ca-sovereign-primitives-0.0.2.tgz
+      '@p31ca/ui':
+        specifier: file:vendor/p31ca-ui-1.3.1.tgz
+        version: file:vendor/p31ca-ui-1.3.1.tgz(@types/node@22.20.2)(idb-keyval@6.3.0)(rollup@4.63.1)(typescript@5.9.3)(use-sync-external-store@1.7.0(react@19.3.0))
       '@sentry/browser':
         specifier: ^9.47.1
         version: 9.47.1
@@ -998,37 +998,43 @@ packages:
   '@oslojs/encoding@1.1.0':
     resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
 
-  '@p31/design-core@2.1.0':
-    resolution: {integrity: sha512-Mmh0wkguGKQokSYBwynm4g2esHmGYebVpoTvgQKBUqkkmYFwX3wNQfSmX6l9TZKeiSgs57Jo6Rzxyz0m3oUsdA==}
+  '@p31ca/canon@0.1.0':
+    resolution: {integrity: sha512-mYCezf9SH1V+fkc/8ecjEYK9dBQMH79JdGPhb0NeC6XXmycR4SuR4e1kJryyFu/mauUAq0KogUJf6MDOs+aHPA==}
 
-  '@p31/game-engine@0.2.0-alpha.0':
-    resolution: {integrity: sha512-SmsTsBQiy5u1b2f60btPRpEY7XDZf9SDu0gFVOjaUpG26mGQ5vfGLruI+u3RbX1tPP5FWgfP9Fj0lYeFR1jlsg==}
+  '@p31ca/design-core@2.1.0':
+    resolution: {integrity: sha512-8wXhWL/AAOMst7D7ftDr9rslu77Cg193hXivsmE5VJdj6Ihpu/zko5g4sdnZsnKh//vaAXupGLNYBNa/JkTexQ==}
 
-  '@p31/gamification@1.0.0':
-    resolution: {integrity: sha512-u6HeSt8jO0QX/v2KqoS6UnJxRi7I4ZkdbRsTwP09TzRk2S/p/pscS5bDXcXDZxLwTSBL44UsZ/dIXm44KOc87w==}
+  '@p31ca/design-core@file:vendor/p31-design-core-3.0.0.tgz':
+    resolution: {integrity: sha512-sO8fkWzgTp/G08pFEg/YiTVwvTTo1B4E937jNdJ6Pq1Rc8G2gpQdCteXIJOWyYsZMW1ThGI48fWM01Rq8dZFNQ==, tarball: file:vendor/p31-design-core-3.0.0.tgz}
+    version: 3.0.0
+    peerDependencies:
+      react: '>=18.0.0'
 
-  '@p31/quantum-core@0.1.0':
-    resolution: {integrity: sha512-Oci0AbegMb9KKNnSaL837inOQZGR1ltL69sZVnmzcH+iBjYmQuKqceQLGnW0k72kntFZRCl8uDasv+gq9eLJBA==}
+  '@p31ca/game-engine@0.2.0-alpha.0':
+    resolution: {integrity: sha512-y+H0C1fR9yj5x8v/hUa2gqdG4V5Hbtd05m0YK8KNR0Z+NxxzUFfcb+NWLySGom5qj6ShjlSAmIOCv863/g8tew==}
 
-  '@p31/sovereign-core@file:vendor/p31-sovereign-core-0.1.0.tgz':
-    resolution: {integrity: sha512-Y7Gc/zn1Mj3odU6hah+6YjN7/u6orXIRdzrmc3s7Q81HmGpvZZvKdX6O5Q0hNkeFdGxU08EUakZraUGgmk7yLQ==, tarball: file:vendor/p31-sovereign-core-0.1.0.tgz}
+  '@p31ca/gamification@1.0.0':
+    resolution: {integrity: sha512-w+Bc3W2Fo5IkVKXGYkruUsDapdIQH8Xu1BUoXNn8/G9EHuMVZhjrX6iNVjtDn1FtOSoHTE2CM3FbO9kaXGCkcg==}
+
+  '@p31ca/quantum-core@0.1.0':
+    resolution: {integrity: sha512-0r4BBy/lw804xGLgN3cC8Vf9AJ7FmABjt5Uiw+QgjQ/XcUXJw4XfZp1S58CHf6Ae2fpUIQT6LjSAaf0B/KClUQ==}
+
+  '@p31ca/sovereign-core@file:vendor/p31ca-sovereign-core-0.1.0.tgz':
+    resolution: {integrity: sha512-K2RSX+YR16A8rhC7Bi0jbmEHbKPihEo22y2iyRbVj84ltETMkT70BNSy7msZozh6ZAMAX7068QT/+lf1p4K4Mg==, tarball: file:vendor/p31ca-sovereign-core-0.1.0.tgz}
     version: 0.1.0
     peerDependencies:
       react: ^19.2.0
 
-  '@p31/sovereign-primitives@file:vendor/p31-sovereign-primitives-0.0.1.tgz':
-    resolution: {integrity: sha512-qEJd7HP1kkKZx7+7I25pzxdUgMHMPV66BdgwTNHGQcX+UXXio18ea9gQrioo+6Q8j5epQ+82EIJNmK8ECsyDZg==, tarball: file:vendor/p31-sovereign-primitives-0.0.1.tgz}
-    version: 0.0.1
+  '@p31ca/sovereign-primitives@0.0.1':
+    resolution: {integrity: sha512-WVjFowTr9BZ2ZjbbbjQgaPtpFhwugrw/FdXK9wL1qLtX8tiJ5B2cr22DjkKZ2LgHTsJofl/maqUCHw+3cvmm5g==}
 
-  '@p31/ui@file:vendor/p31-ui-1.3.1.tgz':
-    resolution: {integrity: sha512-NH+Xs0b5m52903U5IQGbLujWAxFJjnCZSbjMLKziSK/+jn6n9v03F4MQ5lAnkJjOSK0ImaYyjuJsnYIg/LhxNQ==, tarball: file:vendor/p31-ui-1.3.1.tgz}
+  '@p31ca/sovereign-primitives@file:vendor/p31ca-sovereign-primitives-0.0.2.tgz':
+    resolution: {integrity: sha512-cnuI0k4ospBd8wBpuIPATnXzmqcGMn67KbIZNnkJho42seIWDorDC7PjURVYekhU6v7BjgNl3q/Qt/D/LuvMLA==, tarball: file:vendor/p31ca-sovereign-primitives-0.0.2.tgz}
+    version: 0.0.2
+
+  '@p31ca/ui@file:vendor/p31ca-ui-1.3.1.tgz':
+    resolution: {integrity: sha512-FWGyAuyhsfcJOU7cD6tNg8qz4zv8EgnJv7o20fVdLgSF7vfVSpGV2tIdxDtHoASyibgLLLn+DFvxrEy6q1beiA==, tarball: file:vendor/p31ca-ui-1.3.1.tgz}
     version: 1.3.1
-
-  '@p31ca/design-core@file:vendor/p31-design-core-3.0.0.tgz':
-    resolution: {integrity: sha512-aZqYalsmkhzaS2MqVMZq5JjalI3+gFeq6907krOBCDtQsUoK7xjoYRPcS8m/YTHnl201ujDfIONpPcsJEt7rbw==, tarball: file:vendor/p31-design-core-3.0.0.tgz}
-    version: 3.0.0
-    peerDependencies:
-      react: '>=18.0.0'
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -2943,6 +2949,10 @@ packages:
   longest-streak@3.1.0:
     resolution: {integrity: sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==}
 
+  loose-envify@1.4.0:
+    resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
+    hasBin: true
+
   loupe@3.2.1:
     resolution: {integrity: sha512-CdzqowRJCeLU72bHvWqwRBBlLcMEtIvGrlvef74kMnV2AolS9Y8xUv1I0U/MNAWMhBlKIoyuEgoJ0t/bbwHbLQ==}
 
@@ -3552,6 +3562,10 @@ packages:
 
   react-refresh@0.17.0:
     resolution: {integrity: sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ==}
+    engines: {node: '>=0.10.0'}
+
+  react@18.3.1:
+    resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
     engines: {node: '>=0.10.0'}
 
   react@19.3.0:
@@ -4524,6 +4538,9 @@ packages:
   zod@4.6.2:
     resolution: {integrity: sha512-lh5RCAGFa1Cm2hjtNwLQhSs/AsqdWnTQaBER9fEwN/88pSh7KOtJavtBx/0VlkN/uFd61SwYmljLMDAsHlvzBQ==}
 
+  zod@4.6.5:
+    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+
   zustand@5.0.15:
     resolution: {integrity: sha512-MpSEjRiBkA9crSYeOUH32rJC7SVqAbm0Fqcqge/bUi2PPoLcBWKOsG+C8mevmpr8TwXHBVkChbbJiyvkE+i/3A==}
     engines: {node: '>=12.20.0'}
@@ -5214,52 +5231,61 @@ snapshots:
 
   '@oslojs/encoding@1.1.0': {}
 
-  '@p31/design-core@2.1.0': {}
-
-  '@p31/game-engine@0.2.0-alpha.0': {}
-
-  '@p31/gamification@1.0.0(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))':
+  '@p31ca/canon@0.1.0':
     dependencies:
-      idb-keyval: 6.3.0
-      zustand: 5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
-      - react
-      - use-sync-external-store
+      '@p31ca/sovereign-primitives': 0.0.1
+      zod: 4.6.5
 
-  '@p31/quantum-core@0.1.0': {}
-
-  '@p31/sovereign-core@file:vendor/p31-sovereign-core-0.1.0.tgz(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))':
+  '@p31ca/design-core@2.1.0(@types/node@22.20.2)(idb-keyval@6.3.0)(rollup@4.63.1)(typescript@5.9.3)':
     dependencies:
-      ethers: 6.17.0
-      peerjs: 1.5.5
-      react: 19.3.0
-      zustand: 5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
+      '@modelcontextprotocol/sdk': 1.30.0(zod@3.25.76)
+      '@p31ca/canon': 0.1.0
+      astro: 5.18.2(@types/node@22.20.2)(idb-keyval@6.3.0)(rollup@4.63.1)(typescript@5.9.3)(yaml@2.9.0)
+      css-tree: 3.2.1
+      esprima: 4.0.1
+      fs-extra: 11.4.0
+      jsdom: 25.0.1
+      postcss: 8.5.28
+      react: 18.3.1
+      yaml: 2.9.0
+      zod: 3.25.76
     transitivePeerDependencies:
-      - '@types/react'
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@cfworker/json-schema'
+      - '@deno/kv'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@types/node'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/functions'
+      - '@vercel/kv'
+      - aws4fetch
       - bufferutil
-      - immer
-      - use-sync-external-store
+      - canvas
+      - db0
+      - idb-keyval
+      - ioredis
+      - jiti
+      - less
+      - lightningcss
+      - rollup
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
+      - typescript
+      - uploadthing
       - utf-8-validate
-
-  '@p31/sovereign-primitives@file:vendor/p31-sovereign-primitives-0.0.1.tgz':
-    dependencies:
-      '@noble/post-quantum': 0.6.1
-
-  '@p31/ui@file:vendor/p31-ui-1.3.1.tgz(use-sync-external-store@1.7.0(react@19.3.0))':
-    dependencies:
-      '@noble/post-quantum': 0.2.1
-      '@p31/design-core': 2.1.0
-      '@p31/quantum-core': 0.1.0
-      '@types/qrcode': 1.5.6
-      '@types/react': 19.3.0
-      qrcode: 1.5.4
-      react: 19.3.0
-      zustand: 5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
-    transitivePeerDependencies:
-      - immer
-      - use-sync-external-store
 
   '@p31ca/design-core@file:vendor/p31-design-core-3.0.0.tgz(@types/node@22.20.2)(idb-keyval@6.3.0)(react@19.3.0)(rollup@4.63.1)(typescript@5.9.3)(use-sync-external-store@1.7.0(react@19.3.0))':
     dependencies:
@@ -5276,6 +5302,91 @@ snapshots:
       react: 19.3.0
       yaml: 2.9.0
       zod: 3.25.76
+      zustand: 5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@cfworker/json-schema'
+      - '@deno/kv'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@types/node'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/functions'
+      - '@vercel/kv'
+      - aws4fetch
+      - bufferutil
+      - canvas
+      - db0
+      - idb-keyval
+      - immer
+      - ioredis
+      - jiti
+      - less
+      - lightningcss
+      - rollup
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
+      - typescript
+      - uploadthing
+      - use-sync-external-store
+      - utf-8-validate
+
+  '@p31ca/game-engine@0.2.0-alpha.0': {}
+
+  '@p31ca/gamification@1.0.0(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))':
+    dependencies:
+      idb-keyval: 6.3.0
+      zustand: 5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
+    transitivePeerDependencies:
+      - '@types/react'
+      - immer
+      - react
+      - use-sync-external-store
+
+  '@p31ca/quantum-core@0.1.0': {}
+
+  '@p31ca/sovereign-core@file:vendor/p31ca-sovereign-core-0.1.0.tgz(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))':
+    dependencies:
+      ethers: 6.17.0
+      peerjs: 1.5.5
+      react: 19.3.0
+      zustand: 5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
+    transitivePeerDependencies:
+      - '@types/react'
+      - bufferutil
+      - immer
+      - use-sync-external-store
+      - utf-8-validate
+
+  '@p31ca/sovereign-primitives@0.0.1':
+    dependencies:
+      '@noble/post-quantum': 0.6.1
+
+  '@p31ca/sovereign-primitives@file:vendor/p31ca-sovereign-primitives-0.0.2.tgz':
+    dependencies:
+      '@noble/post-quantum': 0.6.1
+
+  '@p31ca/ui@file:vendor/p31ca-ui-1.3.1.tgz(@types/node@22.20.2)(idb-keyval@6.3.0)(rollup@4.63.1)(typescript@5.9.3)(use-sync-external-store@1.7.0(react@19.3.0))':
+    dependencies:
+      '@noble/post-quantum': 0.2.1
+      '@p31ca/design-core': 2.1.0(@types/node@22.20.2)(idb-keyval@6.3.0)(rollup@4.63.1)(typescript@5.9.3)
+      '@p31ca/quantum-core': 0.1.0
+      '@types/qrcode': 1.5.6
+      '@types/react': 19.3.0
+      qrcode: 1.5.4
+      react: 19.3.0
       zustand: 5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -7603,6 +7714,10 @@ snapshots:
 
   longest-streak@3.1.0: {}
 
+  loose-envify@1.4.0:
+    dependencies:
+      js-tokens: 4.0.0
+
   loupe@3.2.1: {}
 
   lru-cache@10.4.3: {}
@@ -8398,6 +8513,10 @@ snapshots:
   react-is@17.0.2: {}
 
   react-refresh@0.17.0: {}
+
+  react@18.3.1:
+    dependencies:
+      loose-envify: 1.4.0
 
   react@19.3.0: {}
 
@@ -9496,6 +9615,8 @@ snapshots:
   zod@3.25.76: {}
 
   zod@4.6.2: {}
+
+  zod@4.6.5: {}
 
   zustand@5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0)):
     optionalDependencies:
