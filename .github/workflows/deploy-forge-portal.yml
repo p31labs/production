@@ -1,0 +1,44 @@
+name: Deploy Forge Portal
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'portals/forge/**'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-forge-portal
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: cd portals/forge && pnpm install --frozen-lockfile
+
+      - name: Forge gate (typecheck, lint, test, build, system-test)
+        run: cd portals/forge && pnpm verify
+
+      - name: Deploy forge portal
+        run: npx wrangler pages deploy portals/forge/dist --project-name p31-portal-forge --branch main --commit-dirty=true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Verify deployment
+        run: echo 'Forge portal deployed to Cloudflare Pages (project p31-portal-forge)'
