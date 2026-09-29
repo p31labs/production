@@ -48,3 +48,16 @@ jobs:
         run: cd monetization && pnpm install --frozen-lockfile
       - name: Full gate (token-audit, typecheck, lint, test, build, v:gate)
         run: cd monetization && pnpm gate
+
+  forge:
+    name: Forge Gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install forge dependencies
+        run: cd portals/forge && pnpm install --frozen-lockfile
+      - name: Forge gate (typecheck, lint, test, build, system-test)
+        run: cd portals/forge && pnpm verify
