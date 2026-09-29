@@ -1,0 +1,147 @@
+/* P31 Quantum Material — Forge Portal Tokens
+   Every color is oklch(). No raw hex, no rgba — the token-audit and
+   canon-purity gates enforce this. Worlds scope the accent; coherence is
+   the glow; calm mode (spoons ≤ 1) disables motion. */
+
+:root {
+  color-scheme: light dark;
+
+  /* ── Primitives ─────────────────────────────────────────────── */
+  --p31-ink:        oklch(0.16 0.015 270);
+  --p31-ink-soft:   oklch(0.42 0.020 270);
+  --p31-ink-faint:  oklch(0.62 0.015 270);
+  --p31-paper:      oklch(0.985 0.004 90);
+  --p31-paper-warm: oklch(0.970 0.006 80);
+
+  /* ── Accent (world-scoped; default ocean) ───────────────────── */
+  --p31-accent:        oklch(0.62 0.16 235);
+  --p31-accent-strong: oklch(0.52 0.19 235);
+  --p31-accent-soft:   oklch(0.88 0.06 235);
+  --p31-accent-faint:  oklch(0.95 0.025 235);
+  --p31-coherence:     oklch(0.72 0.14 235 / 0.32);
+  --p31-decoherence:   oklch(0.72 0.02 235 / 0.12);
+
+  /* ── Surface stack (elevation) ──────────────────────────────── */
+  --p31-surface-0: oklch(0.990 0.003 90);
+  --p31-surface-1: oklch(0.975 0.005 90);
+  --p31-surface-2: oklch(0.950 0.008 90);
+  --p31-surface-3: oklch(0.910 0.012 90);
+  --p31-surface-4: oklch(0.860 0.016 90);
+
+  /* ── Glass ──────────────────────────────────────────────────── */
+  --p31-glass-bg:     oklch(0.99 0.004 90 / 0.62);
+  --p31-glass-border: oklch(0.86 0.012 90 / 0.70);
+  --p31-glass-blur:   18px;
+
+  /* ── Border / ring ──────────────────────────────────────────── */
+  --p31-border: oklch(0.88 0.008 90);
+  --p31-ring:   oklch(0.62 0.16 235 / 0.50);
+
+  /* ── Type ───────────────────────────────────────────────────── */
+  --p31-font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --p31-font-body:    "Inter", system-ui, -apple-system, sans-serif;
+  --p31-font-mono:    "JetBrains Mono", ui-monospace, monospace;
+
+  --p31-text-display: 2.75rem;
+  --p31-text-h1:      2rem;
+  --p31-text-h2:      1.375rem;
+  --p31-text-body:    0.9375rem;
+  --p31-text-small:   0.8125rem;
+  --p31-text-micro:   0.6875rem;
+
+  /* ── Space ──────────────────────────────────────────────────── */
+  --p31-space-1: 0.25rem;
+  --p31-space-2: 0.5rem;
+  --p31-space-3: 0.75rem;
+  --p31-space-4: 1rem;
+  --p31-space-5: 1.5rem;
+  --p31-space-6: 2rem;
+  --p31-space-7: 3rem;
+  --p31-space-8: 4rem;
+
+  /* ── Radius ─────────────────────────────────────────────────── */
+  --p31-radius-sm:   6px;
+  --p31-radius-md:   10px;
+  --p31-radius-lg:   16px;
+  --p31-radius-xl:   24px;
+  --p31-radius-pill: 999px;
+
+  /* ── Motion ─────────────────────────────────────────────────── */
+  --p31-ease-quantum:  cubic-bezier(0.16, 1, 0.3, 1);
+  --p31-ease-collapse: cubic-bezier(0.4, 0, 0.2, 1);
+  --p31-dur-fast:  140ms;
+  --p31-dur-base:  240ms;
+  --p31-dur-slow:  420ms;
+
+  /* ── Shadow (coherence-aware) ───────────────────────────────── */
+  --p31-shadow-1: 0 1px 2px  oklch(0.20 0.02 270 / 0.05);
+  --p31-shadow-2: 0 4px 16px oklch(0.20 0.02 270 / 0.07);
+  --p31-shadow-3: 0 12px 40px oklch(0.20 0.02 270 / 0.10);
+  --p31-glow:     0 0 0 1px var(--p31-coherence), 0 4px 20px var(--p31-coherence);
+}
+
+/* ── Worlds ───────────────────────────────────────────────────── */
+[data-world="ocean"] {
+  --p31-accent:        oklch(0.62 0.16 235);
+  --p31-accent-strong: oklch(0.52 0.19 235);
+  --p31-accent-soft:   oklch(0.88 0.06 235);
+  --p31-accent-faint:  oklch(0.95 0.025 235);
+  --p31-coherence:     oklch(0.72 0.14 235 / 0.32);
+}
+[data-world="garden"] {
+  --p31-accent:        oklch(0.60 0.14 150);
+  --p31-accent-strong: oklch(0.48 0.16 150);
+  --p31-accent-soft:   oklch(0.88 0.06 150);
+  --p31-accent-faint:  oklch(0.95 0.025 150);
+  --p31-coherence:     oklch(0.70 0.13 150 / 0.30);
+}
+[data-world="aurora"] {
+  --p31-accent:        oklch(0.64 0.18 295);
+  --p31-accent-strong: oklch(0.54 0.20 295);
+  --p31-accent-soft:   oklch(0.89 0.06 295);
+  --p31-accent-faint:  oklch(0.95 0.03 295);
+  --p31-coherence:     oklch(0.74 0.16 295 / 0.34);
+}
+[data-world="zen"] {
+  --p31-accent:        oklch(0.58 0.07 55);
+  --p31-accent-strong: oklch(0.46 0.08 55);
+  --p31-accent-soft:   oklch(0.88 0.03 55);
+  --p31-accent-faint:  oklch(0.95 0.015 55);
+  --p31-coherence:     oklch(0.68 0.06 55 / 0.24);
+}
+[data-world="volt"] {
+  --p31-accent:        oklch(0.78 0.18 100);
+  --p31-accent-strong: oklch(0.66 0.20 100);
+  --p31-accent-soft:   oklch(0.92 0.08 100);
+  --p31-accent-faint:  oklch(0.96 0.04 100);
+  --p31-coherence:     oklch(0.86 0.16 100 / 0.40);
+}
+
+/* ── Dark mode ────────────────────────────────────────────────── */
+[data-mode="dark"] {
+  --p31-ink:        oklch(0.97 0.008 90);
+  --p31-ink-soft:   oklch(0.80 0.012 90);
+  --p31-ink-faint:  oklch(0.62 0.012 90);
+  --p31-paper:      oklch(0.16 0.020 270);
+  --p31-paper-warm: oklch(0.19 0.020 260);
+  --p31-surface-0: oklch(0.17 0.018 270);
+  --p31-surface-1: oklch(0.20 0.020 270);
+  --p31-surface-2: oklch(0.24 0.022 270);
+  --p31-surface-3: oklch(0.29 0.024 270);
+  --p31-surface-4: oklch(0.35 0.026 270);
+  --p31-glass-bg:     oklch(0.20 0.020 270 / 0.55);
+  --p31-glass-border: oklch(0.40 0.024 270 / 0.50);
+  --p31-border: oklch(0.32 0.022 270);
+}
+
+/* ── Low-capacity mode (spoons ≤ 1) — motion off, glow off ────── */
+[data-capacity="low"] {
+  --p31-dur-fast: 0ms;
+  --p31-dur-base: 0ms;
+  --p31-dur-slow: 0ms;
+  --p31-coherence: oklch(0.72 0.02 235 / 0.10);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --p31-dur-fast: 0ms; --p31-dur-base: 0ms; --p31-dur-slow: 0ms; }
+}

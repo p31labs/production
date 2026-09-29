@@ -1,0 +1,447 @@
+{
+  "generatedAt": "2026-09-29T00:42:06.518Z",
+  "contentRoot": "/home/p31/P31-local-workspace/software/p31-forge/content",
+  "count": 48,
+  "kinds": [
+    "corporate",
+    "governance",
+    "grants",
+    "legal",
+    "omnibus",
+    "social"
+  ],
+  "packs": [
+    {
+      "id": "corporate-resolution_initial_board",
+      "kind": "corporate",
+      "title": "BOARD RESOLUTION — INITIAL ORGANIZATIONAL ACTIONS",
+      "filename": "P31_Resolution_Initial_Board.docx",
+      "date": "[DATE TO BE INSERTED UPON ADOPTION]",
+      "theme": null,
+      "source": "corporate/resolution_initial_board.json"
+    },
+    {
+      "id": "governance-adopt_sovereign_stack_governance",
+      "kind": "governance",
+      "title": "BOARD RESOLUTION — ADOPTION OF THE SOVEREIGN STACK GOVERNANCE FRAMEWORK",
+      "filename": "P31_Resolution_Adopt_Sovereign_Stack_Governance.docx",
+      "date": "September 28, 2026",
+      "theme": "hub",
+      "source": "governance/adopt_sovereign_stack_governance.json"
+    },
+    {
+      "id": "governance-jitterbug_human_eye_test",
+      "kind": "governance",
+      "title": "Jitterbug Work Package — The Human Eye Test",
+      "filename": "P31_Jitterbug_Work_Package_Human_Eye_Test.docx",
+      "date": "2026-09-28",
+      "theme": "scene",
+      "source": "governance/jitterbug_human_eye_test.json"
+    },
+    {
+      "id": "governance-sovereign_stack_overview",
+      "kind": "governance",
+      "title": "Sovereign Stack — Enterprise Governance Framework",
+      "filename": "P31_Sovereign_Stack_Governance_Overview.docx",
+      "date": "September 28, 2026",
+      "theme": "scene",
+      "source": "governance/sovereign_stack_overview.json"
+    },
+    {
+      "id": "governance-research_audit_verification",
+      "kind": "governance",
+      "title": "The Handoff Envelope Wins: Ground-Truth Research on Auditor Verification Cost",
+      "filename": "P31_Research_Report_Audit_Verification_Enterprise.docx",
+      "date": "2026-09-28",
+      "theme": "scene",
+      "source": "governance/research_audit_verification.json"
+    },
+    {
+      "id": "grants-asan",
+      "kind": "grants",
+      "title": "ASAN Teighlor McGee Grassroots Mini-Grants",
+      "filename": "P31_Grant_ASAN_TeighlorMcGee.docx",
+      "date": null,
+      "theme": null,
+      "source": "grants/asan.json"
+    },
+    {
+      "id": "grants-awesome",
+      "kind": "grants",
+      "title": "Awesome Foundation Micro-Grant",
+      "filename": "P31_Grant_Awesome_Foundation.docx",
+      "date": null,
+      "theme": null,
+      "source": "grants/awesome.json"
+    },
+    {
+      "id": "grants-exante_gecko_shadowbridge_love_ledger",
+      "kind": "grants",
+      "title": "EXANTE Gecko Fund — Shadow Bridge + L.O.V.E. Ledger",
+      "filename": "P31_Grant_EXANTE-Gecko_ShadowBridge-LOVE-Ledger.docx",
+      "date": null,
+      "theme": null,
+      "source": "grants/exante_gecko_shadowbridge_love_ledger.json"
+    },
+    {
+      "id": "grants-gates",
+      "kind": "grants",
+      "title": "Gates Foundation Grand Challenges: AI to Accelerate Charitable Giving",
+      "filename": "P31_Grant_Gates_Grand_Challenges.docx",
+      "date": null,
+      "theme": null,
+      "source": "grants/gates.json"
+    },
+    {
+      "id": "grants-microsoft",
+      "kind": "grants",
+      "title": "Microsoft AI for Accessibility Grant",
+      "filename": "P31_Grant_Microsoft_AI_Accessibility.docx",
+      "date": null,
+      "theme": null,
+      "source": "grants/microsoft.json"
+    },
+    {
+      "id": "grants-nlnet_ngi_2026_consolidated",
+      "kind": "grants",
+      "title": "NGI 2026 — Consolidated Proposals (TALER + Fediversity)",
+      "filename": "P31_Grant_NGI-2026_Consolidated.docx",
+      "date": null,
+      "theme": null,
+      "source": "grants/nlnet_ngi_2026_consolidated.json"
+    },
+    {
+      "id": "grants-nlnet_fediversity_phos_sovereign",
+      "kind": "grants",
+      "title": "NGI Fediversity (12th Open Call) — PHOS-Sovereign",
+      "filename": "P31_Grant_NGI-Fediversity_PHOS-Sovereign.docx",
+      "date": null,
+      "theme": null,
+      "source": "grants/nlnet_fediversity_phos_sovereign.json"
+    },
+    {
+      "id": "grants-nlnet_taler_love_ledger",
+      "kind": "grants",
+      "title": "NGI TALER (14th Open Call) — L.O.V.E.-Ledger",
+      "filename": "P31_Grant_NGI-TALER_LOVE-Ledger.docx",
+      "date": null,
+      "theme": null,
+      "source": "grants/nlnet_taler_love_ledger.json"
+    },
+    {
+      "id": "grants-nlnet",
+      "kind": "grants",
+      "title": "NLnet NGI Zero Commons Fund",
+      "filename": "P31_Grant_NLnet_Commons.docx",
+      "date": null,
+      "theme": null,
+      "source": "grants/nlnet.json"
+    },
+    {
+      "id": "grants-stimpunks",
+      "kind": "grants",
+      "title": "Stimpunks Foundation Micro-Grant",
+      "filename": "P31_Grant_Stimpunks_Foundation.docx",
+      "date": null,
+      "theme": null,
+      "source": "grants/stimpunks.json"
+    },
+    {
+      "id": "legal-2025CV936-supplemental_notice",
+      "kind": "legal",
+      "title": "DEFENDANT'S SUPPLEMENTAL NOTICE OF PRODUCTION AND UPDATED DISCOVERY DISCLOSURES",
+      "filename": "Supplemental_Discovery_Notice.docx",
+      "date": "14th day of April, 2026",
+      "theme": null,
+      "source": "legal/2025CV936/supplemental_notice.json"
+    },
+    {
+      "id": "legal-2025CV936-hearing_day_carry_card",
+      "kind": "legal",
+      "title": "legal-2025CV936-hearing_day_carry_card",
+      "filename": "Hearing_Day_Carry_Card_April_16_2026.docx",
+      "date": "April 16, 2026",
+      "theme": null,
+      "source": "legal/2025CV936/hearing_day_carry_card.json"
+    },
+    {
+      "id": "legal-2025CV936-hearing_day_final_prep",
+      "kind": "legal",
+      "title": "legal-2025CV936-hearing_day_final_prep",
+      "filename": "Hearing_Day_Final_Prep_April_16_2026.docx",
+      "date": "April 16, 2026",
+      "theme": null,
+      "source": "legal/2025CV936/hearing_day_final_prep.json"
+    },
+    {
+      "id": "legal-2025CV936-hearing_quick_ref_sheet",
+      "kind": "legal",
+      "title": "legal-2025CV936-hearing_quick_ref_sheet",
+      "filename": "Hearing_Quick_Reference_Sheet_April_16_2026.docx",
+      "date": "April 16, 2026",
+      "theme": null,
+      "source": "legal/2025CV936/hearing_quick_ref_sheet.json"
+    },
+    {
+      "id": "legal-2025CV936-hearing_script_and_fallbacks",
+      "kind": "legal",
+      "title": "legal-2025CV936-hearing_script_and_fallbacks",
+      "filename": "Hearing_Script_and_Fallbacks_April_16_2026.docx",
+      "date": "April 16, 2026",
+      "theme": null,
+      "source": "legal/2025CV936/hearing_script_and_fallbacks.json"
+    },
+    {
+      "id": "legal-2025CV936-response_good_faith",
+      "kind": "legal",
+      "title": "legal-2025CV936-response_good_faith",
+      "filename": "Response_Good_Faith_Letter_FINAL.docx",
+      "date": "April 14, 2026",
+      "theme": null,
+      "source": "legal/2025CV936/response_good_faith.json"
+    },
+    {
+      "id": "legal-2025CV936-business_documentation",
+      "kind": "legal",
+      "title": "P31 LABS, INC. — BUSINESS DOCUMENTATION",
+      "filename": "P31_Labs_Business_Documentation.docx",
+      "date": "14th day of April, 2026",
+      "theme": null,
+      "source": "legal/2025CV936/business_documentation.json"
+    },
+    {
+      "id": "omnibus-paper23",
+      "kind": "omnibus",
+      "title": "Assistive Technology Economics for Neurodivergent Populations",
+      "filename": "P31_Paper_23_Assistive_Technology_Economics.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper23.json"
+    },
+    {
+      "id": "omnibus-paper08",
+      "kind": "omnibus",
+      "title": "BONDING: A Publicly Deployed Multiplayer Chemistry Game",
+      "filename": "P31_Paper_08_BONDING_Chemistry_Game.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper08.json"
+    },
+    {
+      "id": "omnibus-paper06",
+      "kind": "omnibus",
+      "title": "Cognitive Passport Protocol",
+      "filename": "P31_Paper_06_Cognitive_Passport_Protocol.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper06.json"
+    },
+    {
+      "id": "omnibus-paper03",
+      "kind": "omnibus",
+      "title": "Consciousness, Memory, and the Architecture of Self-Preservation",
+      "filename": "P31_Paper_03_Consciousness_Memory_Architecture.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper03.json"
+    },
+    {
+      "id": "omnibus-paper17",
+      "kind": "omnibus",
+      "title": "Context-Dependent Memory and Cognitive Prosthetics",
+      "filename": "P31_Paper_17_Context_Dependent_Memory.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper17.json"
+    },
+    {
+      "id": "omnibus-paper05",
+      "kind": "omnibus",
+      "title": "Delta Mesh Topology Underlying the P31 Labs Ecosystem",
+      "filename": "P31_Paper_05_Delta_Mesh_Topology.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper05.json"
+    },
+    {
+      "id": "omnibus-paper25",
+      "kind": "omnibus",
+      "title": "Digital Zeitgebers: Environmental Cues for Cognitive Regulation",
+      "filename": "P31_Paper_25_Digital_Zeitgebers.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper25.json"
+    },
+    {
+      "id": "omnibus-paper15",
+      "kind": "omnibus",
+      "title": "Entropic Bridge: Thermodynamics of Cognitive Systems",
+      "filename": "P31_Paper_15_Entropic_Bridge.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper15.json"
+    },
+    {
+      "id": "omnibus-paper11",
+      "kind": "omnibus",
+      "title": "Gates Foundation Grand Challenges: AI to Accelerate Charitable Giving",
+      "filename": "P31_Paper_11_Gates_Grand_Challenges_Proposal.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper11.json"
+    },
+    {
+      "id": "omnibus-paper02",
+      "kind": "omnibus",
+      "title": "Genesis Whitepaper v1.1",
+      "filename": "P31_Paper_02_Genesis_Whitepaper_v1.1.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper02.json"
+    },
+    {
+      "id": "omnibus-paper24",
+      "kind": "omnibus",
+      "title": "Geometric Security Model: Isostatic Rigidity in Cognitive Systems",
+      "filename": "P31_Paper_24_Geometric_Security_Model.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper24.json"
+    },
+    {
+      "id": "omnibus-paper22",
+      "kind": "omnibus",
+      "title": "Neural Entrainment Technology for Cognitive Prosthetics",
+      "filename": "P31_Paper_22_Neural_Entrainment_Technology.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper22.json"
+    },
+    {
+      "id": "omnibus-paper07",
+      "kind": "omnibus",
+      "title": "Neurodivergent Founder Methodology",
+      "filename": "P31_Paper_07_Neurodivergent_Founder_Methodology.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper07.json"
+    },
+    {
+      "id": "omnibus-paper09",
+      "kind": "omnibus",
+      "title": "Node Zero Hardware Prototype",
+      "filename": "P31_Paper_09_Node_Zero_Hardware.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper09.json"
+    },
+    {
+      "id": "omnibus-paper20",
+      "kind": "omnibus",
+      "title": "Omnibus D20 System: Geodesic Navigation for Research Provenance",
+      "filename": "P31_Paper_20_Omnibus_D20_System.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper20.json"
+    },
+    {
+      "id": "omnibus-paper13",
+      "kind": "omnibus",
+      "title": "Philosophical Foundations of Cognitive Liberty",
+      "filename": "P31_Paper_13_Philosophical_Foundations.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper13.json"
+    },
+    {
+      "id": "omnibus-paper14",
+      "kind": "omnibus",
+      "title": "Predictive Processing Framework for Cognitive Prosthetics",
+      "filename": "P31_Paper_14_Predictive_Processing_Framework.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper14.json"
+    },
+    {
+      "id": "omnibus-paper21",
+      "kind": "omnibus",
+      "title": "Quantum Security Protocols for Cognitive Prosthetics",
+      "filename": "P31_Paper_21_Quantum_Security_Protocols.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper21.json"
+    },
+    {
+      "id": "omnibus-paper18",
+      "kind": "omnibus",
+      "title": "Reality Testing Protocols for Cognitive Prosthetics",
+      "filename": "P31_Paper_18_Reality_Testing_Protocols.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper18.json"
+    },
+    {
+      "id": "omnibus-paper19",
+      "kind": "omnibus",
+      "title": "Sensory Integration and Cognitive Prosthetics",
+      "filename": "P31_Paper_19_Sensory_Integration.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper19.json"
+    },
+    {
+      "id": "omnibus-paper01",
+      "kind": "omnibus",
+      "title": "Tetrahedron Protocol",
+      "filename": "P31_Paper_01_Tetrahedron_Protocol.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper01.json"
+    },
+    {
+      "id": "omnibus-paper10",
+      "kind": "omnibus",
+      "title": "The Buffer: Communication-Processing Application for Neurodivergent Users",
+      "filename": "P31_Paper_10_The_Buffer_Application.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper10.json"
+    },
+    {
+      "id": "omnibus-paper04",
+      "kind": "omnibus",
+      "title": "The Minimum Enclosing Structure Monograph",
+      "filename": "P31_Paper_04_Minimum_Enclosing_Structure.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper04.json"
+    },
+    {
+      "id": "omnibus-paper16",
+      "kind": "omnibus",
+      "title": "Thetorical Framework: Decision Making Under Uncertainty",
+      "filename": "P31_Paper_16_Thetorical_Framework.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper16.json"
+    },
+    {
+      "id": "omnibus-paper12",
+      "kind": "omnibus",
+      "title": "Universal Bridge: AI Accessibility Framework",
+      "filename": "P31_Paper_12_Universal_Bridge_AI_Accessibility.docx",
+      "date": null,
+      "theme": null,
+      "source": "omnibus/paper12.json"
+    },
+    {
+      "id": "social-posts",
+      "kind": "social",
+      "title": "social-posts",
+      "filename": "social-posts.docx",
+      "date": null,
+      "theme": null,
+      "source": "social/posts.json"
+    }
+  ]
+}

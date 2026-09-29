@@ -1,0 +1,40 @@
+{
+  "$comment": "Forge portal gate registry. Every gate has a negative control that MUST make it exit non-zero. A gate that passes its own negative control is furniture. The meta-gate (gate-self-test.mjs) runs every gate's NC and fails if any is furniture. States: OBSERVATIONAL | WARNING | BLOCKING. This registry is drift-checked against packages/govern/domains/forge/constitution.json by check-gate-registry-drift.mjs.",
+  "contract": {
+    "negativeControl": "a fixture or mutation that makes the gate exit non-zero in under 30 seconds",
+    "enforcementMoment": "each BLOCKING gate names when it fires",
+    "version": 1
+  },
+  "gates": [
+    {
+      "id": "token-audit",
+      "command": "node /home/p31/P31-local-workspace/packages/design-core/scripts/token-audit.mjs",
+      "state": "BLOCKING",
+      "owner": "forge-portal",
+      "scope": "production/portals/forge/src/** (no raw hex/rgba)",
+      "negativeControl": {
+        "type": "fixture",
+        "command": "negative-controls/token-audit.mjs",
+        "description": "a source file containing a raw hex color must make token-audit exit non-zero",
+        "expected": "exit non-zero"
+      },
+      "enforcementMoment": "CI + gate",
+      "remediation": "runbooks/RUNBOOK-forge-pipeline.md"
+    },
+    {
+      "id": "system-test",
+      "command": "node scripts/system-test.mjs",
+      "state": "BLOCKING",
+      "owner": "forge-portal",
+      "scope": "manifest integrity + API contract + store + token-audit + build + acceptance",
+      "negativeControl": {
+        "type": "fixture",
+        "command": "negative-controls/system-test.mjs",
+        "description": "a corrupt manifest entry (pack missing on disk) must make the system test exit non-zero",
+        "expected": "exit non-zero"
+      },
+      "enforcementMoment": "CI + gate",
+      "remediation": "runbooks/RUNBOOK-forge-pipeline.md"
+    }
+  ]
+}
