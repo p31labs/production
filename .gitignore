@@ -1,7 +1,3 @@
-# Separate build trees (own git repos)
-/shell/
-/shell-host/
-
 # Dependencies & build output
 node_modules/
 dist/
@@ -39,3 +35,29 @@ worker-configuration.d.ts
 # Editor / IDE
 .idea/
 .vscode/
+
+# opencode operational state — keys, ledger, tokens (contains secrets)
+.workspace/
+.opencode/
+
+# Monorepo build artifacts
+.pnpm-store/
+build/
+out/
+.turbo/
+.wrangler/
+coverage/
+*.tsbuildinfo
+*.bundle
+playwright-report/
+test-results/
+
+# Large model/training archives (not source; exceed Git's 100 MB limit)
+*.tar
+
+# Runtime logs
+logs/
+
+# Service credentials & MCP auth keys
+.smithery.key
+.mcp-auth/
