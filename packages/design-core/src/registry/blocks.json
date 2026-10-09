@@ -1,0 +1,55 @@
+{
+  "$schema": "https://p31ca.org/schemas/registry/blocks.json",
+  "name": "@p31ca/design-core",
+  "blocks": [
+    {
+      "id": "evidence-block",
+      "name": "EvidenceBlock",
+      "type": "registry:block",
+      "category": "page",
+      "slot": "main",
+      "description": "A document-pipeline evidence unit: claim, value, source, verification status. Promoted from the forge's compose data model (BodyItem type 'evidence').",
+      "status": "stable",
+      "props": {
+        "claim": "string",
+        "value": "string",
+        "source": "string",
+        "verified": "string"
+      },
+      "importPath": "@p31ca/design-core/compositions",
+      "confidence": "supervised",
+      "lovePrice": 4
+    },
+    {
+      "id": "metric-row-block",
+      "name": "MetricRowBlock",
+      "type": "registry:block",
+      "category": "page",
+      "slot": "main",
+      "description": "An ordered row of value+label metrics. The simplest block — pure props, no state. Promoted from the portal home metrics.",
+      "status": "stable",
+      "props": {
+        "items": "{ value: string, label: string }[]"
+      },
+      "importPath": "@p31ca/design-core/compositions",
+      "confidence": "autonomous",
+      "lovePrice": 2
+    },
+    {
+      "id": "governance-overview-block",
+      "name": "GovernanceOverviewBlock",
+      "type": "registry:block",
+      "category": "page",
+      "slot": "main",
+      "description": "A titled governance panel composing headings, paragraphs, and EvidenceBlocks. The first composed block — proves block nesting.",
+      "status": "stable",
+      "props": {
+        "title": "string",
+        "body": "PackBodyItem[]"
+      },
+      "importPath": "@p31ca/design-core/compositions",
+      "confidence": "supervised",
+      "lovePrice": 6
+    }
+  ]
+}

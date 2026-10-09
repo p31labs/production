@@ -1,0 +1,10 @@
+import { loadComponents } from '../src/generator/index.ts';
+import { generateWC } from '../src/generator/adapters/webcomponent.ts';
+const defs = await loadComponents();
+const def = (defs as any).components?.CommandPalette || (defs as any).CommandPalette;
+console.log('def found:', !!def);
+const out = generateWC('CommandPalette', def, undefined as any);
+const code = typeof out === 'string' ? out : out.code;
+const lines = code.split('\n');
+const idx = lines.findIndex(l => l.includes('input-row'));
+console.log(lines.slice(idx, idx+8).join('\n'));

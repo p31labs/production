@@ -1,0 +1,66 @@
+C1 scope/humanId evidence — recorded from packages/canon/src/loom/gate.ts (v1 frozen contract)
+================================================================================================
+
+SOURCE: src/loom/gate.ts — normalizeLegacyScope (lines 34-40) and ReplayGate.append scope
+shape check (lines 114-133). The gate is the single enforcement point; scope.ts declares the
+agent surface scope, it does not define human scope rules.
+
+1) Human event with scope 'personal' WITHOUT humanId
+   → REJECTED at the gate (append, lines 126-130):
+       error: `kind 'X' is 'personal' but carries no humanId`
+   Rationale in code: "a scope nobody can enforce is a leak" — a personal record must name
+   its owner.
+   Confirmed by test-loom-scope.mjs §1 (line 31-34).
+
+2) Human event with scope 'personal' WITH humanId
+   → ACCEPTED (the humanId survives append, and normalizeLegacyScope returns the input
+   unchanged when scope === 'personal', so the id is preserved on replay).
+   Confirmed by test-loom-scope.mjs §5 (lines 86-88: personal humanId kept) and by the
+   personal-with-humanId case in the gate path (line 131 is not triggered).
+
+3) Shared-scope event carrying a humanId (incl. the DEFAULT case — scope absent defaults to
+   'shared', line 125)
+   → REJECTED at the gate (lines 131-133):
+       error: `kind 'X' is 'shared' but carries a humanId`
+   Rationale in code: "a family record carries the family, not an individual — identity is
+   surfaced via code names (statedBy), never raw ids."
+   Note: an unscoped human event that carries a humanId therefore defaults to shared and is
+   rejected — the App must opt into personal explicitly (comment, lines 121-124).
+   Confirmed by test-loom-scope.mjs §2 (lines 37-42) and §default (lines 54-58).
+
+   LEGACY: on replay only, normalizeLegacyScope strips the humanId from events that have no
+   explicit scope (legacy rows predate the scope field and were shared-with-humanId). The
+   stored chain `data` is NEVER mutated; only the in-memory replay is normalized.
+   Confirmed by test-loom-scope.mjs §5/§6 (lines 81-99).
+
+4) shared with statedBy (code-name handle) → ACCEPTED (test-loom-scope.mjs §2b, lines 46-50).
+   statedBy is a handle, never a raw id.
+
+5) session → RESERVED. Allowed by the type (LoomScope), no writer emits it, the gate does not
+   special-case it — structurally indistinguishable from shared minus the humanId rule.
+   Confirmed by test-loom-scope.mjs §4 (lines 68-76).
+
+6) Agent events → always shared/co-present. Agent kinds carry NO scope/humanId fields in the
+   type; the writer-per-kind rule isolates the agent from human personal state.
+   Confirmed by test-loom-scope.mjs §3 (lines 60-66).
+
+7) HUMAN_KINDS (gate.ts line 67, exported Set — single source shared with loom/training.ts
+   and scope.ts):
+     focus, revise, approve, reject, view.save,
+     instrument.zone.place, instrument.zone.clear, instrument.zone.name, instrument.zone.move,
+     control.mapping.set, control.mapping.clear, control.patch.set, control.midi.learn
+
+8) AGENT_KINDS (gate.ts line 68, exported Set):
+     traverse, propose, review, presence
+
+9) Writer decision (gate.ts lines 107-110):
+     const expected = HUMAN_KINDS.has(input.kind) ? 'human' : 'agent';
+     if (!HUMAN_KINDS.has(kind) && !AGENT_KINDS.has(kind)) → rejected: "unknown kind: K"
+     if (input.writer !== expected) → rejected: "kind 'K' requires writer='W', got 'X'"
+
+10) The scope shape check (step 1-5) runs for EVERY human event regardless of kind — it is a
+    structural rule keyed on the `scope`/`humanId` fields, not per-kind. So the new v1.1
+    human chat.* kinds inherit it unchanged: personal requires humanId, shared rejects it.
+
+NOTE: the v1.1 chat.* additive extension adds NEW union members only; nothing above is
+retyped. All evidence above is from the v1 frozen gate — no rules were invented.

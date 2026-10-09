@@ -1,0 +1,305 @@
+/*
+ * @p31/canon — suite.css
+ *
+ * The shared P31 quantum-material component vocabulary, reconciled into canon
+ * from the deployed workspace suite (production/portals/workspace). This is
+ * the layer the ControlSurface (and every quantum-material surface) composes
+ * from — the same classes, tokens, and motion discipline the suite ships.
+ *
+ * Non-negotiable rules (from the build prompt §5.4 + the workspace suite's
+ * own motion model):
+ *   • Every transition multiplies by `--motion-scale` — driven at runtime by
+ *     the spoon level (useSpoonDial) and by prefers-reduced-motion, so spoons=0
+ *     and reduced-motion both zero the motion. Never a hardcoded duration.
+ *   • Transforms also multiply by `--motion-scale` — a hover lift at spoons=0
+ *     is a violation, not a decoration.
+ *   • Zero hardcoded colors; every value is a `var(--p31-*)` token or a
+ *     color-mix() in oklch.
+ *   • :focus-visible outline is the shared accessibility floor; .skip-link is
+ *     the shared keyboard-entry affordance.
+ */
+
+/* ─── Focus & keyboard floor ─────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--p31-accent);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--p31-space-4);
+  background: var(--p31-accent);
+  color: var(--p31-void);
+  padding: var(--p31-space-2) var(--p31-space-4);
+  border-radius: var(--p31-radius-sm);
+  font-weight: 600;
+  z-index: 9999;
+  transition: top var(--p31-transition-fast) var(--p31-ease-quantum);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: var(--p31-space-4);
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--p31-space-2);
+  min-height: 40px;
+  padding: var(--p31-space-2) var(--p31-space-4);
+  border-radius: var(--p31-radius-sm);
+  font-family: var(--p31-font-sans);
+  font-size: var(--p31-text-base);
+  font-weight: 500;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--p31-transition-fast) var(--p31-ease-quantum);
+  background: transparent;
+  color: var(--p31-text-primary);
+  text-decoration: none;
+  user-select: none;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--p31-accent);
+  color: var(--p31-void);
+  font-weight: 600;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--p31-accent-hover);
+  box-shadow: 0 0 16px color-mix(in oklch, var(--p31-accent) 35%, transparent);
+}
+
+.btn-glass {
+  background: var(--p31-glass-bg);
+  border-color: var(--p31-glass-border);
+  backdrop-filter: var(--p31-glass-blur);
+}
+
+.btn-glass:hover:not(:disabled) {
+  background: var(--p31-glass-bg-hover);
+  border-color: color-mix(in oklch, white 18%, transparent);
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: var(--p31-text-sm);
+  min-height: 32px;
+}
+
+/* ─── Glass panel — the base surface every control panel sits on ─────────── */
+.glass-panel {
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  backdrop-filter: var(--p31-glass-blur);
+  border-radius: var(--p31-radius-md);
+  box-shadow: var(--p31-glass-shadow);
+}
+
+/* ─── Badges — mode + status chips ───────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--p31-radius-full);
+  font-size: var(--p31-text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-spark {
+  background: color-mix(in oklch, var(--p31-accent-cyan) 15%, transparent);
+  color: var(--p31-accent-cyan);
+  border: 1px solid color-mix(in oklch, var(--p31-accent-cyan) 30%, transparent);
+}
+
+.badge-maker {
+  background: color-mix(in oklch, var(--p31-accent-violet) 15%, transparent);
+  color: var(--p31-accent-violet);
+  border: 1px solid color-mix(in oklch, var(--p31-accent-violet) 30%, transparent);
+}
+
+.badge-workshop {
+  background: color-mix(in oklch, var(--p31-accent-gold) 15%, transparent);
+  color: var(--p31-accent-gold);
+  border: 1px solid color-mix(in oklch, var(--p31-accent-gold) 30%, transparent);
+}
+
+/* ─── Filter chips ───────────────────────────────────────────────────────── */
+.chip {
+  background: var(--p31-surface2);
+  border: 1px solid var(--p31-glass-border);
+  padding: 6px 16px;
+  border-radius: var(--p31-radius-full);
+  font-size: var(--p31-text-sm);
+  cursor: pointer;
+  color: var(--p31-cloud);
+  transition: all var(--p31-transition-fast) var(--p31-ease-quantum);
+}
+
+.chip.active {
+  background: var(--p31-accent-dim);
+  color: var(--p31-accent);
+  border-color: color-mix(in oklch, var(--p31-accent) 40%, transparent);
+}
+
+/* ─── Sidebar nav ────────────────────────────────────────────────────────── */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-3);
+  padding: var(--p31-space-3);
+  border-radius: var(--p31-radius-sm);
+  cursor: pointer;
+  background: none;
+  border: 1px solid transparent;
+  color: var(--p31-cloud);
+  text-decoration: none;
+  font-size: var(--p31-text-base);
+  transition: all var(--p31-transition-fast) var(--p31-ease-quantum);
+}
+
+.nav-item:hover {
+  background: var(--p31-surface2);
+  color: var(--p31-text-primary);
+}
+
+.nav-item.active {
+  background: var(--p31-accent-dim);
+  color: var(--p31-accent);
+  border-color: color-mix(in oklch, var(--p31-accent) 20%, transparent);
+}
+
+.nav-item .lock-icon { margin-left: auto; opacity: 0.6; }
+
+/* ─── Surface cards — the launcher / destination cards ───────────────────── */
+.surface-card {
+  background: var(--p31-glass-bg);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  padding: var(--p31-space-5);
+  transition: all var(--p31-transition-normal) var(--p31-ease-quantum);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-3);
+  color: inherit;
+  text-align: left;
+}
+
+.surface-card:hover,
+.surface-card:focus-visible {
+  background: var(--p31-glass-bg-hover);
+  border-color: color-mix(in oklch, white 20%, transparent);
+  transform: translateY(calc(-4px * var(--motion-scale)));
+  box-shadow: 0 16px 32px color-mix(in oklch, black 50%, transparent);
+}
+
+.surface-card-header { display: flex; align-items: center; justify-content: space-between; }
+.surface-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--p31-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+.surface-card-title { font-size: var(--p31-text-xl); font-weight: 600; color: var(--p31-text-primary); }
+.surface-card-desc { font-size: var(--p31-text-base); color: var(--p31-cloud); line-height: 1.4; }
+
+/* ─── Spoon dial — the energy controller ─────────────────────────────────── */
+.spoon-dial {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--p31-surface2);
+  padding: 4px 12px;
+  border-radius: var(--p31-radius-full);
+  border: 1px solid var(--p31-glass-border);
+}
+
+.spoon-dial-label {
+  font-size: 11px;
+  color: var(--p31-cloud);
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.spoon-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--p31-surface3);
+  cursor: pointer;
+  border: none;
+  transition: transform var(--p31-transition-fast), background var(--p31-transition-fast);
+}
+
+.spoon-dot.active {
+  background: var(--p31-accent-gold);
+  box-shadow: 0 0 8px color-mix(in oklch, var(--p31-accent-gold) 60%, transparent);
+  transform: scale(1.2);
+}
+
+.spoon-crisis-btn {
+  margin-left: 4px;
+  background: color-mix(in oklch, var(--p31-accent-red) 15%, transparent);
+  border: 1px solid color-mix(in oklch, var(--p31-accent-red) 30%, transparent);
+  color: var(--p31-accent-red);
+  font-size: var(--p31-text-xs);
+  padding: 2px 8px;
+  border-radius: var(--p31-radius-full);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* ─── Modal ──────────────────────────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: color-mix(in oklch, var(--p31-void) 85%, transparent);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-box {
+  width: 100%;
+  max-width: 440px;
+  background: var(--p31-surface);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  padding: var(--p31-space-6);
+  box-shadow: var(--p31-glass-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-5);
+}
+
+/* ─── Surface panel — the tabbed surface convention ────────────────────────
+   Each routed surface mounts inside a .surface-panel; the active one is
+   `.active` (display:flex). Standalone surfaces (the ControlSurface's three
+   columns) override to always-visible via their own class. */
+.surface-panel {
+  display: none;
+  flex: 1;
+  height: 100%;
+  flex-direction: column;
+}
+
+.surface-panel.active { display: flex; }

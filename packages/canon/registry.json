@@ -1,0 +1,5041 @@
+{
+  "generatedFrom": [
+    "dist/tokens.css",
+    "src/contracts/*.contract.ts",
+    "src/css/*.css",
+    "src/theming/theme-store.ts"
+  ],
+  "counts": {
+    "tokens": 252,
+    "components": 32,
+    "cssClasses": 133,
+    "themes": 11,
+    "frames": 4
+  },
+  "tokens": [
+    {
+      "name": "--p31-accent",
+      "value": "oklch(65% 0.18 195)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-accent-alt",
+      "value": "oklch(65% 0.18 285)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-accent-bright",
+      "value": "color-mix(in oklch, var(--p31-accent) 60%, oklch(100% 0 0))",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-accent-cyan",
+      "value": "oklch(70% 0.15 200)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-accent-faint",
+      "value": "color-mix(in oklch, var(--p31-accent) 15%, transparent)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-accent-glow",
+      "value": "oklch(71.484% 0.126 215.221 / 0.15)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-accent-gold",
+      "value": "oklch(65% 0.18 15)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-accent-green",
+      "value": "oklch(65% 0.18 105)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-accent-iris",
+      "value": "oklch(65% 0.18 270)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-accent-red",
+      "value": "oklch(65% 0.18 20)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-accent-soft",
+      "value": "color-mix(in oklch, var(--p31-accent) 25%, transparent)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-accent-violet",
+      "value": "oklch(65% 0.18 285)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-ambient-blur",
+      "value": "6px",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-ambient-filter",
+      "value": "blur(var(--p31-ambient-blur)) opacity(var(--p31-ambient-opacity))",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-ambient-opacity",
+      "value": "0.2",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-base",
+      "value": "16px",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-bg",
+      "value": "oklch(10% 0.01 270)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-blur-standard",
+      "value": "12px",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-blur-strong",
+      "value": "24px",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-blur-subtle",
+      "value": "8px",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-body",
+      "value": "16px",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-body-sm",
+      "value": "14px",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-caption",
+      "value": "7px",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-card-padding",
+      "value": "24px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-chain-broken",
+      "value": "#c0392b",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-chain-pending",
+      "value": "#d97757",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-chain-verified",
+      "value": "#788c5d",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-cloud",
+      "value": "#A1A1AA",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-accent-default",
+      "value": "oklch(70% 0.15 200)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-accent-gold-default",
+      "value": "oklch(72% 0.15 40)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-accent-gold-muted",
+      "value": "oklch(72% 0.05 40)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-accent-green-default",
+      "value": "oklch(70% 0.15 160)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-accent-green-muted",
+      "value": "oklch(70% 0.05 160)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-accent-muted",
+      "value": "oklch(70% 0.05 200)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-accent-red-default",
+      "value": "oklch(70% 0.15 20)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-accent-red-muted",
+      "value": "oklch(70% 0.05 20)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-accent-violet-default",
+      "value": "oklch(65% 0.15 250)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-accent-violet-muted",
+      "value": "oklch(65% 0.05 250)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-action-ghost",
+      "value": "oklch(100% 0 0 / 0)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-action-ghost-hover",
+      "value": "oklch(100% 0.01 230 / 0.04)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-action-primary",
+      "value": "oklch(70% 0.15 200)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-action-primary-hover",
+      "value": "oklch(70% 0.15 200 / 0.8)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-action-primary-text",
+      "value": "oklch(95% 0.02 230)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-action-secondary",
+      "value": "oklch(22% 0.045 240)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-action-secondary-text",
+      "value": "oklch(95% 0.02 230)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-amber",
+      "value": "oklch(72% 0.15 50)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-emerald",
+      "value": "oklch(60% 0.13 155)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-text-muted",
+      "value": "oklch(55% 0.02 235)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-text-primary",
+      "value": "oklch(95% 0.02 230)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-color-text-secondary",
+      "value": "oklch(78% 0.02 235)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-container-gap",
+      "value": "clamp(0.25rem, 0.8cqi, 1rem)",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-duration-base",
+      "value": "431ms",
+      "tier": "primitive",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-duration-fast",
+      "value": "100ms",
+      "tier": "primitive",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-duration-instant",
+      "value": "62.5ms",
+      "tier": "primitive",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-duration-normal",
+      "value": "300ms",
+      "tier": "primitive",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-duration-slow",
+      "value": "500ms",
+      "tier": "primitive",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-duration-slower",
+      "value": "1000ms",
+      "tier": "primitive",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-duration-standard",
+      "value": "250ms",
+      "tier": "primitive",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-ease-kuramoto",
+      "value": "cubic-bezier(0.7, 0, 0.2, 1)",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-easing-accelerate",
+      "value": "cubic-bezier(0.4, 0.0, 1.0, 1)",
+      "tier": "primitive",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-easing-decelerate",
+      "value": "cubic-bezier(0.0, 0.0, 0.2, 1)",
+      "tier": "primitive",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-easing-linear",
+      "value": "linear",
+      "tier": "primitive",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-easing-smooth",
+      "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "tier": "primitive",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-easing-snappy",
+      "value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      "tier": "primitive",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-easing-standard",
+      "value": "cubic-bezier(0.4, 0.0, 0.2, 1)",
+      "tier": "primitive",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-elevation-level1-tint",
+      "value": "0.05",
+      "tier": "semantic",
+      "category": "other"
+    },
+    {
+      "name": "--p31-elevation-level2-tint",
+      "value": "0.08",
+      "tier": "semantic",
+      "category": "other"
+    },
+    {
+      "name": "--p31-elevation-level3-tint",
+      "value": "0.11",
+      "tier": "semantic",
+      "category": "other"
+    },
+    {
+      "name": "--p31-font-base",
+      "value": "13px",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-font-display",
+      "value": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-font-family-mono",
+      "value": "'JetBrains Mono', ui-monospace, 'SF Mono', 'Fira Code', monospace",
+      "tier": "semantic",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-font-family-sans",
+      "value": "'Space Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "tier": "semantic",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-font-mono",
+      "value": "ui-monospace, SFMono-Regular, 'Fira Code', 'Fira Mono', 'Roboto Mono', 'JetBrains Mono', Menlo, Monaco, Consolas, monospace",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-font-sans",
+      "value": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-font-scale",
+      "value": "1.333",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-font-size-lg",
+      "value": "20px",
+      "tier": "semantic",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-font-size-md",
+      "value": "16px",
+      "tier": "semantic",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-font-size-sm",
+      "value": "14px",
+      "tier": "semantic",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-glass-background",
+      "value": "oklch(100% 0.01 230 / 0.04)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glass-bg",
+      "value": "oklch(100% 0.01 240 / 0.04)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glass-bg-dark",
+      "value": "oklch(10% 0.01 60 / 0.6)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glass-bg-light",
+      "value": "oklch(100% 0.01 75 / 0.10)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glass-bg-overlay",
+      "value": "oklch(100% 0.01 75 / 0.10)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glass-bg-strong",
+      "value": "oklch(100% 0.01 75 / 0.22)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glass-blur",
+      "value": "blur(12px)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glass-border",
+      "value": "oklch(100% 0.01 240 / 0.08)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glass-border-hover",
+      "value": "oklch(100% 0.01 240 / 0.15)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glass-border-strong",
+      "value": "oklch(100% 0.01 75 / 0.16)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glass-border-strong-hover",
+      "value": "oklch(100% 0.01 75 / 0.25)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glass-radius",
+      "value": "24px",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glass-shadow",
+      "value": "0 8px 32px rgba(0,0,0,0.15)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glass-surface",
+      "value": "oklch(100% 0.01 240 / 0.04)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glass-surface-hover",
+      "value": "oklch(100% 0.01 240 / 0.06)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glow-amber",
+      "value": "0 0 6px oklch(88.7% 0.182 95.3), 0 0 20px oklch(88.7% 0.182 95.3 / 0.3)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glow-coral",
+      "value": "0 0 6px oklch(71.2% 0.181 22.8), 0 0 20px oklch(71.2% 0.181 22.8 / 0.3)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glow-cyan",
+      "value": "0 0 20px rgba(0,240,255,0.25)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glow-magenta",
+      "value": "0 0 6px oklch(70.2% 0.322 328.4), 0 0 20px oklch(70.2% 0.322 328.4 / 0.3)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glow-mint",
+      "value": "0 0 6px oklch(87.6% 0.228 152.5), 0 0 20px oklch(87.6% 0.228 152.5 / 0.3)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glow-neon",
+      "value": "0 0 6px oklch(90.5% 0.155 194.8), 0 0 20px oklch(90.5% 0.155 194.8 / 0.3)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-glow-violet",
+      "value": "0 0 6px oklch(67.0% 0.234 309.1), 0 0 20px oklch(67.0% 0.234 309.1 / 0.3)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-h1",
+      "value": "51px",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-h2",
+      "value": "38px",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-h3",
+      "value": "28px",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-h4",
+      "value": "21px",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-hero-filter",
+      "value": "drop-shadow(0 0 30px var(--p31-accent)) brightness(1.1)",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-label",
+      "value": "12px",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-layout-density-factor",
+      "value": "1",
+      "tier": "semantic",
+      "category": "other"
+    },
+    {
+      "name": "--p31-layout-spacing-lg",
+      "value": "24px",
+      "tier": "semantic",
+      "category": "other"
+    },
+    {
+      "name": "--p31-layout-spacing-lg-tight",
+      "value": "20px",
+      "tier": "semantic",
+      "category": "other"
+    },
+    {
+      "name": "--p31-layout-spacing-md",
+      "value": "16px",
+      "tier": "semantic",
+      "category": "other"
+    },
+    {
+      "name": "--p31-layout-spacing-md-tight",
+      "value": "12px",
+      "tier": "semantic",
+      "category": "other"
+    },
+    {
+      "name": "--p31-layout-spacing-sm",
+      "value": "8px",
+      "tier": "semantic",
+      "category": "other"
+    },
+    {
+      "name": "--p31-layout-spacing-xl",
+      "value": "32px",
+      "tier": "semantic",
+      "category": "other"
+    },
+    {
+      "name": "--p31-layout-spacing-xs",
+      "value": "4px",
+      "tier": "semantic",
+      "category": "other"
+    },
+    {
+      "name": "--p31-motion-duration-fast",
+      "value": "150ms",
+      "tier": "semantic",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-motion-easing-standard",
+      "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "tier": "semantic",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-motion-spring-expressive-default-effects",
+      "value": "cubic-bezier(0.34, 0.80, 0.34, 1.00)|200ms",
+      "tier": "semantic",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-motion-spring-expressive-default-spatial",
+      "value": "cubic-bezier(0.38, 1.21, 0.22, 1.00)|500ms",
+      "tier": "semantic",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-motion-spring-expressive-fast-effects",
+      "value": "cubic-bezier(0.31, 0.80, 0.34, 1.00)|150ms",
+      "tier": "semantic",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-motion-spring-expressive-fast-spatial",
+      "value": "cubic-bezier(0.42, 1.67, 0.21, 0.90)|350ms",
+      "tier": "semantic",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-motion-spring-expressive-slow-effects",
+      "value": "cubic-bezier(0.34, 0.80, 0.34, 1.00)|300ms",
+      "tier": "semantic",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-motion-spring-expressive-slow-spatial",
+      "value": "cubic-bezier(0.38, 0.86, 0.22, 1.00)|650ms",
+      "tier": "semantic",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-motion-spring-standard-spatial",
+      "value": "cubic-bezier(0.2, 0, 0, 1)|300ms",
+      "tier": "semantic",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-neon",
+      "value": "oklch(90.5% 0.155 194.8)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-neon-amber",
+      "value": "oklch(88.7% 0.182 95.3)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-neon-blue",
+      "value": "oklch(80.4% 0.146 219.5)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-neon-coral",
+      "value": "oklch(71.2% 0.181 22.8)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-neon-cyan",
+      "value": "oklch(90.5% 0.155 194.8)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-neon-dim",
+      "value": "oklch(90.5% 0.155 194.8 / 0.35)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-neon-faint",
+      "value": "oklch(90.5% 0.155 194.8 / 0.08)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-neon-ghost",
+      "value": "oklch(90.5% 0.155 194.8 / 0.03)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-neon-lavender",
+      "value": "oklch(62% 0.279 290.8)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-neon-magenta",
+      "value": "oklch(70.2% 0.322 328.4)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-neon-mint",
+      "value": "oklch(87.6% 0.228 152.5)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-neon-orange",
+      "value": "oklch(75.4% 0.164 50.4)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-neon-pink",
+      "value": "oklch(67.4% 0.293 340.4)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-neon-violet",
+      "value": "oklch(67.0% 0.234 309.1)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-portal-accent",
+      "value": "var(--p31-accent)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-portal-glow",
+      "value": "rgba(0, 240, 255, 0.08)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-quantum-cyan",
+      "value": "oklch(0.870 0.148 203)",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-radius-candy",
+      "value": "24px",
+      "tier": "semantic",
+      "category": "radius"
+    },
+    {
+      "name": "--p31-radius-full",
+      "value": "9999px",
+      "tier": "semantic",
+      "category": "radius"
+    },
+    {
+      "name": "--p31-radius-lg",
+      "value": "calc(var(--p31-scale-lg) / 2)",
+      "tier": "semantic",
+      "category": "radius"
+    },
+    {
+      "name": "--p31-radius-md",
+      "value": "calc(var(--p31-scale-md) / 2)",
+      "tier": "semantic",
+      "category": "radius"
+    },
+    {
+      "name": "--p31-radius-none",
+      "value": "0",
+      "tier": "primitive",
+      "category": "radius"
+    },
+    {
+      "name": "--p31-radius-sm",
+      "value": "8px",
+      "tier": "semantic",
+      "category": "radius"
+    },
+    {
+      "name": "--p31-radius-xl",
+      "value": "calc(var(--p31-scale-xl) / 2)",
+      "tier": "primitive",
+      "category": "radius"
+    },
+    {
+      "name": "--p31-scale-2xl",
+      "value": "calc(var(--p31-base) * 3.1604)",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-scale-3xl",
+      "value": "calc(var(--p31-base) * 4.2139)",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-scale-4xl",
+      "value": "calc(var(--p31-base) * 5.6186)",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-scale-lg",
+      "value": "calc(var(--p31-base) * 1.7777)",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-scale-md",
+      "value": "calc(var(--p31-base) * 1.3333)",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-scale-sm",
+      "value": "var(--p31-base)",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-scale-xl",
+      "value": "calc(var(--p31-base) * 2.3703)",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-scale-xs",
+      "value": "12px",
+      "tier": "semantic",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-shape-morph-duration",
+      "value": "300ms",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-space-2",
+      "value": "8px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-2xl",
+      "value": "clamp(var(--p31-scale-2xl), 6.5vw, var(--p31-scale-3xl))",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-2xs",
+      "value": "6px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-3",
+      "value": "12px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-3xl",
+      "value": "64px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-5",
+      "value": "32px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-6",
+      "value": "24px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-7",
+      "value": "48px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-base",
+      "value": "1rem",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-component",
+      "value": "var(--p31-space-sm, 16px)",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-inline-lg",
+      "value": "24px",
+      "tier": "semantic",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-inline-md",
+      "value": "16px",
+      "tier": "semantic",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-inline-sm",
+      "value": "8px",
+      "tier": "semantic",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-lg",
+      "value": "clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl))",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-md",
+      "value": "clamp(var(--p31-scale-md), 2.5vw, var(--p31-scale-lg))",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-micro",
+      "value": "4px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-sm",
+      "value": "clamp(var(--p31-scale-sm), 1.5vw, var(--p31-scale-md))",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-tiny",
+      "value": "2px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-xl",
+      "value": "clamp(var(--p31-scale-xl), 5vw, var(--p31-scale-2xl))",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-space-xs",
+      "value": "clamp(var(--p31-scale-xs), 1vw, var(--p31-scale-sm))",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-spacing-lg",
+      "value": "24px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-spacing-md",
+      "value": "16px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-spacing-sm",
+      "value": "8px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-spacing-xl",
+      "value": "32px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-spacing-xs",
+      "value": "4px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-spacing-xxl",
+      "value": "64px",
+      "tier": "primitive",
+      "category": "spacing"
+    },
+    {
+      "name": "--p31-speed-factor",
+      "value": "1",
+      "tier": "primitive",
+      "category": "motion"
+    },
+    {
+      "name": "--p31-spring-expressive-default-effects",
+      "value": "cubic-bezier(0.34, 0.80, 0.34, 1.00)",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-spring-expressive-default-effects-ms",
+      "value": "200ms",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-spring-expressive-default-spatial",
+      "value": "cubic-bezier(0.38, 1.21, 0.22, 1.00)",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-spring-expressive-default-spatial-ms",
+      "value": "500ms",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-spring-expressive-fast-effects",
+      "value": "cubic-bezier(0.31, 0.80, 0.34, 1.00)",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-spring-expressive-fast-effects-ms",
+      "value": "150ms",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-spring-expressive-fast-spatial",
+      "value": "cubic-bezier(0.42, 1.67, 0.21, 0.90)",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-spring-expressive-fast-spatial-ms",
+      "value": "350ms",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-spring-expressive-slow-effects",
+      "value": "cubic-bezier(0.34, 0.80, 0.34, 1.00)",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-spring-expressive-slow-effects-ms",
+      "value": "300ms",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-spring-expressive-slow-spatial",
+      "value": "cubic-bezier(0.38, 0.86, 0.22, 1.00)",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-spring-expressive-slow-spatial-ms",
+      "value": "650ms",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-spring-standard-spatial",
+      "value": "cubic-bezier(0.2, 0, 0, 1)",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-spring-standard-spatial-ms",
+      "value": "300ms",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-starfield-hearth",
+      "value": "oklch(55% 0.15 35)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-starfield-particle-coral",
+      "value": "oklch(65% 0.14 40 / 0.5)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-starfield-particle-teal",
+      "value": "oklch(70% 0.12 185 / 0.6)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-starfield-remembrance",
+      "value": "oklch(95% 0.01 80)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-starfield-teal",
+      "value": "oklch(60% 0.08 185)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-status-error",
+      "value": "oklch(65% 0.18 20)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-status-info",
+      "value": "oklch(65% 0.18 195)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-status-offline",
+      "value": "oklch(78% 0.01 240)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-status-online",
+      "value": "oklch(65% 0.18 105)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-status-success",
+      "value": "oklch(65% 0.18 105)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-status-warning",
+      "value": "oklch(65% 0.18 15)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-surface",
+      "value": "oklch(15% 0.015 270)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-surface-background",
+      "value": "oklch(10% 0.03 240)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-surface-overlay",
+      "value": "oklch(22% 0.045 240)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-surface-raised",
+      "value": "oklch(15% 0.04 240)",
+      "tier": "semantic",
+      "category": "color"
+    },
+    {
+      "name": "--p31-surface-s1",
+      "value": "oklch(0% 0 0)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-surface-s2",
+      "value": "oklch(4.9% 0 0)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-surface-s3",
+      "value": "oklch(6.9% 0 0)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-surface-s4",
+      "value": "oklch(10.5% 0 0)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-surface2",
+      "value": "oklch(22% 0.02 270)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-tetra-overlap",
+      "value": "0.3333333333333333",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-text",
+      "value": "oklch(96% 0.005 270)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-text-2xs",
+      "value": "10px",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-text-primary",
+      "value": "oklch(96% 0.005 270)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-text-secondary",
+      "value": "oklch(80% 0.01 270)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-text-sm",
+      "value": "13px",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-text-tertiary",
+      "value": "oklch(78% 0.01 270)",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-text-xs",
+      "value": "12px",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-topbar-height",
+      "value": "64px",
+      "tier": "semantic",
+      "category": "layout"
+    },
+    {
+      "name": "--p31-touch-large",
+      "value": "64px",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-touch-min",
+      "value": "48px",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-touch-recommended",
+      "value": "56px",
+      "tier": "primitive",
+      "category": "other"
+    },
+    {
+      "name": "--p31-type-body",
+      "value": "clamp(calc(var(--p31-base) * 0.95), 1vw + 0.5rem, var(--p31-scale-sm))",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-type-caption",
+      "value": "clamp(var(--p31-scale-xs), 0.8vw, var(--p31-scale-sm))",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-type-display",
+      "value": "clamp(var(--p31-scale-2xl), 7vw, var(--p31-scale-3xl))",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-type-emphasized-body",
+      "value": "500 16px/1.4 system-ui, sans-serif",
+      "tier": "semantic",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-type-emphasized-display",
+      "value": "700 64px/1.1 system-ui, sans-serif",
+      "tier": "semantic",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-type-emphasized-h1",
+      "value": "700 40px/1.15 system-ui, sans-serif",
+      "tier": "semantic",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-type-emphasized-h2",
+      "value": "600 28px/1.2 system-ui, sans-serif",
+      "tier": "semantic",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-type-emphasized-h3",
+      "value": "600 20px/1.25 system-ui, sans-serif",
+      "tier": "semantic",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-type-emphasized-label",
+      "value": "600 14px/1.2 system-ui, sans-serif",
+      "tier": "semantic",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-type-h1",
+      "value": "clamp(var(--p31-scale-xl), 5.6vw, var(--p31-scale-2xl))",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-type-h2",
+      "value": "clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl))",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-type-h3",
+      "value": "clamp(var(--p31-scale-md), 2vw, var(--p31-scale-lg))",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-type-label",
+      "value": "var(--p31-scale-sm)",
+      "tier": "primitive",
+      "category": "typography"
+    },
+    {
+      "name": "--p31-void",
+      "value": "#0A0A0F",
+      "tier": "primitive",
+      "category": "color"
+    },
+    {
+      "name": "--p31-z-content",
+      "value": "1",
+      "tier": "primitive",
+      "category": "layout"
+    },
+    {
+      "name": "--p31-z-crisis",
+      "value": "99999",
+      "tier": "semantic",
+      "category": "layout"
+    },
+    {
+      "name": "--p31-z-dropdown",
+      "value": "100",
+      "tier": "primitive",
+      "category": "layout"
+    },
+    {
+      "name": "--p31-z-floating",
+      "value": "60",
+      "tier": "semantic",
+      "category": "layout"
+    },
+    {
+      "name": "--p31-z-modal",
+      "value": "80",
+      "tier": "semantic",
+      "category": "layout"
+    },
+    {
+      "name": "--p31-z-skip-link",
+      "value": "100",
+      "tier": "primitive",
+      "category": "layout"
+    },
+    {
+      "name": "--p31-z-starfield",
+      "value": "0",
+      "tier": "semantic",
+      "category": "layout"
+    },
+    {
+      "name": "--p31-z-toast",
+      "value": "9999",
+      "tier": "primitive",
+      "category": "layout"
+    },
+    {
+      "name": "--p31-z-topbar",
+      "value": "10",
+      "tier": "semantic",
+      "category": "layout"
+    }
+  ],
+  "components": [
+    {
+      "slug": "badge",
+      "name": "Badge",
+      "layer": "component",
+      "status": "verified",
+      "intent": "Compact status label. Crisis mode keeps colors but forces opaque surfaces.",
+      "contract": "src/contracts/badge.contract.ts",
+      "import": "import { Badge } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "tone",
+          "type": "enum",
+          "required": false,
+          "options": [
+            "success",
+            "warning",
+            "error",
+            "info",
+            "neutral"
+          ],
+          "default": "neutral",
+          "description": "Status tone."
+        },
+        {
+          "name": "children",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Label text (design-core renders it as children)."
+        }
+      ],
+      "variants": {
+        "tone": [
+          "success",
+          "warning",
+          "error",
+          "info",
+          "neutral"
+        ]
+      },
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.color.accent.default",
+        "p31.color.accent.green.default",
+        "p31.color.accent.gold.default",
+        "p31.color.accent.red.default",
+        "p31.radius.full",
+        "p31.font.family.sans"
+      ]
+    },
+    {
+      "slug": "bottomnav",
+      "name": "BottomNav",
+      "layer": "component",
+      "status": "verified",
+      "intent": "Fixed bottom navigation bar for mobile-first apps. Use for primary app navigation.",
+      "contract": "src/contracts/bottom-nav.contract.ts",
+      "import": "import { BottomNav } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "items",
+          "type": "array",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Structured navigation items."
+        },
+        {
+          "name": "activeIndex",
+          "type": "number",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Currently active item index."
+        },
+        {
+          "name": "onChange",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Callback when the active item changes."
+        },
+        {
+          "name": "children",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Deprecated — pass items instead."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.topbar.height",
+        "p31.glass.background",
+        "p31.glass.border"
+      ]
+    },
+    {
+      "slug": "button",
+      "name": "Button",
+      "layer": "primitive",
+      "status": "verified",
+      "intent": "Primary action button. Use for CTAs, form submissions, and key actions.",
+      "contract": "src/contracts/button.contract.ts",
+      "import": "import { Button } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "options": [
+            "primary",
+            "secondary",
+            "ghost"
+          ],
+          "default": "primary",
+          "description": "Visual variant."
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "options": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "md",
+          "description": "Size."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Whether the button is disabled."
+        },
+        {
+          "name": "children",
+          "type": "node",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "The button content."
+        }
+      ],
+      "variants": {
+        "variant": [
+          "primary",
+          "secondary",
+          "ghost"
+        ],
+        "size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.color.accent.default",
+        "p31.radius.md"
+      ]
+    },
+    {
+      "slug": "calmindicator",
+      "name": "CalmIndicator",
+      "layer": "component",
+      "status": "verified",
+      "intent": "Calm pill in the status cluster — reads spoon level and opens the calm overlay.",
+      "contract": "src/contracts/calm-indicator.contract.ts",
+      "import": "import { CalmIndicator } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "spoons",
+          "type": "number",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Current spoon level (0-5)."
+        },
+        {
+          "name": "onOpen",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Fired when tapped."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.color.accent.green.default",
+        "p31.color.accent.red.default",
+        "p31.glass.background",
+        "p31.radius.full"
+      ]
+    },
+    {
+      "slug": "calmoverlay",
+      "name": "CalmOverlay",
+      "layer": "composition",
+      "status": "unverifiable",
+      "intent": "Calm-mode overlay shown at spoon level 0. Breathing circle rest stop. Store-agnostic — spoons/onReturn are props.",
+      "contract": "src/contracts/calm-overlay.contract.ts",
+      "import": "import { CalmOverlay } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "spoons",
+          "type": "number",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Current spoon level; calm activates at 0."
+        },
+        {
+          "name": "onExit",
+          "type": "function",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Called when the user exits calm."
+        },
+        {
+          "name": "onEnterCalm",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Fired on entry."
+        },
+        {
+          "name": "onSessionEnd",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Called when a calm session ends."
+        },
+        {
+          "name": "sighFirst",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Sigh first, then coherence."
+        }
+      ],
+      "variants": {},
+      "states": [],
+      "tokens": [
+        "p31.surface.background",
+        "p31.color.accent.default",
+        "p31.color.text.primary",
+        "p31.z.floating"
+      ]
+    },
+    {
+      "slug": "candyheader",
+      "name": "CandyHeader",
+      "layer": "composition",
+      "status": "verified",
+      "intent": "Candy-rounded glass header for the sovereign stack.",
+      "contract": "src/contracts/candy-header.contract.ts",
+      "import": "import { CandyHeader } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "eyebrow",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Eyebrow line."
+        },
+        {
+          "name": "title",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Title."
+        },
+        {
+          "name": "lede",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Supporting lede."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.glass.surface",
+        "p31.glass.border",
+        "p31.radius.candy",
+        "p31.color.text.primary",
+        "p31.color.accent.default"
+      ]
+    },
+    {
+      "slug": "card",
+      "name": "Card",
+      "layer": "composition",
+      "status": "verified",
+      "intent": "Elevated surface with an optional interactive affordance.",
+      "contract": "src/contracts/card.contract.ts",
+      "import": "import { Card } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "title",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Card title."
+        },
+        {
+          "name": "description",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Card description."
+        },
+        {
+          "name": "padding",
+          "type": "enum",
+          "required": false,
+          "options": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "md",
+          "description": "Container padding."
+        },
+        {
+          "name": "interactive",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Interactive affordance."
+        },
+        {
+          "name": "children",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Card content."
+        }
+      ],
+      "variants": {
+        "padding": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.surface.background",
+        "p31.glass.border",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.radius.md"
+      ]
+    },
+    {
+      "slug": "chameleon",
+      "name": "Chameleon",
+      "layer": "composition",
+      "status": "verified",
+      "intent": "Adaptive theme controls: brand × world × age × sensory modes. Zero-reload token swaps.",
+      "contract": "src/contracts/chameleon.contract.ts",
+      "import": "import { Chameleon } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.color.accent.default"
+      ]
+    },
+    {
+      "slug": "chatshell",
+      "name": "ChatShell",
+      "layer": "composition",
+      "status": "verified",
+      "intent": "Conversational shell with a header, drawer, and chat surface.",
+      "contract": "src/contracts/chat-shell.contract.ts",
+      "import": "import { ChatShell } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "header",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Header slot."
+        },
+        {
+          "name": "drawerLabel",
+          "type": "string",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Accessible label for the drawer."
+        },
+        {
+          "name": "drawerOpen",
+          "type": "boolean",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Whether the drawer is open."
+        },
+        {
+          "name": "onCloseDrawer",
+          "type": "function",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Called when the drawer closes."
+        },
+        {
+          "name": "drawer",
+          "type": "node",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Drawer content."
+        },
+        {
+          "name": "children",
+          "type": "node",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Main chat content."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.surface.background",
+        "p31.glass.border",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.radius.lg"
+      ]
+    },
+    {
+      "slug": "checkbox",
+      "name": "Checkbox",
+      "layer": "primitive",
+      "status": "verified",
+      "intent": "Tri-state checkbox (checked / unchecked / indeterminate).",
+      "contract": "src/contracts/checkbox.contract.ts",
+      "import": "import { Checkbox } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Label text."
+        },
+        {
+          "name": "checked",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Checked state."
+        },
+        {
+          "name": "indeterminate",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Indeterminate state."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Disabled state."
+        },
+        {
+          "name": "onChange",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Callback with the new state."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.color.accent.default",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.radius.sm"
+      ]
+    },
+    {
+      "slug": "commandpalette",
+      "name": "CommandPalette",
+      "layer": "composition",
+      "status": "verified",
+      "intent": "Keyboard-friendly command palette (⌘K). Use for site-wide search and command invocation.",
+      "contract": "src/contracts/command-palette.contract.ts",
+      "import": "import { CommandPalette } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Whether the palette is open."
+        },
+        {
+          "name": "onClose",
+          "type": "function",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Called to close."
+        },
+        {
+          "name": "items",
+          "type": "array",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "The command items."
+        },
+        {
+          "name": "onSelect",
+          "type": "function",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Called with the selected item id."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Search placeholder."
+        },
+        {
+          "name": "leadingIcon",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Leading icon."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.color.accent.default",
+        "p31.radius.md",
+        "p31.z.modal"
+      ]
+    },
+    {
+      "slug": "commandtrigger",
+      "name": "CommandTrigger",
+      "layer": "primitive",
+      "status": "verified",
+      "intent": "Topbar search affordance — a button with a keyboard hint that opens the command palette.",
+      "contract": "src/contracts/command-trigger.contract.ts",
+      "import": "import { CommandTrigger } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Placeholder text."
+        },
+        {
+          "name": "shortcut",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "OS-correct modifier hint."
+        },
+        {
+          "name": "onOpen",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Fired when activated."
+        },
+        {
+          "name": "compact",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Icon-only rendering."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.radius.full",
+        "p31.color.text.secondary",
+        "p31.font.family.mono"
+      ]
+    },
+    {
+      "slug": "crisisoverlay",
+      "name": "CrisisOverlay",
+      "layer": "composition",
+      "status": "verified",
+      "intent": "Full-screen crisis mode overlay. Shown when spoons=0. Only exit control visible.",
+      "contract": "src/contracts/crisis-overlay.contract.ts",
+      "import": "import { CrisisOverlay } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "message",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Message shown to the user."
+        },
+        {
+          "name": "buttonLabel",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Label for the exit button."
+        },
+        {
+          "name": "onReady",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Called when dismissed."
+        },
+        {
+          "name": "visible",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Whether the overlay is visible."
+        },
+        {
+          "name": "children",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Overlay content."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.surface.background",
+        "p31.color.text.primary",
+        "p31.color.accent.default",
+        "p31.z.crisis"
+      ]
+    },
+    {
+      "slug": "crown",
+      "name": "Crown",
+      "layer": "component",
+      "status": "verified",
+      "intent": "Compact brand crown mark with a label.",
+      "contract": "src/contracts/crown.contract.ts",
+      "import": "import { Crown } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Visible label beside the mark."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.color.accent.default",
+        "p31.color.text.primary",
+        "p31.font.family.sans"
+      ]
+    },
+    {
+      "slug": "dropdown",
+      "name": "Dropdown",
+      "layer": "primitive",
+      "status": "verified",
+      "intent": "Selectable dropdown menu with options.",
+      "contract": "src/contracts/dropdown.contract.ts",
+      "import": "import { Dropdown } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Label text."
+        },
+        {
+          "name": "options",
+          "type": "array",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "The options."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Selected value."
+        },
+        {
+          "name": "onChange",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Called with the new value."
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Accessible name."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Disabled state."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.surface.background",
+        "p31.glass.border",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.color.accent.default",
+        "p31.radius.md"
+      ]
+    },
+    {
+      "slug": "footer",
+      "name": "Footer",
+      "layer": "composition",
+      "status": "verified",
+      "intent": "Site footer with configurable columns, branding, and legal text.",
+      "contract": "src/contracts/footer.contract.ts",
+      "import": "import { Footer } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "columns",
+          "type": "array",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "The footer columns."
+        },
+        {
+          "name": "brandLabel",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Brand label."
+        },
+        {
+          "name": "brandIcon",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Brand icon."
+        },
+        {
+          "name": "tagline",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Tagline."
+        },
+        {
+          "name": "copyright",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Copyright line."
+        },
+        {
+          "name": "legalText",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Legal text."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.surface.background",
+        "p31.color.text.primary",
+        "p31.color.text.secondary"
+      ]
+    },
+    {
+      "slug": "glasscard",
+      "name": "GlassCard",
+      "layer": "composition",
+      "status": "verified",
+      "intent": "Padded glassmorphic card for content grouping. Use for feature cards, paper listings, and content tiles.",
+      "contract": "src/contracts/glass-card.contract.ts",
+      "import": "import { GlassCard } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "children",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Card content."
+        },
+        {
+          "name": "strong",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Stronger glass opacity."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Deprecated — use <GlassCard strong> with a wrapping <a>."
+        },
+        {
+          "name": "onClick",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Deprecated — use a wrapping element onClick."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.glass.radius"
+      ]
+    },
+    {
+      "slug": "glasspanel",
+      "name": "GlassPanel",
+      "layer": "composition",
+      "status": "verified",
+      "intent": "Elevated glassmorphic surface with backdrop blur. Use for modals, drawers, and elevated content areas.",
+      "contract": "src/contracts/glass-panel.contract.ts",
+      "import": "import { GlassPanel } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "children",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Panel content."
+        },
+        {
+          "name": "padding",
+          "type": "enum",
+          "required": false,
+          "options": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "md",
+          "description": "Padding size."
+        },
+        {
+          "name": "strong",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Stronger glass opacity."
+        },
+        {
+          "name": "hover",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Deprecated — use strong."
+        }
+      ],
+      "variants": {
+        "padding": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.glass.radius"
+      ]
+    },
+    {
+      "slug": "metricbadge",
+      "name": "MetricBadge",
+      "layer": "component",
+      "status": "verified",
+      "intent": "Compact metric display with icon. Use for dashboard KPIs and telemetry.",
+      "contract": "src/contracts/metric-badge.contract.ts",
+      "import": "import { MetricBadge } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "icon",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Icon."
+        },
+        {
+          "name": "value",
+          "type": "node",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "The metric value."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Label."
+        },
+        {
+          "name": "clickable",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Clickable affordance."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.radius.sm",
+        "p31.scale.xs",
+        "p31.color.text.secondary"
+      ]
+    },
+    {
+      "slug": "mobilebottomnav",
+      "name": "MobileBottomNav",
+      "layer": "component",
+      "status": "verified",
+      "intent": "Mobile bottom navigation bar — flagship items only (suite pattern). Store-agnostic.",
+      "contract": "src/contracts/mobile-bottom-nav.contract.ts",
+      "import": "import { MobileBottomNav } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "items",
+          "type": "array",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Navigation items (flagships only)."
+        },
+        {
+          "name": "activePath",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Currently active path."
+        },
+        {
+          "name": "onNavigate",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Navigate handler."
+        },
+        {
+          "name": "renderItem",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Custom item renderer."
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Accessible name."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.glass.surface",
+        "p31.glass.border",
+        "p31.color.accent.default",
+        "p31.color.text.secondary",
+        "p31.radius.full"
+      ]
+    },
+    {
+      "slug": "modepill",
+      "name": "ModePill",
+      "layer": "primitive",
+      "status": "verified",
+      "intent": "Primary mode control (SPARK / MAKER / WORKSHOP) with a tone dot.",
+      "contract": "src/contracts/mode-pill.contract.ts",
+      "import": "import { ModePill } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "mode",
+          "type": "enum",
+          "required": true,
+          "options": [
+            "spark",
+            "maker",
+            "workshop"
+          ],
+          "default": "spark",
+          "description": "Current mode."
+        },
+        {
+          "name": "onCycle",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Fired when activated."
+        }
+      ],
+      "variants": {
+        "mode": [
+          "spark",
+          "maker",
+          "workshop"
+        ]
+      },
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.color.accent.default",
+        "p31.color.accent.gold.default",
+        "p31.color.accent.green.default",
+        "p31.glass.background",
+        "p31.radius.full"
+      ]
+    },
+    {
+      "slug": "notificationstack",
+      "name": "NotificationStack",
+      "layer": "composition",
+      "status": "verified",
+      "intent": "Stacked, severity-tinted notification toasts (bottom-right). Store-agnostic — items/onDismiss are props; colors via data-kind.",
+      "contract": "src/contracts/notification-stack.contract.ts",
+      "import": "import { NotificationStack } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "items",
+          "type": "array",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "The notifications."
+        },
+        {
+          "name": "onDismiss",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Dismiss one by id."
+        },
+        {
+          "name": "onClearAll",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Clear all."
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Accessible name."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.glass.surface",
+        "p31.glass.border",
+        "p31.color.accent.default",
+        "p31.color.accent.green.default",
+        "p31.color.accent.gold.default",
+        "p31.color.accent.red.default",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.z.floating"
+      ]
+    },
+    {
+      "slug": "pageheader",
+      "name": "PageHeader",
+      "layer": "composition",
+      "status": "verified",
+      "intent": "Inner-page hero: mono eyebrow, gradient title, and lede. Use at the top of content routes.",
+      "contract": "src/contracts/page-header.contract.ts",
+      "import": "import { PageHeader } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "eyebrow",
+          "type": "string",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Mono eyebrow."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Gradient title."
+        },
+        {
+          "name": "lede",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Lede."
+        },
+        {
+          "name": "children",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Header content."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.color.text.secondary"
+      ]
+    },
+    {
+      "slug": "sectionstrip",
+      "name": "SectionStrip",
+      "layer": "component",
+      "status": "verified",
+      "intent": "Desktop pill navigation strip. Use for primary section navigation on wide viewports.",
+      "contract": "src/contracts/section-strip.contract.ts",
+      "import": "import { SectionStrip } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "items",
+          "type": "array",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "The sections."
+        },
+        {
+          "name": "onSelect",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Called with the section id."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.radius.candy",
+        "p31.color.accent.default",
+        "p31.color.text.secondary"
+      ]
+    },
+    {
+      "slug": "sidebarnav",
+      "name": "SidebarNav",
+      "layer": "component",
+      "status": "verified",
+      "intent": "Flat suite navigation rail (emoji + label), active state per route. Store-agnostic — items/activePath/onNavigate are props.",
+      "contract": "src/contracts/sidebar-nav.contract.ts",
+      "import": "import { SidebarNav } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "items",
+          "type": "array",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Navigation items."
+        },
+        {
+          "name": "activePath",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Currently active path."
+        },
+        {
+          "name": "onNavigate",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Navigate handler."
+        },
+        {
+          "name": "renderItem",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Custom item renderer."
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Accessible name."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.glass.surface",
+        "p31.glass.border",
+        "p31.color.accent.default",
+        "p31.color.text.secondary",
+        "p31.radius.full",
+        "p31.font.family.sans"
+      ]
+    },
+    {
+      "slug": "spooncluster",
+      "name": "SpoonCluster",
+      "layer": "component",
+      "status": "verified",
+      "intent": "Spoon dots in the status cluster — read-only metabolic status.",
+      "contract": "src/contracts/spoon-cluster.contract.ts",
+      "import": "import { SpoonCluster } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "level",
+          "type": "number",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "Current spoon level (0-5)."
+        },
+        {
+          "name": "total",
+          "type": "number",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Total dots."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.color.accent.default",
+        "p31.glass.border",
+        "p31.radius.full"
+      ]
+    },
+    {
+      "slug": "spoondial",
+      "name": "SpoonDial",
+      "layer": "component",
+      "status": "verified",
+      "intent": "Cognitive load selector (0-5 spoons). Use for neurodivergent-first accessibility control.",
+      "contract": "src/contracts/spoon-dial.contract.ts",
+      "import": "import { SpoonDial } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "level",
+          "type": "number",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Current spoon level (0-5)."
+        },
+        {
+          "name": "onChange",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Callback when the level changes."
+        },
+        {
+          "name": "onCrisis",
+          "type": "function",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Calm rest button — sets level to its minimum."
+        },
+        {
+          "name": "min",
+          "type": "number",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Minimum level."
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Maximum level."
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Deprecated alias for level."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Deprecated alias for onChange."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.radius.full",
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.color.accent.default",
+        "p31.color.text.muted"
+      ]
+    },
+    {
+      "slug": "starfield",
+      "name": "Starfield",
+      "layer": "composition",
+      "status": "verified",
+      "intent": "Animated starfield background. Use for ambient backgrounds in shell and marketing.",
+      "contract": "src/contracts/starfield.contract.ts",
+      "import": "import { Starfield } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "spoons",
+          "type": "number",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Current spoon level."
+        },
+        {
+          "name": "voltage",
+          "type": "enum",
+          "required": false,
+          "options": [
+            "GREEN",
+            "AMBER",
+            "RED",
+            "BLUE"
+          ],
+          "default": null,
+          "description": "Voltage preset."
+        },
+        {
+          "name": "safeMode",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Safe mode."
+        },
+        {
+          "name": "children",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Foreground content."
+        }
+      ],
+      "variants": {
+        "voltage": [
+          "GREEN",
+          "AMBER",
+          "RED",
+          "BLUE"
+        ]
+      },
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.z.starfield",
+        "p31.starfield.hearth",
+        "p31.starfield.teal",
+        "p31.starfield.remembrance"
+      ]
+    },
+    {
+      "slug": "statusbadge",
+      "name": "StatusBadge",
+      "layer": "component",
+      "status": "verified",
+      "intent": "Status indicator badge. Use for system status, health indicators, and state labels.",
+      "contract": "src/contracts/status-badge.contract.ts",
+      "import": "import { StatusBadge } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "status",
+          "type": "enum",
+          "required": false,
+          "options": [
+            "online",
+            "offline",
+            "busy",
+            "away"
+          ],
+          "default": "online",
+          "description": "Status."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Label text."
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "options": [
+            "live",
+            "beta",
+            "research"
+          ],
+          "default": null,
+          "description": "Deprecated — use status."
+        }
+      ],
+      "variants": {
+        "status": [
+          "online",
+          "offline",
+          "busy",
+          "away"
+        ],
+        "variant": [
+          "live",
+          "beta",
+          "research"
+        ]
+      },
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.radius.full",
+        "p31.scale.xs",
+        "p31.color.accent.green.default",
+        "p31.color.accent.red.default",
+        "p31.color.accent.gold.default"
+      ]
+    },
+    {
+      "slug": "statuscluster",
+      "name": "StatusCluster",
+      "layer": "component",
+      "status": "verified",
+      "intent": "Read-only status row in the topbar right region. Scrolls horizontally with edge fades when it outgrows the bar.",
+      "contract": "src/contracts/status-cluster.contract.ts",
+      "import": "import { StatusCluster } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "children",
+          "type": "node",
+          "required": true,
+          "options": null,
+          "default": null,
+          "description": "The status segments."
+        }
+      ],
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.glass.background"
+      ]
+    },
+    {
+      "slug": "topbarsection",
+      "name": "TopbarSection",
+      "layer": "component",
+      "status": "verified",
+      "intent": "Vertically-centered, gap-consistent slot group inside a Topbar. Owns internal spacing; the Topbar owns arrangement.",
+      "contract": "src/contracts/topbar-section.contract.ts",
+      "import": "import { TopbarSection } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "slot",
+          "type": "enum",
+          "required": true,
+          "options": [
+            "leading",
+            "brand",
+            "center",
+            "status",
+            "mode",
+            "trailing",
+            "mobile-trailing",
+            "identity"
+          ],
+          "default": "brand",
+          "description": "Slot identity."
+        },
+        {
+          "name": "children",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Section content."
+        }
+      ],
+      "variants": {
+        "slot": [
+          "leading",
+          "brand",
+          "center",
+          "status",
+          "mode",
+          "trailing",
+          "mobile-trailing",
+          "identity"
+        ]
+      },
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.glass.background"
+      ]
+    },
+    {
+      "slug": "topbar",
+      "name": "Topbar",
+      "layer": "composition",
+      "status": "verified",
+      "intent": "Unified app-chrome shell — slot-based three-region layout. Brand / center / statusCluster / mode / trailing, with variant (app|marketing|game) and mobile overrides.",
+      "contract": "src/contracts/topbar.contract.ts",
+      "import": "import { Topbar } from '@p31ca/design-core/compositions';",
+      "implemented": false,
+      "props": [
+        {
+          "name": "brand",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Left cluster."
+        },
+        {
+          "name": "left",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Legacy alias for brand."
+        },
+        {
+          "name": "center",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Center region."
+        },
+        {
+          "name": "right",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Legacy right cluster."
+        },
+        {
+          "name": "statusCluster",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Status segments."
+        },
+        {
+          "name": "mode",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Mode control."
+        },
+        {
+          "name": "trailing",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Trailing actions."
+        },
+        {
+          "name": "identity",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Identity region."
+        },
+        {
+          "name": "mobileLeading",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Mobile leading override."
+        },
+        {
+          "name": "mobileTrailing",
+          "type": "node",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Mobile trailing override."
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "options": [
+            "app",
+            "marketing",
+            "game"
+          ],
+          "default": "app",
+          "description": "Visual variant."
+        },
+        {
+          "name": "sticky",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Sticky at top."
+        },
+        {
+          "name": "glass",
+          "type": "boolean",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Glassmorphic background."
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "options": null,
+          "default": null,
+          "description": "Accessible name for the banner."
+        }
+      ],
+      "variants": {
+        "variant": [
+          "app",
+          "marketing",
+          "game"
+        ]
+      },
+      "states": [
+        "default"
+      ],
+      "tokens": [
+        "p31.topbar.height",
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.radius.candy",
+        "p31.color.accent.default",
+        "p31.color.accent.gold.default",
+        "p31.color.accent.green.default"
+      ]
+    }
+  ],
+  "cssClasses": [
+    {
+      "name": ".a2-data-card",
+      "files": [
+        "a2ui-datacard.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-font-mono",
+        "--p31-glass-bg",
+        "--p31-glass-blur",
+        "--p31-glass-border",
+        "--p31-glass-radius",
+        "--p31-neon-faint",
+        "--p31-neon-ghost",
+        "--p31-radius-lg",
+        "--p31-spacing-lg",
+        "--p31-text"
+      ]
+    },
+    {
+      "name": ".a2-data-card-action",
+      "files": [
+        "a2ui-datacard.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-body-sm",
+        "--p31-duration-fast",
+        "--p31-easing-standard",
+        "--p31-font-mono",
+        "--p31-radius-sm"
+      ]
+    },
+    {
+      "name": ".a2-data-card-action--danger",
+      "files": [
+        "a2ui-datacard.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent-red",
+        "--p31-status-error",
+        "--p31-text"
+      ]
+    },
+    {
+      "name": ".a2-data-card-action--primary",
+      "files": [
+        "a2ui-datacard.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-bg",
+        "--p31-neon",
+        "--p31-neon-faint"
+      ]
+    },
+    {
+      "name": ".a2-data-card-actions",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-spacing-md",
+        "--p31-spacing-sm"
+      ]
+    },
+    {
+      "name": ".a2-data-card-body",
+      "files": [
+        "a2ui-datacard.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-spacing-md",
+        "--p31-text-secondary"
+      ]
+    },
+    {
+      "name": ".a2-data-card-close",
+      "files": [
+        "a2ui-datacard.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-duration-fast",
+        "--p31-easing-standard",
+        "--p31-glass-bg",
+        "--p31-neon",
+        "--p31-radius-sm",
+        "--p31-text",
+        "--p31-text-secondary",
+        "--p31-text-tertiary"
+      ]
+    },
+    {
+      "name": ".a2-data-card-header",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-spacing-md"
+      ]
+    },
+    {
+      "name": ".a2-data-card-metric-label",
+      "files": [
+        "a2ui-datacard.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-label",
+        "--p31-text-secondary",
+        "--p31-text-tertiary"
+      ]
+    },
+    {
+      "name": ".a2-data-card-metric-value",
+      "files": [
+        "a2ui-datacard.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-h2",
+        "--p31-text-secondary"
+      ]
+    },
+    {
+      "name": ".a2-data-card-metrics",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-spacing-lg",
+        "--p31-spacing-md"
+      ]
+    },
+    {
+      "name": ".a2-data-card-status",
+      "files": [
+        "a2ui-datacard.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-label",
+        "--p31-radius-full",
+        "--p31-radius-sm"
+      ]
+    },
+    {
+      "name": ".a2-data-card-subtitle",
+      "files": [
+        "a2ui-datacard.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-body-sm",
+        "--p31-text-secondary",
+        "--p31-text-tertiary"
+      ]
+    },
+    {
+      "name": ".a2-data-card-title",
+      "files": [
+        "a2ui-datacard.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-h3",
+        "--p31-text"
+      ]
+    },
+    {
+      "name": ".a2-data-card-title-row",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-spacing-md"
+      ]
+    },
+    {
+      "name": ".active",
+      "files": [
+        "layout.css",
+        "recipes.css",
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-accent-dim",
+        "--p31-accent-gold",
+        "--p31-glass-bg"
+      ]
+    },
+    {
+      "name": ".admin-tab",
+      "files": [
+        "layout.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-body-sm",
+        "--p31-duration-fast",
+        "--p31-easing-standard",
+        "--p31-glass-bg",
+        "--p31-glass-border",
+        "--p31-radius-sm",
+        "--p31-text",
+        "--p31-text-secondary",
+        "--p31-text-tertiary"
+      ]
+    },
+    {
+      "name": ".admin-tabs",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-glass-border",
+        "--p31-spacing-lg",
+        "--p31-spacing-sm"
+      ]
+    },
+    {
+      "name": ".badge",
+      "files": [
+        "recipes.css",
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-radius-full",
+        "--p31-scale-xs",
+        "--p31-text-xs"
+      ]
+    },
+    {
+      "name": ".badge-error",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent-red"
+      ]
+    },
+    {
+      "name": ".badge-info",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent"
+      ]
+    },
+    {
+      "name": ".badge-maker",
+      "files": [
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-accent-violet"
+      ]
+    },
+    {
+      "name": ".badge-spark",
+      "files": [
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-accent-cyan"
+      ]
+    },
+    {
+      "name": ".badge-success",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent-green"
+      ]
+    },
+    {
+      "name": ".badge-warning",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent-gold"
+      ]
+    },
+    {
+      "name": ".badge-workshop",
+      "files": [
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-accent-gold"
+      ]
+    },
+    {
+      "name": ".bottom-nav",
+      "files": [
+        "layout.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-glass-bg",
+        "--p31-glass-blur",
+        "--p31-glass-border",
+        "--p31-z-topbar"
+      ]
+    },
+    {
+      "name": ".breath-circle",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent-green"
+      ]
+    },
+    {
+      "name": ".btn",
+      "files": [
+        "recipes.css",
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-duration-fast",
+        "--p31-ease-quantum",
+        "--p31-font-sans",
+        "--p31-radius-md",
+        "--p31-radius-sm",
+        "--p31-scale-sm",
+        "--p31-space-2",
+        "--p31-space-4",
+        "--p31-spacing-lg",
+        "--p31-spacing-sm",
+        "--p31-text-base",
+        "--p31-text-primary",
+        "--p31-transition-fast"
+      ]
+    },
+    {
+      "name": ".btn-ghost",
+      "files": [
+        "motion.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-duration-fast",
+        "--p31-glass-bg",
+        "--p31-text",
+        "--p31-text-secondary"
+      ]
+    },
+    {
+      "name": ".btn-glass",
+      "files": [
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-glass-bg",
+        "--p31-glass-bg-hover",
+        "--p31-glass-blur",
+        "--p31-glass-border"
+      ]
+    },
+    {
+      "name": ".btn-primary",
+      "files": [
+        "motion.css",
+        "recipes.css",
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-accent-hover",
+        "--p31-duration-fast",
+        "--p31-void"
+      ]
+    },
+    {
+      "name": ".btn-secondary",
+      "files": [
+        "motion.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent-violet",
+        "--p31-duration-fast"
+      ]
+    },
+    {
+      "name": ".btn-sm",
+      "files": [
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-text-sm"
+      ]
+    },
+    {
+      "name": ".card-graph-pinned",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-spacing-lg"
+      ]
+    },
+    {
+      "name": ".chip",
+      "files": [
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-accent-dim",
+        "--p31-cloud",
+        "--p31-ease-quantum",
+        "--p31-glass-border",
+        "--p31-radius-full",
+        "--p31-surface2",
+        "--p31-text-sm",
+        "--p31-transition-fast"
+      ]
+    },
+    {
+      "name": ".clickable",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-duration-instant",
+        "--p31-text"
+      ]
+    },
+    {
+      "name": ".code-block",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-font-mono",
+        "--p31-glass-border",
+        "--p31-radius-md",
+        "--p31-spacing-md",
+        "--p31-void"
+      ]
+    },
+    {
+      "name": ".container",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-spacing-lg"
+      ]
+    },
+    {
+      "name": ".copy-btn",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-duration-fast",
+        "--p31-easing-standard",
+        "--p31-glass-bg",
+        "--p31-glass-border",
+        "--p31-label",
+        "--p31-radius-sm",
+        "--p31-text-secondary"
+      ]
+    },
+    {
+      "name": ".cr-master",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-duration-standard",
+        "--p31-easing-standard"
+      ]
+    },
+    {
+      "name": ".crisis-overlay",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-bg"
+      ]
+    },
+    {
+      "name": ".exit-btn",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-duration-standard",
+        "--p31-easing-standard",
+        "--p31-glass-bg",
+        "--p31-glass-border",
+        "--p31-radius-full",
+        "--p31-text"
+      ]
+    },
+    {
+      "name": ".feature-card",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-glass-bg",
+        "--p31-glass-border",
+        "--p31-radius-xl"
+      ]
+    },
+    {
+      "name": ".feature-card__desc",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-text-secondary"
+      ]
+    },
+    {
+      "name": ".feature-card__icon",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-radius-md"
+      ]
+    },
+    {
+      "name": ".feature-card__title",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-text"
+      ]
+    },
+    {
+      "name": ".floating-window",
+      "files": [
+        "layout.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-glass-bg",
+        "--p31-glass-blur",
+        "--p31-glass-border",
+        "--p31-glass-radius",
+        "--p31-glass-shadow",
+        "--p31-z-floating"
+      ]
+    },
+    {
+      "name": ".floating-window__body",
+      "files": [
+        "layout.css"
+      ],
+      "tokens": [
+        "--p31-scale-xs",
+        "--p31-space-sm",
+        "--p31-text-secondary"
+      ]
+    },
+    {
+      "name": ".floating-window__header",
+      "files": [
+        "layout.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-glass-bg-strong",
+        "--p31-glass-border"
+      ]
+    },
+    {
+      "name": ".floating-window__title",
+      "files": [
+        "layout.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-body-sm",
+        "--p31-scale-xs",
+        "--p31-text"
+      ]
+    },
+    {
+      "name": ".glass-box",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-glass-blur",
+        "--p31-glass-border",
+        "--p31-glass-radius",
+        "--p31-glass-shadow",
+        "--p31-glass-surface"
+      ]
+    },
+    {
+      "name": ".glass-box-hover",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-accent-glow",
+        "--p31-duration-standard",
+        "--p31-easing-standard",
+        "--p31-glass-surface"
+      ]
+    },
+    {
+      "name": ".glass-card",
+      "files": [
+        "motion.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-bg",
+        "--p31-duration-standard",
+        "--p31-easing-standard",
+        "--p31-glass-bg",
+        "--p31-glass-blur",
+        "--p31-glass-border",
+        "--p31-glass-border-hover",
+        "--p31-glass-radius",
+        "--p31-glass-shadow",
+        "--p31-spacing-lg"
+      ]
+    },
+    {
+      "name": ".glass-navbar",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-glass-bg",
+        "--p31-glass-blur",
+        "--p31-glass-border",
+        "--p31-glass-radius",
+        "--p31-spacing-md",
+        "--p31-spacing-sm"
+      ]
+    },
+    {
+      "name": ".glass-panel",
+      "files": [
+        "motion.css",
+        "recipes.css",
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-bg",
+        "--p31-duration-standard",
+        "--p31-easing-standard",
+        "--p31-glass-bg",
+        "--p31-glass-blur",
+        "--p31-glass-border",
+        "--p31-glass-border-hover",
+        "--p31-glass-radius",
+        "--p31-glass-shadow",
+        "--p31-glass-surface-hover",
+        "--p31-radius-md"
+      ]
+    },
+    {
+      "name": ".glass-strong",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-bg",
+        "--p31-glass-bg-strong",
+        "--p31-glass-border",
+        "--p31-glass-border-strong",
+        "--p31-glass-radius",
+        "--p31-glass-shadow"
+      ]
+    },
+    {
+      "name": ".glass-subtle",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-bg",
+        "--p31-glass-bg-light",
+        "--p31-glass-border",
+        "--p31-glass-radius"
+      ]
+    },
+    {
+      "name": ".header-drawer",
+      "files": [
+        "layout.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-glass-bg",
+        "--p31-glass-blur",
+        "--p31-glass-border",
+        "--p31-glass-radius",
+        "--p31-glass-shadow",
+        "--p31-space-lg",
+        "--p31-space-sm",
+        "--p31-space-xs",
+        "--p31-spacing-lg",
+        "--p31-topbar-height",
+        "--p31-z-topbar"
+      ]
+    },
+    {
+      "name": ".honest-label",
+      "files": [
+        "quantum.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent-red",
+        "--p31-label",
+        "--p31-radius-sm",
+        "--p31-space-sm",
+        "--p31-space-xl"
+      ]
+    },
+    {
+      "name": ".input",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-duration-fast",
+        "--p31-glass-border",
+        "--p31-radius-md",
+        "--p31-scale-sm",
+        "--p31-spacing-md",
+        "--p31-spacing-sm",
+        "--p31-text",
+        "--p31-text-tertiary"
+      ]
+    },
+    {
+      "name": ".k4-edge",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent"
+      ]
+    },
+    {
+      "name": ".k4-node",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-duration-standard",
+        "--p31-easing-standard",
+        "--p31-glass-bg",
+        "--p31-glass-border",
+        "--p31-radius-md"
+      ]
+    },
+    {
+      "name": ".metric-badge",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-duration-instant",
+        "--p31-glass-bg",
+        "--p31-glass-border",
+        "--p31-radius-sm",
+        "--p31-scale-xs",
+        "--p31-text",
+        "--p31-text-secondary"
+      ]
+    },
+    {
+      "name": ".modal-backdrop",
+      "files": [
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-void"
+      ]
+    },
+    {
+      "name": ".modal-box",
+      "files": [
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-glass-border",
+        "--p31-glass-shadow",
+        "--p31-radius-lg",
+        "--p31-space-5",
+        "--p31-space-6",
+        "--p31-surface"
+      ]
+    },
+    {
+      "name": ".nav-item",
+      "files": [
+        "layout.css",
+        "recipes.css",
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-accent-dim",
+        "--p31-cloud",
+        "--p31-duration-fast",
+        "--p31-ease-quantum",
+        "--p31-radius-sm",
+        "--p31-scale-xs",
+        "--p31-space-3",
+        "--p31-surface2",
+        "--p31-text-base",
+        "--p31-text-primary",
+        "--p31-text-tertiary",
+        "--p31-transition-fast"
+      ]
+    },
+    {
+      "name": ".offline",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent-red"
+      ]
+    },
+    {
+      "name": ".outcome",
+      "files": [
+        "quantum.css"
+      ],
+      "tokens": [
+        "--p31-space-sm"
+      ]
+    },
+    {
+      "name": ".p31-crisis-button",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-radius-md"
+      ]
+    },
+    {
+      "name": ".p31-crisis-message",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-body",
+        "--p31-text"
+      ]
+    },
+    {
+      "name": ".page-header",
+      "files": [
+        "layout.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-glass-border",
+        "--p31-space-lg",
+        "--p31-space-md",
+        "--p31-spacing-xl"
+      ]
+    },
+    {
+      "name": ".page-header__controls",
+      "files": [
+        "layout.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-space-sm",
+        "--p31-spacing-md"
+      ]
+    },
+    {
+      "name": ".page-header__title",
+      "files": [
+        "layout.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-h1",
+        "--p31-scale-xl",
+        "--p31-text"
+      ]
+    },
+    {
+      "name": ".preview",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-glass-border",
+        "--p31-glass-radius",
+        "--p31-spacing-xl"
+      ]
+    },
+    {
+      "name": ".preview-label",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-label",
+        "--p31-spacing-md",
+        "--p31-text-tertiary"
+      ]
+    },
+    {
+      "name": ".preview-section",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-spacing-xl"
+      ]
+    },
+    {
+      "name": ".rounded",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-radius-md"
+      ]
+    },
+    {
+      "name": ".shell",
+      "files": [
+        "layout.css"
+      ],
+      "tokens": [
+        "--p31-bg"
+      ]
+    },
+    {
+      "name": ".sic-gauge",
+      "files": [
+        "quantum.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent-gold",
+        "--p31-accent-green",
+        "--p31-accent-red",
+        "--p31-space-lg",
+        "--p31-space-sm"
+      ]
+    },
+    {
+      "name": ".skip-link",
+      "files": [
+        "recipes.css",
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-ease-quantum",
+        "--p31-radius-md",
+        "--p31-radius-sm",
+        "--p31-space-2",
+        "--p31-space-4",
+        "--p31-spacing-md",
+        "--p31-spacing-sm",
+        "--p31-transition-fast",
+        "--p31-void",
+        "--p31-z-skip-link"
+      ]
+    },
+    {
+      "name": ".spoon-btn",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-duration-instant",
+        "--p31-glass-bg",
+        "--p31-text",
+        "--p31-text-tertiary"
+      ]
+    },
+    {
+      "name": ".spoon-crisis-btn",
+      "files": [
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-accent-red",
+        "--p31-radius-full",
+        "--p31-text-xs"
+      ]
+    },
+    {
+      "name": ".spoon-dial",
+      "files": [
+        "recipes.css",
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-glass-border",
+        "--p31-radius-full",
+        "--p31-surface2"
+      ]
+    },
+    {
+      "name": ".spoon-dial-label",
+      "files": [
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-cloud"
+      ]
+    },
+    {
+      "name": ".spoon-dot",
+      "files": [
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-accent-gold",
+        "--p31-surface3",
+        "--p31-transition-fast"
+      ]
+    },
+    {
+      "name": ".stack-diagonal",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent"
+      ]
+    },
+    {
+      "name": ".stack-node",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-radius-md"
+      ]
+    },
+    {
+      "name": ".stack-node__count",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-font-mono",
+        "--p31-text-tertiary"
+      ]
+    },
+    {
+      "name": ".stack-node__icon",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-radius-md"
+      ]
+    },
+    {
+      "name": ".stack-node__label",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-text"
+      ]
+    },
+    {
+      "name": ".starfield-bg",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-z-starfield"
+      ]
+    },
+    {
+      "name": ".status-dot",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent-green",
+        "--p31-accent-red"
+      ]
+    },
+    {
+      "name": ".surface-card",
+      "files": [
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-ease-quantum",
+        "--p31-glass-bg",
+        "--p31-glass-bg-hover",
+        "--p31-glass-border",
+        "--p31-radius-lg",
+        "--p31-space-3",
+        "--p31-space-5",
+        "--p31-transition-normal"
+      ]
+    },
+    {
+      "name": ".surface-card-desc",
+      "files": [
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-cloud",
+        "--p31-text-base"
+      ]
+    },
+    {
+      "name": ".surface-card-icon",
+      "files": [
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-radius-md"
+      ]
+    },
+    {
+      "name": ".surface-card-title",
+      "files": [
+        "suite.css"
+      ],
+      "tokens": [
+        "--p31-text-primary",
+        "--p31-text-xl"
+      ]
+    },
+    {
+      "name": ".terminal",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-font-mono",
+        "--p31-glass-border",
+        "--p31-radius-lg"
+      ]
+    },
+    {
+      "name": ".terminal__body",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-text-secondary"
+      ]
+    },
+    {
+      "name": ".terminal__cmd",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-text"
+      ]
+    },
+    {
+      "name": ".terminal__cursor",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent"
+      ]
+    },
+    {
+      "name": ".terminal__header",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-glass-border"
+      ]
+    },
+    {
+      "name": ".terminal__output",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-text-tertiary"
+      ]
+    },
+    {
+      "name": ".terminal__prompt",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent"
+      ]
+    },
+    {
+      "name": ".terminal__success",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-status-success"
+      ]
+    },
+    {
+      "name": ".tetra-grid",
+      "files": [
+        "quantum.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-space-xl",
+        "--p31-tetra-overlap"
+      ]
+    },
+    {
+      "name": ".tetra-nav",
+      "files": [
+        "quantum.css"
+      ],
+      "tokens": [
+        "--p31-quantum-cyan",
+        "--p31-space-sm",
+        "--p31-tetra-overlap"
+      ]
+    },
+    {
+      "name": ".text-accent",
+      "files": [
+        "typography.css"
+      ],
+      "tokens": [
+        "--p31-accent"
+      ]
+    },
+    {
+      "name": ".text-body",
+      "files": [
+        "typography.css"
+      ],
+      "tokens": [
+        "--p31-body"
+      ]
+    },
+    {
+      "name": ".text-caption",
+      "files": [
+        "typography.css"
+      ],
+      "tokens": [
+        "--p31-caption"
+      ]
+    },
+    {
+      "name": ".text-code",
+      "files": [
+        "typography.css"
+      ],
+      "tokens": [
+        "--p31-font-mono"
+      ]
+    },
+    {
+      "name": ".text-dim",
+      "files": [
+        "typography.css"
+      ],
+      "tokens": [
+        "--p31-text-tertiary"
+      ]
+    },
+    {
+      "name": ".text-gold",
+      "files": [
+        "typography.css"
+      ],
+      "tokens": [
+        "--p31-accent-gold"
+      ]
+    },
+    {
+      "name": ".text-green",
+      "files": [
+        "typography.css"
+      ],
+      "tokens": [
+        "--p31-accent-green"
+      ]
+    },
+    {
+      "name": ".text-h1",
+      "files": [
+        "typography.css"
+      ],
+      "tokens": [
+        "--p31-h1"
+      ]
+    },
+    {
+      "name": ".text-h2",
+      "files": [
+        "typography.css"
+      ],
+      "tokens": [
+        "--p31-h2"
+      ]
+    },
+    {
+      "name": ".text-h3",
+      "files": [
+        "typography.css"
+      ],
+      "tokens": [
+        "--p31-h3"
+      ]
+    },
+    {
+      "name": ".text-h4",
+      "files": [
+        "typography.css"
+      ],
+      "tokens": [
+        "--p31-h4"
+      ]
+    },
+    {
+      "name": ".text-label",
+      "files": [
+        "typography.css"
+      ],
+      "tokens": [
+        "--p31-label"
+      ]
+    },
+    {
+      "name": ".text-muted",
+      "files": [
+        "typography.css"
+      ],
+      "tokens": [
+        "--p31-text-secondary"
+      ]
+    },
+    {
+      "name": ".text-red",
+      "files": [
+        "typography.css"
+      ],
+      "tokens": [
+        "--p31-accent-red"
+      ]
+    },
+    {
+      "name": ".text-violet",
+      "files": [
+        "typography.css"
+      ],
+      "tokens": [
+        "--p31-accent-violet"
+      ]
+    },
+    {
+      "name": ".title-shimmer",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-accent-gold",
+        "--p31-accent-green"
+      ]
+    },
+    {
+      "name": ".topbar",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-duration-fast",
+        "--p31-easing-standard",
+        "--p31-glass-bg",
+        "--p31-glass-blur",
+        "--p31-glass-border",
+        "--p31-glass-shadow",
+        "--p31-radius-candy",
+        "--p31-space-sm",
+        "--p31-space-xs",
+        "--p31-text",
+        "--p31-topbar-height",
+        "--p31-z-topbar"
+      ]
+    },
+    {
+      "name": ".topbar-center",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-space-tiny"
+      ]
+    },
+    {
+      "name": ".topbar-center-absolute",
+      "files": [
+        "layout.css"
+      ],
+      "tokens": [
+        "--p31-space-tiny"
+      ]
+    },
+    {
+      "name": ".topbar-glass",
+      "files": [
+        "layout.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-glass-bg",
+        "--p31-glass-blur",
+        "--p31-glass-border",
+        "--p31-glass-radius",
+        "--p31-glass-shadow",
+        "--p31-radius-candy",
+        "--p31-text"
+      ]
+    },
+    {
+      "name": ".topbar-left",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-scale-lg",
+        "--p31-space-xs"
+      ]
+    },
+    {
+      "name": ".topbar-right",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-space-tiny"
+      ]
+    },
+    {
+      "name": ".trust-item",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-duration-standard",
+        "--p31-easing-standard",
+        "--p31-glass-bg",
+        "--p31-glass-border",
+        "--p31-radius-xl"
+      ]
+    },
+    {
+      "name": ".trust-item__label",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-text-secondary"
+      ]
+    },
+    {
+      "name": ".trust-item__number",
+      "files": [
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-accent",
+        "--p31-accent-bright"
+      ]
+    },
+    {
+      "name": ".viewport",
+      "files": [
+        "layout.css",
+        "recipes.css"
+      ],
+      "tokens": [
+        "--p31-space-xs",
+        "--p31-topbar-height",
+        "--p31-z-content"
+      ]
+    }
+  ],
+  "themes": [
+    {
+      "id": "cipher",
+      "name": "Cipher",
+      "description": "Quantum cyan and violet on void",
+      "isDefault": false,
+      "tokenCount": 29
+    },
+    {
+      "id": "garden",
+      "name": "Garden",
+      "description": "Warm soil greens — growth and calm",
+      "isDefault": false,
+      "tokenCount": 29
+    },
+    {
+      "id": "retro",
+      "name": "Retro",
+      "description": "CRT amber — warm glow, terminal vibes",
+      "isDefault": false,
+      "tokenCount": 29
+    },
+    {
+      "id": "ocean",
+      "name": "Ocean",
+      "description": "Deep blue depths — teal and coral",
+      "isDefault": true,
+      "tokenCount": 29
+    },
+    {
+      "id": "sunset",
+      "name": "Sunset",
+      "description": "Warm dusk — orange and rose gold",
+      "isDefault": false,
+      "tokenCount": 29
+    },
+    {
+      "id": "mono",
+      "name": "Mono",
+      "description": "Clean monochrome — black, white, gray",
+      "isDefault": false,
+      "tokenCount": 29
+    },
+    {
+      "id": "aurora",
+      "name": "Aurora",
+      "description": "Nebula bloom — greens and violets in motion",
+      "isDefault": false,
+      "tokenCount": 29
+    },
+    {
+      "id": "zen",
+      "name": "Zen",
+      "description": "Still earth — warm neutrals, minimal contrast",
+      "isDefault": false,
+      "tokenCount": 29
+    },
+    {
+      "id": "volt",
+      "name": "Volt",
+      "description": "Electric — sharp cyan and violet, high contrast",
+      "isDefault": false,
+      "tokenCount": 29
+    },
+    {
+      "id": "family",
+      "name": "Family",
+      "description": "Warm amber and peach — together, not technical",
+      "isDefault": false,
+      "tokenCount": 29
+    },
+    {
+      "id": "sunlight",
+      "name": "Sunlight",
+      "description": "Warm cream canvas, dark ink, terracotta — the human front door",
+      "isDefault": false,
+      "tokenCount": 30
+    }
+  ],
+  "frames": [
+    {
+      "name": "--p31-frame-connection",
+      "value": "oklch(75.3% 0.158 76.8)",
+      "category": "frame"
+    },
+    {
+      "name": "--p31-frame-creation",
+      "value": "oklch(62% 0.13 165.5)",
+      "category": "frame"
+    },
+    {
+      "name": "--p31-frame-rhythm",
+      "value": "oklch(67.9% 0.118 346.3)",
+      "category": "frame"
+    },
+    {
+      "name": "--p31-frame-structure",
+      "value": "oklch(73.5% 0.117 236.2)",
+      "category": "frame"
+    }
+  ]
+}

@@ -1,0 +1,374 @@
+{
+  "$schema": "https://design-tokens.org/schemas/format/2025.10",
+  "version": "2025.10",
+  "package": "@p31ca/design-core",
+  "description": "P31 design token manifest — primitives, semantics, components, and composite types",
+  "$extensions": {
+    "p31": {
+      "version": 2,
+      "name": "P31 Labs Design System",
+      "description": "Sovereign, neuroinclusive design system for assistive technology. Dark-first, glassmorphism, spoon-aware motion scaling.",
+      "deprecationPolicy": "Tokens marked $deprecated will be removed in the next major version. Provide a migration path."
+    }
+  },
+  "tokens": {
+    "color": {
+      "quantum-cyan":   { "$value": "oklch(0.870 0.148 203)", "$type": "color", "$description": "Primary accent for interactive elements, CTAs, mesh highlights", "$extensions": { "p31": { "usage": "accent, primary buttons, focus indicators", "accessibility": "WCAG 2.2 AA on dark backgrounds" } } },
+      "quantum-violet": { "$value": "oklch(0.709 0.159 294)", "$type": "color", "$description": "Secondary accent for supporting actions and decorative elements", "$extensions": { "p31": { "usage": "secondary actions, decorative elements" } } },
+      "quantum-gold":   { "$value": "oklch(0.837 0.164 84)", "$type": "color", "$description": "Special accent for donor-facing elements and achievement indicators", "$extensions": { "p31": { "usage": "donor elements, spark indicators, achievements" } } },
+      "quantum-green":  { "$value": "oklch(0.773 0.153 163)", "$type": "color", "$description": "Success state and online indicator", "$extensions": { "p31": { "usage": "success states, online indicators" } } },
+      "quantum-red":    { "$value": "oklch(0.719 0.169 13)", "$type": "color", "$description": "Error state and destructive action indicator", "$extensions": { "p31": { "usage": "error states, destructive actions, crisis indicators" } } },
+      "quantum-iris":   { "$value": "oklch(0.680 0.158 277)", "$type": "color", "$description": "Tertiary highlight for links and federation context", "$extensions": { "p31": { "usage": "tertiary highlight, links-in-context, federation" } } },
+      "void-deep":      { "$value": "oklch(0.117 0.009 285)", "$type": "color", "$description": "Deepest background layer for terminal, code surfaces", "$extensions": { "p31": { "usage": "code blocks, terminal interfaces" } } },
+      "void":           { "$value": "oklch(0.147 0.011 285)", "$type": "color", "$description": "Primary background — deep, non-reflective void", "$extensions": { "p31": { "usage": "primary background", "accessibility": "base for all dark surfaces" } } },
+      "surface":        { "$value": "oklch(0.186 0.016 285)", "$type": "color", "$description": "Raised card and container backgrounds", "$extensions": { "p31": { "usage": "card backgrounds, raised elements" } } },
+      "surface-2":      { "$value": "oklch(0.233 0.027 284)", "$type": "color", "$description": "Nested surface for scrollbar tracks and secondary containers", "$extensions": { "p31": { "usage": "nested surfaces, scrollbar track" } } },
+      "cloud":          { "$value": "oklch(0.712 0.013 286)", "$type": "color", "$description": "Muted body text and low-emphasis content", "$extensions": { "p31": { "usage": "muted body text" } } },
+      "text-primary":   { "$value": "oklch(0.971 0.003 286)", "$type": "color", "$description": "Primary text for headings and body — never use pure white", "$extensions": { "p31": { "usage": "headings and primary body text", "accessibility": "WCAG 2.2 AA on void background (12.7:1)" } } },
+      "text-secondary": { "$value": "oklch(80% 0.01 270)", "$type": "color", "$description": "Supporting text and metadata", "$extensions": { "p31": { "usage": "supporting text, metadata" } } },
+      "text-tertiary":  { "$value": "oklch(78% 0.01 270)", "$type": "color", "$description": "Low-emphasis text and placeholders", "$extensions": { "p31": { "usage": "placeholders, lowest emphasis" } } },
+      "red":            { "$value": "oklch(0.719 0.169 13)", "$type": "color", "$description": "Error state alias", "$extensions": { "p31": { "usage": "error states" } } },
+      "iris":           { "$value": "oklch(0.680 0.158 277)", "$type": "color", "$description": "Tertiary highlight alias", "$extensions": { "p31": { "usage": "tertiary highlight" } } }
+    },
+    "semantic-color": {
+      "primary":   { "$value": "{color.quantum-cyan}",   "$type": "color", "$description": "Primary accent — the single most important action per screen" },
+      "secondary": { "$value": "{color.quantum-violet}", "$type": "color", "$description": "Secondary accent for supporting actions" },
+      "tertiary":  { "$value": "{color.quantum-gold}",   "$type": "color", "$description": "Special accent for achievements and donor elements" },
+      "success":   { "$value": "{color.quantum-green}",  "$type": "color", "$description": "Success and online status" },
+      "error":     { "$value": "{color.quantum-red}",    "$type": "color", "$description": "Error and destructive action" },
+      "highlight": { "$value": "{color.quantum-iris}",   "$type": "color", "$description": "Federation and tertiary highlight" },
+      "on-primary":{ "$value": "{color.void}",           "$type": "color", "$description": "Text/icon on primary accent backgrounds" },
+      "on-surface":{ "$value": "{color.text-primary}",   "$type": "color", "$description": "Text/icon on surface backgrounds" }
+    },
+    "spacing": {
+      "base":   { "$value": 4, "$type": "dimension", "$description": "Spacing base unit (4px) for the 1.333 scale" },
+      "scale":  { "$value": 1.333, "$type": "number", "$description": "Perfect fourth scale ratio for spacing and typography" },
+      "none":   { "$value": 0, "$type": "dimension", "$description": "Zero spacing" },
+      "xs":     { "$value": 4, "$type": "dimension", "$description": "Extra small — micro-adjustments and icon spacing" },
+      "sm":     { "$value": 8, "$type": "dimension", "$description": "Small — tight spacing and inline elements" },
+      "md":     { "$value": 16, "$type": "dimension", "$description": "Medium — standard spacing between elements" },
+      "lg":     { "$value": 24, "$type": "dimension", "$description": "Large — card padding and section spacing" },
+      "xl":     { "$value": 40, "$type": "dimension", "$description": "Extra large — major section spacing" },
+      "xxl":    { "$value": 64, "$type": "dimension", "$description": "Double extra large — hero spacing" },
+      "gutter": { "$value": 24, "$type": "dimension", "$description": "Grid gutter width" },
+      "margin": { "$value": 32, "$type": "dimension", "$description": "Container margin width" }
+    },
+    "typography": {
+      "sans":  { "$value": "Inter, ui-sans-serif, system-ui, -apple-system, sans-serif", "$type": "fontFamily", "$description": "Primary sans-serif for UI text, headings, body" },
+      "mono":  { "$value": "JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace", "$type": "fontFamily", "$description": "Monospace for code and terminal interfaces" },
+      "scale": { "$value": 1.333, "$type": "number", "$description": "Perfect fourth typographic scale ratio" },
+      "base":  { "$value": 16, "$type": "dimension", "$description": "Base font size (16px)" }
+    },
+    "radii": {
+      "none": { "$value": 0, "$type": "dimension", "$description": "No border radius" },
+      "sm":   { "$value": 8, "$type": "dimension", "$description": "Small radius for decorative elements and scrollbar thumb" },
+      "md":   { "$value": 12, "$type": "dimension", "$description": "Medium radius for buttons and interactive elements" },
+      "lg":   { "$value": 24, "$type": "dimension", "$description": "Large radius for cards, containers, and panels" },
+      "full": { "$value": 9999, "$type": "dimension", "$description": "Full pill radius for badges and avatars" }
+    },
+    "motion": {
+      "tempo":    { "$value": 120, "$type": "number", "$description": "Motion tempo (BPM) for timing calculations" },
+      "beat":     { "$value": 500, "$type": "duration", "$description": "Single beat duration at standard tempo" },
+      "instant":  { "$value": 62.5, "$type": "duration", "$description": "Instant — micro-interactions (1/16 beat)" },
+      "fast":     { "$value": 125, "$type": "duration", "$description": "Fast — hover states, micro-transitions (1/8 beat)" },
+      "standard": { "$value": 250, "$type": "duration", "$description": "Standard — most interactions (1/4 beat)" },
+      "slow":     { "$value": 500, "$type": "duration", "$description": "Slow — entrance animations (1/2 beat)" },
+      "slower":   { "$value": 1000, "$type": "duration", "$description": "Slower — page transitions (1 beat)" }
+    },
+    "shadow": {
+      "glass":       { "$value": { "color": "oklch(0% 0 270 / 0.15)", "offsetX": "0px", "offsetY": "8px", "blur": "32px", "spread": "0px" }, "$type": "shadow", "$description": "Default glass panel shadow" },
+      "glass-hover": { "$value": { "color": "oklch(0% 0 270 / 0.25)", "offsetX": "0px", "offsetY": "12px", "blur": "48px", "spread": "0px" }, "$type": "shadow", "$description": "Glass panel hover shadow — deeper lift" },
+      "glow-cyan":   { "$value": { "color": "oklch(87.005% 0.148 202.875 / 0.25)", "offsetX": "0px", "offsetY": "0px", "blur": "20px", "spread": "0px" }, "$type": "shadow", "$description": "Quantum-cyan glow for primary interactive states" },
+      "glow-violet": { "$value": { "color": "oklch(70.897% 0.159 293.541 / 0.25)", "offsetX": "0px", "offsetY": "0px", "blur": "20px", "spread": "0px" }, "$type": "shadow", "$description": "Violet glow for secondary interactive states" },
+      "glow-gold":   { "$value": { "color": "oklch(83.686% 0.164 84.429 / 0.25)", "offsetX": "0px", "offsetY": "0px", "blur": "20px", "spread": "0px" }, "$type": "shadow", "$description": "Gold glow for achievement and spark states" },
+      "glow-green":  { "$value": { "color": "oklch(77.294% 0.153 163.223 / 0.25)", "offsetX": "0px", "offsetY": "0px", "blur": "20px", "spread": "0px" }, "$type": "shadow", "$description": "Green glow for success states" },
+      "glow-red":    { "$value": { "color": "oklch(71.919% 0.169 13.428 / 0.25)", "offsetX": "0px", "offsetY": "0px", "blur": "20px", "spread": "0px" }, "$type": "shadow", "$description": "Red glow for error states" }
+    },
+    "border": {
+      "glass":       { "$value": { "color": "oklch(0% 0 270 / 0.15)", "width": "1px", "style": "solid" }, "$type": "border", "$description": "Default glass panel border" },
+      "glass-hover": { "$value": { "color": "oklch(0% 0 270 / 0.25)", "width": "1px", "style": "solid" }, "$type": "border", "$description": "Glass panel hover border" },
+      "glass-strong":{ "$value": { "color": "oklch(100% 0 270 / 0.16)", "width": "1px", "style": "solid" }, "$type": "border", "$description": "Strong glass border for navbars and overlays" }
+    }
+  },
+  "component-tokens": {
+    "glass-panel": {
+      "$value": {
+        "backgroundColor": "{color.glass-surface}",
+        "backdrop-filter": "blur(12px)",
+        "border": "{border.glass}",
+        "rounded": "{radii.lg}"
+      },
+      "$type": "composition",
+      "$description": "Standard elevated surface for cards and panels",
+      "$extensions": {
+        "p31": {
+          "useWhen": "Top-level surface that separates content sections with depth",
+          "avoidWhen": "Compact inline content; use GlassCard instead"
+        }
+      }
+    },
+    "glass-card": {
+      "$value": {
+        "backgroundColor": "{color.glass-surface}",
+        "backdrop-filter": "blur(12px)",
+        "border": "{border.glass}",
+        "rounded": "{radii.lg}",
+        "padding": "{spacing.lg}"
+      },
+      "$type": "composition",
+      "$description": "Card container with standard glass styling and padding",
+      "$extensions": {
+        "p31": {
+          "useWhen": "Single piece of content in a grid or list",
+          "avoidWhen": "Full-width sections; use GlassPanel instead"
+        }
+      }
+    },
+    "btn-primary": {
+      "$value": {
+        "backgroundColor": "{color.quantum-cyan}",
+        "textColor": "{color.void}",
+        "rounded": "{radii.md}",
+        "padding": "{spacing.sm} {spacing.lg}"
+      },
+      "$type": "composition",
+      "$description": "Primary action button — use once per view",
+      "$extensions": {
+        "p31": {
+          "useWhen": "The single most important action per screen",
+          "avoidWhen": "Secondary actions; use btn-secondary"
+        }
+      }
+    },
+    "btn-secondary": {
+      "$value": {
+        "backgroundColor": "oklch(100% 0.01 240 / 0.04)",
+        "textColor": "{color.quantum-violet}",
+        "rounded": "{radii.md}",
+        "border": { "color": "oklch(100% 0.01 240 / 0.08)", "width": "1px", "style": "solid" },
+        "padding": "{spacing.sm} {spacing.lg}"
+      },
+      "$type": "composition",
+      "$description": "Secondary action button for supporting flows",
+      "$extensions": {
+        "p31": {
+          "useWhen": "Supporting actions that are not the primary action",
+          "avoidWhen": "Primary CTAs; use btn-primary"
+        }
+      }
+    },
+    "btn-ghost": {
+      "$value": {
+        "backgroundColor": "oklch(100% 0.01 240 / 0.04)",
+        "textColor": "{color.text-secondary}",
+        "rounded": "{radii.md}",
+        "border": { "color": "oklch(100% 0.01 240 / 0.08)", "width": "1px", "style": "solid" },
+        "padding": "{spacing.sm} {spacing.lg}"
+      },
+      "$type": "composition",
+      "$description": "Ghost button for low-emphasis actions",
+      "$extensions": {
+        "p31": {
+          "useWhen": "Low-emphasis actions that should not compete for attention",
+          "avoidWhen": "Actions users need to see; use btn-primary or btn-secondary"
+        }
+      }
+    },
+    "navbar": {
+      "$value": {
+        "backgroundColor": "{color.glass-surface}",
+        "backdrop-filter": "blur(12px)",
+        "border": "{border.glass}",
+        "rounded": "{radii.lg}",
+        "padding": "{spacing.sm} {spacing.md}"
+      },
+      "$type": "composition",
+      "$description": "Fixed navigation bar with glass styling",
+      "$extensions": {
+        "p31": {
+          "useWhen": "Primary navigation at top of page",
+          "avoidWhen": "Mobile menus; use dropdown instead"
+        }
+      }
+    }
+  },
+  "property-overrides": {
+    "p31ca": {
+      "semantic-color": {
+        "primary": { "$value": "{color.quantum-cyan}" },
+        "secondary": { "$value": "{color.quantum-violet}" }
+      }
+    },
+    "phosphorus31": {
+      "semantic-color": {
+        "primary": { "$value": "{color.quantum-violet}" },
+        "secondary": { "$value": "{color.quantum-cyan}" }
+      }
+    },
+    "growth-dashboard": {
+      "semantic-color": {
+        "primary": { "$value": "{color.quantum-cyan}" },
+        "secondary": { "$value": "{color.quantum-iris}" }
+      }
+    },
+    "phos": {
+      "semantic-color": {
+        "primary": { "$value": "{color.quantum-cyan}" },
+        "secondary": { "$value": "{color.quantum-gold}" }
+      }
+    }
+  },
+  "deprecated": {
+    "color": {
+      "red": {
+        "$value": "{color.quantum-red}",
+        "$description": "Use quantum-red instead",
+        "$deprecated": true,
+        "migrationPath": "{color.quantum-red}"
+      },
+      "iris": {
+        "$value": "{color.quantum-iris}",
+        "$description": "Use quantum-iris instead",
+        "$deprecated": true,
+        "migrationPath": "{color.quantum-iris}"
+      }
+    }
+  },
+  "invariants": {
+    "tetra": {
+      "vertices": 4,
+      "edges": 6,
+      "overlap": 0.3333333333333333,
+      "bondAngle": -0.3333333333333333,
+      "rigidity": 6,
+      "dimension": 2,
+      "states": 4,
+      "diameter": 1
+    },
+    "spoons": {
+      "min": 0,
+      "max": 5,
+      "crisis": 0,
+      "storeKey": "p31:spoons",
+      "crisisPersistsAcrossReload": false
+    },
+    "sizeClass": {
+      "options": ["compact", "regular", "medium", "expanded"],
+      "values": {
+        "compact":  { "fontBase": 13, "spacingUnit": 6,  "touchTarget": 48, "navH": 46, "columns": 1, "containerPadding": 10 },
+        "regular":  { "fontBase": 14, "spacingUnit": 8,  "touchTarget": 48, "navH": 50, "columns": 1, "containerPadding": 14 },
+        "medium":   { "fontBase": 15, "spacingUnit": 10, "touchTarget": 44, "navH": 54, "columns": 2, "containerPadding": 18 },
+        "expanded": { "fontBase": 16, "spacingUnit": 12, "touchTarget": 40, "navH": 58, "columns": 3, "containerPadding": 24 }
+      }
+    },
+    "spacing": {
+      "base": 4,
+      "scale": 1.333,
+      "steps": [0, 4, 8, 12, 16, 24, 32, 48, 64, 96],
+      "semantic": {
+        "none": 0,
+        "xs": 4,
+        "sm": 8,
+        "md": 16,
+        "lg": 24,
+        "xl": 40,
+        "xxl": 64,
+        "gutter": 24,
+        "margin": 32
+      }
+    },
+    "typography": {
+      "scale": 1.333,
+      "base": 16,
+      "sans": "Inter, ui-sans-serif, system-ui, -apple-system, sans-serif",
+      "mono": "JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+    },
+    "colors": {
+      "palette": ["oklch(0.870 0.148 203)", "oklch(0.709 0.159 294)", "oklch(0.837 0.164 84)", "oklch(0.773 0.153 163)"],
+      "accent": "oklch(0.870 0.148 203)",
+      "tokens": {
+        "voidDeep": "oklch(0.117 0.009 285)",
+        "void": "oklch(0.147 0.011 285)",
+        "surface": "oklch(0.186 0.016 285)",
+        "surface2": "oklch(0.233 0.027 284)",
+        "cloud": "oklch(0.712 0.013 286)",
+        "textPrimary": "oklch(0.971 0.003 286)",
+        "textSecondary": "oklch(80% 0.01 270)",
+        "textTertiary": "oklch(78% 0.01 270)",
+        "accent": "oklch(0.870 0.148 203)",
+        "violet": "oklch(0.709 0.159 294)",
+        "gold": "oklch(0.837 0.164 84)",
+        "green": "oklch(0.773 0.153 163)",
+        "red": "oklch(0.719 0.169 13)",
+        "iris": "oklch(0.680 0.158 277)"
+      },
+      "glass": {
+        "surface": "oklch(100% 0.01 240 / 0.04)",
+        "border": "oklch(100% 0.01 240 / 0.08)",
+        "borderHover": "oklch(100% 0.01 240 / 0.15)",
+        "surfaceHover": "oklch(100% 0.01 240 / 0.06)",
+        "blur": "12px",
+        "radius": "24px",
+        "shadow": "0 8px 32px oklch(0% 0 270 / 0.15)"
+      }
+    },
+    "radii": {
+      "none": 0,
+      "sm": 8,
+      "md": 12,
+      "lg": 24,
+      "full": 9999
+    },
+    "motion": {
+      "tempo": 120,
+      "beat": 500,
+      "durations": {
+        "instant": 62.5,
+        "fast": 125,
+        "standard": 250,
+        "slow": 500,
+        "slower": 1000
+      },
+      "easing": {
+        "standard": "cubic-bezier(0.4, 0.0, 0.2, 1)",
+        "decelerate": "cubic-bezier(0.0, 0.0, 0.2, 1)",
+        "accelerate": "cubic-bezier(0.4, 0.0, 1.0, 1)"
+      },
+      "spoonMapping": {
+        "0": { "duration": "0s", "transition": "0s" },
+        "1": { "duration": "0s", "transition": "0s" },
+        "2": { "duration": "2s", "transition": "0.6s" },
+        "3": { "duration": "0.3s", "transition": "0.3s" },
+        "4": { "duration": "0.225s", "transition": "0.15s" },
+        "5": { "duration": "0.125s", "transition": "0.1s" }
+      }
+    }
+  },
+  "rules": {
+    "noDynamicTailwind": true,
+    "glassCardOnly": true,
+    "linkGlowOnly": true,
+    "noInlineColors": true,
+    "dataSpoonsRequired": true,
+    "dataSizeClassRequired": true,
+    "singleAccent": true,
+    "noPureWhiteText": true,
+    "noPureBlackBackground": true,
+    "tokenOnlyValues": true,
+    "crisisModeNeverPersists": true,
+    "minTouchTarget": 44,
+    "prefersReducedMotionFallback": true,
+    "wcagCognitiveAccessibility": true
+  },
+  "components": {
+    "allowed": [
+      "GlassCard", "GlowButton", "Section", "StatTiles", "CardGrid",
+      "SICMeasurement", "K4Mesh", "PosnerMolecule", "TetrahedronGrid",
+      "AdaptiveLayout", "QuantumLayer", "GreyRock", "Disclosure",
+      "VoiceInput", "FocusTrap", "SiteNav", "AppNav",
+      "SovereigntyStrip", "CompanionPanel", "BrandMark",
+      "SpoonDial", "Footer", "SkipLink", "CrisisOverlay",
+      "PageHeader", "Starfield", "NeuroAdapter"
+    ]
+  }
+}

@@ -1,0 +1,67 @@
+/**
+ * @file SpoonMeter.wc.js — Web Component (Shadow DOM) version of SpoonMeter.
+ * Auto-generated from components.yml.
+ *
+ * Usage:
+ *   <script type="module" src="./SpoonMeter.wc.js"></script>
+ *   <p31-spoon-meter></p31-spoon-meter>
+ *
+ * Requires p31-tokens.css to be loaded (defines --p31-* variables).
+ */
+
+const template = document.createElement('template');
+template.innerHTML = `
+  <style>
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+    --p31-semantic-color-accent-default: oklch(65% 0.18 195);
+    --p31-semantic-color-accent-gold: oklch(65% 0.18 15);
+    --p31-semantic-color-accent-red: oklch(65% 0.18 20);
+    --p31-semantic-color-accent-iris: oklch(65% 0.18 270);
+    --p31-semantic-color-text-tertiary: oklch(78% 0.01 240);
+    --p31-primitive-typography-font_sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: oklch(100% 0.01 270 / 0.06);
+  transition: all 0.3s ease;
+}
+.dot.filled {
+  background: var(--p31-semantic-color-accent-default);
+  box-shadow: 0 0 6px var(--p31-semantic-color-accent-default);
+}
+
+  </style>
+
+`;
+
+class P31SpoonMeter extends HTMLElement {
+  static get observedAttributes() { return ['current']; }
+
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+  }
+  attributeChangedCallback(name, oldVal, newVal) {
+    if (name === 'current') {
+      const n = parseInt(newVal || '3', 10);
+      const dots = this.shadowRoot.querySelectorAll('.dot');
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('filled', i < n);
+      });
+    }
+  }
+
+  connectedCallback() {
+    
+    this.setAttribute('role', 'img');
+    this.setAttribute('aria-label', 'Spoon level ' + (this.getAttribute('current') || '3') + ' of 5');
+  }
+}
+
+customElements.define('p31-spoon-meter', P31SpoonMeter);

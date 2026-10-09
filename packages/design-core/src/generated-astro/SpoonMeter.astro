@@ -1,0 +1,27 @@
+---
+// @file SpoonMeter — Cognitive load meter for Astro.
+// Auto-generated from components.yml.
+
+interface Props {
+  spoons: number;
+  onChange?: (level: number) => void;
+  class?: string;
+}
+
+const { spoons, onChange, class: className = '' } = Astro.props;
+---
+
+<div class={`flex items-center gap-1 ${className}`} role="img" aria-label={`Spoon level ${spoons} of 5`}>
+  {Array.from({ length: 5 }, (_, i) => (
+    <span
+      class={`w-[18px] h-[18px] ${i < spoons ? 'text-accent' : 'text-white/20'}`}
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 200 200" fill="currentColor">
+        <path d="M100 30 Q96 80 100 110 Q100 120 100 145" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="100" cy="145" rx="16" ry="26" fill="currentColor"/>
+        <circle cx="100" cy="30" r="6" fill="currentColor"/>
+      </svg>
+    </span>
+  ))}
+</div>

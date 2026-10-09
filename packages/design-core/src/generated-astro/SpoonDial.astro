@@ -1,0 +1,26 @@
+---
+// @file SpoonDial — Cognitive load selector (0-5 spoons).
+// Auto-generated from components.yml.
+
+interface Props {
+  level: number;
+  onChange?: (level: number) => void;
+  class?: string;
+}
+
+const { level, onChange, class: className = '' } = Astro.props;
+---
+
+<div class={`spoon-dial ${className}`} role="radiogroup" aria-label="Cognitive load">
+  {Array.from({ length: 6 }, (_, i) => (
+    <button
+      type="button"
+      class={`spoon-btn ${i === level ? 'active' : ''}`}
+      onClick={() => onChange?.(i)}
+      role="radio"
+      aria-checked={i === level}
+      aria-label={`Spoons = ${i}`}
+title={`Cognitive load level ${i}`}
+      />
+    ))}
+  </div>

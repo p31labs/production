@@ -1,0 +1,6 @@
+{"seq":1,"ts":"2026-09-01T10:00:00Z","writer":"human","kind":"focus","node":".feature-card","scope":"shared","humanId":"alex"}
+{"seq":2,"ts":"2026-09-01T10:00:10Z","writer":"agent","kind":"propose","id":"g1","node":".feature-card","body":{"draft":1,"label":"warm theme"},"scope":"shared"}
+{"seq":3,"ts":"2026-09-01T10:00:30Z","writer":"human","kind":"approve","proposal":"g1","scope":"shared","humanId":"maya"}
+{"seq":4,"ts":"2026-09-01T10:01:00Z","writer":"agent","kind":"propose","id":"g2","node":".street","body":{"label":"add a bench","reason":"family uses the street daily"},"scope":"shared"}
+{"seq":5,"ts":"2026-09-01T10:01:30Z","writer":"human","kind":"reject","proposal":"g2","reason":"too big for this week","scope":"shared","humanId":"sam"}
+{"seq":6,"ts":"2026-09-01T10:02:00Z","writer":"agent","kind":"traverse","from":".street","to":".feature-card","reason":"warm theme approved"}

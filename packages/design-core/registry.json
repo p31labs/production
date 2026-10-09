@@ -1,0 +1,2106 @@
+{
+  "$schema": "https://p31ca.org/schema/registry.json",
+  "name": "p31ca",
+  "homepage": "https://design.p31ca.org",
+  "generatedFrom": "src/genui/catalog.json",
+  "generatedAt": "2026-09-30T19:07:22.474Z",
+  "counts": {
+    "components": 32,
+    "chrome": 18,
+    "installable": 32,
+    "confidence": {
+      "autonomous": 12,
+      "supervised": 20,
+      "blocked": 0
+    }
+  },
+  "items": [
+    {
+      "name": "Badge",
+      "type": "registry:component",
+      "category": "surface",
+      "description": "Compact status label. Crisis mode keeps colors but forces opaque surfaces.",
+      "status": "stable",
+      "version": "2.2.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "badge",
+      "tokens": [
+        "accent",
+        "accent-green",
+        "accent-gold",
+        "accent-red",
+        "radius.full",
+        "font.sans"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [],
+      "a11y": [
+        "Small text with sufficient contrast",
+        "Not interactive"
+      ],
+      "props": {
+        "tone": {
+          "type": "'success' | 'warning' | 'error' | 'info' | 'neutral'",
+          "required": false,
+          "default": "\"neutral\"",
+          "description": "Status tone"
+        },
+        "label": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Label text"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/Badge.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "BottomNav",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Fixed bottom navigation bar for mobile-first apps. Use for primary app navigation.",
+      "status": "stable",
+      "version": "1.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "bottom-nav",
+      "tokens": [
+        "topbar.height",
+        "glass.bg",
+        "glass.blur",
+        "glass.border",
+        "spacing.sm"
+      ],
+      "variants": [
+        "default",
+        "mobile",
+        "tablet"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "Minimum 48px touch targets",
+        "Active state clearly indicated",
+        "aria-selected on active item"
+      ],
+      "props": {
+        "items": {
+          "type": "NavItem[]",
+          "required": false,
+          "default": null,
+          "description": "Navigation items with icon, label, and href"
+        },
+        "activeIndex": {
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "Currently active item index"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/BottomNav.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "autonomous",
+        "reason": null
+      }
+    },
+    {
+      "name": "Button",
+      "type": "registry:component",
+      "category": "action",
+      "description": "Primary action button. Use for CTAs, form submissions, and key actions.",
+      "status": "stable",
+      "version": "1.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "btn",
+      "tokens": [
+        "accent",
+        "radius.md",
+        "spacing.sm",
+        "spacing.lg",
+        "font.weight"
+      ],
+      "variants": [
+        "primary",
+        "secondary",
+        "ghost"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "Minimum 48px height",
+        "Disabled state clearly indicated",
+        "Focus ring visible"
+      ],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Button content"
+        },
+        "variant": {
+          "type": "\"primary\" | \"secondary\" | \"ghost\"",
+          "required": false,
+          "default": "\"primary\"",
+          "description": "Visual variant"
+        },
+        "disabled": {
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Disabled state"
+        },
+        "onClick": {
+          "type": "() => void",
+          "required": false,
+          "default": null,
+          "description": "Click handler"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/Button.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "CalmIndicator",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Calm pill in the status cluster — reads spoon level and opens the calm overlay.",
+      "status": "stable",
+      "version": "3.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "calm-indicator",
+      "tokens": [
+        "accent-green",
+        "accent-red",
+        "glass.bg",
+        "radius.full"
+      ],
+      "variants": [
+        "is-calm",
+        "is-alert"
+      ],
+      "slots": [],
+      "a11y": [
+        "aria-label reflects calm state",
+        "Keyboard reachable"
+      ],
+      "props": {
+        "spoons": {
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": "Current spoon level (0–5)"
+        },
+        "onOpen": {
+          "type": "() => void",
+          "required": false,
+          "default": null,
+          "description": "Open calm overlay"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/CalmIndicator.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "CalmOverlay",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Calm-mode overlay shown at spoon level 0. Breathing circle rest stop. Store-agnostic — spoons/onReturn are props.",
+      "status": "stable",
+      "version": "3.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "calm-overlay",
+      "tokens": [
+        "void",
+        "accent",
+        "text.primary",
+        "cloud",
+        "glass.blur",
+        "z.floating"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [],
+      "a11y": [
+        "role=dialog aria-modal=true",
+        "aria-label=\"Calm mode\"",
+        "Return button is keyboard reachable"
+      ],
+      "props": {
+        "spoons": {
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": "Current spoon level; overlay renders only at 0"
+        },
+        "onReturn": {
+          "type": "() => void",
+          "required": true,
+          "default": null,
+          "description": "Return handler (consumer restores spoons)"
+        },
+        "className": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional CSS classes"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/CalmOverlay.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "autonomous",
+        "reason": null
+      }
+    },
+    {
+      "name": "CandyHeader",
+      "type": "registry:component",
+      "category": "surface",
+      "description": "Candy-rounded glass header for the sovereign stack.",
+      "status": "stable",
+      "version": "2.2.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "candy-header",
+      "tokens": [
+        "glass.surface",
+        "glass.border",
+        "radius.candy",
+        "text.primary",
+        "accent"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [],
+      "a11y": [
+        "Semantic header",
+        "Title present"
+      ],
+      "props": {
+        "eyebrow": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Small kicker text"
+        },
+        "title": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Header title"
+        },
+        "lede": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Supporting lead text"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/CandyHeader.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "Card",
+      "type": "registry:component",
+      "category": "surface",
+      "description": "Elevated surface with an optional interactive affordance.",
+      "status": "stable",
+      "version": "2.2.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "card",
+      "tokens": [
+        "surface.bg",
+        "glass.border",
+        "text.primary",
+        "text.secondary",
+        "radius.md",
+        "shadow"
+      ],
+      "variants": [
+        "default",
+        "interactive"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "Semantic article/card",
+        "Interactive state has affordance"
+      ],
+      "props": {
+        "title": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Card title"
+        },
+        "description": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Card description"
+        },
+        "padding": {
+          "type": "\"sm\" | \"md\" | \"lg\"",
+          "required": false,
+          "default": "\"md\"",
+          "description": "Padding size"
+        },
+        "interactive": {
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Show interactive affordance"
+        },
+        "text": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Body text"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/Card.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "Chameleon",
+      "type": "registry:component",
+      "category": "ambient",
+      "description": "Adaptive theme controls: brand × world × age × sensory modes. Zero-reload token swaps.",
+      "status": "stable",
+      "version": "2.2.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "chameleon",
+      "tokens": [
+        "theme.*",
+        "brand.*",
+        "accent",
+        "sensory.muted",
+        "sensory.warmLight"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "aria-haspopup=dialog",
+        "aria-expanded",
+        "aria-pressed on chips",
+        "Escape closes panel"
+      ],
+      "props": {
+        "className": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional CSS classes"
+        },
+        "style": {
+          "type": "CSSProperties",
+          "required": false,
+          "default": null,
+          "description": "Inline styles"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/Chameleon.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "ChatShell",
+      "type": "registry:component",
+      "category": "surface",
+      "description": "Conversational shell with a header, drawer, and chat surface.",
+      "status": "stable",
+      "version": "2.2.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "chat-shell",
+      "tokens": [
+        "surface.bg",
+        "glass.border",
+        "text.primary",
+        "text.secondary",
+        "radius.lg"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [
+        "default",
+        "drawer"
+      ],
+      "a11y": [
+        "Semantic region",
+        "Drawer focus management"
+      ],
+      "props": {
+        "header": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Shell header"
+        },
+        "drawerLabel": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Drawer accessible label"
+        },
+        "drawerOpen": {
+          "type": "boolean",
+          "required": true,
+          "default": null,
+          "description": "Drawer open state"
+        },
+        "onCloseDrawer": {
+          "type": "() => void",
+          "required": true,
+          "default": null,
+          "description": "Close drawer handler"
+        },
+        "drawer": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Drawer content"
+        },
+        "height": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Shell height"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/ChatShell.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "Checkbox",
+      "type": "registry:component",
+      "category": "action",
+      "description": "Tri-state checkbox (checked / unchecked / indeterminate).",
+      "status": "stable",
+      "version": "2.2.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "checkbox",
+      "tokens": [
+        "accent",
+        "text.primary",
+        "text.secondary",
+        "radius.sm",
+        "border"
+      ],
+      "variants": [
+        "default",
+        "indeterminate"
+      ],
+      "slots": [],
+      "a11y": [
+        "Label associated with input",
+        "Keyboard reachable",
+        "Indeterminate announced"
+      ],
+      "props": {
+        "label": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Accessible label"
+        },
+        "checked": {
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Checked state"
+        },
+        "indeterminate": {
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Indeterminate state"
+        },
+        "disabled": {
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Disabled"
+        },
+        "onChange": {
+          "type": "(checked: boolean) => void",
+          "required": false,
+          "default": null,
+          "description": "Change handler"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/Checkbox.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "CommandPalette",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Keyboard-friendly command palette (⌘K). Use for site-wide search and command invocation.",
+      "status": "stable",
+      "version": "2.2.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "cmdk",
+      "tokens": [
+        "glass.bg",
+        "glass.border",
+        "glass.blur",
+        "accent",
+        "radius.md",
+        "z.modal"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "role=dialog + aria-modal",
+        "role=listbox / option",
+        "ArrowUp/Down + Enter + Escape keys",
+        "Arrow keys cycle results"
+      ],
+      "props": {
+        "open": {
+          "type": "boolean",
+          "required": true,
+          "default": null,
+          "description": "Controlled open state"
+        },
+        "onClose": {
+          "type": "() => void",
+          "required": true,
+          "default": null,
+          "description": "Close callback"
+        },
+        "items": {
+          "type": "CommandItem[]",
+          "required": true,
+          "default": null,
+          "description": "Searchable items: { id, label, description?, icon?, keywords? }"
+        },
+        "onSelect": {
+          "type": "(id: string) => void",
+          "required": true,
+          "default": null,
+          "description": "Called with the selected item id"
+        },
+        "placeholder": {
+          "type": "string",
+          "required": false,
+          "default": "\"Search…\"",
+          "description": "Input placeholder"
+        },
+        "leadingIcon": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Optional leading icon"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/CommandPalette.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "autonomous",
+        "reason": null
+      }
+    },
+    {
+      "name": "CommandTrigger",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Topbar search affordance — a button with a keyboard hint that opens the command palette.",
+      "status": "stable",
+      "version": "3.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "command-trigger",
+      "tokens": [
+        "glass.bg",
+        "glass.border",
+        "radius.full",
+        "text.secondary",
+        "font.mono"
+      ],
+      "variants": [
+        "default",
+        "compact"
+      ],
+      "slots": [],
+      "a11y": [
+        "Rendered as a button",
+        "aria-label = placeholder",
+        "Keyboard hint is visual only"
+      ],
+      "props": {
+        "placeholder": {
+          "type": "string",
+          "required": false,
+          "default": "\"Search or jump to…\"",
+          "description": "Placeholder text"
+        },
+        "shortcut": {
+          "type": "string",
+          "required": false,
+          "default": "\"⌘K\"",
+          "description": "OS-correct modifier hint"
+        },
+        "onOpen": {
+          "type": "() => void",
+          "required": false,
+          "default": null,
+          "description": "Open the command palette"
+        },
+        "compact": {
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Icon-only for narrow bars"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/CommandTrigger.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "CrisisOverlay",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Full-screen crisis mode overlay. Shown when spoons=0. Only exit control visible.",
+      "status": "stable",
+      "version": "1.0.0",
+      "importPath": "@p31ca/design-core/crisis-overlay",
+      "cssClass": "crisis-overlay",
+      "tokens": [
+        "bg",
+        "text",
+        "accent",
+        "z.crisis"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "Full screen focus trap",
+        "Escape key exits",
+        "High contrast text"
+      ],
+      "props": {
+        "onReady": {
+          "type": "() => void",
+          "required": false,
+          "default": null,
+          "description": "Callback when user dismisses overlay"
+        },
+        "message": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Custom crisis message"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/CrisisOverlay.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "autonomous",
+        "reason": null
+      }
+    },
+    {
+      "name": "Crown",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Compact brand crown mark with a label.",
+      "status": "stable",
+      "version": "2.2.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "crown",
+      "tokens": [
+        "accent",
+        "text.primary",
+        "font.sans"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [],
+      "a11y": [
+        "Text alternative present",
+        "Non-interactive"
+      ],
+      "props": {
+        "label": {
+          "type": "string",
+          "required": false,
+          "default": "\"P31\"",
+          "description": "Brand label"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/Crown.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "autonomous",
+        "reason": null
+      }
+    },
+    {
+      "name": "Dropdown",
+      "type": "registry:component",
+      "category": "action",
+      "description": "Selectable dropdown menu with options.",
+      "status": "stable",
+      "version": "2.2.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "dropdown",
+      "tokens": [
+        "surface.bg",
+        "glass.border",
+        "text.primary",
+        "text.secondary",
+        "accent",
+        "radius.md"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [],
+      "a11y": [
+        "Label associated",
+        "Keyboard reachable",
+        "Options announced"
+      ],
+      "props": {
+        "label": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Field label"
+        },
+        "value": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Selected value"
+        },
+        "options": {
+          "type": "DropdownOption[]",
+          "required": false,
+          "default": null,
+          "description": "Options list"
+        },
+        "onChange": {
+          "type": "(value: string) => void",
+          "required": false,
+          "default": null,
+          "description": "Selection handler"
+        },
+        "ariaLabel": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Accessible label"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/Dropdown.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "Footer",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Site footer with configurable columns, branding, and legal text.",
+      "status": "stable",
+      "version": "3.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "site-footer",
+      "tokens": [
+        "surface.bg",
+        "text.primary",
+        "text.secondary",
+        "border.subtle",
+        "spacing.lg"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "Semantic <footer> element",
+        "ARIA labels on navigation sections",
+        "Link text is descriptive"
+      ],
+      "props": {
+        "columns": {
+          "type": "FooterColumn[]",
+          "required": false,
+          "default": null,
+          "description": "Footer column groups with title and links"
+        },
+        "brandLabel": {
+          "type": "string",
+          "required": false,
+          "default": "\"P31\"",
+          "description": "Brand label text"
+        },
+        "brandIcon": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Optional brand icon"
+        },
+        "tagline": {
+          "type": "string",
+          "required": false,
+          "default": "\"Sovereign, neuroinclusive interface foundation.\"",
+          "description": "Tagline text"
+        },
+        "copyright": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Optional copyright year/owner"
+        },
+        "legalText": {
+          "type": "string",
+          "required": false,
+          "default": "\"MIT · built on DTCG tokens\"",
+          "description": "Legal/license text"
+        },
+        "className": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional CSS classes"
+        },
+        "style": {
+          "type": "CSSProperties",
+          "required": false,
+          "default": null,
+          "description": "Inline styles"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/Footer.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "autonomous",
+        "reason": null
+      }
+    },
+    {
+      "name": "GlassCard",
+      "type": "registry:component",
+      "category": "surface",
+      "description": "Padded glassmorphic card for content grouping. Use for feature cards, paper listings, and content tiles.",
+      "status": "stable",
+      "version": "1.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "glass-card",
+      "tokens": [
+        "glass.bg",
+        "glass.blur",
+        "glass.border",
+        "glass.radius",
+        "spacing.lg"
+      ],
+      "variants": [
+        "default",
+        "strong"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "Minimum padding ensures touch target compliance"
+      ],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Card content"
+        },
+        "strong": {
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Use stronger glass opacity"
+        },
+        "className": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional CSS classes"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/GlassCard.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "GlassPanel",
+      "type": "registry:component",
+      "category": "surface",
+      "description": "Elevated glassmorphic surface with backdrop blur. Use for modals, drawers, and elevated content areas.",
+      "status": "stable",
+      "version": "1.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "glass-panel",
+      "tokens": [
+        "glass.bg",
+        "glass.blur",
+        "glass.border",
+        "glass.radius",
+        "glass.shadow"
+      ],
+      "variants": [
+        "default",
+        "hover"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "Uses semantic glass tokens for contrast",
+        "Focus styles inherit from global :focus-visible"
+      ],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Content to render inside the panel"
+        },
+        "padding": {
+          "type": "\"sm\" | \"md\" | \"lg\"",
+          "required": false,
+          "default": "\"md\"",
+          "description": "Padding size"
+        },
+        "className": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional CSS classes"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/GlassPanel.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "MetricBadge",
+      "type": "registry:component",
+      "category": "feedback",
+      "description": "Compact metric display with icon. Use for dashboard KPIs and telemetry.",
+      "status": "stable",
+      "version": "1.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "metric-badge",
+      "tokens": [
+        "glass.bg",
+        "glass.border",
+        "radius.sm",
+        "scale.xs",
+        "text.secondary"
+      ],
+      "variants": [
+        "default",
+        "clickable"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "Icon has aria-hidden or accessible name",
+        "Value is screen-reader accessible"
+      ],
+      "props": {
+        "icon": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Icon or indicator"
+        },
+        "value": {
+          "type": "string | number",
+          "required": false,
+          "default": null,
+          "description": "Metric value"
+        },
+        "label": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Metric label"
+        },
+        "clickable": {
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "Enable hover state"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/MetricBadge.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "MobileBottomNav",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Mobile bottom navigation bar — flagship items only (suite pattern). Store-agnostic.",
+      "status": "stable",
+      "version": "3.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "mobile-bottom-nav",
+      "tokens": [
+        "glass.surface",
+        "glass.border",
+        "glass.blur",
+        "accent",
+        "text.secondary",
+        "radius.full"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [],
+      "a11y": [
+        "Semantic <nav> element",
+        "aria-current=page on active item",
+        "Touch targets 48px"
+      ],
+      "props": {
+        "items": {
+          "type": "SidebarNavItem[]",
+          "required": true,
+          "default": null,
+          "description": "Nav items; flagships shown"
+        },
+        "activePath": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Currently active route path"
+        },
+        "onNavigate": {
+          "type": "(path: string) => void",
+          "required": false,
+          "default": null,
+          "description": "Route handler (consumer owns routing)"
+        },
+        "className": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional CSS classes"
+        },
+        "ariaLabel": {
+          "type": "string",
+          "required": false,
+          "default": "\"Mobile navigation\"",
+          "description": "nav aria-label"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/MobileBottomNav.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "autonomous",
+        "reason": null
+      }
+    },
+    {
+      "name": "ModePill",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Primary mode control (SPARK / MAKER / WORKSHOP) with a tone dot.",
+      "status": "stable",
+      "version": "3.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "mode-pill",
+      "tokens": [
+        "accent",
+        "accent-gold",
+        "accent-green",
+        "glass.bg",
+        "radius.full"
+      ],
+      "variants": [
+        "spark",
+        "maker",
+        "workshop"
+      ],
+      "slots": [],
+      "a11y": [
+        "aria-label includes current mode",
+        "Keyboard reachable"
+      ],
+      "props": {
+        "mode": {
+          "type": "'spark' | 'maker' | 'workshop'",
+          "required": true,
+          "default": null,
+          "description": "Current mode"
+        },
+        "onCycle": {
+          "type": "() => void",
+          "required": false,
+          "default": null,
+          "description": "Cycle or open a picker"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/ModePill.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "NotificationStack",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Stacked, severity-tinted notification toasts (bottom-right). Store-agnostic — items/onDismiss are props; colors via data-kind.",
+      "status": "stable",
+      "version": "3.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "notif-stack",
+      "tokens": [
+        "glass.surface",
+        "glass.border",
+        "accent",
+        "accent-green",
+        "accent-gold",
+        "accent-red",
+        "text.primary",
+        "text.secondary",
+        "z.floating"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [],
+      "a11y": [
+        "role=region aria-label=\"Notifications\"",
+        "role=status per toast",
+        "Dismiss buttons are keyboard reachable"
+      ],
+      "props": {
+        "items": {
+          "type": "Notification[]",
+          "required": true,
+          "default": null,
+          "description": "Notifications: { id, kind, title, body? }"
+        },
+        "onDismiss": {
+          "type": "(id: string) => void",
+          "required": false,
+          "default": null,
+          "description": "Dismiss one by id"
+        },
+        "onClearAll": {
+          "type": "() => void",
+          "required": false,
+          "default": null,
+          "description": "Clear all (optional)"
+        },
+        "className": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional CSS classes"
+        },
+        "ariaLabel": {
+          "type": "string",
+          "required": false,
+          "default": "\"Notifications\"",
+          "description": "region aria-label"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/NotificationStack.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "autonomous",
+        "reason": null
+      }
+    },
+    {
+      "name": "PageHeader",
+      "type": "registry:component",
+      "category": "surface",
+      "description": "Inner-page hero: mono eyebrow, gradient title, and lede. Use at the top of content routes.",
+      "status": "stable",
+      "version": "2.2.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "page-header-route",
+      "tokens": [
+        "title.gradient",
+        "text.secondary",
+        "spacing.lg"
+      ],
+      "variants": [
+        "default",
+        "actions"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "Semantic <header> + <h1>",
+        "Visual gradient paired with text",
+        "Actions are keyboard reachable"
+      ],
+      "props": {
+        "eyebrow": {
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Mono eyebrow label"
+        },
+        "title": {
+          "type": "string",
+          "required": true,
+          "default": null,
+          "description": "Page title"
+        },
+        "lede": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Supporting lede paragraph"
+        },
+        "children": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Optional action cluster (rendered in .page-actions)"
+        },
+        "className": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional CSS classes"
+        },
+        "style": {
+          "type": "CSSProperties",
+          "required": false,
+          "default": null,
+          "description": "Inline styles"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/PageHeader.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "SectionStrip",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Desktop pill navigation strip. Use for primary section navigation on wide viewports.",
+      "status": "stable",
+      "version": "2.2.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "section-strip",
+      "tokens": [
+        "glass.bg",
+        "glass.border",
+        "radius.candy",
+        "accent",
+        "text.secondary"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "aria-current=\"page\" on active tab",
+        "Minimum 48px targets",
+        "Keyboard navigable buttons"
+      ],
+      "props": {
+        "items": {
+          "type": "SectionItem[]",
+          "required": false,
+          "default": null,
+          "description": "Nav items: { id, label, icon?, active? }"
+        },
+        "onSelect": {
+          "type": "(id: string) => void",
+          "required": false,
+          "default": null,
+          "description": "Called with the selected section id"
+        },
+        "className": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional CSS classes"
+        },
+        "style": {
+          "type": "CSSProperties",
+          "required": false,
+          "default": null,
+          "description": "Inline styles"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/SectionStrip.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "autonomous",
+        "reason": null
+      }
+    },
+    {
+      "name": "SidebarNav",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Flat suite navigation rail (emoji + label), active state per route. Store-agnostic — items/activePath/onNavigate are props.",
+      "status": "stable",
+      "version": "3.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "sidebar-nav",
+      "tokens": [
+        "glass.surface",
+        "glass.border",
+        "accent",
+        "text.secondary",
+        "radius.full",
+        "font.sans"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [],
+      "a11y": [
+        "Semantic <nav> element",
+        "aria-current=page on active item",
+        "Focus-visible ring on items"
+      ],
+      "props": {
+        "items": {
+          "type": "SidebarNavItem[]",
+          "required": true,
+          "default": null,
+          "description": "Nav items: { path, label, emoji?, flagship? }"
+        },
+        "activePath": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Currently active route path"
+        },
+        "onNavigate": {
+          "type": "(path: string) => void",
+          "required": false,
+          "default": null,
+          "description": "Route handler (consumer owns routing)"
+        },
+        "className": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional CSS classes"
+        },
+        "ariaLabel": {
+          "type": "string",
+          "required": false,
+          "default": "\"Main navigation\"",
+          "description": "nav aria-label"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/SidebarNav.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "autonomous",
+        "reason": null
+      }
+    },
+    {
+      "name": "SpoonCluster",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Spoon dots in the status cluster — read-only metabolic status.",
+      "status": "stable",
+      "version": "3.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "spoon-cluster",
+      "tokens": [
+        "accent",
+        "glass.border",
+        "radius.full"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [],
+      "a11y": [
+        "role=img with aria-label \"N of 5 spoons remaining\""
+      ],
+      "props": {
+        "level": {
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": "Current spoon level (0–5)"
+        },
+        "total": {
+          "type": "number",
+          "required": false,
+          "default": "5",
+          "description": "Total dots"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/SpoonCluster.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "SpoonDial",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Cognitive load selector (0-5 spoons). Use for neurodivergent-first accessibility control.",
+      "status": "stable",
+      "version": "1.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "spoon-dial",
+      "tokens": [
+        "radius.full",
+        "glass.bg",
+        "glass.border",
+        "accent",
+        "text.tertiary"
+      ],
+      "variants": [
+        "default",
+        "crisis"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "Role: radiogroup",
+        "aria-checked on each button",
+        "Labels for each level"
+      ],
+      "props": {
+        "level": {
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "Current spoon level (0-5)"
+        },
+        "onChange": {
+          "type": "(level: number) => void",
+          "required": false,
+          "default": null,
+          "description": "Callback when level changes"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/SpoonDial.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "autonomous",
+        "reason": null
+      }
+    },
+    {
+      "name": "Starfield",
+      "type": "registry:component",
+      "category": "ambient",
+      "description": "Animated starfield background. Use for ambient backgrounds in shell and marketing.",
+      "status": "stable",
+      "version": "1.0.0",
+      "importPath": "@p31ca/design-core/starfield",
+      "cssClass": "starfield-bg",
+      "tokens": [
+        "z.starfield",
+        "starfield.hearth",
+        "starfield.teal",
+        "starfield.remembrance"
+      ],
+      "variants": [
+        "default",
+        "warm",
+        "reduced-motion"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "aria-hidden=\"true\"",
+        "Respects prefers-reduced-motion",
+        "Disabled at spoons=0"
+      ],
+      "props": {
+        "spoons": {
+          "type": "number",
+          "required": false,
+          "default": null,
+          "description": "Current spoon level for density/speed"
+        },
+        "warmStars": {
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Use warm color palette"
+        },
+        "reduceMotion": {
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Disable animations"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/Starfield.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "StatusBadge",
+      "type": "registry:component",
+      "category": "feedback",
+      "description": "Status indicator badge. Use for system status, health indicators, and state labels.",
+      "status": "stable",
+      "version": "1.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "badge",
+      "tokens": [
+        "radius.full",
+        "scale.xs",
+        "accent.green",
+        "accent.red",
+        "accent.gold"
+      ],
+      "variants": [
+        "success",
+        "warning",
+        "error",
+        "info"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "Color + icon for colorblind users",
+        "Screen reader text included"
+      ],
+      "props": {
+        "status": {
+          "type": "\"online\" | \"offline\" | \"busy\" | \"away\"",
+          "required": false,
+          "default": null,
+          "description": "Status type"
+        },
+        "label": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Badge text"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/StatusBadge.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "StatusCluster",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Read-only status row in the topbar right region. Scrolls horizontally with edge fades when it outgrows the bar.",
+      "status": "stable",
+      "version": "3.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "status-cluster",
+      "tokens": [
+        "glass.bg",
+        "space.xs"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "Hidden scrollbar",
+        "Edge fades only on overflowing side",
+        "Children must not open in-flow absolute panels"
+      ],
+      "props": {
+        "className": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional CSS classes"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/StatusCluster.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    },
+    {
+      "name": "Topbar",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Unified app-chrome shell — slot-based three-region layout. Brand / center / statusCluster / mode / trailing, with variant (app|marketing|game) and mobile overrides.",
+      "status": "stable",
+      "version": "3.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "topbar",
+      "tokens": [
+        "topbar.height",
+        "glass.bg",
+        "glass.blur",
+        "glass.border",
+        "spacing.sm",
+        "radius.candy",
+        "accent",
+        "accent-gold",
+        "accent-green"
+      ],
+      "variants": [
+        "app",
+        "marketing",
+        "game"
+      ],
+      "slots": [
+        "brand",
+        "center",
+        "status",
+        "mode",
+        "trailing"
+      ],
+      "a11y": [
+        "role=banner",
+        "aria-label on header",
+        "Center collapses on mobile with mobileLeading/Trailing"
+      ],
+      "props": {
+        "brand": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Left cluster: app mark + wordmark"
+        },
+        "left": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Legacy alias for brand"
+        },
+        "center": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Center region: command trigger, nav, or context"
+        },
+        "right": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Legacy right cluster (renders into trailing)"
+        },
+        "statusCluster": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Read-only status segments"
+        },
+        "mode": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Primary mode control (ModePill)"
+        },
+        "trailing": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Pinned trailing actions + identity"
+        },
+        "mobileLeading": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Mobile-only leading override"
+        },
+        "mobileTrailing": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Mobile-only trailing override"
+        },
+        "variant": {
+          "type": "'app' | 'marketing' | 'game'",
+          "required": false,
+          "default": "\"app\"",
+          "description": "Visual variant"
+        },
+        "sticky": {
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Sticky at top"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/Topbar.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [
+        "Crown",
+        "SpoonDial",
+        "CrisisOverlay"
+      ],
+      "installable": true,
+      "confidence": {
+        "tier": "autonomous",
+        "reason": null
+      }
+    },
+    {
+      "name": "TopbarSection",
+      "type": "registry:component",
+      "category": "chrome",
+      "description": "Vertically-centered, gap-consistent slot group inside a Topbar. Owns internal spacing; the Topbar owns arrangement.",
+      "status": "stable",
+      "version": "3.0.0",
+      "importPath": "@p31ca/design-core/compositions",
+      "cssClass": "topbar-section",
+      "tokens": [
+        "space.xs",
+        "glass.bg"
+      ],
+      "variants": [
+        "default"
+      ],
+      "slots": [
+        "default"
+      ],
+      "a11y": [
+        "data-slot attribute for consumer styling"
+      ],
+      "props": {
+        "slot": {
+          "type": "'leading' | 'brand' | 'center' | 'status' | 'mode' | 'trailing' | 'mobile-trailing'",
+          "required": true,
+          "default": null,
+          "description": "Slot identity"
+        },
+        "className": {
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional CSS classes"
+        }
+      },
+      "files": [
+        {
+          "path": "src/compositions/TopbarSection.tsx",
+          "type": "registry:component",
+          "exists": true
+        }
+      ],
+      "registryDependencies": [],
+      "installable": true,
+      "confidence": {
+        "tier": "supervised",
+        "reason": "no-baseline"
+      }
+    }
+  ]
+}
