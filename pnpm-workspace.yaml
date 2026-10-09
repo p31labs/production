@@ -1,0 +1,12 @@
+packages:
+  - 'packages/*'
+  - 'apps/*'
+  - 'workers/*'
+allowBuilds:
+  '@bundled-es-modules/glob': false
+  esbuild: true
+  onnxruntime-node: false
+  protobufjs: false
+  sharp: true
+  style-dictionary: false
+  workerd: true
