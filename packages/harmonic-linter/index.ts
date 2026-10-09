@@ -26,12 +26,11 @@ async function getAcorn(): Promise<AcornModule> {
   if (_acorn) return _acorn;
   try {
     // Attempt local resolution first (works if acorn is hoisted by the monorepo)
-    _acorn = (await import("acorn")) as AcornModule;
+    _acorn = (await import("acorn")) as unknown as AcornModule;
   } catch {
-    // Fall back to CDN
-    _acorn = (await import(
-      "https://cdn.jsdelivr.net/npm/acorn@8.14.0/dist/acorn.mjs"
-    )) as AcornModule;
+    // Fall back to CDN (Vite resolves the remote URL at build time)
+    // @ts-expect-error -- remote URL module is not in the local type graph
+    _acorn = (await import("https://cdn.jsdelivr.net/npm/acorn@8.14.0/dist/acorn.mjs")) as unknown as AcornModule;
   }
   return _acorn;
 }
