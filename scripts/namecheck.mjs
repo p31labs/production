@@ -104,7 +104,10 @@ for (const file of scanFiles) {
   if (hasHeader) continue;
   // The workspace substrate (STATE/INBOX/HISTORY/AGENTS/manifest) uses its
   // canonical harness names — the contract is the P31-HEADER, not the prefix.
-  const isSubstrate = /(STATE|INBOX|HISTORY|AGENTS)\.md$/.test(file) || file.includes('.workspace');
+  // Anchor to the basename: the harness files are exactly STATE.md / INBOX.md /
+// HISTORY.md / AGENTS.md — not any path that merely ends in "STATE.md" (e.g.
+// a reference doc named SESSION-STATE.md).
+const isSubstrate = /(^|\/)(STATE|INBOX|HISTORY|AGENTS)\.md$/.test(file) || file.includes('.workspace');
   if (isSubstrate) {
     // Generated/derived substrate artifacts (manifest, ledger, keys, tokens,
     // checkpoints, refs) are machine-written — they carry no hand-authored

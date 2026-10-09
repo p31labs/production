@@ -20,7 +20,11 @@ import { join } from 'node:path';
 const ROOT = new URL('..', import.meta.url).pathname;
 const FIX_PLANS_DIR = join(ROOT, 'docs', 'fix-plans');
 
-const MARKERS = /\b(TODO|FIXME|XXX|HACK)\b/i;
+// `XXX` is case-sensitive on purpose: lowercase `xxx` is a GLSL/vector
+// swizzle (e.g. `offset.xxx`), not a marker. TODO/FIXME/HACK stay
+// case-insensitive (they are authored as `todo`, `TODO`, `FIXME`, etc.).
+const MARKERS = /\b(TODO|FIXME|HACK)\b/i;
+const XXX_MARKER = /\bXXX\b/;
 const EXEMPT = [
   /node_modules/, /\.git\//, /dist\//, /vendor\//, /target\//,
   /fix-plan-scan\.mjs$/, /AGENTS\.md$/, /STATE\.md$/, /INBOX\.md$/,
@@ -30,6 +34,11 @@ const EXEMPT = [
   /^scripts\/(namecheck|frontmatter|probe-workspace|audit-)/,
   /negative-controls\.mjs$/,   // the negative-control suite plants markers on purpose
   /docs\/fix-plans\//,                  // the filing mechanism itself
+  // Reference material merged from docs (1)/ is archival, not active work.
+  // The ownership contract (TODO/HACK must be filed) applies to code and the
+  // active governance docs (enterprise/, plans/, research/) — not to reference
+  // notes, prompts, and inventories. Exempt docs/ except those active subdirs.
+  /\/docs\/(?!enterprise\/|plans\/|research\/)/,
 ];
 
 // The set of filenames already covered by a fix-plan (their markers are filed).
@@ -39,10 +48,12 @@ function filedFiles() {
     for (const entry of readdirSync(FIX_PLANS_DIR)) {
       if (!/\.md$/.test(entry)) continue;
       const content = readFileSync(join(FIX_PLANS_DIR, entry), 'utf8');
-      const m = content.match(/^## The bug\s*\n([\s\S]*?)(?=\n## )/m);
+      // Recognize both section conventions ("## The bug" and "## Symptom")
+      // and any source file extension (not just .mjs).
+      const m = content.match(/^## (?:The bug|Symptom)\s*\n([\s\S]*?)(?=\n## )/m);
       if (m) {
-        // Any file path mentioned in the bug section is filed (match basename).
-        for (const path of m[1].matchAll(/`?([\w./-]+\.mjs)`?/g)) {
+        // Any file path mentioned in the section is filed (match basename).
+        for (const path of m[1].matchAll(/`?([\w./-]+\.(?:mjs|ts|tsx|js|json))`?/g)) {
           filed.add(path[1].split('/').pop());
         }
       }
@@ -92,7 +103,7 @@ for (const dir of SCAN_DIRS) {
       if (filed.has(file.split('/').pop())) continue;
       const lines = readFileSync(file, 'utf8').split('\n');
       lines.forEach((line, i) => {
-        const m = line.match(MARKERS);
+        const m = line.match(MARKERS) || line.match(XXX_MARKER);
         if (m) {
           const marker = m[0];
           // Check for a nearby fix-plan reference (e.g. "# fix-plan: <id>").
