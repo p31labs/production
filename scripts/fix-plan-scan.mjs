@@ -20,6 +20,32 @@ import { join } from 'node:path';
 const ROOT = new URL('..', import.meta.url).pathname;
 const FIX_PLANS_DIR = join(ROOT, 'docs', 'fix-plans');
 
+// --self-test proves the scan can FAIL: plant an unfiled TODO in a .ts file,
+// run the scan in a subprocess, assert it exits 1, then clean up. Without this
+// the "pass — no unfiled markers" line is a claim, not a proof.
+if (process.argv.includes('--self-test')) {
+  const { writeFileSync, rmSync } = await import('node:fs');
+  const { execSync } = await import('node:child_process');
+  const tmp = join(ROOT, 'workers', `negctrl-${Date.now()}.ts`);
+  writeFileSync(tmp, '// TODO: negative control — planted to prove the scan fails\n');
+  try {
+    try {
+      execSync(`node ${join(ROOT, 'scripts', 'fix-plan-scan.mjs')}`, { stdio: 'pipe' });
+      console.error('✗ fix-plan-scan --self-test FAILED: scan passed with a planted unfiled TODO');
+      process.exit(1);
+    } catch (e) {
+      if (e.status === 1) {
+        console.log('✅ fix-plan-scan --self-test passed: scan fails on an unfiled TODO');
+      } else {
+        throw e;
+      }
+    }
+  } finally {
+    rmSync(tmp, { force: true });
+  }
+  process.exit(0);
+}
+
 // `XXX` is case-sensitive on purpose: lowercase `xxx` is a GLSL/vector
 // swizzle (e.g. `offset.xxx`), not a marker. TODO/FIXME/HACK stay
 // case-insensitive (they are authored as `todo`, `TODO`, `FIXME`, etc.).

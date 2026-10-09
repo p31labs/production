@@ -2152,6 +2152,21 @@ importers:
         specifier: ^5.7.0
         version: 5.9.3
 
+  tools/phos-forge:
+    dependencies:
+      chokidar:
+        specifier: ^3.6.0
+        version: 3.6.0
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.3
+
+  tools/token-validation:
+    dependencies:
+      '@design-token-kit/cli':
+        specifier: ^1.10.0
+        version: 1.10.0
+
   workers/_template:
     dependencies:
       hono:
@@ -4630,6 +4645,15 @@ packages:
   '@datadog/datadog-api-client@1.64.0':
     resolution: {integrity: sha512-6aNItNZ/lYMDsgTfn7DvEYLW+qGGDqxX3qijIHpHFrxOf830xjX2wb7cwTjubv9j30EP33iSNGu17QA5Y1KGUg==}
     engines: {node: '>=12.0.0'}
+
+  '@design-token-kit/cli@1.10.0':
+    resolution: {integrity: sha512-/4LeNh1Q5VS84khZlEivhiY13p1hgVzwpNZetMQk7d00Pe+uau+xyz+lp37n5LV6mLQGaqnYDIAjJYAhA9CwPg==}
+    engines: {node: '>=20.19.0'}
+    hasBin: true
+
+  '@design-token-kit/core@1.10.0':
+    resolution: {integrity: sha512-zavbLySsM+dfOvEh1PltH6Jrc3NBby4fVmmz21+BijTZW4+uZGNnpkMYkpcv6dkSBMFzUkcGiYzvB6szeqDsEQ==}
+    engines: {node: '>=20.19.0'}
 
   '@dimforge/rapier3d-compat@0.12.0':
     resolution: {integrity: sha512-uekIGetywIgopfD97oDL5PfeezkFpNhwlzlaEYNOA0N6ghdsOvh/HYjSMek5Q2O1PYvRSDFcqFVJl4r4ZBwOow==}
@@ -10788,6 +10812,10 @@ packages:
   commander@12.1.0:
     resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
     engines: {node: '>=18'}
+
+  commander@14.0.1:
+    resolution: {integrity: sha512-2JkV3gUZUVrbNA+1sjBOYLsMZ5cEEl8GTFP2a4AVz5hvasAMCQ1D2l2le/cX+pV4N6ZU17zjUahLpIXRrnWL8A==}
+    engines: {node: '>=20'}
 
   commander@14.0.2:
     resolution: {integrity: sha512-TywoWNNRbhoD0BXs1P3ZEScW8W5iKrnbithIl0YH+uCmBd0QpPOA8yc82DS3BIE5Ma6FnBVUsJ7wVUDz4dvOWQ==}
@@ -17166,6 +17194,11 @@ packages:
     engines: {node: '>= 14.6'}
     hasBin: true
 
+  yaml@2.9.0:
+    resolution: {integrity: sha512-2AvhNX3mb8zd6Zy7INTtSpl1F15HW6Wnqj0srWlkKLcpYl/gMIMJiyuGq2KeI2YFxUPjdlB+3Lc10seMLtL4cA==}
+    engines: {node: '>= 14.6'}
+    hasBin: true
+
   yaml@2.9.1:
     resolution: {integrity: sha512-3NxN8+78OdzbT7C/WjGsyfPAtJaN3FNDsWxv7Y7mcDsT/oOmgW8BpyQQFFBnvZE3j9Y2Sdz1ULFLezL7Eb2yFw==}
     engines: {node: '>= 14.6'}
@@ -19838,6 +19871,17 @@ snapshots:
       pako: 2.2.0
     transitivePeerDependencies:
       - encoding
+
+  '@design-token-kit/cli@1.10.0':
+    dependencies:
+      '@design-token-kit/core': 1.10.0
+      commander: 14.0.1
+
+  '@design-token-kit/core@1.10.0':
+    dependencies:
+      ajv: 8.20.0
+      ajv-formats: 3.0.1(ajv@8.20.0)
+      yaml: 2.9.0
 
   '@dimforge/rapier3d-compat@0.12.0': {}
 
@@ -28052,6 +28096,8 @@ snapshots:
   commander@11.1.0: {}
 
   commander@12.1.0: {}
+
+  commander@14.0.1: {}
 
   commander@14.0.2: {}
 
@@ -37291,6 +37337,8 @@ snapshots:
       yaml: 2.8.3
 
   yaml@2.8.3: {}
+
+  yaml@2.9.0: {}
 
   yaml@2.9.1: {}
 
