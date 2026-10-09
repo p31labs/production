@@ -162,15 +162,35 @@ pnpm gate                                   # 0
 - `pnpm version -r` fails on a plain internal semver range → convert to
   `workspace:` (which Path D enforces).
 
+## Deferred: external-dep catalog (precise diagnosis)
+
+The external-dep catalog (`culori`, `jest`, `@astrojs/cloudflare`, etc.) was
+attempted on pnpm 11.28.5 and reverted: `culori@catalog:` inside an **upstream
+workspace package** — one that other packages link via `workspace:*` — fails
+with `ERR_PNPM_SPEC_NOT_SUPPORTED_BY_ANY_RESOLVER`.
+
+- This is pnpm **#8999** ("using catalog in upstream packages fails"), not the
+  #14361 peerDependencies bug. #14361 (fixed in 12.2.0) is a *different* code
+  path — do not conflate them.
+- #8999 was fixed in 10.6.5 for **injected** workspace packages (#8715); the
+  **linked** (non-injected) path remains broken on 11.28.5.
+- The `workspace:^` catalog entries (design-system trio) work because
+  `workspace:` is resolved by the workspace resolver, never the catalog resolver.
+
+**Retry on pnpm 12** (see Path E): 12.2.0 fixed the peerDependencies variant;
+whether it fixed the linked-upstream-package regular-dependency path is the one
+unknown the rehearsal tests.
+
 ## The numbers that prove this runbook
 
 ```bash
 node scripts/check-p31-scope.mjs \
   && node scripts/check-workspace-protocol.mjs \
+  && pnpm change check \
   && CI=true pnpm install --frozen-lockfile \
   && pnpm gate
 ```
-Four gates, all exit 0. The version line that proves the pin:
+Five gates, all exit 0. The version line that proves the pin:
 `node -e "console.log(require('./package.json').packageManager)"` → prints
-`pnpm@11.28.4` — which is how the workspace stops being "whatever pnpm happens
+`pnpm@11.28.5` — which is how the workspace stops being "whatever pnpm happens
 to be installed."
