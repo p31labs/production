@@ -169,17 +169,20 @@ attempted on pnpm 11.28.5 and reverted: `culori@catalog:` inside an **upstream
 workspace package** — one that other packages link via `workspace:*` — fails
 with `ERR_PNPM_SPEC_NOT_SUPPORTED_BY_ANY_RESOLVER`.
 
-- This is pnpm **#8999** ("using catalog in upstream packages fails"), not the
-  #14361 peerDependencies bug. #14361 (fixed in 12.2.0) is a *different* code
-  path — do not conflate them.
-- #8999 was fixed in 10.6.5 for **injected** workspace packages (#8715); the
-  **linked** (non-injected) path remains broken on 11.28.5.
+- **Not pnpm #8999** — that issue is **closed** (v10.6.5, PR #9266), but the fix
+  covered only the **injected** (`inject-workspace-packages=true`) path. This
+  workspace uses **linked** (`workspace:*`) packages, so the failure is an
+  **unreported variant** of the same class, not the tracked issue.
+- Also distinct from the #14361 peerDependencies bug (fixed in 12.2.0) — a
+  different code path. Do not conflate any of the three.
 - The `workspace:^` catalog entries (design-system trio) work because
   `workspace:` is resolved by the workspace resolver, never the catalog resolver.
 
 **Retry on pnpm 12** (see Path E): 12.2.0 fixed the peerDependencies variant;
 whether it fixed the linked-upstream-package regular-dependency path is the one
-unknown the rehearsal tests.
+unknown the rehearsal tests. (`pnpm deploy` no longer requires
+`injectWorkspacePackages` as of 11.26/12, so there is no pressure to flip the
+linkage just to deploy.)
 
 ## The numbers that prove this runbook
 
