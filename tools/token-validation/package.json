@@ -8,6 +8,6 @@
     "check:dtcg": "dtokens check ../../packages/design-core/tokens/tokens.json"
   },
   "dependencies": {
-    "@design-token-kit/cli": "latest"
+    "@design-token-kit/cli": "^1.10.0"
   }
 }

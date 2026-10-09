@@ -36,9 +36,10 @@ const EXEMPT = [
   /docs\/fix-plans\//,                  // the filing mechanism itself
   // Reference material merged from docs (1)/ is archival, not active work.
   // The ownership contract (TODO/HACK must be filed) applies to code and the
-  // active governance docs (enterprise/, plans/, research/) — not to reference
-  // notes, prompts, and inventories. Exempt docs/ except those active subdirs.
-  /\/docs\/(?!enterprise\/|plans\/|research\/)/,
+  // active governance docs — enterprise/, plans/, research/, and the root
+  // LESSONS/MONITORING/RUNBOOKS/PQC ledgers — not to the reference notes,
+  // prompts, and inventories the merge brought in.
+  /\/docs\/(?!(?:enterprise|plans|research|fix-plans)\/|(?:LESSONS|MONITORING|RUNBOOKS)\.md$|PQC-)/,
 ];
 
 // The set of filenames already covered by a fix-plan (their markers are filed).

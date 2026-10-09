@@ -12,9 +12,12 @@ import { join } from 'node:path';
 
 const CONFIG = process.argv[2] || '/home/p31/.config/opencode/opencode.jsonc';
 
+// The opencode config is machine-local (it wires this machine's MCP servers).
+// A fresh clone or CI has no such config — skip rather than fail, so this
+// check is a local sanity gate, not a CI blocker.
 if (!existsSync(CONFIG)) {
-  console.error(`mcp:paths FAIL — config not found: ${CONFIG}`);
-  process.exit(1);
+  console.warn(`mcp:paths SKIP — no opencode config at ${CONFIG} (nothing to verify)`);
+  process.exit(0);
 }
 
 const raw = readFileSync(CONFIG, 'utf8');
