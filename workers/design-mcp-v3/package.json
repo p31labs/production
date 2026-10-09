@@ -1,0 +1,28 @@
+{
+  "name": "@p31ca/design-mcp-v3",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Canonical P31 design MCP server (2026-07-28 stateless spec). Merge target for p31-design-mcp (workers/design-mcp) tool surface. Hub-readied spoke; gateway added at 3+ spokes.",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "typecheck": "tsc --noEmit",
+    "scan:mcp": "node ../../scripts/scan-mcp-annotations.mjs",
+    "sync:contracts": "node scripts/sync-contracts.mjs",
+    "skills:check": "node scripts/skills-eval.mjs"
+  },
+  "dependencies": {
+    "@p31ca/design-core": "workspace:*",
+    "@p31ca/design-validator": "workspace:*",
+    "yaml": "^2.3.1",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260317.1",
+    "agents": "^0.20.0",
+    "typescript": "^5.9.0",
+    "wrangler": "^4.130.0"
+  }
+}

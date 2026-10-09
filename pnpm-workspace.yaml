@@ -4,9 +4,16 @@ packages:
   - 'workers/*'
 allowBuilds:
   '@bundled-es-modules/glob': false
+  '@coinbase/x402': true
+  '@playwright/browser-chromium': false
+  bufferutil: false
+  core-js-pure: false
   esbuild: true
+  keccak: true
   onnxruntime-node: false
   protobufjs: false
   sharp: true
   style-dictionary: false
+  unix-dgram: false
+  utf-8-validate: false
   workerd: true

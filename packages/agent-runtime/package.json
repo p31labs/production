@@ -1,0 +1,35 @@
+{
+  "name": "@p31ca/agent-runtime",
+  "version": "0.1.0",
+  "description": "P31 family orchestration kernel — the agentic pipeline that connects the QPJ workspace, the Forge, and the Loom. Chief-of-staff coordinator, drafting agents, scoped memory, and a risk-class policy gate. Open source, community-funded, family-first.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build && npm run test"
+  },
+  "dependencies": {
+    "zod": "^3.23.8",
+    "@p31ca/agent-engine": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0",
+    "vitest": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/p31labs/P31-local-workspace.git",
+    "directory": "packages/agent-runtime"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

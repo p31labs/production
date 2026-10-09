@@ -126,6 +126,6 @@
   },
   "dependencies": {
     "zod": "^4.6.5",
-    "@p31ca/sovereign-primitives": "^0.0.1"
+    "@p31ca/sovereign-primitives": "workspace:*"
   }
 }

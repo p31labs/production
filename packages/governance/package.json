@@ -1,0 +1,49 @@
+{
+  "name": "@p31ca/governance",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "P31 governance components — the visual vocabulary of the audit/agent layer: ChainTimeline, VerifyButton, EnforcementGauge, RefusalFeed, ProposalQueue, SovereignBadge, LumiIdentityCard.",
+  "author": "P31 Labs <willyj1587@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://p31ca.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/p31labs/P31-local-workspace.git",
+    "directory": "packages/governance"
+  },
+  "scripts": {
+    "build": "npm run build:js",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --config vitest.config.ts",
+    "build:js": "tsc"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "dependencies": {
+    "@p31ca/design-core": "workspace:*"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./chain": "./dist/ChainTimeline.js",
+    "./verify": "./dist/VerifyButton.js",
+    "./enforcement": "./dist/EnforcementGauge.js",
+    "./refusals": "./dist/RefusalFeed.js",
+    "./proposals": "./dist/ProposalQueue.js",
+    "./sovereign": "./dist/SovereignBadge.js",
+    "./lumi": "./dist/LumiIdentityCard.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}
