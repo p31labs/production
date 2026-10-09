@@ -3,10 +3,13 @@ import type { AgentId, Message, Artifact, Thread, MonitorData, ToolCallEvent, Ge
 import type { PipelineStep, ContractIssue } from './pipeline';
 import type { ClarifyQuestion } from './clarify';
 import { deriveThreadTitle } from './threadList';
+import { emitGenerated, emitRevised } from './loomEmit';
 
 export type { AgentId, Message, Artifact, Thread, MonitorData, ToolCallEvent, GenerationStatus, ArtifactVersion, Tab, Device, ConsoleEntry, InspectorNode, SplitState } from './types';
 export type { PipelineStep, ContractIssue } from './pipeline';
 export type { ClarifyQuestion } from './clarify';
+
+export type Verbosity = 'shorter' | 'standard' | 'detail';
 
 export interface SandboxState {
   threads: Thread[];
@@ -25,6 +28,15 @@ export interface SandboxState {
   lastDeployUrl: string | null;
   pipelineSteps: PipelineStep[];
   pendingClarify: { prompt: string; questions: ClarifyQuestion[] } | null;
+
+  // Presentation prefs (localStorage-backed, not IndexedDB — mirrors LOOM presentation pattern).
+  verbosity: Verbosity;
+  toneLabels: boolean;
+  reducedStimulation: boolean;
+  breakOpen: boolean;
+
+  // Regeneration signal: SandboxChat's single send path consumes `queuedPrompt`.
+  queuedPrompt: string | null;
 
   createThread: (title?: string) => Thread;
   deleteThread: (id: string) => void;
@@ -56,6 +68,13 @@ export interface SandboxState {
   clearPipeline: () => void;
   setPendingClarify: (pending: { prompt: string; questions: ClarifyQuestion[] } | null) => void;
 
+  setVerbosity: (v: Verbosity) => void;
+  setToneLabels: (v: boolean) => void;
+  setReducedStimulation: (v: boolean) => void;
+  setBreakOpen: (v: boolean) => void;
+  queuePrompt: (prompt: string | null) => void;
+  regenerate: (messageId: string) => void;
+
   hydrate: (threads: Thread[], messages: Record<string, Message[]>, artifacts: Record<string, Artifact[]>) => void;
 }
 
@@ -66,6 +85,33 @@ let _artifactSeq = 0;
 function uid(prefix: string) {
   return `${prefix}-${Date.now()}-${_msgSeq++}`;
 }
+
+const PREFS_KEY = 'p31-chat-prefs';
+
+function loadPrefs(): { verbosity: Verbosity; toneLabels: boolean; reducedStimulation: boolean } {
+  try {
+    const raw = localStorage.getItem(PREFS_KEY);
+    if (!raw) return { verbosity: 'standard', toneLabels: true, reducedStimulation: false };
+    const p = JSON.parse(raw) as Partial<{ verbosity: Verbosity; toneLabels: boolean; reducedStimulation: boolean }>;
+    return {
+      verbosity: p.verbosity === 'shorter' || p.verbosity === 'detail' ? p.verbosity : 'standard',
+      toneLabels: typeof p.toneLabels === 'boolean' ? p.toneLabels : true,
+      reducedStimulation: typeof p.reducedStimulation === 'boolean' ? p.reducedStimulation : false,
+    };
+  } catch {
+    return { verbosity: 'standard', toneLabels: true, reducedStimulation: false };
+  }
+}
+
+function savePrefs(p: { verbosity: Verbosity; toneLabels: boolean; reducedStimulation: boolean }) {
+  try {
+    localStorage.setItem(PREFS_KEY, JSON.stringify(p));
+  } catch {
+    // storage unavailable — prefs are session-only
+  }
+}
+
+const initialPrefs = loadPrefs();
 
 export const useSandboxStore = create<SandboxState>((set, get) => ({
   threads: [],
@@ -84,6 +130,11 @@ export const useSandboxStore = create<SandboxState>((set, get) => ({
   lastDeployUrl: null,
   pipelineSteps: [],
   pendingClarify: null,
+  verbosity: initialPrefs.verbosity,
+  toneLabels: initialPrefs.toneLabels,
+  reducedStimulation: initialPrefs.reducedStimulation,
+  breakOpen: false,
+  queuedPrompt: null,
 
   createThread: (title) => {
     const id = uid('thread');
@@ -154,6 +205,8 @@ export const useSandboxStore = create<SandboxState>((set, get) => ({
       artifacts: { ...s.artifacts, [threadId]: [...(s.artifacts[threadId] || []), art] },
       activeArtifactId: art.id,
     }));
+    // RLDF training substrate: capture the original + append the Loom event.
+    emitGenerated(art).catch(() => { /* non-blocking — a capture failure must not break artifact creation */ });
     return art;
   },
 
@@ -166,6 +219,8 @@ export const useSandboxStore = create<SandboxState>((set, get) => ({
         [threadId]: (s.artifacts[threadId] || []).map((a) => (a.id === artifactId ? { ...a, code } : a)),
       },
     }));
+    // RLDF: record the operator-improved version (screenshotRef2 pair).
+    emitRevised({ id: artifactId, code }).catch(() => { /* non-blocking */ });
   },
 
   setArtifactMonitor: (artifactId, monitor) => {
@@ -234,6 +289,48 @@ export const useSandboxStore = create<SandboxState>((set, get) => ({
   clearPipeline: () => set({ pipelineSteps: [] }),
 
   setPendingClarify: (pending) => set({ pendingClarify: pending }),
+
+  setVerbosity: (verbosity) => {
+    const prefs = { verbosity, toneLabels: get().toneLabels, reducedStimulation: get().reducedStimulation };
+    savePrefs(prefs);
+    set({ verbosity });
+  },
+
+  setToneLabels: (toneLabels) => {
+    const prefs = { verbosity: get().verbosity, toneLabels, reducedStimulation: get().reducedStimulation };
+    savePrefs(prefs);
+    set({ toneLabels });
+  },
+
+  setReducedStimulation: (reducedStimulation) => {
+    const prefs = { verbosity: get().verbosity, toneLabels: get().toneLabels, reducedStimulation };
+    savePrefs(prefs);
+    set({ reducedStimulation });
+  },
+
+  setBreakOpen: (breakOpen) => set({ breakOpen }),
+
+  queuePrompt: (prompt) => set({ queuedPrompt: prompt }),
+
+  regenerate: (messageId) => {
+    const threadId = get().activeThreadId;
+    if (!threadId) return;
+    const msgs = get().messages[threadId] || [];
+    const idx = msgs.findIndex((m) => m.id === messageId);
+    if (idx < 0) return;
+    // Keep through the user message immediately preceding the assistant turn;
+    // drop the assistant reply and everything after it. Re-queue that prompt.
+    let cut = idx;
+    while (cut >= 0 && msgs[cut].role !== 'user') cut -= 1;
+    if (cut < 0) return;
+    const prompt = msgs[cut].content;
+    set((s) => ({
+      messages: { ...s.messages, [threadId]: msgs.slice(0, cut + 1) },
+      streamingText: null,
+      isStreaming: false,
+      queuedPrompt: prompt,
+    }));
+  },
 
   hydrate: (threads, messages, artifacts) => {
     if (threads.length === 0) return;

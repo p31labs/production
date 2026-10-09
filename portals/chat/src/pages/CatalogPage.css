@@ -113,15 +113,15 @@
 }
 
 .catalog-grid--drop {
-  background: rgba(0, 240, 255, 0.04);
-  outline-color: var(--p31-accent, #00F0FF);
+  background: color-mix(in oklab, var(--p31-accent, CanvasText) 4%, transparent);
+  outline-color: var(--p31-accent, CanvasText);
 }
 
 .catalog-bricks {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 0 var(--space-3) var(--space-3);
+  padding: 0 var(--p31-space-md) var(--p31-space-md);
 }
 
 .catalog-brick {
@@ -132,10 +132,10 @@
   padding: 8px 12px;
   background: transparent;
   border: 1px solid transparent;
-  border-radius: var(--radius-md);
+  border-radius: var(--p31-radius-md);
   color: var(--p31-text, CanvasText);
   font-size: 12px;
-  font-family: var(--font);
+  font-family: var(--p31-font-sans);
   cursor: pointer;
   text-align: left;
   transition: all 0.15s ease;
@@ -220,8 +220,8 @@
 }
 
 .catalog-brick__meta-item.contract {
-  color: var(--p31-accent-violet, #A78BFA);
-  background: rgba(167, 139, 250, 0.08);
+  color: var(--p31-accent-violet, CanvasText);
+  background: color-mix(in oklab, var(--p31-accent-violet, CanvasText) 8%, transparent);
 }
 
 .catalog-brick__chevron {
@@ -245,7 +245,7 @@
   margin-left: 28px;
   padding: 8px 12px;
   background: var(--p31-surface, Surface);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  border-radius: 0 var(--p31-radius-md) var(--p31-radius-md) 0;
 }
 
 @keyframes expandIn {
@@ -397,7 +397,7 @@
 }
 
 .catalog-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--p31-glass-shadow, 0 8px 24px color-mix(in oklab, var(--p31-void, CanvasText) 12%, transparent));
   transform: translateY(-2px) rotateY(2deg) rotateX(1deg);
   border-color: var(--p31-accent, #6C63FF);
 }
@@ -483,8 +483,8 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--p31-accent, #6C63FF);
-  background: rgba(108, 99, 255, 0.1);
+  color: var(--p31-accent, CanvasText);
+  background: color-mix(in oklab, var(--p31-accent, CanvasText) 10%, transparent);
   padding: 2px 6px;
   border-radius: 4px;
 }
@@ -530,7 +530,7 @@
 }
 
 .catalog-card--contract {
-  border-color: rgba(108, 99, 255, 0.3);
+  border-color: color-mix(in oklab, var(--p31-accent, CanvasText) 30%, transparent);
   border-style: dashed;
 }
 
@@ -549,8 +549,8 @@
 
 .catalog-card__system {
   font-size: 9px;
-  color: var(--p31-accent, #6C63FF);
-  background: rgba(108, 99, 255, 0.08);
+  color: var(--p31-accent, CanvasText);
+  background: color-mix(in oklab, var(--p31-accent, CanvasText) 8%, transparent);
   padding: 2px 5px;
   border-radius: 3px;
 }
@@ -651,7 +651,7 @@
   align-items: center;
   justify-content: center;
   background: var(--p31-surface-raised, SurfaceVariant);
-  border-radius: var(--radius-md);
+  border-radius: var(--p31-radius-md);
   min-height: 100px;
   padding: 8px;
   overflow: hidden;
@@ -681,7 +681,7 @@
   background: var(--p31-accent, #6C63FF);
   color: var(--p31-void, #0A0A0F);
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--p31-radius-sm);
   padding: 6px 14px;
   font-size: 12px;
   font-weight: 600;
@@ -737,15 +737,15 @@
 }
 
 .contract-pills__pill--warn {
-  color: var(--p31-accent-warm, #FBBF24);
-  background: rgba(251, 191, 36, 0.08);
-  border-color: rgba(251, 191, 36, 0.15);
+  color: var(--p31-accent-gold, CanvasText);
+  background: color-mix(in oklab, var(--p31-accent-gold, CanvasText) 8%, transparent);
+  border-color: color-mix(in oklab, var(--p31-accent-gold, CanvasText) 15%, transparent);
 }
 
 .contract-pills__pill--token {
-  color: var(--p31-accent, #6C63FF);
-  background: rgba(108, 99, 255, 0.08);
-  border-color: rgba(108, 99, 255, 0.15);
+  color: var(--p31-accent, CanvasText);
+  background: color-mix(in oklab, var(--p31-accent, CanvasText) 8%, transparent);
+  border-color: color-mix(in oklab, var(--p31-accent, CanvasText) 15%, transparent);
 }
 
 @media (max-width: 600px) {

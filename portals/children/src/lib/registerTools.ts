@@ -1,6 +1,6 @@
 import { registerWebMCPTool, setupGlobalWebMCPExecutor, listWebMCPToolDefinitions } from './webmcp';
 import type { WebMCPInputSchema } from './webmcp';
-import * as cog from '@p31/ui';
+import * as cog from '@p31ca/ui';
 
 const strProp = (name: string, description: string): WebMCPInputSchema => ({
   type: 'object',

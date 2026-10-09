@@ -3,6 +3,14 @@ import { Link } from 'react-router-dom'
 import { api, type BrandData } from '../lib/api'
 import { useUI, WORLDS } from '../lib/store'
 import manifest from '../data/manifest.json'
+import { renderShellConfig, type BlockRegistry } from '@p31ca/design-core/shell'
+import { EvidenceBlock } from '@p31ca/design-core/compositions'
+import { forgeConfig } from '../../forge.config'
+
+/** The forge's block registry — blockId → canon component. */
+const FORGE_BLOCK_REGISTRY: BlockRegistry = {
+  'evidence-block': EvidenceBlock,
+}
 
 export default function Home() {
   const { world, setWorld, spoons, setSpoons } = useUI()
@@ -54,6 +62,11 @@ export default function Home() {
           <span className="metric__v">{err ? 'offline' : brand ? 'online' : '…'}</span>
           <span className="metric__l">worker</span>
         </div>
+      </div>
+
+      <div className="panel" data-mcp-tool="configShell" data-mcp-state="ready">
+        <h2>Config-driven shell</h2>
+        {renderShellConfig(forgeConfig, FORGE_BLOCK_REGISTRY)}
       </div>
 
       <div className="panel">

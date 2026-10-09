@@ -14,7 +14,7 @@ import {
   SpoonDial,
   Starfield,
   CrisisOverlay,
-} from '@p31/design-core/compositions';
+} from '@p31ca/design-core/compositions';
 import type { CatalogEntry } from '../data/catalog';
 
 /**
@@ -24,10 +24,11 @@ import type { CatalogEntry } from '../data/catalog';
  * Interactive components render in a fixed "demo" state.
  *
  * Shared between grid mode (CatalogCard) and expanded brick detail (CatalogDetail).
+ * Layout is class-driven (see .pv-* utilities in index.css); no inline styles.
  */
 const LIVE_PREVIEWS: Record<string, () => React.ReactNode> = {
   Button: () => (
-    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'center' }}>
+    <div className="pv-row">
       <Button variant="primary" size="sm">Primary</Button>
       <Button variant="secondary" size="sm">Secondary</Button>
       <Button variant="ghost" size="sm">Ghost</Button>
@@ -36,18 +37,18 @@ const LIVE_PREVIEWS: Record<string, () => React.ReactNode> = {
 
   GlassPanel: () => (
     <GlassPanel padding="sm">
-      <span style={{ fontSize: 12 }}>Glass panel content</span>
+      <span className="pv-label">Glass panel content</span>
     </GlassPanel>
   ),
 
   GlassCard: () => (
     <GlassCard>
-      <span style={{ fontSize: 12 }}>Glass card</span>
+      <span className="pv-label">Glass card</span>
     </GlassCard>
   ),
 
   StatusBadge: () => (
-    <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
+    <div className="pv-row">
       <StatusBadge status="online" label="Online" />
       <StatusBadge status="away" label="Away" />
     </div>
@@ -56,16 +57,16 @@ const LIVE_PREVIEWS: Record<string, () => React.ReactNode> = {
   MetricBadge: () => <MetricBadge value="124" label="tokens" />,
 
   Topbar: () => (
-    <div style={{ transform: 'scale(0.85)', transformOrigin: 'top center' }}>
+    <div className="pv-scale">
       <Topbar
-        brand={<span style={{ fontWeight: 700, fontSize: 12 }}>P31</span>}
-        right={<span style={{ fontSize: 10, opacity: 0.6 }}>v2.3.0</span>}
+        brand={<span className="pv-brand">P31</span>}
+        right={<span className="pv-meta">v2.3.0</span>}
       />
     </div>
   ),
 
   BottomNav: () => (
-    <div style={{ transform: 'scale(0.85)', transformOrigin: 'bottom center' }}>
+    <div className="pv-scale-bottomsm">
       <BottomNav
         items={[
           { icon: <span>⌂</span>, label: 'Home', onClick: () => {} },
@@ -78,7 +79,7 @@ const LIVE_PREVIEWS: Record<string, () => React.ReactNode> = {
   ),
 
   Footer: () => (
-    <div style={{ transform: 'scale(0.7)', transformOrigin: 'top center' }}>
+    <div className="pv-scale-sv">
       <Footer
         brandLabel="P31 Labs"
         tagline="Sovereign, neuroinclusive interface."
@@ -103,7 +104,7 @@ const LIVE_PREVIEWS: Record<string, () => React.ReactNode> = {
   ),
 
   CommandPalette: () => (
-    <div style={{ transform: 'scale(0.75)', transformOrigin: 'top center', width: 280, height: 160, overflow: 'hidden' }}>
+    <div className="pv-cmd">
       <CommandPalette
         open
         onClose={() => {}}
@@ -120,7 +121,7 @@ const LIVE_PREVIEWS: Record<string, () => React.ReactNode> = {
   Chameleon: () => <Chameleon />,
 
   PageHeader: () => (
-    <div style={{ transform: 'scale(0.8)', transformOrigin: 'top left', width: '125%' }}>
+    <div className="pv-wide">
       <PageHeader eyebrow="System" title="Design Tokens" lede="Single source of truth." />
     </div>
   ),
@@ -128,13 +129,13 @@ const LIVE_PREVIEWS: Record<string, () => React.ReactNode> = {
   SpoonDial: () => <SpoonDial level={3} onChange={() => {}} />,
 
   Starfield: () => (
-    <div style={{ width: 180, height: 80, overflow: 'hidden', borderRadius: 8 }}>
+    <div className="pv-starfield">
       <Starfield spoons={3} />
     </div>
   ),
 
   CrisisOverlay: () => (
-    <div style={{ position: 'relative', width: 200, height: 100, overflow: 'hidden', borderRadius: 8, background: 'var(--p31-void, #0a0a0f)' }}>
+    <div className="pv-crisis">
       <CrisisOverlay visible message="Rest." buttonLabel="Ready" onReady={() => {}} />
     </div>
   ),

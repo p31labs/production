@@ -33,14 +33,17 @@ test.describe('chat sandbox sidebar', () => {
     const handle = page.locator('.chat-sidebar-resize');
     await expect(handle).toBeVisible();
     const hb = await handle.boundingBox();
-    await page.mouse.move(hb.x + hb.width / 2, hb.y + hb.height / 2);
+    expect(hb).not.toBeNull();
+    expect(before).not.toBeNull();
+    await page.mouse.move(hb!.x + hb!.width / 2, hb!.y + hb!.height / 2);
     await page.mouse.down();
-    await page.mouse.move(before.x + before.width + 60, hb.y + hb.height / 2, { steps: 5 });
+    await page.mouse.move(before!.x + before!.width + 60, hb!.y + hb!.height / 2, { steps: 5 });
     await page.mouse.up();
     const after = await sidebar.boundingBox();
-    expect(after.width).toBeGreaterThan(before.width + 40);
+    expect(after).not.toBeNull();
+    expect(after!.width).toBeGreaterThan(before!.width + 40);
     const stored = await page.evaluate(() => Number(localStorage.getItem('p31-chat-sidebar-width')));
-    expect(stored).toBeGreaterThan(before.width);
+    expect(stored).toBeGreaterThan(before!.width);
 
     await page.locator('.chat-thread-item').nth(0).focus();
     await page.keyboard.press('ArrowDown');
@@ -56,12 +59,18 @@ test.describe('chat sandbox sidebar', () => {
     const composer = page.locator('.chat-composer');
     await expect(composer).toBeVisible();
     const cb = await composer.boundingBox();
-    expect(cb.y + cb.height).toBeLessThanOrEqual(812);
+    expect(cb).not.toBeNull();
+    expect(cb!.y + cb!.height).toBeLessThanOrEqual(812);
 
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     expect(overflow).toBeLessThanOrEqual(0);
 
+    // Mobile-first: the drawer is closed on load; open it via the control-bar
+    // hamburger, then close it via the backdrop.
     const sidebar = page.locator('.chat-sidebar');
+    await expect(sidebar).toBeHidden();
+    await page.locator('.chat-control-bar__btn').first().click();
+    await page.waitForTimeout(400);
     await expect(sidebar).toBeVisible();
 
     await page.locator('.chat-sidebar-backdrop').click({ position: { x: 360, y: 400 } });

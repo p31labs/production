@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   useLedStore,
   LED_MODES,
@@ -6,6 +6,7 @@ import {
   MODE_USES_PALETTE,
   LED_PRESETS,
   applyNamedPreset,
+  applyCalmLedPhase,
   ledPresetToUrl,
   applyPresetFromUrl,
   type LedMode,
@@ -99,6 +100,41 @@ export default function LedController() {
     }
   }, [open])
 
+  // ── Calm mode (CALM-MODE.md) ──
+  // While calm is active the LED ring becomes the breathing guide: phase 1 the
+  // physiological sigh (double pulse + long fade), phase 2 sustained coherence.
+  // The prior LED state is restored when calm exits.
+  useEffect(() => {
+    if (!effects.calm) return
+    const s = useLedStore.getState()
+    const prior = {
+      powered: s.powered, mode: s.mode, speed: s.speed, brightness: s.brightness,
+      color: s.color, color2: s.color2,
+      blobBrightness: s.blobBrightness, blobSpeed: s.blobSpeed, blobColor: s.blobColor,
+    }
+    applyCalmLedPhase(effects.calmPhase === 'coherence' ? 'coherence' : 'sigh')
+    // Haptic breathing guide — haptic is primary for interoception (Dobrushina
+    // et al. 2024). Double pulse (double inhale) → long fade (extended exhale),
+    // re-cued each breath cycle. Guarded: only where navigator.vibrate exists.
+    const nav = typeof navigator !== 'undefined' ? navigator : null
+    let vib: number | null = null
+    if (nav && 'vibrate' in nav) {
+      const pattern = effects.calmPhase === 'coherence' ? [80, 50, 80, 2000] : [120, 60, 120, 1400]
+      nav.vibrate(pattern)
+      vib = window.setInterval(() => nav.vibrate(pattern), 10_000)
+    }
+    return () => {
+      if (vib !== null) window.clearInterval(vib)
+      nav?.vibrate(0)
+      useLedStore.getState().applyPreset(prior)
+    }
+  }, [effects.calm])
+
+  useEffect(() => {
+    if (!effects.calm || effects.calmPhase === null) return
+    applyCalmLedPhase(effects.calmPhase === 'coherence' ? 'coherence' : 'sigh')
+  }, [effects.calmPhase])
+
   const usesPalette = MODE_USES_PALETTE[led.mode] > 0
 
   // ── Closed chip ──
@@ -106,9 +142,16 @@ export default function LedController() {
     return (
       <button
         type="button"
-        className="devpanel__chip"
-        onClick={() => setOpen(true)}
-        aria-label="Open control instrument"
+        className={`devpanel__chip${effects.calm ? ' is-calm' : ''}`}
+        onClick={() => {
+          if (effects.calm) {
+            // Tapping the chip during calm exits calm (the host listens).
+            window.dispatchEvent(new CustomEvent('p31:exit-calm'))
+            return
+          }
+          setOpen(true)
+        }}
+        aria-label={effects.calm ? 'Exit calm mode' : 'Open control instrument'}
       >
         <span
           className={`devpanel__dot${led.powered && led.mode !== 'off' ? ' is-live' : ''}${pulseFlash ? ' is-flash' : ''}`}

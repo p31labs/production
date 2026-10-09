@@ -2,9 +2,9 @@ import { useRef, useEffect, useCallback } from 'react';
 import { useSandboxStore, useSandboxPersistence } from '../features/sandbox';
 import SandboxChat from '../features/sandbox/SandboxChat';
 import ArtifactPane from '../features/sandbox/ArtifactPane';
-import { ChatShell } from '@p31/design-core/compositions';
+import { ChatShell } from '@p31ca/design-core/compositions';
 import { useMediaQuery } from '../lib/useMediaQuery';
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 
 const STORAGE_KEY = 'p31-sandbox-split';
 const MIN_RATIO = 30;
@@ -148,8 +148,17 @@ export default function SandboxPage({ variant = 'page' }: { variant?: 'page' | '
               className={`surface-split-handle${artifactOpen ? ' surface-split-handle--visible' : ' surface-split-handle--hidden'}`}
               onPointerDown={handlePointerDown}
               onDoubleClick={toggleArtifact}
+              onKeyDown={(e) => {
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                  e.preventDefault();
+                  setSplitPosition(Math.max(MIN_RATIO, Math.min(MAX_RATIO, splitPosition + (e.key === 'ArrowRight' ? 5 : -5))));
+                }
+              }}
               role="separator"
               aria-orientation="vertical"
+              aria-valuemin={MIN_RATIO}
+              aria-valuemax={MAX_RATIO}
+              aria-valuenow={Math.round(splitPosition)}
               tabIndex={0}
             />
 

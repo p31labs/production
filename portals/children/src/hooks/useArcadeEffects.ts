@@ -1,14 +1,14 @@
 import { useCallback } from 'react';
-import { spawnConfetti } from '@p31/gamification/confetti';
-import { haptic, isHapticEnabled } from '@p31/gamification/haptic';
+import { spawnConfetti } from '@p31ca/gamification/confetti';
+import { haptic, isHapticEnabled } from '@p31ca/gamification/haptic';
 import {
   playAchievementUnlock,
   playLoveChime,
   playQuestComplete,
   playSelectBlip,
   playReject,
-} from '@p31/gamification/sound';
-import { tierFromAge, type GrowthTier } from '@p31/gamification/growth-rings';
+} from '@p31ca/gamification/sound';
+import { tierFromAge, type GrowthTier } from '@p31ca/gamification/growth-rings';
 import { useAudioContext } from './useAudioContext';
 
 const TIER_ICONS: Record<GrowthTier, string> = {

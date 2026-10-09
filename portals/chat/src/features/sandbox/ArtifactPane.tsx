@@ -395,14 +395,17 @@ export default function ArtifactPane() {
         )}
       </div>
 
-      <div className="artifact-tabs">
+      <div className="artifact-tabs" role="tablist" aria-label="Artifact view">
         {(['preview', 'code', 'diff', 'inspect'] as Tab[]).map((t) => (
           <button
             key={t}
             type="button"
+            role="tab"
+            aria-selected={tab === t}
             className={`artifact-tab${tab === t ? ' artifact-tab--active' : ''}`}
             onClick={() => setTab(t)}
-            aria-pressed={tab === t}
+            data-agent-kind="action"
+            data-agent-action="chat.artifact.tab"
           >
             {t.charAt(0).toUpperCase() + t.slice(1)}
           </button>
@@ -495,6 +498,7 @@ export default function ArtifactPane() {
                 autoComplete="off"
                 autoCorrect="off"
                 autoCapitalize="off"
+                aria-label="Code editor"
               />
             </div>
           </div>

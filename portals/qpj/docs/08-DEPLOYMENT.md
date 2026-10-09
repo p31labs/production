@@ -2,7 +2,7 @@
 
 ## Entry
 
-`/home/p31/production/portals/deploy-unified.mjs` → the `qpj` portal in `PORTALS`:
+`scripts/deploy.mjs (per-portal — run `pnpm deploy` from the portal root)` → this portal's own `scripts/deploy.mjs`:
 
 ```js
 qpj: {

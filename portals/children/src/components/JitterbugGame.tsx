@@ -5,8 +5,8 @@ import {
   setJitterbugTarget,
   jitterbugVertices,
   jitterbugEdges,
-} from '@p31/game-engine';
-import type { JitterbugState } from '@p31/game-engine';
+} from '@p31ca/game-engine';
+import type { JitterbugState } from '@p31ca/game-engine';
 import { useArcadeStore } from '../store/useArcadeStore';
 import { useArcadeEffects } from '../hooks/useArcadeEffects';
 

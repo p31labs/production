@@ -39,7 +39,8 @@ describe('Routes', () => {
         <Catalog />
       </BrowserRouter>
     );
-    expect(screen.getByText('Catalog')).toBeDefined();
+    // The page h1 — not the nav-item/chrome preview labels also named "Catalog".
+    expect(screen.getByRole('heading', { name: 'Catalog' })).toBeDefined();
   });
 
   it('renders Tokens page', () => {

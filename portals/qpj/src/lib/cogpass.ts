@@ -1,7 +1,7 @@
-import { getProfile } from '@p31/sovereign-core';
+import { getProfile } from '@p31ca/sovereign-core';
 import { useQpjStore } from '../store/useQpjStore';
 import type { Identity } from '../lib/identity';
-import type { Preferences, Reputation, Relations, Tetrahedron, TetraVertex } from '@p31/sovereign-core';
+import type { Preferences, Reputation, Relations, Tetrahedron, TetraVertex } from '@p31ca/sovereign-core';
 
 export interface CogPass {
   version: 1;

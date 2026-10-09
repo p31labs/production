@@ -5,7 +5,7 @@ import CaptureBoard from './CaptureBoard';
 import ArcadeCanvas from './ArcadeCanvas';
 import TetrahedronVisualizer from './TetrahedronVisualizer';
 import { useAppStore } from '../store/useAppStore';
-import { type NodeData } from '@p31/ui';
+import { type NodeData } from '@p31ca/ui';
 
 interface DashboardPageProps {
   active: boolean;

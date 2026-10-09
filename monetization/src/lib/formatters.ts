@@ -1,6 +1,7 @@
-export function formatCurrency(value: string | number, decimals = 2): string {
+export function formatCurrency(value: string | number | undefined | null, decimals = 2): string {
+  if (value === undefined || value === null) return '0.00';
   const num = typeof value === 'string' ? parseFloat(value) : value;
-  if (Number.isNaN(num)) return '0.00';
+  if (typeof num !== 'number' || Number.isNaN(num)) return '0.00';
   return num.toLocaleString('en-US', {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,

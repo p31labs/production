@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { ToolCallEvent } from '../../lib/mcpRegistry';
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 
 interface ToolChipProps {
   event: ToolCallEvent;

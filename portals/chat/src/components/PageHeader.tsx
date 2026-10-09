@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { useShellStore } from '../store/useShellStore';
-import { Button } from '@p31/design-core/compositions';
+import { Button } from '@p31ca/design-core/compositions';
 
 export interface PageHeaderProps {
   title: string;

@@ -1,20 +1,14 @@
 import { defineConfig } from '@playwright/test';
 
 /**
- * Visual regression config — TWO explicit projects, one config.
- *
- * 1. `legacy-visual` — the existing gate: 39 baselines in
- *    tests/visual.spec.ts-snapshots/ (default snapshot path). Screenshots every
- *    surface at three breakpoints. This is the shipped production gate.
- * 2. `acceptance` — the Wave-0 freeze: baselines commit to
- *    tests/acceptance/__screenshots__/ via a scoped snapshotPathTemplate.
- *    Uses Playwright's built-in stability loop + reduced-motion emulation.
- *
- * Per-project snapshotPathTemplate keeps the two systems disjoint — the
- * multi-truth problem, resolved by making each baseline's location explicit.
+ * Visual regression gate (WP-2026-09-27) — screenshots every surface at three
+ * breakpoints and diffs against committed baselines (Linux/chromium canonical).
+ * Runs against `vite preview` of the built dist (build:pwa builds first).
+ * Baselines regenerate with: npx playwright test --update-snapshots
  */
 export default defineConfig({
   testDir: './tests',
+  testMatch: '**/*.spec.ts',
   timeout: 60_000,
   expect: {
     timeout: 20_000,
@@ -23,37 +17,22 @@ export default defineConfig({
   use: {
     baseURL: 'http://127.0.0.1:5190',
     browserName: 'chromium',
+    // Persist a trace on the first retry so a failure keeps a DOM snapshot +
+    // action log WITHOUT re-running the suite. Open with `npx playwright show-trace`.
+    trace: 'on-first-retry',
   },
+  // Keep failures machine-readable: the HTML report (playwright-report/) and
+  // JSON (test-results/results.json) both persist after a run — the failure
+  // detail is there WITHOUT re-running. `--last-failed` reads .last-run.json.
+  reporter: [
+    ['list'],
+    ['html', { open: 'never' }],
+    ['json', { outputFile: 'test-results/results.json' }],
+  ],
   webServer: {
     command: 'npx vite preview --port 5190 --strictPort',
     url: 'http://127.0.0.1:5190',
     reuseExistingServer: true,
     timeout: 60_000,
   },
-  projects: [
-    {
-      name: 'legacy-visual',
-      testMatch: /visual\.spec\.ts/,
-      // CRITICAL: default snapshotPathTemplate appends {-projectName} to the arg
-      // (desktop-index-legacy-visual-linux.png). The committed baselines have NO
-      // project suffix. Pin the exact legacy template so we compare against the
-      // 39 committed images, not freshly-created suffixed copies.
-      snapshotPathTemplate: '{snapshotDir}/{testFileDir}/{testFileName}-snapshots/{arg}-linux{ext}',
-    },
-    {
-      name: 'acceptance',
-      testMatch: /acceptance-freeze\.spec\.ts/,
-      snapshotPathTemplate: '{testDir}/acceptance/__screenshots__/{testFilePath}/{arg}{ext}',
-      // P2: centralize reduced-motion here so Path E (and any acceptance test)
-      // inherits the same rendering mode the freeze baselines were captured under.
-      // Playwright 1.62.1 supports testProject.use.reducedMotion (the 1.61.1
-      // silent-no-op bug is fixed).
-      use: { reducedMotion: 'reduce' },
-    },
-    {
-      name: 'triage',
-      testMatch: /acceptance-triage\.spec\.ts/,
-      // Read-only diagnostic — no baseline writes. Run: npx playwright test --project=triage
-    },
-  ],
 });

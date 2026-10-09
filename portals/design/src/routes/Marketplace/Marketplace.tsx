@@ -19,6 +19,14 @@ import {
   Crown,
   CandyHeader,
   Dropdown,
+  SidebarNav,
+  MobileBottomNav,
+  CalmOverlay,
+  NotificationStack,
+  CrisisOverlay,
+  EvidenceBlock,
+  MetricRowBlock,
+  GovernanceOverviewBlock,
 } from '@p31ca/design-core/compositions';
 import { COMPONENT_CATALOG } from '@p31ca/design-core/genui/catalog';
 import { LiveExample } from '../../lib/livePreview';
@@ -63,12 +71,12 @@ export interface CatalogEntry {
 
 export type RenderProps = Record<string, unknown>;
 
-/** The real package specifier is @p31ca/design-core; the genui catalog emits @p31/… */
+/** The real package specifier is @p31ca/design-core; the genui catalog emits @p31ca/… */
 function normalizeImport(path: string): string {
   return path.replace(/^@p31\//, '@p31ca/').replace(/\/generated$/, '');
 }
 
-const CATEGORY_ORDER = ['surface', 'navigation', 'action', 'feedback', 'accessibility', 'ambient'];
+const CATEGORY_ORDER = ['chrome', 'surface', 'navigation', 'action', 'feedback', 'accessibility', 'ambient'];
 
 /** The full 33-entry genui canon, normalized and import-resolvable. */
 export const CATALOG_ENTRIES: CatalogEntry[] = (COMPONENT_CATALOG as unknown as RawEntry[]).map((e) => ({
@@ -143,6 +151,49 @@ export const SHOP_ITEMS: ShopItem[] = CURATED_NAMES
   .map((n) => ENTRY_BY_NAME.get(n))
   .filter((e): e is CatalogEntry => Boolean(e))
   .map(toShopItem);
+
+/** The block shop — registry:block compositions (shell contract slots), each
+ *  with a live preview. Blocks are the units an agent proposes and a human
+ *  approves (the Loom propose/approve pair) — the store at block granularity. */
+interface BlockShopItem {
+  id: string;
+  name: string;
+  description: string;
+  slot: string;
+  lovePrice: number;
+  spoonCost: number;
+  preview: ReactNode;
+}
+
+export const BLOCK_SHOP_ITEMS: BlockShopItem[] = [
+  {
+    id: 'metric-row-block',
+    name: 'MetricRowBlock',
+    description: 'An ordered row of value+label metrics. The simplest block — pure props, autonomous confidence.',
+    slot: 'main',
+    lovePrice: 2,
+    spoonCost: 1,
+    preview: <MetricRowBlock items={[{ value: '48', label: 'packs' }, { value: '6', label: 'domains' }]} />,
+  },
+  {
+    id: 'evidence-block',
+    name: 'EvidenceBlock',
+    description: 'A document-pipeline evidence unit: claim, value, source, verification status.',
+    slot: 'main',
+    lovePrice: 4,
+    spoonCost: 2,
+    preview: <EvidenceBlock claim="Enterprise contracts are enforceable." value="5 of 5 contracts pass compose" source="manifest.json" verified="2026-10-01" />,
+  },
+  {
+    id: 'governance-overview-block',
+    name: 'GovernanceOverviewBlock',
+    description: 'A titled governance panel composing headings + EvidenceBlocks. The first composed block.',
+    slot: 'main',
+    lovePrice: 6,
+    spoonCost: 3,
+    preview: <GovernanceOverviewBlock title="Sovereign Stack Governance" body={[{ type: 'evidence', claim: 'The chain is tamper-evident', value: 'SHA-256 / RFC 8785', source: 'hash-chain.ts', verified: '2026-10-01' }]} />,
+  },
+];
 
 function oneOf<T extends string>(value: unknown, allowed: readonly T[], fallback: T): T {
   return allowed.includes(value as T) ? (value as T) : fallback;
@@ -299,6 +350,46 @@ const SAFE_RENDERERS: Record<string, (p: RenderProps) => ReactNode> = {
       />
     </div>
   ),
+  SidebarNav: (p) => (
+    <div className="catalog-preview-row">
+      <SidebarNav
+        items={[
+          { path: '/', label: 'Home', emoji: '🏠' },
+          { path: '/catalog', label: 'Catalog', emoji: '🧩' },
+          { path: '/marketplace', label: 'Marketplace', emoji: '🛍️' },
+        ]}
+        activePath="/catalog"
+      />
+    </div>
+  ),
+  MobileBottomNav: (p) => (
+    <MobileBottomNav
+      items={[
+        { path: '/', label: 'Home', emoji: '🏠' },
+        { path: '/catalog', label: 'Catalog', emoji: '🧩' },
+        { path: '/marketplace', label: 'Marketplace', emoji: '🛍️' },
+      ]}
+      activePath="/catalog"
+    />
+  ),
+  CalmOverlay: (p) => (
+    <div style={{ position: 'relative', height: 220, overflow: 'hidden', borderRadius: 12, display: 'grid', placeItems: 'center', color: 'var(--p31-text-tertiary)' }}>
+      <span>Calm = subtraction — renders nothing, drives <code>data-calm</code>, keeps the ambient.</span>
+    </div>
+  ),
+  NotificationStack: (p) => (
+    <div style={{ position: 'relative', height: 220, overflow: 'hidden' }}>
+      <NotificationStack
+        items={[
+          { id: '1', kind: 'success', title: 'Verified', body: 'Evidence chain intact' },
+          { id: '2', kind: 'info', title: 'Synced', body: 'All portals on canon' },
+        ]}
+      />
+    </div>
+  ),
+  CrisisOverlay: (p) => (
+    <CrisisOverlay visible message="Crisis mode" buttonLabel="Recover" onReady={() => undefined} />
+  ),
 };
 
 /** Editable props exposed by the LiveExample control strip for safe renders. */
@@ -317,6 +408,11 @@ export const SAFE_PROPS: Record<string, RenderProps> = {
   Crown: { label: 'P31' },
   CandyHeader: { eyebrow: 'System', title: 'Candy Header', lede: 'A candy-rounded glass header for the sovereign stack.' },
   Dropdown: { label: 'Action' },
+  SidebarNav: { activePath: '/catalog' },
+  MobileBottomNav: { activePath: '/catalog' },
+  CalmOverlay: { spoons: 0 },
+  NotificationStack: {},
+  CrisisOverlay: { visible: true, message: 'Crisis mode' },
 };
 
 /** Token-preview tile — themed "no live preview" state for components without
@@ -410,6 +506,31 @@ export default function Marketplace() {
               />
             </div>
           </GlassPanel>
+        </SurfaceSection>
+
+        <SurfaceSection title="Page blocks">
+          <SurfaceGrid columns={3} className="surface-grid--tiles">
+            {BLOCK_SHOP_ITEMS.map((b) => (
+              <div key={b.id} className="marketplace-card" data-mcp-tool={`block-${b.id}`} data-mcp-state="ready">
+                <div className="surface-card-header">
+                  <span className="surface-card-title surface-card-title--mono">{b.name}</span>
+                  <span className="chip">registry:block</span>
+                </div>
+                <div className="preview-box" style={{ minHeight: 120 }}>
+                  {b.preview}
+                </div>
+                <p className="surface-card-desc">{b.description}</p>
+                <div className="meta-row">
+                  <span className="chip">slot · {b.slot}</span>
+                  <span className="chip">◆ {b.spoonCost} spoons</span>
+                  <span className="chip">♥ {b.lovePrice} LOVE</span>
+                </div>
+                <span className="mono" style={{ fontSize: 11, color: 'var(--p31-text-tertiary)' }}>
+                  LUMI proposes · human approves · the pair lands on the Loom chain
+                </span>
+              </div>
+            ))}
+          </SurfaceGrid>
         </SurfaceSection>
 
         <SurfaceSection title="Curated shop">

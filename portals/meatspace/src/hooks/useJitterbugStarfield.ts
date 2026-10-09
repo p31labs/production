@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { mountJitterbugStarfield, type JitterbugStarfieldInstance, type VertexData, type BrightStarData, type EdgeData } from '@p31/ui';
+import { mountJitterbugStarfield, type JitterbugStarfieldInstance, type VertexData, type BrightStarData, type EdgeData } from '@p31ca/ui';
 import { useAppStore } from '../store/useAppStore';
-import { useWorkerHealth } from '@p31/ui';
+import { useWorkerHealth } from '@p31ca/ui';
 
 declare global {
   interface Window {

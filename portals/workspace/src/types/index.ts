@@ -2,10 +2,12 @@
 // Shared types for the P31 Quantum Material Workspace
 // ============================================================================
 
-/** The seven surfaces available in the workspace. */
+/** The nine surfaces available in the workspace. */
 export type SurfaceId =
   | 'home'
   | 'docs'
+  | 'forum'
+  | 'life'
   | 'sheets'
   | 'slides'
   | 'calendar'

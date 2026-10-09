@@ -1,0 +1,344 @@
+{
+  "portal": "chat",
+  "path": "production/portals/chat",
+  "auditedAt": "2026-10-02T11:35:00Z",
+  "mode": "static",
+  "toolchain": {
+    "typecheck": "PASS (tsc --noEmit)",
+    "tests": "PASS (68/68 vitest)",
+    "contracts": "PASS (5 contracts, 0 errors, 0 warnings)",
+    "apca": "PASS (72/72) — script fixed to point at design-core tokens.css (F-D9 resolved)",
+    "slop_src": "13 (baseline 19, delta -6, verdict acceptable)",
+    "slop_repo": "22 (baseline 19, delta +3, threshold 22, verdict acceptable-elevated)",
+    "note": "pnpm audit:apca npm script itself is misconfigured (F-D9); run the script directly against tokens.css."
+  },
+  "severity_counts": {
+    "critical": 1,
+    "high": 5,
+    "medium": 7,
+    "low": 4
+  },
+  "findings": [
+    {
+      "id": "F-D1",
+      "severity": "critical",
+      "category": "design",
+      "title": "P31 theme tokens never load at runtime — app renders on browser defaults",
+      "files": [
+        "src/main.tsx:5-7",
+        "dist/assets/index-D1xDgZfs.css"
+      ],
+      "detail": "main.tsx imports only '@p31ca/design-core/css/all.css', 'container.css', and './index.css'. The built CSS defines exactly 3 --p31-* custom properties (--p31-container-font/padding/gap). Every var(--p31-*) reference in index.css and CatalogPage.css therefore resolves to its fallback (Canvas, CanvasText, currentColor, or a hardcoded hex/oklch). The portal renders with browser-default colors and fonts, not the P31 rebel theme.",
+      "evidence": "Computed by scanning dist/assets/index-D1xDgZfs.css: 3 --p31-* definitions total; theme-p31ca.css and tokens.css are exported by design-core but not imported.",
+      "recommendation": "Import '@p31ca/design-core/css/tokens.css' and 'theme-p31ca.css' (or the combined 'index.css') before './index.css', and set data-brand=\"p31ca\" / data-theme=\"rebel\" on <html>.",
+      "rule": "token_usage",
+      "status": "fixed"
+    },
+    {
+      "id": "F-F4",
+      "severity": "high",
+      "category": "form-function",
+      "title": "Duplicate Enter-to-send handlers — Ctrl+Enter double-submits",
+      "files": [
+        "src/features/sandbox/SandboxChat.tsx:240-252",
+        "src/features/sandbox/SandboxChat.tsx:482-487",
+        "src/features/sandbox/SandboxChat.tsx:650-655"
+      ],
+      "detail": "A global window keydown listener fires handleSend on Ctrl/Cmd+Enter; the textarea also has an inline onKeyDown that fires handleSend on Enter when !shiftKey. When focus is in the textarea and the user presses Ctrl+Enter, BOTH handlers run: the inline handler matches (Enter, !shiftKey) and the global handler matches (ctrlKey+Enter). handleSend reads `input`, calls setInput(''), then handleClarify(text) — the second invocation re-reads the stale `input` closure and can enqueue the same prompt twice, producing duplicate user messages and double generation.",
+      "evidence": "SandboxChat.tsx:482-487 (global) and :650-655 (inline) both call handleSend; no guard prevents the second call in the same keypress.",
+      "recommendation": "Consolidate submission into one handler: have the inline textarea onKeyDown delegate to a single submit path and remove the duplicate branch, or gate the global handler with `if (e.target === textareaRef.current) return;`.",
+      "rule": "single_submit_path",
+      "status": "fixed"
+    },
+    {
+      "id": "F-F7",
+      "severity": "high",
+      "category": "form-function",
+      "title": "CatalogDetail Place affordability uses a hardcoded threshold, not live spoons",
+      "files": [
+        "src/components/CatalogDetail.tsx:47",
+        "src/store/gamification.ts:42-51"
+      ],
+      "detail": "canAfford is computed as `entry.spoonCost <= 3`, ignoring the real useSpoons() value. A component with spoonCost 4-5 is permanently disabled even at spoons 5; a component with spoonCost <= 3 is enabled even at spoons 0, and the Place click then silently fails because placeComponent() returns { success:false }. The gamification store already enforces the correct check.",
+      "evidence": "CatalogDetail.tsx:47 hardcodes the threshold; gamification.ts:42-51 compares against useSpoons.getState().spoons.",
+      "recommendation": "Read spoons from useSpoons inside CatalogDetail and set `canAfford = spoons >= entry.spoonCost`, or pass the affordability flag from the parent.",
+      "rule": "spoon_awareness",
+      "status": "fixed"
+    },
+    {
+      "id": "F-F2",
+      "severity": "high",
+      "category": "form-function",
+      "title": "Composer textarea disabled without aria-busy / aria-disabled on the input",
+      "files": [
+        "src/features/sandbox/SandboxChat.tsx:656",
+        "specs/chat-composer/tokens.json"
+      ],
+      "detail": "The textarea is set to `disabled={generationStatus !== 'idle' || pendingClarify !== null}`. The composer contract requires `aria-busy when streaming`, and the disabled input is not announced as busy/disabled to assistive tech. The status indicator also lacks role/live region (see F-F3).",
+      "evidence": "SandboxChat.tsx:656 disables the textarea; contract required_aria lists 'aria-busy when streaming' and 'aria-live on status'.",
+      "recommendation": "Add aria-busy={generating} to the textarea (and aria-disabled when disabled) and role=\"status\" + aria-live=\"polite\" to the generation-status element.",
+      "rule": "required_aria",
+      "status": "fixed"
+    },
+    {
+      "id": "F-F3",
+      "severity": "high",
+      "category": "form-function",
+      "title": "Generation status has no role=\"status\" / aria-live",
+      "files": [
+        "src/features/sandbox/SandboxChat.tsx:616-621"
+      ],
+      "detail": "The 'Calling generator…' / 'Streaming…' status div has no role=\"status\" or aria-live, so screen readers never announce generation state. Contract chat-composer requires `aria-live on status`.",
+      "evidence": "SandboxChat.tsx:616-621 renders .chat-generation-status with no live-region semantics.",
+      "recommendation": "Add role=\"status\" aria-live=\"polite\" to the status div.",
+      "rule": "required_aria",
+      "status": "fixed"
+    },
+    {
+      "id": "F-F5",
+      "severity": "medium",
+      "category": "form-function",
+      "title": "AgentSelector popover has no keyboard navigation or Escape close",
+      "files": [
+        "src/features/sandbox/AgentSelector.tsx:24-65"
+      ],
+      "detail": "The selector is a Button + role=\"menu\" popover. It closes on outside mousedown only. No ArrowUp/Down movement, no Escape-to-close, no focus management, no typeahead. Keyboard users cannot operate the menu.",
+      "evidence": "AgentSelector.tsx:29-36 (outside click only), :40 (aria-expanded), :45 (role=menu); no onKeyDown handlers.",
+      "recommendation": "Add ArrowUp/Down navigation over role=menuitem options, Escape to close, and focus the active item on open.",
+      "rule": "keyboard_operable",
+      "status": "fixed"
+    },
+    {
+      "id": "F-F6",
+      "severity": "medium",
+      "category": "form-function",
+      "title": "ClarifyGate options are not a radiogroup; no keyboard nav; contradictory label",
+      "files": [
+        "src/features/sandbox/ClarifyGate.tsx:39-68"
+      ],
+      "detail": "Each option is a standalone aria-pressed button, not a role=radiogroup, so arrow-key selection is impossible. There is no fieldset/legend grouping. The submit button label 'Let defaults decide' is shown when answerCount===0 but the button is disabled until allAnswered (0===length only when there are no questions), so that label is effectively unreachable.",
+      "evidence": "ClarifyGate.tsx:43-55 (aria-pressed buttons), :62-67 (disabled submit + conditional label).",
+      "recommendation": "Use a radiogroup (role=radiogroup + role=radio, arrow-key selection) per question, or native inputs; fix the disabled/label logic so 'Let defaults decide' is actionable when the user wants defaults.",
+      "rule": "keyboard_operable",
+      "status": "fixed"
+    },
+    {
+      "id": "F-F9",
+      "severity": "medium",
+      "category": "form-function",
+      "title": "Artifact code textarea has no aria-label; tabs use aria-pressed, not the tab pattern",
+      "files": [
+        "src/features/sandbox/ArtifactPane.tsx:398-410",
+        "src/features/sandbox/ArtifactPane.tsx:487-498"
+      ],
+      "detail": "The code-editor textarea has no aria-label (its visible text is the code). The preview/code/diff/inspect tabs use aria-pressed buttons instead of the tablist/tab pattern, so the artifact-pane contract's 'aria-label on tabs' requirement is unmet.",
+      "evidence": "ArtifactPane.tsx:487-498 (textarea, no aria-label); :398-410 (aria-pressed tabs).",
+      "recommendation": "Add aria-label=\"Code editor\" to the textarea; convert tabs to role=tablist/tab with aria-selected and keyboard arrow navigation.",
+      "rule": "required_aria",
+      "status": "fixed"
+    },
+    {
+      "id": "F-F10",
+      "severity": "medium",
+      "category": "form-function",
+      "title": "Suggestion chip nests a real <button> inside a role=\"button\" container",
+      "files": [
+        "src/features/sandbox/SandboxChat.tsx:622-627"
+      ],
+      "detail": "The chip is a div with role=\"button\" tabIndex=0 and an onClick, but also contains a real dismiss <button> child. Nested interactive roles are an accessibility anti-pattern and can confuse screen-reader navigation.",
+      "evidence": "SandboxChat.tsx:623 (role=button on the container) and :625 (nested dismiss <button>).",
+      "recommendation": "Make the chip itself a real <button>, with the dismiss control a sibling (or a single button that opens an explicit dismiss action), removing the nested interactive.",
+      "rule": "no_nested_interactive",
+      "status": "fixed"
+    },
+    {
+      "id": "F-F8",
+      "severity": "low",
+      "category": "form-function",
+      "title": "Catalog search is a <form> that never submits",
+      "files": [
+        "src/pages/CatalogPage.tsx:117-126"
+      ],
+      "detail": "The search is wrapped in a <form onSubmit={e => e.preventDefault()}> with no submit button and no Enter handling. The form element adds no value and signals a submit affordance that does not exist.",
+      "evidence": "CatalogPage.tsx:117-126.",
+      "recommendation": "Replace the <form> with a plain <div> or label wrapper, or implement a genuine submit/filter action.",
+      "rule": "semantic_html"
+    },
+    {
+      "id": "F-F12",
+      "severity": "low",
+      "category": "form-function",
+      "title": "Split-pane handle is a focusable separator but has no value semantics",
+      "files": [
+        "src/pages/SandboxPage.tsx:151-153"
+      ],
+      "detail": "The resize handle has role=\"separator\" aria-orientation=\"vertical\" tabIndex=0 but no aria-valuemin/max/now, and no arrow-key resize handler. Keyboard users can focus it but cannot resize.",
+      "evidence": "SandboxPage.tsx:151-153.",
+      "recommendation": "Add aria-valuenow/valuemin/valuemax and ArrowLeft/Right handlers, or make it a non-focusable visual handle.",
+      "rule": "keyboard_operable",
+      "status": "fixed"
+    },
+    {
+      "id": "F-F1",
+      "severity": "low",
+      "category": "form-function",
+      "title": "Composer uses role=\"form\" on a div, not a real <form>",
+      "files": [
+        "src/features/sandbox/SandboxChat.tsx:615"
+      ],
+      "detail": "The composer is a div with role=\"form\" aria-label=\"Chat composer\". A real <form> element (or a more specific role) would be more semantically correct and give native Enter/submit behavior.",
+      "evidence": "SandboxChat.tsx:615.",
+      "recommendation": "Use a real <form> element with the aria-label, and handle submit via onSubmit rather than keydown listeners.",
+      "rule": "semantic_html",
+      "status": "fixed"
+    },
+    {
+      "id": "F-D3",
+      "severity": "medium",
+      "category": "design",
+      "title": "Six --p31-* tokens referenced in src are undeclared in any design-core CSS",
+      "files": [
+        "src/pages/CatalogPage.css",
+        "src/index.css"
+      ],
+      "detail": "These tokens are used but not declared in any design-core css file: --p31-accent-warm (CatalogPage.css), --p31-border-soft (CatalogPage.css), --p31-on-status (index.css:2036,2041), --p31-status-warn (index.css), --p31-surface-raised (CatalogPage.css), --p31-text-disabled (CatalogPage.css). Each resolves to its fallback.",
+      "evidence": "Cross-referenced the full declared-token set across P31-local-workspace/packages/design-core/src/css/*.css against all var(--p31-*) references in portals/chat/src.",
+      "recommendation": "Either add these tokens to the design-core token set, or replace them with declared equivalents (e.g. --p31-text-secondary for --p31-text-disabled, --p31-glass-border for --p31-border-soft).",
+      "rule": "token_usage",
+      "status": "fixed"
+    },
+    {
+      "id": "F-D4",
+      "severity": "high",
+      "category": "design",
+      "title": "Hardcoded hex / rgba / oklch colors and inline styles in app source",
+      "files": [
+        "src/components/PreviewRenderer.tsx:137",
+        "src/features/sandbox/ArtifactPane.tsx:50,72",
+        "src/pages/CatalogPage.css",
+        "src/components/SpatialHover.tsx",
+        "src/features/sandbox/ElementInspector.tsx:43",
+        "index.html:16,19"
+      ],
+      "detail": "The portal's own pipeline forbids hex, raw rgb()/rgba(), and inline styles, yet app source uses them: PreviewRenderer.tsx:137 has inline style with #0a0a0f (plus 13 inline styles total); ArtifactPane.tsx:50/72 use inline oklch outline + wrapFragment defaults; CatalogPage.css contains 22 hex and 26 rgba literals (e.g. #6C63FF, #00F0FF, rgba(0,0,0,...)); SpatialHover and ElementInspector use inline style; index.html has two inline-style elements. design-spec.html in public/ is a heavy contributor (12 hex, 26 rgba, 12 emoji) to the repo slop score.",
+      "evidence": "scripts/slop-eval.mjs --dir src reports: PreviewRenderer hardcoded_hex x1 + inline_style x13, SpatialHover inline_style x1, CatalogPage.css hardcoded_hex x22 + hardcoded_rgba x26, pipeline.ts hardcoded_rgba x2, missing_aria_icon x1.",
+      "recommendation": "Replace hex/rgba literals with declared tokens (or add the tokens), and move inline styles into index.css classes.",
+      "rule": "zero_hardcoded_color / no_inline_style",
+      "status": "fixed"
+    },
+    {
+      "id": "F-D2",
+      "severity": "high",
+      "category": "design",
+      "title": "html data-brand=\"willow\" matches no design-core theme; theme-color hardcoded",
+      "files": [
+        "index.html:2",
+        "index.html:6"
+      ],
+      "detail": "<html data-brand=\"willow\">. design-core themes key on data-brand=\"p31ca\" / data-theme=\"rebel\" (theme-p31ca.css) and others. 'willow' activates none of them, compounding F-D1. The meta theme-color is hardcoded to #818CF8 instead of a token.",
+      "evidence": "index.html:2 (data-brand=willow), :6 (theme-color #818CF8); theme-p31ca.css targets [data-brand='p31ca'] / [data-theme='rebel'].",
+      "recommendation": "Set data-brand=\"p31ca\" and data-theme=\"rebel\" (matching the portal brand 'Sandbox' app), and drive theme-color from a token.",
+      "rule": "brand_identity",
+      "status": "fixed"
+    },
+    {
+      "id": "F-D5",
+      "severity": "low",
+      "category": "design",
+      "title": "Non-token custom properties in CatalogPage.css",
+      "files": [
+        "src/pages/CatalogPage.css:124,135,138,248,654,684"
+      ],
+      "detail": "Uses --space-3, --radius-md, --radius-sm, --font which are not part of the design-core token set (declared names are --p31-space-*, --p31-radius-*). These resolve to nothing and fall through to the property default.",
+      "evidence": "CatalogPage.css:124 (var(--space-3)), :135/:248/:654 (var(--radius-md)), :138 (var(--font)), :684 (var(--radius-sm)).",
+      "recommendation": "Replace with --p31-space-*, --p31-radius-*, --p31-font-sans.",
+      "rule": "token_usage",
+      "status": "fixed"
+    },
+    {
+      "id": "F-D6",
+      "severity": "medium",
+      "category": "design",
+      "title": "Typography drift: system-ui instead of Plus Jakarta Sans canon",
+      "files": [
+        "src/index.css:1-2",
+        "specs/README.md"
+      ],
+      "detail": "The design rubric specifies 'Plus Jakarta Sans, not system-ui'. index.css sets font-family to var(--p31-font-sans, system-ui) and the composer input uses the same fallback. Combined with F-D1 (tokens never load), rendered type is system-ui, not the canon font.",
+      "evidence": "src/index.css:1-2; specs/README.md rubric row 'Typography | Plus Jakarta Sans, not system-ui'.",
+      "recommendation": "After wiring tokens (F-D1), ensure --p31-font-sans resolves to Plus Jakarta Sans and that the font file is loaded.",
+      "rule": "brand_identity",
+      "status": "fixed"
+    },
+    {
+      "id": "F-D8",
+      "severity": "low",
+      "category": "design",
+      "title": "slop score at regression threshold on full-repo scan",
+      "files": [
+        "scripts/slop-baseline.json",
+        "public/design-spec.html"
+      ],
+      "detail": "src-only slop is 17 (acceptable, delta -2 vs baseline 19). Full-repo scan (including public/design-spec.html and index.html) is 22 — exactly at the threshold 22 (acceptable-elevated, delta +3). design-spec.html contributes 12 hex, 26 rgba, 12 emoji, 58 glass matches.",
+      "evidence": "node scripts/slop-eval.mjs --dir . : score 22, baseline {score:19, threshold:22}, verdict acceptable-elevated. --dir src: score 17.",
+      "recommendation": "Move design-spec.html out of the scanned surface (or tokenize it), and clear the emoji in BrickRow.tsx.",
+      "rule": "brand_identity",
+      "status": "fixed"
+    },
+    {
+      "id": "F-D9",
+      "severity": "low",
+      "category": "design",
+      "title": "pnpm audit:apca npm script is misconfigured and always fails",
+      "files": [
+        "package.json:17",
+        "/home/p31/P31-local-workspace/packages/design-core/scripts/validate-apca.mjs:224"
+      ],
+      "detail": "The script passes --target <dir>, but validate-apca.mjs expects a tokens.css file path as its positional arg; the first non-flag arg is treated as cssPath, so EISDIR is thrown and the script exits 2.",
+      "evidence": "pnpm audit:apca output: 'Cannot read tokens.css at /home/p31/production/portals/chat: EISDIR'. Direct run against tokens.css passes 72/72.",
+      "recommendation": "Change package.json audit:apca to point at the design-core tokens.css path, e.g. node .../validate-apca.mjs node_modules/@p31ca/design-core/src/css/tokens.css.",
+      "rule": "toolchain",
+      "status": "fixed"
+    },
+    {
+      "id": "F-F11",
+      "severity": "low",
+      "category": "form-function",
+      "title": "e2e/sidebar.spec.ts dereferences nullable boundingBox() unguarded, and tsconfig excludes e2e",
+      "files": [
+        "e2e/sidebar.spec.ts:32-41,58-59",
+        "tsconfig.json"
+      ],
+      "detail": "boundingBox() returns BoundingBox|null; the spec uses hb.x/hb.width, before.width/after.width, cb.y without null guards. The LSP reports 13 'possibly null' errors. They are not caught by typecheck because tsconfig include is only ['src'].",
+      "evidence": "tsconfig.json includes only src; sidebar.spec.ts:36,38,41,59 use nullable box values.",
+      "recommendation": "Guard with expect(hb).not.toBeNull() / non-null assertions, and add an e2e tsconfig (e.g. tsconfig.e2e.json) so playwright specs are typechecked in CI.",
+      "rule": "type_safety",
+      "status": "fixed"
+    },
+    {
+      "id": "F-D10",
+      "severity": "low",
+      "category": "design",
+      "title": ".audit/impeccable.json was empty (0 bytes) — this audit is the first record",
+      "files": [
+        ".audit/impeccable.json"
+      ],
+      "detail": "The audit file existed but contained no findings; this run populates it for the first time.",
+      "evidence": "File size 0 before write.",
+      "recommendation": "None — now populated.",
+      "rule": "audit_chain"
+    }
+  ],
+  "remediation": {
+    "applied_at": "2026-10-02T11:35:00Z",
+    "note": "Phase A (A1-A8) + B1 applied per approved plan. Product integration (C1-C3) deferred.",
+    "verified": {
+      "typecheck": "PASS (tsc --noEmit + tsconfig.e2e.json)",
+      "tests": "PASS (68/68)",
+      "contracts": "PASS (5, 0 errors)",
+      "build": "PASS",
+      "slop_src": "13 (baseline 19, delta -6, acceptable)",
+      "dist_tokens": "125 distinct --p31-* definitions + all 6 compat aliases present + data-theme rebel + data-brand p31ca blocks"
+    }
+  }
+}

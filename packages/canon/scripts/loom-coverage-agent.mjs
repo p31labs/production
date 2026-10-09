@@ -39,7 +39,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..');
 const registry = JSON.parse(readFileSync(join(root, 'registry.json'), 'utf8'));
 const limit = Number(arg('limit', '5'));
-// Optional field traces (JSON array of @p31/field Trace objects). When present
+// Optional field traces (JSON array of @p31ca/field Trace objects). When present
 // and non-empty, the coverage agent ranks by field attention instead of the
 // static signal. Zone ids are the family base names (e.g. ".badge").
 const tracesPath = arg('traces', null);

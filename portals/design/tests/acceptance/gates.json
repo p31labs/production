@@ -1,5 +1,5 @@
 {
-  "$comment": "Gate registry (Wave 0 proceduralization, P2/P3). Every gate has a negative control — a fixture or mutation that MUST make it exit non-zero. A gate that passes its own negative control is furniture (GATE IS FURNITURE). The self-test runs every gate's negative control and fails if any gate is furniture. States: OBSERVATIONAL (runs, no fail) | WARNING (annotates, no fail) | BLOCKING (fails CI).",
+  "$comment": "Gate registry (Wave 0 proceduralization, P2/P3). Every gate has a negative control — a fixture or mutation that MUST make it exit non-zero. A gate that passes its own negative control is furniture (GATE IS FURNITURE). The self-test runs every gate's negative control and fails if any gate is furniture. States: OBSERVATIONAL (runs, no fail) | WARNING (annotates, no fail) | BLOCKING (fails CI). This registry is drift-checked against packages/govern/domains/design/constitution.json by check-gate-registry-drift.mjs.",
   "contract": {
     "negativeControl": "a fixture or mutation that makes the gate exit non-zero in under 30 seconds, with a message naming the gate ID",
     "enforcementMoment": "each BLOCKING gate must name when it fires: pre-commit | CI | weekly",
@@ -13,9 +13,9 @@
       "owner": "design-core",
       "scope": "design-core/src/** manifest.json tokens/",
       "negativeControl": {
-        "type": "fixture",
-        "path": "tests/acceptance/fixtures/gate-self-test/nan.css",
-        "description": "a CSS file containing oklch(NaN NaN NaN) must make canon-purity exit non-zero",
+        "type": "mutation",
+        "command": "negative-controls/canon-purity.mjs",
+        "description": "a source file containing oklch(NaN NaN NaN) or an undefined GOVERNANCE reference must make canon-purity exit non-zero",
         "expected": "exit non-zero"
       },
       "enforcementMoment": "CI + deploy-precheck",
@@ -29,7 +29,7 @@
       "scope": "design-core/src/** (non-allowlisted)",
       "negativeControl": {
         "type": "mutation",
-        "path": "tests/acceptance/fixtures/gate-self-test/raw-hex.css",
+        "command": "negative-controls/token-audit.mjs",
         "description": "a source file containing a raw hex color must make token-audit exit non-zero",
         "expected": "exit non-zero"
       },
@@ -44,7 +44,7 @@
       "scope": "tests/acceptance/__screenshots__/acceptance-freeze.spec.ts/*.png",
       "negativeControl": {
         "type": "fixture",
-        "path": "tests/acceptance/fixtures/gate-self-test/collapsed-dial/",
+        "command": "negative-controls/image-distinctness.mjs",
         "description": "two identical s0/s3 snapshots must make the distinctness check exit non-zero",
         "expected": "exit non-zero"
       },
@@ -59,12 +59,42 @@
       "scope": "tests/acceptance/known-fails.json",
       "negativeControl": {
         "type": "mutation",
-        "path": "tests/acceptance/fixtures/gate-self-test/growth-count",
+        "command": "negative-controls/acceptance-ratchet.mjs",
         "description": "a count > baseline must make the ratchet exit non-zero",
         "expected": "exit non-zero"
       },
       "enforcementMoment": "CI (acceptance project)",
       "remediation": "docs/RUNBOOKS.md#ratchet-wiring"
+    },
+    {
+      "id": "self-test",
+      "command": "node /home/p31/production/portals/design/tests/acceptance/gate-self-test.mjs",
+      "state": "BLOCKING",
+      "owner": "design-portal",
+      "scope": "all registered gates across design/monetization/justice",
+      "negativeControl": {
+        "type": "mutation",
+        "command": "negative-controls/gate-self-test.mjs",
+        "description": "a registry containing a gate with no negative control must make the meta-gate report GATE IS FURNITURE and exit non-zero",
+        "expected": "exit non-zero"
+      },
+      "enforcementMoment": "CI (acceptance project)",
+      "remediation": "docs/RUNBOOKS.md#gate-self-test"
+    },
+    {
+      "id": "canon-source-audit",
+      "command": "node /home/p31/P31-local-workspace/tools/canon-audit/canon-source-audit.mjs --target /home/p31/production/portals/design/src --allow production/portals/design/src/tokens.css,production/portals/design/src/surfaces/ambient.css,production/portals/design/src/components/Topbar.tsx",
+      "state": "BLOCKING",
+      "owner": "design-portal",
+      "scope": "no --p31-* token forks, no component duplicates of @p31ca/design-core/compositions in design src",
+      "negativeControl": {
+        "type": "fixture",
+        "command": "/home/p31/P31-local-workspace/tools/canon-audit/nc/canon-source-audit-nc.mjs",
+        "description": "a scratch file defining --p31-accent + a duplicate Topbar must fail the gate",
+        "expected": "exit non-zero"
+      },
+      "enforcementMoment": "CI + gate",
+      "remediation": "runbooks/RUNBOOK-canon-P6.md"
     }
   ]
 }

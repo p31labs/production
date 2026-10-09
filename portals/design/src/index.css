@@ -15,6 +15,11 @@
   body {
     min-height: 100vh;
     overflow-x: hidden;
+    /* The topbar must be full-width. A vendor rule sets display:flex on body,
+       which shrink-wraps the topbar to its content (~960px) and breaks the
+       shell. This base-layer override guarantees block layout. */
+    display: block;
+    width: 100%;
   }
 
   #root {

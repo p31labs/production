@@ -111,7 +111,7 @@ reintroduced.
 - **Why product:** the canonical source is actively developed alongside QPJ and
   other portals. A registry publish would lag. The `link:` protocol was tried but
   is fragile across fresh clones and `pnpm install` runs. The vendored tarball
-  matches the existing pattern used for `@p31/design-core` and `@p31ca/ui`.
+  matches the existing pattern used for `@p31ca/design-core` and `@p31ca/ui`.
 - **Cost managed by:** `sync:vendor` script regenerates the tarball from the
   canonical source. `v:gate` asserts the vendored version matches expectations.
   Update the tarball with `pnpm pack --pack-destination vendor/` in the canonical
@@ -206,7 +206,7 @@ ships**, **what this portal needs instead**, **why**.
 
 ## Design-core version split: RESOLVED (2026-09-14)
 
-- **What the family ships:** `@p31/design-core@2.3.0` (canonical source:
+- **What the family ships:** `@p31ca/design-core@2.3.0` (canonical source:
   `P31-local-workspace/packages/design-core`). Template declares 2.3.0.
 - **What all portals use:** 2.3.0 vendored tarballs, current.
 - **Resolved:** children/teen/parent/meatspace synced to 2.3.0 via
@@ -219,7 +219,7 @@ ships**, **what this portal needs instead**, **why**.
 
 ## @p31ca/game-engine: dormant in QPJ and meatspace
 
-- **What the family ships:** `@p31/game-engine@0.2.0-alpha.0` — Maxwell
+- **What the family ships:** `@p31ca/game-engine@0.2.0-alpha.0` — Maxwell
   rigidity, jitterbug geometry, geodesic primitives, spoon-gated game runtime.
 - **What children/teen/parent use:** JitterbugGame component (geometry +
   JitterbugState types) — active arcade game surface.
@@ -237,13 +237,13 @@ ships**, **what this portal needs instead**, **why**.
 
 ## @p31ca/gamification: dormant in QPJ and meatspace
 
-- **What the family ships:** `@p31/gamification@1.0.0` — sound, confetti, haptics,
+- **What the family ships:** `@p31ca/gamification@1.0.0` — sound, confetti, haptics,
   achievements, growth rings, voice feedback, economy store.
 - **What children/teen/parent use:** sound, confetti, haptic, growth-rings subpaths —
   active in arcade surfaces.
 - **What QPJ already provides:** Confetti component (custom), voice (useVoice/voiceSupport),
   LOVE ledger (dual-currency system). Partial overlap with gamification's surface.
-- **What meatspace provides:** Uses @p31/ui which includes its own audio/interaction layer.
+- **What meatspace provides:** Uses @p31ca/ui which includes its own audio/interaction layer.
   No direct gamification usage.
 - **Why product:** QPJ's existing features cover some gamification surface (confetti, voice).
   The question is whether QPJ should adopt gamification's sound/haptic/achievement/growth-ring
@@ -253,9 +253,9 @@ ships**, **what this portal needs instead**, **why**.
 - **Rejuvenation trigger:** decision needed — adopt gamification subsystems or document the
   QPJ-specific implementations as the canonical ones.
 
-## @p31/ui: dormant in QPJ and chat
+## @p31ca/ui: dormant in QPJ and chat
 
-- **What the family ships:** `@p31/ui@1.3.1` — starfield, adaptive/GreyRock/NeuroAdapter,
+- **What the family ships:** `@p31ca/ui@1.3.1` — starfield, adaptive/GreyRock/NeuroAdapter,
   webmcp, passport templates, chrome components, layout templates.
 - **What children/teen/meatspace/parent use:** Heavy use — passport/* (backup, pqc, did-document,
   eudi), starfield, types. Identical patterns across all four template-based portals.
@@ -264,23 +264,23 @@ ships**, **what this portal needs instead**, **why**.
 - **What QPJ needs instead:** Custom Starfield (seeded, deterministic, QPJ-specific),
   MeshBridge (p2p mesh integration), ModeGuard (XState mode gate), CrisisOverlay (spoons=0 floor).
   QPJ's patterns are intentional — family-specific look and security posture.
-- **What chat needs instead:** chat uses @p31/design-core compositions exclusively.
-  No @p31/ui features (passport, starfield, adaptive) are needed in chat's sandbox surface.
+- **What chat needs instead:** chat uses @p31ca/design-core compositions exclusively.
+  No @p31ca/ui features (passport, starfield, adaptive) are needed in chat's sandbox surface.
 - **Why product:** QPJ and chat intentionally chose custom implementations that align with
-  their product needs. @p31/ui's passport templates are for sovereign identity surfaces;
+  their product needs. @p31ca/ui's passport templates are for sovereign identity surfaces;
   QPJ/chat handle identity differently.
 - **Cost managed by:** document the replacements. Each dormant dependency has a trigger:
   if QPJ needs GreyRock adaptive theming, adopt. If QPJ needs passport templates, adopt.
 
-## meatspace: declares but does not use @p31/design-core
+## meatspace: declares but does not use @p31ca/design-core
 
-- **What meatspace declares:** `@p31/design-core@2.2.0` in package.json (via template).
+- **What meatspace declares:** `@p31ca/design-core@2.2.0` in package.json (via template).
 - **What meatspace imports:** Zero — grep of all .ts/.tsx files returns no design-core imports.
-- **What meatspace actually uses:** @p31/ui (passport/*, starfield, types, notifications),
-  @p31/sovereign-core (configure, store, types), custom starfield and mesh implementations.
+- **What meatspace actually uses:** @p31ca/ui (passport/*, starfield, types, notifications),
+  @p31ca/sovereign-core (configure, store, types), custom starfield and mesh implementations.
 - **Why product:** meatspace was likely built from the template then diverged. Its surfaces
   have no design-core token layer — no var(--p31-*) styling, no design-core compositions,
-  no token governance. Styling comes from @p31/ui internals or custom CSS.
+  no token governance. Styling comes from @p31ca/ui internals or custom CSS.
 - **Cost managed by:** investigate whether this is intentional (different visual identity)
   or drift. If drift, re-adopt design-core via sync:vendor + token audit. This is the most
   misaligned portal in the family.
@@ -289,7 +289,7 @@ ships**, **what this portal needs instead**, **why**.
 
 ## Two architectural paradigms in the family
 
-- **What the family has:** 7 React SPAs (zustand, hash routing, @p31/design-core CSS,
+- **What the family has:** 7 React SPAs (zustand, hash routing, @p31ca/design-core CSS,
   var(--p31-*) tokens) and 2 Astro sites (Tailwind, react-router, no @p31 packages).
 - **What they share:** Brand voice, color palette (roughly), the P31 name, the same
   deployment target (Cloudflare Pages), the same governance model.
@@ -300,21 +300,21 @@ ships**, **what this portal needs instead**, **why**.
   components, and voice that both paradigms adhere to. Do NOT force one paradigm onto the other.
 - **Action needed:** specification-first — define the contract before any code changes.
   The contract enables p31ca/phosphorus31 to consume design-core tokens and enables SPAs
-  to maintain their @p31/design-core surface.
+  to maintain their @p31ca/design-core surface.
 
-## @p31/shared Tailwind preset: p31ca's design token path
+## @p31ca/shared Tailwind preset: p31ca's design token path
 
-- **What p31ca ships:** `tailwind.config.mjs` extends `@p31/shared/theme/tailwind-preset`.
-  This is p31ca's design token pipeline — NOT @p31/design-core CSS.
-- **What @p31/design-core ships:** CSS custom properties (var(--p31-*)) via all.css,
+- **What p31ca ships:** `tailwind.config.mjs` extends `@p31ca/shared/theme/tailwind-preset`.
+  This is p31ca's design token pipeline — NOT @p31ca/design-core CSS.
+- **What @p31ca/design-core ships:** CSS custom properties (var(--p31-*)) via all.css,
   token JS via mcp/data, DTCG JSON via gen:tokens.
 - **Why product:** p31ca is Astro — it can't consume design-core CSS directly (no
-  design-core dependency, no @p31/design-core/css/all.css import). @p31/shared provides
+  design-core dependency, no @p31ca/design-core/css/all.css import). @p31ca/shared provides
   a Tailwind-compatible token layer.
-- **Cost managed by:** verify that @p31/shared's tailwind preset covers all design-core
+- **Cost managed by:** verify that @p31ca/shared's tailwind preset covers all design-core
   tokens. If not, there's a token drift between the SPA portals (design-core CSS) and
   p31ca (Tailwind preset). This is a cross-paradigm token alignment issue.
-- **Action needed:** token mapping between design-core and @p31/shared preset.
+- **Action needed:** token mapping between design-core and @p31ca/shared preset.
   Critical for market — p31ca is the public dev portal.
 
 ## phosphorus31: zero @p31 integration
@@ -329,7 +329,7 @@ ships**, **what this portal needs instead**, **why**.
   intentionally different aesthetic from QPJ's warm Lantern look. But it's still
   P31 brand and should be recognizable as part of the family.
 - **Cost managed by:** extract phosphorus31's 6 Tailwind colors into a token map,
-  then align with @p31/design-core tokens (or define a parallel institutional palette
+  then align with @p31ca/design-core tokens (or define a parallel institutional palette
   that maps to design-core semantics).
 - **Action needed:** Phase 1 token extraction. Phase 2 alignment mapping. Phase 3
-  optional @p31/design-core CSS adoption via Tailwind.
+  optional @p31ca/design-core CSS adoption via Tailwind.

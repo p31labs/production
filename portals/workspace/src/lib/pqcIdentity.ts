@@ -17,7 +17,7 @@ import {
   COMPOSITE_ALG,
   type CompositeKeyPair,
   type CompositePublicKey,
-} from '@p31/sovereign-primitives'
+} from '@p31ca/sovereign-primitives'
 
 export interface B64KeyMaterial {
   ed25519Pub: string

@@ -3,5 +3,5 @@
    .glass-strong, .glass-subtle, .glass-box, .btn-*, .code-block).
    Single source of truth: recipes.css (Glass Morphism Tiers section).
    Self-contained aggregation entry so the ./css/glass.css export resolves
-   for existing consumers without a @p31/canon dependency. */
+   for existing consumers without a @p31ca/canon dependency. */
 @import './recipes.css';

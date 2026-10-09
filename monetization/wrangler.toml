@@ -2,6 +2,13 @@ name = "p31-monetization"
 main = "src/worker.ts"
 compatibility_date = "2026-09-02"
 
+# Secrets (set via `wrangler secret put <NAME>`, never committed):
+#   ROLE_JWT_SECRET        — HS256 role-token signing secret
+#   ADMIN_TOKEN            — bearer token for POST /api/auth/token (role issuance)
+#   SBT_ISSUE_TOKEN        — shared token forwarded to p31-sbt for SBT issuance
+#   ZERO_TRUST_TEAM_DOMAIN — Cloudflare Access team domain (e.g. "trimtab");
+#                            enables Cf-Access-Jwt-Assertion validation on write routes
+
 [assets]
 directory = "./dist"
 binding = "ASSETS"
@@ -37,3 +44,11 @@ service = "config-gateway"
 [[services]]
 binding = "BTCPAY_GATEWAY"
 service = "btcpay-gateway"
+
+[[services]]
+binding = "SBT_GATEWAY"
+service = "p31-sbt"
+
+[[services]]
+binding = "DORA_GATEWAY"
+service = "p31-ci"

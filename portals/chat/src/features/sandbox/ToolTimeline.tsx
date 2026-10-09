@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { Button } from '@p31/design-core/compositions';
+import { useEffect, useRef, useState } from 'react';
+import { Button } from '@p31ca/design-core/compositions';
 import type { PipelineStep, ContractIssue } from './pipeline';
 
 const KIND_LABEL: Record<PipelineStep['kind'], string> = {
@@ -30,23 +30,37 @@ interface ToolTimelineProps {
 
 export default function ToolTimeline({ steps, onRepair, onRetry, onContinue }: ToolTimelineProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(() => steps.some((s) => s.status === 'running'));
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, [steps]);
+    const running = steps.some((s) => s.status === 'running');
+    setOpen(running);
+    if (running && open) {
+      scrollRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [steps, open]);
 
   if (steps.length === 0) return null;
 
   return (
     <div className="tool-timeline" role="list" aria-label="Generation pipeline" ref={scrollRef}>
-      <div className="tool-timeline-head">
+      <button
+        type="button"
+        className="tool-timeline-head"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        aria-controls="tool-timeline-steps"
+      >
         <span className="tool-timeline-title">Pipeline</span>
         <span className="tool-timeline-progress">
           {steps.filter((s) => s.status === 'done' || s.status === 'error' || s.status === 'blocked').length}/{steps.length}
         </span>
-      </div>
+        <span className="tool-timeline-toggle" aria-hidden="true">
+          {open ? '▾' : '▸'}
+        </span>
+      </button>
 
-      <div className="tool-timeline-steps">
+      <div id="tool-timeline-steps" className="tool-timeline-steps" hidden={!open}>
         {steps.map((step) => {
           const isActive = step.status === 'running';
           const isBlocked = step.status === 'blocked';

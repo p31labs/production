@@ -1,5 +1,5 @@
 {
-  "name": "@p31/portals-qpj",
+  "name": "@p31ca/portals-qpj",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -8,7 +8,7 @@
     "prebuild": "node scripts/emit-route-list.mjs",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "node /home/p31/production/portals/deploy-unified.mjs qpj",
+    "deploy": "node scripts/deploy.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
     "test": "vitest run",

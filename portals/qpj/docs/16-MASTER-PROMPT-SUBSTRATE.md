@@ -160,7 +160,7 @@ Two new workers to deploy:
   document in `docs/08-DEPLOYMENT.md` but do NOT attempt via API).
 - `p31-passport` — user Worker template.
 
-Add both to `portals/deploy-unified.mjs` with a new `--workers` flag that
+Add both to `portals/<portal>/scripts/deploy.mjs` with a new `--workers` flag that
 deploys them separately from the Pages portals.
 
 ## Verification

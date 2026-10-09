@@ -1,27 +1,27 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import { NAV_SECTIONS, isActivePath } from '../lib/nav';
+import { NavLink, useLocation } from 'react-router-dom';
+import { MobileBottomNav as CanonMobileBottomNav } from '@p31ca/design-core/compositions';
+import { NAV_SECTIONS } from '../lib/nav';
 
-/** MobileBottomNav — flagship items (suite pattern). */
+/** MobileBottomNav — canon flagship bottom nav. Flagships are already marked
+ *  in NAV_SECTIONS (6); `renderItem` keeps real react-router <a href>
+ *  semantics. Active state via the canon's aria-current rule. */
 export function MobileBottomNav() {
-  const navigate = useNavigate();
   const { pathname } = useLocation();
-  const items = NAV_SECTIONS.filter((s) => s.flagship);
-
   return (
-    <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
-      {items.map((s) => (
-        <button
-          key={s.path}
-          type="button"
-          onClick={() => navigate(s.path)}
-          aria-label={s.label}
+    <CanonMobileBottomNav
+      items={NAV_SECTIONS}
+      activePath={pathname}
+      renderItem={(item) => (
+        <NavLink
+          to={item.path}
+          end={item.path === '/'}
           className="mobile-bottom-nav__btn"
-          style={{ opacity: isActivePath(s.path, pathname) ? 1 : 0.6 }}
+          aria-label={item.label}
         >
-          <span aria-hidden="true">{s.emoji}</span>
-        </button>
-      ))}
-    </nav>
+          <span aria-hidden="true">{item.emoji}</span>
+        </NavLink>
+      )}
+    />
   );
 }
 

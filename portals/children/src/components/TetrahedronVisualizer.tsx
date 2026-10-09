@@ -9,7 +9,7 @@ import {
   sicPovmProjection,
   computeSymmetry,
   computeCurvature,
-} from '@p31/ui';
+} from '@p31ca/ui';
 
 interface TetrahedronVisualizerProps {
   nodes?: NodeData[];

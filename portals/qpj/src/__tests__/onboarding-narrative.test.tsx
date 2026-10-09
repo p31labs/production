@@ -7,7 +7,7 @@ import { useQpjStore } from '../store/useQpjStore';
 
 const { claimed } = vi.hoisted(() => ({ claimed: { value: false } }));
 
-vi.mock('@p31/sovereign-core', async (importOriginal) => {
+vi.mock('@p31ca/sovereign-core', async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...(actual as Record<string, unknown>),

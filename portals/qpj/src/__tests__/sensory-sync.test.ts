@@ -37,7 +37,7 @@ const mockGetProfile = vi.fn(() => ({
   },
 }));
 
-vi.mock('@p31/sovereign-core', () => ({
+vi.mock('@p31ca/sovereign-core', () => ({
   getProfile: () => mockGetProfile(),
   updateTetrahedronVertex: (...args: unknown[]) => mockUpdate(...args),
 }));

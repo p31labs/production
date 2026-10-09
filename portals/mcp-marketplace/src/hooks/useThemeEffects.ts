@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useThemeStore, THEME_TOKENS } from '@p31/design-core/theming/theme-store'
+import { useThemeStore, THEME_TOKENS } from '@p31ca/design-core/theming/theme-store'
 import { useWorkspaceStore } from '@/store/workspaceStore'
 import { roster } from '@/lib/pickleNames'
 import { resolveProfile } from '@/lib/profile'

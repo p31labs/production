@@ -1,21 +1,42 @@
+import { CalmOverlay as CanonCalmOverlay, type CalmSession } from '@p31ca/design-core/compositions'
 import { useUI } from '../lib/store'
 
-/** Calm overlay — the spoon 0 floor. CrisisOverlay equivalent for this portal. */
+const CALM_LOG_KEY = 'p31:calm-sessions'
+const CALM_LOG_CAP = 50
+
+/** Append a calm session to the local recovery log (oldest-capped). */
+function recordCalmSession(session: CalmSession) {
+  try {
+    const existing = JSON.parse(localStorage.getItem(CALM_LOG_KEY) ?? '[]') as CalmSession[]
+    const next = [...existing, session].slice(-CALM_LOG_CAP)
+    localStorage.setItem(CALM_LOG_KEY, JSON.stringify(next))
+  } catch {
+    // Non-fatal — the calm surface itself never depends on the log.
+  }
+}
+
+/**
+ * CalmOverlay — the regulation instrument (CALM-MODE.md). The forge has no
+ * ambient package (no dome/LED), so calm is the simplified form: the canon
+ * controller drives data-calm (hiding chrome), and the breathing circle is the
+ * guide. Esc or the spoon-restore exits — no button, no text, no decisions.
+ * Sessions are appended to the local recovery log (recovery-time trend).
+ */
 export function CalmOverlay() {
-  const { spoons } = useUI()
-  const visible = spoons <= 0
+  const spoons = useUI((s) => s.spoons)
+  const calm = spoons <= 0
   return (
-    <div className={`calm-overlay ${visible ? 'is-visible' : ''}`} aria-hidden={!visible}>
-      <div className="calm-overlay__card glass">
-        <h1>Taking a pause</h1>
-        <p>
-          Spoons are at 0. The interface has gone quiet — no motion, no glow,
-          just the essentials. Nothing needs your attention right now.
-        </p>
-        <button className="btn btn--primary" onClick={() => useUI.getState().setSpoons(1)}>
-          I'm ready
-        </button>
-      </div>
-    </div>
+    <>
+      <CanonCalmOverlay
+        spoons={spoons}
+        onExit={() => useUI.getState().setSpoons(1)}
+        onSessionEnd={recordCalmSession}
+      />
+      {calm && (
+        <div className="calm-guide calm-breathe" aria-hidden="true" />
+      )}
+    </>
   )
 }
+
+export default CalmOverlay

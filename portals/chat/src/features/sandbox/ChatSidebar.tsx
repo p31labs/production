@@ -3,12 +3,24 @@ import { useSandboxStore } from './sandboxStore';
 import { useMediaQuery } from '../../lib/useMediaQuery';
 import { relativeTime, groupThreads } from './threadList';
 import type { Thread } from './sandboxStore';
+import { SpoonDial } from '@p31ca/design-core/compositions';
+import SidebarUserChip from './SidebarUserChip';
+import { useSpoons } from '../../store/spoons';
 
 const SIDEBAR_WIDTH_KEY = 'p31-chat-sidebar-width';
 const MIN_SIDEBAR = 240;
 const MAX_SIDEBAR = 400;
 const REFRESH_MS = 60 * 1000;
 const SEARCH_DEBOUNCE_MS = 150;
+
+function P31Mark({ className = '' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" className={className} aria-hidden="true" fill="none">
+      <path d="M12 2 L21 8.5 L12 22 L3 8.5 Z" fill="currentColor" opacity="0.9" />
+      <path d="M12 9 L21 8.5 L12 14 L3 8.5 Z" fill="var(--p31-void, Canvas)" opacity="0.55" />
+    </svg>
+  );
+}
 
 function DeleteIcon() {
   return (
@@ -18,13 +30,15 @@ function DeleteIcon() {
   );
 }
 
-export default function ChatSidebar() {
+export default function ChatSidebar({ open }: { open?: boolean }) {
   const threads = useSandboxStore((s) => s.threads);
   const activeThreadId = useSandboxStore((s) => s.activeThreadId);
   const globalStreaming = useSandboxStore((s) => s.isStreaming);
   const createThread = useSandboxStore((s) => s.createThread);
   const setActiveThread = useSandboxStore((s) => s.setActiveThread);
   const deleteThread = useSandboxStore((s) => s.deleteThread);
+  const spoons = useSpoons((s) => s.spoons);
+  const setSpoons = useSpoons((s) => s.setSpoons);
 
   const [rawQuery, setRawQuery] = useState('');
   const [query, setQuery] = useState('');
@@ -107,15 +121,19 @@ export default function ChatSidebar() {
 
   return (
     <div
-      className="chat-sidebar"
+      className={`chat-sidebar${open ? ' chat-sidebar--open' : ''}`}
       style={sidebarWidth != null && isDesktop ? { '--p31-chat-sidebar-width': `${sidebarWidth}px` } as React.CSSProperties : undefined}
       aria-label="Threads sidebar"
     >
       <div className="chat-sidebar-header">
-        <h3>Threads</h3>
+        <span className="chat-sidebar-brand">
+          <P31Mark className="chat-sidebar-brand__mark" />
+          <span className="chat-sidebar-brand__name">Sandbox</span>
+          <span className="chat-sidebar-brand__ctx">Component lab</span>
+        </span>
       </div>
 
-      <button type="button" className="chat-sidebar-new" onClick={handleNew}>
+      <button type="button" className="chat-sidebar-new" onClick={handleNew} data-agent-kind="action" data-agent-action="chat.thread.new">
         <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 5v14M5 12h14" />
         </svg>
@@ -177,6 +195,8 @@ export default function ChatSidebar() {
                       aria-label={`Delete ${t.title}`}
                       title="Delete thread"
                       tabIndex={-1}
+                      data-agent-kind="action"
+                      data-agent-action="chat.thread.delete"
                     >
                       <DeleteIcon />
                     </button>
@@ -186,6 +206,14 @@ export default function ChatSidebar() {
             </div>
           ))
         )}
+      </div>
+
+      <div className="chat-sidebar-footer">
+        <div className="chat-sidebar-footer__spoons">
+          <span className="chat-sidebar-footer__label">Spoons</span>
+          <SpoonDial level={spoons} onChange={setSpoons} aria-label="Spoon level" />
+        </div>
+        <SidebarUserChip />
       </div>
 
       {isDesktop && (

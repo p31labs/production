@@ -10,6 +10,8 @@ type SurfaceCardId = Exclude<SurfaceId, 'home' | 'profile' | 'identity'>
 
 const CARD_META: Record<SurfaceCardId, { desc: string; iconBg: string; icon: string }> = {
   docs: { desc: 'Collaborative rich-text document editing with live presence hints and outlines.', iconBg: 'color-mix(in oklch, var(--p31-accent-cyan) 15%, transparent)', icon: '📄' },
+  forum: { desc: 'Q&A threads merged with the blog — each post has a discussion thread, answers carry accepted markers.', iconBg: 'color-mix(in oklch, var(--p31-accent-violet) 15%, transparent)', icon: '💬' },
+  life: { desc: 'The life log — conversations, health, reflections, goals, and notes, one governed record at a time.', iconBg: 'color-mix(in oklch, var(--p31-accent-green) 15%, transparent)', icon: '🌱' },
   sheets: { desc: 'Spreadsheet matrix with formula evaluation, cell grid selection, and frozen headers.', iconBg: 'color-mix(in oklch, var(--p31-accent-green) 15%, transparent)', icon: '📊' },
   slides: { desc: 'Slide deck creation and full-screen presenter display mode for family showcases.', iconBg: 'color-mix(in oklch, var(--p31-accent-violet) 15%, transparent)', icon: '📽️' },
   calendar: { desc: 'Month grid and day inspector for tracking family events and schedules.', iconBg: 'color-mix(in oklch, var(--p31-accent-gold) 15%, transparent)', icon: '📅' },

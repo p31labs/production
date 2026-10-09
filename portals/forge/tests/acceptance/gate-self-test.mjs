@@ -75,4 +75,32 @@ if (furniture) {
   console.error(`\n✗ GATE SELF-TEST: ${furniture} gate(s) are furniture or unproven.`);
   process.exit(1);
 }
-console.log(`\n✅ GATE SELF-TEST: ${registry.gates.length} gates proven able to fail.`);
+
+// Presence check — a BLOCKING gate that is never invoked by the gate/deploy
+// pipeline is furniture that can only fail in theory (the Silent Success
+// failure mode: a green pipeline that ran no checks). Every BLOCKING gate's
+// tool must appear in gate.mjs, deploy-precheck.mjs, or the package gate chain.
+const here2 = resolve(import.meta.dirname);
+const root = resolve(here2, '..', '..');
+const pipeline = [
+  readFileSync(resolve(root, 'scripts', 'gate.mjs'), 'utf8'),
+  readFileSync(resolve(root, 'scripts', 'deploy-precheck.mjs'), 'utf8'),
+  readFileSync(resolve(root, 'scripts', 'system-test.mjs'), 'utf8'),
+  readFileSync(resolve(root, 'package.json'), 'utf8'),
+].join('\n');
+const absent = [];
+for (const gate of registry.gates) {
+  if (gate.state !== 'BLOCKING') continue;
+  // Distinguishing token: the last path segment of the command (e.g.
+  // canon-source-audit.mjs, layout-invariants.mjs, token-audit.mjs).
+  const seg = (gate.command ?? '').match(/([a-z0-9-]+\.mjs)$/)?.[1];
+  if (!seg) continue;
+  if (!pipeline.includes(seg)) absent.push(`${gate.id} (${seg})`);
+}
+if (absent.length > 0) {
+  console.error(`\n✗ GATE SELF-TEST: BLOCKING gates not wired into the pipeline (registered but never invoked):`);
+  for (const a of absent) console.error(`   - ${a}`);
+  console.error('  Wire them into gate.mjs / deploy-precheck.mjs — an unenforced BLOCKING gate is furniture.');
+  process.exit(1);
+}
+console.log(`\n✅ GATE SELF-TEST: ${registry.gates.length} gates proven able to fail + all BLOCKING gates wired into the pipeline.`);

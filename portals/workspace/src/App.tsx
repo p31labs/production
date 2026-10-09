@@ -18,6 +18,8 @@ import { DevMenu } from '@/features/dev/DevMenu'
 
 import { HomeSurface } from '@/features/home/HomeSurface'
 import { DocsSurface } from '@/features/docs/DocsSurface'
+import { ForumSurface } from '@/features/forum/ForumSurface'
+import { LifeSurface } from '@/features/life/LifeSurface'
 import { SheetsSurface } from '@/features/sheets/SheetsSurface'
 import { SlidesSurface } from '@/features/slides/SlidesSurface'
 import { CalendarSurface } from '@/features/calendar/CalendarSurface'
@@ -32,6 +34,8 @@ import type { SurfaceId } from '@/types'
 const SURFACE_COMPONENTS: Record<SurfaceId, React.ComponentType> = {
   home: HomeSurface,
   docs: DocsSurface,
+  forum: ForumSurface,
+  life: LifeSurface,
   sheets: SheetsSurface,
   slides: SlidesSurface,
   calendar: CalendarSurface,
@@ -41,7 +45,7 @@ const SURFACE_COMPONENTS: Record<SurfaceId, React.ComponentType> = {
   identity: IdentitySurface,
 }
 
-const APP_HASHES = new Set(['app', 'home', 'docs', 'sheets', 'slides', 'calendar', 'mail', 'drive', 'profile', 'identity', 'setup'])
+const APP_HASHES = new Set(['app', 'home', 'docs', 'forum', 'life', 'sheets', 'slides', 'calendar', 'mail', 'drive', 'profile', 'identity', 'setup'])
 
 /** Parse the current hash into the app layer (boolean) + surface id. */
 function parseHash(): { inApp: boolean; surface: SurfaceId | null } {

@@ -5,7 +5,7 @@ import { GamificationBar } from '../components/GamificationBar';
 import { CATALOG } from '../data/catalog';
 import { useSpoons } from '../store/spoons';
 import { useGamification } from '../store/gamification';
-import { CrisisOverlay, SpoonDial } from '@p31/design-core/compositions';
+import { CrisisOverlay, SpoonDial } from '@p31ca/design-core/compositions';
 import type { CatalogEntry } from '../data/catalog';
 import './CatalogPage.css';
 

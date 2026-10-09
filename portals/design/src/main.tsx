@@ -16,9 +16,9 @@ import './surfaces/surface.css';
 import './utilities.css';
 import './surfaces/legacy-missing.css';
 import './surfaces/dome.css';
-import '@p31/p31ca-ambient/css/molecular-dome.css';
-import '@p31/p31ca-ambient/css/p31-style.css';
-import '@p31/p31ca-ambient/css/controls.css';
+import '@p31ca/p31ca-ambient/css/molecular-dome.css';
+import '@p31ca/p31ca-ambient/css/p31-style.css';
+import '@p31ca/p31ca-ambient/css/controls.css';
 import './surfaces/ambient.css';
 import { useThemeStore } from '@p31ca/design-core/theming/theme-store';
 

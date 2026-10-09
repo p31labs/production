@@ -2,8 +2,24 @@ export interface RevenueSummary {
   total_usdc: string;
   total_eur: string;
   total_love: string;
+  total_x402?: string;
   count: number;
   avg_per_transaction: string;
+  source_breakdown?: Record<string, { count: number; total_usdc: string }>;
+}
+
+export interface RevenueEntry {
+  id: string;
+  source: string;
+  payer_did: string;
+  merchant_did: string;
+  amount_usdc: string;
+  asset: string;
+  metadata?: string;
+  settlement_tx: string | null;
+  created_at: number;
+  prev_hash: string;
+  hash: string;
 }
 
 export interface Position {
@@ -48,6 +64,25 @@ export interface BtcpayInvoice {
   paymentMethods?: any[];
 }
 
+export interface BtcpayInvoiceListItem {
+  id: string;
+  amount: string | null;
+  currency: string;
+  status: string;
+  type?: string;
+  checkoutLink?: string;
+  createdTime?: string;
+  expirationTime?: string;
+  orderId?: string | null;
+}
+
+export interface BtcpayStore {
+  id: string;
+  name: string;
+  supportedPaymentMethods?: string[];
+  currency?: string;
+}
+
 export interface BtcpayDonation {
   id: string;
   invoice_id: string;
@@ -75,6 +110,18 @@ export const api = {
   async getRevenueSummary(): Promise<RevenueSummary> {
     const res = await fetch(proxyUrl('revenue/summary', 'source=x402&range=30d'));
     if (!res.ok) throw new Error('Revenue summary failed');
+    return res.json();
+  },
+
+  async getRevenueLedger(limit = 500): Promise<{ entries: RevenueEntry[] }> {
+    const res = await fetch(proxyUrl('revenue/ledger', `limit=${limit}`));
+    if (!res.ok) throw new Error('Revenue ledger failed');
+    return res.json();
+  },
+
+  async verifyRevenueChain(): Promise<{ valid: boolean; total_entries: number; last_hash: string }> {
+    const res = await fetch(proxyUrl('revenue/verify-chain'));
+    if (!res.ok) throw new Error('Revenue chain verify failed');
     return res.json();
   },
 
@@ -128,6 +175,20 @@ export const api = {
     const res = await fetch(proxyUrl('btcpay/donations'));
     if (!res.ok) throw new Error('Failed to fetch donations');
     return res.json();
+  },
+
+  async getBtcpayInvoices(): Promise<{ invoices: BtcpayInvoiceListItem[] }> {
+    const res = await fetch(proxyUrl('btcpay/invoices', 'take=50'));
+    if (!res.ok) throw new Error('Failed to fetch BTCPay invoices');
+    const json = await res.json();
+    return (json as { data?: { invoices: BtcpayInvoiceListItem[] } }).data ?? (json as { invoices: BtcpayInvoiceListItem[] });
+  },
+
+  async getBtcpayStores(): Promise<{ stores: BtcpayStore[] }> {
+    const res = await fetch(proxyUrl('btcpay/stores'));
+    if (!res.ok) throw new Error('Failed to fetch BTCPay stores');
+    const json = await res.json();
+    return (json as { data?: { stores: BtcpayStore[] } }).data ?? (json as { stores: BtcpayStore[] });
   },
 
   async sweepDonations(): Promise<{ swept: boolean; count: number; totalBTC: string }> {

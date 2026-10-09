@@ -1,4 +1,4 @@
-# @p31/canon — session corrections & changelog
+# @p31ca/canon — session corrections & changelog
 
 This file is the durable record of canon-intent fixes. Trust the byte
 counts here over any session/transcript narrative; the walkers in
@@ -23,7 +23,7 @@ counts here over any session/transcript narrative; the walkers in
   themes, foundations, patterns, guides, chunks) derived from ground truth
   (contracts + `theme-store.ts` + the DTCG tree). Wired into the build chain
   (`gen:dsds`), exported as `./dsds.json`, and served by canon-mcp as a new
-  `list_docs` tool. Re-run `pnpm --filter @p31/canon gen:dsds` after any
+  `list_docs` tool. Re-run `pnpm --filter @p31ca/canon gen:dsds` after any
   contract/token change so the doc index never lies.
   **This is a scaffold, not a full DSDS integration.** `components` is complete
   (both contracts); `themes` is complete (9); `tokens` carries the 16
@@ -41,9 +41,9 @@ counts here over any session/transcript narrative; the walkers in
   `check-no-agent-names.mjs`. Renamed to `AGENT_UI_PROMPT.md` and rewrote all
   model references to role language. `test:loom` (all 14 gates) green again.
 
-Ground-truth regate: `pnpm --filter @p31/canon build`, `pnpm --filter
-@p31/canon test:loom`, `pnpm --filter @p31/design-validator test`,
-`pnpm --filter @p31/canon-react typecheck` — all exit 0.
+Ground-truth regate: `pnpm --filter @p31ca/canon build`, `pnpm --filter
+@p31ca/canon test:loom`, `pnpm --filter @p31ca/design-validator test`,
+`pnpm --filter @p31ca/canon-react typecheck` — all exit 0.
 
 ## 2026-09-19 — Fix 5 was real work; the "no-op retraction" is WRONG
 

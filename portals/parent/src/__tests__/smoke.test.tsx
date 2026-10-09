@@ -1,18 +1,18 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react';
 
-vi.mock('@p31/ui', () => ({
+vi.mock('@p31ca/ui', () => ({
   NotificationScreen: () => null,
   RestOverlay: () => null,
 }));
-vi.mock('@p31/sovereign-core', () => ({
+vi.mock('@p31ca/sovereign-core', () => ({
   HeartbeatMesh: vi.fn().mockImplementation(() => ({
     connect: vi.fn(async () => 'peer-1'),
     disconnect: vi.fn(),
     broadcast: vi.fn(),
   })),
 }));
-vi.mock('@p31/design-core', () => ({}));
+vi.mock('@p31ca/design-core', () => ({}));
 
 vi.mock('../components/Topbar', () => ({ default: () => null }));
 vi.mock('../components/BottomNav', () => ({ default: () => null }));

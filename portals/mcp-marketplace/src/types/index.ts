@@ -128,7 +128,7 @@ export interface SessionEvent {
   ts: number
 }
 
-// ─── Keep the original kernel intent types (used by vendored @p31/ui helpers) ──
+// ─── Keep the original kernel intent types (used by vendored @p31ca/ui helpers) ──
 
 export type IntentKind = 'forge-letter' | 'forge-memo' | 'forge-report' | 'unknown'
 export type PlanStage = 'classify' | 'render'

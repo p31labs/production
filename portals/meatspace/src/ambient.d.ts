@@ -1,5 +1,5 @@
 /**
- * Ambient declarations for @p31/ui (vendored portal tarball) sources: the
+ * Ambient declarations for @p31ca/ui (vendored portal tarball) sources: the
  * vendored ui imports .astro layouts and the untyped `qrcode` package. These
  * declarations let the meatspace tsc program type-check the vendored source.
  */

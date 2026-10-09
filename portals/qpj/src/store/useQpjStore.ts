@@ -2,9 +2,9 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { substrateStorage, safeLocalStorage } from '../lib/substrate-storage';
 import { isEdgeMode } from '../lib/substrate';
-import { HeartbeatMesh, type MeshState } from '@p31/sovereign-core';
+import { HeartbeatMesh, type MeshState } from '@p31ca/sovereign-core';
 import { verifyMeshPayload } from '../lib/pqcIdentity';
-import type { Preferences } from '@p31/sovereign-core';
+import type { Preferences } from '@p31ca/sovereign-core';
 import type { Identity, IdentityStatus } from '../lib/identity';
 import { useNotifStore } from './useNotifStore';
 import {

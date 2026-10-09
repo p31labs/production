@@ -19,7 +19,7 @@ Companion to `AGENTS.md`; the terse operational layer for long sessions.
 - **Vendored tarball keyed by path**: `.pnpm` store entries embed the `file:` spec path.
   Bumping versions requires re-install; "Already up to date" is a lie if the pack was
   resolved from an old path. Fix: `rm -rf node_modules pnpm-lock.yaml && pnpm install`.
-- **v:gate hardcoded 2.2.0 was stale**: canonical is now `@p31/design-core@2.3.0`
+- **v:gate hardcoded 2.2.0 was stale**: canonical is now `@p31ca/design-core@2.3.0`
   (`tools/portal-vendor-sync/v-gate.mjs`). chat/qpj/design/template all pass.
 - **Web Speech health race**: never `setHealth('listening')` after `rec.start()` —
   a synchronous engine fires `onerror`→`onend` (rebuild path) before `start()` returns
@@ -34,7 +34,7 @@ Companion to `AGENTS.md`; the terse operational layer for long sessions.
 `docs/01-ARCHITECTURE.md` (layout/design intent) · `02-STATE.md` (store+machine) ·
 `03-VOICE.md` · `04-MODES.md` (progressive disclosure) · `05-ROUTING.md` ·
 `06-DESIGN-SYSTEM.md` (tokens/no-hex) · `07-TESTING.md` (matrix + fake-voice) ·
-`08-DEPLOYMENT.md` (deploy-unified + prod domain `qpj.p31ca.org`).
+`08-DEPLOYMENT.md` (per-portal `scripts/deploy.mjs` + prod domain `qpj.p31ca.org`).
 
 ## Phase 2 executed (this session)
 

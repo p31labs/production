@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useMemo } from 'react';
 
 interface SpatialHoverProps {
   children: React.ReactNode;
@@ -12,6 +12,10 @@ interface SpatialHoverProps {
  * From P31 Spatial Catalog design (Gemini HTML).
  * Uses container-relative coordinates so the tilt responds to
  * the card width, not the viewport.
+ *
+ * Reduced-motion: under `prefers-reduced-motion`, the transform is disabled
+ * entirely (no tilt, no scale) so the interaction never triggers vestibular
+ * sensitivity. Matches the LOOM reduced-motion discipline.
  */
 export function SpatialHover({
   children,
@@ -22,8 +26,13 @@ export function SpatialHover({
   const ref = useRef<HTMLDivElement>(null);
   const [style, setStyle] = useState<React.CSSProperties>({});
 
+  const reducedMotion = useMemo(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    [],
+  );
+
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!ref.current) return;
+    if (!ref.current || reducedMotion) return;
     const rect = ref.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -35,7 +44,7 @@ export function SpatialHover({
       transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(${scale}, ${scale}, ${scale})`,
       transformOrigin: 'center center',
     });
-  }, [maxTilt, scale]);
+  }, [maxTilt, scale, reducedMotion]);
 
   const handleMouseLeave = useCallback(() => {
     setStyle({
@@ -51,11 +60,10 @@ export function SpatialHover({
   return (
     <div
       ref={ref}
-      className={`spatial-hover ${className}`}
+      className={`spatial-hover${reducedMotion ? ' spatial-hover--reduced-motion' : ''} ${className}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onMouseEnter={handleMouseEnter}
-      style={{ perspective: 600 }}
     >
       {children}
     </div>

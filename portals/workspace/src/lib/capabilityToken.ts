@@ -4,8 +4,8 @@ import {
   compositePublicKey,
   compositeKeyFingerprint,
   verifySelfContainedCapabilityToken,
-} from '@p31/sovereign-primitives'
-import { base64urlEncode } from '@p31/sovereign-primitives'
+} from '@p31ca/sovereign-primitives'
+import { base64urlEncode } from '@p31ca/sovereign-primitives'
 
 /**
  * Session capability-token minting for the workspace.

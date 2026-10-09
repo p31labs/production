@@ -1,5 +1,5 @@
 /* P31 design-core — base.css */
-/* Token definitions now come from @p31/canon via tokens.css. */
+/* Token definitions now come from @p31ca/canon via tokens.css. */
 @import './tokens.css';
 
 *, *::before, *::after { box-sizing: border-box; }

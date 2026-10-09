@@ -12,5 +12,11 @@ allowBuilds:
   sharp: true
   workerd: true
 
+minimumReleaseAgeExclude:
+  - '@p31ca/ui@1.3.0'
+  - '@p31ca/sovereign-core@0.1.0'
+  - '@p31ca/game-engine@0.2.0-alpha.0'
+  - '@p31ca/gamification@1.0.0'
+  - '@p31ca/quantum-core@0.1.0'
 packages:
   - '.'

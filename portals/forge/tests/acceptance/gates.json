@@ -35,6 +35,51 @@
       },
       "enforcementMoment": "CI + gate",
       "remediation": "runbooks/RUNBOOK-forge-pipeline.md"
+    },
+    {
+      "id": "visual-gate",
+      "command": "node /home/p31/P31-local-workspace/tools/design-parity/visual-gate.mjs --candidate http://localhost:5180",
+      "state": "BLOCKING",
+      "owner": "forge-portal",
+      "scope": "visual parity vs canon (design.p31ca.org) + anti-slop judge on forge screenshots",
+      "negativeControl": {
+        "type": "fixture",
+        "command": "negative-controls/visual-gate.mjs",
+        "description": "a candidate pointing at an unrelated page (e.g. https://example.com) must make the visual gate exit non-zero",
+        "expected": "exit non-zero"
+      },
+      "enforcementMoment": "deploy-precheck (deploy refusal)",
+      "remediation": "runbooks/RUNBOOK-forge-pipeline.md"
+    },
+    {
+      "id": "canon-source-audit",
+      "command": "node /home/p31/P31-local-workspace/tools/canon-audit/canon-source-audit.mjs --target /home/p31/production/portals/forge/src",
+      "state": "BLOCKING",
+      "owner": "forge-portal",
+      "scope": "no --p31-* token forks, no component duplicates of @p31ca/design-core/compositions in forge src",
+      "negativeControl": {
+        "type": "fixture",
+        "command": "/home/p31/P31-local-workspace/tools/canon-audit/nc/canon-source-audit-nc.mjs",
+        "description": "a scratch file defining --p31-accent + a duplicate Topbar must make the gate exit non-zero",
+        "expected": "exit non-zero"
+      },
+      "enforcementMoment": "CI + gate",
+      "remediation": "runbooks/RUNBOOK-canon-P7.md"
+    },
+    {
+      "id": "layout-invariants",
+      "command": "node /home/p31/P31-local-workspace/tools/design-parity/layout-invariants.mjs http://localhost:5180 --routes /,/catalog,/playground,/identity,/compose,/activity,/channels",
+      "state": "BLOCKING",
+      "owner": "forge-portal",
+      "scope": "DOM-geometry structural invariants: no horizontal overflow, fixed/sticky chrome within viewport bounds, topbar spans >=95% viewport, no in-flow child overflow (every forge route)",
+      "negativeControl": {
+        "type": "fixture",
+        "command": "negative-controls/layout-invariants.mjs",
+        "description": "a fixture serving a 600px-wide topbar in a 1440px viewport + an in-flow overflow must make the gate exit non-zero",
+        "expected": "exit non-zero"
+      },
+      "enforcementMoment": "gate.mjs + deploy-precheck (deploy refusal)",
+      "remediation": "runbooks/RUNBOOK-forge-pipeline.md"
     }
   ]
 }

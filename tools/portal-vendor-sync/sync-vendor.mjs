@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 // P31 Design System — portal vendor sync (shared CLI)
 // Regenerates the pinned vendor tarballs for a portal from canonical sources:
-//   @p31ca/design-core -> P31-local-workspace/packages/design-core (canonical monorepo)
+//   @p31ca/design-core -> production/packages/design-core (canonical monorepo)
 //   @p31ca/ui (fixed)  -> ./ui-src (source tree with the JSX/useRef fixes baked in)
 // Usage: node sync-vendor.mjs --target <portalRoot>
 // Run via `pnpm sync:vendor` in each portal (no postinstall bootstrapping; explicit by design).
 import { execSync } from 'node:child_process'
-import { readFileSync, rmSync, writeFileSync, mkdirSync } from 'node:fs'
+import { readFileSync, rmSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -21,9 +21,36 @@ if (!targetArg) {
 
 const portalRoot = path.resolve(targetArg)
 const vendor = path.join(portalRoot, 'vendor')
-const canonicalCore = '/home/p31/P31-local-workspace/packages/design-core'
+const canonicalCore = '/home/p31/production/packages/design-core'
 const uiSrc = path.join(scriptDir, 'ui-src')
 const manifestPath = path.join(vendor, '.sha512')
+
+// migration guard: Path A removed the `@p31ca/design-core/css/tokens.css`
+// export. Portals still importing it work only on frozen tarballs; the next
+// repack here drops the file and breaks them loudly at build time. Refuse to
+// vendor a portal that has not migrated — a pre-sync failure, not a surprise.
+const REMOVED_EXPORT = /@p31ca\/design-core\/css\/tokens\.css/
+const SKIP_DIRS = new Set(['node_modules', 'dist', 'vendor', '.git', '.turbo', 'coverage'])
+const SOURCE_RE = /\.(ts|tsx|css|js|mjs)$/
+const scanForRemovedImport = (dir) => {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name)
+    if (entry.isDirectory()) {
+      if (!SKIP_DIRS.has(entry.name)) scanForRemovedImport(full)
+    } else if (SOURCE_RE.test(entry.name)) {
+      const src = readFileSync(full, 'utf8')
+      const lines = src.split('\n')
+      for (let i = 0; i < lines.length; i++) {
+        if (REMOVED_EXPORT.test(lines[i])) {
+          console.error(`\n✗ migration guard: ${full}:${i + 1} still imports @p31ca/design-core/css/tokens.css (removed by SSOT Path A).`)
+          console.error('  Migrate to `@p31ca/canon/tokens.css` and add "@p31ca/canon": "file:vendor/p31ca-canon-0.1.0.tgz" to dependencies.')
+          process.exit(1)
+        }
+      }
+    }
+  }
+}
+scanForRemovedImport(path.join(portalRoot, 'src'))
 
 mkdirSync(vendor, { recursive: true })
 
@@ -43,8 +70,20 @@ const readManifest = () => {
 
 const sha512 = (file) => createHash('sha512').update(readFileSync(file)).digest('hex')
 
-const pack = (cwd, args) =>
+const pack = (cwd, args, expectedName) =>
   execSync(`pnpm pack --pack-destination ${vendor} ${args}`, { cwd, stdio: 'inherit' })
+// pnpm names tarballs after package.json `name` (@p31ca/design-core →
+// p31ca-design-core-*.tgz), but the portal deps + this manifest pin the legacy
+// filename (p31-design-core-*.tgz). Rename the fresh pack to the pinned name so
+// the sha512 check and `pnpm install` resolve the NEW bytes, not the stale ones.
+const renamePack = (packed, pinned) => {
+  const dest = pinned
+  if (packed !== dest) {
+    rmSync(dest, { force: true })
+    writeFileSync(dest, readFileSync(packed))
+    rmSync(packed, { force: true })
+  }
+}
 
 const refreshDep = (pkg) => {
   console.log(`Refreshing ${pkg} in ${portalRoot} (tarball content changed)…`)
@@ -55,13 +94,24 @@ const prev = readManifest()
 const storedDes = new Map(Object.entries(prev))
 
 const tarballs = [
-  { key: 'design-core', path: path.join(vendor, 'p31-design-core-3.0.0.tgz'), pkg: '@p31ca/design-core' },
-  { key: 'ui', path: path.join(vendor, 'p31ca-ui-1.3.1.tgz'), pkg: '@p31ca/ui' },
+  { key: 'design-core', path: path.join(vendor, 'p31-design-core-3.0.0.tgz'), pkg: '@p31ca/design-core', packed: 'p31ca-design-core-3.0.0.tgz' },
+  { key: 'ui', path: path.join(vendor, 'p31ca-ui-1.3.1.tgz'), pkg: '@p31ca/ui', packed: 'p31ca-ui-1.3.1.tgz' },
 ]
 
-pack(canonicalCore, '')
-pack(uiSrc, '')
+// canon-purity gate: refuse to vendor a corrupt canon. This is the same gate
+// that would have caught the migrate-oklch.mjs NaN corruption before it ever
+// shipped to design.p31ca.org.
+console.log('Running canon-purity gate…')
+execSync('node scripts/canon-purity.mjs', { cwd: canonicalCore, stdio: 'inherit' })
+
+pack(canonicalCore, '', '')
+pack(uiSrc, '', '')
 rmSync(path.join(vendor, '@p31ca-ui-1.3.1.tgz'), { force: true })
+
+// Rename fresh packs to the pinned filenames the portal deps expect.
+for (const t of tarballs) {
+  renamePack(path.join(vendor, t.packed), t.path)
+}
 
 const next = {}
 for (const { key, path: tarball, pkg } of tarballs) {

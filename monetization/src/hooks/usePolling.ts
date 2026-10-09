@@ -25,12 +25,12 @@ export function usePolling<T>(fetcher: () => Promise<T>, intervalMs = 30000) {
 
   useEffect(() => {
     fetch();
-    timerRef.current = setTimeout(() => {
+    timerRef.current = window.setTimeout(() => {
       fetch();
     }, currentInterval.current);
 
     return () => {
-      if (timerRef.current !== null) clearTimeout(timerRef.current);
+      if (timerRef.current !== null) window.clearTimeout(timerRef.current);
     };
   }, []);
 

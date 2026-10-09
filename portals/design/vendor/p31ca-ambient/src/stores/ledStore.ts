@@ -1,9 +1,9 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-export type LedMode = 'chase' | 'rainbow' | 'breath' | 'solid' | 'gradient' | 'dual-chase' | 'off'
+export type LedMode = 'chase' | 'rainbow' | 'breath' | 'solid' | 'gradient' | 'dual-chase' | 'off' | 'sigh'
 
-export const LED_MODES: LedMode[] = ['chase', 'rainbow', 'breath', 'solid', 'gradient', 'dual-chase', 'off']
+export const LED_MODES: LedMode[] = ['chase', 'rainbow', 'breath', 'solid', 'gradient', 'dual-chase', 'off', 'sigh']
 
 export const MODE_LABELS: Record<LedMode, string> = {
   chase: 'CHASE',
@@ -13,6 +13,7 @@ export const MODE_LABELS: Record<LedMode, string> = {
   gradient: 'GRADIENT',
   'dual-chase': 'DUAL',
   off: 'OFF',
+  sigh: 'SIGH',
 }
 
 export const MODE_HINTS: Record<LedMode, string> = {
@@ -23,6 +24,7 @@ export const MODE_HINTS: Record<LedMode, string> = {
   gradient: 'Color 1 → Color 2 sweep',
   'dual-chase': 'Two colors chase each other',
   off: 'Ring dark, heart glows',
+  sigh: 'Physiological sigh — double inhale, long exhale (calm)',
 }
 
 /** Modes that use a second color (color2). */
@@ -34,6 +36,7 @@ export const MODE_USES_PALETTE: Record<LedMode, number> = {
   gradient: 2,
   'dual-chase': 2,
   off: 0,
+  sigh: 0,
 }
 
 interface LedState {
@@ -62,12 +65,12 @@ interface LedState {
 
 const DEFAULTS = {
   powered: true,
-  mode: 'breath' as LedMode,
-  speed: 30,
-  brightness: 15,
+  mode: 'rainbow' as LedMode,
+  speed: 45,
+  brightness: 30,
   color: '#22d3ee',
   color2: '#a78bfa',
-  blobBrightness: 45,
+  blobBrightness: 60,
   blobSpeed: 50,
   blobColor: '#ff9944',
 }
@@ -96,7 +99,7 @@ export const useLedStore = create<LedState>()(
       applyPreset: (p) => set(p),
       reset: () => set({ ...DEFAULTS }),
     }),
-    { name: 'p31:led:v2' },
+    { name: 'p31:led:v1' },
   ),
 )
 
@@ -190,4 +193,20 @@ export function applyNamedPreset(id: string): boolean {
   if (!preset) return false
   useLedStore.getState().applyPreset(preset.patch)
   return true
+}
+
+/** Calm-mode breathing timeline (CALM-MODE.md). Phase 1 = physiological sigh
+ *  (double inhale + long exhale); Phase 2 = 6 BPM coherence. LED params are
+ *  chosen so the shader cycle ≈ the breath period: sigh mode uses uSpeed 10
+ *  (10s cycle), breath mode uses uSpeed 42 (≈10s cycle at 0.15 Hz base). */
+export const CALM_BREATH = {
+  sigh: { mode: 'sigh' as LedMode, speed: 10, brightness: 30, color: '#7a8fff', durationMs: 60_000 },
+  coherence: { mode: 'breath' as LedMode, speed: 42, brightness: 30, color: '#7a8fff' },
+}
+
+/** Enter calm on the LED ring: force the sigh (phase 1) or coherence (phase 2)
+ *  pattern. Returns nothing; the caller is expected to restore on exit. */
+export function applyCalmLedPhase(phase: 'sigh' | 'coherence'): void {
+  const p = CALM_BREATH[phase]
+  useLedStore.getState().applyPreset({ powered: true, mode: p.mode, speed: p.speed, brightness: p.brightness, color: p.color, blobBrightness: 40, blobSpeed: 25, blobColor: p.color })
 }

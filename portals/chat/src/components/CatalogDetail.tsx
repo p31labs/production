@@ -1,4 +1,5 @@
 import { PreviewRenderer, hasLivePreview } from './PreviewRenderer';
+import { useSpoons } from '../store/spoons';
 import type { CatalogEntry } from '../data/catalog';
 
 interface ContractPillsProps {
@@ -44,7 +45,8 @@ interface CatalogDetailProps {
 
 export function CatalogDetail({ entry, onPlace }: CatalogDetailProps) {
   const live = hasLivePreview(entry.name);
-  const canAfford = entry.spoonCost <= 3;
+  const spoons = useSpoons((s) => s.spoons);
+  const canAfford = spoons >= entry.spoonCost;
 
   return (
     <div className="catalog-detail">

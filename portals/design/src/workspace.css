@@ -44,10 +44,12 @@
   box-shadow: 0 0 12px color-mix(in oklch, var(--p31-accent) 30%, transparent);
 }
 
-.topbar-center { display: flex; align-items: center; flex: 1; max-width: 520px; margin:0 var(--p31-space-5); }
-.topbar-right { display: flex; align-items: center; gap: var(--p31-space-3); }
+.topbar-center { display: flex; align-items: center; position: static; flex: 1 1 0; min-width: 0; max-width: 520px; margin:0 var(--p31-space-5); overflow: hidden; }
+.topbar-right { display: flex; align-items: center; gap: var(--p31-space-3); flex-shrink: 0; }
 
 .search-box {
+  flex: 1 1 0;
+  min-width: 0;
   width: 100%;
   height: 40px;
   background: var(--p31-surface2);
@@ -142,7 +144,7 @@
   background: color-mix(in oklch, var(--p31-surface) 72%, transparent);
   backdrop-filter: var(--p31-glass-blur);
   border-right: 1px solid var(--p31-glass-border);
-  display: flex;
+  display: none;
   flex-direction: column;
   padding:var(--p31-space-3);
   gap: var(--p31-space-1);
@@ -214,12 +216,25 @@
   min-height: 48px;
 }
 
+@media (width > 768px) {
+  .sidebar { display: flex !important; }
+  .mobile-bottom-nav { display: none !important; }
+}
 @media (max-width: 768px) {
-  .sidebar { display: none; }
-  .mobile-bottom-nav { display: flex; }
+  .sidebar { display: none !important; }
+  .mobile-bottom-nav { display: flex !important; }
   .topbar-center { display: none; }
+  .topbar-right .badge,
+  .topbar-right .spoon-dial { display: none; }
+  .theme-picker__label { display: none; }
+  .topbar-brand span { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   body { padding-bottom:64px; }
 }
+
+/* Interim viewport breakpoints (RB-SPINE-001). The spine replaces these with
+   container queries on a named container. */
+@media (width <= 1200px) { .search-kbd { display: none; } }
+@media (width <= 1100px) { .session-btn__label { display: none; } }
 
 /* Home / launcher */
 .home-container { padding:var(--p31-space-6); max-width: 1200px; margin:0 auto; width: 100%; }

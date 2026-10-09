@@ -3,6 +3,17 @@ import { seedSandbox } from './seed';
 
 test.describe('chat sandbox visual', () => {
   test.beforeEach(async ({ page }) => {
+    // Deterministic screenshots: disable the starfield (canvas rAF is not
+    // stopped by Playwright's animations:'disabled'). reducedStimulation is
+    // read from localStorage on boot.
+    await page.addInitScript(() => {
+      try {
+        const raw = localStorage.getItem('p31-chat-prefs');
+        const prefs = raw ? JSON.parse(raw) : {};
+        prefs.reducedStimulation = true;
+        localStorage.setItem('p31-chat-prefs', JSON.stringify(prefs));
+      } catch {}
+    });
     await page.goto('/');
   });
 
@@ -27,6 +38,7 @@ test.describe('chat sandbox visual', () => {
     await seedSandbox(page);
     const sidebar = page.locator('.chat-sidebar').first();
     await expect(sidebar).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
     await expect(sidebar).toHaveScreenshot('sidebar.png', {
       animations: 'disabled',
     });

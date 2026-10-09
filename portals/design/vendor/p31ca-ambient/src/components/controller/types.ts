@@ -1,5 +1,5 @@
 /**
- * @p31/controls — types.ts
+ * @p31ca/controls — types.ts
  *
  * The shared contract every control primitive implements.
  */

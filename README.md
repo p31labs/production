@@ -27,7 +27,7 @@ visual and component decisions, from OKLCH design tokens to compositions like
 | design | Design token and component portal backed by the design system |
 | qpj | Quantum Pickle Jar ("qpj", sub-brand Lantern) — the unified gateway portal converging the persona portals behind progressive-disclosure modes and `modeGate` PIN elevation |
 
-Each portal is its own pnpm workspace and consumes `@p31/design-core` from a
+Each portal is its own pnpm workspace and consumes `@p31ca/design-core` from a
 vendored tarball. Deployments are orchestrated by `portals/deploy-unified.mjs`.
 
 ## Substrate status
@@ -55,7 +55,7 @@ gracefully when the trial concludes.
 
 ## Design system
 
-`@p31/design-core` v2.3.0 — design tokens (OKLCH, 5 worlds x 3 ages x 2 sensory
+`@p31ca/design-core` v2.3.0 — design tokens (OKLCH, 5 worlds x 3 ages x 2 sensory
 modes), component compositions (`ChatShell`, `SectionStrip`, `CommandPalette`,
 `Chameleon`, `PageHeader`), accessibility-first (WCAG 2.2 AA minimum), and an
 MCP server for token discovery and spec-driven component generation. AGPL-3.0.

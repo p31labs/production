@@ -32,3 +32,16 @@ The canonical token-audit scans the portal's `src/**` (it roots at `process.cwd(
 ## Verdict on the governance question
 
 The forge portal is now a **governed domain** (`domains/forge/constitution.json`), the 6th in the enterprise stack, with an enforceable `documents-are-canonical` contract. The portal-local `gates.json` + meta-gate + NCs give it the same discipline as the design portal, and the drift check keeps the two registries honest.
+## Structural parity (2026-09-30 review)
+
+The forge's token vocabulary is now an ADAPTER over the canon: `src/tokens.css`
+imports `@p31ca/design-core/css/index.css` and aliases the legacy forge names
+(`--p31-ink`, `--p31-paper`, `--p31-font-display`, …) onto canon values. Drift
+is impossible — the forge inherits canon changes. Verified: h1 renders
+system-ui (canon sans), dark theme, token-audit clean, visual gate passes.
+
+The chrome swap (Topbar/SidebarNav/CalmOverlay from @p31ca/ui) is DEFERRED:
+the canon portal (design.p31ca.org) hand-rolls its own chrome rather than
+importing @p31ca/ui, so a swap would couple the forge to design-portal
+internals without new visual value. Visual parity is already achieved; the
+structural fix that mattered was the token consolidation.

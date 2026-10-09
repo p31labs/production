@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * r3f-perf-audit — enforce the React-Three-Fiber enterprise performance rules
- * on the dome feature + the @p31/spaceship-earth cockpit slice it renders:
+ * on the dome feature + the @p31ca/spaceship-earth cockpit slice it renders:
  * dpr cap, no setState inside useFrame (refs only), instancing for repeated
  * geometry (the cockpit renders hundreds of port tetrahedra + struts via
  * instancedMesh — one draw call each), an additive-star/glass pipeline, and a

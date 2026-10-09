@@ -32,7 +32,7 @@ production/portals/qpj/
     │   ├── Studio.tsx                    # Studio tab: sandboxed artifact studio (chat + offline composer)
     │   ├── TokenExplorer.tsx           # TOKEN_MAP explorer (@p31ca/design-core/mcp/data)
     │   ├── RecipeBrowser.tsx           # RECIPE_MAP/NAMES/CATEGORIES browser
-    │   ├── ComponentCatalog.tsx        # live @p31/design-core/compositions gallery
+    │   ├── ComponentCatalog.tsx        # live @p31ca/design-core/compositions gallery
     │   ├── Playground.tsx              # Intent DSL → parseIntent + runQaGates (in-browser)
     │   ├── Brands.tsx                  # resolveBrandTokens live re-paint (no localStorage)
     │   ├── ApcaChecker.tsx + apca.ts   # pure APCA 0.98G contrast tool

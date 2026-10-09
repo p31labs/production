@@ -17,7 +17,7 @@ import './surfaces/session.css';
 /* The ambient instrument is part of the 570KB vendor-p31ca-ambient chunk.
    It stays lazy and mounts only after the load event (useAmbientReady), so
    the ambient JS never blocks FCP/LCP on the surfaces. */
-const LedController = lazy(() => import('@p31/p31ca-ambient/LedController'));
+const LedController = lazy(() => import('@p31ca/p31ca-ambient/LedController'));
 
 const Showcase = lazy(() => import('./routes/Showcase/Showcase'));
 const Marketplace = lazy(() => import('./routes/Marketplace/Marketplace'));
@@ -34,6 +34,7 @@ const A2ui = lazy(() => import('./routes/A2ui/A2ui'));
 const Dome = lazy(() => import('./routes/Dome/Dome'));
 
 const MODES = ['spark', 'maker', 'workshop'] as const;
+type Mode = (typeof MODES)[number];
 
 /** Ambient deferral — the ambient bundle (570KB vendor chunk) mounts only
  *  after the load event so FCP/LCP lock onto the surface, not the canvases.

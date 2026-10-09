@@ -23,7 +23,7 @@ never quietly passed off as spec.
 - **Motion:** `packages/design-core/src/math/motion.ts` — M3 Expressive springs
   (`SPRINGS`, `spoonSpring`), durations, `SHAPE_MORPH`, `ELEVATION`.
 - **Governance components:** `packages/design-core/src/governance/` (also
-  `@p31/governance`) — ChainTimeline, VerifyButton, EnforcementGauge,
+  `@p31ca/governance`) — ChainTimeline, VerifyButton, EnforcementGauge,
   RefusalFeed, ProposalQueue, SovereignBadge, LumiIdentityCard.
 
 ## Token rules (non-negotiable)
@@ -47,7 +47,7 @@ never quietly passed off as spec.
 - Chat surfaces: use `ChatShell` from `@p31ca/design-core/compositions`; never
   reimplement the shell.
 - Governance surfaces (chain, identity, refusals, enforcement): use the
-  `@p31/governance` components — they render the audit layer with the correct
+  `@p31ca/governance` components — they render the audit layer with the correct
   tokens.
 
 ## Generation checklist
@@ -57,7 +57,7 @@ never quietly passed off as spec.
 - [ ] Theme/age/sensory variants handled via the `data-*` cascade, not inline
 - [ ] Spoon-aware motion via `spoonSpring`
 - [ ] Accessibility: touch ≥48px, focus visible, reduced-motion, aria labels
-- [ ] Governance data rendered via `@p31/governance` components
+- [ ] Governance data rendered via `@p31ca/governance` components
 
 ## The P31 differentiator
 

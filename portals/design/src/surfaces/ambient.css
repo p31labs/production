@@ -1,4 +1,4 @@
-/* ambient.css — portal-specific overrides on the vendored @p31/p31ca-ambient
+/* ambient.css — portal-specific overrides on the vendored @p31ca/p31ca-ambient
    CSS. Imported AFTER the vendored CSS so these win at equal specificity.
    Token stance: var(--p31-*) only (color-mix, no raw hex/rgba).
 

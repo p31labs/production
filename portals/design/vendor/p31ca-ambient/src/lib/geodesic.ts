@@ -66,9 +66,9 @@ export function icosahedronGeodesic(radius: number, detail: number): Geodesic {
   for (let d = 0; d < detail; d++) {
     const next: [number, number, number][] = []
     for (const [a, b, c] of faces) {
-      const ab = point(midpoint(verts[a], verts[b], radius))
-      const bc = point(midpoint(verts[b], verts[c], radius))
-      const ca = point(midpoint(verts[c], verts[a], radius))
+      const ab = point(midpoint(verts[a]!, verts[b]!, radius))
+      const bc = point(midpoint(verts[b]!, verts[c]!, radius))
+      const ca = point(midpoint(verts[c]!, verts[a]!, radius))
       next.push([a, ab, ca])
       next.push([b, bc, ab])
       next.push([c, ca, bc])
@@ -112,9 +112,9 @@ export function nearestPairs(
   for (let i = 0; i < points.length; i++) {
     for (let j = i + 1; j < points.length; j++) {
       const d = Math.hypot(
-        points[i][0] - points[j][0],
-        points[i][1] - points[j][1],
-        points[i][2] - points[j][2],
+        points[i]![0] - points[j]![0],
+        points[i]![1] - points[j]![1],
+        points[i]![2] - points[j]![2],
       )
       if (d < maxDist) pairs.push([i, j])
     }

@@ -7,7 +7,7 @@
  * person without exposing the raw DID or a real name.
  *
  * Pure + edge-safe: no imports, no fs, works in Workers, Node, browsers, tests.
- * Mirrors @p31/canon/loom/codename.ts.
+ * Mirrors @p31ca/canon/loom/codename.ts.
  */
 
 function hashStr(s: string): number {

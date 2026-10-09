@@ -1,0 +1,21 @@
+{
+  "name": "@p31ca/quantum-edge",
+  "version": "1.0.0",
+  "description": "P31 Labs Quantum Edge Worker - SIC-POVM Swarm at the Edge",
+  "main": "worker.ts",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev"
+  },
+  "dependencies": {
+    "@p31ca/quantum-core": "workspace:*",
+    "@p31ca/sovereign-sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240320.0",
+    "wrangler": "^3.28.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

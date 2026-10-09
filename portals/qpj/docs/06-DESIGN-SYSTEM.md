@@ -6,8 +6,8 @@ QPJ styles **against** `@p31ca/design-core` (v2.3.0); it does not fork it.
 
 `src/main.tsx` imports in this exact order:
 
-1. `@p31/design-core/css/all.css`   — the system
-2. `@p31/design-core/css/container.css`
+1. `@p31ca/design-core/css/all.css`   — the system
+2. `@p31ca/design-core/css/container.css`
 3. `src/index.css`                  — Lantern layer (warm overrides)
 
 `src/index.css` is the **only** stylesheet for qpj components. It keeps working

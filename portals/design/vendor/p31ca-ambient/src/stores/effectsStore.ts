@@ -12,6 +12,9 @@ import { create } from 'zustand'
 interface EffectsState {
   spoons: number
   calm: boolean
+  /** Calm breathing phase: 'sigh' (acute, 0–60s) → 'coherence' (sustained).
+   *  null when not in calm. */
+  calmPhase: 'sigh' | 'coherence' | null
   reduceMotion: boolean
   urgent: boolean
   pulseAt: number | null
@@ -21,15 +24,17 @@ interface EffectsState {
 
   setSpoons: (n: number) => void
   setCalm: (c: boolean) => void
+  setCalmPhase: (p: 'sigh' | 'coherence' | null) => void
   setUrgent: (u: boolean) => void
   pulse: (weight?: number) => void
   setAudioEnergy: (e: number) => void
   setAutoMode: (a: boolean) => void
 }
 
-export const useEffectsStore = create<EffectsState>((set, get) => ({
+export const useEffectsStore = create<EffectsState>((set) => ({
   spoons: 3,
   calm: false,
+  calmPhase: null,
   reduceMotion: false,
   urgent: false,
   pulseAt: null,
@@ -38,7 +43,8 @@ export const useEffectsStore = create<EffectsState>((set, get) => ({
   isAutoMode: false,
 
   setSpoons: (spoons) => set({ spoons: Math.max(0, Math.min(5, Math.round(spoons))) }),
-  setCalm: (calm) => set({ calm }),
+  setCalm: (calm) => set({ calm, ...(calm ? {} : { calmPhase: null }) }),
+  setCalmPhase: (calmPhase) => set({ calmPhase }),
   setUrgent: (urgent) => set({ urgent }),
   pulse: (weight = 0.35) => set({ pulseAt: Date.now(), pulseWeight: weight }),
   setAudioEnergy: (audioEnergy) => set({ audioEnergy: Math.max(0, Math.min(1, audioEnergy)) }),

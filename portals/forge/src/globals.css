@@ -31,8 +31,8 @@ a:hover { color: var(--p31-accent-strong); }
 /* ── Glass ────────────────────────────────────────────────────── */
 .glass {
   background: var(--p31-glass-bg);
-  backdrop-filter: blur(var(--p31-glass-blur));
-  -webkit-backdrop-filter: blur(var(--p31-glass-blur));
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
   border: 1px solid var(--p31-glass-border);
   border-radius: var(--p31-radius-lg);
 }
@@ -177,8 +177,8 @@ input[type="range"] { accent-color: var(--p31-accent); width: 100%; }
   display: flex; align-items: center; gap: var(--p31-space-4);
   padding: var(--p31-space-3) var(--p31-space-5);
   background: var(--p31-glass-bg);
-  backdrop-filter: blur(var(--p31-glass-blur));
-  -webkit-backdrop-filter: blur(var(--p31-glass-blur));
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
   border-bottom: 1px solid var(--p31-glass-border);
 }
 .topbar__brand { font-family: var(--p31-font-display); font-weight: 700; font-size: var(--p31-text-h2); color: var(--p31-ink); }
@@ -195,64 +195,59 @@ input[type="range"] { accent-color: var(--p31-accent); width: 100%; }
   background: var(--p31-surface-2);
 }
 
-/* ── Sidebar ──────────────────────────────────────────────────── */
+/* ── Sidebar (canon SidebarNav inside the forge drawer) ───────── */
 .sidebar {
   position: fixed; top: 0; left: 0; bottom: 0; z-index: 50;
   width: 240px;
   padding: var(--p31-space-5);
   background: var(--p31-glass-bg);
-  backdrop-filter: blur(var(--p31-glass-blur));
-  -webkit-backdrop-filter: blur(var(--p31-glass-blur));
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
   border-right: 1px solid var(--p31-glass-border);
   transform: translateX(-100%);
   transition: transform var(--p31-dur-base) var(--p31-ease-quantum);
 }
 .sidebar.is-open { transform: translateX(0); }
-.sidebar__nav { display: flex; flex-direction: column; gap: var(--p31-space-2); margin-top: var(--p31-space-6); }
-.sidebar__link {
+.sidebar .sidebar-nav { margin-top: var(--p31-space-6); }
+.sidebar-nav__link {
   display: flex; align-items: center; gap: var(--p31-space-3);
-  padding: var(--p31-space-3) var(--p31-space-4);
-  border-radius: var(--p31-radius-md);
-  color: var(--p31-ink-soft);
+  width: 100%; color: inherit; text-decoration: none;
   font-size: var(--p31-text-body);
 }
-.sidebar__link:hover { background: var(--p31-accent-faint); color: var(--p31-ink); }
-.sidebar__link.is-active { background: var(--p31-accent-soft); color: var(--p31-ink); font-weight: 600; }
-.sidebar__link .emoji { font-size: var(--p31-text-h2); }
-.sidebar__backdrop {
-  position: fixed; inset: 0; z-index: 45;
-  background: oklch(0.2 0.02 270 / 0.4);
-  opacity: 0; pointer-events: none;
-  transition: opacity var(--p31-dur-base) var(--p31-ease-quantum);
-}
-.sidebar__backdrop.is-visible { opacity: 1; pointer-events: auto; }
+.sidebar-nav__link .emoji { font-size: var(--p31-text-h2); }
 
-/* ── Mobile bottom nav ────────────────────────────────────────── */
-.mobile-nav {
+/* ── Mobile bottom nav (canon MobileBottomNav, forge fixed bar) ── */
+.mobile-bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
-  display: flex; justify-content: space-around;
   padding: var(--p31-space-2) var(--p31-space-3) calc(var(--p31-space-2) + env(safe-area-inset-bottom));
   background: var(--p31-glass-bg);
-  backdrop-filter: blur(var(--p31-glass-blur));
-  -webkit-backdrop-filter: blur(var(--p31-glass-blur));
+  backdrop-filter: var(--p31-glass-blur);
+  -webkit-backdrop-filter: var(--p31-glass-blur);
   border-top: 1px solid var(--p31-glass-border);
 }
-.mobile-nav__link { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: var(--p31-text-micro); color: var(--p31-ink-faint); }
-.mobile-nav__link.is-active { color: var(--p31-accent-strong); }
-.mobile-nav__link .emoji { font-size: var(--p31-text-h2); }
+.mobile-bottom-nav__link {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  font-size: var(--p31-text-micro); color: var(--p31-ink-faint);
+  text-decoration: none;
+}
+.mobile-bottom-nav__link.is-active { color: var(--p31-accent-strong); }
+.mobile-bottom-nav__link .emoji { font-size: var(--p31-text-h2); }
 
-@media (min-width: 900px) { .mobile-nav { display: none; } }
+@media (min-width: 900px) { .mobile-bottom-nav { display: none; } }
 @media (max-width: 899px) { .sidebar { display: none; } }
 
-/* ── Calm overlay (spoons ≤ 1) ────────────────────────────────── */
-.calm-overlay {
-  position: fixed; inset: 0; z-index: 100;
-  display: none; place-items: center;
-  background: var(--p31-paper-warm);
+/* ── Calm mode (CALM-MODE.md) — the forge's simplified form ────── */
+html[data-calm] .main-workspace,
+html[data-calm] .app-theme { display: none !important; }
+.calm-guide {
+  position: fixed; top: 50%; left: 50%;
+  width: 96px; height: 96px; margin: -48px 0 0 -48px;
+  border-radius: 50%;
+  border: 2px solid var(--p31-accent);
+  background: radial-gradient(circle, color-mix(in oklch, var(--p31-accent) 30%, transparent) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 100;
 }
-.calm-overlay.is-visible { display: grid; }
-.calm-overlay__card { text-align: center; padding: var(--p31-space-7); max-width: 480px; }
-.calm-overlay__card h1 { font-size: var(--p31-text-h1); }
 
 /* ── Compose / evidence blocks ────────────────────────────────── */
 .evidence {
@@ -289,3 +284,22 @@ input[type="range"] { accent-color: var(--p31-accent); width: 100%; }
 /* ── Route skeleton ───────────────────────────────────────────── */
 .route-skeleton { height: 40vh; border-radius: var(--p31-radius-lg); background: var(--p31-surface-1); animation: pulse 1.2s var(--p31-ease-quantum) infinite alternate; }
 @keyframes pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
+/* Theme picker — fixed top-right, above the shell chrome. */
+.app-theme {
+  position: fixed;
+  top: 0.9rem;
+  right: 1rem;
+  z-index: 120;
+}
+
+/* ── Ambient (the chameleon dome + starfield) ──────────────────── */
+.dome-surface {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.dome-surface canvas {
+  display: block;
+}

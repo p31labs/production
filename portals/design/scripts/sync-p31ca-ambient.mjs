@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * sync-p31ca-ambient — derive the vendored @p31/p31ca-ambient package (the
+ * sync-p31ca-ambient — derive the vendored @p31ca/p31ca-ambient package (the
  * p31ca.org ambient experience: MolecularHeart background + LedController)
- * from the canonical apps/p31ca source + the @p31/controls knob slice. The
+ * from the canonical apps/p31ca source + the @p31ca/controls knob slice. The
  * design portal consumes the EXACT deployed components; this script re-copies
  * so they never drift (single source of truth).
  *
@@ -34,7 +34,7 @@ const copies = [
   [P31CA, 'lib/starfield.ts', 'src/lib/starfield.ts'],
   [P31CA, 'styles/molecular-dome.css', 'css/molecular-dome.css'],
   [P31CA, 'styles/p31-style.css', 'css/p31-style.css'],
-  // @p31/controls slice — the real Knob + math (p31ca's own are shims).
+  // @p31ca/controls slice — the real Knob + math (p31ca's own are shims).
   [CONTROLS, 'Knob.tsx', 'src/components/controller/Knob.tsx'],
   [CONTROLS, 'knobMath.ts', 'src/components/controller/knobMath.ts'],
   [CONTROLS, 'types.ts', 'src/components/controller/types.ts'],
@@ -63,14 +63,14 @@ function patch(file, find, replace) {
 }
 
 // a) LedController imports the shell-chrome theme store → shim it locally
-//    (the design portal must not depend on @p31/shell-chrome).
+//    (the design portal must not depend on @p31ca/shell-chrome).
 patch(
   'src/components/LedController.tsx',
-  "import { useThemeStore } from '@p31/shell-chrome/stores'",
+  "import { useThemeStore } from '@p31ca/shell-chrome/stores'",
   "import { useThemeStore } from '../stores/themeStore'",
 );
 
-// b) the real @p31/controls Knob has a named export only; LedController
+// b) the real @p31ca/controls Knob has a named export only; LedController
 //    imports it as default (the p31ca shim re-exported it as default).
 {
   const kp = path.join(VENDOR, 'src/components/controller/Knob.tsx');
@@ -289,7 +289,7 @@ fs.writeFileSync(path.join(VENDOR, 'src', 'stores', 'themeStore.ts'), themeStore
 
 // 4) package.json — self-contained (react + zustand + three only).
 const pkg = {
-  name: '@p31/p31ca-ambient',
+  name: '@p31ca/p31ca-ambient',
   version: '1.0.0',
   private: true,
   type: 'module',

@@ -3,7 +3,7 @@
 /* 1:1 match with EDE Suite ChildPortal styling                        */
 /* ═══════════════════════════════════════════════════════════════════ */
 
-@import '@p31/design-core/css/tokens.css';
+@import '@p31ca/design-core/css/tokens.css';
 
 /* ─── Willow (children) portal brand overrides ─── */
 [data-brand="willow"] {

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@p31ca/design-core/compositions';
-import { hasSBTMilestone } from '@p31/sovereign-core';
+import { hasSBTMilestone } from '@p31ca/sovereign-core';
 import { useQpjStore } from '../store/useQpjStore';
 import { MILESTONE_CLAIMED_SPACE } from '../hooks/useSBT';
 import './post-entry-checklist.css';

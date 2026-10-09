@@ -13,13 +13,22 @@
  *
  * Anti-gaming: run this from a base-branch copy so an agent cannot satisfy it
  * by weakening a gate's failure path in the working branch.
+ *
+ * Optional: --registry <path> overrides which registry file to read. The
+ * self-test NC uses this to point at a temp fixture registry instead of
+ * mutating the real one (a mutation that also recursively re-runs this
+ * meta-gate is a restore bug waiting to happen).
  */
 import { readFileSync, existsSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { resolve } from 'node:path';
 
 const here = resolve(import.meta.dirname);
-const registry = JSON.parse(readFileSync(resolve(here, 'gates.json'), 'utf8'));
+const registryArgIdx = process.argv.indexOf('--registry');
+const registryPath = registryArgIdx !== -1 && process.argv[registryArgIdx + 1]
+  ? resolve(here, process.argv[registryArgIdx + 1])
+  : resolve(here, 'gates.json');
+const registry = JSON.parse(readFileSync(registryPath, 'utf8'));
 
 let furniture = 0;
 let missing = 0;
@@ -32,7 +41,9 @@ for (const gate of registry.gates) {
     continue;
   }
 
-  const checkScript = resolve(here, 'negative-controls', `${gate.id}.mjs`);
+  const checkScript = nc.command
+    ? resolve(here, nc.command)
+    : resolve(here, 'negative-controls', `${gate.id}.mjs`);
   if (!existsSync(checkScript)) {
     console.error(`✗ ${gate.id}: negative-control script missing: ${checkScript}`);
     missing++;
@@ -64,4 +75,25 @@ if (furniture) {
   console.error(`\n✗ GATE SELF-TEST: ${furniture} gate(s) are furniture or unproven.`);
   process.exit(1);
 }
-console.log(`\n✅ GATE SELF-TEST: ${registry.gates.length} gates proven able to fail.`);
+
+// Presence check — every BLOCKING gate must be invoked by the deploy/gate
+// pipeline, else it can only fail in theory (the Silent Success failure mode).
+const root = resolve(import.meta.dirname, '..', '..');
+const pipeline = [
+  readFileSync(resolve(root, 'scripts', 'deploy-precheck.mjs'), 'utf8'),
+  readFileSync(resolve(root, 'package.json'), 'utf8'),
+].join('\n');
+const absent = [];
+for (const gate of registry.gates) {
+  if (gate.state !== 'BLOCKING') continue;
+  const seg = (gate.command ?? '').match(/([a-z0-9-]+\.mjs)/)?.[1];
+  if (!seg) continue;
+  if (!pipeline.includes(seg)) absent.push(`${gate.id} (${seg})`);
+}
+if (absent.length > 0) {
+  console.error(`\n✗ GATE SELF-TEST: BLOCKING gates not wired into the pipeline (registered but never invoked):`);
+  for (const a of absent) console.error(`   - ${a}`);
+  console.error('  Wire them into scripts/deploy-precheck.mjs — an unenforced BLOCKING gate is furniture.');
+  process.exit(1);
+}
+console.log(`\n✅ GATE SELF-TEST: ${registry.gates.length} gates proven able to fail + all BLOCKING gates wired into the pipeline.`);

@@ -2,11 +2,11 @@ import { describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react';
 
 // Mock all @p31 workspace packages (avoid zustand/workspace resolution)
-vi.mock('@p31/ui', () => ({
+vi.mock('@p31ca/ui', () => ({
   NotificationScreen: () => null,
   RestOverlay: () => null,
 }));
-vi.mock('@p31/sovereign-core', () => ({
+vi.mock('@p31ca/sovereign-core', () => ({
   HeartbeatMesh: vi.fn().mockImplementation(() => ({
     connect: vi.fn(async () => 'peer-1'),
     disconnect: vi.fn(),
@@ -14,9 +14,9 @@ vi.mock('@p31/sovereign-core', () => ({
   })),
   hasSBTMilestone: vi.fn(() => false),
 }));
-vi.mock('@p31/design-core', () => ({}));
-vi.mock('@p31/gamification', () => ({}));
-vi.mock('@p31/game-engine', () => ({ JitterbugScene: () => null }));
+vi.mock('@p31ca/design-core', () => ({}));
+vi.mock('@p31ca/gamification', () => ({}));
+vi.mock('@p31ca/game-engine', () => ({ JitterbugScene: () => null }));
 
 // Mock local heavy components
 vi.mock('../components/Topbar', () => ({ default: () => null }));

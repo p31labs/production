@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react'
+import type * as THREE from 'three'
 import { useEffectsStore } from '../../stores/effectsStore'
 import { useLedStore, type LedMode } from '../../stores/ledStore'
 import { useSceneStore } from '../../stores/sceneStore'
 import { icosahedronGeodesic } from '../../lib/geodesic'
 import { cssToHex } from '../../lib/color'
-import * as THREE from 'three'
 
 /**
  * MolecularHeart — the dome background with the molecular heart inside.
@@ -27,13 +27,12 @@ export default function MolecularHeart() {
     const canvas = canvasRef.current
     if (!canvas) return
     let cancelled = false
-    let recenterTimer = 0
-    let recenterTries = 0
-    let ro: ResizeObserver | null = null
 
     const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
 
-    const init = async () => {
+    async function init() {
+      if (!canvas) return
+      const THREE = await import('three')
       let renderer: any
       try {
         renderer = new (THREE as any).WebGLRenderer({
@@ -129,12 +128,14 @@ export default function MolecularHeart() {
           float freq = 1.0 + 1.4 * e + uAlarm * 0.6;
           if (uCalm > 0.5) { amp *= 0.6; freq *= 0.7; }
           float t = uTime * (1.0 + 0.6 * uBlobSpeed);
+          vec3 eye = vec3(sin(t * 0.21 + 1.3), 0.35, cos(t * 0.21 + 1.3));
+          float lean = dot(position, eye) * (0.03 + 0.05 * e);
           vec3 p = position;
           float n1 = snoise(p * freq + vec3(t * 0.4 * (1.0 + e), 0.0, 0.0));
           float n2 = snoise(p * (freq * 2.1) + vec3(0.0, t * 0.55, t * 0.35));
           float n3 = snoise(p * (freq * 4.2 + 3.7) + vec3(t * 0.8, -t * 0.3, 0.0));
           float wob = n1 * 0.62 + n2 * 0.28 + n3 * 0.10;
-          vec3 displaced = position + normal * (wob * amp);
+          vec3 displaced = position + normal * (wob * amp + lean);
           vNormal = normalize(mat3(normalMatrix) * normalize(displaced));
           vec3 worldPos = (modelMatrix * vec4(displaced, 1.0)).xyz;
           vViewDir = normalize(cameraPosition - worldPos);
@@ -242,6 +243,7 @@ export default function MolecularHeart() {
         gradient: 4,
         'dual-chase': 5,
         off: 6,
+        sigh: 7,
       }
 
       const frameShell = icosahedronGeodesic(DOME_RADIUS, DOME_DETAIL)
@@ -252,8 +254,8 @@ export default function MolecularHeart() {
 
       const placements: { pos: THREE.Vector3; dir: THREE.Vector3; segLen: number }[] = []
       for (const [a, b] of frameShell.edges) {
-        const start = new THREE.Vector3(...frameShell.vertices[a])
-        const end = new THREE.Vector3(...frameShell.vertices[b])
+        const start = new THREE.Vector3(...frameShell.vertices[a]!)
+        const end = new THREE.Vector3(...frameShell.vertices[b]!)
         const dir = new THREE.Vector3().copy(end).sub(start)
         const len = dir.length()
         const dirNorm = dir.clone().normalize()
@@ -348,6 +350,16 @@ export default function MolecularHeart() {
               finalColor = uColor1 * int0 + uColor2 * int1;
             } else if (uMode == 6) {
               brightness = 0.0;
+            } else if (uMode == 7) {
+              // Physiological sigh (CALM-MODE.md): double inhale → long exhale.
+              // Two quick bright pulses, then a slow fade — the acute calm guide.
+              // Fixed ~10s cycle (double inhale ≈ 1.8s, extended exhale ≈ 7.4s).
+              float p = mod(uTime, 10.0) / 10.0;
+              float in1 = smoothstep(0.00, 0.05, p) * (1.0 - smoothstep(0.05, 0.12, p));
+              float in2 = smoothstep(0.12, 0.18, p) * (1.0 - smoothstep(0.18, 0.26, p));
+              float exhale = 1.0 - smoothstep(0.26, 0.92, p);
+              float breath = 0.25 + 0.75 * max(in1, max(in2, exhale));
+              brightness *= breath;
             }
             if (uFrozen > 0.5) brightness *= 0.35;
             brightness *= 0.4 + 0.6 * uEnergy;
@@ -384,70 +396,6 @@ export default function MolecularHeart() {
       const light = new THREE.PointLight(heartCoreOf(), 0.5, 22)
       group.add(light)
       scene.add(group)
-      // Design portal viewport centering: dome centered in the content area,
-      // not the full screen. Reads .sidebar width; 0 offset when hidden.
-      const recenter = () => {
-        const nav = document.querySelector('.sidebar')
-        const navW = nav ? nav.getBoundingClientRect().width : 0
-        const cw = canvas.clientWidth || window.innerWidth
-        const ch = canvas.clientHeight || window.innerHeight
-        camera.aspect = cw / ch
-        camera.position.x = 0
-        if (navW > 0) {
-          // Off-center projection via view offset: the world origin renders at
-          // (cw/2 + navW/2, ch/2) — content-area center. The camera stays
-          // on-axis, so the LED frame + plasma blob stay concentric (no
-          // off-axis perspective drift, unlike camera.position.x).
-          camera.setViewOffset(cw + navW, ch, 0, 0, cw, ch)
-        } else {
-          camera.clearViewOffset()
-        }
-      }
-      recenter()
-      // Retry until the sidebar is laid out (the ambient's lazy chunk can win
-      // the race against the app shell's CSS). setTimeout rather than rAF so
-      // the wait doesn't force a layout read every frame. Observes the sidebar
-      // directly (ResizeObserver on documentElement won't fire on child adds).
-      const ensureCentered = () => {
-        if (cancelled) return
-        recenter()
-        const nav = document.querySelector('.sidebar')
-        if (nav && nav.getBoundingClientRect().width > 0) {
-          if (typeof ResizeObserver !== 'undefined') {
-            ro = new ResizeObserver(recenter)
-            ro.observe(nav)
-          }
-          return
-        }
-        if (recenterTries++ < 20) {
-          recenterTimer = window.setTimeout(ensureCentered, 50)
-        }
-      }
-      ensureCentered()
-      // Design portal orbit: drag to rotate the dome (enabled when the /dome
-      // surface is active). Document-level so it works through the app shell;
-      // ignores the controller + genuine controls (NOT [data-mcp-tool] — the
-      // /dome surface root itself carries data-mcp-tool).
-      let orbitDrag: { id: number; x: number; y: number; y0: number; x0: number } | null = null
-      const isOrbitTarget = (t: any) => t && t.closest && t.closest('.devpanel, button, a, input, select, textarea, [role="button"]')
-      const domeSurfaceActive = () => !!document.querySelector('.surface-panel.dome-surface.active')
-      const onOrbitDown = (e: PointerEvent) => {
-        if (isOrbitTarget(e.target)) return
-        if (!domeSurfaceActive()) return
-        orbitDrag = { id: e.pointerId, x: e.clientX, y: e.clientY, y0: inner.rotation.y, x0: inner.rotation.x }
-        e.preventDefault()
-      }
-      const onOrbitMove = (e: PointerEvent) => {
-        if (!orbitDrag || e.pointerId !== orbitDrag.id) return
-        inner.rotation.y = orbitDrag.y0 + (e.clientX - orbitDrag.x) * 0.004
-        inner.rotation.x = Math.max(-1.2, Math.min(1.2, orbitDrag.x0 + (e.clientY - orbitDrag.y) * 0.003))
-        e.preventDefault()
-      }
-      const onOrbitEnd = (e: PointerEvent) => { if (orbitDrag && e.pointerId === orbitDrag.id) orbitDrag = null }
-      window.addEventListener('pointerdown', onOrbitDown)
-      window.addEventListener('pointermove', onOrbitMove)
-      window.addEventListener('pointerup', onOrbitEnd)
-      window.addEventListener('pointercancel', onOrbitEnd)
 
       // Scene changes apply live — scale + tilt read fresh each frame via
       // the store; the subscription just re-asserts the group values.
@@ -477,12 +425,12 @@ export default function MolecularHeart() {
       // Read mode → LED-frame uniforms.
       const applyLed = (mode: LedMode, powered: boolean) => {
         const led = useLedStore.getState()
-        frameMat.uniforms.uMode.value = powered ? LED_MODE_MAP[mode] : LED_MODE_MAP.off
-        frameMat.uniforms.uSpeed.value = led.speed / 10
-        frameMat.uniforms.uColor.value.set(led.color)
-        frameMat.uniforms.uBrightness.value = led.brightness / 100
-        frameMat.uniforms.uColor1.value.set(led.color)
-        frameMat.uniforms.uColor2.value.set(led.color2)
+        frameMat.uniforms.uMode!.value = powered ? LED_MODE_MAP[mode] : LED_MODE_MAP.off
+        frameMat.uniforms.uSpeed!.value = led.speed / 10
+        frameMat.uniforms.uColor!.value.set(led.color)
+        frameMat.uniforms.uBrightness!.value = led.brightness / 100
+        frameMat.uniforms.uColor1!.value.set(led.color)
+        frameMat.uniforms.uColor2!.value.set(led.color2)
       }
       applyLed(useLedStore.getState().mode, useLedStore.getState().powered)
       const unsubLedApply = useLedStore.subscribe((state, prev) => {
@@ -520,9 +468,9 @@ export default function MolecularHeart() {
         heartUniforms.uBlobSpeed.value = THREE.MathUtils.smoothstep(led.blobSpeed, 0, 100)
         heartUniforms.uBlobColor.value.set(led.blobColor)
 
-        frameMat.uniforms.uTime.value = t
-        frameMat.uniforms.uEnergy.value = energy
-        frameMat.uniforms.uFrozen.value = crisis ? 1 : 0
+        frameMat.uniforms.uTime!.value = t
+        frameMat.uniforms.uEnergy!.value = energy
+        frameMat.uniforms.uFrozen!.value = crisis ? 1 : 0
 
         if (!crisis) {
           const rot = useSceneStore.getState().dome.rotation
@@ -549,8 +497,9 @@ export default function MolecularHeart() {
         const nh = canvas.clientHeight || window.innerHeight
         canvas.style.width = `${nw}px`
         canvas.style.height = `${nh}px`
+        camera.aspect = nw / nh
+        camera.updateProjectionMatrix()
         renderer.setSize(nw, nh, false)
-        recenter()
       }
       window.addEventListener('resize', onResize)
 
@@ -574,13 +523,65 @@ export default function MolecularHeart() {
     void init()
     return () => {
       cancelled = true
-      clearTimeout(recenterTimer)
-      if (ro) ro.disconnect()
     }
   }, [])
 
   return (
     <div className="molecular-heart-layer" aria-hidden="true">
+      {/* Static SVG molecular heart in a dome — always renders, no WebGL needed. */}
+      <svg className="molecular-heart-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="mh-dome" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="var(--p31-accent, #22d3ee)" stopOpacity="0.32" />
+            <stop offset="45%" stopColor="var(--p31-accent-violet, #a78bfa)" stopOpacity="0.10" />
+            <stop offset="100%" stopColor="transparent" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="mh-heart-inner" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="var(--p31-accent, #22d3ee)" stopOpacity="0.55" />
+            <stop offset="100%" stopColor="transparent" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+
+        <circle cx="200" cy="200" r="185" fill="url(#mh-dome)" />
+        <circle cx="200" cy="200" r="185" fill="none" stroke="var(--p31-accent, #22d3ee)" strokeOpacity="0.18" strokeWidth="0.6" />
+        <circle cx="200" cy="200" r="165" fill="none" stroke="var(--p31-accent, #22d3ee)" strokeOpacity="0.10" strokeWidth="0.5" />
+
+        <ellipse cx="200" cy="205" rx="80" ry="72" fill="url(#mh-heart-inner)" />
+
+        <g fill="var(--p31-accent, #22d3ee)" fillOpacity="0.95">
+          <circle cx="200" cy="168" r="3.2" />
+          <circle cx="176" cy="172" r="2.6" />
+          <circle cx="156" cy="188" r="2.8" />
+          <circle cx="152" cy="212" r="2.6" />
+          <circle cx="168" cy="234" r="3.0" />
+          <circle cx="200" cy="252" r="3.2" />
+          <circle cx="232" cy="234" r="3.0" />
+          <circle cx="248" cy="212" r="2.6" />
+          <circle cx="244" cy="188" r="2.8" />
+          <circle cx="224" cy="172" r="2.6" />
+          <circle cx="200" cy="196" r="2.4" fill="var(--p31-accent-violet, #a78bfa)" />
+        </g>
+
+        <g stroke="var(--p31-accent, #22d3ee)" strokeOpacity="0.35" strokeWidth="0.7" fill="none">
+          <line x1="200" y1="168" x2="176" y2="172" />
+          <line x1="176" y1="172" x2="156" y2="188" />
+          <line x1="156" y1="188" x2="152" y2="212" />
+          <line x1="152" y1="212" x2="168" y2="234" />
+          <line x1="168" y1="234" x2="200" y2="252" />
+          <line x1="200" y1="252" x2="232" y2="234" />
+          <line x1="232" y1="234" x2="248" y2="212" />
+          <line x1="248" y1="212" x2="244" y2="188" />
+          <line x1="244" y1="188" x2="224" y2="172" />
+          <line x1="224" y1="172" x2="200" y2="168" />
+          <line x1="200" y1="168" x2="200" y2="252" strokeOpacity="0.20" />
+          <line x1="152" y1="212" x2="248" y2="212" strokeOpacity="0.20" />
+          <line x1="176" y1="172" x2="200" y2="196" strokeOpacity="0.30" />
+          <line x1="224" y1="172" x2="200" y2="196" strokeOpacity="0.30" />
+          <line x1="168" y1="234" x2="200" y2="196" strokeOpacity="0.30" />
+          <line x1="232" y1="234" x2="200" y2="196" strokeOpacity="0.30" />
+        </g>
+      </svg>
+
       {/* WebGL canvas on top — stars + dome glow + heartbeat. */}
       <canvas ref={canvasRef} className="molecular-heart-canvas" aria-hidden="true" />
     </div>

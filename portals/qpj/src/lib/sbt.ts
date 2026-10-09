@@ -1,5 +1,5 @@
-import { getProfile, updateTetrahedronVertex, addSBTMilestone, computeTetrahedronHash } from '@p31/sovereign-core';
-import type { SBT, Reputation } from '@p31/sovereign-core';
+import { getProfile, updateTetrahedronVertex, addSBTMilestone, computeTetrahedronHash } from '@p31ca/sovereign-core';
+import type { SBT, Reputation } from '@p31ca/sovereign-core';
 import { anchorSbt } from './sbt-anchor';
 
 export type SBTKind = 'achievement' | 'credential' | 'affiliation' | 'guardian';
@@ -147,4 +147,4 @@ export function mirrorSBTToProfile(
   });
 }
 
-export { hasSBTMilestone } from '@p31/sovereign-core';
+export { hasSBTMilestone } from '@p31ca/sovereign-core';

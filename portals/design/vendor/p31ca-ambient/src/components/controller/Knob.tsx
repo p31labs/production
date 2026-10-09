@@ -1,5 +1,5 @@
 /**
- * @p31/controls — Knob.tsx
+ * @p31ca/controls — Knob.tsx
  *
  * Rotary control, extracted from apps/p31ca (SVG arc visual) and hardened:
  *

@@ -5,6 +5,7 @@ compatibility_date = "2025-01-01"
 [vars]
 FORGE_ORIGIN = "https://p31-forge.trimtab-signal.workers.dev"
 LOOM_ORIGIN = "https://loom.p31ca.org"
+FORUM_ORIGIN = "https://forum-api.trimtab-signal.workers.dev"
 
 # Cloudflare Access (set in the Pages dashboard for production):
 # CF_ACCESS_TEAM_DOMAIN and CF_ACCESS_AUD are read from Pages secrets/vars.

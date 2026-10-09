@@ -124,7 +124,7 @@ Status: RESEARCH COMPLETE + CODE INTEGRATED. This doc records what was found and
 - Animation SIXTH.
 
 ### How qpj uses it
-- qpj follows all 6 routes via its existing design system (@p31/design-core).
+- qpj follows all 6 routes via its existing design system (@p31ca/design-core).
 - The Triad Architect step audits UI changes against these routes before committing.
 - The Substrate's dispatch Worker enforces priority order via the `verify` phase.
 

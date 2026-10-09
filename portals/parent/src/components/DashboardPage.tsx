@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import type { LoveBalance } from '@p31/sovereign-core';
+import type { LoveBalance } from '@p31ca/sovereign-core';
 import { useAppStore } from '../store/useAppStore';
 import TetrahedronVisualizer from './TetrahedronVisualizer';
-import { type NodeData } from '@p31/ui';
+import { type NodeData } from '@p31ca/ui';
 import { useMeshTetraNodes, edgeWeight } from '../hooks/useMeshTetraNodes';
 
 interface DashboardPageProps {

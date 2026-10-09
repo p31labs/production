@@ -3,7 +3,7 @@
 **Owner:** P31 Labs — Design Systems / Platform Engineering
 **Status:** LOCKED (2026-09-30) — research-validated, human-approved design direction
 **Supersedes:** the legacy modal CalmOverlay (calm-circle + "Take a breath." + "Return to the workspace")
-**Applies to:** `@p31ca/design-core` (CalmOverlay + CSS), `@p31/p31ca-ambient` (LED breathing), all portals consuming canon chrome
+**Applies to:** `@p31ca/design-core` (CalmOverlay + CSS), `@p31ca/p31ca-ambient` (LED breathing), all portals consuming canon chrome
 
 ---
 
@@ -135,7 +135,7 @@ html[data-calm] .calm-breathe {
 }
 ```
 
-## 7. Ambient contract — LED breathing (`@p31/p31ca-ambient`)
+## 7. Ambient contract — LED breathing (`@p31ca/p31ca-ambient`)
 
 - `ledStore` gains a `'sigh'` mode (double pulse + long fade) alongside the existing
   `'breath'` mode, and a `CALM_BREATH` timeline

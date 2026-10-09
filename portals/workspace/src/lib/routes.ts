@@ -12,6 +12,8 @@ export interface RouteDef {
 export const ROUTES: RouteDef[] = [
   { id: 'home', path: '/', label: 'Home / Launcher', icon: '🏠', badge: 'spark' },
   { id: 'docs', path: '/docs', label: 'Docs', icon: '📄', badge: 'spark' },
+  { id: 'forum', path: '/forum', label: 'Forum', icon: '💬', badge: 'spark' },
+  { id: 'life', path: '/life', label: 'Life', icon: '🌱', badge: 'spark' },
   { id: 'sheets', path: '/sheets', label: 'Sheets', icon: '📊', badge: 'maker', requiresMode: 'maker' },
   { id: 'slides', path: '/slides', label: 'Slides', icon: '📽️', badge: 'maker', requiresMode: 'maker' },
   { id: 'calendar', path: '/calendar', label: 'Calendar', icon: '📅', badge: 'spark' },

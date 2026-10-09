@@ -6,7 +6,7 @@ import {
   type ThemeId,
   type BrandId,
   type AgeTier,
-} from '@p31/design-core/theming/theme-store'
+} from '@p31ca/design-core/theming/theme-store'
 
 const WORLD_LABELS: Record<ThemeId, string> = {
   garden: 'Garden',

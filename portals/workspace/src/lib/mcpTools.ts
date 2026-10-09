@@ -7,6 +7,8 @@ import type { SurfaceId } from '@/types'
 export const MCP_TOOLS: Record<SurfaceId, string> = {
   home: 'homeSurface',
   docs: 'docsSurface',
+  forum: 'forumSurface',
+  life: 'lifeSurface',
   sheets: 'sheetCell',
   slides: 'slidesSurface',
   calendar: 'calendarSurface',
@@ -19,6 +21,8 @@ export const MCP_TOOLS: Record<SurfaceId, string> = {
 export const MCP_HANDLERS: Record<SurfaceId, string> = {
   home: 'mcp_p31_home_launch',
   docs: 'mcp_p31_docs_edit',
+  forum: 'mcp_p31_forum_answer',
+  life: 'mcp_p31_life_log',
   sheets: 'mcp_p31_sheets_eval',
   slides: 'mcp_p31_slides_present',
   calendar: 'mcp_p31_calendar_event',

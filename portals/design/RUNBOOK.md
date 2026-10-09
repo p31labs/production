@@ -48,7 +48,7 @@ This:
 1. Packs canonical `design-core` and fixed `p31-ui` into `vendor/`
 2. Computes SHA512 of each tarball
 3. Compares against `vendor/.sha512` manifest
-4. If changed → runs `pnpm update @p31/design-core @p31ca/ui` to refresh lockfile
+4. If changed → runs `pnpm update @p31ca/design-core @p31ca/ui` to refresh lockfile
 5. Updates `vendor/.sha512` manifest
 
 ### 3. Verify
@@ -98,7 +98,7 @@ If portal can't import new compositions:
 If `pnpm install` doesn't pick up new tarball:
 ```bash
 cd production/portals/design
-pnpm update @p31/design-core @p31/ui
+pnpm update @p31ca/design-core @p31ca/ui
 ```
 
 ## Key Files

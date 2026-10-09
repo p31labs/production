@@ -1,11 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import * as Sentry from '@sentry/react';
-import { configure } from '@p31/sovereign-core';
+import { configure } from '@p31ca/sovereign-core';
 import App from './App';
-import '@p31/design-core/css/all.css';
-import '@p31/ui/chrome.css';
+import '@p31ca/design-core/css/all.css';
+import '@p31ca/ui/chrome.css';
 import './index.css';
+
+// p31-enterprise-baseline: SW registration + path→hash deep-link pre-hook.
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+}
+(() => {
+  const seg = location.pathname.replace(/^\/+/, '').split('/')[0];
+  if (seg && /^[a-z0-9-]+$/i.test(seg) && !/\.(html|js|css|png|json|svg|ico|webmanifest|txt|xml)$/i.test(seg)) {
+    history.replaceState(null, '', '/');
+    location.hash = '#/' + seg;
+  }
+})();
 
 const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN as string | undefined;
 if (SENTRY_DSN) {

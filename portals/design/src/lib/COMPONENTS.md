@@ -40,5 +40,5 @@ literals in surfaces (enforced by `token-audit`).
 
 ## Ambient
 The dome/blob/starfield + LED controller are vendored from
-`@p31/p31ca-ambient` — never edited in place; changes go through
+`@p31ca/p31ca-ambient` — never edited in place; changes go through
 `node scripts/sync-p31ca-ambient.mjs`.

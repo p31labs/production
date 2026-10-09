@@ -1,10 +1,27 @@
 <!doctype html>
-<html lang="en" data-world="ocean" data-mode="light">
+<html lang="en" data-world="ocean" data-mode="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="oklch(0.62 0.16 235)" />
     <title>P31 Forge — Enterprise Document Pipeline</title>
+    <script>
+      // No-flash theme boot: read the canon theme-store's persisted key
+      // (p31-portal-theme, zustand JSON) or fall back to ocean — the canon
+      // default. Set data-theme BEFORE first paint; the canon store re-applies
+      // the full token set on init. A module would defer and reintroduce flash.
+      (function () {
+        var saved = null;
+        try {
+          var raw = localStorage.getItem('p31-portal-theme');
+          if (raw) { saved = JSON.parse(raw).state.theme; }
+        } catch (e) {}
+        if (!saved) { try { saved = localStorage.getItem('p31-theme'); } catch (e) {} }
+        var valid = ['garden', 'ocean', 'aurora', 'zen', 'volt'].indexOf(saved) !== -1;
+        var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = valid ? saved : (dark ? 'aurora' : 'ocean');
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

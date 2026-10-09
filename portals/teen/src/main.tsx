@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import * as Sentry from '@sentry/react';
-import { configure } from '@p31/sovereign-core';
+import { configure } from '@p31ca/sovereign-core';
 import App from './App';
 import './index.css';
 

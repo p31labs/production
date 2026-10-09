@@ -36,7 +36,7 @@ Three models, three roles, one output:
 
 1. **DeepSeek** generates or modifies the UI code from a spec.
 2. **Claude** reviews the output against the golden rules and refactors:
-   - Does it use `@p31/design-core` compositions correctly?
+   - Does it use `@p31ca/design-core` compositions correctly?
    - Are there hardcoded hex values? (FAIL — must use `--p31-*` tokens only)
    - Is the progressive disclosure intact? (mode gates respected?)
    - Is per-person isolation maintained? (no cross-person data in UI?)
@@ -60,7 +60,7 @@ judgment, run these mechanical checks (from `@bacnh85/pi-ux` pattern):
 3. **State check**: Default, hover, focus, active, selected, disabled, loading,
    error, success — all have distinct visual treatment within one coherent system.
 4. **Hex check**: Zero hex colors anywhere in CSS or JSX. (ESLint rule.)
-5. **Component check**: All UI uses `@p31/design-core` compositions (ChatShell,
+5. **Component check**: All UI uses `@p31ca/design-core` compositions (ChatShell,
    SpoonDial, Button, CommandPalette, etc.) — never reimplemented.
 
 If any mechanical check fails, the surface does NOT reach the vision-LLM stage.
@@ -138,7 +138,7 @@ For any UI task in QPJ, orchestrate the triad:
    NEVER the default.
 2. **Zero new tokens**: Do not introduce new `--p31-*` tokens. If you need a
    color, use an existing one from `src/index.css`.
-3. **Zero new components**: All UI uses `@p31/design-core` compositions. If
+3. **Zero new components**: All UI uses `@p31ca/design-core` compositions. If
    something doesn't exist, file a design-core request — don't reimplement.
 4. **Barely-there**: Shadows, blur, glow are used sparingly. Glass surfaces
    use `--p31-glass-bg` and `--p31-glass-border`. No excessive depth.

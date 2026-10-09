@@ -10,7 +10,7 @@ parent/chat/design) into one codebase with progressive-disclosure "modes".
    `ChatShell`, `SpoonDial`, `Button`) for every surface — never reimplement chat
    or chrome. The shell styles against its tokens, it doesn't own them.
 2. **Zero hardcoded colors.** No hex, no rgb. Everything via `var(--p31-*)` in
-   OKLCH from `src/index.css`, which layers over `@p31/design-core/css/all.css`
+   OKLCH from `src/index.css`, which layers over `@p31ca/design-core/css/all.css`
    + `container.css` (see `src/main.tsx` import order — that ordering is what
    makes the warm Lantern look win).
 3. **Progressive disclosure is a security posture, not a nav label.** A person's
@@ -32,7 +32,7 @@ pnpm typecheck   # tsc --noEmit
 pnpm lint        # eslint src/ (0 warnings exit-clean)
 pnpm test        # vitest run — 354 tests across 46 files
 pnpm build       # vite build; prebuild writes public/routes.json
-pnpm v:gate      # asserts @p31/design-core @ 2.3.0 + @p31ca/ui @ 1.3.1 from vendor tarballs
+pnpm v:gate      # asserts @p31ca/design-core @ 2.3.0 + @p31ca/ui @ 1.3.1 from vendor tarballs
 ```
 
 `pnpm run build` also runs `prebuild` (`scripts/emit-route-list.mjs`) which writes
@@ -57,8 +57,8 @@ pnpm v:gate      # asserts @p31/design-core @ 2.3.0 + @p31ca/ui @ 1.3.1 from ven
 - `src/lib/brand.ts` — single source of brand copy (see `docs/12-BRAND.md`; `brand-scrub.test.ts` guards it)
 - `src/__tests__/token-audit.test.ts` — guard: every `var(--p31-*)` read across loaded design-core css + `src/**/*.css` resolves to a definition (see `docs/15-DIVERGENCES.md`)
 - `src/components/CrisisOverlay.tsx` — spoons=0 rest-stop floor (see `docs/13-COMMANDS-AND-FLOOR.md`)
-- `src/components/CommandPalette.tsx` — shell bridge over `@p31/design-core` CommandPalette (⌘K, mode-filtered; never a PIN bypass)
-- `src/components/ThemeCharm.tsx` — shell bridge over `@p31/design-core` Chameleon + theme-store, with the QPJ pack row (Space ⭐ default / Lantern 🏮)
+- `src/components/CommandPalette.tsx` — shell bridge over `@p31ca/design-core` CommandPalette (⌘K, mode-filtered; never a PIN bypass)
+- `src/components/ThemeCharm.tsx` — shell bridge over `@p31ca/design-core` Chameleon + theme-store, with the QPJ pack row (Space ⭐ default / Lantern 🏮)
 - `src/components/PinChangeCard.tsx` — workshop hub card to verify the current caregiver PIN and set a new one (factory default `1234`)
 - `src/lib/love.ts` — dual-currency pure core: weights, 50/50 split, care-score decay (Paper XI protocol micro)
 - `src/components/LOVELedgerCard.tsx` — LOVE ledger: two pools + care score + care-note spend (see `docs/14-LOVE-LEDGER.md`)
@@ -83,6 +83,6 @@ pnpm v:gate      # asserts @p31/design-core @ 2.3.0 + @p31ca/ui @ 1.3.1 from ven
 - `workers/p31-passport/` — per-persona Worker + PassportDO (SQLite, hibernation)
 - `src/lib/substrate.ts` — client bridge (feature-flag-gated fetch to dispatch)
 - `src/features/worker/substrate-bridge.ts` — bridge integration with worker store
-- `deploy-unified.mjs` registration lives in `/home/p31/production/portals/`
+- Deploy: `pnpm deploy` → `scripts/deploy.mjs` (per-portal, no unified script)
 
 Detailed docs: `docs/01-ARCHITECTURE.md` … `docs/08-DEPLOYMENT.md`.

@@ -1,25 +1,30 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import { NAV_SECTIONS, isActivePath } from '../lib/nav';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { SidebarNav as CanonSidebarNav } from '@p31ca/design-core/compositions';
+import { NAV_SECTIONS } from '../lib/nav';
 
-/** SidebarNav — flat suite nav (emoji + label), active state per route. */
+/** SidebarNav — the canon suite nav, composed in the design portal rail.
+ *  `className="sidebar"` reuses the rail styling; `renderItem` keeps real
+ *  react-router <a href> semantics (right/middle-click, SEO, a11y). */
 export function SidebarNav() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-
   return (
-    <nav className="sidebar" aria-label="Main navigation">
-      {NAV_SECTIONS.map((s) => (
-        <button
-          key={s.path}
-          type="button"
-          className={`nav-item ${isActivePath(s.path, pathname) ? 'active' : ''}`}
-          onClick={() => navigate(s.path)}
+    <CanonSidebarNav
+      className="sidebar"
+      items={NAV_SECTIONS}
+      activePath={pathname}
+      onNavigate={navigate}
+      renderItem={(item) => (
+        <NavLink
+          to={item.path}
+          end={item.path === '/'}
+          className={({ isActive }) => `nav-item${isActive ? ' active' : ''}`}
         >
-          <span aria-hidden="true">{s.emoji}</span>
-          <span>{s.label}</span>
-        </button>
-      ))}
-    </nav>
+          <span aria-hidden="true">{item.emoji}</span>
+          <span>{item.label}</span>
+        </NavLink>
+      )}
+    />
   );
 }
 

@@ -1,5 +1,5 @@
 /**
- * @p31/controls — knobMath.ts
+ * @p31ca/controls — knobMath.ts
  *
  * Rotary control math (pure). Extracted from apps/p31ca/src/lib/knobMath.ts
  * WITHOUT changing the tested API — the normalized 0..1 contract is what the
@@ -46,8 +46,6 @@ export function angleToValue(angle: number): number {
 
 /** Vertical drag delta (px) → value change. Up (negative dy) increases. */
 export function dragDeltaToValue(startValue: number, deltaY: number, fine = false): number {
-  const perPx = 1 / DRAG_PX_FULL_RANGE;
-  const next = startValue - (deltaY / DRAG_PX_FULL_RANGE) * (fine ? FINE_FACTOR : 1) * perPx * DRAG_PX_FULL_RANGE;
   // Simplify: with fine, the whole drag scales by FINE_FACTOR.
   const scaled = startValue - deltaY / DRAG_PX_FULL_RANGE * (fine ? FINE_FACTOR : 1);
   return Math.max(0, Math.min(1, scaled));

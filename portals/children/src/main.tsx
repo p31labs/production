@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import * as Sentry from '@sentry/react';
-import { configure } from '@p31/sovereign-core';
+import { configure } from '@p31ca/sovereign-core';
 import App from './App';
-import '@p31/design-core/css/all.css';
-import '@p31/ui/chrome.css';
+import '@p31ca/design-core/css/all.css';
+import '@p31ca/ui/chrome.css';
 import './index.css';
 
 const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN as string | undefined;

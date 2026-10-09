@@ -46,7 +46,7 @@ export function BrickRow({ entry, expanded, onToggle, onClick }: BrickRowProps) 
           )}
           {entry.forbidden?.length ? (
             <span className="catalog-brick__meta-item contract">
-              ⚠ {entry.forbidden.length}
+              {entry.forbidden.length} forbidden
             </span>
           ) : null}
           <span className={`catalog-brick__chevron${expanded ? ' expanded' : ''}`} aria-hidden="true">

@@ -44,7 +44,7 @@ QPJ declares 3 @p31 packages it never imports. Per family rule: not dead, needs 
 | Signal | Rewrite | Refactor |
 |---|---|---|
 | Current state | Declared, never used. Family uses passport/*, starfield, adaptive/GreyRock/NeuroAdapter. QPJ has custom Starfield, MeshBridge, ModeGuard, CrisisOverlay. | Document dormancy with replacement analysis. |
-| Decision | **REFACTOR** — QPJ's custom implementations are intentional (family-specific look, security posture). Document which @p31/ui exports QPJ intentionally replaces and why. | |
+| Decision | **REFACTOR** — QPJ's custom implementations are intentional (family-specific look, security posture). Document which @p31ca/ui exports QPJ intentionally replaces and why. | |
 | Rejuvenation path | Option A: Adopt GreyRock/NeuroAdapter (adaptive theming) if QPJ needs them. Option B: Adopt passport templates if QPJ's passport flow needs them. Option C: Document all current replacements with triggers. | |
 
 ## Dimension 3: meatspace misalignment
@@ -71,9 +71,9 @@ QPJ declares 3 @p31 packages it never imports. Per family rule: not dead, needs 
 
 | Signal | Rewrite | Refactor |
 |---|---|---|
-| Current state | Astro site using @p31/ui (chrome, webmcp), @p31/shell-chrome, @p31/shared-identity, @p31/shared (Tailwind preset). No @p31/design-core. Tailwind v3 with custom colors + shared preset. | Incremental — p31ca already has @p31 footprints. Expand them. |
-| Decision | **REFACTOR** — p31ca is already partially aligned. Expand its @p31/design-core surface (tokens, compositions for marketing pages). | |
-| Action | Phase 1: Verify @p31/shared tailwind preset covers design-core tokens. Phase 2: Add design-core token layer to p31ca's Tailwind pipeline. Phase 3: Adopt shared design-core components (Footer, Topbar, etc.) where they improve consistency. | |
+| Current state | Astro site using @p31ca/ui (chrome, webmcp), @p31ca/shell-chrome, @p31ca/shared-identity, @p31ca/shared (Tailwind preset). No @p31ca/design-core. Tailwind v3 with custom colors + shared preset. | Incremental — p31ca already has @p31 footprints. Expand them. |
+| Decision | **REFACTOR** — p31ca is already partially aligned. Expand its @p31ca/design-core surface (tokens, compositions for marketing pages). | |
+| Action | Phase 1: Verify @p31ca/shared tailwind preset covers design-core tokens. Phase 2: Add design-core token layer to p31ca's Tailwind pipeline. Phase 3: Adopt shared design-core components (Footer, Topbar, etc.) where they improve consistency. | |
 | Design track | Runs in parallel — this IS a design track item. | |
 
 ## Dimension 6: phosphorus31 design alignment
@@ -82,7 +82,7 @@ QPJ declares 3 @p31 packages it never imports. Per family rule: not dead, needs 
 |---|---|---|
 | Current state | Astro site using zero @p31 packages. Tailwind v4 with hardcoded hex colors (6 colors in config, plus inline). Institutional marketing site. | Incremental — phosphorus31 is the most disconnected from the ecosystem but is the public-facing brand site. |
 | Decision | **REFACTOR** — phosphorus31 is the "cleaner warmer institutional version." It needs design tokens (not full design-core) for brand consistency across the family. | |
-| Action | Phase 1: Extract phosphorus31's Tailwind colors into a token map. Phase 2: Align token palette with @p31/design-core (or define a parallel institutional palette that maps to design-core). Phase 3: Add @p31/design-core CSS tokens via Tailwind config if feasible. | |
+| Action | Phase 1: Extract phosphorus31's Tailwind colors into a token map. Phase 2: Align token palette with @p31ca/design-core (or define a parallel institutional palette that maps to design-core). Phase 3: Add @p31ca/design-core CSS tokens via Tailwind config if feasible. | |
 | Design track | Runs in parallel — this IS a design track item. | |
 
 ## Dimension 7: Vendor tarbell governance

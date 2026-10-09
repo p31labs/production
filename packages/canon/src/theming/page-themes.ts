@@ -10,7 +10,7 @@
  * the destination stays primary. The background/motion levels are the P31
  * sensory contract: calm, spoon-aware, reduced-motion safe.
  */
-/** Canon theme id — mirrors @p31/shared/theme/ids so canon stays dependency-light. */
+/** Canon theme id — mirrors @p31ca/shared/theme/ids so canon stays dependency-light. */
 export type ThemeId =
   | 'cipher' | 'garden' | 'retro' | 'ocean' | 'sunset' | 'mono'
   | 'aurora' | 'zen' | 'volt' | 'family' | 'sunlight'

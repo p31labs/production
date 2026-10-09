@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useAppStore } from '../store/useAppStore';
-import type { NodeData } from '@p31/ui';
+import type { NodeData } from '@p31ca/ui';
 
 export interface MeshPeer {
   did: string;

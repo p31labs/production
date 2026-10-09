@@ -10,7 +10,7 @@ import {
 } from '@/lib/profile'
 import { useNotifStore } from '@/store/useNotifStore'
 import { MCP_TOOLS } from '@/lib/mcpTools'
-import { useThemeStore, type ThemeId, type AgeTier } from '@p31/design-core/theming/theme-store'
+import { useThemeStore, type ThemeId, type AgeTier } from '@p31ca/design-core/theming/theme-store'
 import type { SpoonLevel } from '@/types'
 
 const WORLD_LABELS: Record<ThemeId, string> = {

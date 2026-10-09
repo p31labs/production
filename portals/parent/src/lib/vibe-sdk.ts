@@ -1,9 +1,9 @@
 /**
- * @p31/vibe-sdk — P31 Vibe Coding SDK
+ * @p31ca/vibe-sdk — P31 Vibe Coding SDK
  * Programmatic access to the P31 Vibe Coding Engine.
  *
  * Usage:
- *   import { P31Client } from '@p31/vibe-sdk';
+ *   import { P31Client } from '@p31ca/vibe-sdk';
  *   const p31 = new P31Client({ baseUrl: 'https://phos.p31ca.org' });
  *   const result = await p31.generate({ prompt: 'Build a game', vibeTags: ['playful'], ageGroup: 'child' });
  *   const deployed = await p31.deploy({ name: 'My Game', ...result });

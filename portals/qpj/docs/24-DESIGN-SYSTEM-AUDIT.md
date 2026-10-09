@@ -30,8 +30,8 @@ Audit date: post a11y polish pass. Severity per axe-core 4.13 impact labels. Rat
 
 | Item | Route(s) | Ratio | Evidence |
 |---|----------|--------|----------|
-| SpoonDial `aria-checked` on toggle buttons | all (6 nodes each) | invalid ARIA | `node_modules/@p31/design-core/src/compositions/SpoonDial.tsx:36` (generated `SpoonDial.tsx:26`). QPJ does not own this markup; vendor fix required. `aria-allowed-attr` Critical. |
-| `Button` `.btn`/`.btn-md` color-contrast | entry, you | **4.37:1** | design-core owned (`node_modules/@p31/design-core/src/css/`). Computed: `--p31-accent-contrast` (14%, rgb 14,8,2) on `--p31-accent` (57%, rgb 158,108,17). **Vendor defect; QPJ-owned pass/fail.** Below 4.5:1 AA normal text but far from invisible — corrected ratio (was misreported 1.68:1 via a contrast.mjs gamma-encode bug, fixed this pass). Track with design-core; consider whether a different Button variant meets AA within the existing palette. |
+| SpoonDial `aria-checked` on toggle buttons | all (6 nodes each) | invalid ARIA | `node_modules/@p31ca/design-core/src/compositions/SpoonDial.tsx:36` (generated `SpoonDial.tsx:26`). QPJ does not own this markup; vendor fix required. `aria-allowed-attr` Critical. |
+| `Button` `.btn`/`.btn-md` color-contrast | entry, you | **4.37:1** | design-core owned (`node_modules/@p31ca/design-core/src/css/`). Computed: `--p31-accent-contrast` (14%, rgb 14,8,2) on `--p31-accent` (57%, rgb 158,108,17). **Vendor defect; QPJ-owned pass/fail.** Below 4.5:1 AA normal text but far from invisible — corrected ratio (was misreported 1.68:1 via a contrast.mjs gamma-encode bug, fixed this pass). Track with design-core; consider whether a different Button variant meets AA within the existing palette. |
 
 ## QPJ-owned AA failures (axe false negatives — transparent-bg elements)
 

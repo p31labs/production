@@ -1,5 +1,5 @@
-import { COMPONENT_DEFS } from '@p31/design-core/mcp/data';
-import type { ComponentDef } from '@p31/design-core/mcp/data';
+import { COMPONENT_DEFS } from '@p31ca/design-core/mcp/data';
+import type { ComponentDef } from '@p31ca/design-core/mcp/data';
 
 export interface CatalogEntry {
   name: string;

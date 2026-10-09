@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useLayoutEffect, useCallback } from 'react
 import { useVirtualizer } from '@tanstack/react-virtual';
 import type { ReactNode } from 'react';
 import { useSandboxStore } from './sandboxStore';
+import { useMediaQuery } from '../../lib/useMediaQuery';
 import ChatSidebar from './ChatSidebar';
 import ChatMessage from './ChatMessage';
 import AgentSelector from './AgentSelector';
@@ -13,34 +14,35 @@ import { detectAmbiguities, resolveClarify } from './clarify';
 import { validateHtml, runRubric, buildRepairPrompt, makeStep, repairLoop, type ContractIssue } from './pipeline';
 import { verifyVisual } from './visual';
 import { captureAndDiff, visualDiffVerdictToIssue } from './visualDiff';
-import { Button, GlassPanel } from '@p31/design-core/compositions';
+import { Button, GlassPanel } from '@p31ca/design-core/compositions';
+import BreakModule from './BreakModule';
 
 const VIRTUAL_THRESHOLD = 50;
 
 const PROMPT_CARDS = [
   {
     icon: 'chart',
-    title: 'Dashboard',
+    title: 'Build a dashboard',
     desc: 'Calming overview with a live spoon meter',
-    prompt: 'Build a calming dashboard with a spoon meter',
+    prompt: 'Build a calming dashboard with a live spoon meter',
   },
   {
     icon: 'form',
-    title: 'Login form',
+    title: 'Create a login form',
     desc: 'Email + password with inline validation',
-    prompt: 'Create a login form with validation',
+    prompt: 'Create a login form with email, password, and inline validation',
   },
   {
     icon: 'grid',
-    title: 'Card grid',
+    title: 'Design a card grid',
     desc: 'Glass borders and hover lift',
-    prompt: 'Make a card grid with glass borders',
+    prompt: 'Make a card grid with glass borders and hover lift',
   },
   {
     icon: 'gear',
-    title: 'Settings page',
+    title: 'Build a settings page',
     desc: 'Profile, theme, and toggles layout',
-    prompt: 'Generate a settings page layout',
+    prompt: 'Generate a settings page layout with profile, theme, and toggle controls',
   },
 ];
 
@@ -160,6 +162,8 @@ export default function SandboxChat({ onArtifactGenerated }: { onArtifactGenerat
   const generationStatus = useSandboxStore((s) => s.generationStatus);
   const sidebarCollapsed = useSandboxStore((s) => s.sidebarCollapsed);
   const toggleSidebar = useSandboxStore((s) => s.toggleSidebar);
+  const artifactOpen = useSandboxStore((s) => s.artifactOpen);
+  const toggleArtifact = useSandboxStore((s) => s.toggleArtifact);
   const pipelineSteps = useSandboxStore((s) => s.pipelineSteps);
   const pendingClarify = useSandboxStore((s) => s.pendingClarify);
   const addMessage = useSandboxStore((s) => s.addMessage);
@@ -174,12 +178,22 @@ export default function SandboxChat({ onArtifactGenerated }: { onArtifactGenerat
   const updatePipelineStep = useSandboxStore((s) => s.updatePipelineStep);
   const clearPipeline = useSandboxStore((s) => s.clearPipeline);
   const setPendingClarify = useSandboxStore((s) => s.setPendingClarify);
+  const verbosity = useSandboxStore((s) => s.verbosity);
+  const toneLabels = useSandboxStore((s) => s.toneLabels);
+  const reducedStimulation = useSandboxStore((s) => s.reducedStimulation);
+  const setVerbosity = useSandboxStore((s) => s.setVerbosity);
+  const setToneLabels = useSandboxStore((s) => s.setToneLabels);
+  const setReducedStimulation = useSandboxStore((s) => s.setReducedStimulation);
+  const setBreakOpen = useSandboxStore((s) => s.setBreakOpen);
+  const queuedPrompt = useSandboxStore((s) => s.queuedPrompt);
 
   const [input, setInput] = useState('');
   const [suggestionChip, setSuggestionChip] = useState<{ selector: string; html: string } | null>(null);
   const [drifted, setDrifted] = useState(false);
+  const [prefsOpen, setPrefsOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const sendingRef = useRef(false);
 
   const onScroll = () => {
     const el = scrollRef.current;
@@ -192,6 +206,7 @@ export default function SandboxChat({ onArtifactGenerated }: { onArtifactGenerat
     if (!drifted) scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [messages, streamingText, drifted]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const composerFormRef = useRef<HTMLFormElement>(null);
   const cancelRef = useRef<(() => void) | null>(null);
   const queueRef = useRef<{ prompt: string; agent: AgentId; repair?: ContractIssue }[]>([]);
   const processingRef = useRef(false);
@@ -202,6 +217,20 @@ export default function SandboxChat({ onArtifactGenerated }: { onArtifactGenerat
   useEffect(() => {
     if (!activeThreadId) createThread();
   }, [activeThreadId, createThread]);
+
+  // Mobile-first: a fresh mobile session lands on the chat, not the drawer.
+  const prefersMobile = useMediaQuery('(max-width: 639px)');
+  const mountedRef = useRef(false);
+  useEffect(() => {
+    if (mountedRef.current) return;
+    mountedRef.current = true;
+    if (prefersMobile && !sidebarCollapsed) useSandboxStore.getState().toggleSidebar();
+  }, [prefersMobile, sidebarCollapsed]);
+
+  // Reduced-stimulation CSS override on <html>.
+  useEffect(() => {
+    document.documentElement.setAttribute('data-reduced-stimulation', String(reducedStimulation));
+  }, [reducedStimulation]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -423,6 +452,16 @@ export default function SandboxChat({ onArtifactGenerated }: { onArtifactGenerat
     void pumpQueue();
   }, [pumpQueue]);
 
+  // Regenerate / Edit signal: consume `queuedPrompt` via the single send path.
+  useEffect(() => {
+    if (!queuedPrompt) return;
+    if (generationStatus !== 'idle' || pendingClarify) return;
+    const prompt = queuedPrompt;
+    useSandboxStore.getState().queuePrompt(null);
+    addMessage('user', prompt);
+    enqueue(prompt);
+  }, [queuedPrompt, generationStatus, pendingClarify, addMessage, enqueue]);
+
   const handleClarify = (text: string) => {
     clearPipeline();
     const questions = detectAmbiguities(text);
@@ -473,17 +512,18 @@ export default function SandboxChat({ onArtifactGenerated }: { onArtifactGenerat
   };
 
   const handleSend = () => {
+    if (sendingRef.current) return;
     const text = input.trim();
     if (!text) return;
+    sendingRef.current = true;
     setInput('');
     handleClarify(text);
+    window.setTimeout(() => { sendingRef.current = false; }, 0);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
+  const handleComposerSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSend();
   };
 
   const handleStop = () => {
@@ -524,13 +564,67 @@ export default function SandboxChat({ onArtifactGenerated }: { onArtifactGenerat
   return (
     <>
       <div className="chat-pane-wrap">
-        {!sidebarCollapsed && (
-          <>
-            <ChatSidebar />
-            <div className="chat-sidebar-backdrop" onClick={toggleSidebar} aria-hidden="true" />
-          </>
-        )}
+        <ChatSidebar open={!sidebarCollapsed} />
+        <div className={`chat-sidebar-backdrop${!sidebarCollapsed ? ' chat-sidebar-backdrop--open' : ''}`} onClick={toggleSidebar} aria-hidden="true" />
         <div className={`chat-pane${messages.length === 0 && !isStreaming ? ' chat-pane--empty' : ''}`}>
+          <div className="chat-control-bar" role="toolbar" aria-label="Chat controls">
+            <button
+              type="button"
+              className="chat-control-bar__btn"
+              onClick={toggleSidebar}
+              aria-pressed={!sidebarCollapsed}
+              aria-label={sidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
+              title={sidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="15" y2="18" />
+              </svg>
+            </button>
+            {artifactOpen && (
+              <button
+                type="button"
+                className="chat-control-bar__btn"
+                onClick={toggleArtifact}
+                aria-pressed={artifactOpen}
+                aria-label="Toggle artifact preview"
+                title="Toggle artifact preview"
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <line x1="3" y1="9" x2="21" y2="9" />
+                  <line x1="9" y1="21" x2="9" y2="9" />
+                </svg>
+              </button>
+            )}
+            <button
+              type="button"
+              className="chat-control-bar__btn"
+              onClick={() => window.dispatchEvent(new CustomEvent('p31:popout'))}
+              aria-label="Open in new window"
+              title="Open in new window"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              className={`chat-control-bar__btn${reducedStimulation ? ' chat-control-bar__btn--active' : ''}`}
+              onClick={() => setReducedStimulation(!reducedStimulation)}
+              aria-pressed={reducedStimulation}
+              aria-label="Toggle starfield"
+              title="Toggle starfield"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" />
+              </svg>
+            </button>
+          </div>
           {messages.length === 0 && !isStreaming ? (
             <div className="chat-empty-prompt">
               <div className="chat-empty-hero__mark" aria-hidden="true">
@@ -549,7 +643,9 @@ export default function SandboxChat({ onArtifactGenerated }: { onArtifactGenerat
                     key={card.title}
                     type="button"
                     className="chat-empty-card"
-                    onClick={() => { setInput(card.prompt); textareaRef.current?.focus(); }}
+                    data-agent-kind="action"
+                    data-agent-action="chat.send"
+                    onClick={() => handleClarify(card.prompt)}
                   >
                     <span className="chat-empty-card__icon"><PromptIcon name={card.icon} /></span>
                     <span className="chat-empty-card__title">{card.title}</span>
@@ -591,8 +687,13 @@ export default function SandboxChat({ onArtifactGenerated }: { onArtifactGenerat
               )}
               {generating && !streamingMessage && (
                 <div className="chat-msg chat-msg--assistant">
-                  <div className="chat-msg-bubble">
-                    <span className="chat-msg-thinking">Thinking...</span>
+                  <div className="chat-msg-content">
+                    <span className="chat-thinking" role="status" aria-live="polite">
+                      <span className="chat-thinking__shimmer" aria-hidden="true" />
+                      <span className="chat-thinking__stage">
+                        {generationStatus === 'pending' ? 'Calling generator\u2026' : 'Streaming\u2026'}
+                      </span>
+                    </span>
                   </div>
                 </div>
               )}
@@ -612,17 +713,30 @@ export default function SandboxChat({ onArtifactGenerated }: { onArtifactGenerat
             </div>
           )}
 
-          <div className="chat-composer" role="form" aria-label="Chat composer">
+          <div className="chat-composer">
             {(generationStatus === 'pending' || generationStatus === 'streaming') && (
-              <div className="chat-generation-status">
-                <span className="status-dot" aria-hidden="true" />
+              <div className="chat-generation-status" role="status" aria-live="polite" aria-atomic="true">
+                <span className="chat-thinking__shimmer" aria-hidden="true" />
                 {generationStatus === 'pending' ? 'Calling generator\u2026' : 'Streaming\u2026'}
               </div>
             )}
             {suggestionChip && (
-              <div className="suggestion-chip" onClick={() => handleChipClick(suggestionChip.selector)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleChipClick(suggestionChip.selector); } }}>
-                <span>Edit element: <code>{suggestionChip.selector}</code></span>
-                 <button className="suggestion-chip-dismiss" onClick={(e) => { e.stopPropagation(); setSuggestionChip(null); }} aria-label="Dismiss suggestion">Dismiss</button>
+              <div className="suggestion-chip" role="group" aria-label="Element suggestion">
+                <button
+                  type="button"
+                  className="suggestion-chip-action"
+                  onClick={() => handleChipClick(suggestionChip.selector)}
+                >
+                  <span>Edit element: <code>{suggestionChip.selector}</code></span>
+                </button>
+                <button
+                  type="button"
+                  className="suggestion-chip-dismiss"
+                  onClick={() => setSuggestionChip(null)}
+                  aria-label="Dismiss suggestion"
+                >
+                  Dismiss
+                </button>
               </div>
             )}
             {pendingClarify && (
@@ -640,41 +754,110 @@ export default function SandboxChat({ onArtifactGenerated }: { onArtifactGenerat
               onContinue={handleContinue}
             />
             <GlassPanel padding="md" className="chat-composer-panel chat-composer-panel--solid">
-              <textarea
-                ref={textareaRef}
-                className="chat-composer-input"
-                placeholder="Describe the UI you want to build..."
-                aria-label="Type a message..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSend();
-                  }
-                }}
-                disabled={generationStatus !== 'idle' || pendingClarify !== null}
-              />
-              <div className="chat-composer-actions">
-                <AgentSelector
-                  className="composer-agent-selector"
-                  active={activeAgent}
-                  onChange={setActiveAgent}
+              <form
+                ref={composerFormRef}
+                className="chat-composer-form"
+                aria-label="Chat composer"
+                aria-busy={generating}
+                onSubmit={handleComposerSubmit}
+              >
+                <textarea
+                  ref={textareaRef}
+                  className="chat-composer-input"
+                  placeholder="Describe the UI you want to build..."
+                  aria-label="Type a message..."
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      composerFormRef.current?.requestSubmit();
+                    }
+                  }}
+                  disabled={generationStatus !== 'idle' || pendingClarify !== null}
                 />
-                {generating ? (
-                  <Button variant="primary" className="chat-composer-stop" onClick={handleStop}>
-                    Stop
-                  </Button>
-                ) : (
-                  <Button variant="primary" className="chat-composer-send" onClick={handleSend} disabled={!input.trim()} aria-label="Send message">
-                    Send
-                  </Button>
-                )}
-              </div>
+                <div className="chat-composer-actions">
+                  <AgentSelector
+                    className="composer-agent-selector"
+                    active={activeAgent}
+                    onChange={setActiveAgent}
+                  />
+                  <div className={`composer-prefs${prefsOpen ? ' composer-prefs--open' : ''}`} id="composer-prefs">
+                    <label className="composer-pref">
+                      <span className="composer-pref-label" id="verbosity-label">Length</span>
+                      <select
+                        className="composer-pref-select"
+                        aria-labelledby="verbosity-label"
+                        value={verbosity}
+                        onChange={(e) => setVerbosity(e.target.value as 'shorter' | 'standard' | 'detail')}
+                        disabled={generationStatus !== 'idle'}
+                      >
+                        <option value="shorter">Shorter</option>
+                        <option value="standard">Standard</option>
+                        <option value="detail">More detail</option>
+                      </select>
+                    </label>
+                    <label className="composer-pref composer-pref--toggle">
+                      <input
+                        type="checkbox"
+                        checked={toneLabels}
+                        onChange={(e) => setToneLabels(e.target.checked)}
+                        disabled={generationStatus !== 'idle'}
+                      />
+                      <span className="composer-pref-label">Tone labels</span>
+                    </label>
+                    <label className="composer-pref composer-pref--toggle">
+                      <input
+                        type="checkbox"
+                        checked={reducedStimulation}
+                        onChange={(e) => setReducedStimulation(e.target.checked)}
+                      />
+                      <span className="composer-pref-label">Calm colors</span>
+                    </label>
+                    <button
+                      type="button"
+                      className="composer-break"
+                      onClick={() => setBreakOpen(true)}
+                      aria-label="Take a break"
+                      title="Take a break"
+                    >
+                      Take a break
+                    </button>
+                  </div>
+                  <button
+                    type="button"
+                    className="composer-prefs-toggle"
+                    onClick={() => setPrefsOpen((o) => !o)}
+                    aria-expanded={prefsOpen}
+                    aria-controls="composer-prefs"
+                    aria-label={prefsOpen ? 'Hide composer options' : 'Composer options'}
+                    title="Composer options"
+                  >
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="3" />
+                      <path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" />
+                    </svg>
+                    Options
+                  </button>
+                  {generating ? (
+                    <Button variant="primary" type="button" className="chat-composer-stop" onClick={handleStop} data-agent-kind="action" data-agent-action="chat.stop">
+                      Stop
+                    </Button>
+                  ) : (
+                    <Button variant="primary" type="submit" className="chat-composer-send" disabled={!input.trim()} aria-label="Send message" data-agent-kind="action" data-agent-action="chat.send">
+                      Send
+                    </Button>
+                  )}
+                </div>
+              </form>
             </GlassPanel>
+            <p className="chat-composer-disclaimer">
+              Generated output can be imperfect. Double-check anything important before you ship it.
+            </p>
           </div>
         </div>
       </div>
+      <BreakModule />
     </>
   );
 }

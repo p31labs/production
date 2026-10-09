@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { getProfile, updateTetrahedronVertex } from '@p31/sovereign-core';
+import { getProfile, updateTetrahedronVertex } from '@p31ca/sovereign-core';
 import { useQpjStore } from '../store/useQpjStore';
-import type { Preferences } from '@p31/sovereign-core';
+import type { Preferences } from '@p31ca/sovereign-core';
 
 const DEBOUNCE_MS = 300;
 

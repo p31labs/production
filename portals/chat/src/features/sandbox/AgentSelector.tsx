@@ -1,6 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback, useId } from 'react';
 import type { AgentId } from './sandboxStore';
-import { Button } from '@p31/design-core/compositions';
 
 interface AgentDef {
   id: AgentId;
@@ -24,7 +23,10 @@ interface AgentSelectorProps {
 export default function AgentSelector({ className, active, onChange }: AgentSelectorProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const activeAgent = AGENTS.find((a) => a.id === active) || AGENTS[0];
+  const listboxId = useId();
 
   useEffect(() => {
     if (!open) return;
@@ -35,29 +37,89 @@ export default function AgentSelector({ className, active, onChange }: AgentSele
     return () => document.removeEventListener('mousedown', handler);
   }, [open]);
 
+  const closeAndReturnFocus = useCallback(() => {
+    setOpen(false);
+    triggerRef.current?.focus();
+  }, []);
+
+  const onOptionKeyDown = useCallback((e: React.KeyboardEvent, index: number) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const next = (index + 1) % AGENTS.length;
+      optionRefs.current[next]?.focus();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prev = (index - 1 + AGENTS.length) % AGENTS.length;
+      optionRefs.current[prev]?.focus();
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      optionRefs.current[0]?.focus();
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      optionRefs.current[AGENTS.length - 1]?.focus();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      closeAndReturnFocus();
+    } else if (e.key === 'Tab') {
+      closeAndReturnFocus();
+    }
+  }, [closeAndReturnFocus]);
+
+  const onTriggerKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+      if (!open) {
+        e.preventDefault();
+        setOpen(true);
+        const activeIndex = AGENTS.findIndex((a) => a.id === active);
+        requestAnimationFrame(() => optionRefs.current[Math.max(0, activeIndex)]?.focus());
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        optionRefs.current[0]?.focus();
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (!open) setOpen(true);
+      requestAnimationFrame(() => optionRefs.current[AGENTS.length - 1]?.focus());
+    } else if (e.key === 'Escape') {
+      closeAndReturnFocus();
+    }
+  }, [open, active, closeAndReturnFocus]);
+
   return (
     <div className={`agent-selector ${className || ''}`} ref={ref}>
-      <Button variant="ghost" size="sm" onClick={() => setOpen(!open)} aria-expanded={open} aria-haspopup="true">
+      <button
+        type="button"
+        ref={triggerRef}
+        className="btn btn-ghost btn-sm"
+        onClick={() => setOpen(!open)}
+        onKeyDown={onTriggerKeyDown}
+        aria-expanded={open}
+        aria-haspopup="listbox"
+        aria-controls={listboxId}
+      >
         {activeAgent.name}
         <span className="agent-selector-chevron" aria-hidden="true">▾</span>
-      </Button>
+      </button>
       {open && (
-        <div className="agent-selector-popover" role="menu">
-          {AGENTS.map((a) => (
-            <Button
+        <div className="agent-selector-popover" role="listbox" aria-label="Select agent" id={listboxId}>
+          {AGENTS.map((a, i) => (
+            <button
               key={a.id}
-              variant="ghost"
-              size="sm"
-              onClick={() => { onChange(a.id); setOpen(false); }}
-              aria-current={a.id === active ? 'true' : undefined}
-              role="menuitem"
-              className={`agent-selector-option${a.id === active ? ' agent-selector-option--active' : ''}`}
+              type="button"
+              ref={(el) => { optionRefs.current[i] = el; }}
+              className={`btn btn-ghost btn-sm agent-selector-option${a.id === active ? ' agent-selector-option--active' : ''}`}
+              onClick={() => { onChange(a.id); setOpen(false); triggerRef.current?.focus(); }}
+              onKeyDown={(e) => onOptionKeyDown(e, i)}
+              aria-selected={a.id === active}
+              role="option"
+              data-agent-kind="action"
+              data-agent-action="chat.agent.select"
             >
               <div className="agent-option-text">
                 <div className="agent-selector-option-name">{a.name}</div>
                 <div className="agent-selector-option-desc">{a.desc}</div>
               </div>
-            </Button>
+            </button>
           ))}
         </div>
       )}

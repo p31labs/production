@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { initAudio } from '@p31/gamification/sound';
+import { initAudio } from '@p31ca/gamification/sound';
 
 let audioInitialized = false;
 

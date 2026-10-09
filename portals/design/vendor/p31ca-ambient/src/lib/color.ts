@@ -51,7 +51,6 @@ export function oklchToHex(value: string, fallback = '#22d3ee'): string {
   const m = value.match(/oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)/)
   if (!m) return fallback
   const L = Number(m[1])
-  const C = Number(m[2])
   const H = (Number(m[3]) * Math.PI) / 180
   const a = Math.cos(H)
   const b = Math.sin(H)

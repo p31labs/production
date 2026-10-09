@@ -24,4 +24,5 @@ if (exit === 0) {
   process.exit(1);
 }
 console.log(`ratchet correctly failed on growth (count ${baseline + 1} > baseline ${baseline}).`);
+console.log('NEGATIVE_CONTROL_OK');
 process.exit(0);

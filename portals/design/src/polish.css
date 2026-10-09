@@ -13,11 +13,19 @@
 
 /* ── Sidebar / panel alignment ──────────────────────────────────────────── */
 .sidebar {
-  display: flex;
   flex-direction: column;
   align-items: center;
   padding-top:var(--p31-space-3);
 }
+/* Canon SidebarNav container inside the rail — let the portal's .nav-item
+   styling own the item look (neutralize the canon pill container chrome). */
+.sidebar .sidebar-nav__item { padding: 0; border: none; background: none; }
+
+/* Calm = subtraction (CALM-MODE.md): hide route content + floating chrome;
+   the ambient (dome/starfield/heart) and the LED chip stay. */
+html[data-calm] .main-workspace,
+html[data-calm] .theme-picker,
+html[data-calm] .cmdk-trigger { display: none !important; }
 .nav-item {
   width: 100%;
   justify-content: center;

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Button } from '@p31/design-core/compositions';
+import { useRef, useState } from 'react';
+import { Button } from '@p31ca/design-core/compositions';
 import type { ClarifyQuestion } from './clarify';
 
 interface ClarifyGateProps {
@@ -12,6 +12,7 @@ interface ClarifyGateProps {
 export default function ClarifyGate({ originalPrompt, questions, onResolve, onCancel }: ClarifyGateProps) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   const answerCount = questions.filter((q) => answers[q.key]).length;
   const allAnswered = answerCount === questions.length;
@@ -21,6 +22,36 @@ export default function ClarifyGate({ originalPrompt, questions, onResolve, onCa
     setSubmitted(true);
     onResolve(answers);
   };
+
+  const pick = (key: string, value: string) => {
+    if (submitted) return;
+    setAnswers((a) => ({ ...a, [key]: value }));
+  };
+
+  const onGroupKeyDown = (e: React.KeyboardEvent, qi: number) => {
+    const groupOptions = questions[qi].options;
+    const current = groupOptions.findIndex((o) => answers[questions[qi].key] === o.value);
+    const base = questions.slice(0, qi).reduce((n, q) => n + q.options.length, 0);
+    const index = current >= 0 ? current : 0;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      const next = (index + 1) % groupOptions.length;
+      optionRefs.current[base + next]?.focus();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prev = (index - 1 + groupOptions.length) % groupOptions.length;
+      optionRefs.current[base + prev]?.focus();
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      optionRefs.current[base]?.focus();
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      optionRefs.current[base + groupOptions.length - 1]?.focus();
+    }
+  };
+
+  const optionIndex = (qi: number, oi: number) =>
+    questions.slice(0, qi).reduce((n, q) => n + q.options.length, 0) + oi;
 
   return (
     <div className="clarify-gate" role="region" aria-label="Clarify before generating">
@@ -32,21 +63,26 @@ export default function ClarifyGate({ originalPrompt, questions, onResolve, onCa
 
         <div className="clarify-gate-questions">
           {questions.map((q, qi) => (
-            <div key={q.key} className="clarify-question">
-              <span className="clarify-question-label">
+            <fieldset key={q.key} className="clarify-question">
+              <legend className="clarify-question-label">
                 {qi + 1}. {q.question}
-              </span>
-              <div className="clarify-options">
-                {q.options.map((opt) => {
+              </legend>
+              <div className="clarify-options" role="radiogroup" aria-label={q.question}>
+                {q.options.map((opt, oi) => {
                   const selected = answers[q.key] === opt.value;
                   return (
                     <button
                       key={opt.value}
                       type="button"
+                      role="radio"
+                      aria-checked={selected}
+                      ref={(el) => { optionRefs.current[optionIndex(qi, oi)] = el; }}
                       className={`clarify-option${selected ? ' clarify-option--selected' : ''}`}
-                      onClick={() => setAnswers((a) => ({ ...a, [q.key]: opt.value }))}
-                      aria-pressed={selected}
+                      onClick={() => pick(q.key, opt.value)}
+                      onKeyDown={(e) => onGroupKeyDown(e, qi)}
                       aria-label={opt.hint ? `${opt.label} — ${opt.hint}` : opt.label}
+                      data-agent-kind="action"
+                      data-agent-action="chat.clarify.resolve"
                     >
                       <span className="clarify-option-label">{opt.label}</span>
                       {opt.hint && <span className="clarify-option-hint">{opt.hint}</span>}
@@ -54,7 +90,7 @@ export default function ClarifyGate({ originalPrompt, questions, onResolve, onCa
                   );
                 })}
               </div>
-            </div>
+            </fieldset>
           ))}
         </div>
 
@@ -63,7 +99,7 @@ export default function ClarifyGate({ originalPrompt, questions, onResolve, onCa
             Skip
           </Button>
           <Button variant="primary" size="sm" onClick={submit} disabled={!allAnswered}>
-            {answerCount === 0 ? 'Let defaults decide' : `Generate with ${answerCount} choice${answerCount > 1 ? 's' : ''}`}
+            Generate{answerCount > 0 ? ` with ${answerCount} choice${answerCount > 1 ? 's' : ''}` : ''}
           </Button>
         </div>
       </div>

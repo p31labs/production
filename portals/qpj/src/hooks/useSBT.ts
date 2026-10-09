@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { useQpjStore } from '../store/useQpjStore';
 import { useNotifStore } from '../store/useNotifStore';
 import { getPassport } from '../lib/passports';
-import { getProfile, hasSBTMilestone, addSBTMilestone } from '@p31/sovereign-core';
+import { getProfile, hasSBTMilestone, addSBTMilestone } from '@p31ca/sovereign-core';
 import { appendSBT, mirrorSBTToProfile } from '../lib/sbt';
 import type { QpjSBTRecord, SBTKind } from '../lib/sbt';
-import type { Relations } from '@p31/sovereign-core';
+import type { Relations } from '@p31ca/sovereign-core';
 
 type StoreState = ReturnType<typeof useQpjStore.getState>;
 

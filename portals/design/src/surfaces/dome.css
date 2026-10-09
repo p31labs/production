@@ -1,5 +1,5 @@
 /* dome.css — dome surface + ambient background wrapper. Token stance: var(--p31-*) only.
-   The LED controller styling lives in the vendored @p31/p31ca-ambient CSS. */
+   The LED controller styling lives in the vendored @p31ca/p31ca-ambient CSS. */
 
 /* Portal-wide ambient wrapper (MolecularHeart is fixed z-0 + pointer-events none). */
 .dome-bg {

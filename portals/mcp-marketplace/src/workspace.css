@@ -147,6 +147,8 @@
   padding: var(--p31-space-3);
   gap: var(--p31-space-1);
   flex-shrink: 0;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .nav-item {

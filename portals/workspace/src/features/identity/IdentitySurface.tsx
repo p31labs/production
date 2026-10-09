@@ -6,7 +6,7 @@ import { roster } from '@/lib/pickleNames'
 import { resolveProfile } from '@/lib/profile'
 import { shortDid, type Identity } from '@/lib/identity'
 import { loadSbtChain, verifySbtChain, type SBT } from '@/lib/sbt'
-import { getLoveBalance } from '@p31/sovereign-core'
+import { getLoveBalance } from '@p31ca/sovereign-core'
 import { MCP_TOOLS } from '@/lib/mcpTools'
 
 /**

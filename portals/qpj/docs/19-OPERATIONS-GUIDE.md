@@ -312,7 +312,7 @@ Each worker's `package.json`:
 
 ```json
 {
-  "name": "@p31/p31-passport",
+  "name": "@p31ca/p31-passport",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -345,12 +345,12 @@ curl -s https://p31-dispatch.trimtab-signal.workers.dev/health
 curl -s https://p31-passport.trimtab-signal.workers.dev/health
 ```
 
-### Deploy Registration (deploy-unified.mjs)
+### Deploy (per-portal)
 
 The agent registered the workers manually via `wrangler deploy`. For the unified deploy script to handle them, add:
 
 ```js
-// In deploy-unified.mjs, alongside portal deployment:
+// In scripts/deploy.mjs:
 if (flags.workers) {
   await exec('cd workers/p31-dispatch && npx wrangler deploy');
   await exec('cd workers/p31-passport && npx wrangler deploy');

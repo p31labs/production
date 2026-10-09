@@ -1,20 +1,29 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
+import { MobileBottomNav as CanonMobileBottomNav } from '@p31ca/design-core/compositions'
 import { NAV_ITEMS } from './SidebarNav'
 
+/** MobileBottomNav — the canon flagship bottom nav, composed with the forge's
+ *  fixed-bar styling. Flagships (/, /catalog, /compose, /identity) are shown;
+ *  `renderItem` keeps real react-router <a href> semantics. */
 export function MobileBottomNav() {
+  const { pathname } = useLocation()
   return (
-    <nav className="mobile-nav" aria-label="Mobile">
-      {NAV_ITEMS.map((item) => (
+    <CanonMobileBottomNav
+      items={NAV_ITEMS}
+      activePath={pathname}
+      renderItem={(item) => (
         <NavLink
-          key={item.path}
           to={item.path}
           end={item.path === '/'}
-          className={({ isActive }) => `mobile-nav__link ${isActive ? 'is-active' : ''}`}
+          className={({ isActive }) => `mobile-bottom-nav__link${isActive ? ' is-active' : ''}`}
+          aria-label={item.label}
         >
-          <span className="emoji">{item.emoji}</span>
-          <span>{item.label}</span>
+          <span aria-hidden="true">{item.emoji}</span>
+          <span className="mobile-bottom-nav__label">{item.label}</span>
         </NavLink>
-      ))}
-    </nav>
+      )}
+    />
   )
 }
+
+export default MobileBottomNav

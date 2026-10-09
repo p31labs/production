@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import { usePassport, passportFace } from '@p31/ui/passport';
-import { exportBackup, importBackup } from '@p31/ui/passport/backup';
-import { generateMLDSA65Identity, loadMLDSA65Identity } from '@p31/ui/passport/pqc';
-import { generateDIDDocument, exportDIDDocumentJSON } from '@p31/ui/passport/did-document';
-import { exportEUDIWallet, serializeEUDIWallet } from '@p31/ui/passport/eudi';
+import { usePassport, passportFace } from '@p31ca/ui/passport';
+import { exportBackup, importBackup } from '@p31ca/ui/passport/backup';
+import { generateMLDSA65Identity, loadMLDSA65Identity } from '@p31ca/ui/passport/pqc';
+import { generateDIDDocument, exportDIDDocumentJSON } from '@p31ca/ui/passport/did-document';
+import { exportEUDIWallet, serializeEUDIWallet } from '@p31ca/ui/passport/eudi';
 
 const btnStyle: React.CSSProperties = {
   width: '100%',

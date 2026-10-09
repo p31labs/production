@@ -172,7 +172,7 @@ html[data-qpj-theme='quantum-glass'] {
 }
 
 /* ————— design-core loaded-tree alignment —————
-   QPJ loads @p31/design-core/css/all.css, never canon.css or theme-*.css
+   QPJ loads @p31ca/design-core/css/all.css, never canon.css or theme-*.css
    (the sovereign look isn't the family look). These tokens are READ by the
    loaded chrome/recipes css but defined only in canon.css/theme files — and
    were resolving to undefined. Define them here with family values so every

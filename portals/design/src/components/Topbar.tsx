@@ -121,7 +121,7 @@ export function Topbar({ mode, onElevate, onOpenPalette, onOpenSession, sessionT
       </div>
 
       <div className="topbar-right">
-        <button type="button" className="session-btn" ref={sessionTriggerRef} onClick={onOpenSession} aria-label="Open session summary">
+        <button type="button" className="session-btn" ref={sessionTriggerRef} onClick={onOpenSession} aria-label="End session" title="End session">
           <span className="session-btn__icon" aria-hidden="true">◈</span>
           <span className="session-btn__label">End session</span>
         </button>

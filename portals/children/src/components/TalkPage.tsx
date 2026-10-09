@@ -11,7 +11,7 @@ import {
   grounding54321,
   meltdownPlan,
   simplify,
-} from '@p31/ui';
+} from '@p31ca/ui';
 import { getOpenAIFunctionDefinitions } from '../lib/registerTools';
 
 const CHAT_API = 'https://portal-chat.trimtab-signal.workers.dev/chat';

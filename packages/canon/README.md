@@ -1,4 +1,4 @@
-# @p31/canon
+# @p31ca/canon
 
 The P31 design canon — a **family-first, agent-native design system**.
 Apache-2.0. Built by [P31 Labs](https://p31ca.org) for neurodivergent
