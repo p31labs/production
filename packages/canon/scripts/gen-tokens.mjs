@@ -22,7 +22,7 @@
  *
  * Run: node scripts/gen-tokens.mjs  (from packages/canon)
  */
-import { writeFileSync, mkdirSync } from 'node:fs'
+import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs'
 import { join, dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import StyleDictionary from 'style-dictionary'
@@ -269,6 +269,22 @@ const dtcg = {
   themes,
   component: {},
 }
+
+// Merge the deprecation manifest (flat --p31-* → $deprecated) into the DTCG
+// tree. The p31 subtree is flat — its keys are the CSS var name minus the
+// --p31- prefix — so the mapping is `p31[name]`. Tokens whose value was not
+// portable (dropped from the export) are simply absent and stay un-merged.
+const deprecationsPath = join(tokensDir, '..', 'deprecations.json')
+if (existsSync(deprecationsPath)) {
+  const deprecations = JSON.parse(readFileSync(deprecationsPath, 'utf8'))
+  for (const [cssName, meta] of Object.entries(deprecations)) {
+    const key = cssName.replace(/^--p31-/, '')
+    if (p31[key] && typeof p31[key] === 'object') {
+      p31[key].$deprecated = meta.$deprecated
+    }
+  }
+}
+
 writeFileSync(dtcgPath, JSON.stringify(dtcg, null, 2) + '\n')
 
 // ---------------------------------------------------------------------

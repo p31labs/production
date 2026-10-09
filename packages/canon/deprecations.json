@@ -1,458 +1,458 @@
 {
   "--p31-accent-alt": {
-    "$deprecated": "Superseded by the primary accent token."
+    "$deprecated": "Superseded by the primary accent token. Removal in v0.3.0."
   },
   "--p31-accent-iris": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-blur-standard": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-blur-strong": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-blur-subtle": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-card-padding": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-chain-broken": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-chain-pending": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-chain-verified": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-accent-default": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-accent-gold-default": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-accent-gold-muted": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-accent-green-default": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-accent-green-muted": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-accent-muted": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-accent-red-default": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-accent-red-muted": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-accent-violet-default": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-accent-violet-muted": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-action-ghost": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-action-ghost-hover": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-action-primary": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-action-primary-hover": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-action-primary-text": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-action-secondary": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-action-secondary-text": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-amber": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-emerald": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-text-muted": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-text-primary": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-color-text-secondary": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-duration-normal": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-duration-slower": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-easing-accelerate": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-easing-decelerate": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-easing-linear": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-easing-smooth": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-easing-snappy": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-elevation-level1-tint": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-elevation-level2-tint": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-elevation-level3-tint": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-font-display": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-font-family-mono": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-font-family-sans": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-font-size-lg": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-font-size-md": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-font-size-sm": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-frame-connection": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-frame-creation": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-frame-rhythm": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-frame-structure": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-glass-background": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-glass-bg-overlay": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-glass-border-strong-hover": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-glow-amber": {
-    "$deprecated": "No consumer. Use --p31-accent-glow if an accent glow is needed."
+    "$deprecated": "No consumer. Use --p31-accent-glow if an accent glow is needed. Removal in v0.3.0."
   },
   "--p31-glow-coral": {
-    "$deprecated": "No consumer. Use --p31-accent-glow if an accent glow is needed."
+    "$deprecated": "No consumer. Use --p31-accent-glow if an accent glow is needed. Removal in v0.3.0."
   },
   "--p31-glow-cyan": {
-    "$deprecated": "No consumer. Use --p31-accent-glow if an accent glow is needed."
+    "$deprecated": "No consumer. Use --p31-accent-glow if an accent glow is needed. Removal in v0.3.0."
   },
   "--p31-glow-magenta": {
-    "$deprecated": "No consumer. Use --p31-accent-glow if an accent glow is needed."
+    "$deprecated": "No consumer. Use --p31-accent-glow if an accent glow is needed. Removal in v0.3.0."
   },
   "--p31-glow-mint": {
-    "$deprecated": "No consumer. Use --p31-accent-glow if an accent glow is needed."
+    "$deprecated": "No consumer. Use --p31-accent-glow if an accent glow is needed. Removal in v0.3.0."
   },
   "--p31-glow-neon": {
-    "$deprecated": "No consumer. Use --p31-accent-glow if an accent glow is needed."
+    "$deprecated": "No consumer. Use --p31-accent-glow if an accent glow is needed. Removal in v0.3.0."
   },
   "--p31-glow-violet": {
-    "$deprecated": "No consumer. Use --p31-accent-glow if an accent glow is needed."
+    "$deprecated": "No consumer. Use --p31-accent-glow if an accent glow is needed. Removal in v0.3.0."
   },
   "--p31-layout-density-factor": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-layout-spacing-lg": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-layout-spacing-lg-tight": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-layout-spacing-md": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-layout-spacing-md-tight": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-layout-spacing-sm": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-layout-spacing-xl": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-layout-spacing-xs": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-motion-duration-fast": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-motion-easing-standard": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-motion-spring-expressive-default-effects": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-motion-spring-expressive-default-spatial": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-motion-spring-expressive-fast-effects": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-motion-spring-expressive-fast-spatial": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-motion-spring-expressive-slow-effects": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-motion-spring-expressive-slow-spatial": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-motion-spring-standard-spatial": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-neon-amber": {
-    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette."
+    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
   },
   "--p31-neon-blue": {
-    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette."
+    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
   },
   "--p31-neon-coral": {
-    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette."
+    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
   },
   "--p31-neon-cyan": {
-    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette."
+    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
   },
   "--p31-neon-dim": {
-    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette."
+    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
   },
   "--p31-neon-lavender": {
-    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette."
+    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
   },
   "--p31-neon-magenta": {
-    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette."
+    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
   },
   "--p31-neon-mint": {
-    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette."
+    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
   },
   "--p31-neon-orange": {
-    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette."
+    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
   },
   "--p31-neon-pink": {
-    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette."
+    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
   },
   "--p31-neon-violet": {
-    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette."
+    "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
   },
   "--p31-portal-accent": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-portal-glow": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-radius-none": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-scale-3xl": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-scale-4xl": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-shape-morph-duration": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-space-2xl": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-space-3xl": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-space-inline-lg": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-space-inline-md": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-space-inline-sm": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spacing-xs": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spacing-xxl": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-speed-factor": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spring-expressive-default-effects": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spring-expressive-default-effects-ms": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spring-expressive-default-spatial": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spring-expressive-default-spatial-ms": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spring-expressive-fast-effects": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spring-expressive-fast-effects-ms": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spring-expressive-fast-spatial": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spring-expressive-fast-spatial-ms": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spring-expressive-slow-effects": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spring-expressive-slow-effects-ms": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spring-expressive-slow-spatial": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spring-expressive-slow-spatial-ms": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spring-standard-spatial": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-spring-standard-spatial-ms": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-starfield-hearth": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-starfield-particle-coral": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-starfield-particle-teal": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-starfield-remembrance": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-starfield-teal": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-status-info": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-status-offline": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-status-online": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-status-warning": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-surface-background": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-surface-overlay": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-surface-raised": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-surface-s1": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-surface-s2": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-surface-s3": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-surface-s4": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-touch-large": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-touch-min": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-touch-recommended": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-type-body": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-type-caption": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-type-display": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-type-emphasized-body": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-type-emphasized-display": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-type-emphasized-h1": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-type-emphasized-h2": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-type-emphasized-h3": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-type-emphasized-label": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-type-h1": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-type-h2": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-type-h3": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-type-label": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-z-crisis": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-z-modal": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   },
   "--p31-z-toast": {
-    "$deprecated": "Deprecated: no consumer. Removal in a future minor."
+    "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
   }
 }
