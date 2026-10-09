@@ -17,3 +17,17 @@ allowBuilds:
   unix-dgram: false
   utf-8-validate: false
   workerd: true
+
+# Design-system packages declare their mutual versions once. Both the catalog:
+# and workspace: protocols are replaced on publish.
+catalog:
+  '@p31ca/canon': workspace:^
+  '@p31ca/design-core': workspace:^
+  '@p31ca/ui': workspace:^
+
+# The three design-system packages ship as one unit — always the same version.
+versioning:
+  fixed:
+    - - '@p31ca/canon'
+      - '@p31ca/design-core'
+      - '@p31ca/ui'

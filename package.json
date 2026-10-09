@@ -5,7 +5,7 @@
   "type": "module",
   "description": "The P31 production workspace — one governed system (the enterprise runbook v2).",
   "scripts": {
-    "gate": "node scripts/namecheck.mjs && node scripts/frontmatter.mjs --check && node scripts/fix-plan-scan.mjs && node scripts/veto-check.mjs && node scripts/verify-chain.mjs && node scripts/token-check.mjs && node scripts/soft-delete-check.mjs && node scripts/audit-coverage.mjs && node scripts/audit-safety.mjs && node scripts/audit-provenance.mjs && node scripts/audit-policy.mjs && node scripts/audit-redundancy.mjs && node scripts/audit-scope.mjs && node scripts/negative-controls.mjs && node scripts/verify-mcp-paths.mjs && node scripts/theme-check.mjs && node scripts/check-p31-scope.mjs",
+    "gate": "node scripts/namecheck.mjs && node scripts/frontmatter.mjs --check && node scripts/fix-plan-scan.mjs && node scripts/veto-check.mjs && node scripts/verify-chain.mjs && node scripts/token-check.mjs && node scripts/soft-delete-check.mjs && node scripts/audit-coverage.mjs && node scripts/audit-safety.mjs && node scripts/audit-provenance.mjs && node scripts/audit-policy.mjs && node scripts/audit-redundancy.mjs && node scripts/audit-scope.mjs && node scripts/negative-controls.mjs && node scripts/verify-mcp-paths.mjs && node scripts/theme-check.mjs && node scripts/check-p31-scope.mjs && node scripts/check-workspace-protocol.mjs",
     "gate:safety": "node scripts/veto-check.mjs && node scripts/verify-chain.mjs && node scripts/token-check.mjs && node scripts/soft-delete-check.mjs",
     "gate:faces": "node scripts/audit-coverage.mjs && node scripts/audit-safety.mjs && node scripts/audit-provenance.mjs && node scripts/audit-policy.mjs",
     "audit:workspace": "node scripts/probe-workspace.mjs",
@@ -22,5 +22,6 @@
     "theme-check": "node scripts/theme-check.mjs",
     "fleet": "node scripts/fleet.mjs",
     "gate:negative": "node scripts/negative-controls.mjs"
-  }
+  },
+  "packageManager": "pnpm@11.28.4"
 }
