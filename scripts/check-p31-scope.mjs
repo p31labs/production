@@ -16,7 +16,7 @@ import { execSync } from 'node:child_process';
 const OLD = '@p31' + '/';
 const EXCLUDE = [
   'node_modules', 'archive', 'dist', '.baseline', '.turbo', '.wrangler',
-  'docs/enterprise/npm-scope-migration.md', '*.tgz', '*.bundle', '*.log',
+  'docs/enterprise/npm-scope-migration.md', 'docs/enterprise/build-package/runbooks/npm-migration-polish.md', '*.tgz', '*.bundle', '*.log',
 ];
 
 const args = EXCLUDE.map(g => `-g '!${g}'`).join(' ');
