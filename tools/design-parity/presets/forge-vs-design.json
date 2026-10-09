@@ -1,0 +1,11 @@
+{
+  "$comment": "Forge-vs-design parity preset. reference = the canon consumer (design portal), candidate = the forge (local dev or deployed). Routes mirror the forge's surfaces. Run: parity_compare { reference: this.reference, candidate: <forge-url>, route }",
+  "reference": "https://design.p31ca.org",
+  "candidate": "http://localhost:5180",
+  "viewport": { "width": 1440, "height": 900 },
+  "routes": [
+    { "route": "/", "note": "home/launcher — both portals share it" },
+    { "route": "/catalog", "note": "catalog surface — both portals share it" }
+  ],
+  "styleSelectors": ["h1", "h2", "p", ".topbar", ".sidebar", ".pack-card", ".glass", "button.btn", ".app-main", "nav", "main"]
+}

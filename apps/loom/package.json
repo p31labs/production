@@ -1,0 +1,44 @@
+{
+  "name": "@p31ca/loom",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "The Loom \u2014 the design system as a live graph where human and agent are co-present.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.functions.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "port-audit": "node scripts/port-audit.mjs --out docs/PORTING_INVENTORY.md",
+    "docs-audit": "node scripts/docs-audit.mjs --out docs/DOCS_INVENTORY.md",
+    "manifest:check": "node -e \"JSON.parse(require('fs').readFileSync('public/.well-known/agent-manifest.json','utf8')); console.log('manifest: valid JSON')\"",
+    "seed": "node scripts/seed-log.mjs",
+    "typecheck:functions": "tsc -p tsconfig.functions.json",
+    "deploy": "wrangler pages deploy dist --project-name loom && ../../scripts/purge-superseded-deployments.sh loom",
+    "verify": "node scripts/verify.mjs"
+  },
+  "dependencies": {
+    "@p31ca/canon": "workspace:*",
+    "@p31ca/field": "workspace:*",
+    "@xyflow/react": "^12.3.5",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "three": "0.185.1",
+    "@p31ca/sovereign-primitives": "workspace:*"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@types/three": "^0.185.4",
+    "@vitejs/plugin-react": "^4.7.0",
+    "jsdom": "^30.0.1",
+    "typescript": "^5.7.0",
+    "vite": "^6.4.2",
+    "vitest": "^3.0.0"
+  }
+}

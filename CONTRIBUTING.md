@@ -43,7 +43,7 @@ root).
 
 ## Note on the workspace README
 
-The P31-local-workspace README displays an MIT license badge and MIT license
+The production README displays an MIT license badge and MIT license
 section, but the on-disk LICENSE file in that repository is the full GNU
 AGPL-3.0 text. The workspace badge is a known inconsistency owned by a separate
 team; it is flagged here rather than corrected here. Licenses in this

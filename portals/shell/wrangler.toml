@@ -1,0 +1,34 @@
+name = "p31-portal-shell"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-07-21"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "p31-portal-shell"
+database_id = "04ee6f38-aaeb-47f5-aef2-ec7c52e45758"
+
+# Workers AI binding — the deployed Dreamer provider calls env.AI.run directly
+# instead of fetching the (dead) phos-ai-proxy. Pages may require this binding
+# to also be added in the dashboard (Settings → Bindings → Workers AI → AI).
+[ai]
+binding = "AI"
+
+# Durable Object binding — the room Worker (portals/shell/room/) hosts the
+# SessionRoom class. Pages cannot host a DO class, so this binds to that
+# separate Worker by script_name.
+[[durable_objects.bindings]]
+name = "SESSION_ROOM"
+class_name = "SessionRoom"
+script_name = "p31-portal-shell-room"
+
+[[durable_objects.bindings]]
+name = "PAGE_ROOM"
+class_name = "PageRoom"
+script_name = "p31-portal-shell-room"
+
+# Native tracing: Cloudflare instruments fetch/D1/DO and exports OTLP. Enable
+# in BOTH this file and the room Worker — a single file leaves the DO a blind
+# spot.
+[observability]
+enabled = true

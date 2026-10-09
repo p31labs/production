@@ -13,7 +13,7 @@
  */
 import { execSync } from 'node:child_process';
 
-const DC = '/home/p31/P31-local-workspace/packages/design-core';
+const DC = '/home/p31/production/packages/design-core';
 const PORTAL = '/home/p31/production/portals/design/src';
 
 // Patterns for asserted (non-derived) status/label values.

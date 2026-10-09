@@ -1,0 +1,22 @@
+{
+  "name": "@p31ca/ui-forge",
+  "version": "0.1.0",
+  "description": "Tetrahedral SIC-POVM UI engine — Grounder/Dreamer/Governor/Shaper generation tetrahedron + the four-axis completeness gate, plus the canon→schema constrained-decoding path.",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "files": [
+    "src/",
+    "ui-schema.json",
+    "package.json"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "gen:schema": "node scripts/gen-ui-schema.mjs",
+    "smoke": "node scripts/ui-forge-smoke.mjs",
+    "vendor:pack": "mkdir -p ../../portals/ui-forge-studio/vendor && pnpm pack --pack-destination ../../portals/ui-forge-studio/vendor"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.0"
+  }
+}

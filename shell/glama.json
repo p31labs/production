@@ -1,0 +1,12 @@
+{
+  "name": "P31 Sovereign Shell",
+  "description": "Sovereign OS for families — spoon-aware AI assistant, post-quantum identity (Ed25519+ML-DSA-65), P2P mesh (libp2p+PeerJS), LOVE economy, cognitive tools, and 90+ MCP commands across 8 integrated servers.",
+  "url": "https://p31-shell.trimtab-signal.workers.dev",
+  "mcpEndpoint": "https://p31-shell.trimtab-signal.workers.dev/mcp",
+  "version": "1.0.0",
+  "tools": 90,
+  "categories": ["Autonomous Agents", "Identity & Security", "Health & Wellness", "Research & Data"],
+  "license": "Apache-2.0",
+  "repository": "https://github.com/p31labs/P31-local-workspace",
+  "keywords": ["sovereign", "spoon-aware", "post-quantum", "KERI", "did:key", "MCP", "neurodivergent", "family-mesh", "local-ai", "LOVE-economy"]
+}

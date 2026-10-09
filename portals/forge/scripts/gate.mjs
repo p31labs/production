@@ -16,7 +16,7 @@ import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = resolve(fileURLToPath(import.meta.url), '..', '..')
-const LAYOUT_GATE = '/home/p31/P31-local-workspace/tools/design-parity/layout-invariants.mjs'
+const LAYOUT_GATE = '/home/p31/production/tools/design-parity/layout-invariants.mjs'
 const ROUTES = '/,/catalog,/playground,/identity,/compose,/activity,/channels'
 const PORT = 5180
 
@@ -49,7 +49,7 @@ const steps = [
   ['typecheck', 'pnpm typecheck'],
   ['unit', 'pnpm test'],
   ['build', 'pnpm build'],
-  ['fork-gate', 'node /home/p31/P31-local-workspace/tools/canon-audit/canon-source-audit.mjs --target /home/p31/production/portals/forge/src'],
+  ['fork-gate', 'node /home/p31/production/tools/canon-audit/canon-source-audit.mjs --target /home/p31/production/portals/forge/src'],
   ['layout', runLayout],
   ['system', 'pnpm system-test'],
 ]

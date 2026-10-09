@@ -1,0 +1,102 @@
+---
+/**
+ * /compliance — the audit-logging capability, mapped to the requirements.
+ *
+ * The mapping data comes from src/data/p31-compliance-mapping.ts (the single
+ * source of truth — also referenced by ENTERPRISE_PACKAGE.md) so the two can
+ * never drift.
+ *
+ * Honest framing:
+ *  - EU AI Act Article 12 imposes logging requirements on providers/deployers
+ *    of HIGH-RISK AI systems — a classification of the deployment, not P31.
+ *  - IETF drafts (AAT -04, GAR -02) are individual Internet-Drafts, not
+ *    adopted standards; alignment is as-of-date and the drafts expire.
+ *  - SOC 2 / ISO 42001 are not certified.
+ *  - The verify mechanism is a reproducible command (clone + pnpm verify),
+ *    not a live URL — the stable custom domain is behind Cloudflare Access
+ *    and preview URLs rotate, so no public URL is a reliable proof.
+ */
+import MarketingShell from '../layouts/MarketingShell.astro';
+import SectionHeader from '../components/marketing/SectionHeader.astro';
+import Footer from '../components/marketing/Footer.astro';
+import { COMPLIANCE_ROWS, VERIFY_REPRO, LOOM_STABLE_URL } from '../data/p31-compliance-mapping';
+---
+
+<MarketingShell
+  title="Compliance — P31 Labs"
+  description="The Loom audit-logging capability, mapped to EU AI Act Article 12 and IETF audit drafts — with a reproducible verify for each requirement."
+>
+  <main id="main-content" class="section">
+    <div class="max-w-4xl mx-auto px-6 md:px-12 lg:px-16">
+      <SectionHeader
+        title="Compliance"
+        description="The Loom's audit-logging capability, mapped to the requirements it serves."
+        align="left"
+      />
+
+      <div class="mt-16 space-y-8">
+
+        {/* ── THE HONEST FRAMING ── */}
+        <section class="glass-card" style="border-left: 3px solid var(--p31-signal-amber, #f59e0b);">
+          <div class="p-8 space-y-4">
+            <h3 class="text-xl font-bold" style="color: var(--p31-text);">The honest scope</h3>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              EU AI Act <strong style="color: var(--p31-text);">Article 12</strong> requires automatic event logging for <strong style="color: var(--p31-text);">high-risk AI systems</strong> — a classification that applies to the provider or deployer of such a system, not to P31. P31 does not operate a high-risk AI system. It provides the audit-logging layer that such a deployment would use. The Digital Omnibus deferred the high-risk logging obligation to <strong style="color: var(--p31-text);">December 2, 2027</strong> (Annex III standalone systems) and <strong style="color: var(--p31-text);">August 2, 2028</strong> (Annex I embedded systems) — P31's architecture is ready for it, rather than reporting it as an immediate deadline.
+            </p>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              The IETF drafts referenced below (<span class="font-mono">draft-sharif-agent-audit-trail-04</span>, <span class="font-mono">draft-sato-soos-gar-02</span>) are <strong style="color: var(--p31-text);">individual Internet-Drafts</strong>, not adopted standards — alignment is as-of-date and the drafts expire without revision.
+            </p>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              The verify mechanism on this page is a <strong style="color: var(--p31-text);">reproducible command</strong> (clone + <span class="font-mono">pnpm verify</span>), not a live URL — the stable custom domain is behind Cloudflare Access and preview URLs rotate, so no public URL is a reliable proof.
+            </p>
+          </div>
+        </section>
+
+        {/* ── THE MAP ── */}
+        <section class="glass-card">
+          <div class="p-8 space-y-6">
+            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">Requirement → implementation → verify</h3>
+            <div class="space-y-6">
+              {COMPLIANCE_ROWS.map((r) => (
+                <div class="rounded-xl border p-5" style="border-color: var(--p31-glass-border, rgba(255,255,255,0.1)); background: var(--p31-panel-surface, rgba(255,255,255,0.04));">
+                  <div class="font-bold" style="color: var(--p31-text);">{r.requirement}</div>
+                  <p class="mt-1 text-sm" style="color: var(--p31-text-secondary);"><strong style="color: var(--p31-text);">Scope:</strong> {r.scope}</p>
+                  <p class="mt-1 text-sm" style="color: var(--p31-text-secondary);"><strong style="color: var(--p31-text);">Implementation:</strong> {r.implementation}</p>
+                  <div class="mt-2 font-mono text-xs px-3 py-2 rounded" style="background: rgba(0,0,0,0.3); color: var(--p31-text);">
+                    <strong style="color: var(--p31-accent);">{r.kind === 'command' ? 'Verify:' : 'Attested:'}</strong> {r.verify}
+                  </div>
+                  {r.kind === 'command' && r.expected && (
+                    <p class="mt-2 text-sm" style="color: var(--p31-text-tertiary, #a1a1a1);">
+                      <strong style="color: var(--p31-text);">Passing looks like:</strong> {r.expected}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── LIVE ENDPOINT NOTE ── */}
+        <section class="glass-card">
+          <div class="p-8 space-y-3">
+            <h3 class="text-xl font-bold" style="color: var(--p31-text);">About the live endpoint</h3>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              A live public endpoint is available on request (the stable domain <span class="font-mono" style="color: var(--p31-accent);">{LOOM_STABLE_URL}</span> is behind Cloudflare Access — a documented, open gap — and Cloudflare Pages preview URLs rotate, so no preview URL is reliable to print here). For a durable, self-serve proof, run <span class="font-mono" style="color: var(--p31-accent);">pnpm verify</span> in a clone of the repo — it exercises the same chain-verification logic.
+            </p>
+          </div>
+        </section>
+
+        {/* ── CTA ── */}
+        <section class="text-center py-6">
+          <a href="/enterprise" class="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold transition"
+             style="background: var(--p31-accent, #22d3ee); color: #0a0a0f;">
+            Read the full enterprise package →
+          </a>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</MarketingShell>

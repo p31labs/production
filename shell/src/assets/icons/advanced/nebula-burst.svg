@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="Nebula Burst animated icon">
+  <title>Nebula Burst</title>
+  <desc>A generative particle cloud with expanding wave rings, representing emergence and structure from chaos. 6-color palette.</desc>
+  <style>
+    .nb-ripple { fill: none; stroke-width: 1.5; stroke-linecap: round; opacity: 0; transform-origin: 100px 100px; }
+    .nb-r1 { stroke: var(--p31-accent, #00F0FF); animation: nbRipple 6s infinite ease-out; }
+    .nb-r2 { stroke: var(--p31-accent-violet, #A78BFA); animation: nbRipple 6s infinite ease-out 2s; }
+    .nb-r3 { stroke: var(--p31-accent-gold, #FBBF24); animation: nbRipple 6s infinite ease-out 4s; }
+    .nb-r4 { stroke: var(--p31-accent-green, #34D399); animation: nbRipple 6s infinite ease-out 6s; }
+    @keyframes nbRipple { 0% { transform: scale(0.05); opacity: 0.7; stroke-width: 4; } 100% { transform: scale(1); opacity: 0; stroke-width: 1; } }
+    .nb-dot { r: 2.5; animation: nbDrift var(--d, 8s) infinite alternate ease-in-out; }
+    .nb-dot:nth-child(6n+1) { fill: var(--p31-accent, #00F0FF); }
+    .nb-dot:nth-child(6n+2) { fill: var(--p31-accent-violet, #A78BFA); }
+    .nb-dot:nth-child(6n+3) { fill: var(--p31-accent-gold, #FBBF24); }
+    .nb-dot:nth-child(6n+4) { fill: var(--p31-accent-green, #34D399); }
+    .nb-dot:nth-child(6n+5) { fill: var(--p31-accent-red, #FB7185); }
+    .nb-dot:nth-child(6n+6) { fill: var(--p31-accent-iris, #818CF8); }
+    @keyframes nbDrift { 0% { transform: translate(0, 0); opacity: 0.3; } 100% { transform: translate(var(--tx, 20px), var(--ty, -20px)); opacity: 0.9; } }
+    .nb-master { transition: opacity 0.4s ease, filter 0.4s ease; }
+    .nb-cluster { transform-origin: 100px 100px; animation: nbCluster 28s infinite ease-in-out; }
+    @keyframes nbCluster { 0%, 100% { transform: rotate(0deg) scale(1); } 25% { transform: rotate(3deg) scale(1.02); } 75% { transform: rotate(-3deg) scale(0.98); } }
+    .master-pulse .nb-master { opacity: 0.9 !important; filter: drop-shadow(0 0 12px var(--p31-accent, #00F0FF)) !important; }
+    @media (prefers-reduced-motion: reduce) { .nb-ripple, .nb-dot, .nb-cluster { animation: none; } .nb-dot { opacity: 0.5; transform: none; } .nb-ripple { opacity: 0; } }
+  </style>
+    <circle cx="100" cy="100" r="90" class="nb-ripple nb-r1 nb-master"/>
+  <circle cx="100" cy="100" r="90" class="nb-ripple nb-r2"/>
+  <circle cx="100" cy="100" r="90" class="nb-ripple nb-r3"/>
+  <circle cx="100" cy="100" r="90" class="nb-ripple nb-r4"/>
+  <g class="nb-cluster">
+    <circle cx="100" cy="40" class="nb-dot" style="--d:12s;--tx:15px;--ty:-10px"/>
+    <circle cx="80" cy="50" class="nb-dot" style="--d:9s;--tx:-10px;--ty:15px"/>
+    <circle cx="120" cy="45" class="nb-dot" style="--d:11s;--tx:12px;--ty:-8px"/>
+    <circle cx="60" cy="65" class="nb-dot" style="--d:7s;--tx:-8px;--ty:12px"/>
+    <circle cx="140" cy="60" class="nb-dot" style="--d:10s;--tx:14px;--ty:-12px"/>
+    <circle cx="45" cy="85" class="nb-dot" style="--d:8s;--tx:-12px;--ty:8px"/>
+    <circle cx="155" cy="80" class="nb-dot" style="--d:13s;--tx:10px;--ty:-14px"/>
+    <circle cx="35" cy="105" class="nb-dot" style="--d:6s;--tx:-14px;--ty:6px"/>
+    <circle cx="165" cy="100" class="nb-dot" style="--d:14s;--tx:16px;--ty:-10px"/>
+    <circle cx="40" cy="125" class="nb-dot" style="--d:9s;--tx:-10px;--ty:14px"/>
+    <circle cx="160" cy="120" class="nb-dot" style="--d:11s;--tx:12px;--ty:-6px"/>
+    <circle cx="55" cy="140" class="nb-dot" style="--d:7s;--tx:-8px;--ty:10px"/>
+    <circle cx="145" cy="135" class="nb-dot" style="--d:10s;--tx:14px;--ty:-12px"/>
+    <circle cx="75" cy="150" class="nb-dot" style="--d:8s;--tx:-12px;--ty:8px"/>
+    <circle cx="125" cy="148" class="nb-dot" style="--d:12s;--tx:10px;--ty:-10px"/>
+    <circle cx="100" cy="155" class="nb-dot" style="--d:6s;--tx:-14px;--ty:12px"/>
+    <circle cx="90" cy="35" class="nb-dot" style="--d:11s;--tx:8px;--ty:-15px"/>
+    <circle cx="110" cy="35" class="nb-dot" style="--d:9s;--tx:-8px;--ty:10px"/>
+    <circle cx="50" cy="100" class="nb-dot" style="--d:13s;--tx:16px;--ty:-8px"/>
+    <circle cx="150" cy="95" class="nb-dot" style="--d:7s;--tx:-10px;--ty:14px"/>
+    <circle cx="95" cy="60" class="nb-dot" style="--d:10s;--tx:12px;--ty:-12px"/>
+    <circle cx="105" cy="65" class="nb-dot" style="--d:8s;--tx:-14px;--ty:8px"/>
+    <circle cx="70" cy="90" class="nb-dot" style="--d:12s;--tx:10px;--ty:-10px"/>
+    <circle cx="130" cy="85" class="nb-dot" style="--d:6s;--tx:-8px;--ty:15px"/>
+    <circle cx="85" cy="115" class="nb-dot" style="--d:14s;--tx:14px;--ty:-6px"/>
+    <circle cx="115" cy="110" class="nb-dot" style="--d:9s;--tx:-12px;--ty:10px"/>
+    <circle cx="75" cy="130" class="nb-dot" style="--d:11s;--tx:8px;--ty:-14px"/>
+    <circle cx="125" cy="125" class="nb-dot" style="--d:7s;--tx:-10px;--ty:8px"/>
+    <circle cx="100" cy="75" class="nb-dot" style="--d:10s;--tx:15px;--ty:-10px"/>
+    <circle cx="100" cy="130" class="nb-dot" style="--d:8s;--tx:-12px;--ty:12px"/>
+    <circle cx="65" cy="105" class="nb-dot" style="--d:13s;--tx:10px;--ty:-8px"/>
+    <circle cx="135" cy="105" class="nb-dot" style="--d:6s;--tx:-14px;--ty:10px"/>
+    <circle cx="90" cy="90" class="nb-dot" style="--d:12s;--tx:8px;--ty:-12px"/>
+    <circle cx="110" cy="95" class="nb-dot" style="--d:9s;--tx:-10px;--ty:14px"/>
+    <circle cx="80" cy="75" class="nb-dot" style="--d:11s;--tx:12px;--ty:-8px"/>
+    <circle cx="120" cy="135" class="nb-dot" style="--d:7s;--tx:-8px;--ty:10px"/>
+    <circle cx="100" cy="50" class="nb-dot" style="--d:10s;--tx:14px;--ty:-14px"/>
+    <circle cx="100" cy="150" class="nb-dot" style="--d:8s;--tx:-12px;--ty:8px"/>
+    <circle cx="55" cy="95" class="nb-dot" style="--d:14s;--tx:10px;--ty:-12px"/>
+    <circle cx="145" cy="100" class="nb-dot" style="--d:6s;--tx:-14px;--ty:10px"/>
+    <circle cx="70" cy="110" class="nb-dot" style="--d:13s;--tx:8px;--ty:-15px"/>
+    <circle cx="130" cy="115" class="nb-dot" style="--d:9s;--tx:-10px;--ty:8px"/>
+  </g>
+</svg>

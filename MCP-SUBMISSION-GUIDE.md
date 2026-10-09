@@ -41,9 +41,9 @@ Submit each server individually. The JSON payloads are ready to paste.
 
 | Server | Glama Payload |
 |--------|---------------|
-| Spaceship Earth | `/home/p31/P31-local-workspace/glama-submission-payload.json` |
-| Crypto MCP | `/home/p31/P31-local-workspace/workers/p31-crypto-mcp/glama-submission-payload.json` |
-| Design MCP | `/home/p31/P31-local-workspace/cli/design-mcp-server/glama-submission-payload.json` |
+| Spaceship Earth | `/home/p31/production/glama-submission-payload.json` |
+| Crypto MCP | `/home/p31/production/workers/p31-crypto-mcp/glama-submission-payload.json` |
+| Design MCP | `/home/p31/production/cli/design-mcp-server/glama-submission-payload.json` |
 
 ### Submission notes
 
@@ -83,9 +83,9 @@ Submit each server individually. The JSON payloads are ready to paste.
 
 | Server | Official Registry Payload |
 |--------|--------------------------|
-| Spaceship Earth | `/home/p31/P31-local-workspace/official-registry-entry.json` |
-| Crypto MCP | `/home/p31/P31-local-workspace/workers/p31-crypto-mcp/official-registry-entry.json` |
-| Design MCP | `/home/p31/P31-local-workspace/cli/design-mcp-server/official-registry-entry.json` |
+| Spaceship Earth | `/home/p31/production/official-registry-entry.json` |
+| Crypto MCP | `/home/p31/production/workers/p31-crypto-mcp/official-registry-entry.json` |
+| Design MCP | `/home/p31/production/cli/design-mcp-server/official-registry-entry.json` |
 
 ---
 
@@ -103,8 +103,8 @@ Smithery auto-detects MCP servers from `smithery.yaml` in the repo root or serve
 
 | Server | Smithery File | Status |
 |--------|---------------|--------|
-| Spaceship Earth | `/home/p31/P31-local-workspace/packages/spaceship-earth/smithery.yaml` | Present |
-| Crypto MCP | `/home/p31/P31-local-workspace/workers/p31-crypto-mcp/smithery.yaml` | Present |
+| Spaceship Earth | `/home/p31/production/packages/spaceship-earth/smithery.yaml` | Present |
+| Crypto MCP | `/home/p31/production/workers/p31-crypto-mcp/smithery.yaml` | Present |
 | Design MCP | N/A (stdio-only) | Not applicable |
 
 ### Smithery.yaml field mapping

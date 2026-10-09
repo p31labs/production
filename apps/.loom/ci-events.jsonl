@@ -1,0 +1,2 @@
+{"writer":"agent","kind":"traverse","from":"--p31-scale-xl","to":".a2-data-card","reason":"referenced-by","seq":0,"ts":"2026-09-19T21:45:14.269Z"}
+{"writer":"agent","kind":"propose","id":"prop_demo_1789854314275_0","node":".a2-data-card","body":{"draft":true,"iteration":0},"author":"demo-agent","seq":1,"ts":"2026-09-19T21:45:14.275Z"}

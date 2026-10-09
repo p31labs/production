@@ -163,10 +163,10 @@ test('D9b void hue check + D13b generated story path leak', async ({ page }) => 
 
 test('D12 generated-file load-bearing check', async () => {
   const { execSync } = await import('node:child_process');
-  const files = execSync('ls ../../../P31-local-workspace/packages/design-core/src/generated/*.test.tsx 2>/dev/null | xargs -n1 basename').toString().trim().split('\n').filter(Boolean);
+  const files = execSync('ls ../../../production/packages/design-core/src/generated/*.test.tsx 2>/dev/null | xargs -n1 basename').toString().trim().split('\n').filter(Boolean);
   const refs = {};
   for (const f of files) {
-    const hit = execSync(`grep -rn "${f}" /home/p31/P31-local-workspace/packages/design-core/src /home/p31/P31-local-workspace/packages/canon/src /home/p31/production/portals/design/src 2>/dev/null | grep -v "src/generated/${f}:" | wc -l`).toString().trim();
+    const hit = execSync(`grep -rn "${f}" /home/p31/production/packages/design-core/src /home/p31/production/packages/canon/src /home/p31/production/portals/design/src 2>/dev/null | grep -v "src/generated/${f}:" | wc -l`).toString().trim();
     refs[f] = hit;
   }
   const loadBearing = Object.entries(refs).filter(([, n]) => Number(n) > 0);

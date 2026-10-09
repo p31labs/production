@@ -1,0 +1,7 @@
+---
+import FlagshipPage from '../../components/marketing/FlagshipPage.astro';
+import { FLAGSHIPS } from '../../data/flagships';
+const qpj = FLAGSHIPS.find((f) => f.slug === 'qpj')!;
+---
+
+<FlagshipPage flagship={qpj} />

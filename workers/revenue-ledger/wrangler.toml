@@ -1,0 +1,12 @@
+name = "revenue-ledger"
+main = "src/index.ts"
+compatibility_date = "2026-09-02"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "p31-revenue-ledger"
+database_id = "REPLACE_ME_WITH_D1_ID"
+
+[observability]
+enabled = true

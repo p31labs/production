@@ -1,0 +1,28 @@
+name = "forum-api"
+main = "src/index.ts"
+compatibility_date = "2026-07-16"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "p31-forum"
+database_id = "acf1d16f-5805-46b8-9a52-98d0c43927e3"
+
+[[durable_objects.bindings]]
+name = "FORUM_ROOM"
+class_name = "ForumRoom"
+
+# SQLite-backed DO (GA 2026; the fleet's mandatory backend).
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["ForumRoom"]
+
+[vars]
+ENVIRONMENT = "production"
+LOOM_ORIGIN = "https://loom.p31ca.org"
+# Audience the AIC-JWT capability token must carry (the forum origin).
+# Set to "forum.p31ca.org" (or the deployed host) — writes fail closed without it.
+FORUM_AUD = "forum.p31ca.org"
+
+[observability]
+enabled = true

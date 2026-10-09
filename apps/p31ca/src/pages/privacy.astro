@@ -1,0 +1,92 @@
+---
+/**
+ * /privacy — the zero-telemetry statement.
+ *
+ * Scoped honestly: the site's own code sets no tracking cookies and keeps
+ * no server-side identity store. Identity is generated and stored on the
+ * device; the edge relay (Cloudflare) never persists the private key. The
+ * date must match ground-truth (policies.privacy.effective) — the
+ * consistency checker validates it.
+ */
+import MarketingShell from '../layouts/MarketingShell.astro';
+import SectionHeader from '../components/marketing/SectionHeader.astro';
+import Footer from '../components/marketing/Footer.astro';
+import constants from '../data/p31-mesh-constants.json';
+
+const CONTACT_EMAIL = constants.contactEmail;
+
+const sections = [
+  {
+    title: 'What we store',
+    body: 'Your did:key is generated and stored on your own device — device-key-wrapped under a non-extractable IndexedDB key. P31 keeps no server-side identity store. The public DID is what the rest of the workspace sees; the private key never leaves your device.',
+  },
+  {
+    title: 'Analytics',
+    body: 'None. The site ships without Google Analytics, Plausible, or any tracking script. The zero-telemetry posture is a documented gate in the build, not a marketing claim.',
+  },
+  {
+    title: 'Cookies',
+    body: 'The site\u2019s own code sets no cookies. The only preferences stored are the theme and spoon level in localStorage, which stays on your device — these are functional preferences, not tracking. Your Cloudflare edge provider may set strictly necessary cookies (e.g., for bot management) on its own infrastructure; under the ePrivacy directive these fall in the "strictly necessary" exemption, are not tracking cookies, and we do not read them.',
+  },
+  {
+    title: 'Children\u2019s privacy',
+    body: 'P31 is designed for use by a parent or guardian who manages a child\u2019s device-local identity. The site does not knowingly collect personal information from children under 13. No child profile is stored server-side — the child\u2019s identity lives on the device and never leaves it. For COPPA-related inquiries, contact '+CONTACT_EMAIL+'.',
+  },
+  {
+    title: 'GDPR — visitors in the EU/EEA',
+    body: 'If you are located in the EU/EEA and we process your personal data (for example, you email us or make a donation through a linked processor), we do so under the lawful basis of legitimate interest for responding to inquiries, and consent for any marketing communication. You have the right to access, correct, delete, and port your data, and to object to processing. To exercise these rights, contact '+CONTACT_EMAIL+'. P31 has not appointed a GDPR Article 27 representative; data-subject requests are handled directly.',
+  },
+  {
+    title: 'Donation processors',
+    body: 'Donations are processed by named third parties, not by P31 directly: Stripe, Ko-fi, PayPal, and Blockonomics (crypto). Your card or payment details go to the processor you choose; P31 does not receive or store them. Each processor handles your data under its own privacy policy.',
+  },
+  {
+    title: 'The audit chain',
+    body: 'The Loom records that an action happened and by whom — not the content of what was said or built. The chain is hash-linked and independently verifiable at the public verify endpoint.',
+  },
+  {
+    title: 'How to delete',
+    body: 'Clear the site data for this origin (the DID is stored locally). Removing it removes your on-device identity. No server-side copy exists to delete.',
+  },
+  {
+    title: 'Contact',
+    body: 'For privacy questions or a deletion request, email '+CONTACT_EMAIL+'.',
+  },
+];
+---
+
+<MarketingShell
+  title="Privacy — P31 Labs"
+  description="What we store, what we don't, and how to delete it. The zero-telemetry statement."
+>
+  <main id="main-content" class="section">
+    <div class="max-w-3xl mx-auto px-6 md:px-12 lg:px-16">
+      <SectionHeader
+        title="Privacy"
+        description="What we store, what we don't, and how to delete it."
+        align="left"
+      />
+
+      <div class="mt-16 space-y-6">
+        {sections.map((s) => (
+          <section class="glass-card" key={s.title}>
+            <div class="p-8 space-y-3">
+              <h3 class="text-xl font-bold" style="color: var(--p31-text);">{s.title}</h3>
+              <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">{s.body}</p>
+            </div>
+          </section>
+        ))}
+
+        <section class="glass-card">
+          <div class="p-8 space-y-3">
+            <p class="text-sm" style="color: var(--p31-text-tertiary);">
+              <span class="font-mono">Effective: June 10, 2026</span>
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</MarketingShell>

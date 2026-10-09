@@ -1,0 +1,10 @@
+# portals/design is a standalone workspace, isolated from the production root
+# workspace (whose packages/* glob does not include portals/). This file makes
+# the portal its own workspace root so `pnpm install` here no longer discovers
+# the 74-project parent workspace. Durable across pnpm versions — unlike
+# `--ignore-workspace`, which regressed in pnpm 12 (#14809).
+#
+# `packages: ['.']` (rather than omitting the field) avoids pnpm's recursive
+# project discovery on `run`/`exec` when `packages:` is absent (#14047).
+packages:
+  - '.'

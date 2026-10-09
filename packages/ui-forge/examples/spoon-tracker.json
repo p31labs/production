@@ -1,0 +1,26 @@
+{
+  "title": "Spoon Tracker",
+  "entities": [
+    {
+      "name": "spoon",
+      "title": "Spoon balance",
+      "fields": [
+        { "name": "level", "type": "number" },
+        { "name": "status", "type": "enum" },
+        { "name": "note", "type": "string" }
+      ]
+    },
+    {
+      "name": "task",
+      "title": "Daily tasks",
+      "fields": [
+        { "name": "title", "type": "string" },
+        { "name": "done", "type": "boolean" }
+      ]
+    }
+  ],
+  "actions": [
+    { "name": "logSpoon", "label": "Log spoons" },
+    { "name": "completeTask", "label": "Complete task" }
+  ]
+}

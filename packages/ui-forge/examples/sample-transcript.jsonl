@@ -1,0 +1,10 @@
+{"seq":1,"ts":"2026-10-02T10:00:00Z","writer":"agent","kind":"propose","id":"p1","node":".spoon-tracker","body":{"title":"Spoon Tracker","bestTree":{"type":"GlassPanel","tokens":["p31.surface.bg"]}},"scope":"shared"}
+{"seq":2,"ts":"2026-10-02T10:00:05Z","writer":"human","kind":"chat.artifact.approve","node":".spoon-tracker","artifactId":"art-1","scope":"shared","statedBy":"wj"}
+{"seq":3,"ts":"2026-10-02T10:00:10Z","writer":"agent","kind":"chat.artifact.generated","node":".spoon-tracker","artifactId":"art-1","artifactType":"ui-tree","screenshotRef":"r2://p31-artifacts/art-1-v1.png","screenshotRef2":"r2://p31-artifacts/art-1-v2.png","scope":"shared"}
+{"seq":4,"ts":"2026-10-02T10:00:15Z","writer":"agent","kind":"propose","id":"p2","node":".spoon-tracker","body":{"title":"Spoon Tracker v2","bestTree":{"type":"Card"}},"scope":"shared"}
+{"seq":5,"ts":"2026-10-02T10:00:20Z","writer":"human","kind":"chat.artifact.reject","node":".spoon-tracker","artifactId":"art-2","reason":"hash:abc123:len:12","scope":"shared","statedBy":"wj"}
+{"seq":6,"ts":"2026-10-02T10:00:25Z","writer":"agent","kind":"chat.artifact.generated","node":".spoon-tracker","artifactId":"art-2","artifactType":"ui-tree","screenshotRef":"r2://p31-artifacts/art-2-v1.png","scope":"shared"}
+{"seq":7,"ts":"2026-10-02T10:00:30Z","writer":"agent","kind":"chat.artifact.generated","node":".spoon-tracker","artifactId":"art-3","artifactType":"ui-tree","screenshotRef":"r2://p31-artifacts/art-3-v1.png","scope":"shared"}
+{"seq":8,"ts":"2026-10-02T10:00:35Z","writer":"human","kind":"chat.artifact.approve","node":".spoon-tracker","artifactId":"art-3","scope":"shared","statedBy":"sj"}
+{"seq":9,"ts":"2026-10-02T10:00:40Z","writer":"agent","kind":"propose","id":"p3","node":".spoon-tracker","body":{"title":"Spoon Tracker v3"},"scope":"shared"}
+{"seq":10,"ts":"2026-10-02T10:00:45Z","writer":"human","kind":"approve","proposal":"p3","scope":"shared","statedBy":"wj"}

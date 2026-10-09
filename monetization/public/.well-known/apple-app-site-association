@@ -1,0 +1,16 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["REPLACE_WITH_TEAMID.org.p31.capital"],
+        "components": [
+          { "/": "/revenue/*", "comment": "Revenue surface" },
+          { "/": "/positions/*", "comment": "Positions surface" },
+          { "/": "/opportunities/*", "comment": "Opportunities surface" },
+          { "/": "/trust/*", "comment": "Trust Center" },
+          { "/": "/", "comment": "Home / default" }
+        ]
+      }
+    ]
+  }
+}

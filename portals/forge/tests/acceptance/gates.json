@@ -8,7 +8,7 @@
   "gates": [
     {
       "id": "token-audit",
-      "command": "node /home/p31/P31-local-workspace/packages/design-core/scripts/token-audit.mjs",
+      "command": "node /home/p31/production/packages/design-core/scripts/token-audit.mjs",
       "state": "BLOCKING",
       "owner": "forge-portal",
       "scope": "production/portals/forge/src/** (no raw hex/rgba)",
@@ -38,7 +38,7 @@
     },
     {
       "id": "visual-gate",
-      "command": "node /home/p31/P31-local-workspace/tools/design-parity/visual-gate.mjs --candidate http://localhost:5180",
+      "command": "node /home/p31/production/tools/design-parity/visual-gate.mjs --candidate http://localhost:5180",
       "state": "BLOCKING",
       "owner": "forge-portal",
       "scope": "visual parity vs canon (design.p31ca.org) + anti-slop judge on forge screenshots",
@@ -53,13 +53,13 @@
     },
     {
       "id": "canon-source-audit",
-      "command": "node /home/p31/P31-local-workspace/tools/canon-audit/canon-source-audit.mjs --target /home/p31/production/portals/forge/src",
+      "command": "node /home/p31/production/tools/canon-audit/canon-source-audit.mjs --target /home/p31/production/portals/forge/src",
       "state": "BLOCKING",
       "owner": "forge-portal",
       "scope": "no --p31-* token forks, no component duplicates of @p31ca/design-core/compositions in forge src",
       "negativeControl": {
         "type": "fixture",
-        "command": "/home/p31/P31-local-workspace/tools/canon-audit/nc/canon-source-audit-nc.mjs",
+        "command": "/home/p31/production/tools/canon-audit/nc/canon-source-audit-nc.mjs",
         "description": "a scratch file defining --p31-accent + a duplicate Topbar must make the gate exit non-zero",
         "expected": "exit non-zero"
       },
@@ -68,7 +68,7 @@
     },
     {
       "id": "layout-invariants",
-      "command": "node /home/p31/P31-local-workspace/tools/design-parity/layout-invariants.mjs http://localhost:5180 --routes /,/catalog,/playground,/identity,/compose,/activity,/channels",
+      "command": "node /home/p31/production/tools/design-parity/layout-invariants.mjs http://localhost:5180 --routes /,/catalog,/playground,/identity,/compose,/activity,/channels",
       "state": "BLOCKING",
       "owner": "forge-portal",
       "scope": "DOM-geometry structural invariants: no horizontal overflow, fixed/sticky chrome within viewport bounds, topbar spans >=95% viewport, no in-flow child overflow (every forge route)",

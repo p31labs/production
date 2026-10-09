@@ -1,0 +1,2834 @@
+{
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://p31ca.org/ui-forge/ui-schema.json",
+    "title": "P31 UI Forge — constrained component-tree schema",
+    "description": "Registry-derived schema for Dreamer output. 34 components (34 unique) from design-core + canon. Emitted by scripts/gen-ui-schema.mjs.",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "Badge",
+          "BottomNav",
+          "Button",
+          "CalmIndicator",
+          "CalmOverlay",
+          "CandyHeader",
+          "Card",
+          "Chameleon",
+          "ChatShell",
+          "Checkbox",
+          "CommandPalette",
+          "CommandTrigger",
+          "CrisisOverlay",
+          "Crown",
+          "Dropdown",
+          "Footer",
+          "GlassCard",
+          "GlassPanel",
+          "MetricBadge",
+          "MobileBottomNav",
+          "ModePill",
+          "NotificationStack",
+          "PageHeader",
+          "SectionStrip",
+          "SidebarNav",
+          "SpoonCluster",
+          "SpoonDial",
+          "Starfield",
+          "StatusBadge",
+          "StatusCluster",
+          "Topbar",
+          "TopbarSection",
+          "Badge",
+          "Button"
+        ]
+      },
+      "props": {
+        "type": "object"
+      },
+      "tokens": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^p31([.][a-z][a-z0-9-]*)+$"
+        },
+        "description": "p31.*-namespaced token paths only."
+      },
+      "children": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/p31Component"
+        },
+        "description": "nested component tree."
+      },
+      "id": {
+        "type": "string",
+        "description": "unique node id"
+      },
+      "variants": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "dataBinding": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "description": "backend data path this node consumes (Grounder-derived)."
+      }
+    },
+    "required": [
+      "type"
+    ],
+    "$defs": {
+      "p31Component": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "Badge",
+              "BottomNav",
+              "Button",
+              "CalmIndicator",
+              "CalmOverlay",
+              "CandyHeader",
+              "Card",
+              "Chameleon",
+              "ChatShell",
+              "Checkbox",
+              "CommandPalette",
+              "CommandTrigger",
+              "CrisisOverlay",
+              "Crown",
+              "Dropdown",
+              "Footer",
+              "GlassCard",
+              "GlassPanel",
+              "MetricBadge",
+              "MobileBottomNav",
+              "ModePill",
+              "NotificationStack",
+              "PageHeader",
+              "SectionStrip",
+              "SidebarNav",
+              "SpoonCluster",
+              "SpoonDial",
+              "Starfield",
+              "StatusBadge",
+              "StatusCluster",
+              "Topbar",
+              "TopbarSection",
+              "Badge",
+              "Button"
+            ]
+          },
+          "props": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/p31Props.Badge"
+              },
+              {
+                "$ref": "#/$defs/p31Props.BottomNav"
+              },
+              {
+                "$ref": "#/$defs/p31Props.Button"
+              },
+              {
+                "$ref": "#/$defs/p31Props.CalmIndicator"
+              },
+              {
+                "$ref": "#/$defs/p31Props.CalmOverlay"
+              },
+              {
+                "$ref": "#/$defs/p31Props.CandyHeader"
+              },
+              {
+                "$ref": "#/$defs/p31Props.Card"
+              },
+              {
+                "$ref": "#/$defs/p31Props.Chameleon"
+              },
+              {
+                "$ref": "#/$defs/p31Props.ChatShell"
+              },
+              {
+                "$ref": "#/$defs/p31Props.Checkbox"
+              },
+              {
+                "$ref": "#/$defs/p31Props.CommandPalette"
+              },
+              {
+                "$ref": "#/$defs/p31Props.CommandTrigger"
+              },
+              {
+                "$ref": "#/$defs/p31Props.CrisisOverlay"
+              },
+              {
+                "$ref": "#/$defs/p31Props.Crown"
+              },
+              {
+                "$ref": "#/$defs/p31Props.Dropdown"
+              },
+              {
+                "$ref": "#/$defs/p31Props.Footer"
+              },
+              {
+                "$ref": "#/$defs/p31Props.GlassCard"
+              },
+              {
+                "$ref": "#/$defs/p31Props.GlassPanel"
+              },
+              {
+                "$ref": "#/$defs/p31Props.MetricBadge"
+              },
+              {
+                "$ref": "#/$defs/p31Props.MobileBottomNav"
+              },
+              {
+                "$ref": "#/$defs/p31Props.ModePill"
+              },
+              {
+                "$ref": "#/$defs/p31Props.NotificationStack"
+              },
+              {
+                "$ref": "#/$defs/p31Props.PageHeader"
+              },
+              {
+                "$ref": "#/$defs/p31Props.SectionStrip"
+              },
+              {
+                "$ref": "#/$defs/p31Props.SidebarNav"
+              },
+              {
+                "$ref": "#/$defs/p31Props.SpoonCluster"
+              },
+              {
+                "$ref": "#/$defs/p31Props.SpoonDial"
+              },
+              {
+                "$ref": "#/$defs/p31Props.Starfield"
+              },
+              {
+                "$ref": "#/$defs/p31Props.StatusBadge"
+              },
+              {
+                "$ref": "#/$defs/p31Props.StatusCluster"
+              },
+              {
+                "$ref": "#/$defs/p31Props.Topbar"
+              },
+              {
+                "$ref": "#/$defs/p31Props.TopbarSection"
+              },
+              {
+                "$ref": "#/$defs/p31Props.Badge"
+              },
+              {
+                "$ref": "#/$defs/p31Props.Button"
+              }
+            ],
+            "description": "props must satisfy the named component contract."
+          },
+          "tokens": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^p31([.][a-z][a-z0-9-]*)+$"
+            }
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/p31Component"
+            }
+          },
+          "id": {
+            "type": "string"
+          },
+          "dataBinding": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "p31Props.Badge": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "variant": {
+            "type": "string",
+            "enum": [
+              "success",
+              "warning",
+              "error",
+              "info"
+            ],
+            "description": "Semantic tone. success/warning/error/info map to the four status colours."
+          },
+          "children": {
+            "type": [
+              "string",
+              "number",
+              "boolean",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "The label text."
+          }
+        },
+        "required": []
+      },
+      "p31Props.BottomNav": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (NavItem)"
+            },
+            "description": "Navigation items with icon, label, and href"
+          },
+          "activeIndex": {
+            "type": "number",
+            "description": "Currently active item index"
+          }
+        },
+        "required": []
+      },
+      "p31Props.Button": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "variant": {
+            "type": "string",
+            "enum": [
+              "primary",
+              "secondary",
+              "ghost"
+            ],
+            "description": "Visual emphasis. primary = main action, secondary = alternative, ghost = tertiary."
+          },
+          "size": {
+            "type": "string",
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "description": "Control size. Affects padding, font, and touch target."
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "When true, the button is not interactive and renders aria-disabled."
+          },
+          "loading": {
+            "type": "boolean",
+            "description": "When true, sets aria-busy and blocks interaction. Renders a spinner before the label in default (non-asChild) mode."
+          },
+          "children": {
+            "type": [
+              "string",
+              "number",
+              "boolean",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "The button label / content."
+          }
+        },
+        "required": []
+      },
+      "p31Props.CalmIndicator": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "spoons": {
+            "type": "number",
+            "description": "Current spoon level (0–5)"
+          },
+          "onOpen": {
+            "type": "object",
+            "description": "Open calm overlay",
+            "nullable": true
+          }
+        },
+        "required": []
+      },
+      "p31Props.CalmOverlay": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "spoons": {
+            "type": "number",
+            "description": "Current spoon level; overlay renders only at 0"
+          },
+          "onReturn": {
+            "type": "object",
+            "description": "Return handler (consumer restores spoons)",
+            "nullable": true
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS classes"
+          }
+        },
+        "required": []
+      },
+      "p31Props.CandyHeader": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "eyebrow": {
+            "type": "string",
+            "description": "Small kicker text"
+          },
+          "title": {
+            "type": "string",
+            "description": "Header title"
+          },
+          "lede": {
+            "type": "string",
+            "description": "Supporting lead text"
+          }
+        },
+        "required": []
+      },
+      "p31Props.Card": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Card title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Card description"
+          },
+          "padding": {
+            "type": "string",
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "description": "Padding size"
+          },
+          "interactive": {
+            "type": "boolean",
+            "description": "Show interactive affordance"
+          },
+          "text": {
+            "type": "string",
+            "description": "Body text"
+          }
+        },
+        "required": []
+      },
+      "p31Props.Chameleon": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "className": {
+            "type": "string",
+            "description": "Additional CSS classes"
+          },
+          "style": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Inline styles"
+          }
+        },
+        "required": []
+      },
+      "p31Props.ChatShell": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "header": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Shell header"
+          },
+          "drawerLabel": {
+            "type": "string",
+            "description": "Drawer accessible label"
+          },
+          "drawerOpen": {
+            "type": "boolean",
+            "description": "Drawer open state"
+          },
+          "onCloseDrawer": {
+            "type": "object",
+            "description": "Close drawer handler",
+            "nullable": true
+          },
+          "drawer": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Drawer content"
+          },
+          "height": {
+            "type": "string",
+            "description": "Shell height"
+          }
+        },
+        "required": []
+      },
+      "p31Props.Checkbox": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Accessible label"
+          },
+          "checked": {
+            "type": "boolean",
+            "description": "Checked state"
+          },
+          "indeterminate": {
+            "type": "boolean",
+            "description": "Indeterminate state"
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "Disabled"
+          },
+          "onChange": {
+            "type": "object",
+            "description": "Change handler",
+            "nullable": true
+          }
+        },
+        "required": []
+      },
+      "p31Props.CommandPalette": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "open": {
+            "type": "boolean",
+            "description": "Controlled open state"
+          },
+          "onClose": {
+            "type": "object",
+            "description": "Close callback",
+            "nullable": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (CommandItem)"
+            },
+            "description": "Searchable items: { id, label, description?, icon?, keywords? }"
+          },
+          "onSelect": {
+            "type": "object",
+            "description": "Called with the selected item id",
+            "nullable": true
+          },
+          "placeholder": {
+            "type": "string",
+            "description": "Input placeholder"
+          },
+          "leadingIcon": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Optional leading icon"
+          }
+        },
+        "required": []
+      },
+      "p31Props.CommandTrigger": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "placeholder": {
+            "type": "string",
+            "description": "Placeholder text"
+          },
+          "shortcut": {
+            "type": "string",
+            "description": "OS-correct modifier hint"
+          },
+          "onOpen": {
+            "type": "object",
+            "description": "Open the command palette",
+            "nullable": true
+          },
+          "compact": {
+            "type": "boolean",
+            "description": "Icon-only for narrow bars"
+          }
+        },
+        "required": []
+      },
+      "p31Props.CrisisOverlay": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "onReady": {
+            "type": "object",
+            "description": "Callback when user dismisses overlay",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Custom crisis message"
+          }
+        },
+        "required": []
+      },
+      "p31Props.Crown": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Brand label"
+          }
+        },
+        "required": []
+      },
+      "p31Props.Dropdown": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Field label"
+          },
+          "value": {
+            "type": "string",
+            "description": "Selected value"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (DropdownOption)"
+            },
+            "description": "Options list"
+          },
+          "onChange": {
+            "type": "object",
+            "description": "Selection handler",
+            "nullable": true
+          },
+          "ariaLabel": {
+            "type": "string",
+            "description": "Accessible label"
+          }
+        },
+        "required": []
+      },
+      "p31Props.Footer": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (FooterColumn)"
+            },
+            "description": "Footer column groups with title and links"
+          },
+          "brandLabel": {
+            "type": "string",
+            "description": "Brand label text"
+          },
+          "brandIcon": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Optional brand icon"
+          },
+          "tagline": {
+            "type": "string",
+            "description": "Tagline text"
+          },
+          "copyright": {
+            "type": "string",
+            "description": "Optional copyright year/owner"
+          },
+          "legalText": {
+            "type": "string",
+            "description": "Legal/license text"
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS classes"
+          },
+          "style": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Inline styles"
+          }
+        },
+        "required": []
+      },
+      "p31Props.GlassCard": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "children": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Card content"
+          },
+          "strong": {
+            "type": "boolean",
+            "description": "Use stronger glass opacity"
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS classes"
+          }
+        },
+        "required": []
+      },
+      "p31Props.GlassPanel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "children": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Content to render inside the panel"
+          },
+          "padding": {
+            "type": "string",
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "description": "Padding size"
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS classes"
+          }
+        },
+        "required": []
+      },
+      "p31Props.MetricBadge": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "icon": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Icon or indicator"
+          },
+          "value": {
+            "type": [
+              "string",
+              "number"
+            ],
+            "description": "Metric value"
+          },
+          "label": {
+            "type": "string",
+            "description": "Metric label"
+          },
+          "clickable": {
+            "type": "boolean",
+            "description": "Enable hover state"
+          }
+        },
+        "required": []
+      },
+      "p31Props.MobileBottomNav": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (SidebarNavItem)"
+            },
+            "description": "Nav items; flagships shown"
+          },
+          "activePath": {
+            "type": "string",
+            "description": "Currently active route path"
+          },
+          "onNavigate": {
+            "type": "object",
+            "description": "Route handler (consumer owns routing)",
+            "nullable": true
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS classes"
+          },
+          "ariaLabel": {
+            "type": "string",
+            "description": "nav aria-label"
+          }
+        },
+        "required": []
+      },
+      "p31Props.ModePill": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "spark",
+              "maker",
+              "workshop"
+            ],
+            "description": "Current mode"
+          },
+          "onCycle": {
+            "type": "object",
+            "description": "Cycle or open a picker",
+            "nullable": true
+          }
+        },
+        "required": []
+      },
+      "p31Props.NotificationStack": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (Notification)"
+            },
+            "description": "Notifications: { id, kind, title, body? }"
+          },
+          "onDismiss": {
+            "type": "object",
+            "description": "Dismiss one by id",
+            "nullable": true
+          },
+          "onClearAll": {
+            "type": "object",
+            "description": "Clear all (optional)",
+            "nullable": true
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS classes"
+          },
+          "ariaLabel": {
+            "type": "string",
+            "description": "region aria-label"
+          }
+        },
+        "required": []
+      },
+      "p31Props.PageHeader": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "eyebrow": {
+            "type": "string",
+            "description": "Mono eyebrow label"
+          },
+          "title": {
+            "type": "string",
+            "description": "Page title"
+          },
+          "lede": {
+            "type": "string",
+            "description": "Supporting lede paragraph"
+          },
+          "children": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Optional action cluster (rendered in .page-actions)"
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS classes"
+          },
+          "style": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Inline styles"
+          }
+        },
+        "required": []
+      },
+      "p31Props.SectionStrip": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (SectionItem)"
+            },
+            "description": "Nav items: { id, label, icon?, active? }"
+          },
+          "onSelect": {
+            "type": "object",
+            "description": "Called with the selected section id",
+            "nullable": true
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS classes"
+          },
+          "style": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Inline styles"
+          }
+        },
+        "required": []
+      },
+      "p31Props.SidebarNav": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (SidebarNavItem)"
+            },
+            "description": "Nav items: { path, label, emoji?, flagship? }"
+          },
+          "activePath": {
+            "type": "string",
+            "description": "Currently active route path"
+          },
+          "onNavigate": {
+            "type": "object",
+            "description": "Route handler (consumer owns routing)",
+            "nullable": true
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS classes"
+          },
+          "ariaLabel": {
+            "type": "string",
+            "description": "nav aria-label"
+          }
+        },
+        "required": []
+      },
+      "p31Props.SpoonCluster": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "level": {
+            "type": "number",
+            "description": "Current spoon level (0–5)"
+          },
+          "total": {
+            "type": "number",
+            "description": "Total dots"
+          }
+        },
+        "required": []
+      },
+      "p31Props.SpoonDial": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "level": {
+            "type": "number",
+            "description": "Current spoon level (0-5)"
+          },
+          "onChange": {
+            "type": "object",
+            "description": "Callback when level changes",
+            "nullable": true
+          }
+        },
+        "required": []
+      },
+      "p31Props.Starfield": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "spoons": {
+            "type": "number",
+            "description": "Current spoon level for density/speed"
+          },
+          "warmStars": {
+            "type": "boolean",
+            "description": "Use warm color palette"
+          },
+          "reduceMotion": {
+            "type": "boolean",
+            "description": "Disable animations"
+          }
+        },
+        "required": []
+      },
+      "p31Props.StatusBadge": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "online",
+              "offline",
+              "busy",
+              "away"
+            ],
+            "description": "Status type"
+          },
+          "label": {
+            "type": "string",
+            "description": "Badge text"
+          }
+        },
+        "required": []
+      },
+      "p31Props.StatusCluster": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "className": {
+            "type": "string",
+            "description": "Additional CSS classes"
+          }
+        },
+        "required": []
+      },
+      "p31Props.Topbar": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "brand": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Left cluster: app mark + wordmark"
+          },
+          "left": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Legacy alias for brand"
+          },
+          "center": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Center region: command trigger, nav, or context"
+          },
+          "right": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Legacy right cluster (renders into trailing)"
+          },
+          "statusCluster": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Read-only status segments"
+          },
+          "mode": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Primary mode control (ModePill)"
+          },
+          "trailing": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Pinned trailing actions + identity"
+          },
+          "mobileLeading": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Mobile-only leading override"
+          },
+          "mobileTrailing": {
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Mobile-only trailing override"
+          },
+          "variant": {
+            "type": "string",
+            "enum": [
+              "app",
+              "marketing",
+              "game"
+            ],
+            "description": "Visual variant"
+          },
+          "sticky": {
+            "type": "boolean",
+            "description": "Sticky at top"
+          }
+        },
+        "required": []
+      },
+      "p31Props.TopbarSection": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "slot": {
+            "type": "string",
+            "enum": [
+              "leading",
+              "brand",
+              "center",
+              "status",
+              "mode",
+              "trailing",
+              "mobile-trailing"
+            ],
+            "description": "Slot identity"
+          },
+          "className": {
+            "type": "string",
+            "description": "Additional CSS classes"
+          }
+        },
+        "required": []
+      }
+    }
+  },
+  "catalog": {
+    "schema": "p31.uiForge/1.0.0",
+    "generatedFrom": [
+      "/home/p31/production/packages/design-core/registry.json",
+      "/home/p31/production/packages/canon/registry.json"
+    ],
+    "components": [
+      {
+        "name": "Badge",
+        "category": "surface",
+        "cssClass": "badge",
+        "tokens": [
+          "accent",
+          "accent-green",
+          "accent-gold",
+          "accent-red",
+          "radius.full",
+          "font.sans"
+        ],
+        "props": [
+          {
+            "name": "tone",
+            "type": "string",
+            "enum": [
+              "success",
+              "warning",
+              "error",
+              "info",
+              "neutral"
+            ],
+            "description": "Status tone"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "description": "Label text"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "BottomNav",
+        "category": "chrome",
+        "cssClass": "bottom-nav",
+        "tokens": [
+          "topbar.height",
+          "glass.bg",
+          "glass.blur",
+          "glass.border",
+          "spacing.sm"
+        ],
+        "props": [
+          {
+            "name": "items",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (NavItem)"
+            },
+            "description": "Navigation items with icon, label, and href"
+          },
+          {
+            "name": "activeIndex",
+            "type": "number",
+            "description": "Currently active item index"
+          }
+        ],
+        "variants": [
+          "default",
+          "mobile",
+          "tablet"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "Button",
+        "category": "action",
+        "cssClass": "btn",
+        "tokens": [
+          "accent",
+          "radius.md",
+          "spacing.sm",
+          "spacing.lg",
+          "font.weight"
+        ],
+        "props": [
+          {
+            "name": "children",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Button content"
+          },
+          {
+            "name": "variant",
+            "type": "string",
+            "enum": [
+              "primary",
+              "secondary",
+              "ghost"
+            ],
+            "description": "Visual variant"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "description": "Disabled state"
+          },
+          {
+            "name": "onClick",
+            "type": "object",
+            "description": "Click handler",
+            "nullable": true
+          }
+        ],
+        "variants": [
+          "primary",
+          "secondary",
+          "ghost"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "CalmIndicator",
+        "category": "chrome",
+        "cssClass": "calm-indicator",
+        "tokens": [
+          "accent-green",
+          "accent-red",
+          "glass.bg",
+          "radius.full"
+        ],
+        "props": [
+          {
+            "name": "spoons",
+            "type": "number",
+            "description": "Current spoon level (0–5)"
+          },
+          {
+            "name": "onOpen",
+            "type": "object",
+            "description": "Open calm overlay",
+            "nullable": true
+          }
+        ],
+        "variants": [
+          "is-calm",
+          "is-alert"
+        ],
+        "slots": [],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "CalmOverlay",
+        "category": "chrome",
+        "cssClass": "calm-overlay",
+        "tokens": [
+          "void",
+          "accent",
+          "text.primary",
+          "cloud",
+          "glass.blur",
+          "z.floating"
+        ],
+        "props": [
+          {
+            "name": "spoons",
+            "type": "number",
+            "description": "Current spoon level; overlay renders only at 0"
+          },
+          {
+            "name": "onReturn",
+            "type": "object",
+            "description": "Return handler (consumer restores spoons)",
+            "nullable": true
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "description": "Additional CSS classes"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "CandyHeader",
+        "category": "surface",
+        "cssClass": "candy-header",
+        "tokens": [
+          "glass.surface",
+          "glass.border",
+          "radius.candy",
+          "text.primary",
+          "accent"
+        ],
+        "props": [
+          {
+            "name": "eyebrow",
+            "type": "string",
+            "description": "Small kicker text"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "description": "Header title"
+          },
+          {
+            "name": "lede",
+            "type": "string",
+            "description": "Supporting lead text"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "Card",
+        "category": "surface",
+        "cssClass": "card",
+        "tokens": [
+          "surface.bg",
+          "glass.border",
+          "text.primary",
+          "text.secondary",
+          "radius.md",
+          "shadow"
+        ],
+        "props": [
+          {
+            "name": "title",
+            "type": "string",
+            "description": "Card title"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "description": "Card description"
+          },
+          {
+            "name": "padding",
+            "type": "string",
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "description": "Padding size"
+          },
+          {
+            "name": "interactive",
+            "type": "boolean",
+            "description": "Show interactive affordance"
+          },
+          {
+            "name": "text",
+            "type": "string",
+            "description": "Body text"
+          }
+        ],
+        "variants": [
+          "default",
+          "interactive"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "Chameleon",
+        "category": "ambient",
+        "cssClass": "chameleon",
+        "tokens": [
+          "theme.*",
+          "brand.*",
+          "accent",
+          "sensory.muted",
+          "sensory.warmLight"
+        ],
+        "props": [
+          {
+            "name": "className",
+            "type": "string",
+            "description": "Additional CSS classes"
+          },
+          {
+            "name": "style",
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Inline styles"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "ChatShell",
+        "category": "surface",
+        "cssClass": "chat-shell",
+        "tokens": [
+          "surface.bg",
+          "glass.border",
+          "text.primary",
+          "text.secondary",
+          "radius.lg"
+        ],
+        "props": [
+          {
+            "name": "header",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Shell header"
+          },
+          {
+            "name": "drawerLabel",
+            "type": "string",
+            "description": "Drawer accessible label"
+          },
+          {
+            "name": "drawerOpen",
+            "type": "boolean",
+            "description": "Drawer open state"
+          },
+          {
+            "name": "onCloseDrawer",
+            "type": "object",
+            "description": "Close drawer handler",
+            "nullable": true
+          },
+          {
+            "name": "drawer",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Drawer content"
+          },
+          {
+            "name": "height",
+            "type": "string",
+            "description": "Shell height"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [
+          "default",
+          "drawer"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "Checkbox",
+        "category": "action",
+        "cssClass": "checkbox",
+        "tokens": [
+          "accent",
+          "text.primary",
+          "text.secondary",
+          "radius.sm",
+          "border"
+        ],
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "description": "Accessible label"
+          },
+          {
+            "name": "checked",
+            "type": "boolean",
+            "description": "Checked state"
+          },
+          {
+            "name": "indeterminate",
+            "type": "boolean",
+            "description": "Indeterminate state"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "description": "Disabled"
+          },
+          {
+            "name": "onChange",
+            "type": "object",
+            "description": "Change handler",
+            "nullable": true
+          }
+        ],
+        "variants": [
+          "default",
+          "indeterminate"
+        ],
+        "slots": [],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "CommandPalette",
+        "category": "chrome",
+        "cssClass": "cmdk",
+        "tokens": [
+          "glass.bg",
+          "glass.border",
+          "glass.blur",
+          "accent",
+          "radius.md",
+          "z.modal"
+        ],
+        "props": [
+          {
+            "name": "open",
+            "type": "boolean",
+            "description": "Controlled open state"
+          },
+          {
+            "name": "onClose",
+            "type": "object",
+            "description": "Close callback",
+            "nullable": true
+          },
+          {
+            "name": "items",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (CommandItem)"
+            },
+            "description": "Searchable items: { id, label, description?, icon?, keywords? }"
+          },
+          {
+            "name": "onSelect",
+            "type": "object",
+            "description": "Called with the selected item id",
+            "nullable": true
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "description": "Input placeholder"
+          },
+          {
+            "name": "leadingIcon",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Optional leading icon"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "CommandTrigger",
+        "category": "chrome",
+        "cssClass": "command-trigger",
+        "tokens": [
+          "glass.bg",
+          "glass.border",
+          "radius.full",
+          "text.secondary",
+          "font.mono"
+        ],
+        "props": [
+          {
+            "name": "placeholder",
+            "type": "string",
+            "description": "Placeholder text"
+          },
+          {
+            "name": "shortcut",
+            "type": "string",
+            "description": "OS-correct modifier hint"
+          },
+          {
+            "name": "onOpen",
+            "type": "object",
+            "description": "Open the command palette",
+            "nullable": true
+          },
+          {
+            "name": "compact",
+            "type": "boolean",
+            "description": "Icon-only for narrow bars"
+          }
+        ],
+        "variants": [
+          "default",
+          "compact"
+        ],
+        "slots": [],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "CrisisOverlay",
+        "category": "chrome",
+        "cssClass": "crisis-overlay",
+        "tokens": [
+          "bg",
+          "text",
+          "accent",
+          "z.crisis"
+        ],
+        "props": [
+          {
+            "name": "onReady",
+            "type": "object",
+            "description": "Callback when user dismisses overlay",
+            "nullable": true
+          },
+          {
+            "name": "message",
+            "type": "string",
+            "description": "Custom crisis message"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/crisis-overlay"
+      },
+      {
+        "name": "Crown",
+        "category": "chrome",
+        "cssClass": "crown",
+        "tokens": [
+          "accent",
+          "text.primary",
+          "font.sans"
+        ],
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "description": "Brand label"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "Dropdown",
+        "category": "action",
+        "cssClass": "dropdown",
+        "tokens": [
+          "surface.bg",
+          "glass.border",
+          "text.primary",
+          "text.secondary",
+          "accent",
+          "radius.md"
+        ],
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "description": "Field label"
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "description": "Selected value"
+          },
+          {
+            "name": "options",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (DropdownOption)"
+            },
+            "description": "Options list"
+          },
+          {
+            "name": "onChange",
+            "type": "object",
+            "description": "Selection handler",
+            "nullable": true
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "description": "Accessible label"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "Footer",
+        "category": "chrome",
+        "cssClass": "site-footer",
+        "tokens": [
+          "surface.bg",
+          "text.primary",
+          "text.secondary",
+          "border.subtle",
+          "spacing.lg"
+        ],
+        "props": [
+          {
+            "name": "columns",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (FooterColumn)"
+            },
+            "description": "Footer column groups with title and links"
+          },
+          {
+            "name": "brandLabel",
+            "type": "string",
+            "description": "Brand label text"
+          },
+          {
+            "name": "brandIcon",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Optional brand icon"
+          },
+          {
+            "name": "tagline",
+            "type": "string",
+            "description": "Tagline text"
+          },
+          {
+            "name": "copyright",
+            "type": "string",
+            "description": "Optional copyright year/owner"
+          },
+          {
+            "name": "legalText",
+            "type": "string",
+            "description": "Legal/license text"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "description": "Additional CSS classes"
+          },
+          {
+            "name": "style",
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Inline styles"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "GlassCard",
+        "category": "surface",
+        "cssClass": "glass-card",
+        "tokens": [
+          "glass.bg",
+          "glass.blur",
+          "glass.border",
+          "glass.radius",
+          "spacing.lg"
+        ],
+        "props": [
+          {
+            "name": "children",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Card content"
+          },
+          {
+            "name": "strong",
+            "type": "boolean",
+            "description": "Use stronger glass opacity"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "description": "Additional CSS classes"
+          }
+        ],
+        "variants": [
+          "default",
+          "strong"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "GlassPanel",
+        "category": "surface",
+        "cssClass": "glass-panel",
+        "tokens": [
+          "glass.bg",
+          "glass.blur",
+          "glass.border",
+          "glass.radius",
+          "glass.shadow"
+        ],
+        "props": [
+          {
+            "name": "children",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Content to render inside the panel"
+          },
+          {
+            "name": "padding",
+            "type": "string",
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "description": "Padding size"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "description": "Additional CSS classes"
+          }
+        ],
+        "variants": [
+          "default",
+          "hover"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "MetricBadge",
+        "category": "feedback",
+        "cssClass": "metric-badge",
+        "tokens": [
+          "glass.bg",
+          "glass.border",
+          "radius.sm",
+          "scale.xs",
+          "text.secondary"
+        ],
+        "props": [
+          {
+            "name": "icon",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Icon or indicator"
+          },
+          {
+            "name": "value",
+            "type": [
+              "string",
+              "number"
+            ],
+            "description": "Metric value"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "description": "Metric label"
+          },
+          {
+            "name": "clickable",
+            "type": "boolean",
+            "description": "Enable hover state"
+          }
+        ],
+        "variants": [
+          "default",
+          "clickable"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "MobileBottomNav",
+        "category": "chrome",
+        "cssClass": "mobile-bottom-nav",
+        "tokens": [
+          "glass.surface",
+          "glass.border",
+          "glass.blur",
+          "accent",
+          "text.secondary",
+          "radius.full"
+        ],
+        "props": [
+          {
+            "name": "items",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (SidebarNavItem)"
+            },
+            "description": "Nav items; flagships shown"
+          },
+          {
+            "name": "activePath",
+            "type": "string",
+            "description": "Currently active route path"
+          },
+          {
+            "name": "onNavigate",
+            "type": "object",
+            "description": "Route handler (consumer owns routing)",
+            "nullable": true
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "description": "Additional CSS classes"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "description": "nav aria-label"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "ModePill",
+        "category": "chrome",
+        "cssClass": "mode-pill",
+        "tokens": [
+          "accent",
+          "accent-gold",
+          "accent-green",
+          "glass.bg",
+          "radius.full"
+        ],
+        "props": [
+          {
+            "name": "mode",
+            "type": "string",
+            "enum": [
+              "spark",
+              "maker",
+              "workshop"
+            ],
+            "description": "Current mode"
+          },
+          {
+            "name": "onCycle",
+            "type": "object",
+            "description": "Cycle or open a picker",
+            "nullable": true
+          }
+        ],
+        "variants": [
+          "spark",
+          "maker",
+          "workshop"
+        ],
+        "slots": [],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "NotificationStack",
+        "category": "chrome",
+        "cssClass": "notif-stack",
+        "tokens": [
+          "glass.surface",
+          "glass.border",
+          "accent",
+          "accent-green",
+          "accent-gold",
+          "accent-red",
+          "text.primary",
+          "text.secondary",
+          "z.floating"
+        ],
+        "props": [
+          {
+            "name": "items",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (Notification)"
+            },
+            "description": "Notifications: { id, kind, title, body? }"
+          },
+          {
+            "name": "onDismiss",
+            "type": "object",
+            "description": "Dismiss one by id",
+            "nullable": true
+          },
+          {
+            "name": "onClearAll",
+            "type": "object",
+            "description": "Clear all (optional)",
+            "nullable": true
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "description": "Additional CSS classes"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "description": "region aria-label"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "PageHeader",
+        "category": "surface",
+        "cssClass": "page-header-route",
+        "tokens": [
+          "title.gradient",
+          "text.secondary",
+          "spacing.lg"
+        ],
+        "props": [
+          {
+            "name": "eyebrow",
+            "type": "string",
+            "description": "Mono eyebrow label"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "description": "Page title"
+          },
+          {
+            "name": "lede",
+            "type": "string",
+            "description": "Supporting lede paragraph"
+          },
+          {
+            "name": "children",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Optional action cluster (rendered in .page-actions)"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "description": "Additional CSS classes"
+          },
+          {
+            "name": "style",
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Inline styles"
+          }
+        ],
+        "variants": [
+          "default",
+          "actions"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "SectionStrip",
+        "category": "chrome",
+        "cssClass": "section-strip",
+        "tokens": [
+          "glass.bg",
+          "glass.border",
+          "radius.candy",
+          "accent",
+          "text.secondary"
+        ],
+        "props": [
+          {
+            "name": "items",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (SectionItem)"
+            },
+            "description": "Nav items: { id, label, icon?, active? }"
+          },
+          {
+            "name": "onSelect",
+            "type": "object",
+            "description": "Called with the selected section id",
+            "nullable": true
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "description": "Additional CSS classes"
+          },
+          {
+            "name": "style",
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Inline styles"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "SidebarNav",
+        "category": "chrome",
+        "cssClass": "sidebar-nav",
+        "tokens": [
+          "glass.surface",
+          "glass.border",
+          "accent",
+          "text.secondary",
+          "radius.full",
+          "font.sans"
+        ],
+        "props": [
+          {
+            "name": "items",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "array element (SidebarNavItem)"
+            },
+            "description": "Nav items: { path, label, emoji?, flagship? }"
+          },
+          {
+            "name": "activePath",
+            "type": "string",
+            "description": "Currently active route path"
+          },
+          {
+            "name": "onNavigate",
+            "type": "object",
+            "description": "Route handler (consumer owns routing)",
+            "nullable": true
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "description": "Additional CSS classes"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "description": "nav aria-label"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "SpoonCluster",
+        "category": "chrome",
+        "cssClass": "spoon-cluster",
+        "tokens": [
+          "accent",
+          "glass.border",
+          "radius.full"
+        ],
+        "props": [
+          {
+            "name": "level",
+            "type": "number",
+            "description": "Current spoon level (0–5)"
+          },
+          {
+            "name": "total",
+            "type": "number",
+            "description": "Total dots"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "SpoonDial",
+        "category": "chrome",
+        "cssClass": "spoon-dial",
+        "tokens": [
+          "radius.full",
+          "glass.bg",
+          "glass.border",
+          "accent",
+          "text.tertiary"
+        ],
+        "props": [
+          {
+            "name": "level",
+            "type": "number",
+            "description": "Current spoon level (0-5)"
+          },
+          {
+            "name": "onChange",
+            "type": "object",
+            "description": "Callback when level changes",
+            "nullable": true
+          }
+        ],
+        "variants": [
+          "default",
+          "crisis"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "Starfield",
+        "category": "ambient",
+        "cssClass": "starfield-bg",
+        "tokens": [
+          "z.starfield",
+          "starfield.hearth",
+          "starfield.teal",
+          "starfield.remembrance"
+        ],
+        "props": [
+          {
+            "name": "spoons",
+            "type": "number",
+            "description": "Current spoon level for density/speed"
+          },
+          {
+            "name": "warmStars",
+            "type": "boolean",
+            "description": "Use warm color palette"
+          },
+          {
+            "name": "reduceMotion",
+            "type": "boolean",
+            "description": "Disable animations"
+          }
+        ],
+        "variants": [
+          "default",
+          "warm",
+          "reduced-motion"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/starfield"
+      },
+      {
+        "name": "StatusBadge",
+        "category": "feedback",
+        "cssClass": "badge",
+        "tokens": [
+          "radius.full",
+          "scale.xs",
+          "accent.green",
+          "accent.red",
+          "accent.gold"
+        ],
+        "props": [
+          {
+            "name": "status",
+            "type": "string",
+            "enum": [
+              "online",
+              "offline",
+              "busy",
+              "away"
+            ],
+            "description": "Status type"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "description": "Badge text"
+          }
+        ],
+        "variants": [
+          "success",
+          "warning",
+          "error",
+          "info"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "StatusCluster",
+        "category": "chrome",
+        "cssClass": "status-cluster",
+        "tokens": [
+          "glass.bg",
+          "space.xs"
+        ],
+        "props": [
+          {
+            "name": "className",
+            "type": "string",
+            "description": "Additional CSS classes"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "Topbar",
+        "category": "chrome",
+        "cssClass": "topbar",
+        "tokens": [
+          "topbar.height",
+          "glass.bg",
+          "glass.blur",
+          "glass.border",
+          "spacing.sm",
+          "radius.candy",
+          "accent",
+          "accent-gold",
+          "accent-green"
+        ],
+        "props": [
+          {
+            "name": "brand",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Left cluster: app mark + wordmark"
+          },
+          {
+            "name": "left",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Legacy alias for brand"
+          },
+          {
+            "name": "center",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Center region: command trigger, nav, or context"
+          },
+          {
+            "name": "right",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Legacy right cluster (renders into trailing)"
+          },
+          {
+            "name": "statusCluster",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Read-only status segments"
+          },
+          {
+            "name": "mode",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Primary mode control (ModePill)"
+          },
+          {
+            "name": "trailing",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Pinned trailing actions + identity"
+          },
+          {
+            "name": "mobileLeading",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Mobile-only leading override"
+          },
+          {
+            "name": "mobileTrailing",
+            "type": [
+              "string",
+              "number",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "Mobile-only trailing override"
+          },
+          {
+            "name": "variant",
+            "type": "string",
+            "enum": [
+              "app",
+              "marketing",
+              "game"
+            ],
+            "description": "Visual variant"
+          },
+          {
+            "name": "sticky",
+            "type": "boolean",
+            "description": "Sticky at top"
+          }
+        ],
+        "variants": [
+          "app",
+          "marketing",
+          "game"
+        ],
+        "slots": [
+          "brand",
+          "center",
+          "status",
+          "mode",
+          "trailing"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "TopbarSection",
+        "category": "chrome",
+        "cssClass": "topbar-section",
+        "tokens": [
+          "space.xs",
+          "glass.bg"
+        ],
+        "props": [
+          {
+            "name": "slot",
+            "type": "string",
+            "enum": [
+              "leading",
+              "brand",
+              "center",
+              "status",
+              "mode",
+              "trailing",
+              "mobile-trailing"
+            ],
+            "description": "Slot identity"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "description": "Additional CSS classes"
+          }
+        ],
+        "variants": [
+          "default"
+        ],
+        "slots": [
+          "default"
+        ],
+        "importPath": "@p31ca/design-core/compositions"
+      },
+      {
+        "name": "Badge",
+        "category": "contract",
+        "cssClass": null,
+        "tokens": [
+          "p31.radius-full",
+          "p31.scale-xs"
+        ],
+        "props": [
+          {
+            "name": "variant",
+            "type": "string",
+            "enum": [
+              "success",
+              "warning",
+              "error",
+              "info"
+            ],
+            "description": "Semantic tone. success/warning/error/info map to the four status colours."
+          },
+          {
+            "name": "children",
+            "type": [
+              "string",
+              "number",
+              "boolean",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "The label text."
+          }
+        ],
+        "variants": [
+          "success",
+          "warning",
+          "error",
+          "info"
+        ],
+        "slots": [],
+        "importPath": "import { Badge } from '@p31ca/canon-react';"
+      },
+      {
+        "name": "Button",
+        "category": "contract",
+        "cssClass": null,
+        "tokens": [
+          "p31.color.action.primary",
+          "p31.color.action.primary-hover",
+          "p31.color.action.primary-text",
+          "p31.color.action.secondary",
+          "p31.color.action.secondary-text",
+          "p31.color.action.ghost",
+          "p31.color.action.ghost-hover",
+          "p31.space.inline.sm",
+          "p31.space.inline.md",
+          "p31.space.inline.lg",
+          "p31.radius.md",
+          "p31.font.size.sm",
+          "p31.font.size.md",
+          "p31.font.size.lg",
+          "p31.motion.duration.fast",
+          "p31.motion.easing.standard"
+        ],
+        "props": [
+          {
+            "name": "variant",
+            "type": "string",
+            "enum": [
+              "primary",
+              "secondary",
+              "ghost"
+            ],
+            "description": "Visual emphasis. primary = main action, secondary = alternative, ghost = tertiary."
+          },
+          {
+            "name": "size",
+            "type": "string",
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "description": "Control size. Affects padding, font, and touch target."
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "description": "When true, the button is not interactive and renders aria-disabled."
+          },
+          {
+            "name": "loading",
+            "type": "boolean",
+            "description": "When true, sets aria-busy and blocks interaction. Renders a spinner before the label in default (non-asChild) mode."
+          },
+          {
+            "name": "children",
+            "type": [
+              "string",
+              "number",
+              "boolean",
+              "object",
+              "array",
+              "null"
+            ],
+            "description": "The button label / content."
+          }
+        ],
+        "variants": [
+          "primary",
+          "secondary",
+          "ghost",
+          "sm",
+          "md",
+          "lg"
+        ],
+        "slots": [],
+        "importPath": "import { Button } from '@p31ca/canon-react';"
+      }
+    ]
+  }
+}

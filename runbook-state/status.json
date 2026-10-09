@@ -1,0 +1,31 @@
+{
+  "WAVE_1_CLOSED_SHA": "96982c6385e66be022b78026588d920477c77e81",
+  "base": "9425a58",
+  "paths": {
+    "P2": "fb7b856",
+    "P1_P4": "e726229",
+    "P5": "96982c6"
+  },
+  "gates": {
+    "typecheck": 0,
+    "lint": 0,
+    "vitest": 16,
+    "build": "ok",
+    "gate_self_test": "4/4",
+    "image_distinctness": "6/6",
+    "runbooks": "7/7",
+    "lessons": "8/8",
+    "audit_orphans": "15 allowlisted",
+    "audit_derive": "clean",
+    "acceptance": "9/9",
+    "legacy_visual": "57/57",
+    "triage": "7/7",
+    "anti_gaming": "clean-HEAD worktree pass"
+  },
+  "decisions_pending": [
+    "H1 runbook library",
+    "H2 gate registry states",
+    "H3 orphan allowlist",
+    "H4 lessons ledger"
+  ]
+}

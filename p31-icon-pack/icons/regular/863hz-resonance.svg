@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="863 Hz Resonance animated icon">
+  <title>863 Hz Resonance</title>
+  <desc>Concentric expanding rings with crossing sine waves representing the Larmor frequency of phosphorus-31.</desc>
+  <style>
+    .res-ring-p { fill: none; stroke: var(--p31-accent-gold, #FBBF24); stroke-width: 1.5; opacity: 0; transform-origin: 100px 100px; animation: ringPulse 6s infinite ease-out; }
+    .res-ring-1 { animation-delay: 0s; }
+    .res-ring-2 { animation-delay: 2s; }
+    .res-ring-3 { animation-delay: 4s; }
+    .res-wave-s { fill: none; stroke: var(--p31-accent-violet, #A78BFA); stroke-width: 2; stroke-linecap: round; opacity: 0.5; }
+    .res-wave-1 { transform-origin: 100px 100px; animation: waveOscillate 8s infinite ease-in-out; }
+    .res-wave-2 { transform-origin: 100px 100px; animation: waveOscillate 8s infinite ease-in-out reverse; }
+    .res-core-p { fill: var(--p31-accent-gold, #FBBF24); transform-origin: 100px 100px; animation: coreOscillate 3s infinite alternate ease-in-out; }
+    .res-dot-n { fill: var(--p31-text, #F5F5F7); opacity: 0.8; }
+    @keyframes ringPulse { 0% { transform: scale(0.1); opacity: 1; stroke-width: 4; } 100% { transform: scale(1.05); opacity: 0; stroke-width: 1; } }
+    @keyframes waveOscillate { 0%, 100% { opacity: 0.3; transform: rotate(-3deg); } 50% { opacity: 0.7; transform: rotate(3deg); } }
+    @keyframes coreOscillate { 0% { filter: drop-shadow(0 0 2px var(--p31-accent-gold, #FBBF24)); opacity: 0.7; r: 8; } 100% { filter: drop-shadow(0 0 16px var(--p31-accent-gold, #FBBF24)); opacity: 1; r: 11; } }
+    @media (prefers-reduced-motion: reduce) { .res-ring-p { animation: none; opacity: 0.15; transform: scale(0.5); } .res-wave-1, .res-wave-2 { animation: none; opacity: 0.4; } .res-core-p { animation: none; opacity: 0.8; r: 9; } }
+  </style>
+  <circle cx="100" cy="100" r="90" class="res-ring-p res-ring-1"/>
+  <circle cx="100" cy="100" r="90" class="res-ring-p res-ring-2"/>
+  <circle cx="100" cy="100" r="90" class="res-ring-p res-ring-3"/>
+  <g class="res-wave-1"><path d="M10 100 Q 55 40 100 100 T 190 100" class="res-wave-s"/></g>
+  <g class="res-wave-2"><path d="M10 100 Q 55 160 100 100 T 190 100" class="res-wave-s"/></g>
+  <circle cx="100" cy="100" r="9" class="res-core-p"/>
+  <circle cx="100" cy="50" r="3" class="res-dot-n"/>
+</svg>

@@ -1,0 +1,11 @@
+{
+  "name": "@p31ca/design-system",
+  "version": "1.0.0-deprecated",
+  "private": true,
+  "description": "DEPRECATED — use @p31ca/design-core instead",
+  "exports": {
+    "./tokens": "./tokens.css",
+    "./themes": "./themes.css",
+    "./motion": "./motion.css"
+  }
+}

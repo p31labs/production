@@ -1,0 +1,543 @@
+/* The music maker — index.css.
+ *
+ * Token-only. No hex, no rgb, no oklch literals — every color/spacing/motion
+ * value comes from a --p31-* token (the canon's tokens.css). The 48px family
+ * floor applies to anything a child or elder touches; child/elder-primary
+ * controls are 56px (--p31-touch-recommended), the sound toggle is 64px
+ * (--p31-touch-large). Reduced motion collapses the motion scale to 0.01 —
+ * never `animation: none` (the same load-bearing rule as the Loom). */
+
+:root {
+  --motion-scale: 1;
+  /* The bottom ornament's height — the tour/toasts anchor above it. */
+  --mm-ornament-h: 72px;
+  /* Elevation tokens (visual shadow weight only — stacking stays on the
+     existing --p31-z-* scale). Consolidate the raw oklch() literals that
+     were inlined across the floating surfaces. */
+  --p31-shadow-1: 0 2px 8px oklch(0% 0 0 / 0.2);
+  --p31-shadow-3: 0 6px 20px oklch(0% 0 0 / 0.35);
+  --p31-shadow-5: 0 8px 24px oklch(0% 0 0 / 0.4);
+  --p31-shadow-6: 0 12px 32px oklch(0% 0 0 / 0.45);
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion-scale: 0.01; }
+}
+
+/* The never-white floor. The whole instrument is transparent so the starfield
+   and WebGL scene paint it; if a canvas never draws (or WebGL is unavailable)
+   the frame must still be the dark sky, never the browser's white. The parent
+   shell's bridge overlays the exact --p31-bg value when framed. */
+html,
+body,
+#root {
+  background: var(--p31-bg, oklch(10% 0.01 240));
+}
+
+.mm-shell {
+  --p31-touch-min: 48px;
+  --p31-touch-recommended: 56px;
+  --p31-touch-large: 64px;
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  /* Transparent so the canon starfield (a fixed layer behind) shows through. */
+  background: transparent;
+  color: var(--p31-text);
+  font: 16px/1.5 system-ui, -apple-system, sans-serif;
+}
+
+/* The canon starfield background recipe (packages/canon/dist/css/recipes.css
+   .starfield-bg): a fixed layer at --p31-z-starfield, pointer-events none. */
+.starfield-bg {
+  position: fixed;
+  inset: 0;
+  z-index: var(--p31-z-starfield);
+  pointer-events: none;
+  overflow: hidden;
+}
+.starfield-bg canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* The stage and scene canvases are transparent so the starfield reads through
+   the audio-reactive sphere. */
+.mm-stage {
+  background: transparent;
+}
+.spatial-canvas {
+  background: transparent;
+}
+
+/* The corner label — top-left, depth-styled, fades after 5s idle (a class
+   swap drives the opacity transition; App's pointer-move handler brings it
+   back for another 5s). */
+.mm-corner-label {
+  position: absolute;
+  top: var(--p31-space-md);
+  left: var(--p31-space-md);
+  margin: 0;
+  z-index: var(--p31-z-floating);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--p31-text-tertiary);
+  opacity: 1;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+  box-shadow: var(--p31-shadow-1);
+}
+.mm-corner-label--hidden { opacity: 0; }
+
+.sound-toggle,
+.mm-btn {
+  min-height: var(--p31-touch-recommended);
+  min-width: var(--p31-touch-recommended);
+  padding: 0 var(--p31-space-md);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  background: var(--p31-glass-bg);
+  color: var(--p31-text);
+  font: 600 16px/1 system-ui, sans-serif;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background calc(120ms * var(--motion-scale)) ease,
+    color calc(120ms * var(--motion-scale)) ease,
+    transform calc(120ms * var(--motion-scale)) ease;
+}
+.sound-toggle { min-height: var(--p31-touch-large); }
+.sound-toggle:active,
+.mm-btn:active { transform: translateY(1px); }
+.sound-toggle[aria-pressed='true'] { background: var(--p31-accent-green); color: var(--p31-bg); }
+.mm-btn-accent { background: var(--p31-accent); color: var(--p31-bg); }
+.mm-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* The ornament — one floating bottom bar, overlapping the canvas. Exactly one
+   solid-accent control (place a zone); the rest are ghost/icon. */
+.mm-ornament {
+  position: absolute;
+  left: 50%;
+  bottom: -20px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-sm);
+  padding: var(--p31-space-sm);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  background: var(--p31-glass-bg);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--p31-shadow-3);
+  z-index: var(--p31-z-floating);
+}
+.mm-ornament__group {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-sm);
+}
+.mm-ornament__group + .mm-ornament__group::before {
+  content: '';
+  width: 1px;
+  height: 28px;
+  margin: 0 var(--p31-space-xs, 4px);
+  background: var(--p31-glass-border);
+}
+.mm-ornament__ghost { background: transparent; border-color: transparent; }
+.mm-ornament__icon {
+  min-width: var(--p31-touch-min);
+  padding: 0;
+  font-size: 18px;
+}
+.mm-ornament__primary {
+  background: var(--p31-accent);
+  color: var(--p31-bg);
+  border-color: transparent;
+}
+
+/* The ⋯ overflow — a native <details> disclosure (outside-click + Escape to
+   close for free; not modal, so no focus trap). */
+.mm-overflow { position: relative; }
+.mm-overflow__pop {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + var(--p31-space-sm));
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-sm);
+  padding: var(--p31-space-sm);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  background: var(--p31-glass-bg);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--p31-shadow-5);
+}
+
+.mm-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.spatial-scene {
+  position: absolute;
+  inset: 0;
+}
+.spatial-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+/* The selected-zone inspector — a right-edge drawer (bottom sheet on mobile).
+   More opaque than the ornament so the canvas doesn't bleed through. */
+.mm-drawer {
+  position: absolute;
+  top: var(--p31-space-md);
+  right: var(--p31-space-md);
+  bottom: calc(var(--mm-ornament-h) + var(--p31-space-md));
+  width: min(360px, calc(100% - 2 * var(--p31-space-md)));
+  padding: var(--p31-space-md);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  background: oklch(8% 0.01 240 / 0.9);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--p31-shadow-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-sm);
+  z-index: var(--p31-z-floating);
+  overflow-y: auto;
+}
+.mm-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--p31-space-sm);
+}
+.mm-drawer__title { margin: 0; font-size: 20px; font-weight: 700; color: var(--p31-text); }
+.mm-drawer__row { display: flex; align-items: center; gap: var(--p31-space-sm); }
+.mm-drawer__key { color: var(--p31-text-secondary); font-size: 14px; min-width: 84px; }
+.mm-drawer__val { color: var(--p31-text); font-size: 14px; text-transform: capitalize; }
+.mm-drawer__history { align-items: flex-start; }
+.mm-drawer__plays { list-style: none; margin: 0; padding: 0; }
+.mm-drawer__plays li { font-size: 14px; line-height: 1.4; }
+.mm-drawer__input {
+  min-height: var(--p31-touch-recommended);
+  min-width: 0;
+  flex: 1;
+  padding: 0 var(--p31-space-sm);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-md);
+  background: var(--p31-surface);
+  color: var(--p31-text);
+  font: 16px/1.4 system-ui, sans-serif;
+}
+.mm-drawer__input:focus-visible {
+  outline: 2px solid var(--p31-accent);
+  outline-offset: 2px;
+}
+.mm-drawer__clear {
+  border-color: var(--p31-accent-red);
+  color: var(--p31-accent-red);
+  background: transparent;
+}
+.mm-drawer__note { margin: 0; font-size: 12px; color: var(--p31-text-tertiary); }
+
+/* The visible zoom control — a family member shouldn't have to discover the
+   wheel or the pinch. Right edge, vertically centered, out of the way. */
+.mm-zoom {
+  position: absolute;
+  right: var(--p31-space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-sm);
+  z-index: var(--p31-z-floating);
+}
+.mm-zoom__btn {
+  width: var(--p31-touch-min);
+  height: var(--p31-touch-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  background: var(--p31-glass-bg);
+  color: var(--p31-text);
+  font-size: 20px;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--p31-shadow-1);
+}
+
+/* The visible zone selector — a dropdown of zones (name + timbre chip). */
+.mm-zone-menu { position: relative; }
+.mm-zone-menu__toggle { min-height: var(--p31-touch-recommended); }
+.mm-zone-menu__nearest {
+  padding: var(--p31-space-xs, 4px) var(--p31-space-sm);
+  font-size: 12px;
+  color: var(--p31-text-tertiary);
+}
+.mm-zone-menu__list {
+  position: absolute;
+  top: calc(100% + var(--p31-space-sm));
+  left: 0;
+  z-index: var(--p31-z-floating);
+  min-width: 200px;
+  max-height: 40vh;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: var(--p31-space-sm);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  background: var(--p31-glass-bg);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--p31-shadow-5);
+}
+.mm-zone-menu__item {
+  width: 100%;
+  min-height: var(--p31-touch-min);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--p31-space-sm);
+  padding: 0 var(--p31-space-sm);
+  border: 0;
+  border-radius: var(--p31-radius-md);
+  background: transparent;
+  color: var(--p31-text);
+  font: 16px/1 system-ui, sans-serif;
+  cursor: pointer;
+  text-align: left;
+}
+.mm-zone-menu__item[aria-selected='true'] {
+  background: var(--p31-accent-soft, var(--p31-surface));
+  color: var(--p31-text);
+}
+.mm-zone-menu__timbre {
+  font-size: 12px;
+  color: var(--p31-text-tertiary);
+  text-transform: capitalize;
+}
+
+/* The trigger announcements — visually hidden, screen-reader visible. */
+.mm-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* The error boundary's face — a crash becomes a warm, recoverable message, not
+   a white frame (the parent shell cannot see the iframe's console). */
+.mm-crash {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--p31-space-md);
+  padding: var(--p31-space-md);
+  text-align: center;
+  background: var(--p31-bg);
+  color: var(--p31-text);
+}
+.mm-crash__title { margin: 0; font-size: 24px; font-weight: 700; }
+.mm-crash__body { margin: 0; color: var(--p31-text-secondary); }
+
+/* The guided tour — a teaching card anchored above the ornament. The scene
+   stays interactive behind it (the tour is a hint, never a gate). */
+.mm-tour {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--mm-ornament-h) + var(--p31-space-md));
+  transform: translateX(-50%);
+  max-width: 320px;
+  width: calc(100% - 2 * var(--p31-space-md));
+  padding: var(--p31-space-md);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  background: var(--p31-glass-bg);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--p31-shadow-5);
+  text-align: center;
+  z-index: var(--p31-z-floating);
+}
+.mm-tour__step {
+  margin: 0 0 var(--p31-space-xs, 4px);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p31-text-tertiary);
+}
+.mm-tour__title {
+  margin: 0 0 var(--p31-space-xs, 4px);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--p31-text);
+}
+.mm-tour__body {
+  margin: 0 0 var(--p31-space-md);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--p31-text-secondary);
+}
+.mm-tour__skip {
+  min-height: var(--p31-touch-recommended);
+  padding: 0 var(--p31-space-md);
+}
+.mm-tour__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--p31-space-sm);
+  flex-wrap: wrap;
+}
+.mm-tour__begin {
+  min-height: var(--p31-touch-recommended);
+  padding: 0 var(--p31-space-md);
+}
+
+/* The named presence pop-ups — bottom-right, above the ornament, glass cards. */
+.mm-notices {
+  position: absolute;
+  right: var(--p31-space-md);
+  bottom: calc(var(--mm-ornament-h) + var(--p31-space-md));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--p31-space-sm);
+  z-index: var(--p31-z-floating);
+  pointer-events: none;
+}
+.mm-notice {
+  max-width: 280px;
+  padding: var(--p31-space-sm) var(--p31-space-md);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-lg);
+  background: var(--p31-glass-bg);
+  backdrop-filter: blur(12px);
+  color: var(--p31-text);
+  font-size: 14px;
+  box-shadow: var(--p31-shadow-5);
+}
+
+/* The per-zone agent surfaces (C1): positioned by the scene's frame loop,
+   invisible to sighted users but a real DOM surface for agents and tests.
+   They are non-interactive SPANS — pointer-events: none means they can never
+   swallow a canvas drag or tap (a clipped <button> can, on some browsers). */
+.mm-zone-agent {
+  position: absolute;
+  width: var(--p31-touch-min);
+  height: var(--p31-touch-min);
+  transform: translate(-50%, -50%);
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  background: transparent;
+  pointer-events: none;
+}
+
+/* The keyboard zone list (P3): visually hidden, but IN the tab order. A
+   keyboard user focuses it and drives selection with the arrow keys; the
+   live region announces. Clipped like the agent spans so it never covers the
+   canvas. */
+.mm-zone-list {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  list-style: none;
+}
+.mm-zone-list:focus-visible {
+  outline: none;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .mm-ornament,
+  .mm-drawer,
+  .mm-tour,
+  .mm-notice,
+  .sound-toggle,
+  .mm-btn {
+    backdrop-filter: none;
+    background: var(--p31-bg);
+  }
+}
+
+@media (max-width: 640px) {
+  /* Pinch/wheel already zoom — the redundant on-screen buttons are hidden. */
+  .mm-zoom { display: none; }
+  /* The ornament goes icon-only (aria-labels carry the text). */
+  .mm-ornament__group:nth-of-type(2) .mm-ornament__primary {
+    min-width: var(--p31-touch-recommended);
+    width: var(--p31-touch-recommended);
+    padding: 0;
+  }
+  .mm-ornament__group:nth-of-type(2) .mm-ornament__primary {
+    text-indent: -9999px;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+  }
+  .mm-ornament__group:nth-of-type(2) .mm-ornament__primary::before {
+    content: '✦';
+    text-indent: 0;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mm-ornament__ghost:not(.mm-ornament__icon) {
+    min-width: var(--p31-touch-min);
+    width: var(--p31-touch-min);
+    padding: 0;
+    text-indent: -9999px;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+  }
+  .mm-ornament__ghost:not(.mm-ornament__icon)::before {
+    content: attr(data-mobile);
+    text-indent: 0;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* The drawer becomes a bottom sheet sliding up over the ornament. */
+  .mm-drawer {
+    top: auto;
+    left: var(--p31-space-md);
+    right: var(--p31-space-md);
+    bottom: var(--p31-space-md);
+    width: auto;
+    max-height: 40vh;
+  }
+}

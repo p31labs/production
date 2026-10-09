@@ -18,8 +18,8 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { execSync } from 'node:child_process';
 
-const gate = resolve('/home/p31/P31-local-workspace/packages/design-core/scripts/canon-purity.mjs');
-const root = resolve('/home/p31/P31-local-workspace/packages/design-core');
+const gate = resolve('/home/p31/production/packages/design-core/scripts/canon-purity.mjs');
+const root = resolve('/home/p31/production/packages/design-core');
 
 // Copy the canon into /tmp so the gate scans a throwaway tree.
 const fixtureRoot = mkdtempSync(join(tmpdir(), 'govern-nc-canon-'));

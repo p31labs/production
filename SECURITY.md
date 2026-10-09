@@ -47,7 +47,7 @@ The following subsystems are in scope:
 - Identity handling: routes, passwords/PINs, and the K4 trust mesh
 
 Out of scope: the dormant design-system workspace at
-`/home/p31/P31-local-workspace` (its own repository), third-party
+`/home/p31/production` (its own repository), third-party
 dependencies unless the vulnerability is in how P31 uses them, and issues that
 require a deliberate, local attacker with physical device access.
 

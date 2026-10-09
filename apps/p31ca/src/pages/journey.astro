@@ -1,0 +1,135 @@
+---
+import MarketingShell from '../layouts/MarketingShell.astro';
+import SharedFooter from '../components/SharedFooter.astro';
+import JourneyHub from '../components/islands/JourneyHub.tsx';
+import JourneyWizard from '../components/islands/JourneyWizard.tsx';
+---
+
+<MarketingShell
+  title="Journey — P31 Labs"
+  description="Where will your family build today? Six doors — Workspace, QPJ, Arcade, Chat, Tetra, Passports. Or start the two-minute journey."
+  theme="ocean"
+  background="dome"
+>
+
+  <main id="main-content" class="max-w-7xl mx-auto px-6 pb-16">
+    <JourneyHub client:load />
+    <JourneyWizard client:load />
+  </main>
+
+  <SharedFooter />
+</MarketingShell>
+
+<style is:global>
+  /* Journey hub + wizard — glass language matches the rest of p31ca.org */
+
+  .journey-hub { padding-block: 3rem 1rem; text-align: center; }
+  .journey-eyebrow {
+    font-family: var(--p31-font-mono, ui-monospace);
+    font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--p31-accent, oklch(0.78 0.18 195));
+  }
+  .journey-h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; letter-spacing: -0.02em;
+    margin-block: 0.75rem 1rem; color: var(--p31-text, #f5f5f7);
+    max-width: 22ch; margin-inline: auto;
+  }
+  .journey-sub { color: var(--p31-text-secondary, #a1a1aa); font-size: 1.125rem; max-width: 52ch; margin-inline: auto; }
+  .journey-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
+  .journey-cta { padding: 12px 28px; font-size: 1rem; border-radius: 12px; cursor: pointer; }
+
+  .journey-section { margin-top: 4rem; text-align: left; }
+  .journey-h2 { font-size: 1.5rem; font-weight: 600; color: var(--p31-text, #f5f5f7); }
+  .journey-hint { color: var(--p31-text-secondary, #a1a1aa); margin-top: 0.5rem; }
+  .journey-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+  .journey-card {
+    display: flex; flex-direction: column; gap: 0.75rem; padding: 1.5rem; border-radius: 16px;
+    text-decoration: none; color: inherit;
+    transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .journey-card:hover, .journey-card:focus-visible {
+    transform: translateY(-3px); border-color: color-mix(in oklch, white 20%, transparent);
+  }
+  .journey-card__head { display: flex; align-items: center; justify-content: space-between; }
+  .journey-card__icon { font-size: 2rem; }
+  .journey-card__dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.15); }
+  .journey-card__dot.is-live { background: oklch(0.72 0.14 155); box-shadow: 0 0 8px oklch(0.72 0.14 155 / 0.55); }
+  .journey-card__title { font-size: 1.125rem; font-weight: 600; color: var(--p31-text, #f5f5f7); }
+  .journey-card__desc { color: var(--p31-text-secondary, #a1a1aa); font-size: 0.9rem; line-height: 1.5; }
+  .journey-card__foot { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--p31-text-tertiary, #71717a); margin-top: auto; padding-top: 0.5rem; }
+  .journey-card__arrow { color: var(--p31-accent, oklch(0.78 0.18 195)); }
+
+  .journey-wizard {
+    margin-top: 5rem; padding: 2rem; border-radius: 20px;
+    background: color-mix(in oklch, white 3%, transparent);
+    border: 1px solid color-mix(in oklch, white 8%, transparent);
+    backdrop-filter: blur(20px); max-width: 720px; margin-inline: auto; text-align: left;
+    scroll-margin-top: 2rem;
+  }
+  .journey-progress { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+  .journey-progress__pip { flex: 1; height: 3px; border-radius: 2px; background: color-mix(in oklch, white 12%, transparent); transition: background 200ms ease; }
+  .journey-progress__pip.is-done { background: oklch(0.72 0.14 155); }
+  .journey-progress__pip.is-current { background: var(--p31-accent, oklch(0.78 0.18 195)); }
+
+  .journey-step-title { font-size: 1.5rem; font-weight: 700; color: var(--p31-text, #f5f5f7); outline: none; }
+  .journey-step-title:focus-visible { outline: 2px solid var(--p31-accent, oklch(0.78 0.18 195)); outline-offset: 4px; border-radius: 4px; }
+  .journey-step-desc { color: var(--p31-text-secondary, #a1a1aa); margin-top: 0.25rem; }
+  .journey-step { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+  .journey-step-copy { color: var(--p31-text, #f5f5f7); line-height: 1.6; }
+  .journey-mono { font-family: var(--p31-font-mono, ui-monospace); font-size: 0.9em; color: var(--p31-accent, oklch(0.78 0.18 195)); }
+  .journey-step__actions { display: flex; gap: 0.75rem; margin-top: 0.5rem; flex-wrap: wrap; }
+  .journey-error { color: oklch(0.68 0.18 15); font-size: 0.9rem; }
+  .journey-step-count { color: var(--p31-text-tertiary, #71717a); font-size: 0.75rem; margin-top: 1.5rem; }
+
+  .journey-roster { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .journey-member {
+    display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.9rem; border-radius: 10px;
+    background: color-mix(in oklch, white 4%, transparent);
+    border: 1px solid color-mix(in oklch, white 8%, transparent);
+    color: var(--p31-text, #f5f5f7); font-size: 0.9rem; cursor: pointer; min-height: 44px;
+  }
+  .journey-member.is-active { border-color: var(--p31-accent, oklch(0.78 0.18 195)); background: color-mix(in oklch, var(--p31-accent, oklch(0.78 0.18 195)) 15%, transparent); }
+  .journey-member__emoji { font-size: 1.1rem; }
+  .journey-member__check { color: var(--p31-accent, oklch(0.78 0.18 195)); font-weight: 700; }
+
+  .journey-passport { display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem; background: color-mix(in oklch, white 3%, transparent); border: 1px solid color-mix(in oklch, white 8%, transparent); border-radius: 12px; }
+  .journey-passport__row { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.9rem; }
+  .journey-passport__row dt { color: var(--p31-text-tertiary, #71717a); }
+  .journey-passport__row dd { color: var(--p31-text, #f5f5f7); text-align: right; word-break: break-all; }
+  .journey-passport__did { font-size: 0.8rem; }
+
+  .journey-doors { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.75rem; }
+  .journey-door {
+    display: flex; align-items: center; gap: 0.6rem; padding: 0.9rem 1rem; border-radius: 10px;
+    background: color-mix(in oklch, white 4%, transparent);
+    border: 1px solid color-mix(in oklch, white 8%, transparent);
+    color: var(--p31-text, #f5f5f7); font-size: 0.9rem; text-decoration: none;
+    transition: border-color 150ms ease;
+  }
+  .journey-door:hover, .journey-door:focus-visible { border-color: color-mix(in oklch, white 22%, transparent); }
+  .journey-door__icon { font-size: 1.1rem; }
+
+  .journey-nav { position: relative; display: inline-block; }
+  .journey-nav__trigger {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: transparent; border: 1px solid color-mix(in oklch, white 10%, transparent);
+    border-radius: 8px; padding: 6px 10px; color: inherit; font-size: 0.85rem; cursor: pointer; min-height: 36px;
+  }
+  .journey-nav__trigger:hover { border-color: color-mix(in oklch, white 25%, transparent); }
+  .journey-nav__caret { font-size: 0.7rem; opacity: 0.7; }
+  .journey-nav__menu {
+    position: absolute; top: calc(100% + 6px); right: 0; min-width: 200px;
+    background: color-mix(in oklch, oklch(0.14 0.008 270) 96%, transparent);
+    border: 1px solid color-mix(in oklch, white 10%, transparent); border-radius: 12px; padding: 6px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5); backdrop-filter: blur(20px); z-index: 500;
+  }
+  .journey-nav__item { display: flex; align-items: center; gap: 0.6rem; padding: 8px 10px; border-radius: 8px; color: var(--p31-text, #f5f5f7); text-decoration: none; font-size: 0.9rem; }
+  .journey-nav__item:hover { background: color-mix(in oklch, white 8%, transparent); }
+  .journey-nav__item.is-current { background: color-mix(in oklch, var(--p31-accent, oklch(0.78 0.18 195)) 12%, transparent); }
+  .journey-nav__badge { margin-left: auto; font-size: 0.7rem; color: var(--p31-text-tertiary, #71717a); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .journey-card, .journey-door { transition: none; }
+    .journey-wizard { backdrop-filter: none; background: color-mix(in oklch, oklch(0.14 0.008 270) 98%, transparent); }
+  }
+</style>

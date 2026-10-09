@@ -1,0 +1,4 @@
+# design-parity — runtime artifacts (not committed)
+.slop-cache/
+out/
+baselines/

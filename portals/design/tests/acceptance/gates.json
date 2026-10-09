@@ -8,7 +8,7 @@
   "gates": [
     {
       "id": "canon-purity",
-      "command": "node /home/p31/P31-local-workspace/packages/design-core/scripts/canon-purity.mjs",
+      "command": "node /home/p31/production/packages/design-core/scripts/canon-purity.mjs",
       "state": "BLOCKING",
       "owner": "design-core",
       "scope": "design-core/src/** manifest.json tokens/",
@@ -23,7 +23,7 @@
     },
     {
       "id": "token-audit",
-      "command": "node /home/p31/P31-local-workspace/packages/design-core/scripts/token-audit.mjs",
+      "command": "node /home/p31/production/packages/design-core/scripts/token-audit.mjs",
       "state": "BLOCKING",
       "owner": "design-core",
       "scope": "design-core/src/** (non-allowlisted)",
@@ -83,13 +83,13 @@
     },
     {
       "id": "canon-source-audit",
-      "command": "node /home/p31/P31-local-workspace/tools/canon-audit/canon-source-audit.mjs --target /home/p31/production/portals/design/src --allow production/portals/design/src/tokens.css,production/portals/design/src/surfaces/ambient.css,production/portals/design/src/components/Topbar.tsx",
+      "command": "node /home/p31/production/tools/canon-audit/canon-source-audit.mjs --target /home/p31/production/portals/design/src --allow production/portals/design/src/tokens.css,production/portals/design/src/surfaces/ambient.css,production/portals/design/src/components/Topbar.tsx",
       "state": "BLOCKING",
       "owner": "design-portal",
       "scope": "no --p31-* token forks, no component duplicates of @p31ca/design-core/compositions in design src",
       "negativeControl": {
         "type": "fixture",
-        "command": "/home/p31/P31-local-workspace/tools/canon-audit/nc/canon-source-audit-nc.mjs",
+        "command": "/home/p31/production/tools/canon-audit/nc/canon-source-audit-nc.mjs",
         "description": "a scratch file defining --p31-accent + a duplicate Topbar must fail the gate",
         "expected": "exit non-zero"
       },

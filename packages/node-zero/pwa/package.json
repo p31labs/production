@@ -14,9 +14,9 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@p31ca/game-engine": "^0.1.0-alpha.0",
-    "@p31ca/love-ledger": "^0.1.0-alpha.0",
-    "@p31ca/node-zero": "^0.2.0-alpha.0"
+    "@p31ca/game-engine": "workspace:*",
+    "@p31ca/love-ledger": "workspace:*",
+    "@p31ca/node-zero": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",

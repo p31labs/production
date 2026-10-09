@@ -1,0 +1,39 @@
+name = "p31-capital-machine-mcp"
+main = "src/index.ts"
+compatibility_date = "2026-07-16"
+
+# x402-gated MCP server for the P31 Capital Machine.
+# CDP Facilitator (production) — settles on Base mainnet. Credentials set via
+# `wrangler secret put FACILITATOR_KEY_ID` / `FACILITATOR_SECRET_KEY`.
+[vars]
+NETWORK = "base"
+PAY_TO = "0xF68f0a09b4cbC2D012B6BA01C787d3FFE4C47058"
+FACILITATOR_URL = "https://api.cdp.coinbase.com/platform/v2/x402"
+PORTAL_URL = "https://p31-monetization.trimtab-signal.workers.dev"
+REVENUE_LEDGER_URL = "https://revenue-ledger.trimtab-signal.workers.dev"
+ENTITLEMENT_URL = "https://entitlement.trimtab-signal.workers.dev"
+# OAuth 2.1 resource-server (RFC 8707) — the resource URI that bearer-token
+# `aud` claims MUST match. External IdP JWKS endpoint set via `wrangler secret
+# put OAUTH_JWKS_URL` (optional).
+RESOURCE_ID = "https://p31-capital-machine-mcp.trimtab-signal.workers.dev/mcp"
+OAUTH_JWKS_URL = "https://oauth-relay.trimtab-signal.workers.dev/.well-known/jwks.json"
+
+[observability]
+enabled = true
+
+[cache]
+enabled = true
+
+# Sibling workers are reached via service bindings — public worker→worker
+# subrequests on *.trimtab-signal.workers.dev fail with 404 / error 1042.
+[[services]]
+binding = "REVENUE_LEDGER"
+service = "revenue-ledger"
+
+[[services]]
+binding = "ENTITLEMENT"
+service = "entitlement"
+
+[[services]]
+binding = "PORTAL"
+service = "p31-monetization"

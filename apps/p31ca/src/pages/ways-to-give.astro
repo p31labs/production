@@ -1,0 +1,114 @@
+---
+/**
+ * /ways-to-give — the donation taxonomy.
+ *
+ * Only paths with a registered destination are listed as active. Paths that
+ * are planned but not yet wired are marked "coming" — no fake links, no
+ * dead ends. Every active link resolves from src/data/p31-mesh-constants.json.
+ */
+import MarketingShell from '../layouts/MarketingShell.astro';
+import SectionHeader from '../components/marketing/SectionHeader.astro';
+import Footer from '../components/marketing/Footer.astro';
+import constants from '../data/p31-mesh-constants.json';
+
+const CONTACT_EMAIL = constants.contactEmail;
+
+const treasuryFlow = `
+flowchart LR
+    classDef core fill:#2563eb,stroke:#1e40af,color:#ffffff
+    classDef store fill:#64748b,stroke:#334155,color:#ffffff
+    classDef success fill:#10b981,stroke:#047857,color:#ffffff
+    A["Donation"]:::core --> B["D1 ledger"]:::store
+    B --> C["Quarterly report"]:::success
+    B --> D["Form 990"]:::success
+`;
+
+const paths = [
+  { label: 'One-time gift', desc: 'A single donation, any amount. Fastest way to support the work.', href: 'https://buy.stripe.com/5kQ14g827gmpcHFb0W8Ra00', status: 'active' },
+  { label: 'Recurring support', desc: 'Monthly giving via Ko-fi — sustains ongoing R&D and hosting.', href: 'https://ko-fi.com/p31labs', status: 'active' },
+  { label: 'Operations fund', desc: 'Direct operating support for the day-to-day infrastructure.', href: 'https://ko-fi.com/trimtab69420', status: 'active' },
+  { label: 'Fiscal sponsorship', desc: 'Backed by Hack Club HCB — a fiscal host for open-source nonprofits.', href: 'https://hcb.hackclub.com/donations/start/p31-labs', status: 'active' },
+  { label: 'PayPal', desc: 'PayPal.me — a simple, familiar route.', href: 'https://paypal.me/p31labs', status: 'active' },
+  { label: 'Crypto', desc: 'BTC and other coins via Blockonomics.', href: 'https://blockonomics.co/pay/p31labs', status: 'active' },
+  { label: 'Research funding', desc: 'Sponsor the open research program on Zenodo.', href: 'https://zenodo.org/communities/p31labs', status: 'active' },
+  { label: 'Planned giving', desc: 'Bequests and legacy gifts. Structured path coming.', href: null, status: 'coming' },
+  { label: 'Stock / DAF', desc: 'Donor-advised funds and stock transfers. Coming.', href: null, status: 'coming' },
+  { label: 'In-kind', desc: 'Hardware, hosting, and services. Contact us directly.', href: `mailto:${CONTACT_EMAIL}`, status: 'contact' },
+];
+---
+
+<MarketingShell
+  title="Ways to Give — P31 Labs"
+  description="Every path a donation can take — and where it goes. Only live destinations are listed; nothing is faked."
+>
+  <main id="main-content" class="section">
+    <div class="max-w-5xl mx-auto px-6 md:px-12 lg:px-16">
+      <SectionHeader
+        title="Ways to Give"
+        description="Every path a donation can take — and where it goes."
+        align="left"
+      />
+
+      <div class="mt-16 space-y-8">
+
+        {/* ── THE TREASURY FLOW ── */}
+        <section class="glass-card">
+          <div class="p-8 space-y-6">
+            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">Where the money goes</h3>
+            <pre class="mermaid" set:html={treasuryFlow} />
+            <p class="text-sm" style="color: var(--p31-text-secondary);">
+              P31 Labs, Inc. — a Georgia nonprofit corporation, EIN 42-1888158, 501(c)(3) determination granted (effective 2026-04-03). Donations are tax-deductible to the fullest extent of the law.
+            </p>
+          </div>
+        </section>
+
+        {/* ── THE PATHS ── */}
+        <section>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {paths.map((p) => (
+              p.status === 'active' || p.status === 'contact' ? (
+                <a
+                  key={p.label}
+                  href={p.href!}
+                  target={p.href?.startsWith('mailto') ? undefined : '_blank'}
+                  rel="noopener noreferrer"
+                  class="glass-card p-6 rounded-xl block transition"
+                  style="border: 1px solid var(--p31-glass-border, rgba(255,255,255,0.1));"
+                >
+                  <div class="flex items-center justify-between gap-3">
+                    <h3 class="text-lg font-bold" style="color: var(--p31-text);">{p.label}</h3>
+                    <span class="shrink-0 text-xs font-mono px-2 py-0.5 rounded-full" style="background: color-mix(in oklch, var(--p31-accent-green) 15%, transparent); color: var(--p31-accent-green);">
+                      {p.status === 'contact' ? 'contact' : 'active'}
+                    </span>
+                  </div>
+                  <p class="mt-2 text-sm leading-relaxed" style="color: var(--p31-text-secondary);">{p.desc}</p>
+                </a>
+              ) : (
+                <div key={p.label} class="glass-card p-6 rounded-xl" style="border: 1px dashed var(--p31-glass-border, rgba(255,255,255,0.14)); opacity: 0.85;">
+                  <div class="flex items-center justify-between gap-3">
+                    <h3 class="text-lg font-bold" style="color: var(--p31-text);">{p.label}</h3>
+                    <span class="shrink-0 text-xs font-mono px-2 py-0.5 rounded-full" style="background: color-mix(in oklch, var(--p31-accent) 12%, transparent); color: var(--p31-accent);">
+                      coming
+                    </span>
+                  </div>
+                  <p class="mt-2 text-sm leading-relaxed" style="color: var(--p31-text-secondary);">{p.desc}</p>
+                </div>
+              )
+            ))}
+          </div>
+        </section>
+
+        {/* ── CTA ── */}
+        <section class="text-center py-6">
+          <a href="/donate" class="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold transition"
+             style="background: var(--p31-accent, #22d3ee); color: #0a0a0f;">
+            Make a one-time gift →
+          </a>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</MarketingShell>

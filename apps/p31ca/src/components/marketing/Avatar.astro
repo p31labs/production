@@ -1,0 +1,15 @@
+---
+interface Props {
+  name: string;
+}
+const { name } = Astro.props;
+const initial = name.trim().charAt(0).toUpperCase();
+---
+
+<div
+  class="flex h-14 w-14 items-center justify-center rounded-full text-lg font-bold"
+  style="background: color-mix(in oklch, var(--p31-accent) 18%, transparent); color: var(--p31-accent); border: 1px solid var(--p31-glass-border, rgba(255,255,255,0.16));"
+  aria-hidden="true"
+>
+  {initial}
+</div>

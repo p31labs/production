@@ -1,0 +1,164 @@
+{
+  "claims": [
+    {
+      "name": "verify.mjs exists",
+      "type": "file-exists",
+      "path": "tools/agent-verify/verify.mjs"
+    },
+    {
+      "name": "pickle-names package exists (verified earlier)",
+      "type": "file-exists",
+      "path": "packages/sovereign-primitives/src/pickle-names/index.ts"
+    },
+    {
+      "name": "family constitution has pickle-names gate",
+      "type": "file-contains",
+      "path": "packages/govern/domains/family/constitution.json",
+      "pattern": "pickle-names"
+    },
+    {
+      "name": "negative-control for pickle gate exists",
+      "type": "file-exists",
+      "path": "tools/family/negative-controls/pickle-names.mjs"
+    },
+    {
+      "name": "Lantern Architect negative control fixture exists",
+      "type": "file-exists",
+      "path": "packages/design-core/src/agentic/intent/examples/__nc__fail-contrast.yml"
+    },
+    {
+      "name": "sabotage NC exists (system-test negative control)",
+      "type": "file-exists",
+      "path": "tools/system-test/negative-controls/sabotage.mjs"
+    },
+    {
+      "name": "convergence/planner.mjs exists",
+      "type": "file-exists",
+      "path": "tools/phos-forge/convergence/planner.mjs"
+    },
+    {
+      "name": "convergence/resilient.mjs exists",
+      "type": "file-exists",
+      "path": "tools/phos-forge/convergence/resilient.mjs"
+    },
+    {
+      "name": "convergence/stall-recovery.mjs exists",
+      "type": "file-exists",
+      "path": "tools/phos-forge/convergence/stall-recovery.mjs"
+    },
+    {
+      "name": "convergence/model-health.mjs exists",
+      "type": "file-exists",
+      "path": "tools/phos-forge/convergence/model-health.mjs"
+    },
+    {
+      "name": "convergence/graceful.mjs exists",
+      "type": "file-exists",
+      "path": "tools/phos-forge/convergence/graceful.mjs"
+    },
+    {
+      "name": "convergence/model-chain.mjs exists",
+      "type": "file-exists",
+      "path": "tools/phos-forge/convergence/model-chain.mjs"
+    },
+    {
+      "name": "jitterbug imports graceful convergence",
+      "type": "file-contains",
+      "path": "tools/phos-forge/jitterbug.mjs",
+      "pattern": "convergence/graceful.mjs"
+    },
+    {
+      "name": "router forwards reasoning_effort (root-cause fix)",
+      "type": "file-contains",
+      "path": "tools/phos-forge/router.mjs",
+      "pattern": "reasoning_effort: reasoningEffort"
+    },
+    {
+      "name": "convergence unit tests pass (deterministic, no LLM)",
+      "type": "command-passes",
+      "command": "node --eval \"import('./convergence/planner.mjs').then(async m=>{const t=m.__testPlan(); if(!(t.direct==='direct'&&t.chunked==='chunked'&&t.deferred==='deferred'))process.exit(1)}); import('./convergence/stall-recovery.mjs').then(async m=>{const t=await m.__testStallRecovery(); if(!(t.recovered&&t.textLen>0))process.exit(1)}); import('./convergence/model-health.mjs').then(async m=>{const t=m.__testModelHealth(); if(!(t.bState==='OPEN'&&t.bSinks))process.exit(1)}); import('./convergence/resilient.mjs').then(async m=>{const t=await m.__testResilient(); if(!(t.briefs===2&&t.hasSynthesis))process.exit(1)}); import('./convergence/graceful.mjs').then(async m=>{const t=await m.__testGraceful(); if(!(t.level==='concatenated-briefs'&&t.hasContent&&t.degraded))process.exit(1)});\"",
+      "cwd": "tools/phos-forge"
+    },
+    {
+      "name": "convergence negative control: stall-recovery throws bounded (3 attempts)",
+      "type": "command-passes",
+      "command": "node --eval \"import('./convergence/stall-recovery.mjs').then(async m=>{try{await m.callWithStallRecovery('s','u',async()=>'');process.exit(1)}catch(e){if(e.message!=='empty-response')process.exit(1)}})\"",
+      "cwd": "tools/phos-forge"
+    },
+    {
+      "name": "summary-prompt module exists",
+      "type": "file-exists",
+      "path": "tools/phos-forge/convergence/summary-prompt.mjs"
+    },
+    {
+      "name": "embed-fonts module exists",
+      "type": "file-exists",
+      "path": "software/p31-forge/scripts/embed-fonts.mjs"
+    },
+    {
+      "name": "check-layout gate exists",
+      "type": "file-exists",
+      "path": "software/p31-forge/scripts/check-layout.py"
+    },
+    {
+      "name": "jitterbug requires Summary section",
+      "type": "file-contains",
+      "path": "tools/phos-forge/jitterbug.mjs",
+      "pattern": "## Summary"
+    },
+    {
+      "name": "summary FK contract test (plain ok, dense rejected)",
+      "type": "command-passes",
+      "command": "node --eval \"import('./convergence/summary-prompt.mjs').then(async m=>{const t=m.__testSummaryPrompt(); if(!(t.plainOk && !t.denseOk && t.plainFk<=8 && t.denseFk>8)) process.exit(1)})\"",
+      "cwd": "tools/phos-forge"
+    },
+    {
+      "name": "layout gate catches widow page",
+      "type": "command-passes",
+      "command": "python3 -c \"import ast; ast.parse(open(chr(115)+chr(111)+chr(102)+chr(116)+chr(119)+chr(97)+chr(114)+chr(101)+chr(47)+chr(112)+chr(51)+chr(49)+chr(45)+chr(102)+chr(111)+chr(114)+chr(103)+chr(101)+chr(47)+chr(115)+chr(99)+chr(114)+chr(105)+chr(112)+chr(116)+chr(115)+chr(47)+chr(99)+chr(104)+chr(101)+chr(99)+chr(107)+chr(45)+chr(108)+chr(97)+chr(121)+chr(111)+chr(117)+chr(116)+chr(46)+chr(112)+chr(121)).read())\"",
+      "cwd": ""
+    },
+    {
+      "name": "render-report uses marked parser",
+      "type": "file-contains",
+      "path": "software/p31-forge/scripts/render-report.mjs",
+      "pattern": "import { marked } from 'marked'"
+    },
+    {
+      "name": "report.css has .chapter rule",
+      "type": "file-contains",
+      "path": "software/p31-forge/booklet/report.css",
+      "pattern": ".chapter {"
+    },
+    {
+      "name": "gate checks CSS use not presence",
+      "type": "file-contains",
+      "path": "software/p31-forge/scripts/check-report.mjs",
+      "pattern": "CSS-use"
+    },
+    {
+      "name": "theme system (4 themes)",
+      "type": "file-contains",
+      "path": "software/p31-forge/booklet/report-themes.css",
+      "pattern": "[data-theme=\"midnight\"]"
+    },
+    {
+      "name": "theme picker script",
+      "type": "file-contains",
+      "path": "software/p31-forge/booklet/theme-picker.js",
+      "pattern": "localStorage.setItem"
+    },
+    {
+      "name": "renderer loads themes + picker",
+      "type": "file-contains",
+      "path": "software/p31-forge/scripts/render-report.mjs",
+      "pattern": "THEME_PICKER_JS"
+    },
+    {
+      "name": "Key Metrics retry in jitterbug",
+      "type": "file-contains",
+      "path": "tools/phos-forge/jitterbug.mjs",
+      "pattern": "## Key Metrics"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+
+      - name: Enforce design tokens (no hardcoded hex outside Three.js/Canvas)
+        run: |
+          echo "Checking for hardcoded hex colors in src..."
+          HEX_COUNT=$(grep -Er "#[0-9a-fA-F]{6}" src --include="*.tsx" --include="*.css" \
+            | grep -v "// " \
+            | grep -v "import " \
+            | grep -v "@media" \
+            | grep -v "var(--" \
+            | grep -v "THREE\." \
+            | grep -v "new THREE" \
+            | grep -v "Canvas\|ctx\." \
+            | wc -l)
+          echo "Hardcoded hex count (excluding Three.js/Canvas): $HEX_COUNT"
+          if [ "$HEX_COUNT" -gt 0 ]; then
+            echo "FAIL: Hardcoded hex colors found outside Three.js/Canvas. Migrate to --p31-* tokens."
+            grep -Er "#[0-9a-fA-F]{6}" src --include="*.tsx" --include="*.css" \
+              | grep -v "// " \
+              | grep -v "import " \
+              | grep -v "@media" \
+              | grep -v "var(--" \
+              | grep -v "THREE\." \
+              | grep -v "new THREE" \
+              | grep -v "Canvas\|ctx\." \
+              | head -20
+            exit 1
+          fi
+          echo "PASS: No hardcoded hex colors found outside Three.js/Canvas."
+
+      # Deploy on push to main (requires CLOUDFLARE_API_TOKEN secret)
+      - if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: pnpm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      # E2E verify suite runs against the live production deploy (with retry)
+      - if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          for attempt in 1 2 3; do
+            echo "E2E attempt $attempt/3..."
+            if node scripts/verify-shell.cjs; then
+              echo "E2E passed on attempt $attempt"
+              exit 0
+            fi
+            echo "E2E failed on attempt $attempt"
+            if [ "$attempt" -lt 3 ]; then sleep 10; fi
+          done
+          echo "E2E failed after 3 attempts"
+          exit 1
+        env:
+          CI: true
+
+      # Visual regression
+      - if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: VISUAL_TEST=1 node scripts/verify-shell.cjs
+        env:
+          CI: true

@@ -1,0 +1,61 @@
+{
+  "name": "@p31ca/mcp-membrane",
+  "version": "1.0.0",
+  "description": "MCP server for post-deploy verification — DORA metrics, deploy checks, gamified XP/LOVE, and artifact minting",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "bin": {
+    "mcp-membrane": "./dist/server.js"
+  },
+  "scripts": {
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "build": "tsc",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "@types/node": "^20.14.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "P31 Labs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/p31labs/mcp-membrane"
+  },
+  "homepage": "https://github.com/p31labs/mcp-membrane#readme",
+  "bugs": {
+    "url": "https://github.com/p31labs/mcp-membrane/issues"
+  },
+  "sideEffects": false,
+  "keywords": [
+    "p31",
+    "mcp",
+    "membrane",
+    "dora",
+    "deploy",
+    "verification",
+    "gamification"
+  ]
+}

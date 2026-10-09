@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="Molecule animated icon">
+  <title>Molecule / Atom</title>
+  <desc>A central nucleus with elliptical orbits and rotating electrons representing bonding and quantum mechanics.</desc>
+  <style>
+    .mo-orb-s { fill: none; stroke: var(--p31-accent-violet, #A78BFA); stroke-width: 1.5; opacity: 0.35; }
+    .mo-sys { transform-origin: 100px 100px; animation: moSpin 30s infinite linear; }
+    .mo-core-p { fill: var(--p31-accent-green, #34D399); transform-origin: 100px 100px; animation: moPulse 2.5s infinite alternate ease-in-out; }
+    .mo-elec-n { fill: var(--p31-text, #F5F5F7); opacity: 0.9; filter: drop-shadow(0 0 4px var(--p31-accent-green, #34D399)); }
+    @keyframes moSpin { to { transform: rotate(360deg); } }
+    @keyframes moPulse { 0% { transform: scale(0.9); filter: drop-shadow(0 0 4px var(--p31-accent-green, #34D399)); } 100% { transform: scale(1.12); filter: drop-shadow(0 0 14px var(--p31-accent-green, #34D399)); } }
+    @media (prefers-reduced-motion: reduce) { .mo-sys, .mo-core-p { animation: none; } .mo-core-p { transform: scale(1); opacity: 0.8; } }
+  </style>
+  <g class="mo-sys">
+    <ellipse cx="100" cy="100" rx="75" ry="25" class="mo-orb-s"/>
+    <ellipse cx="100" cy="100" rx="75" ry="25" class="mo-orb-s" transform="rotate(60 100 100)"/>
+    <ellipse cx="100" cy="100" rx="75" ry="25" class="mo-orb-s" transform="rotate(120 100 100)"/>
+    <circle cx="175" cy="100" r="4.5" class="mo-elec-n"/>
+    <circle cx="62" cy="35" r="4.5" class="mo-elec-n"/>
+    <circle cx="62" cy="165" r="4.5" class="mo-elec-n"/>
+  </g>
+  <circle cx="100" cy="100" r="14" class="mo-core-p"/>
+</svg>

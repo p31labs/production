@@ -1,0 +1,20 @@
+const { chromium } = require('playwright');
+(async () => {
+  const browser = await chromium.launch({ headless: true });
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  const all=[];
+  page.on('console', msg => all.push(msg.type()+': '+(msg.text()||'').slice(0,400)));
+  page.on('pageerror', e => all.push('PAGEERR: '+e.message.slice(0,1500)));
+  await page.goto('https://p31-shell.trimtab-signal.workers.dev/cockpit', { waitUntil: 'networkidle', timeout: 45000 }).catch(e=>all.push('goto: '+e.message));
+  await page.waitForTimeout(3000);
+  const title = await page.title().catch(()=>'(n/a)');
+  const hasCockpit = await page.$('.cockpit, .ship-root, .cockpit-view').catch(()=>null);
+  const bodySnippet = await page.evaluate(()=>document.body.innerText.slice(0,300)).catch(()=>'(n/a)');
+  console.log('TITLE:', title);
+  console.log('cockpit element present:', !!hasCockpit);
+  console.log('BODY:', bodySnippet.replace(/\n+/g,' / '));
+  console.log('=== ALL CONSOLE ('+all.length+') ===');
+  console.log(all.join('\n'));
+  await browser.close();
+})().catch(e=>{console.error('SCRIPT ERR', e.stack); process.exit(1);});

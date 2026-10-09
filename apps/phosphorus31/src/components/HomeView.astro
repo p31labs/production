@@ -1,0 +1,284 @@
+---
+import { SITE_DATA } from '../data/site-data';
+---
+
+<main class="animate-[fadeIn_0.4s_ease-out]">
+  {/* HERO SECTION */}
+  <section class="relative max-w-7xl mx-auto px-6 py-20 md:py-32 flex flex-col-reverse md:flex-row items-center gap-16">
+    <div class="flex-1 space-y-8 z-10">
+      <div class="inline-block bg-quantum-violet/20 text-quantum-violet font-bold text-xs px-4 py-1.5 rounded-full border border-quantum-violet/40">
+        Evidence-Based Assistive Technology
+      </div>
+      <h1 class="text-5xl md:text-7xl font-heading font-black leading-[1.1] text-white">
+        Technology that moves at the <span class="text-quantum-cyan">speed of your child's brain.</span>
+      </h1>
+      <p class="text-lg md:text-xl text-cloud/70 max-w-xl">
+        <strong class="text-quantum-cyan">Bottom Line Up Front:</strong> We build free, open-source tools for neurodivergent families to manage energy, facilitate co-parenting, and foster connection without sensory overload.
+      </p>
+      <div class="flex flex-col sm:flex-row flex-wrap gap-4 pt-4">
+        <a href="/products" class="bg-quantum-violet hover:bg-quantum-violet/80 text-white font-bold text-lg py-4 px-8 rounded-2xl shadow-lg transition-transform hover:-translate-y-1 text-center no-underline">
+          Find Tools for My Family
+        </a>
+        <a href="https://p31ca.org/" target="_blank" rel="noopener noreferrer" class="bg-quantum-cyan/20 hover:bg-quantum-cyan/30 text-quantum-cyan font-bold text-lg py-4 px-8 rounded-2xl shadow-md transition-transform hover:-translate-y-1 text-center no-underline border-2 border-quantum-cyan/50">
+          Technical Hub ↗
+        </a>
+        <a href="https://discord.gg/uYW5rTCuZ" target="_blank" rel="noopener noreferrer" class="bg-surface2 hover:bg-surface text-cloud font-bold text-lg py-4 px-8 rounded-2xl border-2 border-cloud/10 transition-colors text-center no-underline">
+          Join Discord
+        </a>
+      </div>
+    </div>
+
+    {/* Quantum Illustration — K4 Tetrahedron */}
+    <div class="flex-1 relative w-full h-[400px] flex items-center justify-center">
+      <svg class="k4-mesh" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="K4 tetrahedron" style="width: 280px; height: 280px;">
+        <defs>
+          <filter id="k4-glow-cyan" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+          <filter id="k4-glow-violet" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="8" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+          <filter id="k4-chromatic" x="-20%" y="-20%" width="140%" height="140%">
+            <feOffset in="SourceGraphic" dx="1" dy="0" result="red" />
+            <feOffset in="SourceGraphic" dx="-1" dy="0" result="blue" />
+            <feMerge><feMergeNode in="red" /><feMergeNode in="SourceGraphic" /><feMergeNode in="blue" /></feMerge>
+          </filter>
+          <radialGradient id="k4-orbital-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.6" />
+            <stop offset="100%" stop-color="#00f0ff" stop-opacity="0" />
+          </radialGradient>
+          <radialGradient id="k4-superposition" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#b53cff" stop-opacity="0.9" />
+            <stop offset="50%" stop-color="#00f0ff" stop-opacity="0.5" />
+            <stop offset="100%" stop-color="#b53cff" stop-opacity="0" />
+          </radialGradient>
+          <linearGradient id="k4-edge-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#b53cff" />
+            <stop offset="50%" stop-color="#00f0ff" />
+            <stop offset="100%" stop-color="#ffd700" />
+          </linearGradient>
+        </defs>
+        <ellipse cx="150" cy="150" rx="120" ry="80" fill="url(#k4-orbital-glow)" opacity="0.3" transform="rotate(30 150 150)">
+          <animateTransform attributeName="transform" type="rotate" from="30 150 150" to="390 150 150" dur="12s" repeatCount="indefinite" />
+        </ellipse>
+        <ellipse cx="150" cy="150" rx="100" ry="70" fill="url(#k4-orbital-glow)" opacity="0.2" transform="rotate(-45 150 150)">
+          <animateTransform attributeName="transform" type="rotate" from="-45 150 150" to="315 150 150" dur="18s" repeatCount="indefinite" />
+        </ellipse>
+        <ellipse cx="150" cy="150" rx="80" ry="60" fill="url(#k4-orbital-glow)" opacity="0.15" transform="rotate(90 150 150)">
+          <animateTransform attributeName="transform" type="rotate" from="90 150 150" to="450 150 150" dur="24s" repeatCount="indefinite" />
+        </ellipse>
+        <g stroke="url(#k4-edge-gradient)" stroke-width="2.5" fill="none" filter="url(#k4-glow-cyan)">
+          <line x1="150" y1="30" x2="250" y2="210"><animate attributeName="stroke-dasharray" values="10 20; 20 10; 10 20" dur="3s" repeatCount="indefinite" /><animate attributeName="stroke-dashoffset" values="0; -30" dur="3s" repeatCount="indefinite" /></line>
+          <line x1="250" y1="210" x2="50" y2="210"><animate attributeName="stroke-dasharray" values="8 24; 24 8; 8 24" dur="4s" repeatCount="indefinite" /><animate attributeName="stroke-dashoffset" values="0; -32" dur="4s" repeatCount="indefinite" /></line>
+          <line x1="50" y1="210" x2="150" y2="30"><animate attributeName="stroke-dasharray" values="12 18; 18 12; 12 18" dur="3.5s" repeatCount="indefinite" /><animate attributeName="stroke-dashoffset" values="0; -30" dur="3.5s" repeatCount="indefinite" /></line>
+          <line x1="150" y1="30" x2="150" y2="140"><animate attributeName="stroke-dasharray" values="6 30; 30 6; 6 30" dur="5s" repeatCount="indefinite" /><animate attributeName="stroke-dashoffset" values="0; -36" dur="5s" repeatCount="indefinite" /></line>
+          <line x1="250" y1="210" x2="150" y2="140"><animate attributeName="stroke-dasharray" values="14 16; 16 14; 14 16" dur="2.8s" repeatCount="indefinite" /><animate attributeName="stroke-dashoffset" values="0; -30" dur="2.8s" repeatCount="indefinite" /></line>
+          <line x1="50" y1="210" x2="150" y2="140"><animate attributeName="stroke-dasharray" values="10 22; 22 10; 10 22" dur="3.2s" repeatCount="indefinite" /><animate attributeName="stroke-dashoffset" values="0; -32" dur="3.2s" repeatCount="indefinite" /></line>
+        </g>
+        <circle cx="150" cy="30" r="14" fill="url(#k4-superposition)" filter="url(#k4-chromatic)"><animate attributeName="r" values="12; 16; 12" dur="2s" repeatCount="indefinite" /></circle>
+        <circle cx="250" cy="210" r="14" fill="url(#k4-superposition)" filter="url(#k4-chromatic)"><animate attributeName="r" values="14; 18; 14" dur="2.5s" repeatCount="indefinite" /></circle>
+        <circle cx="50" cy="210" r="14" fill="url(#k4-superposition)" filter="url(#k4-chromatic)"><animate attributeName="r" values="13; 17; 13" dur="2.2s" repeatCount="indefinite" /></circle>
+        <circle cx="150" cy="140" r="20" fill="url(#k4-superposition)" filter="url(#k4-glow-violet)"><animate attributeName="fill" values="#b53cff; #00f0ff; #b53cff" dur="1.5s" repeatCount="indefinite" /><animate attributeName="r" values="18; 24; 18" dur="1.5s" repeatCount="indefinite" /></circle>
+        <g fill="#ffffff" opacity="0.8">
+          <circle cx="150" cy="15" r="2"><animate attributeName="cx" values="150; 250; 150" dur="6s" repeatCount="indefinite" /><animate attributeName="cy" values="30; 210; 30" dur="6s" repeatCount="indefinite" /></circle>
+          <circle cx="250" cy="210" r="2"><animate attributeName="cx" values="250; 50; 250" dur="7s" repeatCount="indefinite" /><animate attributeName="cy" values="210; 210; 210" dur="7s" repeatCount="indefinite" /></circle>
+          <circle cx="50" cy="210" r="2"><animate attributeName="cx" values="50; 150; 50" dur="5s" repeatCount="indefinite" /><animate attributeName="cy" values="210; 30; 210" dur="5s" repeatCount="indefinite" /></circle>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  {/* METRICS BAR */}
+  <section class="bg-surface text-white py-12">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/10">
+      <div class="text-center">
+        <div class="text-4xl font-black font-heading text-quantum-gold mb-2">{SITE_DATA.metrics.bondingTestCount}</div>
+        <div class="text-sm font-medium text-cloud/80 uppercase tracking-widest">BONDING Tests</div>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl font-black font-heading text-quantum-cyan mb-2">100%</div>
+        <div class="text-sm font-medium text-cloud/80 uppercase tracking-widest">Open Source</div>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl font-black font-heading text-quantum-violet mb-2">{SITE_DATA.metrics.phosSurfaces}</div>
+        <div class="text-sm font-medium text-cloud/80 uppercase tracking-widest">Hub + Suite Routes</div>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl font-black font-heading text-quantum-green mb-2">$0</div>
+        <div class="text-sm font-medium text-cloud/80 uppercase tracking-widest">Cost to Families</div>
+      </div>
+    </div>
+  </section>
+
+  {/* FAMILY NEEDS GRID */}
+  <section class="max-w-7xl mx-auto px-6 py-24">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-heading font-black text-white mb-4">What does your family need today?</h2>
+      <p class="text-lg text-cloud/60 max-w-2xl mx-auto">We organize our tools by the actual challenges neurodivergent families face, not by clinical terminology.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <a href="https://bonding.p31ca.org" target="_blank" rel="noopener noreferrer" class="glass-box p-8 rounded-3xl border-t-4 border-t-quantum-cyan hover:shadow-xl transition-shadow cursor-pointer group no-underline block">
+        <div class="w-14 h-14 bg-quantum-cyan/10 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">&#x269B;&#xFE0F;</div>
+        <h3 class="font-heading font-bold text-2xl mb-3 text-white">Remote Connection</h3>
+        <p class="text-cloud/70 mb-6 text-sm">Tools for co-parents and families separated by distance. Build meaningful memories when you can't be in the same room.</p>
+        <div class="text-quantum-cyan font-bold flex items-center gap-2">Launch BONDING <span class="text-xl">&#x2192;</span></div>
+      </a>
+
+      <a href="https://p31ca.org/ede-about.html" target="_blank" rel="noopener noreferrer" class="glass-box p-8 rounded-3xl border-t-4 border-t-quantum-violet hover:shadow-xl transition-shadow cursor-pointer group no-underline block">
+        <div class="w-14 h-14 bg-quantum-violet/10 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">&#x2B21;</div>
+        <h3 class="font-heading font-bold text-2xl mb-3 text-white">Cognitive Prosthetics</h3>
+        <p class="text-cloud/70 mb-6 text-sm">The EDE: a browser-native IDE with Jitterbug Compiler, spoon tracking, Samson's Law entropy linter, and 4-tier progressive disclosure. Zero npm. Works offline.</p>
+        <div class="text-quantum-violet font-bold flex items-center gap-2">Explore EDE <span class="text-xl">&#x2192;</span></div>
+      </a>
+
+      <a href="https://p31ca.org/buffer-about.html" target="_blank" rel="noopener noreferrer" class="glass-box p-8 rounded-3xl border-t-4 border-t-quantum-gold hover:shadow-xl transition-shadow cursor-pointer group no-underline block">
+        <div class="w-14 h-14 bg-quantum-gold/20 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">&#x1F6E1;&#xFE0F;</div>
+        <h3 class="font-heading font-bold text-2xl mb-3 text-white">Communication Shields</h3>
+        <p class="text-cloud/70 mb-6 text-sm">AI-powered tools that strip emotional hostility from high-conflict emails and texts. The Fawn Guard Buffer detects passive-aggression, scores voltage, activates protective protocols.</p>
+        <div class="text-quantum-gold font-bold flex items-center gap-2">See The Buffer <span class="text-xl">&#x2192;</span></div>
+      </a>
+    </div>
+  </section>
+
+  {/* ONE ORG, THREE DOORS — vision bridge (see docs/SITE_MAP_AND_OWNERSHIP.md) */}
+  <section class="bg-surface text-cloud py-16 border-y border-white/5">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <div class="inline-block bg-quantum-cyan/20 text-quantum-cyan font-bold text-xs px-4 py-1.5 rounded-full border border-quantum-cyan/40 mb-4">
+          One organization, three doors
+        </div>
+        <h2 class="text-3xl md:text-4xl font-heading font-black text-white mb-3">Same mission — different entry points</h2>
+        <p class="text-cloud/70 max-w-2xl mx-auto">
+          Trust and fundraising live here. Tools, repos, and fleet status live on the technical hub. Authoritative mesh state and agents run on Cloudflare Workers (linked from the hub, not duplicated on static pages).
+        </p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="rounded-2xl bg-surface/5 border border-white/10 p-6">
+          <div class="text-quantum-gold font-heading font-bold text-lg mb-2">Nonprofit portal</div>
+          <p class="text-sm text-cloud/75 mb-4">Mission, donate, research narrative, transparency — you are here.</p>
+          <a href="/donate" class="text-quantum-violet font-bold text-sm hover:text-quantum-violet/80 no-underline">Donate →</a>
+        </div>
+        <div class="rounded-2xl bg-quantum-cyan/10 border border-quantum-cyan/30 p-6">
+          <div class="text-quantum-cyan font-heading font-bold text-lg mb-2">Technical hub</div>
+          <p class="text-sm text-cloud/75 mb-4">Hub cards, static apps, Production Suite links, command-center fleet strip.</p>
+          <a href="https://p31ca.org/" target="_blank" rel="noopener noreferrer" class="text-white font-bold text-sm hover:underline no-underline">p31ca.org ↗</a>
+        </div>
+        <div class="rounded-2xl bg-surface/5 border border-white/10 p-6">
+          <div class="text-cloud font-heading font-bold text-lg mb-2">Edge runtime</div>
+          <p class="text-sm text-cloud/75 mb-4">K₄ cage, agent hub, Carrie, Fawn API — Wrangler deploys; KV is source of truth for mesh.</p>
+          <a href="https://github.com/p31labs/andromeda/blob/main/docs/SITE_MAP_AND_OWNERSHIP.md" target="_blank" rel="noopener noreferrer" class="text-quantum-cyan font-bold text-sm hover:text-quantum-cyan/80 no-underline">Site map &amp; ownership ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* RESEARCH / ZENODO DOIs */}
+  <section class="bg-gradient-to-br from-surface via-surface2 to-surface py-20">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <div class="inline-block bg-quantum-cyan/20 text-quantum-cyan font-bold text-sm px-4 py-1.5 rounded-full border border-quantum-cyan/30 mb-4">
+          Peer-Reviewed Publications
+        </div>
+        <h2 class="text-3xl md:text-4xl font-heading font-black text-white mb-4">Published Research</h2>
+        <p class="text-white/60 max-w-2xl mx-auto">
+          Mathematical frameworks grounding the P31 ecosystem. Both publications open-access on Zenodo.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        <div class="bg-surface/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-quantum-cyan/30 transition-colors">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="bg-quantum-cyan text-void text-xs font-bold px-3 py-1 rounded-full">DOI</span>
+            <span class="text-white/40 text-xs font-mono">10.5281/zenodo.19004485</span>
+          </div>
+          <h3 class="text-xl font-heading font-bold text-white mb-3">Tetrahedron Protocol (K4)</h3>
+          <p class="text-white/60 text-sm mb-4 leading-relaxed">
+            Geometric proof that decentralized K4 topology is inherently more stable than centralized systems. 280+ views, 240+ downloads. Includes open-source implementation.
+          </p>
+          <a href="https://doi.org/10.5281/zenodo.19004485" target="_blank" rel="noopener noreferrer" class="text-quantum-cyan text-sm font-bold hover:text-quantum-cyan/80">
+            Read on Zenodo &#x2192;
+          </a>
+        </div>
+
+        <div class="bg-surface/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-quantum-cyan/30 transition-colors">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="bg-quantum-cyan text-void text-xs font-bold px-3 py-1 rounded-full">DOI</span>
+            <span class="text-white/40 text-xs font-mono">10.5281/zenodo.19411363</span>
+          </div>
+          <h3 class="text-xl font-heading font-bold text-white mb-3">Genesis Whitepaper v1.1</h3>
+          <p class="text-white/60 text-sm mb-4 leading-relaxed">
+            SIC-POVM measurement framework, EDE architecture, Q Distribution spoon tracking, Samson's Law entropy formalization. Six implemented systems.
+          </p>
+          <a href="https://doi.org/10.5281/zenodo.19411363" target="_blank" rel="noopener noreferrer" class="text-quantum-cyan text-sm font-bold hover:text-quantum-cyan/80">
+            Read on Zenodo &#x2192;
+          </a>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <a href="/research" class="inline-flex items-center gap-2 bg-quantum-cyan hover:bg-quantum-cyan/80 text-void font-bold py-3 px-6 rounded-xl transition-colors no-underline">
+          All Publications & White Papers &#x2192;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* COMMUNITY */}
+  <section class="bg-surface2 py-20 border-y border-white/5">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-heading font-black text-white mb-4">Join the Community</h2>
+      <p class="text-cloud/70 max-w-xl mx-auto mb-10">
+        Discord server for neurodivergent builders, parents, and researchers. Ko-fi for those who want to fund the work directly.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="https://discord.gg/uYW5rTCuZ" target="_blank" rel="noopener noreferrer" class="bg-quantum-violet hover:bg-quantum-violet/80 text-white font-bold py-3 px-8 rounded-xl transition-colors no-underline">
+          Join Discord
+        </a>
+        <a href="https://ko-fi.com/trimtab69420" target="_blank" rel="noopener noreferrer" class="bg-quantum-gold hover:bg-quantum-gold/80 text-void font-bold py-3 px-8 rounded-xl transition-colors no-underline">
+          Support on Ko-fi
+        </a>
+        <a href="https://github.com/p31labs" target="_blank" rel="noopener noreferrer" class="bg-surface hover:bg-surface2 text-cloud font-bold py-3 px-8 rounded-xl transition-colors no-underline border border-cloud/10">
+          GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* GLASS BOX ETHOS */}
+  <section class="bg-void/50 py-24">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-heading font-black text-white mb-8">The Glass Box Ethos</h2>
+      <p class="text-xl text-cloud/80 leading-relaxed mb-10">
+        Modern assistive tech is often locked behind expensive medical paywalls and proprietary black boxes. <strong class="text-quantum-cyan">We believe accessibility is a human right.</strong> P31 Labs operates with absolute transparency. You can see our code, our bank accounts, and our physical hardware blueprints.
+      </p>
+      <a href="/transparency" class="inline-block bg-surface2 text-quantum-cyan font-bold py-3 px-8 rounded-xl shadow-md hover:bg-surface/10 transition-colors no-underline border border-quantum-cyan/20">
+        Open the Glass Box
+      </a>
+    </div>
+  </section>
+
+  {/* DONATE CTA */}
+  <section class="bg-gradient-to-br from-quantum-violet via-surface to-quantum-cyan py-20">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <div class="text-quantum-gold font-bold tracking-widest uppercase text-sm mb-4">Support P31 Labs</div>
+      <h2 class="text-3xl md:text-4xl font-heading font-black text-white mb-6">Every atom placed is a connection.</h2>
+      <p class="text-lg text-white/80 max-w-2xl mx-auto mb-10">
+        Your donation directly funds free, open-source assistive technology for neurodivergent families. No middleman. No paywall. Just tools that work.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/donate" class="bg-quantum-violet hover:bg-quantum-violet/80 text-white font-bold text-lg py-4 px-10 rounded-2xl shadow-lg transition-transform hover:-translate-y-1 no-underline">
+          Donate via PayPal
+        </a>
+        <a href="https://ko-fi.com/trimtab69420" target="_blank" rel="noopener noreferrer" class="bg-surface/10 hover:bg-surface/20 text-white font-bold text-lg py-4 px-10 rounded-2xl border-2 border-white/20 transition-colors no-underline">
+          Ko-fi (0% fee)
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+

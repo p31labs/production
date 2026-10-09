@@ -1,0 +1,21 @@
+name = "swarm-router"
+main = "src/index.ts"
+compatibility_date = "2026-07-21"
+compatibility_flags = ["nodejs_compat"]
+
+[[routes]]
+pattern = "mesh.p31ca.org/*"
+zone_name = "p31ca.org"
+
+[observability]
+enabled = true
+head_sampling_rate = 0.1
+
+# Service bindings for the K4 router vertices.
+[[services]]
+binding = "GATEWAY"
+service = "mcp-x402-gateway"
+
+[[services]]
+binding = "PHOS_AI_PROXY"
+service = "phos-ai-proxy"

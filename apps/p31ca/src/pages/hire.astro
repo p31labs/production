@@ -1,0 +1,126 @@
+---
+/**
+ * /hire — the one-page offer.
+ *
+ * The transducer AND the sale. One page an average human can feel in 3
+ * seconds, explore in 30, and act on in 3 minutes. Everything else (the 8
+ * flagship pages, WIMSE, the registry) is the credibility layer behind this.
+ *
+ * Offer: production MCP servers on Cloudflare Workers, $2,500 fixed, 3-day
+ * delivery. Verified market: MCP devs bill $60–120/hr; builds $1,000–3,000.
+ */
+import MarketingShell from '../layouts/MarketingShell.astro';
+
+import ExplorableChain from '../components/islands/ExplorableChain.tsx';
+import Footer from '../components/marketing/Footer.astro';
+---
+
+<MarketingShell
+  title="Hire P31 — Production MCP Servers on Cloudflare Workers"
+  description="I build production MCP servers on Cloudflare Workers — with post-quantum auth and a hash-chained audit. $2,500 fixed, 3-day delivery."
+  theme="sunlight"
+>
+  <main id="main-content" class="section">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+
+      {/* ── HERO: human first, one offer ── */}
+      <section class="pt-24 pb-16 md:pt-32 md:pb-20">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div class="space-y-6">
+            <p class="font-mono text-xs tracking-[0.2em] uppercase" style="color: var(--p31-accent);">
+              Production MCP servers · Cloudflare Workers · Post-quantum auth
+            </p>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight" style="color: var(--p31-text); letter-spacing: -0.02em;">
+              A production MCP server, built right, in 3 days.
+            </h1>
+            <p class="text-lg md:text-xl leading-relaxed" style="color: var(--p31-text-secondary);">
+              I turn a REST API into a governed MCP server that Claude, Gemini, and every
+              other agent can use — with capability tokens and a tamper-evident audit trail
+              your security team will actually like.
+            </p>
+            <div class="flex flex-col sm:flex-row items-start gap-4 pt-2">
+              <a href="mailto:willyj1587@gmail.com?subject=MCP%20server%20build"
+                 class="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-bold no-underline"
+                 style="background: var(--p31-accent); color: #000;">
+                Start a build →
+              </a>
+              <div class="px-6 py-3.5 rounded-lg border" style="border-color: var(--p31-glass-border);">
+                <div class="text-xs uppercase tracking-wider" style="color: var(--p31-text-tertiary);">Fixed price</div>
+                <div class="text-xl font-bold" style="color: var(--p31-text);">$2,500</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Live proof panel */}
+          <div class="space-y-4">
+            <div class="rounded-2xl border p-5" style="border-color: var(--p31-glass-border); background: var(--p31-surface);">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="w-2 h-2 rounded-full" style="background: #34D399; box-shadow: 0 0 6px rgba(52,211,153,0.6);" aria-hidden="true"></span>
+                <span class="text-sm font-semibold" style="color: var(--p31-text);">Live proof — I run an MCP registry</span>
+              </div>
+              <ul class="space-y-2 text-sm">
+                <li><a href="https://mcp-registry.trimtab-signal.workers.dev" target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">mcp-registry.trimtab-signal.workers.dev</a></li>
+                <li><a href="https://marketplace-mcp.trimtab-signal.workers.dev" target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">marketplace-mcp.trimtab-signal.workers.dev</a></li>
+                <li><a href="https://loom.p31ca.org/api/loom-public/verify" target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">loom.p31ca.org/api/loom-public/verify</a></li>
+              </ul>
+            </div>
+            <div class="rounded-2xl border p-5" style="border-color: var(--p31-glass-border); background: var(--p31-surface);">
+              <div class="font-mono text-xs uppercase tracking-widest mb-3" style="color: var(--p31-text-tertiary);">What you get</div>
+              <div class="grid grid-cols-1 gap-2 text-sm" style="color: var(--p31-text);">
+                <span>· Working MCP server (Streamable HTTP)</span>
+                <span>· Capability-token auth, not naked API keys</span>
+                <span>· Hash-chained audit of every tool call</span>
+                <span>· Deployed to Cloudflare Workers</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── THE TRANSDUCER: explorable chain ── */}
+      <section class="mb-16">
+        <div class="max-w-3xl mx-auto">
+          <h2 class="text-2xl md:text-3xl font-bold text-center mb-2" style="color: var(--p31-text);">
+            What "hash-chained audit" actually means
+          </h2>
+          <p class="text-center mb-6" style="color: var(--p31-text-secondary);">
+            Try it. Change a block, watch the chain break, then verify.
+          </p>
+          <ExplorableChain client:load />
+        </div>
+      </section>
+
+      {/* ── THE OFFER DETAILS ── */}
+      <section class="mb-16">
+        <div class="grid md:grid-cols-3 gap-6">
+          {[
+            { n: '$2,500', t: 'Fixed price', d: 'No hourly meter. You know the cost up front.' },
+            { n: '3 days', t: 'Delivery', d: 'Working MCP server, deployed, with docs.' },
+            { n: '100%', t: 'Yours', d: 'Clean code, no lock-in. You own the server.' },
+          ].map((c) => (
+            <div class="glass-card p-6 rounded-xl text-center">
+              <div class="text-3xl font-extrabold mb-2" style="color: var(--p31-accent);">{c.n}</div>
+              <div class="font-semibold mb-1" style="color: var(--p31-text);">{c.t}</div>
+              <p class="text-sm" style="color: var(--p31-text-secondary);">{c.d}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section class="pb-16">
+        <div class="glass-card p-10 rounded-2xl text-center">
+          <h2 class="text-2xl md:text-3xl font-bold mb-4" style="color: var(--p31-text);">
+            One email. A working MCP server in 3 days.
+          </h2>
+          <a href="mailto:willyj1587@gmail.com?subject=MCP%20server%20build" class="inline-flex items-center gap-2 px-10 py-4 rounded-lg font-bold no-underline" style="background: var(--p31-accent); color: #000;">
+            willyj1587@gmail.com →
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+</MarketingShell>

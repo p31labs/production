@@ -1,0 +1,17 @@
+---
+/**
+ * FaqBody — renders a FAQ entry's markdown body (the extended answer).
+ *
+ * Astro content collections expose the body via render()'s `Content`
+ * component, which must be rendered as JSX (<Content />), not interpolated.
+ */
+import { render } from 'astro:content';
+
+interface Props {
+  entry: any;
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Content />

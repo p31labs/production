@@ -1,0 +1,7 @@
+{
+  "extends": "../template/tsconfig.json",
+  "compilerOptions": {
+    "types": ["@cloudflare/workers-types", "react", "react-dom"]
+  },
+  "include": ["src", "functions"]
+}

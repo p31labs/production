@@ -1,0 +1,23 @@
+{
+  "name": "@p31ca/mcp-registry",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build": "tsc --noEmit",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.0.0",
+    "typescript": "^5.9.0",
+    "vitest": "^2.1.0",
+    "wrangler": "^4.0.0"
+  },
+  "dependencies": {
+    "jose": "^5.9.0"
+  }
+}

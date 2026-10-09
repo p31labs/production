@@ -92,7 +92,7 @@ fixed the token gap that surfaced with it. What remains custom is listed below.
 - **What QPJ needs:** the Paper XI micro — two pools (Sovereignty vest /
   Performance spend), care-score gate, 7-day decay.
 - **Why product:** it's family memory, not chrome; `docs/14-LOVE-LEDGER.md`
-  documents it. See also `/home/p31/P31-local-workspace/docs/LOVE_LITEPAPER.md`.
+  documents it. See also `/home/p31/production/docs/LOVE_LITEPAPER.md`.
 
 ## Resolved — status token naming
 
@@ -107,7 +107,7 @@ reintroduced.
   in the root pnpm store, missing `motionScale`, `soundScale`, `contrastTarget`,
   `density`, `breathPattern`, `zeitgeber`).
 - **What QPJ uses:** `vendor/p31-sovereign-core-0.1.0.tgz`, packed from
-  `/home/p31/P31-local-workspace/packages/sovereign-core` (the canonical source).
+  `/home/p31/production/packages/sovereign-core` (the canonical source).
 - **Why product:** the canonical source is actively developed alongside QPJ and
   other portals. A registry publish would lag. The `link:` protocol was tried but
   is fragile across fresh clones and `pnpm install` runs. The vendored tarball
@@ -207,7 +207,7 @@ ships**, **what this portal needs instead**, **why**.
 ## Design-core version split: RESOLVED (2026-09-14)
 
 - **What the family ships:** `@p31ca/design-core@2.3.0` (canonical source:
-  `P31-local-workspace/packages/design-core`). Template declares 2.3.0.
+  `production/packages/design-core`). Template declares 2.3.0.
 - **What all portals use:** 2.3.0 vendored tarballs, current.
 - **Resolved:** children/teen/parent/meatspace synced to 2.3.0 via
   tarball copy + package.json update + pnpm install.

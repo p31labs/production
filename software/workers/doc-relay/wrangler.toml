@@ -1,0 +1,31 @@
+# p31-doc-relay — y-websocket relay for phos Docs.
+#
+# One Durable Object per room (document id). The DO holds the room's Yjs state
+# in memory, persists it to DO storage on every update, and relays the y-websocket
+# sync + awareness protocol to connected clients. Client rooms are addressed by
+# URL path: wss://<host>/<roomName>.
+#
+# Deploy: wrangler deploy
+# Client: set PUBLIC_PHOS_DOCS_WS_URL=https://p31-doc-relay.trimtab-signal.workers.dev
+#         in the phos build env to enable cross-device sync.
+
+name = "p31-doc-relay"
+main = "src/index.ts"
+compatibility_date = "2026-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[[durable_objects.bindings]]
+name = "DOC_RELAY"
+class_name = "DocRelayDO"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["DocRelayDO"]
+
+# Comma-separated origins allowed to reach this relay (OPTIONS/DELETE preflight).
+# Set to the phos app origin(s); '*' only for development.
+[vars]
+CORS_ALLOW_ORIGIN = "https://phos.p31ca.org"
+
+[observability]
+enabled = true

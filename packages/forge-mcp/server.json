@@ -1,0 +1,18 @@
+{
+  "name": "com.p31ca/forge-mcp",
+  "version": "0.1.0",
+  "description": "P31 Forge — themed, evidence-blocked document generation. Two-mode theming (hub: warm terracotta; scene: deep cyan). Every claim carries a source.",
+  "repository": "https://github.com/p31labs/P31-local-workspace",
+  "homepage": "https://p31ca.org",
+  "license": "MIT",
+  "transport": "stdio",
+  "tools": ["forge_health", "forge_brand", "forge_stylize", "forge_compile"],
+  "env": {
+    "FORGE_BASE_URL": {
+      "required": false,
+      "default": "https://p31-forge.trimtab-signal.workers.dev"
+    },
+    "FORGE_API_KEY": { "required": false },
+    "FORGE_OUT_DIR": { "required": false, "default": "./forge-out" }
+  }
+}

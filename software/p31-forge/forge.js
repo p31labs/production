@@ -1,0 +1,962 @@
+#!/usr/bin/env node
+/**
+ * P31 FORGE — Document Generation Engine
+ * =======================================
+ * Single-pipeline, content-driven document generation.
+ *
+ *   CONTENT PACK (JSON)  →  brand.js primitives  →  .docx  →  .pdf
+ *
+ * Content packs live under content/<domain>/... and specify:
+ *   - kind: court | letter | resolution | memo | grant | social
+ *   - metadata (title, date, case no, etc.)
+ *   - body: typed items (h1, h2, para, field, bullet, numbered, affects, timeline)
+ *
+ * Usage:
+ *   node forge.js compile <path/to/content-pack.json>   # Content-driven
+ *   node forge.js court "TITLE" "16th day of April, 2026" [--subtitle "..."]
+ *   node forge.js letter "RE: Subject" "April 14, 2026"
+ *   node forge.js paper --paper <id>     # Generate omnibus paper by ID (01-25)
+ *   node forge.js grant gates|nlnet|asan
+ *   node forge.js social "Post content" bluesky|mastodon|linkedin|all
+ *   node forge.js social-post <post-id>   # Generate docs from social post
+ *   node forge.js brand                  # Print brand constants
+ */
+
+const fs = require('fs');
+const path = require('path');
+const {
+  Document, Packer, Paragraph, TextRun, PageBreak,
+  AlignmentType, ShadingType, BorderStyle, WidthType
+} = require('docx');
+const B = require('./brand');
+const { publish, publishPack, CHANNELS } = require('./channels');
+
+// ═══════════════════════════════════════════════════════════════════
+// TYPED-BODY DISPATCHER — iterates content-pack body[] items
+// ═══════════════════════════════════════════════════════════════════
+
+/**
+ * Render a content-pack body[] into docx Paragraph/Table children.
+ * Supported item types:
+ *   { type: 'h1', text }                 — section heading
+ *   { type: 'h2', text }                 — subsection heading
+ *   { type: 'para', text }               — body paragraph
+ *   { type: 'field', label, value }      — indented label: value line
+ *   { type: 'bullet', text }             — coral bullet list item
+ *   { type: 'numbered', text }           — auto-numbered list item (per sibling run)
+ *   { type: 'affects', text }            — gray italic "Affects: ..." line
+ *   { type: 'timeline', entries: [...] } — date/event mini-table
+ *   { type: 'evidence', claim, value, source, verified } — source block
+ *        (the P31 evidence block: claim → value → source → verified date)
+ *
+ * Options:
+ *   headingColor: override for h1 (dark for court filings, coral for grants)
+ *   theme: 'scene' | 'hub' — resolves THEMES palette for accent/verified/muted
+ */
+function renderBody(items, opts = {}) {
+  const out = [];
+  const theme = B.THEMES[opts.theme] || null;
+  const headingColor = opts.headingColor || (theme ? theme.accent : B.COLORS.coral);
+  let numberedCounter = 0;
+  let lastType = null;
+
+  for (const item of items) {
+    // Reset numbered counter when non-numbered item appears between runs
+    if (item.type !== 'numbered' && lastType === 'numbered') {
+      numberedCounter = 0;
+    }
+
+    switch (item.type) {
+      case 'h1':
+        out.push(B.heading1(item.text, { color: headingColor }));
+        break;
+      case 'h2':
+        out.push(B.heading2(item.text, { color: B.COLORS.dark }));
+        break;
+      case 'para':
+        out.push(B.para(item.text));
+        break;
+      case 'field':
+        out.push(B.field(item.label, item.value));
+        break;
+      case 'bullet':
+        out.push(B.bullet(item.text));
+        break;
+      case 'numbered':
+        numberedCounter += 1;
+        out.push(B.numbered(item.text, numberedCounter));
+        break;
+      case 'affects':
+        out.push(B.affects(item.text));
+        break;
+      case 'evidence':
+        out.push(...renderEvidence(item, theme));
+        out.push(new Paragraph({ spacing: { after: 120 } }));
+        break;
+      case 'timeline':
+        out.push(B.timeline(item.entries));
+        // Add spacing paragraph after tables so next para breathes
+        out.push(new Paragraph({ spacing: { after: 120 } }));
+        break;
+      default:
+        console.warn(`[forge] Unknown body item type: ${item.type}`);
+    }
+    lastType = item.type;
+  }
+
+  return out;
+}
+
+/**
+ * Evidence block — the P31 credibility transducer.
+ * Renders as a bordered callout: "✓ claim — value" + mono source/verified lines.
+ * Per the deliverable skill: no claim without a source, no source without a
+ * date, no date without a verifiable URL.
+ */
+function renderEvidence(item, theme) {
+  const verifiedColor = theme ? theme.verified : B.COLORS.teal;
+  const mutedColor = theme ? theme.muted : B.COLORS.gray;
+  const borderColor = theme ? theme.accent : B.COLORS.coral;
+  const rows = [
+    new Paragraph({
+      border: { left: { style: BorderStyle.SINGLE, size: 12, color: borderColor } },
+      spacing: { before: 120, after: 40 },
+      shading: theme ? { type: ShadingType.SOLID, color: theme.surface } : undefined,
+      children: [
+        new TextRun({ text: '✓  ', color: verifiedColor, bold: true }),
+        new TextRun({ text: item.claim, color: verifiedColor, bold: true }),
+      ],
+    }),
+  ];
+  if (item.value) {
+    rows.push(new Paragraph({
+      indent: { left: 240 },
+      spacing: { after: 40 },
+      children: [new TextRun({ text: item.value, color: theme ? theme.body : B.COLORS.med })],
+    }));
+  }
+  if (item.source) {
+    rows.push(new Paragraph({
+      indent: { left: 240 },
+      spacing: { after: 40 },
+      children: [
+        new TextRun({ text: `Source: ${item.source}`, font: B.TYPE.mono, size: B.TYPE.tiny, color: mutedColor }),
+      ],
+    }));
+  }
+  if (item.verified) {
+    rows.push(new Paragraph({
+      indent: { left: 240 },
+      spacing: { after: 40 },
+      children: [
+        new TextRun({ text: `Verified: ${item.verified}`, font: B.TYPE.mono, size: B.TYPE.tiny, color: mutedColor }),
+      ],
+    }));
+  }
+  // The verification-cost + replay fields (work package WP-HET, M2): every
+  // evidence block must carry a replay command and a bounded verification
+  // cost so a human reviewer can see what to check and how long it takes
+  // BEFORE reading the prose. No claim without a replayable source.
+  if (item.replayCommand) {
+    rows.push(new Paragraph({
+      indent: { left: 240 },
+      spacing: { after: 40 },
+      children: [
+        new TextRun({ text: `Replay: ${item.replayCommand}`, font: B.TYPE.mono, size: B.TYPE.tiny, color: mutedColor }),
+      ],
+    }));
+  }
+  if (item.verificationCostMinutes) {
+    rows.push(new Paragraph({
+      indent: { left: 240 },
+      spacing: { after: 40 },
+      children: [
+        new TextRun({ text: `Verify: ~${item.verificationCostMinutes} min`, font: B.TYPE.mono, size: B.TYPE.tiny, color: theme ? theme.accent : B.COLORS.coral }),
+      ],
+    }));
+  }
+  return rows;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CONTENT-PACK RENDERERS (kind → Document)
+// ═══════════════════════════════════════════════════════════════════
+
+function renderCourt(pack) {
+  const children = [
+    ...B.courtCaption(pack.title, pack.subtitle),
+    ...(pack.preamble ? [B.para(pack.preamble)] : []),
+    // Court filings use dark headings (restrained, per SAMPLE_Court_Filing)
+    ...renderBody(pack.body || [], { headingColor: B.COLORS.dark, theme: pack.theme }),
+    ...B.signatureBlock(pack.date),
+    ...(pack.cert_of_service
+      ? B.certOfService(pack.date, pack.cert_of_service.extra)
+      : [])
+  ];
+  return new Document({ sections: [B.makeSection(children, { style: 'legal' })] });
+}
+
+function renderLetter(pack) {
+  const children = [];
+
+  // Date
+  children.push(B.para(pack.date, { after: 200 }));
+
+  // Via line
+  if (pack.via) {
+    children.push(B.para(pack.via, {
+      size: B.TYPE.small, color: B.COLORS.gray, italics: true, after: 0
+    }));
+  }
+
+  // Recipient block
+  (pack.recipient || []).forEach((line, i) => {
+    children.push(B.para(line, { after: i === pack.recipient.length - 1 ? 200 : 0 }));
+  });
+
+  // RE block (bold, dark)
+  if (pack.re && pack.re.length) {
+    pack.re.forEach((line, i) => {
+      children.push(B.para(line, {
+        bold: i === 0,
+        color: B.COLORS.dark,
+        after: i === pack.re.length - 1 ? 200 : 0
+      }));
+    });
+  }
+
+  // Salutation
+  if (pack.salutation) {
+    children.push(B.para(pack.salutation, { after: 160 }));
+  }
+
+  // Body — letters also use dark headings
+  children.push(...renderBody(pack.body || [], { headingColor: B.COLORS.dark, theme: pack.theme }));
+
+  // Closing
+  if (pack.closing) {
+    children.push(new Paragraph({
+      spacing: { before: 300, after: 60 },
+      children: [B.text(pack.closing)]
+    }));
+  }
+
+  // Signature
+  if (pack.signature) {
+    children.push(new Paragraph({ children: [B.text("_______________________________")] }));
+    children.push(new Paragraph({
+      spacing: { after: 20 },
+      children: [B.text(pack.signature.name, { bold: true, color: B.COLORS.dark })]
+    }));
+    (pack.signature.lines || []).forEach(line => {
+      children.push(new Paragraph({
+        spacing: { after: 0 },
+        children: [B.text(line, { size: B.TYPE.small, color: B.COLORS.gray })]
+      }));
+    });
+    children.push(new Paragraph({ spacing: { after: 200 } }));
+  }
+
+  // CC
+  (pack.cc || []).forEach(name => {
+    children.push(new Paragraph({
+      spacing: { after: 0 },
+      children: [B.text(`cc: ${name}`, {
+        size: B.TYPE.tiny, color: B.COLORS.gray, italics: true
+      })]
+    }));
+  });
+
+  return new Document({ sections: [B.makeSection(children, { style: 'legal' })] });
+}
+
+function renderResolution(pack) {
+  const { tokens } = resolveTheme(pack);
+  const accent = tokens.accent;
+  const children = [
+    B.para("P31 LABS, INC.", {
+      size: B.TYPE.h1, bold: true, color: accent,
+      align: AlignmentType.CENTER, after: 40
+    }),
+    B.para(pack.title || "BOARD RESOLUTION", {
+      size: B.TYPE.h2, bold: true, color: B.COLORS.dark,
+      align: AlignmentType.CENTER, after: 40
+    }),
+    B.para(`Adopted: ${pack.date}`, {
+      size: B.TYPE.small, color: B.COLORS.gray,
+      align: AlignmentType.CENTER, after: 200
+    }),
+    new Paragraph({
+      border: { bottom: { style: BorderStyle.SINGLE, size: 3, color: accent, space: 8 } },
+      spacing: { after: 300 }
+    }),
+    ...renderBody(pack.body || [], { headingColor: accent, theme: pack.theme }),
+    new Paragraph({ spacing: { before: 400, after: 60 }, children: [B.text("CERTIFICATION")] }),
+    B.para(`I, ${B.ENTITY.name}, Sole Incorporator of P31 Labs, Inc., hereby certify that the foregoing resolution was duly adopted on ${pack.date}.`),
+    new Paragraph({ spacing: { before: 200 }, children: [B.text("_______________________________")] }),
+    new Paragraph({
+      children: [B.text(B.ENTITY.name + ", Sole Incorporator", { bold: true, color: B.COLORS.dark })]
+    })
+  ];
+  return new Document({ sections: [B.makeSection(children, { style: 'org' })] });
+}
+
+function renderMemo(pack) {
+  const { tokens } = resolveTheme(pack);
+  const accent = tokens.accent;
+  const children = [
+    B.para("P31 LABS, INC.", {
+      size: B.TYPE.h1, bold: true, color: accent,
+      align: AlignmentType.CENTER, after: 200
+    }),
+    new Paragraph({
+      border: { bottom: { style: BorderStyle.SINGLE, size: 3, color: accent, space: 8 } },
+      spacing: { after: 200 }
+    }),
+    B.field("TO", pack.to || "[Recipient]"),
+    B.field("FROM", pack.from || B.ENTITY.name),
+    B.field("DATE", pack.date),
+    B.field("RE", pack.subject || pack.title || "[Subject]"),
+    new Paragraph({
+      border: { bottom: { style: BorderStyle.SINGLE, size: 1, color: B.COLORS.rule, space: 8 } },
+      spacing: { after: 200 }
+    }),
+    ...renderBody(pack.body || [], { headingColor: accent, theme: pack.theme })
+  ];
+  return new Document({ sections: [B.makeSection(children, { style: 'org' })] });
+}
+
+function renderPaper(pack) {
+  return new Document({
+    sections: [
+      B.makeSection(
+        [
+          { type: "h1", text: pack.title },
+          { type: "para", text: pack.abstract },
+          ...(pack.body || [])
+        ],
+        { style: "org" }
+      ),
+    ],
+  });
+}
+
+
+function renderGrant(pack) {
+  const { tokens } = resolveTheme(pack);
+  const accent = tokens.accent;
+  const children = [
+    B.para("P31 LABS, INC.", {
+      size: B.TYPE.h1, bold: true, color: accent,
+      align: AlignmentType.CENTER, after: 20
+    }),
+    B.para("GRANT APPLICATION", {
+      size: B.TYPE.h2, bold: true, color: B.COLORS.dark,
+      align: AlignmentType.CENTER, after: 40
+    }),
+    B.para(pack.title || pack.program, {
+      size: B.TYPE.small, color: B.COLORS.gray, italics: true,
+      align: AlignmentType.CENTER, after: 200
+    }),
+    new Paragraph({
+      border: { bottom: { style: BorderStyle.SINGLE, size: 3, color: accent, space: 8 } },
+      spacing: { after: 200 }
+    }),
+    B.field("Program", pack.title || pack.program),
+    ...(pack.amount ? [B.field("Amount", pack.amount)] : []),
+    ...(pack.deadline ? [B.field("Deadline", pack.deadline)] : []),
+    B.field("Applicant", B.ENTITY.org),
+    B.field("EIN", B.ENTITY.ein),
+    B.field("Contact", `${B.ENTITY.name} \u2022 ${B.ENTITY.orgEmail}`),
+    new Paragraph({ spacing: { after: 200 } }),
+    ...renderBody(pack.body || [], { headingColor: accent, theme: pack.theme })
+  ];
+  return new Document({ sections: [B.makeSection(children, { style: 'org' })] });
+}
+
+const RENDERERS = {
+  paper:      renderPaper,
+  court:      renderCourt,
+  letter:     renderLetter,
+  resolution: renderResolution,
+  memo:       renderMemo,
+  grant:      renderGrant
+};
+
+// ═══════════════════════════════════════════════════════════════════
+// THEME RESOLUTION — two-mode (scene | hub) from the content pack.
+// Content packs may set { theme: 'scene' | 'hub' }; default 'hub'
+// (warm editorial — the P31 public front door).
+// ═══════════════════════════════════════════════════════════════════
+function resolveTheme(pack) {
+  const mode = pack.theme === 'scene' ? 'scene' : 'hub';
+  return { mode, tokens: B.THEMES[mode] };
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// COMPILE — content pack → Document
+// ═══════════════════════════════════════════════════════════════════
+
+function compile(pack) {
+  const render = RENDERERS[pack.kind];
+  if (!render) {
+    throw new Error(
+      `Unknown content-pack kind: "${pack.kind}". ` +
+      `Valid: ${Object.keys(RENDERERS).join(', ')}`
+    );
+  }
+  return render(pack);
+}
+
+async function compileFile(packPath) {
+  const resolved = path.resolve(packPath);
+  if (!fs.existsSync(resolved)) {
+    throw new Error(`Content pack not found: ${resolved}`);
+  }
+  const pack = JSON.parse(fs.readFileSync(resolved, 'utf8'));
+  const doc = compile(pack);
+  const filename = pack.filename || path.basename(resolved, '.json') + '.docx';
+  const outDir = path.resolve(__dirname, 'out');
+  if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
+  const outPath = path.join(outDir, filename);
+  const buffer = await Packer.toBuffer(doc);
+  fs.writeFileSync(outPath, buffer);
+  return outPath;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// AD-HOC SCAFFOLD GENERATORS (for blank templates)
+// ═══════════════════════════════════════════════════════════════════
+
+function court(title, date, opts = {}) {
+  const children = [
+    ...B.courtCaption(title, opts.subtitle),
+    B.para("COMES NOW Defendant, " + B.ENTITY.nameFull + ", pro se, and respectfully submits the following:"),
+    B.heading1("I. [SECTION HEADING]", { color: B.COLORS.dark }),
+    B.para("[Body text goes here. Replace this placeholder with the substance of your filing.]"),
+    ...B.signatureBlock(date),
+    ...B.certOfService(date)
+  ];
+  return new Document({ sections: [B.makeSection(children, { style: 'legal' })] });
+}
+
+function letter(subject, date, opts = {}) {
+  const to = opts.to || {
+    name:    B.ENTITY.opposing,
+    firm:    B.ENTITY.opposingFirm,
+    address: "575 E. King Avenue",
+    city:    "Kingsland, Georgia 31548",
+    email:   B.ENTITY.opposingEmail
+  };
+  const children = [
+    B.para(date, { after: 200 }),
+    B.para(`Via Email: ${to.email}`, { size: B.TYPE.small, color: B.COLORS.gray, italics: true, after: 0 }),
+    B.para(to.name, { after: 0 }),
+    ...(to.firm ? [B.para(to.firm, { after: 0 })] : []),
+    B.para(to.address, { after: 0 }),
+    B.para(to.city, { after: 200 }),
+    B.para(`RE: ${subject}`, { bold: true, color: B.COLORS.dark, after: 200 }),
+    B.para(`Dear ${to.name.split(',')[0].split(' ').pop()},`),
+    B.para("[Letter body goes here.]"),
+    new Paragraph({ spacing: { before: 300, after: 60 }, children: [B.text("Respectfully,")] }),
+    new Paragraph({ children: [B.text("_______________________________")] }),
+    new Paragraph({ spacing: { after: 20 }, children: [B.text("William R. Johnson, Pro Se", { bold: true, color: B.COLORS.dark })] }),
+    ...[B.ENTITY.address, B.ENTITY.city, B.ENTITY.phone, B.ENTITY.email].map(
+      l => new Paragraph({ spacing: { after: 0 }, children: [B.text(l, { size: B.TYPE.small, color: B.COLORS.gray })] })
+    ),
+    new Paragraph({ spacing: { after: 200 } }),
+    ...(opts.cc || []).map(
+      name => new Paragraph({ spacing: { after: 0 }, children: [B.text(`cc: ${name}`, { size: B.TYPE.tiny, color: B.COLORS.gray, italics: true })] })
+    )
+  ];
+  return new Document({ sections: [B.makeSection(children, { style: 'legal' })] });
+}
+
+function corporate(type, date, opts = {}) {
+  if (type === 'resolution') {
+    return renderResolution({
+      title: "BOARD RESOLUTION",
+      date,
+      body: [
+        { type: "para", text: `WHEREAS, P31 Labs, Inc. is a Georgia domestic nonprofit corporation (EIN ${B.ENTITY.ein}); and` },
+        { type: "para", text: "WHEREAS, [state the reason for the resolution]; and" },
+        { type: "para", text: "NOW, THEREFORE, BE IT RESOLVED, that [state what is being resolved];" },
+        { type: "para", text: "FURTHER RESOLVED, that [additional resolved clauses as needed]." }
+      ]
+    });
+  }
+  if (type === 'memo') {
+    return renderMemo({
+      to: opts.to || "[Recipient]",
+      from: B.ENTITY.name,
+      date,
+      subject: opts.subject || "[Subject]",
+      body: [{ type: "para", text: "[Memo body goes here.]" }]
+    });
+  }
+  throw new Error(`Unknown corporate type: ${type}. Use: resolution, memo`);
+}
+
+function grant(program, opts = {}) {
+  const scaffolds = {
+    gates: {
+      program: "gates",
+      title: "Gates Foundation Grand Challenges: AI to Accelerate Charitable Giving",
+      deadline: "April 28, 2026, 11:30 AM PDT",
+      amount: "Up to $150,000",
+      sections: [
+        "Relevance to Challenge Area",
+        "Expected Impact",
+        "Feasibility and Methodology",
+        "Measurement of Success",
+        "Scalability Potential",
+        "Responsible AI Practices"
+      ]
+    },
+    nlnet_taler: {
+      program: "nlnet_taler",
+      title: "NLnet NGI Taler — Privacy-preserving digital payments",
+      deadline: "August 1, 2026, 12:00 CEST",
+      amount: "\u20AC5,000\u2013\u20AC50,000",
+      sections: [
+        "Integration with GNU Taler — How your project connects to Taler's payment system",
+        "Privacy Architecture — Data minimization, anonymity, auditability",
+        "Technical Implementation — Stack, timeline, deliverables",
+        "Open Source Compliance — License, dependencies, reproducibility",
+        "Ecosystem Impact — Who benefits and how"
+      ]
+    },
+    nlnet_fediversity: {
+      program: "nlnet_fediversity",
+      title: "NLnet NGI Fediversity — Reproducible hosting stack on Nix",
+      deadline: "August 1, 2026, 12:00 CEST",
+      amount: "\u20AC5,000\u2013\u20AC50,000",
+      sections: [
+        "Contribution to Fediversity — How you extend or integrate with Fediversity",
+        "Nix-based Architecture — Reproducibility, declarative config, deployment",
+        "Technical Implementation — Stack, timeline, deliverables",
+        "Open Source Compliance — License, dependencies, reproducibility",
+        "Ecosystem Impact — Who benefits and how"
+      ]
+    },
+    asan: {
+      program: "asan",
+      title: "ASAN Teighlor McGee Grassroots Mini-Grants",
+      deadline: "July 31, 2026 (opens May 15)",
+      amount: "Up to $6,250",
+      sections: [
+        "Project Description",
+        "Community Impact",
+        "Budget",
+        "Self-Advocate Leadership"
+      ]
+    },
+    ats: {
+      program: "ats",
+      title: "ATS Accelerator 2026 (Access to Success / OBIO)",
+      deadline: "June 28, 2026, 5:00 PM EDT",
+      amount: "$50,000+ in grants (0% equity, free)",
+      sections: [
+        "Problem & Solution — What accessibility barrier are you solving and how?",
+        "MVP & Traction — Current stage, users, validation evidence",
+        "Co-creation with Disability Community — How disabled people shaped your product",
+        "Target Market & Impact — Who benefits and at what scale",
+        "Team — Why you are the right people to build this",
+        "Why ATS — What you hope to gain from the program"
+      ]
+    },
+    wargachuk: {
+      program: "wargachuk",
+      title: "Wargachuk Grant Program",
+      deadline: "Rolling — year-round",
+      amount: "$111–$50,000 (requesting $5,000)",
+      sections: [
+        "Introduction — Who you are and what you create",
+        "The Ask — How much ($111–$50K) and what it enables",
+        "Your Story — Why this moment matters",
+        "Links — Optional portfolio/github/website"
+      ]
+    }
+  };
+  const s = scaffolds[program];
+  if (!s) throw new Error(`Unknown grant: ${program}. Use: gates, nlnet_taler, nlnet_fediversity, asan, ats, wargachuk`);
+
+  return renderGrant({
+    program: s.program,
+    title: s.title,
+    amount: s.amount,
+    deadline: s.deadline,
+    body: [
+      { type: "h1", text: "ELEVATOR PITCH" },
+      { type: "para", text: B.grantElevator() },
+      { type: "h1", text: "WHITESPACE" },
+      { type: "para", text: B.grantWhitespace() },
+      ...s.sections.flatMap(sec => [
+        { type: "h1", text: sec.toUpperCase() },
+        { type: "para", text: `[Complete this section for ${s.title}. See grant requirements.]` }
+      ])
+    ]
+  });
+}
+
+function social(content, platform) {
+  const result = B.formatSocial(content, platform);
+  console.log(`\n--- ${platform.toUpperCase()} (${result.length}/${result.maxLength}) ---`);
+  console.log(result.text);
+  console.log(`--- ${result.remaining} chars remaining ---\n`);
+  return result;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CLI
+// ═══════════════════════════════════════════════════════════════════
+
+async function main() {
+  const args = process.argv.slice(2);
+  if (args.length === 0) {
+    console.log(`
+P31 FORGE \u2014 Document Generation Engine
+\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+
+CONTENT-DRIVEN (preferred):
+  node forge.js compile content/legal/2025CV936/supplemental_notice.json
+  node forge.js compile content/grants/gates.json
+
+PUBLISH (requires channel secrets in env):
+  node forge.js publish <channel> <content>   # channels: ${Object.keys(CHANNELS).join('|')}
+  node forge.js publish-pack content/social/posts.json [--ids id1,id2] [--targets bluesky,mastodon]
+  node forge.js scan-grants                   # grants.gov Search2 API scan
+  node forge.js scan-substack [--feed URL] [--targets bluesky,mastodon]  # RSS scan + optional fan-out
+
+AD-HOC SCAFFOLDS:
+  node forge.js court "MOTION TITLE" "16th day of April, 2026"
+  node forge.js letter "RE: Subject" "April 14, 2026"
+  node forge.js corporate resolution|memo "April 14, 2026"
+  node forge.js grant gates|nlnet_taler|nlnet_fediversity|asan|ats|wargachuk
+  node forge.js booklet [--input path.md] [--output name]  # Compile explorer booklet
+  node forge.js social "Post content" bluesky|mastodon|linkedin|all
+  node forge.js brand                     # Print brand constants
+
+Entity: ${B.ENTITY.org} | EIN: ${B.ENTITY.ein}
+Colors: coral #${B.COLORS.coral} | teal #${B.COLORS.teal} | dark #${B.COLORS.dark}
+Font:   ${B.TYPE.serif} (body) | ${B.TYPE.mono} (code)
+`);
+    return;
+  }
+
+  const cmd = args[0];
+  let doc, filename;
+
+  switch (cmd) {
+    case 'compile': {
+      const packPath = args[1];
+      if (!packPath) {
+        console.error("Usage: forge.js compile <path/to/content-pack.json>");
+        process.exit(1);
+      }
+      const outPath = await compileFile(packPath);
+      console.log(`\u2705 ${outPath}`);
+      return;
+    }
+
+    case 'court':
+      doc = court(args[1] || "UNTITLED MOTION", args[2] || "_____ day of __________, 20__", {
+        subtitle: args.includes('--subtitle') ? args[args.indexOf('--subtitle') + 1] : null
+      });
+      filename = `Court_${(args[1] || 'Filing').replace(/[^a-zA-Z0-9]/g, '_').substring(0, 40)}.docx`;
+      break;
+
+    case 'letter':
+      doc = letter(args[1] || "Subject", args[2] || new Date().toLocaleDateString(), {
+        cc: ["Brenda O'Dell, Designated ADA Support Person"]
+      });
+      filename = `Letter_${new Date().toISOString().slice(0, 10)}.docx`;
+      break;
+
+    case 'corporate':
+      doc = corporate(args[1] || 'resolution', args[2] || new Date().toLocaleDateString());
+      filename = `P31_${(args[1] || 'Document').charAt(0).toUpperCase() + (args[1] || 'document').slice(1)}_${new Date().toISOString().slice(0, 10)}.docx`;
+      break;
+
+    case 'grant':
+      doc = grant(args[1] || 'gates');
+      filename = `P31_Grant_${(args[1] || 'Application').charAt(0).toUpperCase() + (args[1] || 'app').slice(1)}_Scaffold.docx`;
+      break;
+    case 'paper': {
+      const paperId = args[args.indexOf('--paper') + 1];
+      if (!paperId) {
+        console.error("Usage: forge.js paper --paper <id>");
+        process.exit(1);
+      }
+      const packPath = `content/omnibus/paper${paperId.padStart(2, '0')}.json`;
+      const outPath = await compileFile(packPath);
+      console.log(`u2705 ${outPath}`);
+      return;
+    }
+
+    case 'social': {
+      const content = args[1] || "P31 Labs update";
+      const platform = args[2] || 'all';
+      if (platform === 'all') {
+        ['bluesky', 'mastodon', 'linkedin'].forEach(p => social(content, p));
+      } else {
+        social(content, platform);
+      }
+      return;
+    }
+
+    case 'publish': {
+      const channel = args[1];
+      const contentArg = args[2];
+      if (!channel || !contentArg) {
+        console.error(`Usage: forge.js publish <channel> <content|@file.json>\nChannels: ${Object.keys(CHANNELS).join(', ')}`);
+        process.exit(1);
+      }
+      let content;
+      if (contentArg.startsWith('@')) {
+        const p = path.resolve(contentArg.slice(1));
+        if (!fs.existsSync(p)) {
+          console.error(`Content file not found: ${p}`);
+          process.exit(1);
+        }
+        const raw = fs.readFileSync(p, 'utf8');
+        try { content = JSON.parse(raw); } catch { content = raw; }
+      } else {
+        content = contentArg;
+      }
+      const result = await publish(channel, content, process.env);
+      console.log(JSON.stringify(result, null, 2));
+      return;
+    }
+
+    case 'publish-pack': {
+      const packPath = args[1];
+      if (!packPath) {
+        console.error("Usage: forge.js publish-pack <path/to/pack.json> [--ids id1,id2] [--targets bluesky,mastodon]");
+        process.exit(1);
+      }
+      const resolved = path.resolve(packPath);
+      if (!fs.existsSync(resolved)) {
+        console.error(`Pack not found: ${resolved}`);
+        process.exit(1);
+      }
+      const pack = JSON.parse(fs.readFileSync(resolved, 'utf8'));
+      const opts = {};
+      const idsIdx = args.indexOf('--ids');
+      if (idsIdx !== -1 && args[idsIdx + 1]) opts.postIds = args[idsIdx + 1].split(',').map(s => s.trim());
+      const tgtIdx = args.indexOf('--targets');
+      if (tgtIdx !== -1 && args[tgtIdx + 1]) opts.targets = args[tgtIdx + 1].split(',').map(s => s.trim());
+      const results = await publishPack(pack, process.env, opts);
+      console.log(JSON.stringify(results, null, 2));
+      const ok = results.filter(r => r.success !== false).length;
+      const fail = results.length - ok;
+      console.log(`\n\u2014 ${ok} succeeded, ${fail} failed across ${results.length} post\u00D7platform firings`);
+      return;
+    }
+
+    case 'scan-substack': {
+      const content = {};
+      const feedArg = args.indexOf('--feed');
+      if (feedArg !== -1 && args[feedArg + 1]) content.feed = args[feedArg + 1];
+      const limitArg = args.indexOf('--limit');
+      if (limitArg !== -1 && args[limitArg + 1]) content.limit = parseInt(args[limitArg + 1], 10);
+
+      const result = await publish('substack', content, process.env);
+      console.log(`\nsubstack scan \u2014 ${result.newCount} new / ${result.count} total`);
+      console.log(`feed: ${result.feed}`);
+      console.log("\u2550".repeat(60));
+      for (const p of result.newPosts) {
+        console.log(`\n  [NEW] ${p.meta.title}`);
+        console.log(`  ${p.meta.link}`);
+        console.log(`  ${p.meta.pubDate || ''}`);
+        console.log(`  ${p.meta.excerpt.slice(0, 120)}\u2026`);
+      }
+      if (result.newCount === 0) console.log("(no new posts since last scan)");
+
+      // Optional fan-out: --targets bluesky,mastodon
+      const tgtArg = args.indexOf('--targets');
+      if (tgtArg !== -1 && args[tgtArg + 1] && result.newCount > 0) {
+        const targets = args[tgtArg + 1].split(',').map(s => s.trim());
+        console.log(`\n\u2500\u2500 fanning ${result.newCount} new post(s) to: ${targets.join(', ')}`);
+        const pack = { posts: result.newPosts, defaultTargets: targets };
+        const fanResults = await publishPack(pack, process.env, { targets });
+        console.log(JSON.stringify(fanResults, null, 2));
+        const ok = fanResults.filter(r => r.success !== false).length;
+        console.log(`\n\u2014 ${ok} succeeded, ${fanResults.length - ok} failed`);
+      }
+      console.log();
+      return;
+    }
+
+
+    case 'social-post': {
+      const postId = args[1];
+      if (!postId) {
+        console.error('Usage: forge.js social-post <post-id>');
+        process.exit(1);
+      }
+      
+      // Load social posts
+      const postsPath = path.resolve(__dirname, 'content/social/posts.json');
+      const postsData = JSON.parse(fs.readFileSync(postsPath, 'utf8'));
+      const post = postsData.posts.find(p => p.id === postId);
+      
+      if (!post) {
+        console.error(`Post not found: ${postId}`);
+        console.error('Available posts:', postsData.posts.map(p => p.id).join(', '));
+        process.exit(1);
+      }
+      
+      console.log(`\n📄 Generating documents from social post: ${post.occasion}`);
+      console.log("═".repeat(60));
+      
+      // Generate all document types
+      const grantDoc = renderGrant({
+        ...post,
+        body: [
+          { type: 'h1', text: post.occasion },
+          { type: 'para', text: post.content },
+          { type: 'h2', text: 'Project Overview' },
+          { type: 'para', text: 'This initiative aligns with P31 Labs mission to build open-source cognitive infrastructure for neurodivergent individuals.' },
+          { type: 'field', label: 'Date', value: new Date().toLocaleDateString() },
+          { type: 'field', label: 'Organization', value: 'P31 Labs, Inc.' },
+          { type: 'field', label: 'EIN', value: '42-1888158' }
+        ]
+      });
+      
+      const boardDoc = renderResolution({
+        date: new Date().toLocaleDateString(),
+        title: `Board Resolution: ${post.occasion}`,
+        body: [
+          { type: 'h1', text: `Board Resolution: ${post.occasion}` },
+          { type: 'para', text: `WHEREAS, P31 Labs seeks to advance its mission through the following initiative;` },
+          { type: 'para', text: post.content },
+          { type: 'h2', text: 'RESOLVED' },
+          { type: 'bullet', text: 'That the Board approves this initiative and authorizes necessary resources.' },
+          { type: 'bullet', text: 'That the President is authorized to execute related documents.' },
+          { type: 'bullet', text: 'That this resolution shall be effective immediately.' }
+        ]
+      });
+      
+      const legalDoc = renderCourt(
+        `Legal Filing: ${post.occasion}`,
+        new Date().toLocaleDateString() + ' ' + post.occasion,
+        {
+          ...post,
+          body: [
+            { type: 'h1', text: 'COMPLAINT FOR DECLARATORY RELIEF' },
+            { type: 'para', text: post.content },
+            { type: 'h2', text: 'JURISDICTION AND VENUE' },
+            { type: 'para', text: 'This Court has jurisdiction pursuant to Georgia law and federal question jurisdiction.' },
+            { type: 'field', label: 'Case', value: '2025CV936' },
+            { type: 'field', label: 'Filing Date', value: new Date().toLocaleDateString() }
+          ]
+        }
+      );
+      
+      // Write files
+      const outDir = path.resolve(__dirname, 'out');
+      if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
+      
+      const { Packer } = require('docx');
+      
+      const grantPath = path.join(outDir, `grant-${postId}.docx`);
+      const boardPath = path.join(outDir, `resolution-${postId}.docx`);
+      const legalPath = path.join(outDir, `legal-${postId}.docx`);
+      
+      await Promise.all([
+        Packer.toBuffer(grantDoc).then(b => fs.writeFileSync(grantPath, b)),
+        Packer.toBuffer(boardDoc).then(b => fs.writeFileSync(boardPath, b)),
+        Packer.toBuffer(legalDoc).then(b => fs.writeFileSync(legalPath, b))
+      ]);
+      
+      console.log(`\n✅ Documents generated:`);
+      console.log(`   ${grantPath}`);
+      console.log(`   ${boardPath}`);
+      console.log(`   ${legalPath}`);
+      console.log();
+      return;
+    }
+
+    case 'booklet': {
+      const bookletDir = path.join(__dirname, 'booklet');
+      const compileScript = path.join(bookletDir, 'compile.js');
+      const docxScript = path.join(bookletDir, 'to-docx.js');
+
+      if (!fs.existsSync(compileScript)) {
+        console.error('Booklet compiler not found at booklet/compile.js');
+        process.exit(1);
+      }
+
+      const { spawnSync } = require('child_process');
+
+      // Step 1: HTML + Markdown
+      const r1 = spawnSync('node', [compileScript, ...args.slice(1)], {
+        stdio: 'inherit', cwd: __dirname
+      });
+      if (r1.status !== 0) process.exit(r1.status ?? 1);
+
+      // Step 2: .docx
+      if (!args.includes('--html-only')) {
+        console.log('\nGenerating .docx version...');
+        const r2 = spawnSync('node', ['booklet/to-docx.js'], {
+          stdio: 'inherit', cwd: __dirname
+        });
+        if (r2.status !== 0) console.warn('Docx generation skipped (images may be missing)');
+      }
+
+      // Print summary
+      const outDir = path.join(bookletDir, 'out');
+      const files = fs.readdirSync(outDir)
+        .filter(f => f.startsWith('P31_Explorer_Booklet'))
+        .map(f => `  ${path.join(outDir, f)} (${fs.statSync(path.join(outDir, f)).size} bytes)`);
+      console.log(`\nBooklet outputs:\n${files.join('\n')}`);
+      console.log('\nOpen the .html in a browser, then File > Print > Save as PDF for print-ready output.');
+      return;
+    }
+
+    case 'brand':
+      console.log("\nP31 FORGE — BRAND CONSTANTS");
+      console.log("═".repeat(40) + "\n");
+      console.log("COLORS:");
+      Object.entries(B.COLORS).forEach(([k, v]) => console.log(`  ${k.padEnd(12)} #${v}`));
+      console.log("\nTYPOGRAPHY:");
+      Object.entries(B.TYPE).forEach(([k, v]) => console.log(`  ${k.padEnd(12)} ${typeof v === 'number' ? v/2 + 'pt' : v}`));
+      console.log("\nENTITY:");
+      Object.entries(B.ENTITY).forEach(([k, v]) => console.log(`  ${k.padEnd(16)} ${v}`));
+      console.log("\nSOCIAL:");
+      console.log(`  Tagline:  ${B.SOCIAL.tagline}`);
+      console.log(`  Hashtags: ${B.SOCIAL.hashtags}`);
+      console.log(`  CTA:      ${B.SOCIAL.cta}`);
+      console.log();
+      return;
+
+    default:
+      console.error(`Unknown command: ${cmd}. Run forge.js without args for help.`);
+      process.exit(1);
+  }
+
+  // Write ad-hoc scaffold output
+  const outDir = path.resolve(__dirname, 'out');
+  if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
+  const outPath = path.join(outDir, filename);
+  const buffer = await Packer.toBuffer(doc);
+  fs.writeFileSync(outPath, buffer);
+  console.log(`✅ ${outPath}`);
+}
+
+if (require.main === module) {
+  main().catch(e => {
+    if (process.env.DEBUG) console.error(e);
+    else console.error(`❌ ${e.message}`);
+    process.exit(1);
+  });
+}
+
+// Export for programmatic use (Worker/API, tests, build scripts)
+module.exports = {
+  compile, compileFile, renderBody,
+  renderCourt, renderLetter, renderResolution, renderMemo, renderGrant,
+  court, letter, corporate, grant, social,
+  publish, publishPack, CHANNELS
+};

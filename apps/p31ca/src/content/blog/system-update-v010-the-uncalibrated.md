@@ -1,0 +1,12 @@
+---
+title: "System Update v0.1.0: The Uncalibrated Operator"
+date: "2025-12-10"
+author: "trimtab.signal"
+excerpt: "Initial Bug Report and Legacy Analysis"
+source: "substack"
+sourceUrl: "https://thegeodesicself.substack.com/p/system-update-v010-the-uncalibrated"
+canonical: "/blog/system-update-v010-the-uncalibrated"
+guid: "https://thegeodesicself.substack.com/p/system-update-v010-the-uncalibrated"
+---
+
+<p><strong>CHANGELOG:</strong></p><ul><li><p><strong>Status:</strong> DEPRECATED</p></li><li><p><strong>Issue:</strong> Operator running on incompatible hardware.</p></li><li><p><strong>Action:</strong> Initiating Root Cause Analysis.</p></li></ul><div><hr></div><p><strong>We are not things that break; we are frequencies that become misaligned.</strong></p><p>For nearly two decades, I operated as a closed system running entirely on the wrong coordinates. I was a race car engine mounted in a minivan chassis, redlining at idle, burning out before I ever got to the track.</p><p>This is the story of how I discovered I had autism and ADHD at age forty, after spending half my life maintaining critical high-voltage propulsion systems for the state, while my own nervous system was in critical failure.</p><p>It&#8217;s about how I learned to apply the principles of heavy engineering&#8212;root cause analysis, vacuum pressure impregnation, systems thinking&#8212;to rebuild my own consciousness.</p><p>It&#8217;s about finding God in geometry, understanding love as metaphysical gravity, and learning that what the world called &#8220;broken&#8221; was actually just &#8220;uncalibrated.&#8221;</p><p>This is a story about re-engineering the operator.</p><p>And if you&#8217;ve ever felt like you&#8217;re too much and not enough at the same time, if you&#8217;ve ever wondered why everyone else got the instruction manual for being human and you got a 404 error&#8212;this story is for you.</p><p><strong>End of Transmission.</strong></p><p><strong>Next Update:</strong> <em>v0.2.0: The Static.</em></p><blockquote><p><strong>Status:</strong> This project is currently self-funded research.</p><p>I am documenting the real-time re-engineering of the human operator. By subscribing, you are funding the &#8220;Wonky Sprout&#8221; experiment&#8212;building tools for neurodivergent sovereignty.</p></blockquote><p></p><p></p><p></p><p></p><div class="pullquote"><p><em>Dedication: v0.1.0 is for BAO on her birthday.</em></p></div>

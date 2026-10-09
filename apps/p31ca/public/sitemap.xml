@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core hub pages -->
+  <url><loc>https://p31ca.org/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://p31ca.org/about/</loc><priority>0.8</priority></url>
+  <url><loc>https://p31ca.org/connect/</loc><priority>0.8</priority></url>
+  <url><loc>https://p31ca.org/demos/</loc><priority>0.8</priority></url>
+  <url><loc>https://p31ca.org/dome/</loc><priority>0.7</priority></url>
+  <url><loc>https://p31ca.org/atmosphere/</loc><priority>0.7</priority></url>
+
+  <!-- Content pages -->
+  <url><loc>https://p31ca.org/research/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://p31ca.org/grants/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://p31ca.org/syllabus/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://p31ca.org/passport/</loc><priority>0.7</priority></url>
+  <url><loc>https://p31ca.org/ada/</loc><priority>0.6</priority></url>
+  <url><loc>https://p31ca.org/garden/</loc><priority>0.5</priority></url>
+  <url><loc>https://p31ca.org/media/</loc><priority>0.5</priority></url>
+  <url><loc>https://p31ca.org/forge/</loc><priority>0.5</priority></url>
+
+  <!-- Operations -->
+  <url><loc>https://p31ca.org/ops/</loc><priority>0.6</priority></url>
+  <url><loc>https://p31ca.org/mesh-observatory/</loc><priority>0.6</priority></url>
+  <url><loc>https://p31ca.org/node-zero/</loc><priority>0.5</priority></url>
+  <url><loc>https://p31ca.org/messaging-hub/</loc><priority>0.5</priority></url>
+
+  <!-- Game experiences -->
+  <url><loc>https://p31ca.org/arcade/</loc><priority>0.7</priority></url>
+  <url><loc>https://p31ca.org/arcade/bashball/</loc><priority>0.5</priority></url>
+  <url><loc>https://p31ca.org/arcade/cards/</loc><priority>0.5</priority></url>
+  <url><loc>https://p31ca.org/arcade/gridiron/</loc><priority>0.5</priority></url>
+  <url><loc>https://p31ca.org/arcade/orbital/</loc><priority>0.5</priority></url>
+  <url><loc>https://p31ca.org/arcade/poetry/</loc><priority>0.5</priority></url>
+  <url><loc>https://p31ca.org/arcade/resonance/</loc><priority>0.5</priority></url>
+  <url><loc>https://p31ca.org/arcade/strategy/</loc><priority>0.5</priority></url>
+  <url><loc>https://p31ca.org/arcade/liquid/</loc><priority>0.5</priority></url>
+  <url><loc>https://p31ca.org/arcade/leaderboard/</loc><priority>0.4</priority></url>
+
+  <!-- Soverign tools -->
+  <url><loc>https://p31ca.org/demo-labs/</loc><priority>0.6</priority></url>
+  <url><loc>https://p31ca.org/ignite/</loc><priority>0.6</priority></url>
+  <url><loc>https://p31ca.org/integrations/</loc><priority>0.5</priority></url>
+  <url><loc>https://p31ca.org/phos/</loc><priority>0.6</priority></url>
+  <url><loc>https://p31ca.org/phosphorus/</loc><priority>0.6</priority></url>
+  <url><loc>https://p31ca.org/orchestrator/</loc><priority>0.5</priority></url>
+  <url><loc>https://p31ca.org/qfactor/</loc><priority>0.5</priority></url>
+  <url><loc>https://p31ca.org/geodesic-math/</loc><priority>0.5</priority></url>
+  <url><loc>https://p31ca.org/cybernetic-bonsai/</loc><priority>0.4</priority></url>
+
+  <!-- Legal + trust -->
+  <url><loc>https://p31ca.org/privacy/</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://p31ca.org/terms/</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+
+  <!-- Immersive experiences -->
+  <url><loc>https://p31ca.org/spaceship-earth/</loc><priority>0.7</priority></url>
+  <url><loc>https://p31ca.org/demos/molecular-field.html</loc><priority>0.6</priority></url>
+  <url><loc>https://p31ca.org/connect.html</loc><priority>0.5</priority></url>
+
+  <!-- Subdomain endpoints -->
+  <url><loc>https://phos.p31ca.org/</loc><priority>0.9</priority></url>
+  <url><loc>https://phos.p31ca.org/portal/</loc><priority>0.8</priority></url>
+  <url><loc>https://bonding.p31ca.org/</loc><priority>0.7</priority></url>
+  <url><loc>https://willow.p31ca.org/</loc><priority>0.7</priority></url>
+  <url><loc>https://phosphorus31.org/</loc><priority>0.9</priority></url>
+</urlset>

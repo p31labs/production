@@ -1,0 +1,14 @@
+name = "standard-site-projection"
+main = "src/index.ts"
+compatibility_date = "2026-07-16"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ENVIRONMENT = "production"
+BLOG_RSS = "https://p31ca.org/blog/rss.xml"
+# When a Cirrus PDS is deployed, set these to write records to it:
+# PDS_ORIGIN = "https://pds.p31ca.org"
+# PDS_DID = "did:web:p31ca.org"
+
+[observability]
+enabled = true

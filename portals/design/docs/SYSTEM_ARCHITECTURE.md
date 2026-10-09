@@ -1,7 +1,7 @@
 # SYSTEM_ARCHITECTURE.md — P31 Design System Portal
 
 **Version:** 1.0.0 · **Date:** 2026-09-24 · **Status:** Production (live at design.p31ca.org)
-**Canon:** `@p31ca/design-core` 3.0.0 (vendored tarball; source in `P31-local-workspace/packages/design-core/`).
+**Canon:** `@p31ca/design-core` 3.0.0 (vendored tarball; source in `production/packages/design-core/`).
 This file is the **architecture contract** — what is true. Update it when anything here changes.
 
 ---

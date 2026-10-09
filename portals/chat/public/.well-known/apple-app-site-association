@@ -1,0 +1,16 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "REPLACE_WITH_TEAMID.org.p31.capital"
+        ],
+        "components": [
+          {
+            "/": "/"
+          }
+        ]
+      }
+    ]
+  }
+}

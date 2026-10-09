@@ -1,0 +1,14 @@
+{
+  "name": "@p31ca/shell-chrome",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./stores": "./src/stores/index.ts"
+  },
+  "dependencies": {
+    "@p31ca/shared": "workspace:*",
+    "zustand": "^5.0.15"
+  }
+}

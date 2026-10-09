@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="LOVE Heart animated icon">
+  <title>LOVE Heart</title>
+  <desc>A geometric pulsing heart with an infinity-loop outline representing the care economy.</desc>
+  <style>
+    .lv-path-s { fill: none; stroke: var(--p31-accent, #00F0FF); stroke-width: 2; stroke-linecap: round; }
+    .lv-dash { stroke-dasharray: 12 16; animation: lvFlow 20s infinite linear; }
+    .lv-glow-p { fill: var(--p31-accent-violet, #A78BFA); transform-origin: 100px 100px; animation: lvBreath 4s infinite alternate ease-in-out; }
+    .lv-dot-n { fill: var(--p31-text, #F5F5F7); opacity: 0.8; }
+    @keyframes lvBreath { 0% { transform: scale(0.92); opacity: 0.6; filter: drop-shadow(0 0 4px var(--p31-accent-violet, #A78BFA)); } 100% { transform: scale(1.04); opacity: 0.95; filter: drop-shadow(0 0 20px var(--p31-accent-violet, #A78BFA)); } }
+    @keyframes lvFlow { to { stroke-dashoffset: 400; } }
+    @media (prefers-reduced-motion: reduce) { .lv-glow-p, .lv-dash { animation: none; } .lv-glow-p { transform: scale(1); opacity: 0.8; } .lv-dash { stroke-dashoffset: 0; } }
+  </style>
+  <path d="M100 165 C 100 165, 20 100, 20 50 C 20 15, 70 10, 100 45 C 130 10, 180 15, 180 50 C 180 100, 100 165, 100 165 Z" class="lv-path-s lv-dash" opacity="0.6"/>
+  <path d="M100 150 C 100 150, 40 95, 40 55 C 40 30, 65 20, 100 50 C 135 20, 160 30, 160 55 C 160 95, 100 150, 100 150 Z" class="lv-glow-p"/>
+  <circle cx="100" cy="45" r="4" class="lv-dot-n"/>
+  <circle cx="100" cy="155" r="3" fill="var(--p31-accent, #00F0FF)" opacity="0.6"/>
+</svg>

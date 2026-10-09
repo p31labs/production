@@ -13,7 +13,7 @@ import { resolve } from 'node:path'
 
 const here = resolve(import.meta.dirname)
 const portal = JSON.parse(readFileSync(resolve(here, 'gates.json'), 'utf8'))
-const conPath = resolve('/home/p31/P31-local-workspace/packages/govern/domains/forge/constitution.json')
+const conPath = resolve('/home/p31/production/packages/govern/domains/forge/constitution.json')
 if (!existsSync(conPath)) {
   console.error(`forge govern constitution missing: ${conPath}`)
   process.exit(1)

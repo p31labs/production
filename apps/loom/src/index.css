@@ -1,0 +1,1949 @@
+/* Self-hosted typefaces — Space Grotesk (display/body sans) + JetBrains Mono
+ * (values/readouts). woff2, OFL, font-display: swap. */
+
+/* COLOR-MIX RULE — every color-mix() in this file interpolates in oklab,
+ * not oklch. Safari < 18 mixes a color with transparent or with a gray/white
+ * tone in oklch by interpolating through a red-ish hue, so the pulse, the
+ * orb glow, and the artifact shadow all came out tinted red on older iPads.
+ * oklch() is still used for literal color definitions (the correct
+ * perceptual space for a single color); it is only avoided as the
+ * interpolation space of a mix. See tailwindlabs/tailwindcss#15201.
+ * Gate: no declaration here uses the oklch space for a color-mix(). */
+@layer reset, base, tokens, components, utilities, overrides;
+
+@font-face { font-family: 'Space Grotesk'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/space-grotesk-400.woff2') format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/space-grotesk-500.woff2') format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/space-grotesk-600.woff2') format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/space-grotesk-700.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/jetbrains-mono-400.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/jetbrains-mono-500.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/jetbrains-mono-600.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/jetbrains-mono-700.woff2') format('woff2'); }
+
+/* The Loom — portal chrome. Styled by canon's own tokens. */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body, #root { height: 100%; margin: 0; }
+}
+
+/* Accessibility floor. The default canvas already clears WCAG 2.2 AA + the
+ * COGA baseline. The profile store (see src/lib/profile.ts) tightens or
+ * loosens these custom properties from this floor — never below it.
+ * - letter/line spacing: dyslexia (extra-large spacing is the evidence-backed
+ *   fix; coloured overlays are NOT — evidence is contradictory).
+ * - density: ADHD + age (flat layouts, no nested navigation).
+ */
+@layer tokens {
+:root {
+  --loom-letter-spacing: 0.02em;
+  --loom-line-height: 1.5;
+  /* Every token-driven transition multiplies this factor. OS reduced-motion
+   * seeds 0.01; the profile motion tier re-scales it (see the axes below). */
+  --motion-scale: 1;
+  /* Attention-as-light: the field resolves these at render time (App.tsx).
+   * Intensity is the field's entropy (cold ~0.3, busy ~0.8); hue is the
+   * hazard (195 cyan → 255 red). The shadow stays fixed — a moving light
+   * disorients. Defaults are the calm field. */
+  --loom-light-intensity: 0.3;
+  --loom-light-hue: 195;
+  /* The Loom renders at data-theme="compat", whose COMPAT_ROOT overrides the
+   * font tokens at :root with design-core's system stack. Re-point them here —
+   * unlayered, so this wins over the layered canon tokens — for the Space
+   * Grotesk / JetBrains Mono split (see the @font-face blocks above). */
+  --p31-font-sans: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --p31-font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Fira Code', monospace;
+  /* M3 Expressive springs (from @p31ca/canon motion.spring.*). Spatial transitions
+   * overshoot; the profile motion tier re-scales duration via --motion-scale. */
+  --p31-spring-fast-spatial: cubic-bezier(0.42, 1.67, 0.21, 0.90);
+  --p31-spring-default-spatial: cubic-bezier(0.38, 1.21, 0.22, 1.00);
+  --p31-spring-slow-spatial: cubic-bezier(0.38, 0.86, 0.22, 1.00);
+  --p31-spring-effects: cubic-bezier(0.34, 0.80, 0.34, 1.00);
+  --p31-shape-morph-duration: 300ms;
+}
+}
+
+/* Reduced motion — vestibular, autism, sensory. Collapse every non-essential
+ * transition and animation under the OS-level preference. Play is user-initiated
+ * and discrete, so the scrubber's logic is untouched; only decorative motion is
+ * neutralized. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  /* Seed the motion-scale floor for CSS (the JS floorMotion() re-applies the
+   * same boundary in App.tsx). */
+  :root { --motion-scale: 0.01; }
+}
+
+/* Reduced transparency — the glass stack's accessibility counterpart to
+ * reduced motion. An opaque surface + no backdrop blur honors the OS setting
+ * (Reduce transparency on macOS/iOS) instead of frosting over it. */
+@media (prefers-reduced-transparency: reduce) {
+  .loom-bar,
+  .loom-panel,
+  .loom-scrub {
+    background: var(--p31-surface, #12121a);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@layer base {
+  body {
+    background: var(--p31-bg, #0a0e14);
+    color: var(--p31-text, #e2e8f0);
+    font-family: var(--p31-font-sans, system-ui, sans-serif);
+  }
+}
+
+@layer components {
+.loom-shell {
+  --loom-panel-width: 320px;
+  display: grid;
+  grid-template-columns: 1fr var(--loom-panel-width);
+  grid-template-rows: 48px 1fr auto;
+  grid-template-areas: 'bar bar' 'canvas panel' 'scrub scrub';
+  height: 100%;
+}
+
+.loom-bar {
+  grid-area: bar;
+  display: flex;
+  align-items: center;
+  gap: var(--p31-layout-spacing-md);
+  padding: 0 var(--p31-layout-spacing-md);
+  border-bottom: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.1));
+  background: rgba(10, 14, 20, 0.55);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  box-shadow:
+    inset 0 1px 0 hsl(var(--loom-light-hue) 80% 80% / calc(var(--loom-light-intensity) * 0.28)),
+    0 8px 32px rgba(0, 0, 0, calc(0.35 + var(--loom-light-intensity) * 0.15));
+  font-size: 13px;
+}
+.loom-counts { color: var(--p31-text-secondary, #94a3b8); }
+.loom-bar strong { font-weight: 600; letter-spacing: -0.02em; }
+.loom-human { color: var(--p31-text-secondary, #94a3b8); font-size: 12px; }
+.loom-agent { color: var(--p31-accent-violet, #a78bfa); font-size: 12px; }
+.loom-gate { margin-left: auto; color: var(--p31-accent, #00f0ff); font-size: 12px; }
+
+/* Chain status — the tamper-evidence surface made visible. Subtle in the bar,
+ * prominent in the family view. The dot is the state: green = verified,
+ * red = broken, gray = unavailable. No false green on a failed fetch. */
+.chain-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--p31-layout-spacing-sm);
+  font-size: 12px;
+  color: var(--p31-text-secondary, #94a3b8);
+  white-space: nowrap;
+}
+.chain-status--prominent {
+  font-size: 16px;
+  color: var(--p31-text-secondary, #cbd5e1);
+  padding: var(--p31-layout-spacing-md-tight) var(--p31-layout-spacing-md);
+  border-radius: var(--p31-radius-full);
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.14));
+  background: var(--p31-glass-bg, rgba(255, 255, 255, 0.06));
+}
+.chain-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--p31-text-tertiary, #64748b);
+}
+.chain-dot--ok {
+  background: var(--p31-accent-green, #34d399);
+  box-shadow: 0 0 8px color-mix(in oklab, var(--p31-accent-green, #34d399) 60%, transparent);
+}
+.chain-dot--broken {
+  background: var(--p31-accent-red, #fb7185);
+  box-shadow: 0 0 8px color-mix(in oklab, var(--p31-accent-red, #fb7185) 60%, transparent);
+}
+.chain-label--muted { color: var(--p31-text-tertiary, #64748b); }
+.loom-shell[data-motion='reduced'] .chain-dot--ok,
+.loom-shell[data-motion='none'] .chain-dot--ok { box-shadow: none; }
+.loom-shell[data-motion='reduced'] .chain-dot--broken,
+.loom-shell[data-motion='none'] .chain-dot--broken { box-shadow: none; }
+.loom-continue {
+  padding: 4px 10px;
+  min-height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--p31-accent, #00f0ff);
+  background: transparent;
+  color: var(--p31-accent, #00f0ff);
+  font-size: 12px;
+  cursor: pointer;
+}
+.loom-save {
+  padding: 4px 10px;
+  min-height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.2));
+  background: transparent;
+  color: var(--p31-text, #e2e8f0);
+  font-size: 12px;
+  cursor: pointer;
+}
+.loom-theme {
+  padding: 4px 10px;
+  min-height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.2));
+  background: transparent;
+  color: var(--p31-text, #e2e8f0);
+  font-size: 12px;
+  cursor: pointer;
+}
+.loom-mode {
+  margin-left: 8px;
+  padding: 4px 10px;
+  min-height: 44px;
+  min-width: 44px;
+  border-radius: 6px;
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.2));
+  background: var(--p31-surface, #12121a);
+  color: var(--p31-text, #e2e8f0);
+  font-size: 12px;
+  cursor: pointer;
+}
+.loom-mode[aria-pressed='true'] { border-color: var(--p31-accent, #00f0ff); color: var(--p31-accent, #00f0ff); }
+
+/* Presentation controls — the visible neurodivergent-comfort toggles. Each is
+ * 48px minimum, aria-pressed, and mirrors the mode button's quiet presence so
+ * the comfort controls never compete with the decision point. Calm mode gets
+ * the accent treatment when on. */
+.presentation-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-layout-spacing-sm);
+  margin-left: var(--p31-layout-spacing-sm);
+}
+.presentation-toggle {
+  padding: 4px 10px;
+  min-height: 44px;
+  min-width: 44px;
+  border-radius: 6px;
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.2));
+  background: var(--p31-surface, #12121a);
+  color: var(--p31-text, #e2e8f0);
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.presentation-toggle:hover {
+  color: var(--p31-text-primary, #f8fafc);
+  border-color: var(--p31-text-tertiary, #64748b);
+}
+.presentation-toggle[aria-pressed='true'] {
+  border-color: var(--p31-accent, #00f0ff);
+  color: var(--p31-accent, #00f0ff);
+}
+.presentation-toggle--calm[aria-pressed='true'] {
+  border-color: var(--p31-accent-gold, #fbbf24);
+  color: var(--p31-accent-gold, #fbbf24);
+}
+@media (max-width: 1080px) {
+  .presentation-toggle:not(.presentation-toggle--calm) { display: none; }
+}
+
+/* The Instrument — the field made visible. */
+.instrument { position: relative; width: 100%; height: 100%; overflow: hidden; }
+.instrument-canvas { display: block; width: 100%; height: 100%; }
+.instrument-hint {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.2));
+  background: var(--p31-surface, #12121a);
+  color: var(--p31-text-secondary, #94a3b8);
+  font-size: 12px;
+  pointer-events: none;
+}
+.instrument-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0);
+  white-space: nowrap; border: 0;
+}
+
+/* The Jitterbug — the closure of the field, rendered in WebGL. */
+.jb { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--p31-bg, rgb(2, 3, 8)); }
+.jb-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+
+.jb-phase {
+  position: absolute;
+  top: 50%; left: 40px;
+  transform: translateY(-50%);
+  max-width: 380px;
+  pointer-events: none;
+}
+.jb-quote {
+  font-size: 1.35rem;
+  line-height: 1.5;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--p31-text, rgb(226, 232, 240));
+  transition: opacity calc(0.8s * var(--motion-scale)) ease;
+  opacity: 0.92;
+}
+.jb-quote.fade { opacity: 0; }
+.jb-attrib {
+  margin-top: 14px;
+  font-family: var(--p31-font-mono, monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--p31-text-tertiary, rgb(100, 116, 139));
+}
+
+.jb-readouts {
+  position: absolute;
+  bottom: 36px; left: 40px;
+  font-family: var(--p31-font-mono, monospace);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  line-height: 1.9;
+  color: var(--p31-text-secondary, rgb(148, 163, 184));
+  pointer-events: none;
+}
+.jb-row { display: flex; gap: var(--p31-layout-spacing-lg-tight); align-items: baseline; }
+.jb-key { color: var(--p31-text-tertiary, rgb(100, 116, 139)); min-width: 96px; }
+.jb-val { color: var(--p31-text, rgb(226, 232, 240)); font-weight: 500; }
+.jb-val.closed { color: var(--p31-accent-gold, rgb(251, 191, 36)); text-shadow: 0 0 12px var(--p31-glow-amber, rgba(251, 191, 36, 0.5)); }
+.jb-val.jb-hot { color: var(--p31-accent, rgb(0, 240, 255)); }
+.jb-bar { display: inline-block; width: 90px; height: 2px; background: var(--p31-glass-border, rgba(255, 255, 255, 0.12)); vertical-align: middle; }
+.jb-bar > i { display: block; height: 100%; background: var(--p31-accent-gold, rgb(251, 191, 36)); }
+
+.jb-controls {
+  position: absolute;
+  bottom: 36px; right: 40px;
+  display: flex; flex-direction: column; gap: var(--p31-layout-spacing-md); align-items: flex-end;
+  font-family: var(--p31-font-mono, monospace);
+  font-size: 0.75rem; letter-spacing: 0.15em;
+  color: var(--p31-text-tertiary, rgb(100, 116, 139));
+}
+.jb-slider { display: flex; align-items: center; gap: var(--p31-layout-spacing-md); }
+.jb-slider input[type='range'] {
+  -webkit-appearance: none; appearance: none;
+  width: 220px; height: 2px;
+  background: var(--p31-glass-border, rgba(255, 255, 255, 0.12));
+  outline: none;
+}
+.jb-slider input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--p31-accent-gold, rgb(251, 191, 36));
+  cursor: pointer; box-shadow: 0 0 14px var(--p31-glow-amber, rgba(251, 191, 36, 0.5));
+}
+.jb-slider input[type='range']::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%; border: none;
+  background: var(--p31-accent-gold, rgb(251, 191, 36));
+  cursor: pointer; box-shadow: 0 0 14px var(--p31-glow-amber, rgba(251, 191, 36, 0.5));
+}
+.jb-tval { min-width: 42px; text-align: right; color: var(--p31-text, rgb(226, 232, 240)); }
+.jb-btns { display: flex; gap: var(--p31-layout-spacing-md-tight); }
+.jb-btns button {
+  font-family: var(--p31-font-mono, monospace);
+  font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+  background: transparent; color: var(--p31-text, rgb(226, 232, 240));
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.16));
+  padding: var(--p31-layout-spacing-sm) var(--p31-layout-spacing-md); cursor: pointer;
+  min-height: 44px;
+  min-width: 44px;
+  transition: border-color calc(0.25s * var(--motion-scale)) var(--p31-spring-default-spatial), color calc(0.25s * var(--motion-scale)) var(--p31-spring-effects), box-shadow calc(0.25s * var(--motion-scale)) var(--p31-spring-effects);
+}
+.jb-btns button:hover { border-color: var(--p31-accent-gold, rgb(251, 191, 36)); color: var(--p31-accent-gold, rgb(251, 191, 36)); }
+.jb-btns button.on { border-color: var(--p31-accent-gold, rgb(251, 191, 36)); color: var(--p31-accent-gold, rgb(251, 191, 36)); }
+
+@media (max-width: 820px) {
+  .jb-phase { max-width: 240px; }
+  .jb-quote { font-size: 1rem; }
+  .jb-readouts, .jb-controls { font-size: 0.75rem; }
+  .jb-slider input[type='range'] { width: 140px; }
+}
+
+.loom-canvas { grid-area: canvas; min-height: 0; background: var(--p31-bg, #0a0e14); }
+.loom-loading {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%;
+  color: var(--p31-text-tertiary, #64748b);
+  font-family: var(--p31-font-mono, monospace);
+  font-size: 13px;
+}
+
+.loom-panel {
+  grid-area: panel;
+  border-left: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.1));
+  padding: var(--p31-layout-spacing-md);
+  overflow: auto;
+  background: rgba(10, 14, 20, 0.55);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  box-shadow:
+    inset 0 1px 0 hsl(var(--loom-light-hue) 80% 80% / calc(var(--loom-light-intensity) * 0.28)),
+    0 8px 32px rgba(0, 0, 0, calc(0.35 + var(--loom-light-intensity) * 0.15));
+  font-size: 13px;
+}
+.loom-panel h2 { font-size: 15px; margin: var(--p31-layout-spacing-sm) 0; font-weight: 600; letter-spacing: -0.02em; }
+.loom-panel code { font-family: var(--p31-font-mono, monospace); font-size: 0.75rem; color: var(--p31-text-tertiary, #64748b); }
+.loom-panel { line-height: var(--loom-line-height); }
+.loom-panel p { letter-spacing: var(--loom-letter-spacing); }
+.loom-hint { color: var(--p31-text-tertiary, #64748b); }
+.loom-summary { color: var(--p31-text-secondary, #94a3b8); letter-spacing: var(--loom-letter-spacing); line-height: var(--loom-line-height); }
+.loom-kind {
+  display: inline-block;
+  padding: var(--p31-space-tiny) var(--p31-layout-spacing-sm);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--p31-glass-surface, rgba(255, 255, 255, 0.06));
+}
+.loom-kind--token { color: var(--p31-accent, #00f0ff); }
+.loom-kind--class { color: var(--p31-accent-green, #34d399); }
+.loom-kind--component { color: var(--p31-accent-gold, #fbbf24); }
+.loom-kind--theme { color: var(--p31-accent-violet, #a78bfa); }
+
+.loom-actions { display: flex; gap: var(--p31-layout-spacing-sm); margin-top: var(--p31-layout-spacing-md-tight); }
+.loom-reject { display: flex; gap: var(--p31-layout-spacing-sm); margin-top: 8px; align-items: center; }
+.loom-reason {
+  flex: 1;
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.2));
+  background: var(--p31-surface, #12121a);
+  color: var(--p31-text, #e2e8f0);
+  font-size: 12px;
+}
+.loom-btn {
+  padding: var(--p31-layout-spacing-sm) var(--p31-layout-spacing-md-tight);
+  min-height: 44px;
+  border-radius: 6px;
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.2));
+  background: var(--p31-surface, #12121a);
+  color: var(--p31-text, #e2e8f0);
+  cursor: pointer;
+}
+.loom-btn--ok { border-color: var(--p31-accent-green, #34d399); }
+.loom-btn--no { border-color: var(--p31-accent-red, #fb7185); }
+
+/* React Flow nodes — kind-coloured, legible on the void. Every node carries a
+ * WCAG 2.5.8 minimum 24×24 hit area (aligned, centered) so the graph stays
+ * clickable even when fitView shrinks the label; the visible label itself is
+ * unchanged. */
+.loom-node {
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  min-width: 24px;
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.14));
+  background: var(--p31-surface, #12121a);
+  color: var(--p31-text, #e2e8f0);
+  white-space: nowrap;
+}
+.loom-node--token { border-color: var(--p31-accent, #00f0ff); }
+.loom-node--class { border-color: var(--p31-accent-green, #34d399); }
+.loom-node--component { border-color: var(--p31-accent-gold, #fbbf24); font-weight: 700; }
+.loom-node--theme { border-color: var(--p31-accent-violet, #a78bfa); }
+.loom-node--focused { outline: 2px solid var(--p31-accent, #00f0ff); outline-offset: 2px; }
+.loom-node--cursor { border-color: var(--p31-accent-violet, #a78bfa); border-width: 2px; }
+.loom-node--trail { background: var(--p31-accent-violet, #a78bfa); }
+.loom-node--proposal { border-style: dashed; border-color: var(--p31-accent-gold, #fbbf24); }
+.loom-node--proposal--pending { opacity: 0.7; }
+.loom-node--proposal--approved { border-style: solid; border-color: var(--p31-accent-green, #34d399); }
+.loom-node--proposal--rejected { border-color: var(--p31-accent-red, #fb7185); text-decoration: line-through; }
+
+/* Proposal ghost: label + body-survival bar */
+.loom-proposal-node { display: flex; flex-direction: column; gap: 3px; }
+.loom-proposal-label { font-size: 0.75rem; white-space: nowrap; }
+.loom-survival-track { display: block; width: 64px; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.1); overflow: hidden; }
+.loom-survival-fill { display: block; height: 100%; border-radius: 2px; transition: width calc(0.2s * var(--motion-scale)) ease; }
+.loom-survival--ok { background: var(--p31-accent-green, #34d399); }
+.loom-survival--warn { background: var(--p31-accent-gold, #fbbf24); }
+.loom-survival--drift { background: var(--p31-accent-red, #fb7185); }
+
+.loom-edge { stroke: var(--p31-glass-border, rgba(255, 255, 255, 0.12)); }
+
+/* Progressive disclosure: advanced-only surfaces. */
+.loom-shell[data-tier='beginner'] .loom-survival-track,
+.loom-shell[data-tier='intermediate'] .loom-survival-track { display: none; }
+.loom-json {
+  margin-top: var(--p31-layout-spacing-md-tight);
+  padding: var(--p31-layout-spacing-sm);
+  border-radius: 6px;
+  background: var(--p31-surface, #12121a);
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.2));
+  font-family: var(--p31-font-mono, monospace);
+  font-size: 0.75rem;
+  overflow: auto;
+  max-height: 240px;
+  color: var(--p31-text-secondary, #94a3b8);
+}
+.loom-more {
+  margin-top: var(--p31-layout-spacing-md-tight);
+  width: 100%;
+  padding: var(--p31-layout-spacing-sm) var(--p31-layout-spacing-md-tight);
+  min-height: 44px;
+  border-radius: 6px;
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.2));
+  background: none;
+  color: var(--p31-accent, #00f0ff);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/* Beginner digest */
+.digest-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--p31-layout-spacing-xs); }
+.digest-item {
+  display: flex;
+  gap: var(--p31-layout-spacing-sm);
+  align-items: baseline;
+  width: 100%;
+  padding: var(--p31-layout-spacing-sm);
+  border-radius: 6px;
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.14));
+  background: var(--p31-surface, #12121a);
+  color: var(--p31-text, #e2e8f0);
+  cursor: pointer;
+  font-size: 13px;
+  letter-spacing: var(--loom-letter-spacing);
+  line-height: var(--loom-line-height);
+}
+.digest-id { color: var(--p31-accent-gold, #fbbf24); }
+.digest-node { color: var(--p31-text, #e2e8f0); }
+.digest-author { margin-left: auto; color: var(--p31-text-tertiary, #64748b); }
+
+/* Event overlay */
+.ev { display: flex; flex-direction: column; gap: var(--p31-layout-spacing-sm); }
+.ev-head { display: flex; align-items: center; gap: var(--p31-layout-spacing-sm); font-size: 13px; }
+.ev-count { color: var(--p31-text-tertiary, #64748b); }
+.ev-follow { margin-left: auto; font-size: 0.75rem; background: none; border: none; color: var(--p31-accent, #00f0ff); cursor: pointer; min-height: 24px; min-width: 24px; }
+.ev-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--p31-layout-spacing-xs); }
+.ev-empty { color: var(--p31-text-tertiary, #64748b); }
+.ev-item {
+  display: flex;
+  gap: var(--p31-layout-spacing-sm);
+  align-items: baseline;
+  padding: var(--p31-layout-spacing-xs) var(--p31-layout-spacing-sm);
+  border-radius: 4px;
+  border-left: 2px solid transparent;
+  font-size: 12px;
+  font-family: var(--p31-font-mono, monospace);
+  letter-spacing: var(--loom-letter-spacing);
+  line-height: var(--loom-line-height);
+  cursor: pointer;
+}
+.ev-item--human { border-left-color: var(--p31-accent, #00f0ff); }
+.ev-item--agent { border-left-color: var(--p31-accent-violet, #a78bfa); }
+.ev-item--cur { background: var(--p31-glass-surface, rgba(255, 255, 255, 0.06)); }
+.ev-seq { color: var(--p31-text-tertiary, #64748b); }
+.ev-writer { margin-left: auto; color: var(--p31-text-tertiary, #64748b); }
+
+/* Timeline scrubber */
+.loom-scrub {
+  grid-area: scrub;
+  display: flex;
+  align-items: center;
+  gap: var(--p31-layout-spacing-sm);
+  padding: var(--p31-layout-spacing-sm) var(--p31-layout-spacing-md);
+  border-top: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.1));
+  background: rgba(10, 14, 20, 0.55);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  box-shadow:
+    inset 0 1px 0 hsl(var(--loom-light-hue) 80% 80% / calc(var(--loom-light-intensity) * 0.28)),
+    0 8px 32px rgba(0, 0, 0, calc(0.35 + var(--loom-light-intensity) * 0.15));
+}
+.scrub { display: flex; align-items: center; gap: var(--p31-layout-spacing-md-tight); width: 100%; }
+.scrub-range { flex: 1; }
+.scrub-pos { font-family: var(--p31-font-mono, monospace); font-size: 12px; color: var(--p31-text-secondary, #94a3b8); }
+
+/* Trace scale — the field's atomic end: a DOM waterfall of zone traces. */
+.ts { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+.ts-head {
+  display: flex; align-items: center; gap: var(--p31-layout-spacing-md-tight);
+  padding: var(--p31-layout-spacing-sm) var(--p31-layout-spacing-md);
+  border-bottom: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.1));
+  font-family: var(--p31-font-mono, monospace); font-size: 12px;
+}
+.ts-back { background: none; border: none; color: var(--p31-accent, #00f0ff); cursor: pointer; font: inherit; padding: 0; min-height: 24px; min-width: 24px; }
+.ts-count { margin-left: auto; color: var(--p31-text-tertiary, #64748b); }
+.ts-body { flex: 1; overflow-y: auto; }
+.ts-row {
+  display: flex; align-items: center; gap: var(--p31-layout-spacing-md-tight);
+  padding: 0 16px;
+  border-bottom: 1px solid var(--p31-glass-surface, rgba(255, 255, 255, 0.06));
+  font-family: var(--p31-font-mono, monospace); font-size: 12px;
+  position: relative;
+}
+.ts-day { position: absolute; right: 12px; top: -9px; background: var(--p31-surface, #12121a); color: var(--p31-text-tertiary, #64748b); font-size: 0.75rem; padding: 0 4px; }
+.ts-gap { position: absolute; left: 96px; top: -9px; background: var(--p31-surface, #12121a); color: var(--p31-accent-gold, #fbbf24); font-size: 0.75rem; padding: 0 4px; }
+.ts-track { position: relative; width: 80px; height: 6px; flex: none; background: var(--p31-glass-border, rgba(255, 255, 255, 0.1)); border-radius: 3px; }
+.ts-mark { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; border-radius: 50%; }
+.ts-pill { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.ts-actor { color: var(--p31-text, #e2e8f0); min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.ts-coherence { color: var(--p31-text-secondary, #94a3b8); }
+.ts-outcome { color: var(--p31-text-tertiary, #64748b); }
+.ts-ts { margin-left: auto; color: var(--p31-text-tertiary, #64748b); white-space: nowrap; }
+
+/* ── Inclusive presentation axes ────────────────────────────────────────
+ * Density/motion/saturation/literal-labels are surfaced as data-* attributes
+ * on .loom-shell (App.tsx) and consumed here. Defaults live on :root.
+ */
+
+/* Density: re-root the layout spacing scale (canon's comfortable defaults are
+ * the :root values) and scale the panel column. Compact shrinks; spacious
+ * grows. Every consumer of var(--p31-layout-spacing-*) inherits the shift. */
+.loom-shell[data-density='compact'] {
+  --loom-panel-width: 280px;
+  --p31-layout-density-factor: 0.75;
+  --p31-layout-spacing-xs: 2px;
+  --p31-layout-spacing-sm: 4px;
+  --p31-layout-spacing-md: 8px;
+  --p31-layout-spacing-lg: 16px;
+  --p31-layout-spacing-xl: 24px;
+}
+.loom-shell[data-density='spacious'] {
+  --loom-panel-width: 360px;
+  --p31-layout-density-factor: 1.25;
+  --p31-layout-spacing-xs: 6px;
+  --p31-layout-spacing-sm: 12px;
+  --p31-layout-spacing-md: 24px;
+  --p31-layout-spacing-lg: 32px;
+  --p31-layout-spacing-xl: 48px;
+}
+
+/* Color saturation: muted swaps the accent palette for chroma-reduced variants
+ * (token-level, no compositor filter over the canvas). The muted variants are
+ * emitted by canon as --p31-color-accent-muted etc. */
+.loom-shell[data-saturation='muted'] {
+  --p31-accent: var(--p31-color-accent-muted);
+  --p31-accent-violet: var(--p31-color-accent-violet-muted);
+  --p31-accent-gold: var(--p31-color-accent-gold-muted);
+  --p31-accent-green: var(--p31-color-accent-green-muted);
+  --p31-accent-red: var(--p31-color-accent-red-muted);
+}
+
+/* Motion: the tier re-scales a single --motion-scale factor that every
+ * token-driven transition multiplies (see :root). "none" collapses motion to
+ * ~instant; "reduced" halves it. Non-token motion (keyframes, enter/exit
+ * utilities) would need its own narrow kill switch here — the Loom has none. */
+.loom-shell[data-motion='reduced'] { --motion-scale: 0.5; }
+.loom-shell[data-motion='none'] { --motion-scale: 0.01; }
+
+/* Third-party motion: React Flow animates node drag/pan internally, outside
+ * the --motion-scale tokens. Kill it outright under motion='none'. */
+.loom-shell[data-motion='none'] .react-flow * { transition: none !important; }
+
+/* Motion: reduced — drop decorative glow only (text-shadow/box-shadow). */
+.loom-shell[data-motion='reduced'] .jb-val.closed,
+.loom-shell[data-motion='none'] .jb-val.closed { text-shadow: none; }
+.loom-shell[data-motion='reduced'] .jb-slider input[type='range']::-webkit-slider-thumb,
+.loom-shell[data-motion='none'] .jb-slider input[type='range']::-webkit-slider-thumb { box-shadow: none; }
+.loom-shell[data-motion='reduced'] .jb-slider input[type='range']::-moz-range-thumb,
+.loom-shell[data-motion='none'] .jb-slider input[type='range']::-moz-range-thumb { box-shadow: none; }
+
+/* ── Agent cursor (presence) ───────────────────────────────────────────
+ * A DOM overlay that makes the agent's traversal visible. Positioned by
+ * transform (compositor-safe); the ease duration is locked to --motion-scale
+ * so reduced/none motion shorten or teleport it. */
+.loom-canvas { position: relative; }
+.agent-cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--p31-layout-spacing-sm);
+  pointer-events: none;
+  z-index: 15;
+  transition-property: transform;
+  transition-duration: calc(320ms * var(--motion-scale));
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  will-change: transform;
+}
+.agent-cursor-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--p31-accent-violet, rgb(167, 139, 250));
+  box-shadow: 0 0 12px var(--p31-accent-violet, rgb(167, 139, 250));
+}
+.agent-cursor-label {
+  font-family: var(--p31-font-mono, monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--p31-text-secondary, rgb(148, 163, 184));
+  background: rgba(10, 14, 20, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* ── The Launchpad (level 1) — the warm front door ─────────────────────
+ * One screen, one character, one button. The instrument's chrome is gated
+ * behind data-loom-level="2"; at level 1 the canvas fills the whole shell.
+ */
+.loom-shell[data-loom-level='1'] {
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: 'canvas';
+}
+.loom-shell[data-loom-level='1'] .loom-bar,
+.loom-shell[data-loom-level='1'] .loom-panel,
+.loom-shell[data-loom-level='1'] .loom-scrub { display: none; }
+
+.launchpad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--p31-layout-spacing-lg-tight);
+  height: 100%;
+  padding: var(--p31-layout-spacing-xl);
+  text-align: center;
+}
+/* Lumi — the agent's face. The wrap owns the idle bob; an inner div owns the
+ * arrival wave. They live on separate HTML elements so both animate
+ * `transform` without the CSS animation-precedence rule silencing one — and
+ * both are GPU-composited (transforms on SVG *elements* aren't reliably
+ * accelerated in several engines). The svg itself is static. */
+.lumi-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  animation: lumi-bob calc(3s * var(--motion-scale)) ease-in-out infinite;
+}
+.lumi-anim {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lumi { width: 140px; height: 140px; animation: none; }
+@keyframes lumi-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.lumi-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--p31-radius-full);
+  background: radial-gradient(circle, oklch(80% 0.16 75 / 0.38), transparent 70%);
+  filter: blur(10px);
+  transform: scale(1);
+  transition:
+    transform calc(0.6s * var(--motion-scale)) ease,
+    opacity calc(0.6s * var(--motion-scale)) ease;
+  pointer-events: none;
+}
+.lumi-wrap--greeting .lumi-glow { transform: scale(1.18); }
+/* Arrival wave — one-shot tilt on the inner div, so it composes with the bob
+ * (which is on the wrap). Under prefers-reduced-motion the duration collapses
+ * and the gesture is effectively skipped with no JS branch. */
+.lumi-wrap--wave .lumi-anim { animation: lumi-wave calc(1.8s * var(--motion-scale)) ease-in-out; }
+@keyframes lumi-wave {
+  0%   { transform: rotate(0deg); }
+  12%  { transform: rotate(-9deg); }
+  26%  { transform: rotate(7deg); }
+  40%  { transform: rotate(-6deg); }
+  54%  { transform: rotate(4deg); }
+  68%  { transform: rotate(-2deg); }
+  82%  { transform: rotate(1deg); }
+  100% { transform: rotate(0deg); }
+}
+/* Sizing passthrough inside a sized chapter slot. */
+.chapter-lumi .lumi-wrap,
+.chapter-lumi .lumi-anim { width: 100%; height: 100%; }
+.chapter-lumi .lumi-anim svg { width: 100%; height: 100%; }
+.lumi-body { fill: var(--p31-accent, #fbbf24); }
+.lumi-face,
+.lumi-face--hidden { transition: opacity calc(0.3s * var(--motion-scale)) ease; }
+.lumi-face { opacity: 1; }
+.lumi-face--hidden { opacity: 0; }
+.launchpad-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--p31-text-primary, #f8fafc);
+}
+.launchpad-copy {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: var(--p31-text-secondary, #cbd5e1);
+  max-width: 34ch;
+}
+.launchpad-start {
+  min-height: var(--p31-touch-recommended);
+  min-width: 200px;
+  padding: 0 var(--p31-layout-spacing-xl);
+  border: none;
+  border-radius: var(--p31-radius-full);
+  background: var(--p31-accent, #fbbf24);
+  color: var(--p31-bg, #1a120b);
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* The elder's door — quiet, secondary, 48px (family floor). A link in
+ * substance: no fill, no shadow, reads as a way in, not a second CTA. */
+.launchpad-companion {
+  margin-top: var(--p31-layout-spacing-md);
+  min-height: var(--p31-touch-min);
+  padding: 0 var(--p31-layout-spacing-md);
+  border: none;
+  background: none;
+  color: var(--p31-text-secondary, #cbd5e1);
+  font-family: var(--p31-font-sans);
+  font-size: 17px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  transition: color calc(0.15s * var(--motion-scale)) ease;
+}
+.launchpad-companion:hover {
+  color: var(--p31-text-primary, #f8fafc);
+}
+.launchpad-companion:focus-visible {
+  outline: 3px solid var(--p31-text-primary, #f8fafc);
+  outline-offset: 3px;
+}
+
+/* Lumi's memory line — derived, never auto-advancing. One plain sentence
+ * about what was made before; the child still taps Start. */
+.launchpad-memory {
+  margin: 0 0 var(--p31-layout-spacing-md);
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--p31-text-secondary, #cbd5e1);
+  max-width: 30ch;
+}
+
+/* The doors row — companion + family, side by side, both 48px. */
+.launchpad-doors {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--p31-layout-spacing-xs);
+  margin-top: var(--p31-layout-spacing-sm);
+}
+/* The family's door — the whole household's shared page. */
+.launchpad-family {
+  min-height: var(--p31-touch-min);
+  padding: 0 var(--p31-layout-spacing-md);
+  border: none;
+  background: none;
+  color: var(--p31-text-secondary, #cbd5e1);
+  font-family: var(--p31-font-sans);
+  font-size: 17px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  transition: color calc(0.15s * var(--motion-scale)) ease;
+}
+.launchpad-family:hover {
+  color: var(--p31-text-primary, #f8fafc);
+}
+.launchpad-family:focus-visible {
+  outline: 3px solid var(--p31-text-primary, #f8fafc);
+  outline-offset: 3px;
+}
+
+/* ── Chapters — the child's first views ───────────────────── */
+.chapter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--p31-layout-spacing-lg-tight);
+  height: 100%;
+  width: 100%;
+  padding: calc(var(--p31-layout-spacing-xl) + env(safe-area-inset-top))
+    var(--p31-layout-spacing-xl)
+    calc(var(--p31-layout-spacing-xl) + env(safe-area-inset-bottom));
+  text-align: center;
+  background: var(--p31-bg, #0a0e14);
+}
+.chapter-copy {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  color: var(--p31-text-primary, #f8fafc);
+  max-width: 30ch;
+}
+.chapter-hint {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--p31-text-secondary, #cbd5e1);
+}
+.chapter-lumi {
+  width: 160px;
+  height: 160px;
+  position: relative;
+}
+.chapter-lumi .lumi-wrap {
+  width: 100%;
+  height: 100%;
+}
+.chapter-lumi svg {
+  width: 100%;
+  height: 100%;
+}
+.chapter-lumi--small {
+  width: 100px;
+  height: 100px;
+}
+/* Celebration pulse — a translucent amber ring that blooms out from Lumi once
+ * on a celebrated action. Drives the celebrated phase via animationend, so
+ * reduced-motion users (duration ~12ms) land there almost instantly with no
+ * separate code path. */
+.chapter-pulse {
+  position: absolute;
+  inset: -24px;
+  border-radius: var(--p31-radius-full);
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--p31-accent, #fbbf24) 50%, transparent),
+    transparent 70%
+  );
+  opacity: 0;
+  pointer-events: none;
+}
+.chapter-pulse--active {
+  animation: chapter-pulse-out calc(1.2s * var(--motion-scale)) ease-out;
+}
+@keyframes chapter-pulse-out {
+  0%   { opacity: 0.6; transform: scale(0.7); }
+  60%  { opacity: 0.25; transform: scale(1.15); }
+  100% { opacity: 0; transform: scale(1.3); }
+}
+.chapter-action {
+  min-height: var(--p31-touch-large); /* 64px child/elder touch target, not just the 48px floor */
+  min-width: 200px;
+  padding: 0 32px;
+  border: none;
+  border-radius: var(--p31-radius-full);
+  background: linear-gradient(180deg, var(--p31-accent-gold, #fcd34d), var(--p31-accent, #fbbf24));
+  color: var(--p31-bg, #1a120b);
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--p31-layout-spacing-sm);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 8px 24px rgba(255, 170, 40, 0.28);
+  transition: transform calc(0.15s * var(--motion-scale)) var(--p31-spring-fast-spatial),
+    box-shadow calc(0.15s * var(--motion-scale)) var(--p31-spring-effects),
+    opacity calc(0.15s * var(--motion-scale)) var(--p31-spring-effects);
+}
+.chapter-action:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 10px 28px rgba(255, 170, 40, 0.36);
+}
+.chapter-action:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+.chapter-action:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.chapter-action svg { flex-shrink: 0; }
+.chapter-action--ok {
+  background: linear-gradient(180deg, var(--p31-accent-green, #4ade80), var(--p31-accent-green, #34d399));
+  color: var(--p31-bg, #1a120b);
+}
+.chapter-action--no {
+  background: linear-gradient(180deg, var(--p31-accent-red, #fb7185), var(--p31-accent-red, #fb7185));
+  color: var(--p31-bg, #1a120b);
+}
+.chapter-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--p31-text-primary, #f8fafc);
+}
+.chapter-celebration {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--p31-accent, #fbbf24);
+  animation: chapter-pop calc(1s * var(--motion-scale)) ease-out;
+}
+@keyframes chapter-pop {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.chapter-next {
+  margin-top: var(--p31-layout-spacing-md-tight);
+  padding: 8px 20px;
+  min-height: var(--p31-touch-min); /* 48px family floor — the child's and elder's hand-off */
+  border-radius: var(--p31-radius-full);
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.2));
+  background: transparent;
+  color: var(--p31-text, #e2e8f0);
+  font-size: 16px; /* the family 16px text floor */
+  cursor: pointer;
+}
+.chapter-proposal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-layout-spacing-md-tight);
+  max-width: 400px;
+  padding: var(--p31-layout-spacing-lg-tight);
+  border-radius: 14px;
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.14));
+  background: var(--p31-surface, #12121a);
+}
+.chapter-proposal-node {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--p31-accent, #00f0ff);
+}
+.chapter-proposal-body {
+  font-size: 1rem;
+  color: var(--p31-text-secondary, #cbd5e1);
+  line-height: 1.5;
+}
+.chapter-actions {
+  display: flex;
+  gap: var(--p31-layout-spacing-md-tight);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Chapter top bar — holds the sound toggle (when visible) and the shared
+ * chip. Space-between so the toggle reads left and the count reads right;
+ * 48px minimum so it never collapses. */
+.chapter-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--p31-touch-min);
+  gap: var(--p31-layout-spacing-md);
+  margin-bottom: var(--p31-layout-spacing-md);
+}
+
+/* The shared chip. Descriptive, never a score — "You've done N things with
+ * Lumi". Counts the child's own actions only. */
+.shared-chip {
+  font-family: var(--p31-font-sans);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--p31-text-tertiary, #64748b);
+  letter-spacing: 0.01em;
+  margin-left: auto;
+}
+.shared-chip-count {
+  font-family: var(--p31-font-mono, ui-monospace, monospace);
+  font-weight: 700;
+  color: var(--p31-text-secondary, #cbd5e1);
+  padding-inline: 2px;
+}
+
+/* Opt-in sound toggle. Visible, 48px minimum, aria-pressed reflects state.
+ * The label states the current state ("Sound on"/"Sound off"), not the
+ * action ("Mute"). */
+.sound-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--p31-layout-spacing-sm);
+  min-height: var(--p31-touch-min);
+  min-width: var(--p31-touch-min);
+  padding: 0 16px;
+  border-radius: var(--p31-radius-full);
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.12));
+  background: var(--p31-glass-bg, rgba(255, 255, 255, 0.06));
+  color: var(--p31-text-secondary, #cbd5e1);
+  font-family: var(--p31-font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background calc(0.15s * var(--motion-scale)) ease,
+    color calc(0.15s * var(--motion-scale)) ease,
+    border-color calc(0.15s * var(--motion-scale)) ease;
+}
+.sound-toggle:hover {
+  color: var(--p31-text-primary, #f8fafc);
+  border-color: var(--p31-text-tertiary, #64748b);
+}
+.sound-toggle:focus-visible {
+  outline: 3px solid var(--p31-text-primary, #f8fafc);
+  outline-offset: 3px;
+}
+.sound-toggle[aria-pressed='true'] {
+  color: var(--p31-accent, #fbbf24);
+  border-color: color-mix(in oklab, var(--p31-accent, #fbbf24) 60%, transparent);
+}
+.sound-toggle-icon { flex-shrink: 0; }
+
+/* ── The field orb — Chapter 2's "make something happen" object.
+ * The button is the full hit area (96px, well above the 48px floor and the
+ * 64px child/elder target). The visible circle is a radial-gradient div (not
+ * an SVG) so its scale/glow transitions composite on the GPU. */
+.chapter-orb-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+  min-width: 140px;
+  margin-block: var(--p31-layout-spacing-md);
+}
+.orb {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  min-width: 96px;
+  min-height: 96px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  border-radius: var(--p31-radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  outline-offset: 4px;
+}
+.orb:focus-visible {
+  outline: 3px solid var(--p31-text-primary, #f8fafc);
+}
+.orb:disabled {
+  cursor: default;
+}
+.orb-visual {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--p31-radius-full);
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      oklch(88% 0.14 75),
+      var(--p31-accent, #fbbf24) 55%,
+      oklch(58% 0.14 60) 100%
+    );
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.35),
+    0 8px 24px rgba(255, 170, 40, 0.28);
+  transform: scale(1);
+  transition:
+    transform calc(0.25s * var(--motion-scale)) ease-out,
+    box-shadow calc(0.25s * var(--motion-scale)) ease-out;
+}
+.orb--active .orb-visual {
+  transform: scale(1.12);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.45),
+    0 12px 36px rgba(255, 170, 40, 0.5);
+}
+.orb--spent .orb-visual {
+  /* Spent orbs dim rather than vanish — the child can still see what they
+     did. This is the visual equivalent of the celebration chime. */
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      oklch(55% 0.08 75),
+      oklch(38% 0.06 60) 100%
+    );
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.15);
+}
+.orb-glow {
+  position: absolute;
+  inset: -16px;
+  border-radius: var(--p31-radius-full);
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--p31-accent, #fbbf24) 50%, transparent),
+    transparent 70%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity calc(0.4s * var(--motion-scale)) ease-out;
+}
+.orb--active .orb-glow {
+  opacity: 1;
+}
+
+/* ── Proposal card — Lumi's idea + the two-answer decision. */
+.proposal-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-layout-spacing-lg);
+  align-items: center;
+  text-align: center;
+  padding: var(--p31-layout-spacing-lg);
+  border-radius: 16px;
+  background: var(--p31-glass-bg, rgba(255, 255, 255, 0.06));
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.12));
+  max-width: 36ch;
+}
+.proposal-text {
+  margin: 0;
+  font-size: 19px;
+  line-height: var(--loom-line-height);
+  color: var(--p31-text-primary, #f8fafc);
+  font-weight: 500;
+}
+
+/* Proposal details — the co-presence loop made tangible. Expandable "Why
+ * this proposal?" (Lumi's rationale) and a current-vs-proposed diff. Both are
+ * opt-in reading surfaces: they never gate or time the decision, and the two
+ * answer buttons below keep equal weight. */
+.proposal-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-layout-spacing-md-tight);
+  width: 100%;
+}
+.proposal-detail-toggle {
+  min-height: var(--p31-touch-min);
+  padding: 4px 12px;
+  border-radius: var(--p31-radius-full);
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.14));
+  background: transparent;
+  color: var(--p31-accent, #00f0ff);
+  font-family: var(--p31-font-sans);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color calc(0.15s * var(--motion-scale)) ease;
+}
+.proposal-detail-toggle:hover {
+  border-color: var(--p31-text-tertiary, #64748b);
+}
+.proposal-detail-toggle[aria-expanded='true'] {
+  color: var(--p31-accent-gold, #fbbf24);
+  border-color: var(--p31-accent-gold, #fbbf24);
+}
+.proposal-why {
+  margin: 0;
+  font-size: 16px;
+  line-height: var(--loom-line-height);
+  color: var(--p31-text-secondary, #cbd5e1);
+  text-align: left;
+}
+.proposal-diff {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--p31-layout-spacing-md);
+  width: 100%;
+}
+.proposal-diff-col {
+  text-align: left;
+  padding: var(--p31-layout-spacing-md-tight);
+  border-radius: 10px;
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.1));
+  background: var(--p31-surface, #12121a);
+}
+.proposal-diff-col--new {
+  border-color: color-mix(in oklab, var(--p31-accent-green, #34d399) 50%, transparent);
+}
+.proposal-diff-head {
+  display: block;
+  font-family: var(--p31-font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--p31-text-tertiary, #64748b);
+  margin-bottom: 4px;
+}
+.proposal-diff-col--new .proposal-diff-head {
+  color: var(--p31-accent-green, #34d399);
+}
+.proposal-diff-body {
+  margin: 0;
+  font-family: var(--p31-font-mono, monospace);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--p31-text-secondary, #94a3b8);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.proposal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--p31-layout-spacing-md);
+}
+/* Both buttons carry the same visual weight — "Not yet" is not a cancel, it
+ * is a decision. Same size, same shape, same presence. */
+.proposal-action {
+  min-height: var(--p31-touch-recommended);
+  min-width: 148px;
+  padding: 0 var(--p31-layout-spacing-lg);
+  border-radius: var(--p31-radius-full);
+  border: 1px solid transparent;
+  font-family: var(--p31-font-sans);
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform calc(0.15s * var(--motion-scale)) ease,
+    box-shadow calc(0.15s * var(--motion-scale)) ease,
+    opacity calc(0.15s * var(--motion-scale)) ease;
+}
+.proposal-action:focus-visible {
+  outline: 3px solid var(--p31-text-primary, #f8fafc);
+  outline-offset: 3px;
+}
+.proposal-action:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.proposal-action--yes {
+  color: var(--p31-bg, #1a120b);
+  background: linear-gradient(180deg, var(--p31-accent-gold, #fcd34d), var(--p31-accent, #fbbf24));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 8px 24px rgba(255, 170, 40, 0.28);
+}
+.proposal-action--yes:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+.proposal-action--not-yet {
+  /* Deliberately the same weight as yes, not a ghost. "Not yet" is a real
+   * answer, so it reads as a real button. */
+  color: var(--p31-text-primary, #f8fafc);
+  background: var(--p31-surface2, #2d2d3d);
+  border-color: var(--p31-glass-border, rgba(255, 255, 255, 0.12));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.proposal-action--not-yet:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: var(--p31-text-tertiary, #64748b);
+}
+
+/* ── Chapter subtitle — the one-line question under the heading. */
+.chapter-subtitle {
+  margin: 0;
+  font-family: var(--p31-font-sans);
+  font-size: 17px;
+  line-height: var(--loom-line-height);
+  color: var(--p31-text-secondary, #cbd5e1);
+  text-align: center;
+}
+
+/* ── Color picker — Chapter 4's authoring surface.
+ * The swatch is a button; the circle inside is 64px; the button's padding
+ * extends the hit area to 96px. Focus ring lands on the button, not the
+ * circle, so it surrounds the full target. */
+.color-picker {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--p31-layout-spacing-lg);
+  padding-block: var(--p31-layout-spacing-md);
+}
+.color-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--p31-layout-spacing-sm);
+  min-width: 96px;
+  min-height: 96px;
+  padding: var(--p31-layout-spacing-sm);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 16px;
+  transition: transform calc(0.15s * var(--motion-scale)) ease;
+}
+.color-swatch:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+.color-swatch:focus-visible {
+  outline: 3px solid var(--p31-text-primary, #f8fafc);
+  outline-offset: 3px;
+}
+.color-swatch:disabled {
+  cursor: default;
+}
+.color-swatch-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--p31-radius-full);
+  background: var(--swatch-color);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.35),
+    0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: box-shadow calc(0.15s * var(--motion-scale)) ease;
+}
+.color-swatch:hover:not(:disabled) .color-swatch-circle {
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.45),
+    0 6px 20px rgba(0, 0, 0, 0.3);
+}
+.color-swatch-label {
+  font-family: var(--p31-font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--p31-text-secondary, #cbd5e1);
+  letter-spacing: 0.01em;
+}
+
+/* ── Made artifact — Chapter 5's payoff. A real button in the child's chosen
+ * color with the shape Lumi proposed. Style derives from --artifact-color,
+ * which the component sets inline to the token the child picked — nothing
+ * hardcoded. */
+.made-artifact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--p31-layout-spacing-sm);
+  margin-block: var(--p31-layout-spacing-md);
+}
+.made-artifact-btn {
+  min-height: var(--p31-touch-large);
+  min-width: 220px;
+  padding: 0 var(--p31-layout-spacing-xl);
+  border-radius: var(--p31-radius-full);
+  border: none;
+  /* The gradient lifts the token's top edge toward white; the flat token
+     anchors the bottom. Derived, not tinted in code. */
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--artifact-color) 82%, white 18%),
+    var(--artifact-color)
+  );
+  color: var(--p31-bg, #1a120b);
+  font-family: var(--p31-font-sans);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 8px 24px color-mix(in oklab, var(--artifact-color) 35%, transparent);
+  transition:
+    transform calc(0.15s * var(--motion-scale)) ease,
+    box-shadow calc(0.15s * var(--motion-scale)) ease;
+}
+.made-artifact-btn:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 10px 28px color-mix(in oklab, var(--artifact-color) 45%, transparent);
+}
+.made-artifact-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+.made-artifact-btn:focus-visible {
+  outline: 3px solid var(--p31-text-primary, #f8fafc);
+  outline-offset: 3px;
+}
+.made-artifact-btn--pulsed {
+  animation: artifact-pulse calc(0.6s * var(--motion-scale)) ease-out;
+}
+/* The artifact's "it works" proof — a soft scale-up and settle, transform-only,
+ * scaled by --motion-scale so reduced-motion users get a near-instant confirm
+ * rather than a skipped one. */
+@keyframes artifact-pulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+.made-artifact-label {
+  font-family: var(--p31-font-sans);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--p31-text-tertiary, #64748b);
+}
+
+/* ── Lumi, calmer — the companion view's bob. Slower, same path. The wave is
+ * suppressed in JS (calm + wave never co-occur); only the idle loop runs. */
+.lumi-wrap--calm {
+  animation: lumi-bob calc(6s * var(--motion-scale)) ease-in-out infinite;
+}
+
+/* ── MadeArtifact, calmer — no hover lift, no press-shrink, a gentler pulse.
+ * The elder's screen should not jump under their finger. */
+.made-artifact--calm .made-artifact-btn {
+  transition: box-shadow calc(0.3s * var(--motion-scale)) ease;
+}
+.made-artifact-btn--calm:hover {
+  transform: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 8px 24px color-mix(in oklab, var(--artifact-color) 35%, transparent);
+}
+.made-artifact-btn--calm:active {
+  transform: none;
+}
+.made-artifact-btn--calm.made-artifact-btn--pulsed {
+  animation: artifact-pulse-calm calc(0.8s * var(--motion-scale)) ease-out;
+}
+@keyframes artifact-pulse-calm {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+/* ── The companion view — the elder's window.
+ * A single centered column, generous vertical spacing, no chrome beyond the
+ * controls themselves. Every control is at least 48px tall; the artifact is
+ * 64. No element below 16px. */
+.companion {
+  /* dvh = the visible viewport (the keyboard-shortened or Dynamic Island
+   * viewport), not the larger 100vh. iOS 26 has a known regression where
+   * 100vh + viewport-fit=cover mis-renders; dvh resolves it. */
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(var(--p31-layout-spacing-xl) + env(safe-area-inset-top))
+    var(--p31-layout-spacing-lg)
+    calc(var(--p31-layout-spacing-xl) + env(safe-area-inset-bottom));
+  background: var(--p31-bg, #0a0e14);
+  color: var(--p31-text-primary, #f8fafc);
+  font-family: var(--p31-font-sans);
+  opacity: 0;
+  animation: enter calc(0.6s * var(--motion-scale)) ease-out forwards;
+}
+.companion-row {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+}
+.companion-row--top {
+  justify-content: flex-start;
+}
+.companion-row--bottom {
+  justify-content: center;
+}
+.companion-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--p31-layout-spacing-xl);
+  width: 100%;
+  max-width: 480px;
+}
+.companion-lumi {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.companion-sentence {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: var(--p31-text-primary, #f8fafc);
+  max-width: 24ch;
+}
+/* The Back control — always visible, top-left, 48px minimum, high contrast.
+ * Ghost styling because it should read as a way out, not as a demand for
+ * attention. */
+.companion-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--p31-layout-spacing-sm);
+  min-height: var(--p31-touch-min);
+  min-width: var(--p31-touch-min);
+  padding: 0 var(--p31-layout-spacing-md) 0 var(--p31-layout-spacing-sm);
+  border-radius: var(--p31-radius-full);
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.12));
+  background: transparent;
+  color: var(--p31-text-secondary, #cbd5e1);
+  font-family: var(--p31-font-sans);
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    color calc(0.15s * var(--motion-scale)) ease,
+    border-color calc(0.15s * var(--motion-scale)) ease;
+}
+.companion-back:hover {
+  color: var(--p31-text-primary, #f8fafc);
+  border-color: var(--p31-text-tertiary, #64748b);
+}
+.companion-back:focus-visible {
+  outline: 3px solid var(--p31-text-primary, #f8fafc);
+  outline-offset: 3px;
+}
+/* The forward control — big, warm, unmissable. This is the elder's invitation
+ * to see their own work. */
+.companion-next {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--p31-layout-spacing-sm);
+  min-height: var(--p31-touch-large);
+  min-width: 220px;
+  padding: 0 var(--p31-layout-spacing-xl);
+  border-radius: var(--p31-radius-full);
+  border: none;
+  background: linear-gradient(180deg, var(--p31-accent-gold, #fcd34d), var(--p31-accent, #fbbf24));
+  color: var(--p31-bg, #1a120b);
+  font-family: var(--p31-font-sans);
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 8px 24px rgba(255, 170, 40, 0.28);
+  transition: box-shadow calc(0.2s * var(--motion-scale)) ease;
+}
+.companion-next:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 10px 28px rgba(255, 170, 40, 0.36);
+}
+.companion-next:focus-visible {
+  outline: 3px solid var(--p31-text-primary, #f8fafc);
+  outline-offset: 3px;
+}
+
+/* ── Family view — ?mode=family, one short page the whole household reads
+ * together. Same family floor as the companion: 48px targets, ≥16px text,
+ * no auto-advance, no timers, no chip. Shared-scope only. */
+.family {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(var(--p31-layout-spacing-xl) + env(safe-area-inset-top))
+    var(--p31-layout-spacing-lg)
+    calc(var(--p31-layout-spacing-xl) + env(safe-area-inset-bottom));
+  background: var(--p31-bg, #0a0e14);
+  color: var(--p31-text-primary, #f8fafc);
+  font-family: var(--p31-font-sans);
+  opacity: 0;
+  animation: enter calc(0.6s * var(--motion-scale)) ease-out forwards;
+}
+.family-row {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+}
+.family-row--top {
+  justify-content: flex-start;
+}
+.family-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--p31-layout-spacing-lg);
+  width: 100%;
+  max-width: 480px;
+}
+.family-lumi {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.family-sentence {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: var(--p31-text-primary, #f8fafc);
+  max-width: 26ch;
+}
+.family-sentence--empty {
+  color: var(--p31-text-secondary, #cbd5e1);
+  font-weight: 400;
+}
+.family-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--p31-layout-spacing-sm);
+  min-height: var(--p31-touch-min);
+  min-width: var(--p31-touch-min);
+  padding: 0 var(--p31-layout-spacing-md) 0 var(--p31-layout-spacing-sm);
+  border-radius: var(--p31-radius-full);
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.12));
+  background: transparent;
+  color: var(--p31-text-secondary, #cbd5e1);
+  font-family: var(--p31-font-sans);
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    color calc(0.15s * var(--motion-scale)) ease,
+    border-color calc(0.15s * var(--motion-scale)) ease;
+}
+.family-back:hover {
+  color: var(--p31-text-primary, #f8fafc);
+  border-color: var(--p31-text-tertiary, #64748b);
+}
+.family-back:focus-visible {
+  outline: 3px solid var(--p31-text-primary, #f8fafc);
+  outline-offset: 3px;
+}
+/* Care circle — presence, never a score. */
+.family-care {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--p31-layout-spacing-xs);
+  max-width: 32ch;
+}
+.family-care-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--p31-text-primary, #f8fafc);
+}
+.family-care-line {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--p31-text-secondary, #cbd5e1);
+}
+.family-care-pools {
+  margin: 0;
+  font-size: 14px;
+  color: var(--p31-text-tertiary, #64748b);
+}
+/* Receipt — the latest shared moment, with provenance + undo. */
+.family-receipt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--p31-layout-spacing-sm);
+  max-width: 40ch;
+  padding: var(--p31-layout-spacing-md);
+  border-radius: var(--p31-radius-md);
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.14));
+  background: var(--p31-glass-bg, rgba(255, 255, 255, 0.06));
+}
+.family-receipt-line {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--p31-text-secondary, #cbd5e1);
+}
+.family-receipt-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-layout-spacing-md);
+}
+.family-proof {
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.2));
+  background: transparent;
+  color: var(--p31-text-primary, #f8fafc);
+}
+.family-proof:hover {
+  filter: brightness(1.08);
+}
+.family-proof:focus-visible {
+  outline: 3px solid var(--p31-text-primary, #f8fafc);
+  outline-offset: 3px;
+}
+
+/* ── Docs view — ?mode=docs, the live-contract surface. Fourth-audience
+ * (contributor/agent), chrome hidden via isLevel1, no switcher entry. */
+.docs-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-layout-spacing-lg);
+  height: 100%;
+  padding: var(--p31-layout-spacing-xl);
+  overflow-y: auto;
+  background: var(--p31-bg, #0a0e14);
+  color: var(--p31-text-primary, #f8fafc);
+  font-family: var(--p31-font-sans);
+}
+.docs-header { max-width: 60ch; }
+.docs-title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.docs-lede {
+  margin: var(--p31-layout-spacing-sm) 0 0;
+  font-size: 1rem;
+  line-height: var(--loom-line-height);
+  color: var(--p31-text-secondary, #cbd5e1);
+}
+.docs-pane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-layout-spacing-sm);
+}
+.docs-pane-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.docs-pane-note {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--p31-text-tertiary, #64748b);
+}
+.docs-pane-note code,
+.docs-token-name,
+.docs-action-name {
+  font-family: var(--p31-font-mono, ui-monospace, monospace);
+}
+.docs-tokens {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--p31-layout-spacing-xs);
+}
+.docs-token {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-layout-spacing-sm);
+  padding: var(--p31-layout-spacing-sm);
+  border-radius: var(--p31-radius-sm, 8px);
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.12));
+  background: var(--p31-glass-bg, rgba(255, 255, 255, 0.06));
+}
+.docs-token-swatch {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--p31-radius-full, 9999px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.docs-token-name {
+  font-size: 0.8rem;
+  color: var(--p31-text-secondary, #cbd5e1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.docs-actions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-layout-spacing-sm);
+}
+.docs-action {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-layout-spacing-xs);
+  padding: var(--p31-layout-spacing-md);
+  border-radius: var(--p31-radius-sm, 8px);
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.12));
+  border-left-width: 4px;
+  background: var(--p31-glass-bg, rgba(255, 255, 255, 0.06));
+}
+.docs-action--none { border-left-color: var(--p31-accent-green, #34d399); }
+.docs-action--low { border-left-color: var(--p31-accent-gold, #fbbf24); }
+.docs-action--medium { border-left-color: var(--p31-accent, #fbbf24); }
+.docs-action--high { border-left-color: var(--p31-accent-red, #fb7185); }
+.docs-action-meta {
+  font-family: var(--p31-font-mono, ui-monospace, monospace);
+  font-size: 0.75rem;
+  color: var(--p31-text-tertiary, #64748b);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.docs-action-desc {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: var(--loom-line-height);
+  color: var(--p31-text-secondary, #cbd5e1);
+}
+.docs-log {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-layout-spacing-sm);
+}
+.docs-log-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-layout-spacing-md);
+}
+.docs-log-btn {
+  min-height: 48px;
+  min-width: 48px;
+  border-radius: var(--p31-radius-sm, 8px);
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.12));
+  background: var(--p31-glass-bg, rgba(255, 255, 255, 0.06));
+  color: var(--p31-text-primary, #f8fafc);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.docs-log-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.docs-log-pos {
+  font-family: var(--p31-font-mono, ui-monospace, monospace);
+  font-size: 0.85rem;
+  color: var(--p31-text-secondary, #cbd5e1);
+}
+.docs-log-state {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-layout-spacing-xs);
+  padding: var(--p31-layout-spacing-md);
+  border-radius: var(--p31-radius-sm, 8px);
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.12));
+  background: var(--p31-glass-bg, rgba(255, 255, 255, 0.06));
+}
+.docs-log-line {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--p31-text-secondary, #cbd5e1);
+}
+.docs-log-line code {
+  font-family: var(--p31-font-mono, ui-monospace, monospace);
+  color: var(--p31-text-primary, #f8fafc);
+}
+}
+
+/* ── Raw-value triage (the porting inventory's remaining queue) ──────────
+ * The spacing scale was extended (canon now has 12px and 20px steps) and the
+ * off-scale gaps snapped to it, so the queue is now just:
+ *
+ *   1. Micro-elements (keep as literals — no token should exist for these):
+ *      width/height 1–8px dots, bars, indicators (survival track, event
+ *      marks, range sliders), the 3px proposal-node stack gap, the 5px
+ *      reason-input padding, and the 0.01ms reduced-motion floor.
+ *
+ *   2. Chrome sizes (width 90, 220, 240, 280, 320, 360, 380, 400, 480,
+ *      820px; the instrument and Jitterbug readouts): deliberate layout
+ *      constants with no spacing-token intent. Keep, or lift to tokens only
+ *      if a width scale is ever added to the canon.
+ *
+ * The porting inventory (docs/PORTING_INVENTORY.md) regenerates this list on
+ * every `pnpm port-audit`; it is the queue, not a failure state. */

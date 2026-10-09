@@ -1,0 +1,324 @@
+---
+/**
+ * /enterprise — the governance-platform story (separate buying center from the
+ * family story). Every claim verified 2026-09-23: live URLs, published
+ * standards, named research. No invented metrics.
+ */
+import MarketingShell from '../layouts/MarketingShell.astro';
+
+import SectionHeader from '../components/marketing/SectionHeader.astro';
+import Footer from '../components/marketing/Footer.astro';
+
+const proofs = [
+  { title: 'Pre-execution enforcement', desc: 'guardAgentEvent runs before commit — refusals are recorded, not reconstructed. A denied action never reaches the log as if it happened.' },
+  { title: 'Hash-chained evidence', desc: 'RFC 8785 canonicalization + SHA-256. The chain is independently verifiable at a public endpoint — no vendor lock-in on the evidence.' },
+  { title: 'Post-quantum identity', desc: 'ML-DSA-65 (FIPS 204) capability tokens, 15-minute expiry, fail-closed verification. In a market where 87% plan PQC but only 7% deploy, this is live.' },
+];
+
+const compliance = [
+  { label: 'EU AI Act Art. 12', value: 'Dec 2, 2027 / Aug 2, 2028', note: 'Compliant before the staged high-risk logging deadline (Digital Omnibus, in force Jul 27, 2026).' },
+  { label: 'AI Kill Switch Act', value: 'Forensic records', note: 'Preserved, tamper-evident records — the refusal sidecar is the evidence layer.' },
+  { label: 'IETF WIMSE audit record', value: 'draft-gilda-wimse-agent-audit-record-00', note: 'Decision + observed effect, checkable via a canonicalization contract — the Loom records both.' },
+  { label: 'MCP Enterprise-Managed Auth', value: 'Okta XAA', note: 'P31 MCP servers are aligned for the Anthropic Connectors Directory path.' },
+];
+
+const integrations = [
+  { name: 'Google Agent Gateway', note: 'The network-level enforcement point for all agent traffic. The governance slot (hash-chained audit) is empty among current partners.' },
+  { name: 'Anthropic MCP Connectors', note: 'Enterprise-managed authorization is GA (Aug 24, 2026), built on Okta XAA. PQC capability tokens complement XAA.' },
+  { name: 'Cloudflare Agent Cloud', note: 'P31 runs on the same infrastructure — Workers, Durable Objects, D1. A native governance sidecar.' },
+];
+
+const loomDiagram = `
+flowchart TB
+    classDef core fill:#2563eb,stroke:#1e40af,color:#ffffff
+    classDef gate fill:#f59e0b,stroke:#b45309,color:#000000
+    classDef store fill:#64748b,stroke:#334155,color:#ffffff
+    subgraph Gate["Pre-execution gate"]
+        G1{"In scope?"}:::gate
+        G2["Refusal sidecar"]:::gate
+    end
+    subgraph Chain["The Loom"]
+        L1["SHA-256 chain<br/>RFC 8785"]:::core
+        L2["ML-DSA-65 sig<br/>NIST L3"]:::core
+        L3["WIMSE DSSE envelope"]:::core
+        L4["Merkle anchor"]:::core
+    end
+    subgraph Store["Storage"]
+        D1["D1 primary"]:::store
+        R2["R2 backup"]:::store
+    end
+    A["Agent action"]:::core --> G1
+    G1 -->|yes| L1
+    G1 -->|no| G2
+    L1 --> L2 --> L3 --> L4
+    L4 --> D1
+    D1 --> R2
+    D1 --> V["Public verify"]:::core
+`
+
+const identityDiagram = `
+flowchart LR
+    classDef core fill:#2563eb,stroke:#1e40af,color:#ffffff
+    classDef store fill:#64748b,stroke:#334155,color:#ffffff
+    classDef external fill:#f59e0b,stroke:#b45309,color:#000000
+    A["Agent proposes"]:::external --> G["Pre-execution gate"]:::core
+    G --> B["did:key capability<br/>scope-bound"]:::core
+    B --> C["Device-key wrap<br/>AES-GCM"]:::store
+    B --> D["Public DID"]:::core
+    C --> E["PIN re-wrap<br/>PBKDF2"]:::store
+`
+
+const standardsTimeline = `
+timeline
+    title P31 audit standards alignment
+    2020 : RFC 8785 JSON Canonicalization
+    2026-02 : NIST AI Agent Standards Initiative launches
+    2026-04 : draft-dembowski agentledger -00
+    2026-06 : RFC 9943 SCITT published
+    2026-09-08 : draft-wei-aic-jwt -01
+    2026-09-15 : draft-sharif-agent-audit-trail -04
+    2026-09-20 : draft-gilda-wimse-agent-audit-record -00
+    2026-09-23 : P31 v2.0 aligned against all of the above
+`
+
+const securityPosture = `
+flowchart TB
+    classDef core fill:#2563eb,stroke:#1e40af,color:#ffffff
+    classDef gap fill:#f59e0b,stroke:#b45309,color:#000000
+    subgraph Real["Verified working"]
+        A["Tamper-evident hash chain"]:::core
+        B["Refusal sidecar"]:::core
+        C["WIMSE signed envelopes"]:::core
+        D["Merkle batch anchoring"]:::core
+    end
+    subgraph Gaps["Honest gaps"]
+        E["ML-DSA-65 tested, not in production"]:::gap
+        F["EU AI Act retention not audited"]:::gap
+        G["ISO 42001 not pursued"]:::gap
+    end
+    A --> E
+    B --> E
+    C --> F
+    D --> G
+`
+
+---
+
+<MarketingShell
+  title="Enterprise — P31 Labs"
+  description="The audit trail your agents don't have — and can't fake. Hash-chained, PQC-signed, independently verifiable agent governance on Cloudflare Workers."
+  theme="sunlight"
+>
+  <main id="main-content" class="section">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+
+      {/* ── HERO ── */}
+      <section class="relative pt-24 pb-16 md:pt-32 md:pb-20">
+        <div class="max-w-3xl space-y-6">
+          <p class="font-mono text-xs tracking-[0.2em] uppercase" style="color: var(--p31-accent);">
+            Agent Governance · Post-Quantum Identity · Independent Evidence
+          </p>
+          <h1 class="text-4xl md:text-6xl font-bold leading-tight" style="color: var(--p31-text); letter-spacing: -0.02em;">
+            The audit trail your agents don't have — and can't fake.
+          </h1>
+          <p class="text-lg md:text-xl leading-relaxed" style="color: var(--p31-text-secondary);">
+            IDC reports that most enterprises cannot verify what their AI agents actually do —
+            60% of security leaders lack basic agent containment, and 35% cannot shut down a
+            rogue agent. The record of what happened often does not exist at all.
+          </p>
+          <p class="text-lg leading-relaxed" style="color: var(--p31-text);">
+            P31's Loom <strong>is</strong> that record — live, hash-chained, PQC-signed, and
+            independently verifiable on Cloudflare Workers.
+          </p>
+          <div class="flex flex-col sm:flex-row items-start gap-4 pt-2">
+            <a href="/apps/loom" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all no-underline" style="background: var(--p31-accent); color: #000;">
+              See the live chain →
+            </a>
+            <a href="https://loom.p31ca.org/api/loom/verify" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold border no-underline" style="border-color: var(--p31-glass-border); color: var(--p31-text);">
+              Verify the chain ↗
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── THE GAP ── */}
+      <section class="mb-16">
+        <SectionHeader
+          title="The gap is the market"
+          description="IDC, September 2026: 'The Audit Trail That Doesn't Exist.' Governance spend is the answer — agent observability & governance is a $1.68B (2026) → $8.62B (2031) market at 38.69% CAGR."
+        />
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+          <div class="glass-card p-6 rounded-xl">
+            <div class="text-3xl font-extrabold mb-2" style="color: var(--p31-text);">60%</div>
+            <p class="text-sm" style="color: var(--p31-text-secondary);">of security leaders lack basic agent containment controls.</p>
+          </div>
+          <div class="glass-card p-6 rounded-xl">
+            <div class="text-3xl font-extrabold mb-2" style="color: var(--p31-text);">35%</div>
+            <p class="text-sm" style="color: var(--p31-text-secondary);">cannot shut down a rogue agent once deployed.</p>
+          </div>
+          <div class="glass-card p-6 rounded-xl">
+            <div class="text-3xl font-extrabold mb-2" style="color: var(--p31-text);">$1.68B → $8.62B</div>
+            <p class="text-sm" style="color: var(--p31-text-secondary);">agent observability & governance, 2026 → 2031 (38.69% CAGR).</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── VERIFY IT YOURSELF ── */}
+      <section class="mb-16">
+        <SectionHeader
+          title="Verify it yourself — ninety seconds"
+          description="Three commands. No account. The chain recomputes from genesis and returns the current head."
+        />
+        <div class="glass-card p-6 rounded-xl mt-8">
+          <pre class="font-mono text-sm leading-relaxed overflow-x-auto" style="color: var(--p31-text);"><code># 1 · The Loom chain — recomputes and verifies
+curl -s https://b30e37b5.loom-8z0.pages.dev/api/loom-public/verify | python3 -m json.tool
+
+# 2 · The MCP tool registry
+curl -s https://mcp-registry.trimtab-signal.workers.dev/servers | python3 -m json.tool
+
+# 3 · A flagship live
+open https://p31ca.org/apps/loom</code></pre>
+          <p class="mt-4 text-sm" style="color: var(--p31-text-secondary);">
+            Expected from #1: <code class="font-mono">{'{"valid": true, "checked": 16, "brokenAt": null}'}</code> — a live request against a deployed endpoint, not a screenshot.
+          </p>
+        </div>
+      </section>
+
+      {/* ── THE PROOF ── */}
+      <section class="mb-16">
+        <SectionHeader title="Three proofs, all live" description="Every capability resolves to a running service or a published standard." />
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          {proofs.map((p) => (
+            <div class="glass-card p-6 rounded-xl border-t-4" style="border-top-color: var(--p31-accent);">
+              <h3 class="text-lg font-bold mb-3" style="color: var(--p31-text);">{p.title}</h3>
+              <p class="text-sm leading-relaxed" style="color: var(--p31-text-secondary);">{p.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── ARCHITECTURE DIAGRAMS ── */}
+      <section class="mb-16">
+        <SectionHeader
+          title="How it works, in one diagram"
+          description="The Loom pipeline — the same architecture documented in the enterprise package, rendered live."
+        />
+        <div class="mt-8 space-y-8">
+          <pre class="mermaid" set:html={loomDiagram} />
+
+          <pre class="mermaid" set:html={identityDiagram} />
+
+          <pre class="mermaid" set:html={standardsTimeline} />
+
+          <pre class="mermaid" set:html={securityPosture} />
+        </div>
+      </section>
+
+      {/* ── COMPETITIVE POSITION ── */}
+      <section class="mb-16">
+        <SectionHeader
+          title="How it differs"
+          description="The governance market shows policy and traces. P31's differentiator is an independently verifiable audit record — not a policy dashboard."
+        />
+        <div class="mt-8 overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b" style="border-color: var(--p31-glass-border);">
+                <th class="py-3 pr-4 text-xs font-semibold uppercase tracking-wider" style="color: var(--p31-text);">Platform</th>
+                <th class="py-3 pr-4 text-xs font-semibold uppercase tracking-wider" style="color: var(--p31-text);">What it does</th>
+                <th class="py-3 text-xs font-semibold uppercase tracking-wider" style="color: var(--p31-accent);">P31 difference</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { name: 'Credo AI', does: 'Policy packs, audit-evidence workflows, risk views.', diff: 'Policy-first. P31 is evidence-first — the chain proves what happened.' },
+                { name: 'Zenity', does: 'Agent inventory, posture/risk view, runtime controls.', diff: 'Shows posture. P31 proves what actually occurred, verifiable by anyone.' },
+                { name: 'Langfuse / LangSmith', does: 'Traces + evals, LLM observability.', diff: 'Trace. P31 hash-chains — tamper-evident, not just replayable.' },
+                { name: 'KiloClaw for Organizations', does: 'Shadow-AI dashboard, SSO/SCIM, scoped access.', diff: 'Manages access. P31 proves the human approval gate and the record.' },
+              ].map((row) => (
+                <tr class="border-b" style="border-color: var(--p31-glass-border);">
+                  <td class="py-3 pr-4 font-mono text-sm font-bold" style="color: var(--p31-text);">{row.name}</td>
+                  <td class="py-3 pr-4 text-sm" style="color: var(--p31-text-secondary);">{row.does}</td>
+                  <td class="py-3 text-sm" style="color: var(--p31-text);">{row.diff}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-4 text-sm" style="color: var(--p31-text-secondary);">
+          The line: <strong style="color: var(--p31-text);">independently verifiable audit record vs. policy dashboard.</strong>
+        </p>
+      </section>
+
+      {/* ── COMPLIANCE ── */}
+      <section class="mb-16">
+        <SectionHeader title="Standards alignment" description="Verified drafts and staged regulatory deadlines. The architecture is compliant before the standards." />
+        <div class="mt-8 space-y-3">
+          {compliance.map((c) => (
+            <div class="glass-card p-5 rounded-xl flex flex-col md:flex-row md:items-center gap-3">
+              <div class="font-mono text-sm font-bold min-w-[220px]" style="color: var(--p31-accent);">{c.label}</div>
+              <div class="font-mono text-sm" style="color: var(--p31-text);">{c.value}</div>
+              <div class="text-sm md:ml-auto" style="color: var(--p31-text-secondary);">{c.note}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── HONEST GAPS ── */}
+      <section class="mb-16">
+        <SectionHeader
+          title="The honest gaps"
+          description="We would rather you find these here than during procurement. Disclosed, quantified, and scoped."
+        />
+        <p class="mt-2 text-sm" style="color: var(--p31-text-secondary);">
+          For how the audit chain maps to EU AI Act Article 12 and IETF audit drafts — including the honest scope of each — see <a href="/compliance" style="color: var(--p31-accent);">Compliance</a>.
+        </p>
+        <div class="mt-4 space-y-3">
+          <div class="glass-card p-5 rounded-xl flex flex-col md:flex-row md:items-center gap-3" style="border-left: 3px solid var(--p31-signal-amber, #f59e0b);">
+            <div class="font-mono text-sm font-bold min-w-[220px]" style="color: var(--p31-signal-amber, #f59e0b);">Cloudflare Access gate</div>
+            <div class="text-sm" style="color: var(--p31-text);">The Loom API verifies Access JWTs, but the audience value is a placeholder in the current deployment — the gate is OFF. Do not treat it as access-controlled today. Configuration step, not a design flaw.</div>
+          </div>
+          <div class="glass-card p-5 rounded-xl flex flex-col md:flex-row md:items-center gap-3" style="border-left: 3px solid var(--p31-signal-amber, #f59e0b);">
+            <div class="font-mono text-sm font-bold min-w-[220px]" style="color: var(--p31-signal-amber, #f59e0b);">Forge POST endpoint</div>
+            <div class="text-sm" style="color: var(--p31-text);">The workspace Forge proxy forwards without an Access identity check. Lower severity — it renders documents from user input, it does not read family data. Same fix shape as the Loom's.</div>
+          </div>
+          <div class="glass-card p-5 rounded-xl flex flex-col md:flex-row md:items-center gap-3" style="border-left: 3px solid var(--p31-signal-amber, #f59e0b);">
+            <div class="font-mono text-sm font-bold min-w-[220px]" style="color: var(--p31-signal-amber, #f59e0b);">Custom-domain verify</div>
+            <div class="text-sm" style="color: var(--p31-text);">The public verify endpoint is live on the Pages URL. The custom domain returns a redirect behind domain-level Access — use the Pages URL today; an exemption is a routing change.</div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── INTEGRATIONS ── */}
+      <section class="mb-16">
+        <SectionHeader title="Where it plugs in" description="The distribution paths are open — the governance slot is empty." />
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          {integrations.map((i) => (
+            <div class="glass-card p-6 rounded-xl">
+              <div class="font-bold mb-2" style="color: var(--p31-text);">{i.name}</div>
+              <p class="text-sm leading-relaxed" style="color: var(--p31-text-secondary);">{i.note}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section class="pb-16">
+        <div class="glass-card p-10 rounded-2xl text-center">
+          <h2 class="text-2xl md:text-3xl font-bold mb-4" style="color: var(--p31-text);">
+            Available for a governance integration pilot.
+          </h2>
+          <p class="text-lg mb-6" style="color: var(--p31-text-secondary);">
+            Walk the chain, the tokens, or the relay with our engineers. 10–20 hour pilot this month.
+          </p>
+          <a href="mailto:willyj1587@gmail.com" class="inline-flex items-center gap-2 px-8 py-3 rounded-lg font-bold no-underline" style="background: var(--p31-accent); color: #000;">
+            willyj1587@gmail.com →
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+</MarketingShell>

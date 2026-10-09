@@ -1,0 +1,15 @@
+name: p31-mcp-membrane
+displayName: P31 Membrane
+description: Post-deploy verification MCP server with DORA metrics, deploy checks, gamified XP/LOVE rewards, and artifact minting
+runtime: node
+command: npx
+args:
+  - -y
+  - "@p31ca/mcp-membrane"
+tools:
+  - membrane_status
+  - membrane_dora
+  - membrane_history
+  - membrane_deploy_check
+  - membrane_dora_scorecard
+  - membrane_artifact_mint

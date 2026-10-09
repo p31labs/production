@@ -1,0 +1,189 @@
+---
+/**
+ * P31CA.ORG — Ownable Tech Stack for Families That Build
+ * Scene homepage: CanonTopbar + dome background + hero + features +
+ * the 8 flagship surfaces. Every metric is DOI/live-URL verified.
+ */
+import MarketingShell from '../layouts/MarketingShell.astro';
+import SharedFooter from '../components/SharedFooter.astro';
+import {
+  liveProducts,
+  liveDeploymentCount,
+} from '../data/hub-products';
+import { FLAGSHIPS, FLAGSHIP_LIVE_COUNT } from '../data/flagships';
+import contentNonprofit from '../../ground-truth/content/nonprofit.json';
+import contentStats from '../../ground-truth/content/stats.json';
+import researchData from '../data/p31-research.json';
+
+const publishedCount = (researchData as any).papers?.length ?? 23;
+
+const researchItems = [
+  { title: 'Tetrahedron Protocol (K4)', doi: '10.5281/zenodo.18627420', desc: `Geometric proof of K4 minimum isostatic structure. ${contentStats.zenodoViews}+ views, ${contentStats.zenodoDownloads}+ downloads.` },
+  { title: 'Genesis Whitepaper v1.1', doi: '10.5281/zenodo.19411363', desc: 'SIC-POVM measurement framework, EDE architecture, Q Distribution, Samson\'s Law.' },
+  { title: `All ${publishedCount} papers`, doi: null, desc: 'Peer-reviewed and open-access on Zenodo — quantum foundations, sovereign stack, care economy, civil rights, and design ethics.' },
+  { title: '5 Defensive Publications', doi: null, desc: 'Prior art deposited to Internet Archive Feb 25, 2026. Freedom-to-operate protection.' },
+];
+
+const accentBy = {
+  cyan: 'var(--p31-accent)',
+  violet: 'var(--p31-accent-violet, #A78BFA)',
+  gold: 'var(--p31-accent-gold, #FBBF24)',
+  green: 'var(--p31-accent-green, #34D399)',
+} as const;
+---
+
+<MarketingShell
+  title="P31 Labs — Ownable Tech Stack for Families That Build"
+  description={`P31 Labs — agent governance that proves what happened. Hash-chained audit, post-quantum identity, ${FLAGSHIP_LIVE_COUNT} live flagship surfaces, ${publishedCount} open-access papers. EIN ${contentNonprofit.ein}.`}
+  theme="ocean"
+  background="dome"
+>
+
+  <main class="max-w-7xl mx-auto px-6 pb-16">
+    <!-- Hero — Ownable scene -->
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="hero__eyebrow">
+        <span>Act I · 01 · Invitation</span>
+        <span>Open Source · Ownable · Cognitively Diverse‑First</span>
+      </p>
+      <h1 id="hero-title" class="hero__title">
+        <span>Ownable Tech Stack for</span><br />
+        <span class="gradient-text">FAMILIES THAT BUILD</span>
+      </h1>
+      <p class="hero__subtitle">
+        We built the stack — now you own it. Self-owned identity, care economy, and open research — all open source, all yours.
+      </p>
+      <div class="hero__ctas">
+        <a href="#features" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200" style="background: var(--p31-accent-gradient, var(--p31-accent)); color: #000;">Deploy Your Own</a>
+        <a href="https://github.com/p31labs" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold border transition-all duration-200" style="border-color: var(--p31-accent); color: var(--p31-accent);">GitHub ↗</a>
+        <a href="https://qpj.p31ca.org/#/entry" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200" style="background: var(--p31-accent-gradient, var(--p31-accent)); color: #000;">Start for your family →</a>
+      </div>
+    </section>
+
+    <!-- Features — Ownable by design -->
+    <section id="features" class="py-16 space-y-16">
+      <div class="text-center space-y-4">
+        <h2 class="text-3xl md:text-4xl font-bold" style="color: var(--p31-text);">Ownable by design</h2>
+        <p class="text-lg max-w-2xl mx-auto" style="color: var(--p31-text-secondary);">DID:key identity, ML-DSA-65 care co-signatures, SD-JWT credentials. No vendor lock-in.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div>
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3" style="background: color-mix(in srgb, var(--p31-accent) 20%, transparent); color: var(--p31-accent);">🔐</div>
+          <h3 class="font-semibold mb-2" style="color: var(--p31-text);">Self-owned identity</h3>
+          <p class="text-sm" style="color: var(--p31-text-secondary);">Your data, your keys, your choice.</p>
+        </div>
+        <div>
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3" style="background: color-mix(in srgb, var(--p31-accent) 20%, transparent); color: var(--p31-accent);">✨</div>
+          <h3 class="font-semibold mb-2" style="color: var(--p31-text);">Care economy</h3>
+          <p class="text-sm" style="color: var(--p31-text-secondary);">Cognitive-friendly design for families.</p>
+        </div>
+        <div>
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3" style="background: color-mix(in srgb, var(--p31-accent) 20%, transparent); color: var(--p31-accent);">🔓</div>
+          <h3 class="font-semibold mb-2" style="color: var(--p31-text);">100% open source</h3>
+          <p class="text-sm" style="color: var(--p31-text-secondary);">MIT Apache licensed, self-hostable.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Flagships (updated content) -->
+    <section class="mb-16">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-2 h-2 rounded-full bg-cyan-400" style="box-shadow:0 0 6px rgba(34,211,238,0.6);"></div>
+        <h2 class="text-sm font-semibold text-white/70 uppercase tracking-wider">The Flagships</h2>
+        <span class="text-xs text-white/70">{FLAGSHIPS.length} surfaces</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {FLAGSHIPS.map((f) => {
+          const accent = accentBy[f.accent as keyof typeof accentBy] ?? accentBy.cyan;
+          return (
+            <a href={`/apps/${f.slug}`} class="group glass-panel p-5 rounded-xl block transition-all no-underline hover:-translate-y-0.5" style="border-color: var(--p31-glass-border);">
+              <div class="flex items-start justify-between mb-3">
+                <span class="text-2xl" aria-hidden="true">{f.icon}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full border font-mono" style={`color: ${accent}; border-color: color-mix(in oklab, ${accent} 40%, transparent);`}>
+                  {f.status === 'live' ? 'LIVE' : 'VISION'}
+                </span>
+              </div>
+              <h3 class="text-base font-bold text-white group-hover:brightness-110 transition-all mb-1">{f.name}</h3>
+              <p class="text-xs text-white/50 leading-relaxed mb-3">{f.tagline}</p>
+              <div class="text-[11px] font-semibold" style={`color: ${accent};`}>Explore <span aria-hidden="true">→</span></div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Live Deployments -->
+    <section class="mb-16">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-2 h-2 rounded-full bg-emerald-400" style="box-shadow:0 0 6px rgba(52,211,153,0.6);"></div>
+        <h2 class="text-sm font-semibold text-white/70 uppercase tracking-wider">Live Deployments</h2>
+        <span class="text-xs text-white/70">{liveProducts.length} core</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {liveProducts.map((p) => (
+          <a href={p.url} target={p.url.startsWith('http') ? '_blank' : undefined} rel={p.url.startsWith('http') ? 'noopener noreferrer' : undefined} class="group glass-panel p-5 rounded-xl block transition-all" style="text-decoration:none;">
+            <div class="flex items-start justify-between mb-3">
+              <h3 class="text-sm font-bold text-white group-hover:text-hubRose transition-colors">{p.title}</h3>
+              <div class="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0 mt-1" style="box-shadow:0 0 4px rgba(52,211,153,0.5);"></div>
+            </div>
+            <p class="text-xs text-white/50 leading-relaxed mb-3">{p.subtitle}</p>
+            <div class="flex flex-wrap gap-1.5">
+              {p.stack.map((tag) => (
+                <span class="text-[10px] px-2 py-0.5 rounded-md bg-white/[0.05] text-white/70">{tag}</span>
+              ))}
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Publications -->
+    <section class="mb-16">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-2 h-2 rounded-full bg-cyan-400"></div>
+        <h2 class="text-sm font-semibold text-white/70 uppercase tracking-wider">Publications</h2>
+        <span class="text-xs text-white/70">{publishedCount} DOI-verified on Zenodo</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {researchItems.map((r) => (
+          <div class="glass-panel p-5 rounded-xl">
+            <h3 class="text-sm font-bold text-white mb-2">{r.title}</h3>
+            {r.doi && (
+              <a href={`https://doi.org/${r.doi}`} target="_blank" rel="noopener noreferrer" class="text-[10px] text-cyan-400 hover:text-cyan-300 transition-colors mb-2 inline-block" style="text-decoration:none;">DOI: {r.doi}</a>
+            )}
+            <p class="text-xs text-white/50 leading-relaxed">{r.desc}</p>
+          </div>
+        ))}
+      </div>
+      <div class="mt-4 text-center">
+        <a href="/research" class="text-xs text-hubRose/90 hover:text-hubRose transition-colors no-underline">View all {publishedCount} publications &rarr;</a>
+      </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="mb-16">
+      <div class="glass-panel p-6 rounded-xl">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div>
+            <div class="text-2xl font-extrabold text-white">{FLAGSHIP_LIVE_COUNT}</div>
+            <div class="text-[10px] text-white/40 mt-1 uppercase tracking-wider">Live Flagships</div>
+          </div>
+          <div>
+            <div class="text-2xl font-extrabold text-white">{liveDeploymentCount}</div>
+            <div class="text-[10px] text-white/40 mt-1 uppercase tracking-wider">Live Deployments</div>
+          </div>
+          <div>
+            <div class="text-2xl font-extrabold text-white">{publishedCount}</div>
+            <div class="text-[10px] text-white/40 mt-1 uppercase tracking-wider">Papers Published</div>
+          </div>
+          <div>
+            <div class="text-2xl font-extrabold text-white">100%</div>
+            <div class="text-[10px] text-white/40 mt-1 uppercase tracking-wider">Open Source</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <SharedFooter />
+</MarketingShell>

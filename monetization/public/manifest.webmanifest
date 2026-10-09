@@ -1,0 +1,25 @@
+{
+  "name": "P31 Capital Machine",
+  "short_name": "P31 Capital",
+  "description": "Revenue ledger, positions, opportunities, billing, invoices, and x402 ops. Sovereign, neuroinclusive, agent-native.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "background_color": "#0A0A0F",
+  "theme_color": "#0A0A0F",
+  "orientation": "portrait",
+  "categories": ["finance", "productivity", "business"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/icon-1024.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Revenue", "url": "/#/revenue", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Positions", "url": "/#/positions", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Trust Center", "url": "/#/trust", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

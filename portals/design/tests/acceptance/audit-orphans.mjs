@@ -14,7 +14,7 @@ import { execSync } from 'node:child_process';
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const DC = '/home/p31/P31-local-workspace/packages/design-core';
+const DC = '/home/p31/production/packages/design-core';
 const here = resolve(import.meta.dirname);
 const allowlistPath = resolve(here, 'orphan-allowlist.json');
 

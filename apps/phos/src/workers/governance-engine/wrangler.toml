@@ -1,0 +1,33 @@
+name = "governance-engine"
+main = "index.ts"
+compatibility_date = "2026-01-01"
+
+[placement]
+mode = "smart"
+
+[env.production]
+retries = 3
+
+[env.staging]
+retries = 3
+
+[[d1_databases]]
+binding = "GOVERNANCE_DB"
+database_name = "governance-db"
+database_id = "ece98a7c-4e96-4802-9b7c-c1015e8ef69b"
+
+[durable_objects]
+bindings = [
+  { name = "GOVERNANCE_ENGINE", class_name = "GovernanceEngineDO" },
+  { name = "TALLY_ROOM", class_name = "TallyRoom" }
+]
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["GovernanceEngine"]
+
+[[migrations]]
+tag = "v2"
+
+[observability]
+enabled = true

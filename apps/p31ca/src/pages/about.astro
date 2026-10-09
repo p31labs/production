@@ -1,0 +1,159 @@
+---
+import MarketingShell from '../layouts/MarketingShell.astro';
+import SectionHeader from '../components/marketing/SectionHeader.astro';
+import Footer from '../components/marketing/Footer.astro';
+import { papers } from '../data/p31-research.ts';
+import { FLAGSHIP_LIVE_COUNT } from '../data/flagships';
+
+const publishedCount = papers.length;
+
+const stackDiagram = `
+flowchart TB
+    classDef core fill:#2563eb,stroke:#1e40af,color:#ffffff
+    classDef infra fill:#64748b,stroke:#334155,color:#ffffff
+    classDef external fill:#f59e0b,stroke:#b45309,color:#000000
+    subgraph Edge["Cloudflare edge"]
+        W["12 Workers"]:::core
+        D["10 D1 databases"]:::infra
+        O["16 Durable Objects"]:::infra
+    end
+    subgraph Tools["Agent surface"]
+        M["36 MCP tools"]:::core
+    end
+    User["Family member"]:::external --> W
+    W --> D
+    W --> O
+    M --> W
+`
+
+const orgTimeline = `
+timeline
+    title P31 Labs
+    2024 : Founded
+         : Tetrahedron Protocol published
+    2025 : First flagship live
+         : Open research on Zenodo
+    2026 : 501(c)(3) determination
+         : 22 papers on Zenodo
+         : Enterprise package v2.0
+`
+---
+
+<MarketingShell
+  title="About — P31 Labs"
+  description="Sovereign infrastructure for neurodivergent families, built by a father who needed it. The story of William Johnson, the stack, and the 501(c)(3)."
+>
+  <main id="main-content" class="section">
+    <div class="max-w-4xl mx-auto px-6 md:px-12 lg:px-16">
+      <SectionHeader
+        title="About"
+        description="Sovereign infrastructure for neurodivergent families, built by a father who needed it."
+        align="left"
+      />
+
+      <div class="mt-16 space-y-8">
+
+        <!-- ── The world before ── -->
+        <section class="glass-card">
+          <div class="p-8 space-y-6">
+            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">The problem was the tools</h3>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              When assistive technology is extractive — when your family's data is the product, locked behind corporate walls, dependent on a subscription and a login you don't control — the people who need the tools most are the ones it fails. Neurodivergent families need care infrastructure that is <em>theirs</em>: private by default, sovereign by design, and provable.
+            </p>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              None of it existed. So it had to be built.
+            </p>
+          </div>
+        </section>
+
+        <!-- ── The turn ── -->
+        <section class="glass-card">
+          <div class="p-8 space-y-6">
+            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">The founder</h3>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              P31 Labs was founded by <strong style="color: var(--p31-text);">William Johnson</strong> — an AuDHD engineer and former DoD civilian. He spent sixteen years as a DoD civilian engineering technician (GS-0802-12) at Trident Refit Facility in Kings Bay, Georgia — work with an uncompromising reliability standard, where a single point of failure is not acceptable. That same ethos is the K4 topology underneath the whole stack: no single point of failure.
+            </p>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              He is also a single father to two neurodivergent children. The stack was forged out of household survival during severe medical and legal hardship — stress-tested in a live, multi-adversarial environment, every line of code.
+            </p>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              What started as a personal need became an open-source stack anyone can deploy: a real proof layer — an audit chain you can verify in ninety seconds, post-quantum identity that lives on your device, and research that is open and citable.
+            </p>
+          </div>
+        </section>
+
+        <!-- ── The build ── -->
+        <section class="glass-card">
+          <div class="p-8 space-y-6">
+            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">The build</h3>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              The whole stack runs on Cloudflare's edge network — zero server costs, open source, citable on Zenodo:
+            </p>
+            <pre class="mermaid" set:html={stackDiagram} />
+            <p class="text-sm" style="color: var(--p31-text-tertiary);">
+              {FLAGSHIP_LIVE_COUNT} flagship surfaces live today · {publishedCount} papers published on Zenodo · EIN 42-1888158
+            </p>
+          </div>
+        </section>
+
+        <!-- ── The K4 / tetrahedron ── -->
+        <section class="glass-card">
+          <div class="p-8 space-y-6">
+            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">The geometric anchor</h3>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              The K4 — four vertices, six edges, rigidity 6 — is the minimum isostatic structure. It's the geometric proof that anchors the research: a structure that cannot flex, that is exactly as connected as it needs to be. It's why the dome on this page is a geodesic, and why the research is about families that build.
+            </p>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              Read it in <a href="/research" style="color: var(--p31-accent);">The Tetrahedron Protocol</a>, the founding paper.
+            </p>
+          </div>
+        </section>
+
+        <!-- ── The org timeline ── -->
+        <section class="glass-card">
+          <div class="p-8 space-y-6">
+            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">The org timeline</h3>
+            <pre class="mermaid" set:html={orgTimeline} />
+          </div>
+        </section>
+
+        <!-- ── The 501(c)(3) proof ── -->
+        <section class="glass-card">
+          <div class="p-8 space-y-6">
+            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">The 501(c)(3) proof</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="rounded-xl border p-5" style="border-color: var(--p31-glass-border, rgba(255,255,255,0.1)); background: var(--p31-panel-surface, rgba(255,255,255,0.04));">
+                <div class="text-xs font-semibold tracking-widest uppercase" style="color: var(--p31-text-tertiary);">Status</div>
+                <div class="mt-1 text-lg font-bold" style="color: var(--p31-text);">501(c)(3)</div>
+              </div>
+              <div class="rounded-xl border p-5" style="border-color: var(--p31-glass-border, rgba(255,255,255,0.1)); background: var(--p31-panel-surface, rgba(255,255,255,0.04));">
+                <div class="text-xs font-semibold tracking-widest uppercase" style="color: var(--p31-text-tertiary);">EIN</div>
+                <div class="mt-1 text-lg font-bold font-mono" style="color: var(--p31-text);">42-1888158</div>
+              </div>
+            </div>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              Donations are tax-deductible to the fullest extent of the law. Research is published on Zenodo under open licenses; code is on GitHub under AGPL.
+            </p>
+          </div>
+        </section>
+
+        <!-- ── CTA ── -->
+        <section class="text-center py-10">
+          <div class="flex flex-wrap justify-center gap-4">
+            <a href="/team" class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition"
+               style="background: var(--p31-accent, #22d3ee); color: #0a0a0f;">
+              Meet the team
+            </a>
+            <a href="/research" class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition border"
+               style="border-color: var(--p31-glass-border, rgba(255,255,255,0.16)); color: var(--p31-text);">
+              Read the research
+            </a>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</MarketingShell>

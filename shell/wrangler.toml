@@ -1,0 +1,31 @@
+name = "p31-shell"
+main = "src/worker.ts"
+compatibility_date = "2026-07-18"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+# Route asset requests through the Worker so we can relax the SW script's CSP
+# (require-trusted-types-for breaks workbox's importScripts in sw.js).
+run_worker_first = true
+
+[[durable_objects.bindings]]
+name = "CROSS_APP_STATE"
+class_name = "CrossAppStateDO"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["CrossAppStateDO"]
+
+[[services]]
+binding = "SPACESHIP_RELAY"
+service = "spaceship-relay"
+
+[vars]
+# Set via Cloudflare Dashboard → Workers & Pages → p31-shell → Settings → Variables
+# or: echo <dsn> | npx wrangler secret put VITE_SENTRY_DSN
+# VITE_SENTRY_DSN = "https://..."
+
+[observability]
+enabled = true

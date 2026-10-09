@@ -4,7 +4,7 @@
 - Live: `design.p31ca.org` · Source: this directory (`production/portals/design/`)
 - Stack: React 19 · Vite 6 · React Router 6 · Tailwind v4 · Zustand · Vitest · Cloudflare Pages
 - Design canon: `@p31ca/design-core` **3.0.0** (vendored tarball `vendor/p31-design-core-3.0.0.tgz`)
-- Canon source: `P31-local-workspace/packages/design-core/` · Deploy: `pnpm deploy`
+- Canon source: `production/packages/design-core/` · Deploy: `pnpm deploy`
 
 ## Read before editing
 1. `docs/SYSTEM_ARCHITECTURE.md` — IA, shell, routes, surfaces, canon (facts)

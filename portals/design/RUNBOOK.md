@@ -33,7 +33,7 @@ production/portals/design/
 ## Daily Workflow
 
 ### 1. Edit Canonical Design System
-Edit the canonical source in `/home/p31/P31-local-workspace/packages/design-core`:
+Edit the canonical source in `/home/p31/production/packages/design-core`:
 - Tokens: `packages/design-core/src/theming/theme-store.ts`
 - Components: `packages/design-core/src/compositions/`
 - CSS: `packages/design-core/src/css/`

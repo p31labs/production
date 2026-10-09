@@ -1,0 +1,123 @@
+---
+/**
+ * FlagshipPage — the /hire-grade template for all 8 flagship pages.
+ * Structure: human hero → explorable artifact → specifics → live proof →
+ * stack → FAQ → final CTA. Scene theme (dome background), serif display,
+ * M3 Expressive springs. No invented metrics.
+ */
+import MarketingShell from '../../layouts/MarketingShell.astro';
+import LiveProofPanel from '../../components/marketing/LiveProofPanel.astro';
+import FAQ from '../../components/marketing/FAQ.astro';
+import FinalCTA from '../../components/marketing/FinalCTA.astro';
+import Footer from '../../components/marketing/Footer.astro';
+import ExplorableChain from '../../components/islands/ExplorableChain.tsx';
+import LumiTokenVisualizer from '../../components/islands/LumiTokenVisualizer.tsx';
+import GovernanceGallery from '../../components/islands/GovernanceGallery.tsx';
+import ModeGateDemo from '../../components/islands/ModeGateDemo.tsx';
+import TerminalDemo from '../../components/islands/TerminalDemo.tsx';
+import MCPRegistryQuery from '../../components/islands/MCPRegistryQuery.tsx';
+import SpaceshipDome from '../../components/islands/SpaceshipDome.tsx';
+import MeatspaceMesh from '../../components/islands/MeatspaceMesh.tsx';
+import type { Flagship } from '../../data/flagships';
+
+interface Props {
+  flagship: Flagship;
+}
+
+const { flagship: f } = Astro.props;
+---
+
+<MarketingShell
+  title={`${f.name} — P31 Labs`}
+  description={`${f.name}: ${f.tagline}. ${f.lede}`}
+  theme="cipher"
+  background="dome"
+>
+  <main id="main-content" class="section">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+
+      {/* ── HERO: human-first, serif display, one action ── */}
+      <section class="pt-24 pb-16 md:pt-32 md:pb-20">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div class="space-y-6">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl" aria-hidden="true">{f.icon}</span>
+              <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold border" style="color: var(--p31-accent); border-color: color-mix(in oklab, var(--p31-accent) 40%, transparent); background: color-mix(in oklab, var(--p31-accent) 12%, transparent);">
+                {f.status === 'live' ? '● Live' : '◌ In development'}
+              </span>
+              <span class="font-mono text-xs" style="color: var(--p31-text-tertiary);">{f.url}</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl leading-tight" style="font-family: var(--p31-font-serif, Georgia, serif); font-weight: 400; letter-spacing: -0.015em; color: var(--p31-text);">
+              {f.headline}
+            </h1>
+            <p class="text-lg md:text-xl leading-relaxed" style="color: var(--p31-text-secondary);">
+              {f.lede}
+            </p>
+            <div class="flex flex-col sm:flex-row items-start gap-4 pt-2">
+              <a href={f.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline" style="background: var(--p31-accent); color: var(--p31-bg, #141413);">
+                {f.ctaLabel} →
+              </a>
+              <a href="#explore" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold border no-underline" style="border-color: var(--p31-glass-border); color: var(--p31-text);">
+                See it work ↓
+              </a>
+            </div>
+          </div>
+
+          <LiveProofPanel urls={f.links.slice(0, 3)} statusLine="Live in production" />
+        </div>
+      </section>
+
+      {/* ── THE EXPLORABLE ARTIFACT (the transducer) ── */}
+      <section id="explore" class="mb-20">
+        <div class="max-w-3xl mx-auto">
+          <h2 class="text-2xl md:text-3xl mb-3 text-center" style="font-family: var(--p31-font-serif, Georgia, serif); font-weight: 400; color: var(--p31-text);">
+            What "{f.name.toLowerCase()}" actually means
+          </h2>
+          <p class="text-center mb-8" style="color: var(--p31-text-secondary);">
+            Try it. {f.artifactPrompt}
+          </p>
+          {f.artifact === 'chain' && <ExplorableChain client:load />}
+          {f.artifact === 'token' && <LumiTokenVisualizer client:load />}
+          {f.artifact === 'gallery' && <GovernanceGallery client:load />}
+          {f.artifact === 'modegate' && <ModeGateDemo client:load />}
+          {f.artifact === 'terminal' && <TerminalDemo client:load />}
+          {f.artifact === 'registry' && <MCPRegistryQuery client:load />}
+          {f.artifact === 'dome' && <SpaceshipDome client:load />}
+          {f.artifact === 'mesh' && <MeatspaceMesh client:load />}
+        </div>
+      </section>
+
+      {/* ── WHAT'S INSIDE (specifics, not outcomes) ── */}
+      <section class="mb-20">
+        <h2 class="text-2xl mb-6" style="font-family: var(--p31-font-serif, Georgia, serif); font-weight: 400; color: var(--p31-text);">What's inside</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {f.capabilities.map((c) => (
+            <div class="rounded-xl border p-5" style="border-color: var(--p31-glass-border); background: var(--p31-surface);">
+              <h3 class="text-base font-semibold mb-2" style="color: var(--p31-text);">{c.title}</h3>
+              <p class="text-sm leading-relaxed" style="color: var(--p31-text-secondary);">{c.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── STACK ── */}
+      <section class="mb-20">
+        <h2 class="text-sm font-semibold uppercase tracking-wider mb-4" style="color: var(--p31-text-tertiary);">Built with</h2>
+        <div class="flex flex-wrap gap-2">
+          {f.stack.map((s) => (
+            <span class="px-3 py-1.5 rounded-full text-xs font-mono border" style="border-color: var(--p31-glass-border); color: var(--p31-text-secondary);">{s}</span>
+          ))}
+        </div>
+      </section>
+
+      {/* ── FAQ (objections answered before asked) ── */}
+      <FAQ items={f.faq} />
+
+      {/* ── FINAL CTA ── */}
+      <FinalCTA headline={`Try ${f.name} now.`} href={f.url} label={f.ctaLabel} />
+
+    </div>
+  </main>
+
+  <Footer />
+</MarketingShell>

@@ -1,0 +1,21 @@
+name = "revenue-sink"
+main = "src/index.ts"
+compatibility_date = "2026-09-02"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+REVENUE_LEDGER_URL = "https://revenue-ledger.trimtab-signal.workers.dev"
+
+# Secrets (set via `wrangler secret put SINK_TOKEN`): shared push token.
+
+[[services]]
+binding = "REVENUE_LEDGER"
+service = "revenue-ledger"
+
+[[d1_databases]]
+binding = "SINK_DB"
+database_name = "revenue-sink"
+database_id = "585f3291-64ee-47fb-9aff-2dfe6b33c357"
+
+[observability]
+enabled = true

@@ -1,0 +1,244 @@
+{
+  "portal": "governance",
+  "path": "production/governance",
+  "scope": "Org-level legal documents (bylaws, COI, whistleblower, medical device manual, 4 contracts) + cross-checked against admin/Corporate instruments and external authorities (eCFR, US Code, FDA product classification, DNS)",
+  "auditedAt": "2026-10-02T11:00:00Z",
+  "mode": "static + external verification",
+  "toolchain": {
+    "git_tracked": "NO — governance/ and admin/ are both untracked (?? in git status)",
+    "external_checks": {
+      "21_cfr_890_3710": "VERIFIED — Class II (special controls), 510(k) exempt subject to § 890.9 (eCFR, up to date 9/30/2026)",
+      "product_code_ILQ": "VERIFIED — ILQ = System, Communication, Powered, Device Class 2, 21 CFR 890.3710, 510(k) Exempt (FDA + beudamed/innolitics/510kdatabase)",
+      "11_usc_522_d9": "VERIFIED — (d)(9) = professionally prescribed health aids (Cornell LII)",
+      "21_usc_307": "NOT FOUND — § 307 does not exist (404). Real FDA employee protection is § 399d, food-safety-specific (FSMA), NOT medical device",
+      "p31labs_org_domain": "DEAD — p31labs.org returns 000 (does not resolve)",
+      "p31ca_org_domain": "LIVE — p31ca.org returns 200",
+      "miller_v_miller": "UNVERIFIED — cited repeatedly as Georgia personal-goodwill precedent; specific citation (O.C.G.A. § 19-5-13) could not be confirmed (Justia 404)"
+    },
+    "note": "rg output for 'Class I'/'Class II' was display-mangled (lnI/ln); ground truth read via read tool: governance = Class II, admin/WCD = Class I."
+  },
+  "severity_counts": { "critical": 2, "high": 4, "medium": 5, "low": 4 },
+  "findings": [
+    {
+      "id": "G-P1",
+      "severity": "critical",
+      "category": "provenance",
+      "title": "Governance documents are backdated to a Board that did not yet exist",
+      "files": [
+        "governance/BYLAWS.md:288-289",
+        "governance/CONFLICT_OF_INTEREST_POLICY.md:213",
+        "governance/WHISTLEBLOWER_POLICY.md:270",
+        "governance/GOVERNANCE_SUMMARY.md:269-273",
+        "admin/Corporate/Action_of_Incorporator_Organizational_Consent.md:7-75",
+        "admin/P31_REVIEW_AND_COGPASS_DELTA.md:2,11"
+      ],
+      "detail": "All governance docs are stamped 'Effective Date: March 24, 2026' and 'Approved by Board of Directors: March 24, 2026'. But the corporate record shows Articles of Incorporation were filed April 3, 2026 (P31_REVIEW_AND_COGPASS_DELTA.md:11), and the first organizational meeting / unanimous written consent (which elected the initial board and ratified bylaws) is dated April 11, 2026 (Action_of_Incorporator). A board cannot approve bylaws, a COI policy, or a whistleblower policy on March 24 when no board existed until April 11 and the corporation was only filed April 3. The effective dates are legally impossible as written.",
+      "evidence": "Read tool ground truth: BYLAWS.md:288 'Adopted: March 24, 2026'; COI:213 'Approved by Board of Directors: March 24, 2026'; Whistleblower:270 same; Action_of_Incorporator:7 'Date: April 11, 2026' and :15 ratifies Articles 'filed with the Georgia Secretary of State on April 3, 2026'.",
+      "recommendation": "Re-date the governance documents to April 11, 2026 (or the actual approval date), and stamp them as 'ratified by unanimous written consent on April 11, 2026' to match the corporate record.",
+      "rule": "chronology_integrity"
+    },
+    {
+      "id": "G-P2",
+      "severity": "critical",
+      "category": "provenance",
+      "title": "Internal classification contradiction: governance says Class II, admin/WCD compliance docs say Class I — and FDA confirms Class II",
+      "files": [
+        "governance/BYLAWS.md:29",
+        "governance/GOVERNANCE_SUMMARY.md:178-181",
+        "governance/MEDICAL_DEVICE_COMPLIANCE_MANUAL.md:50-53",
+        "admin/P31_COMPLIANCE_AND_REPORTS.md:19,31",
+        "admin/WCD-001-ECOSYSTEM.md (Device Type: Class I)",
+        "admin/WCD-002-KILO-CLINICAL.md (Class I)",
+        "admin/WCD-001-KWAI-CLINICAL.md (Class I)"
+      ],
+      "detail": "The governance framework consistently classifies the Phenix Navigator as a Class II Powered Communication System (product code ILQ, 21 CFR § 890.3710, 510(k) exempt) — which matches the actual FDA classification. But admin/P31_COMPLIANCE_AND_REPORTS.md (which claims to be the authoritative compliance record, 'FULLY DEPLOYED & MEDICALLY CERTIFIED') and multiple WCD clinical docs state 'Class I Medical Device' for the same regulation number. The FDA classification database and eCFR both confirm Class II (special controls). The compliance record is therefore factually wrong on the device class.",
+      "evidence": "eCFR 21 CFR 890.3710: 'Classification. Class II (special controls). The device is exempt from the premarket notification procedures ... subject to § 890.9.' Product code ILQ DB: 'System, Communication, Powered ... Device class 2'. admin/P31_COMPLIANCE_AND_REPORTS.md:19 'FDA Classification: Class I Medical Device — 510(k) Exempt'.",
+      "recommendation": "Correct the Class I statements in admin/P31_COMPLIANCE_AND_REPORTS.md and all WCD clinical docs to Class II. Do not ship a compliance record that misstates device class — it is the document most likely to be shown to FDA, insurers, or a court.",
+      "rule": "regulatory_accuracy"
+    },
+    {
+      "id": "G-P3",
+      "severity": "high",
+      "category": "provenance",
+      "title": "Compliance report claims completed legal status before it existed",
+      "files": [
+        "admin/P31_COMPLIANCE_AND_REPORTS.md:4,141,177",
+        "admin/gameplan.md:36-38",
+        "admin/P31_REVIEW_AND_COGPASS_DELTA.md:11"
+      ],
+      "detail": "admin/P31_COMPLIANCE_AND_REPORTS.md (dated March 27, 2026) claims 'Legal Record 100% — P31 Labs 501(c)(3) active, EIN published' (§6) and 'Status: FULLY DEPLOYED & MEDICALLY CERTIFIED'. But gameplan.md (the contemporaneous plan) says incorporation is 'blocked at $425' and 501(c)(3) determination (IRS Form 1023-EZ, $275) has not yet been filed; incorporation was filed April 3 and the board only constituted April 11. The report asserting an active 501(c)(3) + EIN on March 27 precedes the incorporation filing by a week.",
+      "evidence": "P31_COMPLIANCE_AND_REPORTS.md:177 'Legal Record 100% ... 501(c)(3) active, EIN published'; gameplan.md:36 '**$425 = unlock key.** Georgia Articles ($110) + newspaper publication ($40) + IRS 1023-EZ ($275)' and :38 'Sequence: incorporation → 501(c)(3) → SAM.gov ... All blocked on $425'.",
+      "recommendation": "Mark the report's legal-record section as aspirational/planned as of its date, and regenerate it after the actual 501(c)(3) determination letter arrives.",
+      "rule": "chronology_integrity"
+    },
+    {
+      "id": "G-L1",
+      "severity": "high",
+      "category": "legal",
+      "title": "Whistleblower Policy cites 21 U.S.C. § 307, which does not exist",
+      "files": [
+        "governance/WHISTLEBLOWER_POLICY.md:134"
+      ],
+      "detail": "The policy states employees are protected under '21 U.S.C. § 307 (FDA Whistleblower Protection)'. U.S. Code Title 21 has no § 307 (Cornell LII returns 404). The actual FDA employee-protection provision, 21 U.S.C. § 399d, is food-manufacturing-specific (added by FSMA) and does not cover medical-device whistleblowers generally. So the cited authority is both nonexistent and inapposite to the medical-device context the policy describes.",
+      "evidence": "law.cornell.edu/uscode/text/21/307 → 404. law.cornell.edu/uscode/text/21/399d → § 399d 'Employee protections' (food entities; 'manufacture, processing, packing, transporting, distribution ... of food').",
+      "recommendation": "Replace the citation with correct authorities (e.g., the Food, Drug, and Cosmetic Act § 331 prohibited acts, FDA's Office of Criminal Investigations reporting, plus 18 U.S.C. § 1513 retaliation protections), or remove the specific citation and describe the protection generally. Have counsel verify before publication.",
+      "rule": "citation_accuracy"
+    },
+    {
+      "id": "G-L2",
+      "severity": "high",
+      "category": "provenance",
+      "title": "Whistleblower and contract reporting channels point at a dead domain",
+      "files": [
+        "governance/WHISTLEBLOWER_POLICY.md:55,258-260",
+        "governance/CONTRACTS/*.md"
+      ],
+      "detail": "The Whistleblower Policy directs reports to compliance@p31labs.org, executive@p31labs.org, chair@p31labs.org. The domain p31labs.org does not resolve (curl → 000). There is no live mailbox behind the policy's primary reporting channel, and no SECURITY.md exists in governance/. The live, working security channel (security@p31ca.org, in root SECURITY.md) is not referenced from governance docs.",
+      "evidence": "curl -m 8 https://p31labs.org → 000. Root SECURITY.md uses security@p31ca.org (p31ca.org → 200). governance/ contains no SECURITY.md.",
+      "recommendation": "Either stand up the p31labs.org mail domain, or change all governance contact addresses to the live p31ca.org domain and add a governance SECURITY.md cross-referencing security@p31ca.org.",
+      "rule": "operational_channel"
+    },
+    {
+      "id": "G-P4",
+      "severity": "high",
+      "category": "provenance",
+      "title": "governance/ and admin/ are not tracked in git — zero version history or audit trail",
+      "files": [
+        "governance/",
+        "admin/"
+      ],
+      "detail": "Both governance/ and admin/ are untracked (?? in git status). There is no commit history, no diffable revision trail, no sign-off record, and no way to prove which version of the bylaws or compliance record was in force on a given date. The audit itself cannot verify provenance claims (e.g., that these docs were 'generated from the P31 Philosophy' per the README).",
+      "evidence": "git status --short governance/ admin/ → '?? governance/' '?? admin/'. git log -- governance/ → no commits.",
+      "recommendation": "Commit governance/ and admin/ (with the corrected dates from G-P1), and add a governance changelog / document-control register with version + approval date per document.",
+      "rule": "audit_chain"
+    },
+    {
+      "id": "G-D1",
+      "severity": "medium",
+      "category": "documentation",
+      "title": "governance/README.md lists files that do not exist",
+      "files": [
+        "governance/README.md"
+      ],
+      "detail": "The README documents the directory as containing CONSTITUTION.md, ARCHITECTURE.md, ROADMAP.md, governance.md, and claims docs are 'generated from P31_LABS_ECOSYSTEM_DESCRIPTION.md'. None of these files exist in the directory (actual contents: BYLAWS, CODE_OF_CONDUCT, COI, GOVERNANCE_SUMMARY, MEDICAL_DEVICE_COMPLIANCE_MANUAL, WHISTLEBLOWER_POLICY, CONTRACTS/). The README is stale boilerplate, not an accurate inventory.",
+      "evidence": "ls governance/ → BYLAWS.md, CODE_OF_CONDUCT.md, CONFLICT_OF_INTEREST_POLICY.md, GOVERNANCE_SUMMARY.md, MEDICAL_DEVICE_COMPLIANCE_MANUAL.md, WHISTLEBLOWER_POLICY.md, CONTRACTS/. README.md lists CONSTITUTION.md/ARCHITECTURE.md/ROADMAP.md/governance.md which are absent.",
+      "recommendation": "Rewrite governance/README.md to list the real documents with their version/approval dates.",
+      "rule": "document_inventory"
+    },
+    {
+      "id": "G-D2",
+      "severity": "medium",
+      "category": "legal",
+      "title": "'Personal Goodwill' / Miller v. Miller strategy is asserted as settled law without verifiable citation",
+      "files": [
+        "governance/BYLAWS.md:173-179",
+        "governance/CONFLICT_OF_INTEREST_POLICY.md:107-113",
+        "governance/MEDICAL_DEVICE_COMPLIANCE_MANUAL.md:296-298,313-331",
+        "governance/CONTRACTS/IP_ASSIGNMENT_AGREEMENT.md:29,209-228"
+      ],
+      "detail": "The entire asset-protection strategy rests on 'Personal Goodwill' under the 'Miller v. Miller precedent' and 'Georgia Code § 19-5-13', claimed to make IP non-transferable, bankruptcy-exempt (11 U.S.C. § 522(d)(9) — which is correct for health aids), and divorce-protected. The 11 U.S.C. § 522(d)(9) cite verifies. But the Miller v. Miller / § 19-5-13 personal-goodwill-for-IP claim could not be verified (Justia 404; no specific case citation with reporter). Contracts assert it as fact ('cannot be divided in bankruptcy or divorce proceedings') — an aggressive legal conclusion to put in a template without counsel sign-off.",
+      "evidence": "11 U.S.C. § 522(d)(9) = 'Professionally prescribed health aids' (VERIFIED via LII). Miller v. Miller / O.C.G.A. § 19-5-13 could not be confirmed as establishing IP-as-personal-goodwill (404 on Justia). Contracts make unconditional assertions at IP_ASSIGNMENT_AGREEMENT.md:209-228.",
+      "recommendation": "Have Georgia counsel verify the personal-goodwill premise and cite the actual case with reporter. Soften contract language from 'cannot be divided' to 'may be characterized as separate property, subject to judicial determination'. Do not assert settled law in a template without a supporting legal opinion.",
+      "rule": "legal_review"
+    },
+    {
+      "id": "G-D3",
+      "severity": "medium",
+      "category": "documentation",
+      "title": "QMS artifacts required by the Compliance Manual do not exist anywhere",
+      "files": [
+        "governance/MEDICAL_DEVICE_COMPLIANCE_MANUAL.md:384-433,607-612",
+        "admin/P31_COMPLIANCE_AND_REPORTS.md:82-97"
+      ],
+      "detail": "The manual requires a Design History File, Device Master Record, Risk Management File, CAPA forms, audit report templates, and training records (sections 9, 14 Appendix B). The admin compliance report claims these are implemented (21 CFR Part 820 controls table). None of these artifacts exist on disk — no DHF, no DMR, no RMF, no CAPA templates, no risk files. The claims of QMS implementation are unsupported by any actual document control system.",
+      "evidence": "ls governance/ → no DHF/DMR/RMF/CAPA/template files. rg 'Design History File|Risk Management File|CAPA' admin/ governance/ → only the manual's own requirement text and the compliance report's claims; no artifact files.",
+      "recommendation": "Either generate the QMS artifacts (design plan, risk file, DMR, DHF index) or remove the 'implemented' claims until they exist. For 21 CFR Part 820 (and now QMSR) compliance, documents must exist, not just be specified.",
+      "rule": "qms_evidence"
+    },
+    {
+      "id": "G-D4",
+      "severity": "medium",
+      "category": "provenance",
+      "title": "Three separate 'governance' surfaces with no single source of truth",
+      "files": [
+        "governance/GOVERNANCE_SUMMARY.md",
+        "packages/govern/docs/GOVERNANCE.md",
+        "monetization/docs/GOVERNANCE.md",
+        "docs (1)/GOVERNANCE.md"
+      ],
+      "detail": "The repo contains four governance-shaped documents: org legal governance (governance/), a machine-readable enterprise constitution (packages/govern/docs/GOVERNANCE.md + constitution.json), community SBT governance (monetization/docs/GOVERNANCE.md), and agent/session governance for Lumi (docs (1)/GOVERNANCE.md). They are unlinked and inconsistently versioned (e.g., packages/govern v0.3.1 'Proposed for review'). A reader cannot tell which is authoritative.",
+      "evidence": "find . -name 'GOVERNANCE*.md' → monetization/docs/GOVERNANCE.md, docs (1)/GOVERNANCE.md, packages/govern/docs/GOVERNANCE.md, governance/GOVERNANCE_SUMMARY.md.",
+      "recommendation": "Publish a governance index (e.g., governance/INDEX.md) that names each surface, its scope, owner, and canonical version, and cross-links them.",
+      "rule": "single_source_of_truth"
+    },
+    {
+      "id": "G-L3",
+      "severity": "medium",
+      "category": "legal",
+      "title": "CODE_OF_CONDUCT conflicts with the root repo's Code of Conduct",
+      "files": [
+        "governance/CODE_OF_CONDUCT.md",
+        "CODE_OF_CONDUCT.md"
+      ],
+      "detail": "governance/CODE_OF_CONDUCT.md is a truncated generic Contributor Covenant 2.1 (short 'Our Pledge / Our Standards / Enforcement' with a Gmail contact) that diverges from the root CODE_OF_CONDUCT.md (full covenant with P31-specific neurodiversity/spoons/children-protection clauses and enforcement ladder). The duplicate is contradictory and unversioned.",
+      "evidence": "diff governance/CODE_OF_CONDUCT.md CODE_OF_CONDUCT.md → large divergence; governance version omits the P31-specific clauses.",
+      "recommendation": "Delete the governance/ copy and point governance/README.md to the root CODE_OF_CONDUCT.md, or sync them from one source.",
+      "rule": "single_source_of_truth"
+    },
+    {
+      "id": "G-D5",
+      "severity": "low",
+      "category": "documentation",
+      "title": "Contract templates are 100% placeholder (expected for templates, but Summary claims 'Complete')",
+      "files": [
+        "governance/CONTRACTS/*.md",
+        "governance/GOVERNANCE_SUMMARY.md:200-204"
+      ],
+      "detail": "All four contracts are skeleton templates with [DATE], [RECIPIENT NAME], [AMOUNT], [SPECIFY ...] placeholders and no executed counterpart. The Governance Summary marks 'Initial contract templates creation' as [x] complete (Phase 1), which is fair, but the contracts have never been used and contain the unverified personal-goodwill assertions from G-D2.",
+      "evidence": "Each contract has bracketed placeholders throughout (e.g., NDA_TEMPLATE.md:3 '[DATE]', CLA:60 '[SPECIFY LICENSE]', IP Assignment:116 '$1.00 and other valuable consideration').",
+      "recommendation": "Add a CONTRACTS/README.md stating these are unexecuted templates requiring counsel review, and track usage in the document-control register.",
+      "rule": "template_status"
+    },
+    {
+      "id": "G-P5",
+      "severity": "low",
+      "category": "provenance",
+      "title": "Corporate record references instruments that do not exist on disk",
+      "files": [
+        "admin/Corporate/README.md",
+        "admin/Corporate/Non-Profit_Structuring_Framework.md"
+      ],
+      "detail": "admin/Corporate/README.md lists 'Springing_Durable_POA_April_2026.md' and 'P31_Emergency_Board_Resolutions_April_2026.md' as pending in 'legal-instruments/', and the structuring framework cites Ex parte Desjardins patent strategy, FinCEN exemption, and Zenodo DOIs. The legal-instruments/ directory does not exist and neither instrument is on disk. The README's own Status column correctly marks them 'Pending notarization' / 'Pending countersignature', but the directory it points to is absent.",
+      "evidence": "find . -type d -name 'legal-instruments' → none. ls admin/Corporate/ → no POA or Emergency_Resolutions files.",
+      "recommendation": "Create legal-instruments/ and add the pending instruments (or mark them 'not yet drafted' explicitly rather than 'in legal-instruments/').",
+      "rule": "document_inventory"
+    },
+    {
+      "id": "G-L4",
+      "severity": "low",
+      "category": "legal",
+      "title": "O.C.G.A. § 14-3-821 (unanimous written consent) — plausible but unverified source",
+      "files": [
+        "admin/Corporate/Action_of_Incorporator_Organizational_Consent.md:9",
+        "admin/Corporate/README.md:4"
+      ],
+      "detail": "The organizational consent cites O.C.G.A. § 14-3-821 for unanimous written consent in lieu of meeting. This is a plausible Georgia nonprofit corporation code provision, but was not independently verified against the current Official Code. The underlying incorporation filing date (April 3) and board consent date (April 11) are internally consistent with each other.",
+      "evidence": "Action_of_Incorporator:9 'acting pursuant to O.C.G.A. § 14-3-821'.",
+      "recommendation": "Verify the current § 14-3-821 text with Georgia counsel; the corporate instrument itself is otherwise chronologically consistent.",
+      "rule": "citation_accuracy"
+    },
+    {
+      "id": "G-P6",
+      "severity": "low",
+      "category": "provenance",
+      "title": "Admin compliance report makes unverifiable clinical claims",
+      "files": [
+        "admin/P31_COMPLIANCE_AND_REPORTS.md:20-30,46-57"
+      ],
+      "detail": "The report asserts 'CLINICALLY VALIDATED' with '350+ user trials' and specific efficacy metrics (94% sensory-overwhelm reduction, 78% cognitive-load reduction, 92% decision-paralysis prevention, 87% task completion). No trial protocol, IRB determination, data set, or measurement methodology exists in the repo to substantiate these numbers.",
+      "evidence": "No clinical-trial artifacts found (rg for trial/IRB/clinical data → only the report's own claims).",
+      "recommendation": "Either attach the actual validation protocol + data, or relabel these as internal beta metrics, not 'clinical validation'. Avoid medical-claims language that would implicate FDA/ FTC marketing rules for a device.",
+      "rule": "evidence_integrity"
+    }
+  ]
+}

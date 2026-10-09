@@ -10,11 +10,11 @@ The ecosystem has two architectural paradigms and five @p31 shared packages. Not
 
 | Package | Purpose | Canonical source |
 |---|---|---|
-| `@p31ca/design-core` | Tokens, compositions, recipes, MCP data, agentic pipeline, starfield, crisis overlay, theming | `P31-local-workspace/packages/design-core` (v2.3.0) |
-| `@p31ca/sovereign-core` | Identity, profile, tetrahedron, SBT, mesh, love, crypto state | `P31-local-workspace/packages/sovereign-core` (v0.1.0) |
-| `@p31ca/game-engine` | Jitterbug geometry, geodesic primitives, spoon-gated game runtime, Roblox adapter | `P31-local-workspace/packages/game-engine` (v0.2.0-alpha.0) |
-| `@p31ca/gamification` | Sound, confetti, haptics, achievements, growth rings, voice feedback, economy store | `P31-local-workspace/packages/gamification` (v1.0.0) |
-| `@p31ca/ui` | Starfield, adaptive/GreyRock/NeuroAdapter, webmcp, passport templates, chrome, layout templates | `P31-local-workspace/packages/ui` (v1.3.1) |
+| `@p31ca/design-core` | Tokens, compositions, recipes, MCP data, agentic pipeline, starfield, crisis overlay, theming | `production/packages/design-core` (v2.3.0) |
+| `@p31ca/sovereign-core` | Identity, profile, tetrahedron, SBT, mesh, love, crypto state | `production/packages/sovereign-core` (v0.1.0) |
+| `@p31ca/game-engine` | Jitterbug geometry, geodesic primitives, spoon-gated game runtime, Roblox adapter | `production/packages/game-engine` (v0.2.0-alpha.0) |
+| `@p31ca/gamification` | Sound, confetti, haptics, achievements, growth rings, voice feedback, economy store | `production/packages/gamification` (v1.0.0) |
+| `@p31ca/ui` | Starfield, adaptive/GreyRock/NeuroAdapter, webmcp, passport templates, chrome, layout templates | `production/packages/ui` (v1.3.1) |
 
 Additional @p31 packages used outside the portal SPAs: `@p31ca/shell-chrome`, `@p31ca/shared-identity` (p31ca only), `@p31ca/shared` (p31ca Tailwind preset).
 
@@ -166,7 +166,7 @@ Additional @p31 packages used outside the portal SPAs: `@p31ca/shell-chrome`, `@
 
 **Design token path**: p31ca does NOT use @p31ca/design-core CSS tokens. Instead, its Tailwind config extends `@p31ca/shared/theme/tailwind-preset`, which provides Tailwind-compatible design tokens. This is a separate design token pipeline from the SPA portals.
 **Tailwind config**: uses @p31ca/shared/theme/tailwind-preset preset, extends with quantum.violet (#A78BFA) and hub-specific colors (hubRose, hubNav)
-**No vendor tarballs**: uses workspace:* for @p31 packages (P31-local-workspace monorepo resolution)
+**No vendor tarballs**: uses workspace:* for @p31 packages (production monorepo resolution)
 **Purpose**: Dev portal (kilo.ai equivalent), marketing + documentation + product showcase
 
 ### phosphorus31.org/planetary-planet

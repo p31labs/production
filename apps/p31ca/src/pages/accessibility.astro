@@ -1,0 +1,103 @@
+---
+/**
+ * /accessibility — the WCAG 2.2 AA statement, in the standard structure.
+ *
+ * Conformance status + method of assessment + known limitations + dates,
+ * per the W3C accessibility-statement model. This is a self-assessment, not
+ * a third-party audit, and it is labeled as such.
+ */
+import MarketingShell from '../layouts/MarketingShell.astro';
+import SectionHeader from '../components/marketing/SectionHeader.astro';
+import Footer from '../components/marketing/Footer.astro';
+import constants from '../data/p31-mesh-constants.json';
+
+const CONTACT_EMAIL = constants.contactEmail;
+
+const accommodations = [
+  { name: 'Reduced motion', desc: 'All ambient animation respects prefers-reduced-motion — the dome drifts, the copy never animates past 200ms, and reduced-motion renders a static frame.' },
+  { name: 'Reduced transparency', desc: 'Glass panels fall back to solid surfaces under prefers-reduced-transparency, so reduced-blur systems get readable backgrounds.' },
+  { name: 'Spoon floors', desc: 'A spoon-level system scales motion and sensory load. At low spoon levels the interface slows; at the floor it goes still — a documented cognitive-safety accommodation.' },
+  { name: 'Keyboard navigation', desc: 'The navigation and the control instrument are keyboard-operable; skip links jump straight to main content; focus-visible outlines are provided on interactive elements.' },
+  { name: 'Touch targets', desc: 'Interactive targets meet the 48px minimum (WCAG 2.5.8).' },
+  { name: 'Contrast', desc: 'Text renders in tokens designed for contrast against the ambient background; the design system validates pairs with WCAG 2.2 AA checks.' },
+];
+---
+
+<MarketingShell
+  title="Accessibility — P31 Labs"
+  description="Accessibility statement: P31 Labs is partially conformant with WCAG 2.2 Level AA. Self-assessed."
+>
+  <main id="main-content" class="section">
+    <div class="max-w-3xl mx-auto px-6 md:px-12 lg:px-16">
+      <SectionHeader
+        title="Accessibility"
+        description="Accessibility statement for P31 Labs."
+        align="left"
+      />
+
+      <div class="mt-16 space-y-6">
+
+        <section class="glass-card">
+          <div class="p-8 space-y-4">
+            <h3 class="text-xl font-bold" style="color: var(--p31-text);">Conformance status</h3>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              P31 Labs is <strong style="color: var(--p31-text);">partially conformant</strong> with WCAG 2.2 Level AA. "Partially conformant" means that some parts of the content do not fully conform to the accessibility standard.
+            </p>
+          </div>
+        </section>
+
+        <section class="glass-card">
+          <div class="p-8 space-y-4">
+            <h3 class="text-xl font-bold" style="color: var(--p31-text);">Method of assessment</h3>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              <strong style="color: var(--p31-text);">Self-evaluation.</strong> Automated testing (axe-core) runs in CI, and manual keyboard-only passes are performed on each release. This is a self-assessment, not a third-party audit.
+            </p>
+          </div>
+        </section>
+
+        <section class="glass-card">
+          <div class="p-8 space-y-4">
+            <h3 class="text-xl font-bold" style="color: var(--p31-text);">What is implemented</h3>
+            <div class="mt-2 space-y-4">
+              {accommodations.map((a) => (
+                <div class="rounded-xl border p-5" style="border-color: var(--p31-glass-border, rgba(255,255,255,0.1)); background: var(--p31-panel-surface, rgba(255,255,255,0.04));">
+                  <div class="font-semibold" style="color: var(--p31-text);">{a.name}</div>
+                  <p class="mt-1 text-sm leading-relaxed" style="color: var(--p31-text-secondary);">{a.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section class="glass-card">
+          <div class="p-8 space-y-4">
+            <h3 class="text-xl font-bold" style="color: var(--p31-text);">Known limitations</h3>
+            <ul class="list-disc pl-5 space-y-2 text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              <li>The molecular dome background may not render identically across all reduced-transparency implementations.</li>
+              <li>The spoon-level system is a custom accommodation not covered by a WCAG success criterion — it is an enhancement, not a conformance mechanism.</li>
+              <li>Some legacy archive pages in the public directory predate the current accessibility work and have not been fully audited.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="glass-card" style="border-left: 3px solid var(--p31-signal-amber, #f59e0b);">
+          <div class="p-8 space-y-3">
+            <h3 class="text-xl font-bold" style="color: var(--p31-text);">The honest scope</h3>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              P31 targets WCAG 2.2 AA and builds toward it, but this is a self-assessment — not a claim of third-party certification. If you encounter a barrier, please report it so we can fix it.
+            </p>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text);">
+              Report accessibility issues to <a href={`mailto:${CONTACT_EMAIL}`} style="color: var(--p31-accent);">{CONTACT_EMAIL}</a>.
+            </p>
+            <p class="text-sm mt-4" style="color: var(--p31-text-tertiary, #a1a1a1);">
+              <span class="font-mono">Assessment date: September 24, 2026</span> · <span class="font-mono">Last reviewed: September 24, 2026</span>
+            </p>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</MarketingShell>

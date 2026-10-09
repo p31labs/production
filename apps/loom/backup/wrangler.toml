@@ -1,0 +1,17 @@
+name = "loom-backup"
+main = "index.ts"
+compatibility_date = "2026-07-04"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[triggers]
+crons = ["0 3 * * *"]
+
+[[d1_databases]]
+binding = "LOOM_D1"
+database_name = "loom"
+database_id = "87f9bc5c-e74e-4c61-8405-a0ed04671194"
+
+[[r2_buckets]]
+binding = "LOOM_BACKUPS"
+bucket_name = "loom-backups"

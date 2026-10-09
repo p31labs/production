@@ -128,7 +128,7 @@ And ensure wrangler is ≥4.61.1.
 - The workers are outside the pnpm workspace (`/home/p31/production/workers/` vs `/home/p31/production/portals/`)
 - `npm install @cloudflare/workers-types` failed with ERESOLVE
 - `npm install typescript@5.7.0` failed with ETARGET (version doesn't exist)
-- The agent ultimately symlinked from an existing installation in `/home/p31/P31-local-workspace/workers/phos/node_modules/.ignored/@cloudflare/workers-types`
+- The agent ultimately symlinked from an existing installation in `/home/p31/production/workers/phos/node_modules/.ignored/@cloudflare/workers-types`
 - `npx tsc --noEmit` still failed with TS2688: Cannot find type definition file for '@cloudflare/workers-types'
 
 **Root cause:** The workers are not part of any pnpm workspace. The workspace root is `/home/p31/` (per `pnpm ls` output showing `p31-portals@2.0.0 /home/p31`). The `workers/` directory is outside this workspace. There is no node_modules for the workers, and pnpm does not install dependencies for directories outside its workspace.

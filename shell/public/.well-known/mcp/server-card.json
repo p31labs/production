@@ -1,0 +1,16 @@
+{
+  "servers": [
+    {
+      "name": "p31-design-mcp",
+      "description": "P31 Design System — Token resolution, component generation, layout, icons, UI audit",
+      "endpoint": "https://p31-design-mcp.trimtab-signal.workers.dev/mcp",
+      "transport": "streamable-http"
+    },
+    {
+      "name": "p31-crypto-mcp",
+      "description": "P31 PQC Crypto — ML-DSA-65, ML-KEM-768, SLH-DSA-128s, hybrid signatures",
+      "endpoint": "https://p31-crypto-mcp.trimtab-signal.workers.dev/mcp",
+      "transport": "streamable-http"
+    }
+  ]
+}

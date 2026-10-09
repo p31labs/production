@@ -1,0 +1,17 @@
+name = "p31-ci"
+main = "src/index.ts"
+compatibility_date = "2026-07-16"
+
+[vars]
+SLI_URL = "https://config-gateway.trimtab-signal.workers.dev/api/usage/sli"
+
+[triggers]
+crons = ["*/15 * * * *"]
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "CI_DB"
+database_name = "ci-db"
+database_id = "7c9b42a1-7884-42e9-95fb-6d3c0aabc39e"

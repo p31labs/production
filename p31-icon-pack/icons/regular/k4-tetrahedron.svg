@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" role="img" aria-label="K4 Tetrahedron animated icon">
+  <title>K4 Tetrahedron</title>
+  <desc>A regular tetrahedron with glowing pulsing nodes representing sovereign foundational structure.</desc>
+  <style>
+    .k4-edge-p { stroke: var(--p31-accent, #00F0FF); stroke-width: 2; opacity: 0.4; stroke-dasharray: 200; stroke-dashoffset: 200; animation: edgeReveal 3s ease-out forwards; }
+    .k4-node-p { fill: var(--p31-accent, #00F0FF); }
+    .k4-node-s { fill: var(--p31-accent-violet, #A78BFA); }
+    .k4-node-n { fill: var(--p31-text, #F5F5F7); opacity: 0.9; }
+    .k4-center-p { fill: var(--p31-accent, #00F0FF); transform-origin: 100px 105px; animation: centerPulse 4s infinite ease-in-out; }
+    .k4-group { transform-origin: 100px 105px; animation: slowRotate 30s infinite linear; }
+    @keyframes edgeReveal { to { stroke-dashoffset: 0; opacity: 0.7; } }
+    @keyframes centerPulse { 0%, 100% { transform: scale(0.9); opacity: 0.6; filter: drop-shadow(0 0 4px var(--p31-accent, #00F0FF)); } 50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 14px var(--p31-accent, #00F0FF)); } }
+    @keyframes slowRotate { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .k4-edge-p { animation: none; stroke-dashoffset: 0; opacity: 0.5; } .k4-center-p, .k4-group { animation: none; } .k4-center-p { transform: scale(1); opacity: 0.8; } }
+  </style>
+  <g class="k4-group">
+    <line x1="100" y1="35" x2="40" y2="145" class="k4-edge-p"/>
+    <line x1="100" y1="35" x2="160" y2="145" class="k4-edge-p"/>
+    <line x1="100" y1="35" x2="100" y2="145" class="k4-edge-p"/>
+    <line x1="40" y1="145" x2="160" y2="145" class="k4-edge-p"/>
+    <line x1="40" y1="145" x2="100" y2="145" class="k4-edge-p"/>
+    <line x1="160" y1="145" x2="100" y2="145" class="k4-edge-p"/>
+    <circle cx="100" cy="35" r="5" class="k4-node-p"/>
+    <circle cx="40" cy="145" r="5" class="k4-node-s"/>
+    <circle cx="160" cy="145" r="5" class="k4-node-n"/>
+    <circle cx="100" cy="105" r="10" class="k4-center-p"/>
+  </g>
+</svg>

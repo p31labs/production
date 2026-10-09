@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mcp-marketplace.p31ca.org/sitemap.xml

@@ -1,0 +1,104 @@
+{
+  "version": "1.0",
+  "name": "P31 Chat Sandbox",
+  "description": "A calm, streaming AI chat sandbox for the P31 mesh family. Human prompts, agent builds.",
+  "actions": [
+    {
+      "name": "chat.send",
+      "kind": "action",
+      "danger": "medium",
+      "confirm": "never",
+      "schema": { "prompt": "string", "agent": "string" },
+      "description": "Submit the composer prompt for generation. Human-initiated."
+    },
+    {
+      "name": "chat.stop",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "Cancel in-flight generation."
+    },
+    {
+      "name": "chat.thread.new",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "Create a new conversation thread."
+    },
+    {
+      "name": "chat.thread.delete",
+      "kind": "action",
+      "danger": "high",
+      "confirm": "optional",
+      "schema": { "threadId": "string" },
+      "description": "Delete a thread and its messages."
+    },
+    {
+      "name": "chat.agent.select",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": { "agent": "string" },
+      "description": "Switch the active generation agent."
+    },
+    {
+      "name": "chat.clarify.resolve",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": { "answers": "object" },
+      "description": "Resolve ambiguity questions before generation."
+    },
+    {
+      "name": "chat.artifact.tab",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "tab": { "type": "string", "enum": ["preview", "code", "diff", "inspect"] }
+        },
+        "required": ["tab"]
+      },
+      "description": "Switch the artifact pane view."
+    },
+    {
+      "name": "chat.repair",
+      "kind": "action",
+      "danger": "low",
+      "confirm": "optional",
+      "schema": { "issueCode": "string" },
+      "description": "Re-queue generation to fix a contract or visual issue."
+    },
+    {
+      "name": "chat.deploy",
+      "kind": "action",
+      "danger": "low",
+      "confirm": "optional",
+      "schema": { "name": "string" },
+      "description": "Deploy a generated artifact to a live URL."
+    }
+  ],
+  "data-agent-attributes": {
+    "kind": "data-agent-kind",
+    "action": "data-agent-action",
+    "danger": ["none", "low", "medium", "high"],
+    "confirm": ["never", "optional", "review", "required"]
+  },
+  "mcp": {
+    "servers": [
+      "p31-cli",
+      "sandbox",
+      "justice",
+      "marketplace",
+      "wallet",
+      "crypto",
+      "bros",
+      "dads",
+      "roblox"
+    ]
+  }
+}

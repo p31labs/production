@@ -1,0 +1,16 @@
+name = "p31-ui-forge-studio"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-07-21"
+compatibility_flags = ["nodejs_compat"]
+
+# Service binding to the AI proxy — the Function calls phos-ai-proxy
+# server-to-server (avoids worker→worker public-URL error 1042).
+[[services]]
+binding = "PHOS_AI_PROXY"
+service = "phos-ai-proxy"
+
+# D1 — passkey credentials + audit log (Wave 3). Shared database with apps/auth.
+[[d1_databases]]
+binding = "AUTH_DB"
+database_name = "p31-auth"
+database_id = "73959828-0d6d-4772-950d-38a917881182"

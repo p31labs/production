@@ -11,8 +11,8 @@ const root = resolve(here, '..')
 
 // The forge package content root (sibling workspace).
 const candidates = [
-  resolve(root, '..', '..', '..', 'P31-local-workspace', 'software', 'p31-forge', 'content'),
-  resolve(root, '..', '..', '..', '..', 'P31-local-workspace', 'software', 'p31-forge', 'content'),
+  resolve(root, '..', '..', '..', 'production', 'software', 'p31-forge', 'content'),
+  resolve(root, '..', '..', '..', '..', 'production', 'software', 'p31-forge', 'content'),
 ]
 const contentDir = candidates.find(existsSync)
 if (!contentDir) {

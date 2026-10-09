@@ -76,7 +76,7 @@ Copyright (c) P31 Labs, Inc.
 This repository is licensed under the **GNU Affero General Public License,
 version 3 (AGPL-3.0)**. See [LICENSE](LICENSE) for the full text.
 
-Note: the P31-local-workspace README displays an MIT license badge even though
+Note: the production README displays an MIT license badge even though
 the on-disk LICENSE in that repository is the AGPL-3.0 text. That badge is a
 known inconsistency owned by the workspace team and is not copied here. This
 repository is AGPL-3.0 and the LICENSE file in this repository matches the

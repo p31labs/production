@@ -1,0 +1,50 @@
+# P31 Labs
+
+> P31 Labs builds neuroinclusive, agent-native infrastructure: a spoon-aware design system, the Oasis developer CLI, the PHOS companion app, and the p31ca edge platform.
+
+## Documentation
+- [Docs Hub](https://p31ca.org/docs): entry point for all P31 documentation.
+- [Getting Started](https://p31ca.org/docs/getting-started): environment setup and first run.
+- [Architecture](https://p31ca.org/docs/architecture): system overview.
+- [Tech Stack](https://p31ca.org/docs/architecture/stack): runtimes, frameworks, and edge services.
+- [Security Model](https://p31ca.org/docs/architecture/security): auth, edge proxy, and threat boundaries.
+
+## API
+- [API Overview](https://p31ca.org/docs/api): gateway and service endpoints.
+- [REST Reference](https://p31ca.org/docs/api/rest): request/response shapes.
+- [Auth](https://p31ca.org/docs/api/auth): Bearer-token auth required on protected routes.
+
+## CLI (Oasis)
+- [Oasis CLI](https://p31ca.org/cli): the P31 developer terminal (TUI).
+- [CLI Docs](https://p31ca.org/docs/cli): commands and configuration.
+- [CLI Commands](https://p31ca.org/docs/cli/commands): full command reference.
+- [CLI Themes](https://p31ca.org/docs/cli/themes): theming and accessibility options.
+
+## PHOS
+- [PHOS App](https://p31ca.org/phos): the P31 companion for neurodivergent users.
+- [PHOS Cloud](https://p31ca.org/phos-cloud): sync, surfaces, and voice.
+- [PHOS Cloud Docs](https://p31ca.org/docs/phos-cloud): overview.
+- [Crisis Mode](https://p31ca.org/docs/phos-cloud/crisis): the hard-exit invariant and spoon reset.
+- [Surfaces](https://p31ca.org/docs/phos-cloud/surfaces): adaptive UI surfaces.
+- [Voice](https://p31ca.org/docs/phos-cloud/voice): voice interaction model.
+
+## Design System
+- [Design Overview](https://p31ca.org/docs/design): principles and tokens.
+- [Spoon Theory](https://p31ca.org/docs/design/spoons): data-spoons motion scaling and the 0–5 scale.
+- [Accessibility](https://p31ca.org/docs/design/accessibility): neuroinclusive constraints.
+- [DESIGN.md](https://p31ca.org/DESIGN.md): machine-readable design spec (Google Labs format).
+- [AGENTS.md](https://p31ca.org/AGENTS.md): contributor and agent workflow guide.
+
+## Platform & Ops
+- [Integrations](https://p31ca.org/integrations): connected services.
+- [Research](https://p31ca.org/research): active research threads.
+- [Grants](https://p31ca.org/grants): funding and open calls.
+- [Ops](https://p31ca.org/ops): operations index.
+- [EPCP](https://p31ca.org/ops/epcp): edge control plane.
+- [Mesh NOC](https://p31ca.org/ops/mesh-noc): network operations center.
+- [Mission Control](https://p31ca.org/ops/mission-control): live platform status.
+
+## Agent Discovery
+- [agents.json](https://p31ca.org/.well-known/agents.json): Agent-Readability manifest.
+- [did.json](https://p31ca.org/.well-known/did.json): decentralized identifier.
+- [security.txt](https://p31ca.org/.well-known/security.txt): security contact.

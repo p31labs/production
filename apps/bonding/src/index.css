@@ -1,0 +1,7 @@
+@import '@p31ca/design-core/css/base.css';
+@import '@p31ca/design-core/css/glass.css';
+@import '@p31ca/design-core/css/motion.css';
+@import '@p31ca/design-core/css/typography.css';
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--p31-font-sans); background: var(--p31-void); color: var(--p31-text-primary); }

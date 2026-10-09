@@ -1,0 +1,402 @@
+{
+  "version": "1.0",
+  "name": "P31 Loom",
+  "description": "The design system as a live graph. Human and agent, co-present.",
+  "actions": [
+    {
+      "name": "mode.toggle",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": { "modes": ["canvas", "instrument", "jitterbug"] }
+    },
+    {
+      "name": "surface.show_more",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {}
+    },
+    {
+      "name": "loom.focus",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": { "nodeId": "string" }
+    },
+    {
+      "name": "loom.traverse",
+      "kind": "action",
+      "danger": "low",
+      "confirm": "optional",
+      "surfaced": "agent-side",
+      "schema": { "from": "string", "to": "string", "reason": "string" },
+      "description": "Agent-side verb, not a UI affordance. The agent moves from one graph node to another. Never appears as a data-agent-action in the DOM; the agent commits it directly to the log."
+    },
+    {
+      "name": "loom.propose",
+      "kind": "action",
+      "danger": "medium",
+      "confirm": "review",
+      "surfaced": "agent-side",
+      "schema": { "id": "string", "node": "string", "body": "object" },
+      "description": "Agent-side verb, not a UI affordance. The agent formalizes an idea as a proposal the human can then approve or defer. Never appears as a data-agent-action in the DOM; the agent commits it directly to the log."
+    },
+    {
+      "name": "view.save",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": { "label": "string", "from": "number", "to": "number" }
+    },
+    {
+      "name": "view.continue",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": { "to": "number" }
+    },
+    {
+      "name": "artifact.tap",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "The child taps the artifact they made in Chapter 5 (the Workshop). Commits a human focus event on 'artifact'. Purely celebratory proof the artifact is alive — no state change."
+    },
+    {
+      "name": "chapter.sound.toggle",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "Flip the opt-in sound preference for the child-facing chapters. Device-local (localStorage), never committed to the log. Sound is off by default; this is the only way it turns on."
+    },
+    {
+      "name": "chapter.workshop.open",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "The hand-off from Chapter 5's workshop threshold into the full instrument. Commits a human focus event on 'workshop-open', then the shell switches mode. The door opens only when the child taps it — no auto-advance."
+    },
+    {
+      "name": "color.pick",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "color": { "type": "string", "enum": ["Amber", "Green", "Pink"] }
+        },
+        "required": ["color"]
+      },
+      "description": "The child picks a color in Chapter 4 (You have an idea). Commits a human focus event on the color node, then Lumi formalizes it as an agent proposal. The pick is the child's idea made concrete."
+    },
+    {
+      "name": "color.repick",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "Return from Lumi's review to the color picker in Chapter 4. A reversal, not a rejection — commits a human focus event on 'color-picker'. Fully reversible; a new pick produces a new proposal, never a duplicate for the same color."
+    },
+    {
+      "name": "companion.back",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "screen": { "type": "string", "enum": ["welcome", "artifact"] }
+        }
+      },
+      "description": "Return to the previous screen in the companion view. On the first screen, exits to the launchpad. Commits a human focus event on 'companion-back-{screen}'. Every companion screen has a visible Back."
+    },
+    {
+      "name": "companion.next",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "screen": { "type": "string", "enum": ["welcome", "artifact"] }
+        }
+      },
+      "description": "Advance to the next screen in the companion view ('Show me'). Commits a human focus event on 'companion-next-{screen}'. Never auto-advances; nothing moves without a tap."
+    },
+    {
+      "name": "docs.view",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "The ?mode=docs region — the live-contract surface (tokens, actions, the log fold). Informational marker, not an action an agent should invoke on its own; it exists so the region is discoverable. Hidden from any switcher; ?mode=docs only."
+    },
+    {
+      "name": "companion.view",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "The companion view region — the 70-year-old's window into the log. Informational marker, not an action an agent should invoke on its own; it exists so the region is discoverable."
+    },
+    {
+      "name": "companion.open",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "Open the companion view from the launchpad. The elder's door — a quiet secondary control below Start. Switches the shell to companion mode; commits nothing to the log. A returning visitor whose log has an artifact lands on what they made; a fresh visitor lands on a gentle empty state."
+    },
+    {
+      "name": "make.confirm",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "The child accepts Lumi's offer to make their idea ('Yes, make it') in Chapter 4. Commits a human approve event on Lumi's proposal. The child's own decision, so no confirmation is required."
+    },
+    {
+      "name": "proposal.approve",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "The child accepts Lumi's proposal in Chapter 3 ('Yes, do it'). Commits a human approve event. The proposal becomes real only on this event."
+    },
+    {
+      "name": "proposal.defer",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "The child declines Lumi's proposal for now ('Not yet') in Chapter 3. Commits a human reject event with reason 'not-yet'. A valid decision, not a failure — no retry, no re-prompt."
+    },
+    {
+      "name": "verification.verify",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "Replay the log and return the tamper-evidence verdict: valid, the seq the walk reached, the head hash, and — if the chain is broken — the seq, expected, and found hashes. A read, not a mutation. Safe for any caller with a session."
+    },
+    {
+      "name": "verification.provenance",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "seq": { "type": "integer", "minimum": 0 }
+        },
+        "required": ["seq"]
+      },
+      "description": "Return the event chain from genesis to the given seq, each record carrying its prev_hash, plus the recomputed verdict and the head commitment. The artifact a reviewer asks for. A read."
+    },
+    {
+      "name": "profile.love",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "did": { "type": "string", "description": "The LOVE did:key to read" }
+        },
+        "required": ["did"]
+      },
+      "description": "Read the privacy-preserving care proof for a LOVE DID: bound, careScore, verified (>= 0.5), sovereignty/performance pools, totalEarned. Returns what the ledger attests WITHOUT the care events — the LOVE privacy promise surfaced in the Loom. A read; safe for any caller with a session."
+    },
+    {
+      "name": "anchor.sbt",
+      "kind": "action",
+      "danger": "low",
+      "confirm": "never",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "did": { "type": "string" },
+          "block": { "type": "object" }
+        },
+        "required": ["did", "block"]
+      },
+      "description": "Witness a QPJ SBT block into the Loom's anchor store — makes the portal's client-side hash chain server-authoritative. Verifies the per-DID linkage (a rewritten block breaks it); witnesses the block's own hash as opaque (never re-derived). A write, but only to the anchor store — the log itself is untouched."
+    },
+    {
+      "name": "family.view",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "The family view region — one short page the whole household (and their agents) reads together: the shared artifact, the care circle, the last shared moments, provenance one tap away. Informational marker, not an action an agent should invoke on its own."
+    },
+    {
+      "name": "family.open",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "Open the family view from the launchpad — the whole family's door. Switches the shell to family mode; commits nothing to the log."
+    },
+    {
+      "name": "family.back",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "Return from the family view to the launchpad. Commits a shared focus on 'family-back'."
+    },
+    {
+      "name": "family.memory",
+      "kind": "status",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "Lumi's memory line on the launchpad — one derived sentence about what was made before ('You and Lumi have made N things together'). Folded from the log, never auto-advancing; the child still taps Start. Informational."
+    },
+    {
+      "name": "family.care",
+      "kind": "status",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "The family care circle — a status region showing the bound care record (code name, verified status, sovereignty/performance pools) or its absence. Informational; never a score."
+    },
+    {
+      "name": "family.receipt",
+      "kind": "status",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "The family receipt — the latest shared moment, with provenance and Undo. The receipt is the proof surface: 'prove what happened' links to /provenance/:seq, Undo appends a compensating event."
+    },
+    {
+      "name": "family.provenance",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "A link to GET /api/loom/provenance/:seq for the latest shared moment — the chain from genesis to seq, each record with its prev_hash, the recomputed verdict, and the head commitment. A read; safe for any caller with a session."
+    },
+    {
+      "name": "theme.cycle",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "Cycle the shell's theme in the top bar. Presentation-layer only (localStorage), never committed to the log. Purely cosmetic; safe to invoke."
+    },
+    {
+      "name": "instrument.zone.trigger",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": { "zoneId": "string" },
+      "description": "Tap a zone in the spatial music maker to hear it. EPHEMERAL — broadcast over the live presence channel, never committed to the log, never gated, never persisted. Carries data-agent-action so an agent or test can trigger it non-visually."
+    },
+    {
+      "name": "instrument.zone.place",
+      "kind": "action",
+      "danger": "low",
+      "confirm": "optional",
+      "schema": { "position": "array", "timbre": "string", "name": "string" },
+      "description": "Place a new zone in the spatial music maker. Gesture-driven in the UI (drag-and-drop / long-press-and-release); the gesture's completion callback carries the same data-agent-action semantics a button would. Commits an instrument.zone.place event through the gate — the score is replayable and provenance-tracked."
+    },
+    {
+      "name": "instrument.zone.clear",
+      "kind": "action",
+      "danger": "medium",
+      "confirm": "review",
+      "schema": { "zoneId": "string" },
+      "description": "Remove a zone from the spatial music maker. Commits an instrument.zone.clear event — the removal is a log entry like any other composition change, so the arrangement stays provenance-tracked."
+    },
+    {
+      "name": "instrument.zone.name",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": { "zoneId": "string", "name": "string" },
+      "description": "Rename a zone in the spatial music maker. Commits an instrument.zone.name event through the gate."
+    },
+    {
+      "name": "instrument.sound.toggle",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": {},
+      "description": "Flip the opt-in sound preference for the spatial music maker. Device-local (localStorage), never committed to the log. Sound is off by default on every device, every session; this is the only way it turns on. A shared session where one family member enabled sound does not turn sound on for another family member's device."
+    },
+    {
+      "name": "instrument.listener.move",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": { "position": "array" },
+      "description": "The listener-position control — a drag surface on the spatial music scene. EPHEMERAL, not committed: moving yourself in the field is a live presence act, never a log entry. Carries data-agent-action so a test or agent can drive it non-visually."
+    },
+    {
+      "name": "instrument.mapping.toggle",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": { "mapping": "string" },
+      "description": "Flip the vertical spatial encoding between height→pitch and height→timbre-brightness. Prototype-validated (prototype-spatial-touch.html); the decision is made empirically with a family member, not by spec."
+    },
+    {
+      "name": "instrument.render.toggle",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": { "mode": "string" },
+      "description": "Cycle the spatial scene's render mode: constellation (points + the listener's path trail), terrain (the audio-reactive sphere prominent), bursts (explosions at every trigger). Presentation-layer only; the composition and the audio graph are unchanged."
+    },
+    {
+      "name": "control.midi.bind",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": { "controlId": "string", "cc": "number" },
+      "description": "Bind a MIDI CC to a control-surface knob or fader. Commits a control.midi.learn event through the gate; the control disarms after one bind."
+    },
+    {
+      "name": "control.wled.segment",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": { "segment": "number", "state": "object" },
+      "description": "Set a WLED segment's color, effect, speed, or intensity via the WLED bridge (POST /json/state). Requires the bridge to be connected; an unreachable device reports the honest offline state, never a fake green dot."
+    },
+    {
+      "name": "control.synth.param",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": { "param": "string", "value": "number" },
+      "description": "Set a named synth parameter (0-1 or an enum) on the active engine. EPHEMERAL — broadcast over the live presence channel, never committed to the log. Named params only; the router never touches raw engine internals."
+    },
+    {
+      "name": "control.preset.load",
+      "kind": "action",
+      "danger": "none",
+      "confirm": "never",
+      "schema": { "presetId": "string" },
+      "description": "Load a committed patch preset into the active engine. The preset itself is a committed control.patch.set event; the load is an ephemeral broadcast that applies it to the live audio graph."
+    }
+  ],
+  "data-agent-attributes": {
+    "kind": ["action", "field", "status"],
+    "action": "string",
+    "danger": ["none", "low", "high"],
+    "confirm": ["never", "optional", "review", "required"]
+  },
+  "mcp": {
+    "server": "p31-canon",
+    "discovery": ["search_tools", "get_tool_details"],
+    "families": ["contract", "tokens", "validation", "docs", "observe", "act", "mediate"]
+  }
+}

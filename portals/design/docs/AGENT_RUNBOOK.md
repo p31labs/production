@@ -87,7 +87,7 @@ surface's route + shell wrapper.
 4. `node <dc>/scripts/token-audit.mjs`. 5. Full gate.
 
 ### R4 — Re-vendor the canon (3.0.0)
-1. Edit `P31-local-workspace/packages/design-core` source.
+1. Edit `production/packages/design-core` source.
 2. `cd design-core && node scripts/token-audit.mjs && npm pack` → rename to
    `p31-design-core-3.0.0.tgz` if scoped (`p31ca-design-core-*`).
 3. Copy to `design/vendor/` + `workspace/vendor/`.

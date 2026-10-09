@@ -5,7 +5,7 @@ Status: shipped (Commit 6)
 QPJ runs on **two currencies**. Spoons are the day's energy — session-scoped,
 spendable, resettable. LOVE is the family's trust — a durable, soulbound,
 non-transferable ledger that outlives sessions. LOVE is the qpj micro of
-**Paper XI, the L.O.V.E. Protocol** (see `P31-local-workspace/docs/LOVE_LITEPAPER.md`).
+**Paper XI, the L.O.V.E. Protocol** (see `production/docs/LOVE_LITEPAPER.md`).
 
 ## Protocol mapping (Paper XI → qpj micro)
 

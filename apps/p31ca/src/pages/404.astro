@@ -1,0 +1,33 @@
+---
+import MarketingShell from '../layouts/MarketingShell.astro';
+import SharedFooter from '../components/SharedFooter.astro';
+---
+
+<MarketingShell
+  title="Not found — P31 Labs"
+  description="This page does not exist. The dome is still here."
+>
+
+  <main class="max-w-4xl mx-auto px-6 md:px-12 py-24 text-center">
+    <p class="text-sm tracking-[0.3em] uppercase" style="color: var(--p31-text-tertiary, #a3a3a3);">
+      404
+    </p>
+    <h1 class="mt-4 text-4xl md:text-5xl font-bold" style="color: var(--p31-text, #e2e8f0);">
+      This route is empty space
+    </h1>
+    <p class="mt-6 text-lg leading-relaxed" style="color: var(--p31-text-secondary, #a3a3a3);">
+      The page you tried to reach doesn't exist — but the dome, the starfield,
+      and everything real underneath is still running.
+    </p>
+    <div class="mt-10 flex justify-center">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition"
+        style="background: var(--p31-accent, #22d3ee); color: #0a0a0f;"
+      >
+        Return to the homepage
+      </a>
+    </div>
+  </main>
+
+</MarketingShell>

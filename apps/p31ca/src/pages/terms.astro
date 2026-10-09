@@ -1,0 +1,89 @@
+---
+/**
+ * /terms — donation terms, photo release, and the license summary.
+ *
+ * The effective date must match ground-truth (policies.terms.effective) —
+ * the consistency checker validates it.
+ */
+import MarketingShell from '../layouts/MarketingShell.astro';
+import SectionHeader from '../components/marketing/SectionHeader.astro';
+import Footer from '../components/marketing/Footer.astro';
+import constants from '../data/p31-mesh-constants.json';
+
+const CONTACT_EMAIL = constants.contactEmail;
+
+const sections = [
+  {
+    title: 'Acceptance',
+    body: 'By using this site you agree to these terms. If you do not agree, do not use the site.',
+  },
+  {
+    title: 'License grant',
+    body: 'The P31 code is open source under the AGPL; you are free to inspect, fork, and deploy the stack, and the AGPL terms apply to derivative works of the AGPL code. Site content and research are published under open licenses as stated on each surface. No content license grants a right to use P31 marks or identity.',
+  },
+  {
+    title: 'Donations',
+    body: 'P31 Labs, Inc. is a Georgia nonprofit corporation with 501(c)(3) determination (EIN 42-1888158, determination dated 2026-04-03). Donations are tax-deductible to the fullest extent of the law. Donors retain no ownership interest; a donation is a gift, not an investment. Donations are non-refundable except as required by law.',
+  },
+  {
+    title: 'Photo and media release',
+    body: 'By submitting photographs or media to P31, you grant P31 a non-exclusive, royalty-free license to display and use them on its public surfaces for nonprofit purposes, and you confirm you have the rights to the media you submit. You may request revocation of a specific item by emailing '+CONTACT_EMAIL+'; revocation applies to future display only. This does not transfer ownership.',
+  },
+  {
+    title: 'Use of the audit chain',
+    body: 'The Loom audit chain is public and independently verifiable. By interacting with P31 surfaces, your public actions may be recorded in the chain — this is the transparency feature, not a hidden collection.',
+  },
+  {
+    title: 'Disclaimer of warranties and limitation of liability',
+    body: 'The site and services are provided "as is" without warranties of any kind, express or implied. To the fullest extent permitted by law, P31 Labs, Inc. is not liable for indirect, incidental, or consequential damages arising from use of the site. Nothing in these terms limits rights a consumer may have that cannot be waived.',
+  },
+  {
+    title: 'Governing law and disputes',
+    body: 'These terms are governed by the laws of the State of Georgia, without regard to conflict-of-law rules. Any dispute arising out of or relating to these terms will be resolved in the state or federal courts located in Georgia. P31 does not require arbitration for disputes.',
+  },
+  {
+    title: 'Changes to these terms',
+    body: 'P31 may update these terms from time to time. Material changes will be reflected by an updated effective date on this page.',
+  },
+  {
+    title: 'Contact',
+    body: 'For questions about these terms, email '+CONTACT_EMAIL+'.',
+  },
+];
+---
+
+<MarketingShell
+  title="Terms — P31 Labs"
+  description="Donation terms, photo release, and the open-source license summary."
+>
+  <main id="main-content" class="section">
+    <div class="max-w-3xl mx-auto px-6 md:px-12 lg:px-16">
+      <SectionHeader
+        title="Terms"
+        description="Donation terms, photo release, and the open-source license summary."
+        align="left"
+      />
+
+      <div class="mt-16 space-y-6">
+        {sections.map((s) => (
+          <section class="glass-card" key={s.title}>
+            <div class="p-8 space-y-3">
+              <h3 class="text-xl font-bold" style="color: var(--p31-text);">{s.title}</h3>
+              <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">{s.body}</p>
+            </div>
+          </section>
+        ))}
+
+        <section class="glass-card">
+          <div class="p-8 space-y-3">
+            <p class="text-sm" style="color: var(--p31-text-tertiary);">
+              <span class="font-mono">Effective: June 10, 2026</span>
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</MarketingShell>

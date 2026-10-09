@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://workspace.p31ca.org/sitemap.xml

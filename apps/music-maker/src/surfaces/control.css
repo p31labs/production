@@ -1,0 +1,181 @@
+/* ControlSurface — composes from canon suite.css tokens. */
+
+.control-surface {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-5);
+  padding: var(--p31-space-5);
+  height: 100%;
+  overflow-y: auto;
+}
+
+.control-surface__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.control-surface__title {
+  font-size: var(--p31-text-h2);
+  font-weight: 700;
+  color: var(--p31-text-primary);
+}
+
+.control-surface__status {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-2);
+  font-size: var(--p31-text-sm);
+  color: var(--p31-cloud);
+}
+
+.control-surface__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--p31-surface3);
+}
+
+.control-surface__dot--open { background: var(--p31-control-signal-bound); }
+.control-surface__dot--connecting { background: var(--p31-control-signal-learning); }
+.control-surface__dot--closed,
+.control-surface__dot--error { background: var(--p31-control-signal-error); }
+
+.control-surface__error {
+  padding: var(--p31-space-3) var(--p31-space-4);
+  border-radius: var(--p31-radius-sm);
+  background: color-mix(in oklch, var(--p31-accent-red) 12%, transparent);
+  border: 1px solid color-mix(in oklch, var(--p31-accent-red) 30%, transparent);
+  color: var(--p31-accent-red);
+  font-size: var(--p31-text-sm);
+}
+
+.control-surface__columns {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(320px, 2fr) minmax(240px, 1.5fr);
+  gap: var(--p31-space-4);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .control-surface__columns { grid-template-columns: 1fr; }
+}
+
+.control-surface__panel {
+  padding: var(--p31-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-3);
+}
+
+.control-surface__panel-title {
+  font-size: var(--p31-text-lg);
+  font-weight: 600;
+  color: var(--p31-text-primary);
+}
+
+.control-surface__source {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-2);
+  padding: var(--p31-space-3);
+  border-radius: var(--p31-radius-sm);
+  background: var(--p31-surface);
+}
+
+.control-surface__source-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--p31-text-sm);
+  color: var(--p31-text-primary);
+}
+
+.control-surface__hint {
+  font-size: var(--p31-text-xs);
+  color: var(--p31-cloud);
+  line-height: 1.5;
+}
+
+.control-surface__device {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--p31-space-2) 0;
+  border-bottom: 1px solid var(--p31-glass-border);
+  font-size: var(--p31-text-sm);
+}
+
+.control-surface__device-name { color: var(--p31-text-primary); }
+.control-surface__device-mfr {
+  font-size: var(--p31-text-xs);
+  color: var(--p31-cloud);
+}
+
+.control-surface__tabs {
+  display: flex;
+  gap: var(--p31-space-2);
+}
+
+.control-surface__knobs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: var(--p31-space-4);
+}
+
+.control-surface__lights,
+.control-surface__midi {
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-3);
+}
+
+.control-surface__light-row {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-4);
+  padding: var(--p31-space-2) 0;
+  border-bottom: 1px solid var(--p31-glass-border);
+}
+
+.control-surface__matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--p31-text-sm);
+}
+
+.control-surface__matrix th,
+.control-surface__matrix td {
+  text-align: left;
+  padding: var(--p31-space-2);
+  border-bottom: 1px solid var(--p31-glass-border);
+  color: var(--p31-text-primary);
+}
+
+.control-surface__matrix th {
+  color: var(--p31-cloud);
+  font-weight: 600;
+  font-size: var(--p31-text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.control-surface__matrix tbody tr {
+  cursor: pointer;
+  transition: background var(--p31-transition-fast) var(--p31-ease-quantum);
+}
+
+.control-surface__matrix tbody tr:hover {
+  background: var(--p31-surface2);
+}
+
+.control-surface__row--active { background: var(--p31-accent-dim); }
+
+.control-surface__cell-hint {
+  font-size: var(--p31-text-xs);
+  color: var(--p31-cloud);
+}
+
+.control-surface__cell-hint.is-learning {
+  color: var(--p31-control-signal-learning);
+}

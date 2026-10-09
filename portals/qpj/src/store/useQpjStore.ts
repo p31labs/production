@@ -427,7 +427,7 @@ export const useQpjStore = create<QpjState>()(
           // Ed25519 + ML-DSA-65 signature over `did:timestamp`. The verifier
           // is wired; peers trigger it once they sign their presence (pending
           // the sovereign-core vendor pipeline shipping the signer — see
-          // P31-local-workspace/packages/sovereign-core/src/mesh.ts).
+          // production/packages/sovereign-core/src/mesh.ts).
           (payload) => verifyMeshPayload(payload),
         );
 

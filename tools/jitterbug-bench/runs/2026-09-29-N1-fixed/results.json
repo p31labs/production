@@ -1,0 +1,232 @@
+{
+  "results": [
+    {
+      "prompt": "01-spoon-aware-adaptation",
+      "source": "jitterbug",
+      "compliance": 0.5,
+      "judgement": {
+        "scores": [
+          {
+            "id": "ER-1",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "ER-2",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "ER-3",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "ER-4",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "IR-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "IR-2",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "SY-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "RF-1",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "CM-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "NG-1",
+            "verdict": "Absent"
+          },
+          {
+            "id": "NG-2",
+            "verdict": "Absent"
+          }
+        ]
+      },
+      "report": "## Consensus\n- All three briefs converge on a dual-channel architecture: CSS custom properties for visual/surface adaptation, plus a TypeScript/React Context layer for structural adaptation. CSS alone is insufficient.\n- A 5-tier capacity system (Tier 1 Crisis → Tier 5 Optimal) is the shared organizing model, with tier-driven conditional rendering (\"Structural Logic Gates\") that swap entire component trees rather than adjusting aesthetics.\n- Input modality should shift from open-ended (free text, drag-and-drop) at high capacity to closed-loop (single-choice, Yes/No toggles, constrained selection) at low capacity, grounded in Executive Dysfunction and Cognitive Load Theory.\n- All briefs identify the same core failure mode: mid-task tier transitions causing state/data loss (\"Transition Paradox\"), and converge on the Shadow State Pattern — headless, view-agnostic state (useTaskState / Zustand / Redux) decoupled from rendered components.\n- Shared open question: reliable, real-time capacity detection (self-report vs. behavioral signals like dwell time/error rates) remains unvalidated across all briefs.\n\n## Divergence\n- **Adaptation trigger policy:** Brief 3 explicitly warns against automatic capacity reduction (the \"Feedback Loop\" trap — adaptation itself adds cognitive load) and recommends suggestion-only with explicit user action. Briefs 1 and 2 imply automated tier-driven swapping without addressing this risk. This is a genuine conflict: passive responsiveness vs. user agency.\n- **Transition timing:** Brief 3 introduces Deferred Adaptation (queue changes to a logical break) and Soft Transition prompts as additional mitigations beyond Shadow State; Brief 2 relies solely on Shadow State. Brief 3 also flags an internal tension: deferred adaptation may conflict with urgent overload detection.\n- **Granularity:** Brief 2 questions whether tier-based boolean gates are too coarse; Brief 1's design is built on exactly those boolean gates (shouldSimplifyStructure, shouldConstrainInput). Brief 3's enum approach (InputModality, ComplexityMode) is a partial answer but the tension is unresolved.\n- **Accessibility edge cases:** Brief 3 uniquely surfaces \"Ghost Focus\" (focus reset to body on unmount breaking keyboard navigation) and WCAG 2.2 stability concerns during live transitions; Brief 2 mentions WCAG 2.2 only in passing; Brief 1 omits accessibility entirely.\n- **Scope of concerns:** Brief 1 is strongest on theoretical grounding (Spoon Theory, Allostatic Load, CLT mapping); Brief 2 on token schema and polymorphic components; Brief 3 on failure-mode enumeration and ethics-adjacent risks (privacy, inferred cognitive state appears only in Brief 1).\n\n## Synthesis\nThe unified architecture should layer the three briefs' contributions:\n\n1. **Theoretical foundation (Brief 1):** Keep the hierarchical stack — Spoon Theory as budget, Allostatic Load as volatility, Executive Dysfunction as constraints, CLT as optimization target — as the design rationale. Map tiers to interventions (breadcrumbs/auto-save for working memory; linearization for flexibility; distractor removal for inhibition).\n\n2. **Implementation (Brief 2 + 3):** Adopt the dual-channel token architecture with Brief 3's enum-driven granularity (CapacityTier, InputModality, ComplexityMode) rather than Brief 1's coarser booleans, resolving Brief 2's granularity concern. Polymorphic Adaptive Components (Brief 2) handle local branching; Structural Logic Gates handle tree-level swaps.\n\n3. **Transition safety (all three, Brief 3 leading):** Shadow State as the mandatory baseline, plus Deferred Adaptation for non-urgent changes and a Soft Transition prompt for urgent ones — this partially reconciles Brief 3's internal tension by treating urgency as the routing criterion between immediate and deferred paths. Focus management (preserving focus across swaps) must be a first-class requirement, not an afterthought.\n\n4. **Adaptation policy (Brief 3's constraint wins):** Adopt suggestion-first, never auto-reduce. This is the strongest ethical and UX position and addresses Brief 1's misclassification risk: if detection is unreliable, automation amplifies harm. Passive signals may trigger adaptation only once validated; otherwise explicit user action gates tier changes.\n\n**Carry forward:** tiered capacity model, dual-channel tokens, Shadow State, closed-loop input at low tiers, suggestion-only policy, focus preservation.\n**Deprioritize:** fully automated tier inference (unvalidated), boolean-only gates, purely aesthetic framing of tokens.\n**Unresolved for future work:** validated passive signal detection, privacy/ethics framework for inferred cognitive state, and preservation of partially entered free-form data across modality swaps.",
+      "session": "a4f96d16"
+    },
+    {
+      "prompt": "02-family-safe-governance",
+      "source": "jitterbug",
+      "compliance": 0.6904761904761905,
+      "judgement": {
+        "scores": [
+          {
+            "id": "ER-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "ER-2",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "ER-3",
+            "verdict": "Partially"
+          },
+          {
+            "id": "ER-4",
+            "verdict": "Partially"
+          },
+          {
+            "id": "IR-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "IR-2",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "SY-1",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "RF-1",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "CM-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "NG-1",
+            "verdict": "Absent"
+          },
+          {
+            "id": "NG-2",
+            "verdict": "Absent"
+          }
+        ]
+      },
+      "report": "## Consensus\nAll three briefs converge on a core architecture: a deterministic, non-agentic Governance Proxy (GPC) acting as a hard boundary between the probabilistic Agentic Core and the environment, with the agent reduced to a \"proposer of intents\" submitting typed, hashed Action_Intent objects (JSON, SHA-256) to a validation gateway. Shared elements include:\n\n- **Tiered autonomy** to resolve the latency-safety paradox, with cryptographic HITL (signatures bound to action hashes) for high-stakes actions and pre-authorized fast paths for routine ones.\n- **Break-glass emergency autonomy** permitting life-safety actions (e.g., emergency calls, door unlocks) with retroactive validation recorded to an immutable ledger.\n- **A formal \"Design Canon\"** as a deterministic, machine-readable specification (not a prompt) governing the State/Action Space, validated via Policy-as-Code (OPA/Rego).\n- **The \"Semantic Gap\" as the key failure mode** — mismatch between agent intent and proxy interpretation (euphemistic intents, \"malicious compliance\" like maxing white noise) — mitigated by parameter-level physical-constraint validation.\n- **Partitioned-state (\"split-brain\") failures** as a critical scenario, with a safe fallback state maintained by local non-agentic hardware.\n- **Approval drift / rubber-stamping** as a recognized human-factors risk in HITL.\n- All briefs note **truncated reports and absent empirical validation** (latency, adversarial testing).\n\n## Divergence\n- **Tier structure:** Brief 1 uses three tiers; Brief 2 uses three tiers with retroactive-audit conditional autonomy; Brief 3 adds a Tier 0 (deterministic hard-bounds bypassing the LLM entirely, ~0ms). Brief 3's four-tier model is the most granular.\n- **Failure mode default:** Brief 1 recommends **Fail-Closed** for Tier 2/3 during partitioned state; Brief 3 recommends **Fail-Safe via Passive Safety State** and explicitly flags an unresolved tension between Fail-Safe and **Fail-Operational** modes in life-critical scenarios. These are materially different: Fail-Closed could deny a needed emergency action; Fail-Operational could permit an unsafe one.\n- **Governance of the Canon:** Brief 3 uniquely treats the Design Canon as a Non-Human Identity (NHI) configuration with signed deployment through a SOX-compliant change pipeline — introducing a canonical-poisoning attack surface the other briefs don't address (and Brief 3's own mitigation is truncated/absent).\n- **Cryptographic specifics:** Brief 1 binds approval to an action_intent_hash generically; Brief 3 specifies Ed25519 signatures and a Merkle ledger. Brief 2 mentions SHA-256 and immutable ledger entries without cryptographic detail.\n- **Latency budgets:** Brief 1 specifies concrete budgets (Routine <100ms; Sensitive 1–30s async; Critical <1s sync); Brief 3 gives <50ms for Tier 1; Brief 2 offers no numbers.\n- **Emphasized risks differ:** Brief 1 foregrounds proxy-bypass via direct API jailbreaks and \"Governance Theatre\"; Brief 2 foregrounds Design Canon boundary creep and dual-codebase maintenance burden; Brief 3 foregrounds canonical poisoning and unassigned Tier 3 audit responsibility.\n\n## Synthesis\nThe three briefs describe one architecture at increasing levels of specification; the synthesis should adopt Brief 3's four-tier model as the canonical form (its Tier 0 hard-bounds subsume Brief 1's \"Safe State\" hardware and close the gap where even <100ms validation is too slow), while carrying forward Brief 1's concrete latency budgets and Brief 2's dual-stack separation as the implementation pattern.\n\n**Bridge the Fail-Closed / Fail-Safe / Fail-Operational divergence** with a tier-conditioned policy: partitioned state triggers Fail-Closed for all discretionary actions, but Tier 0 hard-bounds and a narrow, pre-enumerated break-glass set (emergency calls, door unlock) remain Fail-Operational via local hardware — this reconciles Brief 1's conservatism with Brief 3's life-safety concern. The unresolved question of *who audits Tier 3 retroactive bypasses* should be assigned to a defined role with a hard SLA (Brief 3's \"N minutes\") and ledger-enforced escalation on timeout.\n\n**Carry forward:** parameter-level semantic validation against physical constraints (all three briefs' shared answer to the Semantic Gap); cryptographic intent-binding (standardize on Ed25519 + Merkle ledger per Brief 3); the NHI/SOX change-management pipeline for the Design Canon, extended with the missing countermeasures against canonical poisoning (multi-party signed commits, canary validation, independent review of Canon diffs).\n\n**Deprioritize or flag as open:** empirical latency and adversarial testing (all briefs lack it — this is the top validation priority); the dual-codebase maintenance burden (Brief 2) — acceptable cost, but requires tooling investment; Governance Theatre mitigation (Brief 1) — needs design work on approval friction (e.g., mandatory intent paraphrase, delayed approval windows) rather than being treated as solved by cryptography alone. Proxy-bypass via direct API jailbreak remains the sharpest architectural risk: Zero-Trust tooling must make the GPC the *only* execution path, verified by adversarial red-teaming before deployment.",
+      "session": "45938de1"
+    },
+    {
+      "prompt": "03-privacy-preserving-identity",
+      "source": "jitterbug",
+      "compliance": 0.7222222222222222,
+      "judgement": {
+        "scores": [
+          {
+            "id": "ER-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "ER-2",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "ER-3",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "ER-4",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "IR-1",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "IR-2",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "SY-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "RF-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "CM-1",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "NG-1",
+            "verdict": "Absent"
+          },
+          {
+            "id": "NG-2",
+            "verdict": "Absent"
+          }
+        ]
+      },
+      "report": "## Consensus\n- All briefs converge on a two-stage pipeline: HMAC-SHA256 with a per-family secret (K_f) over a canonicalized user identifier, followed by deterministic reduction of the 256-bit digest to vocabulary indices.\n- All reject naive SHA256(salt || U) in favor of keyed HMAC (length-extension resistance) and require input canonicalization (UTF-8, lowercase, trim) to prevent identifier drift.\n- All identify modulo bias as a real defect of naive `digest mod V` and prescribe deterministic rejection sampling as the fix.\n- All prefer single-integer reduction over the full 256-bit digest (Euclidean division/modulo) to per-segment splitting, citing entropy preservation and avoidance of inter-segment pattern leakage.\n- All flag secret management as the central risk: low-entropy K_f, compromise, and rotation-induced instability.\n- All acknowledge birthday-bound collision analysis as the governing model for name collisions, and all note small state spaces enable membership inference/statistical deanonymization.\n- All note their reference implementations are simplified/truncated and need formal verification (rejection loop, domain separation).\n\n## Divergence\n- **Derivation architecture taxonomy:** Brief 1 presents per-segment modulo (Model A) as workable; Brief 2 explicitly rejects it as biased and entropy-discarding; Brief 3 sides with Brief 2 (single-integer reduction). Brief 2 additionally catalogs Model C (bit-masking) as uniform but vocabulary-restrictive — a trade-off the others don't address.\n- **Rejection sampling mechanics:** Brief 1 uses bound M = floor(2^256/V)·V with index = H mod V; Brief 2 uses L = 2^256 − (2^256 mod S) with re-hash HMAC(key, H); Brief 3 requires domain-separated re-hash. These are compatible but not identical specifications — the re-hash input and domain separation differ.\n- **Anonymity framing:** Brief 3 elevates \"anonymity through ambiguity\" (many-to-one compression as defense-in-depth) to a core property; Brief 1 treats large S as the primary mitigation for membership inference; Brief 2 emphasizes that bias itself creates \"hot\" indices exploitable for inference — a mechanism the others underweight.\n- **Vocabulary structure:** Brief 1 argues for 3-part names (~600 words/slot, S ≈ 2.16×10^8) to avoid 15,000-word two-part vocabularies; Brief 2 questions whether non-power-of-two human-friendly vocabularies are required at all, implying Model C could sidestep bias entirely.\n- **Open gaps differ:** Brief 1 flags key rotation/HKD; Brief 2 flags rejection-loop termination bounds and BigInt complexity; Brief 3 flags low-entropy K_f precomputation and incomplete birthday analysis.\n\n## Synthesis\nThe integrated design is a two-stage funnel: (1) canonicalize the identifier, then HMAC-SHA256 with K_f derived hierarchically (K_f = HMAC(K_master, FamilyID)) to bound rotation and compromise blast radius; (2) reduce the full 256-bit digest as a single integer via Euclidean division with deterministic rejection sampling — re-hash with a domain-separated HMAC (e.g., HMAC(K_f, \"rejection\" || H)) when the digest exceeds the uniformity bound, guaranteeing termination in expectation and uniform indices.\n\nCarry forward:\n- Brief 2's Model B (single-integer reduction) as the canonical derivation — it subsumes Brief 1's approach while eliminating compounded per-segment bias, and Brief 3's pattern-leakage argument independently corroborates it.\n- Brief 1's birthday-bound sizing (3-part, ~600 words/slot, S ≈ 2×10^8 for 10^-6 collision risk at ~20 users) as the vocabulary design target, since Brief 2's power-of-two alternative sacrifices human readability for a bias problem rejection sampling already solves.\n- Brief 3's ambiguity-through-compression as defense-in-depth, but explicitly conditioned on Brief 3's own caveat: high-entropy K_f is a prerequisite, or precomputation nullifies it. Enforce a minimum K_f entropy policy (reject family names/PINs as secrets).\n- Brief 2's bias-as-inference-vector insight: treat any residual non-uniformity as a privacy vulnerability, not just a statistical blemish.\n\nDeprioritize:\n- Model A (per-segment modulo) and Model C (bit-masking) — the former is strictly dominated; the latter only if human-friendly vocabularies are abandoned, which Brief 1's sizing analysis argues against.\n- Debates over exact rejection-bound formulations (M vs L): they are equivalent; adopt one specification (Brief 2's, with Brief 3's domain separation) and formalize it.\n\nRemaining work: prove rejection-loop termination bounds, empirically validate bias/collision rates for realistic vocabularies, and produce a formally verified reference implementation — all three briefs flag their pseudocode as unverified.",
+      "session": "c9749c5a"
+    },
+    {
+      "prompt": "04-step-level-routing",
+      "source": "jitterbug",
+      "compliance": 0.9583333333333334,
+      "judgement": {
+        "scores": [
+          {
+            "id": "ER-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "ER-2",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "ER-3",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "ER-4",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "IR-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "IR-2",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "SY-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "RF-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "CM-1",
+            "verdict": "Partially"
+          },
+          {
+            "id": "NG-1",
+            "verdict": "Absent"
+          },
+          {
+            "id": "NG-2",
+            "verdict": "Absent"
+          }
+        ]
+      },
+      "report": "## Consensus\n- Step-level (per-DAG-node) routing outperforms per-query routing by matching model capacity to each node's \"reasoning density\" rather than paying a global reasoning tax on a monolithic call. All three briefs cite AgentRouter (ICML 2026) as the paradigm-defining work.\n- A canonical four-node pipeline is shared: Intent Extraction (small/Tier 1-2 models), Gate Judgment (small models or deterministic heuristics), Code Generation (frontier/Tier 3 models), and Performance Profiling (deterministic tooling — Lighthouse, Jest, Playwright).\n- The \"Router Tax\" / \"Router's Paradox\" is the central viability constraint: cumulative routing overhead (latency, cost, error propagation) must stay below the savings versus a single frontier call. All briefs converge on cheap routers — deterministic heuristics, regex, or <1B distilled models.\n- Error propagation is a shared top risk: a subtle upstream (intent/gate) error cascades into confident, wrong Tier 3 output. Briefs 2 and 3 both prescribe Dual-Layer Validation Contracts (structural + semantic/conformal checks) at node boundaries.\n- Back-propagation/retry loops risk oscillation and cost explosion; retry caps are recommended.\n- FrugalGPT is consistently positioned as the \"flat\" query-level predecessor; step-level routing is its \"deep\" generalization.\n\n## Divergence\n- **Model tier assignments for low-RD nodes**: Brief 1 places intent extraction on very small models (7-8B); Brief 2 assigns it Tier 2 (GPT-4o-mini, Llama-3-70B), reserving Tier 1 for gate judgment. This reflects a trade-off between cost minimization and reducing the \"intelligence gap\" at the entry node.\n- **Router intelligence**: Brief 1 allows a Routing Controller with a constrained optimization function and conformal prediction; Brief 2 and 3 push harder toward deterministic heuristics or sub-1B models to satisfy the latency inequality. Brief 3 is the most restrictive (heuristics, 1B, regex).\n- **Failure handling**: Brief 1 describes a spectrum from forward-only escalation to conditional back-propagation with re-evaluation loops; Brief 3 notes escalation policy details are unspecified (truncated) and recommends retry caps. Brief 2 focuses on validation contracts rather than explicit escalation policy.\n- **Uncertainty quantification**: Brief 3 makes conformal prediction set size a first-class router input; Brief 1 mentions conformal prediction only as a citation; Brief 2 omits it in favor of schema/budget constraints.\n- **Empirical grounding**: Brief 2 reports 60-80% cost reductions but flags them as unvalidated; Briefs 1 and 3 make no quantitative claims, emphasizing theoretical Pareto optimization instead.\n\n## Synthesis\nThe unified architecture is a four-node DAG with per-node micro-routers, but the divergences resolve into concrete design guidance:\n\n1. **Tier assignment should be adaptive, not fixed.** The intent-extraction tier conflict (Brief 1 vs. 2) dissolves if the router uses uncertainty signals: start with the cheapest model and escalate only when conformal prediction set size or validation failure indicates ambiguity. This carries Brief 3's conformal mechanism into Brief 2's state-machine router, and directly mitigates the intelligence gap — the most dangerous failure mode all briefs identify.\n\n2. **Router budget is a hard constraint, not a preference.** Adopt the strict interpretation (Briefs 2-3): routing decisions must be sub-millisecond — deterministic heuristics, regex, or <1B models. Brief 1's optimization-function controller is viable only if precomputed into lookup tables or cheap classifiers; online optimization per node violates the Router Tax inequality.\n\n3. **Validation contracts are the primary error-propagation defense; escalation policy is the secondary one.** Combine Brief 2's Dual-Layer Validation Contract (structural + semantic checks at every node boundary) with Brief 1's conditional back-propagation, bounded by Brief 3's retry caps (e.g., max 1-2 re-evaluations per node, global pipeline retry budget). Forward-only escalation should be the default; back-propagation reserved for validation-detected structural failures where the flawed premise is identifiable.\n\n4. **Deprioritize the quantitative claims until validated.** The 60-80% cost reduction (Brief 2) should be treated as a hypothesis requiring benchmarking, not a design input. The measurable target should instead be the Router Tax inequality itself: instrument cumulative router latency and cost per pipeline run against a monolithic baseline.\n\n5. **Carry forward**: reasoning density as the core design vocabulary; the four-node canonical pipeline; conformal uncertainty as a router input; context distillation (Brief 1) to prevent context bloat at each node. **Deprioritize**: horizontal scaling approaches (MoA), which optimize a different axis; heavy online optimization controllers; unbounded re-evaluation loops.\n\nThe critical open problem all three briefs converge on: empirically demonstrating that the overhead-vs-savings inequality holds in practice, including the overhead of the validation contract itself — a cost no brief has quantified.",
+      "session": "c6cc7dae"
+    }
+  ],
+  "summary": [
+    {
+      "source": "jitterbug",
+      "mean_compliance": 0.7177579365079365,
+      "pass_at_k": 0.5,
+      "n": 4
+    }
+  ]
+}

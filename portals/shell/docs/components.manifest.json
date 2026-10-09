@@ -1,0 +1,108 @@
+{
+  "version": "1.0.0",
+  "purpose": "The P31 canon component manifest — the machine-readable contract an agent reads to COMPOSE a face without porting JSX. Consume intent, never raw values. Appearance comes from var(--p31-*) tokens; the shell owns geometry only.",
+  "composition_rules": [
+    "Compose from these components. Never port styled JSX from another app.",
+    "The shell owns geometry (position/size/flow). Canon owns appearance (color/surface/radius/shadow/type).",
+    "Theming is a value swap at the semantic tier — never fork a component per theme.",
+    "The only raw element permitted is an interactive mount (editor/canvas/grid input) — geometry classes only.",
+    "If a variant is missing, extend the canon (design-core), never fork in the shell."
+  ],
+  "components": {
+    "GlassPanel": {
+      "purpose": "Surface frame — the container for a face's content.",
+      "props": {
+        "padding": { "type": "enum", "values": ["sm", "md", "lg"], "default": "md" },
+        "strong": { "type": "boolean", "default": false }
+      },
+      "composes": ["*"],
+      "example": { "type": "GlassPanel", "props": { "padding": "md" }, "children": [] }
+    },
+    "GlassCard": {
+      "purpose": "Card item in a list — title + metadata.",
+      "props": {
+        "strong": { "type": "boolean", "default": false }
+      },
+      "composes": ["*"],
+      "example": { "type": "GlassCard", "props": { "strong": true }, "children": [] }
+    },
+    "Button": {
+      "purpose": "Action. Primary for the main verb, ghost for secondary.",
+      "props": {
+        "variant": { "type": "enum", "values": ["primary", "secondary", "ghost"], "default": "primary" },
+        "size": { "type": "enum", "values": ["sm", "md", "lg"], "default": "md" },
+        "disabled": { "type": "boolean", "default": false }
+      },
+      "children": "ReactNode — the label.",
+      "example": { "type": "Button", "props": { "variant": "primary", "label": "Save" } }
+    },
+    "StatusBadge": {
+      "purpose": "Metadata / state pill.",
+      "props": {
+        "status": { "type": "enum", "values": ["online", "offline", "busy", "away"], "default": "online" },
+        "label": { "type": "string" }
+      },
+      "example": { "type": "StatusBadge", "props": { "status": "online", "label": "Gate passed" } }
+    },
+    "MetricBadge": {
+      "purpose": "A single metric — value + label (+ optional icon).",
+      "props": {
+        "value": { "type": "string | number", "required": true },
+        "label": { "type": "string" },
+        "icon": { "type": "ReactNode" }
+      },
+      "example": { "type": "MetricBadge", "props": { "value": 4, "label": "Spoons" } }
+    },
+    "SidebarNav": {
+      "purpose": "Structured navigation rail. The canon owns layout + active state; the consumer supplies items + onNavigate.",
+      "props": {
+        "items": { "type": "SidebarNavItem[]", "required": true },
+        "activePath": { "type": "string" },
+        "onNavigate": { "type": "(path: string) => void" }
+      }
+    },
+    "SpoonDial": {
+      "purpose": "The 0-5 cognitive-load meter. Wired to the shell store's spoons/setSpoons.",
+      "props": {
+        "level": { "type": "number", "range": "0-5" },
+        "onChange": { "type": "(level: number) => void" }
+      }
+    },
+    "Starfield": {
+      "purpose": "The fullscreen ambient night-sky canvas. Spoon/voltage-aware.",
+      "props": {
+        "spoons": { "type": "number" },
+        "voltage": { "type": "enum", "values": ["GREEN", "AMBER", "RED", "BLUE"] }
+      }
+    },
+    "NotificationStack": {
+      "purpose": "Stacked severity-tinted toasts (bottom-right). Store-agnostic.",
+      "props": {
+        "items": { "type": "Notification[]", "required": true },
+        "onDismiss": { "type": "(id: string) => void" }
+      }
+    },
+    "Chameleon": {
+      "purpose": "The theme picker. Owns its trigger + panel + token application. Mount bare — no wrapper.",
+      "props": {}
+    },
+    "CrisisOverlay": {
+      "purpose": "The rest-stop at spoons 0. Focus-trapped modal.",
+      "props": {
+        "visible": { "type": "boolean" },
+        "message": { "type": "string" },
+        "buttonLabel": { "type": "string" },
+        "onReady": { "type": "() => void" }
+      }
+    },
+    "CommandPalette": {
+      "purpose": "The ⌘K command bridge. Router-agnostic.",
+      "props": {
+        "open": { "type": "boolean", "required": true },
+        "items": { "type": "CommandItem[]", "required": true },
+        "onSelect": { "type": "(id: string) => void", "required": true },
+        "onClose": { "type": "() => void", "required": true }
+      }
+    }
+  }
+}

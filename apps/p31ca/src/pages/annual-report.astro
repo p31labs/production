@@ -1,0 +1,122 @@
+---
+/**
+ * /annual-report — year one in review.
+ *
+ * Honest framing: P31's 501(c)(3) determination is effective April 2026, so
+ * the first Form 990 is due ~2027. This is the year-one narrative — what was
+ * built, what shipped, what is real — not a 990-based financial report.
+ * Every number is data-driven (flagships, papers) or from ground-truth.
+ */
+import MarketingShell from '../layouts/MarketingShell.astro';
+import SectionHeader from '../components/marketing/SectionHeader.astro';
+import Footer from '../components/marketing/Footer.astro';
+import { FLAGSHIP_LIVE_COUNT, FLAGSHIPS } from '../data/flagships';
+import { papers } from '../data/p31-research.ts';
+
+const publishedCount = papers.length;
+const liveFlagships = FLAGSHIPS.filter((f) => f.status === 'live');
+
+const reportTimeline = `
+timeline
+    2026-01 : Tetrahedron Protocol published
+    2026-03 : First flagship live (BONDING chemistry game)
+    2026-04 : Incorporated as Georgia nonprofit
+            : 501(c)(3) determination effective 2026-04-03
+            : 21 papers uploaded to Zenodo
+    2026-05 : Determination letter (947) received
+    2026-06 : Privacy + terms policies effective
+    2026-09 : Enterprise package v2.0
+            : All ${publishedCount} DOIs verified live
+`;
+---
+
+<MarketingShell
+  title="Annual Report — P31 Labs"
+  description="Year one in review: what was built, what shipped, what is real. P31 Labs, year one (2026)."
+>
+  <main id="main-content" class="section">
+    <div class="max-w-4xl mx-auto px-6 md:px-12 lg:px-16">
+      <SectionHeader
+        title="Annual Report — Year One"
+        description="What was built, what shipped, what is real. The first Form 990 is due ~2027; this is the year-one narrative, not a financial statement."
+        align="left"
+      />
+
+      <div class="mt-16 space-y-8">
+
+        {/* ── THE YEAR IN ONE SENTENCE ── */}
+        <section class="glass-card">
+          <div class="p-8 space-y-6">
+            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">The year, in one sentence</h3>
+            <p class="text-xl leading-relaxed" style="color: var(--p31-text);">
+              In year one, P31 Labs went from a family's lived need to an incorporated 501(c)(3) with
+              <strong style="color: var(--p31-text);"> {liveFlagships.length} live flagship surfaces</strong>,
+              <strong style="color: var(--p31-text);"> {publishedCount} open-access papers</strong>,
+              and a proof layer anyone can verify in ninety seconds.
+            </p>
+          </div>
+        </section>
+
+        {/* ── THE TIMELINE ── */}
+        <section class="glass-card">
+          <div class="p-8 space-y-6">
+            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">The year, in order</h3>
+            <pre class="mermaid" set:html={reportTimeline} />
+          </div>
+        </section>
+
+        {/* ── THE HEADLINES ── */}
+        <section class="glass-card">
+          <div class="p-8 space-y-6">
+            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">The headlines</h3>
+            <div class="space-y-4">
+              <div class="rounded-xl border p-5" style="border-color: var(--p31-glass-border, rgba(255,255,255,0.1)); background: var(--p31-panel-surface, rgba(255,255,255,0.04));">
+                <div class="text-xs font-semibold tracking-widest uppercase" style="color: var(--p31-text-tertiary);">The identity</div>
+                <div class="mt-1 text-base" style="color: var(--p31-text);">P31 Labs became a Georgia nonprofit corporation and received its 501(c)(3) determination — effective April 3, 2026, EIN 42-1888158.</div>
+              </div>
+              <div class="rounded-xl border p-5" style="border-color: var(--p31-glass-border, rgba(255,255,255,0.1)); background: var(--p31-panel-surface, rgba(255,255,255,0.04));">
+                <div class="text-xs font-semibold tracking-widest uppercase" style="color: var(--p31-text-tertiary);">The research</div>
+                <div class="mt-1 text-base" style="color: var(--p31-text);">{publishedCount} papers published on Zenodo — every DOI verified live. From the Tetrahedron Protocol to the Sovereign Stack.</div>
+              </div>
+              <div class="rounded-xl border p-5" style="border-color: var(--p31-glass-border, rgba(255,255,255,0.1)); background: var(--p31-panel-surface, rgba(255,255,255,0.04));">
+                <div class="text-xs font-semibold tracking-widest uppercase" style="color: var(--p31-text-tertiary);">The flagships</div>
+                <div class="mt-1 text-base" style="color: var(--p31-text);">{liveFlagships.length} live flagship surfaces — the Loom audit chain, Lumi identity, Governance, QPJ, CLI, MCP Marketplace, and Meatspace — with Spaceship Earth in vision.</div>
+              </div>
+              <div class="rounded-xl border p-5" style="border-color: var(--p31-glass-border, rgba(255,255,255,0.1)); background: var(--p31-panel-surface, rgba(255,255,255,0.04));">
+                <div class="text-xs font-semibold tracking-widest uppercase" style="color: var(--p31-text-tertiary);">The proof layer</div>
+                <div class="mt-1 text-base" style="color: var(--p31-text);">An audit chain you can verify in ninety seconds, post-quantum identity that lives on the device, and a governance layer aligned to active IETF standards.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── THE HONEST FRAMING ── */}
+        <section class="glass-card" style="border-left: 3px solid var(--p31-signal-amber, #f59e0b);">
+          <div class="p-8 space-y-4">
+            <h3 class="text-xl font-bold" style="color: var(--p31-text);">The honest framing</h3>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              This is a year-one narrative, not a 990-based financial report. The first Form 990 is due for fiscal year 2026, expected <strong style="color: var(--p31-text);">~2027</strong>. When it is filed, it will be posted here and on the <a href="/financials" style="color: var(--p31-accent);">Financials</a> page. Until then, the financial transparency floor is the <a href="/financials" style="color: var(--p31-accent);">registration facts</a> and the <a href="/treasury" style="color: var(--p31-accent);">live treasury ledger</a>.
+            </p>
+          </div>
+        </section>
+
+        {/* ── CTA ── */}
+        <section class="text-center py-6">
+          <div class="flex flex-wrap justify-center gap-4">
+            <a href="/treasury" class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition"
+               style="background: var(--p31-accent, #22d3ee); color: #0a0a0f;">
+              See the treasury →
+            </a>
+            <a href="/financials" class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition border"
+               style="border-color: var(--p31-glass-border, rgba(255,255,255,0.16)); color: var(--p31-text);">
+              Registration facts
+            </a>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</MarketingShell>

@@ -1,0 +1,43 @@
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  backdrop-filter: blur(4px);
+  animation: confirm-fade-in 0.15s ease;
+}
+.confirm-dialog {
+  max-width: 400px;
+  width: 90vw;
+  padding: 24px;
+  border-radius: var(--p31-radius-md);
+  background: var(--p31-glass-bg-strong);
+  border: 1px solid var(--p31-glass-border);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+.confirm-dialog h3 {
+  margin: 0 0 8px;
+  font-size: var(--p31-scale-md);
+}
+.confirm-dialog p {
+  margin: 0 0 20px;
+  color: var(--p31-text-secondary);
+  font-size: var(--p31-scale-sm);
+  line-height: 1.5;
+}
+.confirm-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.btn.danger {
+  color: var(--p31-accent-red);
+  border-color: var(--p31-accent-red);
+}
+@keyframes confirm-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

@@ -1,0 +1,162 @@
+# P31 convergence runbook v1.3  (DRAFT FOR REVIEW; nothing here has been executed)
+# Status legend: READY = no open input needed | BLOCKED(Qn) = waits on an answer | PROPOSE = agent drafts, human applies
+runbook: p31-convergence
+version: "1.3"
+halt_on_failure: true               # a non-zero exit stops the path; steps with gated_on never run after a failed gate/verify
+isolation: git-worktree-per-path        # worktree-gov, worktree-chat, worktree-canon
+commit_policy: one-commit-per-path      # legal and code history stay separable
+baseline_file: scripts/baselines.json
+conventions:
+  rg_exit: "rg exits 1 on no match; 'expect zero' checks are written as '! rg ...'"
+  manual_gates: "every gate step has a cmd (scripts/gate.sh <file>...) that exits non-zero until the file exists and has no TODO; the YAML field requires_files is documentation of the same check"
+
+setup:                                  # run once from repo root, scripts/ committed on base branch
+  - {id: setup_worktrees, cmd: "bash scripts/setup.sh main"}   # creates inputs/ stubs + 3 worktrees (inputs/ symlinked)
+
+pre:
+  - id: record_baseline                 # READY. Run on the unmodified tree, per worktree.
+    cmd: |
+      cd portals/chat
+      pnpm test --reporter=json > /tmp/test.json            # TODO: confirm runner's JSON shape
+      node ../../scripts/check-baseline.mjs --file /tmp/test.json --field numPassedTests --baselines ../../scripts/baselines.json --key tests --record
+      node scripts/slop-eval.mjs --dir src --json > /tmp/slop.json
+      node ../../scripts/check-baseline.mjs --file /tmp/slop.json --field score --baselines ../../scripts/baselines.json --key slop --record
+
+paths:
+  A_governance:
+    worktree: worktree-gov
+    steps:
+      - {id: a0_inventory, status: READY, cmd: "bash scripts/a0_inventory.sh out/a0"}
+      - id: a_pre_gate
+        status: BLOCKED(Q1,Q5)
+        type: gate
+        cmd: "bash scripts/gate.sh inputs/instrument_wording.txt inputs/counsel_approach.txt"
+        requires_files: [inputs/instrument_wording.txt, inputs/counsel_approach.txt]
+      - id: a1_redate_and_domain
+        status: BLOCKED(Q1,Q5)
+        cmd: "bash scripts/a1_redate.sh out/a0"
+        notes: >
+          Single owner of every governance file. File lists come from the A0 inventory.
+          Requires governance/CHANGELOG.md drafted from templates/CHANGELOG.entry.md with counsel-approved text.
+      - id: a2_class_proposal
+        status: PROPOSE(Q2)
+        cmd: "bash scripts/a2_propose_class.sh"
+        notes: Never edits files. Classification is a regulatory determination; counsel applies or approves the patch.
+      - {id: a3_verify, status: READY, cmd: "bash scripts/a3_verify.sh", notes: "governance enforced; admin date/domain hits are WARN-only and need manual review (A1 does not edit admin)"}
+      - id: a4_human_gate
+        type: gate
+        gated_on: [a3_verify]
+        action: "git -C worktree-gov diff --stat && git -C worktree-gov diff governance admin; await explicit approval"
+      - id: a5_commit
+        gated_on: [a4_human_gate]
+        scope: [governance/, admin/]
+        notes: Commit to branch only. Counsel review happens at merge to main (see convergence).
+
+  B_chat:
+    worktree: worktree-chat
+    parallel: [b1_audit_path, b2_manifest, b5_oklab]
+    then: [b3_aria_controls, b4_reduced_motion]      # serialized: may touch the same files
+    steps:
+      - id: b1_audit_path
+        status: READY
+        cmd: |
+          sed -i 's|production/packages/design-core|production/packages/design-core|g' portals/chat/package.json
+          grep -q 'production/packages/design-core' portals/chat/package.json
+          ! grep -q 'production' portals/chat/package.json
+      - id: b2_manifest
+        status: BLOCKED(schema-path)
+        notes: >
+          Add top-level data-agent-attributes and mcp; drop 'surfaced'; action shape {name, kind, danger, confirm, schema}.
+          TODO(blocked-on: path to LOOM's manifest JSON Schema). Validate against the schema, not against another manifest instance.
+          scripts/align-manifest.mjs must be written as part of this step (does not exist yet).
+        emits: [manifest-validated.json]
+      - id: b5_oklab
+        status: BLOCKED(manual-test)
+        type: gate
+        cmd: "bash scripts/gate.sh inputs/oklab_safari_verified"   # create only after testing in Safari <18 (file must not contain TODO)
+        requires_files: [inputs/oklab_safari_verified]
+        notes: Add the rationale comment only if the artifact reproduces. Otherwise omit.
+      - id: b3_aria_controls
+        status: READY
+        agent_prompt: |
+          In AgentSelector, link the trigger button to the listbox with aria-controls.
+          Generate the id with React useId (do not hardcode), apply it to both elements.
+        post_check: |
+          grep -n 'aria-controls' portals/chat/src/features/sandbox/AgentSelector.tsx
+          grep -n 'useId' portals/chat/src/features/sandbox/AgentSelector.tsx
+      - id: b4_reduced_motion
+        status: READY
+        agent_prompt: |
+          Move chat animations behind @media (prefers-reduced-motion: no-preference).
+          Remove the global kill-list, then add a reduce fallback (animation/transition-duration 0.01ms,
+          iteration-count 1, scroll-behavior auto). The fallback is intentional belt-and-suspenders.
+          Keep focus rings and press feedback. Replace slide/scale with opacity crossfades.
+        test: "npx playwright test tests/reduced-motion.spec.ts"   # skeleton; selectors need filling
+      - id: b6_verify
+        status: READY
+        cmd: |
+          cd portals/chat && pnpm typecheck && pnpm test && pnpm build && pnpm contracts:validate
+          node scripts/slop-eval.mjs --dir src --json > /tmp/slop.json
+          node ../../scripts/check-baseline.mjs --file /tmp/slop.json --field score --baselines ../../scripts/baselines.json --key slop
+      - {id: b7_commit, gated_on: [b6_verify], scope: [portals/chat/]}
+
+  C_canon:
+    worktree: worktree-canon
+    steps:
+      - id: c1_union_and_gate
+        status: READY
+        notes: One step, so types, gate and tests cannot drift.
+        agent_prompt: |
+          1. Read packages/canon/src/loom/gate.ts first; record existing scope/humanId semantics in out/c1_scope_evidence.txt.
+             Write gate tests only for rules found there.
+          2. Additively extend LoomEvent (v1 -> v1.1): chat.send (human), chat.artifact.approve (human),
+             chat.artifact.reject (human), chat.artifact.generated (agent). Do not retype existing kinds.
+          3. Privacy: payloads carry an HMAC of prompt/reason (server-keyed), a length, and the agent id. Never raw text.
+          4. Add a replay test: an existing v1 chain still validates under v1.1.
+          5. Update HUMAN_KINDS/AGENT_KINDS and the input type to match.
+      - id: c2_server_writer_decision
+        status: BLOCKED(Q4)
+        type: gate
+        cmd: "bash scripts/gate.sh inputs/c2_decision"    # contents: a | b | defer
+        requires_files: [inputs/c2_decision]
+        notes: |
+          a = generation backend posts chat.artifact.generated with a service identity.
+          b = backend issues a short-lived token binding artifactId + content hash; event must present it.
+          defer = land schema/gate only; skip c3 for agent events.
+          Human events also need an authenticated principal (session or Access JWT) verified server-side.
+      - id: c2b_cherry_pick_b2
+        status: BLOCKED(b2)
+        depends_on: [B_chat.b2_manifest]
+        cmd: "git -C worktree-canon cherry-pick <b2-commit-sha>"   # TODO: sha available after B's b2 is committed; worktrees cannot see each other's changes
+      - id: c3_client
+        status: BLOCKED(Q3,Q4)
+        depends_on: [c1_union_and_gate, c2_server_writer_decision, c2b_cherry_pick_b2]
+        requires:
+          - idempotency key (UUID) scoped per principal+thread, with a stated dedupe window
+          - server assigns seq; duplicate returns the original result
+          - bounded retry with backoff; events with no response never reorder
+        scope_note: "touches SandboxChat.tsx and src/lib/"
+      - id: c4_verify
+        status: READY
+        cmd: |
+          (cd packages/canon && pnpm typecheck && pnpm test)
+          node apps/loom/scripts/port-audit.mjs --manifest portals/chat/public/.well-known/agent-manifest.json
+      - {id: c5_commit, gated_on: [c4_verify], scope: [packages/canon/, portals/chat/src/]}
+
+convergence:
+  needs: [A_governance, B_chat, C_canon]
+  steps:
+    - {id: merge_b, cmd: "git merge --no-ff B_chat"}
+    - {id: merge_c, cmd: "git merge --no-ff C_canon", notes: "expect conflicts in SandboxChat.tsx; resolve manually"}
+    - id: counsel_gate
+      type: gate
+      cmd: "bash scripts/gate.sh inputs/counsel_reviewed"
+      requires_files: [inputs/counsel_reviewed]
+      on_reject: "amend the A_governance branch (new commit or fixup) and re-run a3/a4; do not merge, do not delete history"
+    - {id: merge_a, cmd: "git merge --no-ff A_governance"}
+    - id: full_verify
+      cmd: "re-run b6_verify, c4_verify, a3_verify against recorded baselines"
+    - note: "No combined re-commit; the merge commits are the record."
+
+future_work:
+  - external anchoring of the event chain hash (timestamp authority or public log); not implemented anywhere above

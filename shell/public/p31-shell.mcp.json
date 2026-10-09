@@ -1,0 +1,31 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schemas/server-manifest-external-link.json",
+  "name": "p31-shell",
+  "displayName": "P31 Sovereign Shell",
+  "version": "1.0.0",
+  "description": "Sovereign OS for families — spoon-aware AI assistant, post-quantum identity, P2P mesh, LOVE economy, research library, sandbox playground, and 200+ MCP tools across 12+ servers.",
+  "homepage": "https://p31-shell.trimtab-signal.workers.dev",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/p31labs/P31-local-workspace",
+  "authors": [{ "name": "P31 Labs, Inc." }],
+  "keywords": ["sovereign", "spoon-aware", "post-quantum", "KERI", "did", "MCP", "neurodivergent", "family-mesh", "local-ai", "ZKP"],
+  "capabilities": {
+    "tools": true,
+    "resources": false,
+    "prompts": true,
+    "sampling": false
+  },
+  "mcpServers": [
+    { "id": "shell", "name": "P31 Sovereign Shell", "url": "https://p31-shell.trimtab-signal.workers.dev/mcp", "description": "P31 Sovereign Shell — 90+ shell commands: spoon management, navigation, identity, mesh, cognitive tools, MCP. Ed25519 + ML-DSA-65 verified.", "type": "edge" },
+    { "name": "design-mcp", "url": "https://design-mcp.trimtab-signal.workers.dev", "description": "23 design tools — token resolution, component generation, layout generation, icon search, UI auditing" },
+    { "name": "p31-justice-hub", "url": "https://p31-justice-hub.trimtab-signal.workers.dev/mcp", "description": "8 justice tools — evidence chain (Ed25519+ML-DSA-65), 2-of-3 escrow, ODR case/offer/resolve" },
+    { "name": "marketplace-mcp", "url": "https://marketplace-mcp.trimtab-signal.workers.dev/mcp", "description": "10 marketplace tools — list/search/offer/accept/escrow/dispute" },
+    { "id": "phenix-wallet", "name": "Phenix Vault", "url": "https://phenix-wallet-mcp.trimtab-signal.workers.dev/mcp", "description": "Vault, credential store/present, and recovery guardians — consumed by the in-app Phenix Vault panel" },
+    { "name": "p31-crypto-mcp", "url": "https://p31-crypto-mcp.trimtab-signal.workers.dev/mcp", "description": "12 PQC tools — ML-DSA-65 keygen/sign/verify, X-Wing KEM, SD-JWT, Taler, x402" },
+    { "name": "bros", "url": "https://bros.trimtab-signal.workers.dev/mcp", "description": "8 care tools — persona switching, signaling rooms, crisis pings" },
+    { "name": "dads", "url": "https://dads.trimtab-signal.workers.dev/mcp", "description": "7 trust tools — Incremental EigenTrust, task dispatch, LOVE minting" }
+  ],
+  "tags": ["neurodivergent", "family-mesh", "sovereign-identity", "PQC", "local-ai", "spoons", "LOVE-economy"],
+  "categories": ["Autonomous Agents", "Identity & Security", "Research & Data", "Health & Wellness"],
+  "clients": ["P31 Shell Browser (WebMCP)", "Claude Desktop via MCP", "Cursor IDE via MCP", "Any MCP-compatible client"]
+}

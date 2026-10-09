@@ -23,7 +23,7 @@ agent-inspectable surfaces. The portal is the reference consumer of the canon; i
 | INV-06 | Motion contract: `--motion-scale` 1/0.6/0.2/0 by spoons 4-5/3/1-2/0; transitions `calc(base × var(--motion-scale))`. | `src/App.tsx` + `src/tokens.css` |
 | INV-07 | Every surface root carries `data-mcp-tool` (per-route via `.portal-main`). | `src/lib/mcpTools.ts` |
 | INV-08 | Spoons 0 → CrisisOverlay calm floor (only chrome). | `src/App.tsx` |
-| INV-09 | Do not edit `vendor/*.tgz`; re-pack from `P31-local-workspace/packages/design-core`. | `pnpm install` + `v:gate` |
+| INV-09 | Do not edit `vendor/*.tgz`; re-pack from `production/packages/design-core`. | `pnpm install` + `v:gate` |
 | INV-10 | Tokens/Glass/Brands/Recipes/MCP/A11y/Icons inherit the new stance — no hex re-introduction. | token-audit |
 | INV-11 | **Cascade layer order.** `src/index.css` declares `@layer base, legacy, vendors, suite, content;`. Design-core css → `vendors`; tokens/workspace/globals → `suite`; bespoke tiles → `content`; old bespoke rules → `legacy` (lowest, sunset). No unlayered rules after the imports (unlayered CSS beats every layer). | `src/index.css` |
 | INV-12 | **Flex scroll containers.** Any flex item that hosts scrollable content must declare `overflow-y: auto` AND `min-height: 0` (the flex min-size clamp silently disables scroll). Applied to `.sidebar` across design/workspace/mcp-marketplace. | `workspace.css` `.sidebar` |
@@ -65,7 +65,7 @@ Full canon map (DTCG OKLCH): `manifest.json` + `tokens/tokens.json` in the desig
 
 ```bash
 # 1. Canon changed? re-pack + re-vendor
-cd ../../../P31-local-workspace/packages/design-core
+cd ../../../production/packages/design-core
 node scripts/token-audit.mjs && npm pack   # → p31-design-core-3.0.0.tgz (rename if scoped)
 cp p31-design-core-3.0.0.tgz ../../production/portals/design/vendor/ && cp … workspace/vendor/
 

@@ -1,0 +1,104 @@
+---
+/**
+ * /financials — the transparency floor.
+ *
+ * Honest state: P31's 501(c)(3) determination is effective 2026-04-03, so
+ * the first Form 990 is due ~2027. There is no 990 to link yet — this page
+ * states that plainly instead of faking it. What exists today: registration
+ * facts (all from ground-truth/content/nonprofit.json), the HCB fiscal-
+ * sponsorship financials (auditable), and the live revenue ledger.
+ */
+import MarketingShell from '../layouts/MarketingShell.astro';
+import SectionHeader from '../components/marketing/SectionHeader.astro';
+import Footer from '../components/marketing/Footer.astro';
+
+import nonprofit from '../../ground-truth/content/nonprofit.json';
+
+const REVENUE_LEDGER_URL = 'https://revenue-ledger.trimtab-signal.workers.dev';
+const HCB_URL = 'https://hcb.hackclub.com/donations/start/p31-labs';
+const LETTER_NUMBER = nonprofit.irsLetterNumber ?? '947';
+
+const facts = [
+  { label: 'Entity', value: 'Georgia nonprofit corporation' },
+  { label: 'EIN', value: '42-1888158' },
+  { label: '501(c)(3) determination', value: 'Granted — effective 2026-04-03' },
+  { label: 'IRS ruling date', value: '2026-05-01' },
+  { label: 'Determination letter', value: `Letter ${LETTER_NUMBER}, dated 2026-05-13` },
+  { label: 'Publication 78', value: 'Listed (deductibility code PC)' },
+  { label: 'First Form 990', value: 'Due ~2027 (fiscal year 2026)' },
+];
+---
+
+<MarketingShell
+  title="Financials — P31 Labs"
+  description="The transparency floor. Registration facts, the auditable fiscal-sponsorship record, and an honest statement of what is not yet filed."
+>
+  <main id="main-content" class="section">
+    <div class="max-w-4xl mx-auto px-6 md:px-12 lg:px-16">
+      <SectionHeader
+        title="Financials"
+        description="The transparency floor — registration facts, the auditable fiscal-sponsorship record, and an honest statement of what is not yet filed."
+        align="left"
+      />
+
+      <div class="mt-16 space-y-8">
+
+        {/* ── REGISTRATION FACTS ── */}
+        <section class="glass-card">
+          <div class="p-8 space-y-4">
+            <h3 class="text-xl font-bold" style="color: var(--p31-text);">Registration facts</h3>
+            <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+              {facts.map((f) => (
+                <div class="flex flex-col gap-0.5">
+                  <dt class="text-xs font-semibold uppercase tracking-wider" style="color: var(--p31-text-tertiary);">{f.label}</dt>
+                  <dd class="text-sm" style="color: var(--p31-text);">{f.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+
+        {/* ── THE HONEST NOTE ── */}
+        <section class="glass-card" style="border-left: 3px solid var(--p31-signal-amber, #f59e0b);">
+          <div class="p-8 space-y-4">
+            <h3 class="text-xl font-bold" style="color: var(--p31-text);">The honest note</h3>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              P31's 501(c)(3) determination is effective <strong style="color: var(--p31-text);">April 3, 2026</strong>. The first Form 990 (or 990-N e-Postcard, based on gross receipts) is due for fiscal year 2026 — expected <strong style="color: var(--p31-text);">~2027</strong>. There is no Form 990 to link yet, and this page will not post one that does not exist.
+            </p>
+            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              What is available today, and is independently checkable:
+            </p>
+            <ul class="list-disc pl-5 space-y-1 text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+              <li><strong style="color: var(--p31-text);">The live revenue ledger</strong> — every payment settles into it; the page reads it live.</li>
+              <li><strong style="color: var(--p31-text);">HCB fiscal sponsorship</strong> — the auditable record of the open-source sponsorship host.</li>
+              <li><strong style="color: var(--p31-text);">The treasury page</strong> — the quarterly-report cadence and the live ledger.</li>
+            </ul>
+          </div>
+        </section>
+
+        {/* ── LINKS ── */}
+        <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <a href={REVENUE_LEDGER_URL} target="_blank" rel="noopener noreferrer" class="glass-card p-6 rounded-xl block transition" style="border: 1px solid var(--p31-glass-border, rgba(255,255,255,0.1));">
+            <h3 class="text-lg font-bold" style="color: var(--p31-text);">Live revenue ledger ↗</h3>
+            <p class="mt-2 text-sm leading-relaxed" style="color: var(--p31-text-secondary);">Every payment settles into the ledger. Read it directly, check the hash chain.</p>
+          </a>
+          <a href={HCB_URL} target="_blank" rel="noopener noreferrer" class="glass-card p-6 rounded-xl block transition" style="border: 1px solid var(--p31-glass-border, rgba(255,255,255,0.1));">
+            <h3 class="text-lg font-bold" style="color: var(--p31-text);">HCB fiscal sponsorship ↗</h3>
+            <p class="mt-2 text-sm leading-relaxed" style="color: var(--p31-text-secondary);">The auditable record from our open-source fiscal host.</p>
+          </a>
+        </section>
+
+        {/* ── CTA ── */}
+        <section class="text-center py-6">
+          <a href="/treasury" class="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold transition"
+             style="background: var(--p31-accent, #22d3ee); color: #0a0a0f;">
+            See the public treasury →
+          </a>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</MarketingShell>

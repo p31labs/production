@@ -165,7 +165,7 @@ function phaseGates() {
   // portal, so it walks this portal's src/ — the same gate the design
   // portal uses. No inline reimplementation; inherits every future rule
   // the canonical scanner adds (hsl, named colors, color-mix, etc.).
-  const gate = resolve('/home/p31/P31-local-workspace/packages/design-core/scripts/token-audit.mjs')
+  const gate = resolve('/home/p31/production/packages/design-core/scripts/token-audit.mjs')
   try {
     execSync(`node ${gate}`, { cwd: root, stdio: 'pipe', timeout: 60_000 })
   } catch (e) {

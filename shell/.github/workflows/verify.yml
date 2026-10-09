@@ -1,0 +1,43 @@
+name: Verify Shell
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Run verify suite
+        run: |
+          for attempt in 1 2 3; do
+            echo "Verify attempt $attempt/3..."
+            if node scripts/verify-shell.cjs; then
+              echo "Verify passed on attempt $attempt"
+              exit 0
+            fi
+            echo "Verify failed on attempt $attempt"
+            if [ "$attempt" -lt 3 ]; then sleep 10; fi
+          done
+          echo "Verify failed after 3 attempts"
+          exit 1
+        env:
+          CI: true
+          VERIFY_TIMEOUT: 30000
+          VERIFY_RETRIES: 3

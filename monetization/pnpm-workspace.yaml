@@ -1,0 +1,17 @@
+# Build scripts for e2e a11y tooling (mirror of mcp-marketplace):
+# - accessibility-checker: postinstall is ibmtelemetry — denied, works without it.
+# - chromedriver/puppeteer: transitive deps of accessibility-checker; not needed.
+allowBuilds:
+  '@sentry/cli': true
+  accessibility-checker: false
+  chromedriver: false
+  esbuild: true
+  puppeteer: false
+  sharp: true
+  workerd: true
+
+minimumReleaseAgeExclude:
+  - '@p31ca/quantum-core@0.1.0'
+
+packages:
+  - '.'

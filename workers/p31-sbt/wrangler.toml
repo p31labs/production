@@ -1,0 +1,14 @@
+name = "p31-sbt"
+main = "src/index.ts"
+compatibility_date = "2026-07-16"
+
+[vars]
+LOOM_ANCHOR_URL = "https://loom.trimtab-signal.workers.dev/api/loom/anchor/sbt"
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "SBT_DB"
+database_name = "sbt-registry"
+database_id = "669f8764-ec12-4953-87e9-196e3f2bd533"

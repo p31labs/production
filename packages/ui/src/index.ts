@@ -1,0 +1,14 @@
+export { renderK4Hero, getK4SvgMarkup } from './k4-hero';
+export { initStarfield, mountStarfield } from '@p31ca/design-core/starfield';
+export type { StarfieldConfig, StarfieldOptions, StarfieldInstance } from '@p31ca/design-core/starfield';
+export { getMolecularField, mountMolecularField } from './molecular-field';
+export type { NotifyOpts, MolecularFieldInstance } from './molecular-field';
+export { trackComponentUsage, trackUiEvent } from './telemetry';
+export { EphemeralProvider } from './providers/EphemeralProvider';
+export type { EphemeralProviderProps } from './providers/EphemeralProvider';
+export { AdaptiveLayout } from './layout';
+export type { AdaptiveLayoutProps } from './layout';
+export { WorkspaceShell } from './layout';
+export type { WorkspaceShellProps } from './layout';
+export { ConversationShell } from './layout';
+export type { ConversationShellProps } from './layout';

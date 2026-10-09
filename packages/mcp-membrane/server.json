@@ -1,0 +1,41 @@
+{
+  "$schema": "https://registry.modelcontextprotocol.io/schemas/server.json",
+  "name": "io.github.p31labs.mcp-membrane",
+  "version": "1.0.0",
+  "title": "P31 Membrane",
+  "description": "Post-deploy verification MCP server — DORA metrics, deploy checks, gamified XP/LOVE rewards, and artifact minting. Runs locally via npx.",
+  "transport": "stdio",
+  "command": "npx",
+  "args": ["-y", "@p31ca/mcp-membrane"],
+  "websiteUrl": "https://github.com/p31labs/mcp-membrane",
+  "tools": [
+    {
+      "name": "membrane_status",
+      "description": "Get Membrane system status — XP, LOVE balance, level, streak, and unlocked achievements"
+    },
+    {
+      "name": "membrane_dora",
+      "description": "Get DORA metrics — deployment frequency, lead time for changes, change failure rate, and mean time to restore"
+    },
+    {
+      "name": "membrane_history",
+      "description": "Get deploy history with check results — pass/fail per check, durations, and XP earned"
+    },
+    {
+      "name": "membrane_achievements",
+      "description": "List all unlocked achievements with tier (bronze/silver/gold/platinum) and unlock timestamps"
+    },
+    {
+      "name": "membrane_deploy_check",
+      "description": "Record a deploy check result and earn XP/LOVE rewards — accepts deployId, check name, category, pass/fail, message, and duration"
+    },
+    {
+      "name": "membrane_dora_scorecard",
+      "description": "Get a formatted DORA scorecard with color-coded status per metric and overall score out of 100"
+    },
+    {
+      "name": "membrane_artifact_mint",
+      "description": "Mint a physical artifact from an achievement — generates a unique serial number with verification URL"
+    }
+  ]
+}

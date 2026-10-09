@@ -1,0 +1,30 @@
+name = "p31-portal-shell-room"
+main = "src/index.ts"
+compatibility_date = "2026-07-21"
+compatibility_flags = ["nodejs_compat"]
+
+# The room Worker hosts the SessionRoom and PageRoom classes — Pages cannot
+# host a DO class.
+[[durable_objects.bindings]]
+name = "SESSION_ROOM"
+class_name = "SessionRoom"
+
+[[durable_objects.bindings]]
+name = "PAGE_ROOM"
+class_name = "PageRoom"
+
+# Same D1 database as the Pages project: the room appends session.joined /
+# session.left and checkpoints page snapshots to the same bus ledger.
+[[d1_databases]]
+binding = "DB"
+database_name = "p31-portal-shell"
+database_id = "04ee6f38-aaeb-47f5-aef2-ec7c52e45758"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["SessionRoom", "PageRoom"]
+
+# Native tracing for the room Worker — must mirror the Pages project's setting
+# or the Durable Object's spans are invisible.
+[observability]
+enabled = true

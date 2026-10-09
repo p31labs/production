@@ -1,0 +1,232 @@
+{
+  "results": [
+    {
+      "prompt": "01-spoon-aware-adaptation",
+      "source": "jitterbug",
+      "compliance": 0.5833333333333334,
+      "judgement": {
+        "scores": [
+          {
+            "id": "ER-1",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "ER-2",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "ER-3",
+            "verdict": "Partially"
+          },
+          {
+            "id": "ER-4",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "IR-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "IR-2",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "SY-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "RF-1",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "CM-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "NG-1",
+            "verdict": "Absent"
+          },
+          {
+            "id": "NG-2",
+            "verdict": "Absent"
+          }
+        ]
+      },
+      "report": "## Consensus\nAll three briefs converge on a capacity-adaptive architecture for a financial interface built on these shared pillars:\n\n- **Capacity as a runtime variable (1–5 scale)** rather than static accessibility compliance, grounded in Spoon Theory, Cognitive Load Theory, and Allostatic Load.\n- **A three-layer token taxonomy**: a global driver (`--cap-level`), semantic scaling tokens (`--ui-density`, `--info-abstraction`, `--interaction-limit`, `--noise-reduction`), and component-level consumption — implemented via React Context synced to root CSS custom properties and data-attributes for zero-latency, DOM-wide updates.\n- **Unmount, don't dim**: non-critical components are removed at low capacity, while a Hard Data Invariant preserves essential elements (Current Balance, Urgent Obligations).\n- **Hybrid mitigation stack preserving agency**: user-initiated overrides (\"Unfold,\" Emergency Override, Panic Button / Safe Harbor forcing a Level 1 floor) combined with passive, suggestive-only detection (error rates, erratic input, inactivity) that nudges but never auto-adjusts.\n- **Transactional locking**: capacity changes are queued/locked during active workflows (isProcessing/isEditing flags, mid-POST requests) to prevent financial error.\n- **Shared open risks**: no empirical validation of thresholds or detection heuristics; paternalism perception even with suggestive-only escalation; unclear persistence of override state across sessions.\n\n## Divergence\n- **Discrete vs. continuous capacity**: Brief 1 and Brief 3 use categorical 1–5 tiers; Brief 1 alone introduces a continuous float (1.0–5.0) with a Continuous-to-Discrete Mapping Layer to reconcile the two — an unresolved internal tension about which representation is canonical.\n- **Self-assessment framing**: Brief 2 uniquely argues that self-assessment itself imposes executive-function load (the \"Calibration Gap\"), with two named failure modes — Type I Optimism Bias (over-estimation → dense UI, financial errors) and Type II Avoidance Trap (under-estimation → information starvation from over-unmounting). Briefs 1 and 3 treat the user-set dial as reliable.\n- **Transition behavior**: Brief 1's guidance is truncated (the \"Transition Blind Spot\"); Brief 2 offers the most concrete answer — opacity/transform-only transitions, no layout shifts, a \"fade-to-simple\" pattern to avoid triggering meltdown during emergency activation. Brief 3 is silent on motion.\n- **Edge-case coverage**: Brief 3's Transactional Invariant is truncated with no behavior defined for abandoned/failed transactions; Brief 1's version is more complete but doesn't address failure paths either. Brief 2 flags mode/level conflict resolution as unaddressed.\n- **Assistive technology**: only Brief 1 raises the risk that unmounting conflicts with AT expectations (screen readers, saved focus positions).\n\n## Synthesis\nThe three briefs describe one architecture at different altitudes: Brief 3 supplies the theoretical foundation and implementation skeleton, Brief 1 the token mechanics and invariants, Brief 2 the human-failure-mode critique. The integrated model should:\n\n1. **Adopt Brief 2's Calibration Gap as a first-class design constraint.** The mitigation stack should be reframed not merely as \"agency vs. automation\" but as compensating for unreliable self-assessment: Suggestive Escalation specifically targets Type I (detect erratic input/micro-errors → nudge toward lower capacity) and the Unfold/Safe Harbor valve targets Type II (guarantee information access when over-restriction starves the user). The Level 1 floor plus Hard Data Invariant bounds both failure modes.\n\n2. **Resolve discrete vs. continuous by making the continuous float internal and the discrete tier user-facing.** Users set a 1–5 dial (low executive load); the system may track a continuous `--cap-level` for smooth token interpolation, with the Mapping Layer defining which tier each float maps to. This preserves Brief 1's interpolation benefits without exposing fractional capacity choices to users.\n\n3. **Carry forward Brief 2's transition spec as the canonical answer to the Transition Blind Spot**: opacity/transform-only animations, no layout shifts, fade-to-simple on emergency activation, and `prefers-reduced-motion` respect (Brief 1). Slot-based layouts (Brief 1) prevent CLS during non-emergency transitions.\n\n4. **Close the Transactional Invariant gap**: define queued-change behavior for abandoned and failed transactions (e.g., release the lock on timeout/failure with a confirmation prompt before applying the queued capacity change), and specify mode/level conflict resolution (emergency mode supersedes override; override supersedes standard) plus session-persistence policy (override should expire per-session by default to avoid permanent lock-out at a mis-estimated level).\n\n5. **Deprioritize**: full auto-adjustment (rejected by all three), dimming as a reduction strategy, and further theoretical grounding — the framework is conceptually saturated. The critical gap is empirical: validate level thresholds, detection-heuristic error rates, and whether capacity scaling actually reduces financial errors before production deployment. Also commission an AT-compatibility audit of the unmounting strategy (focus management, live-region announcements on reflow) as a gating requirement.",
+      "session": "53b479b1"
+    },
+    {
+      "prompt": "02-family-safe-governance",
+      "source": "jitterbug",
+      "compliance": 0.6428571428571429,
+      "judgement": {
+        "scores": [
+          {
+            "id": "ER-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "ER-2",
+            "verdict": "Partially"
+          },
+          {
+            "id": "ER-3",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "ER-4",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "IR-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "IR-2",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "SY-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "RF-1",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "CM-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "NG-1",
+            "verdict": "Absent"
+          },
+          {
+            "id": "NG-2",
+            "verdict": "Absent"
+          }
+        ]
+      },
+      "report": "## Consensus\n- **Hardware-backed cryptography as the trust anchor**: All three briefs converge on TEE/HSM/FIDO2/Secure Enclave enforcement rather than soft UI controls. Briefs 1 and 3 both specify FIPS 140-2/3 Level 3 hardware; Briefs 2 and 3 both use ECDSA signatures binding payload hashes.\n- **Hash-binding to defeat the \"Nut-Free → Peanut-Included\" attack**: Brief 2 (Two-Phase Commit with action_payload_hash) and Brief 3 (Composite Payload Hash over action_payload_hash + reasoning_hash) propose functionally equivalent mechanisms; Brief 1's tokenization proxy removes the PII that makes such substitution attractive.\n- **Tiered autonomy / risk-proportional friction**: All three accept that uniform strict approval is unworkable. Brief 2's Tiered Autonomy Levels, Brief 3's Contextual Friction, and Brief 1's semantic abstraction tiers all scale control to stakes.\n- **Break-glass emergency protocols**: Brief 1 (pre-computed emergency tokens), Brief 2 (acknowledges HITL latency as fatal risk), and Brief 3 (Emergency Override Protocol with EMERGENCY_BYPASS flags and retrospective justification) all treat emergency latency as a first-class design requirement.\n- **Append-only accountability**: Brief 2's Verifiable Decision Ledger and Brief 3's CommitmentObject/ledger flags share the append-only, auditable-record model; Brief 1's compliance mapping (GDPR/HIPAA, ISO/IEC 42001) aligns with the auditability goal.\n- **No empirical validation**: All three are conceptual/design analyses with unquantified costs (HSM hardware, ZKP overhead, behavioral efficacy).\n\n## Divergence\n- **Where trust is anchored**: Brief 1 anchors trust in *data protection* (tokenize before the agent sees anything); Briefs 2 and 3 anchor trust in *decision verification* (cryptographic proof of what was decided and executed). These are complementary but imply different architectures: a sidecar proxy intercepting payloads vs. a PEP validating commitments.\n- **Emergency handling philosophy**: Brief 1 pre-computes emergency tokens (latency solved *ex ante*); Brief 3's EOP allows bypass with retrospective justification (latency solved *ex post*); Brief 2 leaves the tension unresolved. Pre-computation risks stale/over-broad emergency access; retrospective bypass risks routine abuse.\n- **Privacy vs. verifiability**: Brief 2 explicitly uses ZKPs to reconcile ledger transparency with pseudonymization; Brief 1 relies on Shamir/MPC quorum re-identification; Brief 3 doesn't address ledger privacy at all. ZKP overhead is unquantified and may be prohibitive for high-frequency decisions.\n- **Single point of failure vs. distributed trust**: Brief 1's vault mapping table is a catastrophic SPOF; Brief 2's ledger distributes trust via transparency logs; Brief 3 flags (but doesn't solve) the \"Lost Guardian\" key problem. Quorum approaches (Brief 1's Shamir) vs. single-guardian signing (Brief 3) conflict.\n- **Threat models differ**: Brief 1's dominant threat is inference/triangulation re-identification; Brief 2's is GIGO (valid-but-false entries) and split-brain; Brief 3's is human factors (approval fatigue, automation bias, coercion). Each brief underweights the others' threats.\n- **Unresolved edge cases preserved**: Split-brain ledger failure (B2), guardian coercion and hardware compromise (B3), frequency-analysis on deterministic tokens (B1), the Utility-Privacy Frontier (B1), and whether Contextual Friction actually works on real humans (B3).\n\n## Synthesis\nThe three briefs describe three layers of a single defense-in-depth system, not competing architectures. The integrated design:\n\n1. **Layer the trust anchors**: Brief 1's tokenization proxy runs *first* (data minimization at ingress), Brief 3's PVC/CommitmentObject cycle runs *second* (decision governance), Brief 2's VDL runs *third* (accountability). Cross-component attestation (B2's GIGO mitigation) becomes the connective tissue: the ledger entry should attest that the payload was tokenized by the vault (B1) and signed by the guardian (B3), closing the loop between all three.\n2. **Unify the hash-binding mechanism**: Adopt Brief 3's Composite Payload Hash (action + reasoning) as the canonical commitment object; Brief 2's 2PC abort-on-mismatch becomes the PEP's enforcement rule for it. This subsumes both proposals with one mechanism.\n3. **Resolve the emergency divergence with a hybrid**: Combine Brief 1's pre-computed break-glass tokens (bounded scope, short TTL, per-session namespace) with Brief 3's EMERGENCY_BYPASS ledger flag and mandatory retrospective review. Pre-computation handles the sub-second case; the bypass handles the unanticipated case; both feed Brief 2's ledger for audit. Rate-limit and alarm on bypass frequency to counter routine-abuse risk.\n4. **Address the SPOF/Lost-Guardian convergence**: Brief 1's Shamir quorum (Guardian + Regulator + HSM-internal) should be extended to key recovery generally — it is also the natural answer to Brief 3's truncated \"Lost Guardian\" scenario. Deprioritize single-guardian signing for high-stakes actions; require quorum there, single-signature with Contextual Friction for low-stakes.\n5. **Deprioritize**: Full ZKP on every ledger entry (B2) — reserve ZKPs for regulatory disclosure queries only, using B1's pseudonymized identifiers for routine entries to control overhead. Also deprioritize resolving the Utility-Privacy Frontier analytically; it requires empirical tuning per deployment.\n6. **Carry forward as the critical research agenda**: (a) empirical validation of Contextual Friction against automation bias, (b) quantification of HSM/ZKP/latency costs, (c) split-brain ledger consensus, and (d) semantic-triangulation defenses — the one threat (B1) that tokenization alone cannot solve and that no other brief addresses. A pilot deployment instrumenting the VDL would generate the data all three briefs lack.",
+      "session": "04311260"
+    },
+    {
+      "prompt": "03-privacy-preserving-identity",
+      "source": "jitterbug",
+      "compliance": 0.5,
+      "judgement": {
+        "scores": [
+          {
+            "id": "ER-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "ER-2",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "ER-3",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "ER-4",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "IR-1",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "IR-2",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "SY-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "RF-1",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "CM-1",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "NG-1",
+            "verdict": "Absent"
+          },
+          {
+            "id": "NG-2",
+            "verdict": "Absent"
+          }
+        ]
+      },
+      "report": "## Consensus\n- Security derives from HMAC-SHA256 as a keyed PRF with a 256-bit server-side secret, not from seed entropy; low-entropy seeds (sequential integers, timestamps) are acceptable inputs only because the secret hardens them.\n- Direct HMAC bit-slicing (H = HMAC-SHA256(Secret, Seed), then slice the 256-bit digest into segments, e.g., two 128-bit halves for prefix/suffix) should replace PRNG-based expansion (SplitMix64/Xorshift), eliminating PRNG state management and a secondary correlation layer.\n- Naive modulo mapping into vocabulary size V introduces bias when V is not a power of two; Lemire's method (fast) or rejection sampling (perfectly uniform) is required.\n- Without the secret, a 32-bit seed yields only ~2^32 names, vulnerable to rainbow tables; the secret expands attacker search space to ~2^32 × 2^256.\n- All briefs converge on the same three-stage pipeline: keyed hardening → bit-slicing → unbiased mapping, with a Python reference implementation.\n- All flag the same core risk: total compromise of the server-side secret de-anonymizes the entire user base, and key rotation/compromise recovery is unaddressed.\n- All note the reference implementations' mapping steps are incomplete or simplified (omitted rejection branch / plain modulo placeholder), risking residual bias in production.\n\n## Divergence\n- **Reference implementation status:** Briefs 1/3 describe a Lemire implementation that is \"simplified and omits the rejection branch\"; Brief 2 describes the mapping as a plain-modulo placeholder with a note to switch to rejection sampling. These are materially different defect characterizations — one is a subtle bias bug, the other is no unbiased mapping at all.\n- **Formal grounding:** Brief 2 grounds the security argument in the SHA-256 compression function and PRF indistinguishability (any slice inherits uniformity), and cites performance evidence (SHA-NI hardware, BigCrush, HKDF paradigm). Briefs 1/3 instead assert length-extension resilience of SHA-256 without formal analysis — a different, weaker justification, and one Brief 2 does not rely on.\n- **Independence of slices:** Brief 2 explicitly flags that independence of the two 128-bit slices is asserted but not formally proven; Briefs 1/3 claim bit-slicing \"prevents structural collisions\" without qualification.\n- **Operational scope:** Briefs 1/3 specify concrete secret-management infrastructure (HSM, AWS KMS, HashiCorp Vault) and raise its uncosted operational burden; Brief 2 stays at the algorithmic level and instead raises the absence of empirical benchmarking/statistical testing of the full pipeline.\n- **Empirical validation:** Only Brief 2 calls out the lack of benchmarking and statistical testing; Briefs 1/3 do not mention validation gaps beyond the mapping bug.\n\n## Synthesis\nThe three briefs describe one coherent design; Briefs 1 and 3 are effectively identical, with Brief 2 adding the rigorous framing. Carry forward the unified pipeline: HMAC-SHA256(Family_Secret, Seed) → 128-bit slice partition → Lemire's method with a correct rejection branch (or rejection sampling where perfect uniformity matters more than speed). Adopt Brief 2's security framing — PRF indistinguishability of HMAC — as the primary justification, and deprioritize the length-extension argument from Briefs 1/3, which is both formally unproven and unnecessary (HMAC is already length-extension-resistant by construction).\n\nTreat the reference implementations as non-production: before deployment, implement and unit-test the unbiased mapping against both briefs' defect reports (assume the worst case — plain modulo — and replace it), and add the statistical testing and benchmarking Brief 2 identifies as missing (e.g., BigCrush-style tests on slices, collision-frequency checks across the vocabulary).\n\nThe most significant open gap is shared by all three and should become the top engineering priority: secret lifecycle management. Key rotation, per-family or per-epoch keys (which also bounds blast radius of compromise), versioned pseudonyms (embed a key ID in the derivation so rotated keys produce distinguishable, re-linkable outputs), and a compromise-recovery runbook. Combine Briefs 1/3's concrete infrastructure recommendations (KMS/Vault/HSM) with a costing exercise they explicitly deferred. Finally, formally state (even if not fully prove) the slice-independence claim as a corollary of PRF output uniformity rather than an independent assumption, closing Brief 2's caveat with Briefs 1/3's framing.",
+      "session": "4cac3038"
+    },
+    {
+      "prompt": "04-step-level-routing",
+      "source": "jitterbug",
+      "compliance": 0.7083333333333334,
+      "judgement": {
+        "scores": [
+          {
+            "id": "ER-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "ER-2",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "ER-3",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "ER-4",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "IR-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "IR-2",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "SY-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "RF-1",
+            "verdict": "Not Satisfied"
+          },
+          {
+            "id": "CM-1",
+            "verdict": "Satisfied"
+          },
+          {
+            "id": "NG-1",
+            "verdict": "Present"
+          },
+          {
+            "id": "NG-2",
+            "verdict": "Present"
+          }
+        ]
+      },
+      "report": "## Consensus\nAll three briefs converge on the same core architecture: a four-stage Tiered DAG (Intent Extraction → Gate Judgment → Code Generation → Performance Profiling) that routes by stage entropy, using small models (Llama-3-8B, GPT-4o-mini, Claude Haiku) for low-entropy stages and frontier models (GPT-4o, Claude 3.5 Sonnet) only for high-entropy code generation. Shared conclusions:\n\n- **Conformal Prediction over raw confidence**: All three replace softmax/logprob confidence with prediction set size (|S| or |C(x)|) against a threshold Γ to drive escalation, explicitly to mitigate the \"Confidence Trap\" (overconfident hallucinations bypassing deferral).\n- **Escalation Trap awareness**: All identify over-escalation as the dual failure mode, mitigated by dynamic Γ tuning (user priority weighting, escalation-ratio monitoring, and/or a cumulative error counter E_cum).\n- **RAG + AST over constrained decoding**: All three cite the \"Constraint Tax\" (arXiv:2605.26128) and adopt pre-hoc RAG grounding plus cheap post-hoc AST validation with local retries, trading compliance rigidity for reasoning quality.\n- **Deterministic Tier 0 profiling**: Playwright, Lighthouse, and unit test runners handle Stage 4, where LLMs are unreliable.\n- **Recursive Context Injection**: All pass only distilled verdict summaries (not raw logs) between stages to prevent context saturation and error accumulation.\n- **Local retries before escalation**: Schema-invalidity or AST failures trigger bounded local retries rather than immediate frontier escalation.\n\n## Divergence\n- **Escalation governance mechanism**: Brief 1 specifies a formula (Γ_effective = Γ_base · Priority_user · f(E_cum)); Brief 2 describes a formal routing function R(s) combining conformal signal and boolean validation V with priority-tuned Γ (low Γ for Premium, high for Batch); Brief 3 emphasizes a cumulative error counter E_cum as a hard escalation trigger for \"broken router\" loops. These are compatible but differently formalized — none fully specifies f(E_cum).\n- **DAG topology**: Briefs 1 and 2 describe sequential DAGs; Brief 3 proposes a sequential-parallel hybrid. Brief 3 is also the only one to explicitly restrict the architecture to asynchronous workflows due to latency.\n- **Failure-mode taxonomy**: Brief 2 uniquely names \"Valid-but-Wrong\" syndrome (schema-valid but semantically incorrect output) and treats error accumulation as an open question; Briefs 1 and 3 treat context injection as the primary mitigation for accumulation.\n- **Calibration robustness**: Brief 3 proposes shadow-mode frontier audits for calibration drift under intent distribution shift; Brief 2 flags conformal validity under distribution shift as unaddressed; Brief 1 notes only the need for periodic re-calibration. Different levels of pessimism about drift.\n- **Unresolved truncations**: Brief 1 truncates before resolving the conformal prediction trade-off; Brief 2 truncates mid-discussion of E_cum mitigation — the two gaps are complementary but leave the escalation-cost analysis incomplete.\n- **Citation risk**: Briefs 2 and 3 both cite arXiv:2605.26128 for the Constraint Tax; Brief 2 explicitly flags it as needing verification.\n\n## Synthesis\nThe three briefs describe the same system at different levels of formalization; the synthesis is a single architecture with Brief 2's formal routing function as the skeleton, Brief 1's dynamic threshold formula as the governance rule, and Brief 3's operational safeguards as production hardening.\n\n**Carry forward:**\n1. The four-stage tiered DAG with entropy-per-dollar routing — unanimous and well-specified.\n2. A unified escalation rule: R(s) = f(|S(x)|, V, E_cum, Priority_user), i.e., Brief 1's Γ_effective formula instantiated with Brief 3's E_cum counter as a hard trigger and Brief 2's validation signal V as a boolean gate. This closes Brief 2's truncated E_cum discussion with Brief 1's f(E_cum) and Brief 3's counter semantics.\n3. RAG pre-hoc grounding + AST post-hoc validation with bounded local retries as the grounding strategy — but verify arXiv:2605.26128 before relying on the Constraint Tax framing in external communication.\n4. Brief 3's shadow-mode frontier audits as the concrete answer to Brief 2's open question on conformal validity under distribution shift; pair with periodic re-calibration on a held-out set (Brief 1) and escalation-ratio drift monitoring (Brief 2).\n5. Brief 3's asynchronous-workflow restriction as an explicit design constraint; latency budgets per stage should be quantified before any synchronous use case.\n\n**Deprioritize:**\n- Compliance rigidity via constrained decoding — all three agree the Constraint Tax outweighs the benefit; treat as a fallback only where absolute syntactic compliance is contractual.\n- Sequential-only topology — adopt Brief 3's hybrid where profiling stages can run in parallel.\n- The \"Valid-but-Wrong\" syndrome deserves a named mitigation (semantic spot-checks in shadow mode) but should not block the core design; it is the residual risk after RAG+AST.\n\n**Open items for the next iteration:** quantify retry budgets and their effect on RAG+AST reliability (Brief 3), empirically measure multi-stage latency and escalation-ratio drift in production, and complete the truncated conformal trade-off analysis from Briefs 1 and 2.",
+      "session": "cdcd730d"
+    }
+  ],
+  "summary": [
+    {
+      "source": "jitterbug",
+      "mean_compliance": 0.6086309523809524,
+      "pass_at_k": 0.25,
+      "n": 4
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+/* Isolated chrome harness — minimal chrome, deterministic capture target. */
+html, body { margin: 0; padding: 0; background: var(--p31-void, #0a0a0f); }
+#root { display: flex; align-items: flex-start; justify-content: flex-start; min-height: 100vh; padding: 24px; }
+.harness-unknown { color: var(--p31-text-primary); font-family: var(--p31-font-sans); padding: 20px; }

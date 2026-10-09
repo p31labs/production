@@ -1,0 +1,6 @@
+[
+  { "axis": "layout-parity", "mean": 7, "verdict": "pass", "findings": [] },
+  { "axis": "sensory-safety", "mean": 8, "verdict": "pass", "findings": [] },
+  { "axis": "identity-surface", "mean": 6.5, "verdict": "pass", "findings": [] },
+  { "axis": "motion-interaction", "mean": 7.5, "verdict": "pass", "findings": [] }
+]

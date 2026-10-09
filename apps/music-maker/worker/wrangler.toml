@@ -1,0 +1,82 @@
+# The music maker — presence Worker. The production transport for the
+# log/presence split (§6 Option B): a Durable Object per music room with
+# WebSocket Hibernation — the DO sleeps when idle (no billable Duration) and
+# wakes to broadcast. Committed events go through the D1 log path.
+name = "music-presence"
+main = "index.ts"
+compatibility_date = "2026-07-04"
+compatibility_flags = ["nodejs_compat"]
+
+workers_dev = true
+
+# Serve the BUILT React app (the spatial instrument UI) from this same Worker —
+# the client uses relative /api/music/* paths, so the UI and the API must share
+# one origin. Build first: cd apps/music-maker && pnpm run build, then deploy
+# from apps/music-maker/worker. Unknown routes fall back to index.html (the
+# React router needs that).
+assets = { directory = "../dist", binding = "ASSETS", not_found_handling = "single-page-application" }
+
+[observability]
+enabled = true
+
+# Workers Logs: collect + index the structured JSON logs emitted by the DO.
+# GA, enabled by default on new Workers; explicit here for clarity.
+[observability.logs]
+enabled = true
+
+# AUTH — Cloudflare Access posture (the Loom's). When MUSIC_ACCESS_AUD is set
+# (wrangler secret put MUSIC_ACCESS_AUD <aud>), the WS upgrade and HTTP
+# endpoints require a valid CF_Authorization cookie. When unset, the room is
+# open. Set it when the Access application is wired.
+#   wrangler secret put MUSIC_ACCESS_AUD
+
+# CONFIG REQUIRED — a D1 database for the committed composition log.
+# Created via: wrangler d1 create music-maker (2026-09-21, region ENAM).
+# Schema applied via: wrangler d1 execute music-maker --remote --file=schema.sql
+[[d1_databases]]
+binding = "MUSIC_D1"
+database_name = "music-maker"
+database_id = "4c26bc1a-d1cf-4e31-94e4-2f51c0c21436"
+# Local dev against the REAL deployed database (remote bindings GA, Wrangler
+# v4.37+): add `remote = true` here. The Worker still runs locally, but D1
+# calls proxy to the deployed resource. Leave it off for the isolated local
+# emulator (schema applied via `pnpm schema:apply:local`).
+
+[durable_objects]
+bindings = [
+  { name = "MUSIC_ROOM", class_name = "MusicRoom" },
+  { name = "CONTROL_ROOM", class_name = "ControlRoom" },
+]
+
+# The modern runtime declaration for a Hibernation WebSocket DO. Without the
+# `exports` entry, the runtime does not route the Hibernation handlers
+# (webSocketMessage / webSocketClose / getWebSockets) to this class — the
+# frames never fan out.
+#
+# `storage = "sqlite"` is REQUIRED by Cloudflare policy (changelog 2026-07-09):
+# new Durable Object namespaces must use the SQLite storage backend; legacy-kv
+# is only accepted for accounts that already provisioned a KV namespace. A
+# fresh account has none — legacy-kv would fail first deploy. getWebSockets()
+# survives hibernation on ANY backend, so SQLite changes nothing about the
+# room's socket tracking. Committed events still go through D1 (MUSIC_D1 is a
+# separate binding); DO SQLite is only the namespace backend, not a log store.
+[exports.MusicRoom]
+type = "durable-object"
+storage = "sqlite"
+
+# The control server — a sibling DO (routing tables never touch the music
+# transport). Same modern declarative form: `exports` routes the Hibernation
+# handlers to the class, and `storage = "sqlite"` satisfies the SQLite-backend
+# mandate. Committed control config shares the MUSIC_D1 log + gate; the
+# mappings/patches projection tables are in the same D1 database.
+[exports.ControlRoom]
+type = "durable-object"
+storage = "sqlite"
+
+# NO [[migrations]] entry: DO class lifecycle is handled by the [exports]
+# declaration above (the modern declarative form). The DO writes committed
+# events through D1 (MUSIC_D1), not DO-local SQLite; DO SQLite storage is the
+# required namespace backend, nothing more.
+
+# A custom route/domain can be added later; workers.dev gives a reachable URL
+# for testing. The client connects to /stream?room=<family-id>.

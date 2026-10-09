@@ -1,0 +1,325 @@
+{
+  "portal": "loom",
+  "path": "production/apps/loom",
+  "scope": "LOOM app + LUMI agent surfaces + canon substrate (packages/canon/src/loom/*)",
+  "auditedAt": "2026-10-02T10:25:00Z",
+  "mode": "static",
+  "toolchain": {
+    "typecheck": "PASS (tsc --noEmit + tsc -p tsconfig.functions.json)",
+    "tests": "PASS (99/99 vitest)",
+    "canon_tests": "PASS (gate, review, memory, training, drift, determinism)",
+    "verify_chain": "PASS (7-record SHA-256 chain, tamper detected)",
+    "lumi_eval": "PASS via dist build (good meets all floors; bad/hard-bad correctly fail)",
+    "lumi_eval_cli": "BROKEN — scripts/lumi-eval.mjs imports TS source, ERR_MODULE_NOT_FOUND",
+    "apca_canon": "0 fails, but 19/19 checks SKIPPED (validator MATRIX is design-core-specific, canon tokens not actually validated)",
+    "slop_src": "12 (definitely-slop by raw count; inflated by 196 hex FALLBACKS + 104 rgba in index.css — see findings)",
+    "port_audit": "7/7 event kinds in canon; 8 used-but-unmanifested AAF actions; 18 manifest-but-unused; raw-value queue +84",
+    "docs_audit": "13 docs, 0 failures, 1 warning (TOKEN-ROTATION.md missing Related Documents)",
+    "note": "apps/loom/ is NOT tracked in git (?? apps/loom/) — no baseline comparison possible."
+  },
+  "severity_counts": { "critical": 0, "high": 4, "medium": 7, "low": 11 },
+  "findings": [
+    {
+      "id": "L-D1",
+      "severity": "high",
+      "category": "design",
+      "title": "Inert data-theme=\"compat\" on <html> — not a canon ThemeId",
+      "files": [
+        "index.html:2"
+      ],
+      "detail": "index.html sets data-theme=\"compat\", but canon ThemeIds are cipher/garden/retro/ocean/sunset/mono/aurora/zen/volt/family/sunlight. tokens.css has no [data-theme=\"compat\"] block, so the html-level attribute is inert. The app re-roots theming at the shell (App.tsx:353 data-theme={theme}), so rendering is correct — the html attr is misleading dead config.",
+      "evidence": "index.html:2 (data-theme=\"compat\"); canon ThemeId list from useTheme.ts:9 / THEME_IDS; App.tsx:353 overrides at shell level.",
+      "recommendation": "Remove the html data-theme attribute (or set it to a real canon ThemeId matching the default 'family').",
+      "rule": "brand_identity"
+    },
+    {
+      "id": "L-D2",
+      "severity": "medium",
+      "category": "design",
+      "title": "Raw hex theme-color in index.html (OS chrome only)",
+      "files": [
+        "index.html:8"
+      ],
+      "detail": "<meta name=\"theme-color\" content=\"#0a0e14\"> is a hardcoded hex. It only affects browser chrome, not the page, but it is not token-driven.",
+      "evidence": "index.html:8.",
+      "recommendation": "Set from a token via JS (e.g. resolve --p31-bg at load) or accept as OS-chrome-only.",
+      "rule": "token_usage"
+    },
+    {
+      "id": "L-D3",
+      "severity": "low",
+      "category": "design",
+      "title": "33 rgba + 5 oklch + 3 hsl CSS literals — documented intentional",
+      "files": [
+        "src/index.css"
+      ],
+      "detail": "Raw color literals exist (glass backgrounds rgba(10,14,20,0.55/0.6), inset highlights rgba(255,255,255,0.5...0.06), shadows rgba(0,0,0,0.25/0.3), amber rgba(255,170,40,...), orb gradients oklch(...), hsl attention-as-light via --loom-light-hue). The porting inventory triage (index.css:1934-1949) documents these as deliberate micro-elements (shadows/highlights/glass) rather than brand surfaces.",
+      "evidence": "rgba?() count 33 in src/index.css; hsl() at index.css:123,392,567 all token-sourced hue/intensity.",
+      "recommendation": "Acceptable as-is per project convention; optionally promote the amber/highlight set to tokens for future themes.",
+      "rule": "zero_hardcoded_color"
+    },
+    {
+      "id": "L-D4",
+      "severity": "low",
+      "category": "design",
+      "title": "10 inline style={{}} sites — all token/layout math, no hardcoded colors",
+      "files": [
+        "src/components/TraceScale.tsx:94-116",
+        "src/components/ProposalNode.tsx:16",
+        "src/components/AgentCursor.tsx:19",
+        "src/components/ColorPicker.tsx:33",
+        "src/components/MadeArtifact.tsx:48",
+        "src/components/DocsView.tsx:62"
+      ],
+      "detail": "Inline styles feed CSS custom properties (--swatch-color, --artifact-color), set imperative transform positions (AgentCursor), virtualization offsets, and token-var backgrounds (DocsView swatch uses var(--${name})). No hardcoded hex in any inline style.",
+      "evidence": "slop-eval flags ProposalNode inline_style x1, TraceScale x3; reviewed each site — all layout/token-driven.",
+      "recommendation": "Acceptable; move AgentCursor/TraceScale transforms to style tokens if desired.",
+      "rule": "no_inline_style"
+    },
+    {
+      "id": "L-D5",
+      "severity": "medium",
+      "category": "design",
+      "title": "9 non-canon token drift items (--loom-*, --motion-scale, --p31-spring-*)",
+      "files": [
+        "docs/PORTING_INVENTORY.md:13-22",
+        "src/index.css"
+      ],
+      "detail": "The app's own port-audit flags --loom-line-height, --loom-light-intensity, --loom-letter-spacing, --loom-panel-width, --loom-light-hue, --motion-scale, and --p31-spring-{fast,default}-spatial/effects as used-but-not-in-canon. These are app-local extension tokens.",
+      "evidence": "docs/PORTING_INVENTORY.md lists 9 drift items; verified --loom-*/--motion-scale/--p31-spring-* present in src/index.css and absent from canon dist/tokens.css.",
+      "recommendation": "Either upstream the recurring ones (motion-scale, panel-width) into canon, or document them as app-scoped local tokens.",
+      "rule": "token_usage"
+    },
+    {
+      "id": "L-D6",
+      "severity": "medium",
+      "category": "design",
+      "title": "8 data-agent-actions used in DOM but absent from agent-manifest.json",
+      "files": [
+        "docs/PORTING_INVENTORY.md:202-210",
+        "public/.well-known/agent-manifest.json"
+      ],
+      "detail": "chain.verify (ChainStatus.tsx), presentation.calm/density/literal/motion/saturation (PresentationControls.tsx), proposal.diff and proposal.why (ProposalCard.tsx) are emitted as data-agent-action but missing from the manifest. 18 manifest actions are never used.",
+      "evidence": "port-audit regenerated docs/PORTING_INVENTORY.md: 'Used but not in manifest: 8' with the exact list.",
+      "recommendation": "Add the 8 actions to agent-manifest.json (and prune 18 unused) before next deploy.",
+      "rule": "agent_manifest_parity"
+    },
+    {
+      "id": "L-D7",
+      "severity": "low",
+      "category": "design",
+      "title": "canon defines [data-spoons] motion scaling but LOOM never sets data-spoons",
+      "files": [
+        "/home/p31/production/packages/canon/src/css/motion.css:15-34",
+        "src/App.tsx",
+        "src/index.css"
+      ],
+      "detail": "canon motion.css re-scales durations for data-spoons 0-2 and 4-5, but the Loom app never sets the attribute. LOOM's energy model is attention-as-light (App.tsx:185-193 sets --loom-light-intensity/--loom-light-hue), so spoon-scaling is unused here. The reduced-motion path IS wired (prefers-reduced-motion + --motion-scale + floorMotion), so this is an unused affordance, not a gap.",
+      "evidence": "rg data-spoons in apps/loom/src and index.html → no matches; canon motion.css defines the selectors.",
+      "recommendation": "Document the intentional choice, or drop the unused data-spoons styles from canon for this app.",
+      "rule": "spoon_awareness"
+    },
+    {
+      "id": "L-F1",
+      "severity": "high",
+      "category": "form-function",
+      "title": "Clickable <li> in EventOverlay is not keyboard-operable; no onKeyDown anywhere in the app",
+      "files": [
+        "src/components/EventOverlay.tsx:31-41"
+      ],
+      "detail": "Each event row is <li onClick={() => onSelect(e.seq)}> with no role, no tabIndex, and no key handler. Keyboard users cannot open a past event. Grep confirms zero onKeyDown/onKeyUp handlers in the entire app.",
+      "evidence": "EventOverlay.tsx:31-41; rg onKeyDown src → 0 matches.",
+      "recommendation": "Add role=\"button\" tabIndex={0} + onKeyDown (Enter/Space) to the li, or wrap each in a real <button>.",
+      "rule": "keyboard_operable"
+    },
+    {
+      "id": "L-F2",
+      "severity": "high",
+      "category": "form-function",
+      "title": "Reject-reason <input> has no aria-label or <label>",
+      "files": [
+        "src/components/ProposalReviewPanel.tsx:65-70"
+      ],
+      "detail": "The reason text input is the only editable text field in the app; it has no accessible name. Screen-reader users cannot tell what the field is for.",
+      "evidence": "ProposalReviewPanel.tsx:65-70 (placeholder='reason (optional)', no label).",
+      "recommendation": "Add aria-label=\"Reject reason\" or a visible <label>.",
+      "rule": "required_aria"
+    },
+    {
+      "id": "L-F3",
+      "severity": "high",
+      "category": "form-function",
+      "title": "Timeline scrubber range input has no aria-label",
+      "files": [
+        "src/components/TimelineScrubber.tsx:40-47"
+      ],
+      "detail": "The range slider is unlabeled (the visible 'seq N / M' text is not a label). Contrast: the Jitterbug closure slider has aria-label=\"Closure\".",
+      "evidence": "TimelineScrubber.tsx:40-47; JitterbugScene.tsx:945 (labeled).",
+      "recommendation": "Add aria-label=\"Log position\" and aria-valuetext=\"seq N of M\".",
+      "rule": "required_aria"
+    },
+    {
+      "id": "L-F4",
+      "severity": "medium",
+      "category": "form-function",
+      "title": "SoundToggle commits to localStorage only, never the log — inconsistent write path",
+      "files": [
+        "src/components/SoundToggle.tsx:17-21"
+      ],
+      "detail": "Every other user action writes to the append-only log via postEvent(fetch /api/loom/event). The sound preference is persisted to localStorage only. It may be intentional (presentation prefs live in localStorage per App.tsx useTheme/usePresentationState), but it breaks the 'every visible state folds over the log' invariant for this control.",
+      "evidence": "SoundToggle.tsx:17-21 (localStorage loom:sound); App.tsx:74-99 postEvent wiring; README.md 'presentation/theme/sound prefs live in localStorage never the log'.",
+      "recommendation": "Document as intentional (it already is per README), or post a view.kind event for provenance parity.",
+      "rule": "write_path_consistency"
+    },
+    {
+      "id": "L-F5",
+      "severity": "medium",
+      "category": "form-function",
+      "title": "Canvas surfaces are pointer-only — no keyboard orbit/hit-test equivalent",
+      "files": [
+        "src/components/Instrument.tsx:213-239",
+        "src/components/JitterbugScene.tsx:670-692"
+      ],
+      "detail": "Instrument click hit-testing (zoom/enter trace) and Jitterbug pointerdown/move orbit, wheel zoom, and raycast focus are mouse/touch-only. Both carry role=\"img\" + aria-label (non-interactive semantics), so AT cannot operate them.",
+      "evidence": "Instrument.tsx:213-239; JitterbugScene.tsx:670-692, 922.",
+      "recommendation": "Add arrow-key equivalents for orbit/navigation or document the canvas as a read-only visualization with interactive controls duplicated in DOM.",
+      "rule": "keyboard_operable"
+    },
+    {
+      "id": "L-F6",
+      "severity": "low",
+      "category": "form-function",
+      "title": "No skip-link or landmark labels",
+      "files": [
+        "index.html",
+        "src/App.tsx"
+      ],
+      "detail": "There is no skip-to-content link and no explicit role=\"main\"/aria-label on landmarks. The app is a single-shell SPA, so impact is modest, but keyboard users must tab through the whole top chrome to reach content.",
+      "evidence": "index.html (no skip link); App.tsx shell has no role=main.",
+      "recommendation": "Add a skip link and aria-label on the shell region.",
+      "rule": "landmark_navigation"
+    },
+    {
+      "id": "L-F7",
+      "severity": "low",
+      "category": "form-function",
+      "title": "No <form>/<fieldset>/<label>/<select> semantics app-wide",
+      "files": [
+        "src/components/ProposalReviewPanel.tsx"
+      ],
+      "detail": "All interaction is button-driven and writes go via fetch to /api/loom/event; there are no native form semantics anywhere. The reject-reason input is a lone ungrouped text field.",
+      "evidence": "grep: 0 <form>, 0 <label>, 0 <fieldset>, 0 <select> in apps/loom/src.",
+      "recommendation": "Group the reject reason + action into a <fieldset> with a <legend>; otherwise acceptable given the app's event-driven model.",
+      "rule": "semantic_html"
+    },
+    {
+      "id": "L-L1",
+      "severity": "low",
+      "category": "lumi",
+      "title": "Lumi.tsx SVG face uses hex fallbacks inside var()",
+      "files": [
+        "src/components/Lumi.tsx:49-77"
+      ],
+      "detail": "The orb's eyes/mouth use var(--p31-bg, #1a120b) — six hex fallbacks. They are fallbacks only (token is wired), so rendering is token-correct; the hex is a warm-brown intended for the orb face against the token bg.",
+      "evidence": "Lumi.tsx:49-77.",
+      "recommendation": "Acceptable; if a future theme changes --p31-bg, the fallback is only pre-theme.",
+      "rule": "token_usage"
+    },
+    {
+      "id": "L-L2",
+      "severity": "low",
+      "category": "lumi",
+      "title": "scripts/lumi-eval.mjs is broken — imports TS source directly",
+      "files": [
+        "/home/p31/production/scripts/lumi-eval.mjs:28-34"
+      ],
+      "detail": "The CLI imports from '../packages/canon/src/loom/scoring.ts', which internally imports './events.js' (and ./memory.js, ./training.js). Node ESM cannot resolve the .js specifiers to .ts source, so running `node scripts/lumi-eval.mjs` throws ERR_MODULE_NOT_FOUND. The scorer works when imported from the built dist/loom/scoring.js.",
+      "evidence": "node scripts/lumi-eval.mjs → ERR_MODULE_NOT_FOUND .../canon/src/loom/events.js (exit from the tool). Running the equivalent against dist/loom/scoring.js passes: good meets all floors, bad/hard-bad fail as designed.",
+      "recommendation": "Change lumi-eval.mjs to import from '../packages/canon/dist/loom/scoring.js' (or add a TS loader).",
+      "rule": "toolchain"
+    },
+    {
+      "id": "L-L3",
+      "severity": "low",
+      "category": "lumi",
+      "title": "LUMI eval scorer + canon substrate verified healthy (positive finding)",
+      "files": [
+        "/home/p31/production/packages/canon/src/loom/scoring.ts",
+        "/home/p31/production/packages/canon/src/loom/memory.ts",
+        "/home/p31/production/packages/canon/src/loom/training.ts",
+        "/home/p31/production/packages/canon/src/loom/gate.ts"
+      ],
+      "detail": "Scoring is deterministic (five phases with FLOORS planning .5 / safety 1 / coPresence .5 / memory .4 / structure .5), bad samples are designed to fail and do, memory is a consent-gated four-tier fold, training is shared-scope-only, and the writer-per-kind gate is enforced. All canon loom tests pass.",
+      "evidence": "lumi-eval via dist: good {planning:1,safety:1,coPresence:1,memory:1,structure:1}; bad {safety:0,coPresence:0}; hard-bad {safety:0,coPresence:0}. canon test-loom-{gate,review,memory,training,drift,determinism} all green.",
+      "recommendation": "None — maintain.",
+      "rule": "positive"
+    },
+    {
+      "id": "L-L4",
+      "severity": "low",
+      "category": "lumi",
+      "title": "Auto-propose timer is timing-based agent behavior",
+      "files": [
+        "src/App.tsx:154-174",
+        "src/components/CreativeChapter.tsx:65-81"
+      ],
+      "detail": "Lumi auto-proposes 3.5s after the child taps the orb, and CreativeChapter formalizes each color pick as an agent propose. These are deterministic arcs; no model identity is used (per Lumi.tsx docstring) and all writes pass the gate. No concern beyond noting agent behavior is time-triggered.",
+      "evidence": "App.tsx:154-174; CreativeChapter.tsx:65-81.",
+      "recommendation": "None — note only.",
+      "rule": "positive"
+    },
+    {
+      "id": "L-D8",
+      "severity": "medium",
+      "category": "design",
+      "title": "APCA validator is design-core-specific — canon tokens are not actually contrast-validated",
+      "files": [
+        "/home/p31/production/packages/design-core/scripts/validate-apca.mjs",
+        "/home/p31/production/packages/canon/dist/tokens.css"
+      ],
+      "detail": "Running validate-apca.mjs against canon dist/tokens.css yields 0 fails but 19/19 checks skipped: the MATRIX pairs reference design-core token names (--p31-text on --p31-bg/surface-s*) and canon uses a different token vocabulary (--p31-text-primary, --p31-layout-* etc.). There is no canon-specific contrast gate.",
+      "evidence": "node .../validate-apca.mjs canon/dist/tokens.css --json → 19 checks, 19 skipped, 0 fails. MATRIX in validate-apca.mjs is design-core pairs.",
+      "recommendation": "Add a canon-token APCA matrix (or parametrize the validator) so the family/theme palettes get contrast coverage.",
+      "rule": "toolchain"
+    },
+    {
+      "id": "L-D9",
+      "severity": "medium",
+      "category": "design",
+      "title": "LOOM src scores 12 on the generic slop-eval — inflated by hex fallbacks, not raw slop",
+      "files": [
+        "src/index.css"
+      ],
+      "detail": "The chat portal's slop-eval counts every #hex occurrence regardless of whether it's a var() fallback. index.css has 196 hex (all var(--p31-*, #fallback)) + 104 rgba (shadows/highlights) + 1 emoji (U+2733 dingbat used as a node label prefix in App.tsx:288) + 1 rgba in JitterbugScene (comment) + inline styles in TraceScale/ProposalNode (layout math). Raw score 12 = 'definitely-slop', but this is a counting artifact, not slop.",
+      "evidence": "node .../portals/chat/scripts/slop-eval.mjs --dir src --json → score 12; detail list shows the 196-hex/104-rgba fallback inflation; verified each flagged file.",
+      "recommendation": "Do not rely on the chat slop-eval for LOOM. Add a canon-aware slop evaluator that ignores var() fallbacks, or extend the raw-value triage in port-audit.",
+      "rule": "toolchain"
+    },
+    {
+      "id": "L-D10",
+      "severity": "low",
+      "category": "design",
+      "title": "apps/loom/ is not tracked in git — no CI/regression baseline",
+      "files": [
+        "/home/p31/production/.git"
+      ],
+      "detail": "git status shows `?? apps/loom/` — the entire directory is untracked in the production repo. This audit's findings and the regenerated docs/PORTING_INVENTORY.md cannot be diffed, and no deploy/CI gate references them.",
+      "evidence": "git -C /home/p31/production status --short apps/loom/ → '?? apps/loom/'.",
+      "recommendation": "Decide the repo boundary for apps/loom (track it here or in its own repo as .gitignore hints) so audit artifacts version.",
+      "rule": "audit_chain"
+    },
+    {
+      "id": "L-D11",
+      "severity": "low",
+      "category": "design",
+      "title": "docs-audit: TOKEN-ROTATION.md missing Related Documents section",
+      "files": [
+        "docs/TOKEN-ROTATION.md:1"
+      ],
+      "detail": "docs-audit reports 1 warning: TOKEN-ROTATION.md has no 'Related Documents' section (13 docs, 0 failures otherwise).",
+      "evidence": "node scripts/docs-audit.mjs → 'Warnings (1): docs/TOKEN-ROTATION.md:1 no-related-section'.",
+      "recommendation": "Add a Related Documents section to TOKEN-ROTATION.md.",
+      "rule": "docs_hygiene"
+    }
+  ]
+}

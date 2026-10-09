@@ -1,0 +1,950 @@
+@import '@p31ca/design-core/css/index.css';
+
+/* ── Motion floor (canon contract — collapse, never disable) ────────── */
+:root {
+  --motion-scale: 1;
+  /* Canon springs — spatial/effects tiers, scaled by --motion-scale. Never a
+   * bare cubic-bezier in this file; every duration multiplies --motion-scale. */
+  --p31-spring-fast-spatial: cubic-bezier(0.42, 1.67, 0.21, 0.90);
+  --p31-spring-default-spatial: cubic-bezier(0.38, 1.21, 0.22, 1.00);
+  --p31-spring-slow-spatial: cubic-bezier(0.38, 0.86, 0.22, 1.00);
+  --p31-spring-effects: cubic-bezier(0.34, 0.80, 0.34, 1.00);
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion-scale: 0.01; }
+}
+
+/* ── Family theme — the warm side of the canon (theme-store `family`).
+   Warm amber near-black, not cyan void. Accents glow, they don't vibrate.
+   "Warm amber and peach — together, not technical." ─────────────────── */
+:root[data-theme='family'],
+:root[data-theme='family'] body,
+.studio[data-theme='family'] {
+  --p31-bg: oklch(17% 0.03 55);
+  --p31-surface: oklch(23% 0.04 55);
+  --p31-surface2: oklch(29% 0.045 55);
+  --p31-accent: oklch(80% 0.16 75);
+  --p31-accent-gold: oklch(83% 0.16 65);
+  --p31-accent-green: oklch(72% 0.16 145);
+  --p31-accent-red: oklch(68% 0.16 25);
+  --p31-text: oklch(97% 0.02 70);
+  --p31-text-primary: oklch(97% 0.02 70);
+  --p31-text-secondary: oklch(82% 0.03 70);
+  --p31-text-tertiary: oklch(60% 0.03 65);
+  --p31-glass-bg: oklch(100% 0.02 60 / 0.05);
+  --p31-glass-border: oklch(100% 0.02 60 / 0.12);
+  --p31-glass-shadow: 0 8px 32px rgba(255, 170, 40, 0.08);
+  --p31-touch-min: 48px;
+  --p31-touch-recommended: 56px;
+}
+
+/* ── The whole app is one column, mobile-first ────────────────────────
+   The viewport contract: the page never scrolls. Only the content area
+   scrolls internally, and only when a chapter genuinely overflows. */
+.studio {
+  height: 100dvh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  background: var(--p31-bg, #1a1410);
+  color: var(--p31-text, #faf6ee);
+  font-family: var(--p31-font-sans, system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Quiet header — only after the welcome ──────────────────────────── */
+.studio__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.25rem;
+}
+.studio__head-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.studio__head-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--p31-radius-full, 9999px);
+  background: var(--p31-accent, #e2b74b);
+  box-shadow: 0 0 12px oklch(80% 0.16 75 / 0.35);
+}
+.studio__head-side {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.studio__head-step {
+  font-size: 0.78rem;
+  color: var(--p31-text-tertiary, #8a8276);
+  letter-spacing: 0.04em;
+}
+.studio__menu-btn {
+  min-width: var(--p31-touch-min, 48px);
+  min-height: var(--p31-touch-min, 48px);
+  background: none;
+  border: none;
+  color: var(--p31-text-tertiary, #8a8276);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+/* ── The canvas — the one thing on screen. The scroll container: the page
+   never scrolls; this row scrolls internally only when content overflows. ─ */
+.studio__canvas {
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1.25rem;
+}
+@media (min-width: 768px) {
+  .studio__canvas { padding: 2rem; }
+}
+
+/* ── What happens next — one warm line of guidance per chapter ─────── */
+.forge-guidance {
+  margin: -0.75rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--p31-text-tertiary, #8a8276);
+  max-width: 30ch;
+}
+
+/* ── Welcome (the Loom's launchpad grammar) ─────────────────────────── */
+.forge-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+  max-width: 30rem;
+  width: 100%;
+}
+.forge-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--p31-text-primary, #faf6ee);
+}
+.forge-copy {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.55;
+  color: var(--p31-text-secondary, #cbbfae);
+  max-width: 28ch;
+}
+
+/* ── The one pill button ────────────────────────────────────────────── */
+.forge-primary {
+  min-height: var(--p31-touch-recommended, 56px);
+  min-width: 220px;
+  padding: 0 1.5rem;
+  border: none;
+  border-radius: var(--p31-radius-full, 9999px);
+  background: var(--p31-accent, #e2b74b);
+  color: var(--p31-bg, #1a1410);
+  font-size: 1.15rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px oklch(80% 0.16 75 / 0.25);
+  transition: transform calc(0.15s * var(--motion-scale)) var(--p31-spring-fast-spatial),
+    box-shadow calc(0.15s * var(--motion-scale)) var(--p31-spring-effects),
+    opacity calc(0.15s * var(--motion-scale)) var(--p31-spring-effects);
+}
+.forge-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 30px oklch(80% 0.16 75 / 0.35); }
+.forge-primary:active { transform: scale(0.97); }
+.forge-primary:disabled { opacity: 0.45; cursor: default; box-shadow: none; transform: none; }
+
+/* ── Quiet doors — 48px, no fill, a way in not a second CTA ─────────── */
+.forge-quiet {
+  min-height: var(--p31-touch-min, 48px);
+  padding: 0 0.5rem;
+  border: none;
+  background: none;
+  color: var(--p31-text-secondary, #cbbfae);
+  font-family: var(--p31-font-sans, system-ui, sans-serif);
+  font-size: 17px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  transition: color calc(0.15s * var(--motion-scale)) ease;
+}
+.forge-quiet:hover { color: var(--p31-text-primary, #faf6ee); }
+.forge-quiet:focus-visible { outline: 3px solid var(--p31-text-primary, #faf6ee); outline-offset: 3px; }
+
+/* ── The one textarea ───────────────────────────────────────────────── */
+.forge-canvas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+  max-width: 34rem;
+  width: 100%;
+}
+.forge-textarea {
+  width: 100%;
+  min-height: 6rem;
+  max-height: 34dvh;
+  padding: 0.9rem 1.1rem;
+  background: var(--p31-surface, #241c14);
+  border: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  border-radius: var(--p31-radius-lg, 20px);
+  color: var(--p31-text, #faf6ee);
+  font-family: var(--p31-font-sans, system-ui, sans-serif);
+  font-size: 1rem;
+  line-height: 1.55;
+  resize: none;
+  outline: none;
+  transition: border-color calc(0.15s * var(--motion-scale)) ease, box-shadow calc(0.15s * var(--motion-scale)) ease;
+}
+.forge-textarea::placeholder { color: var(--p31-text-tertiary, #8a8276); }
+.forge-textarea:focus {
+  border-color: var(--p31-accent, #e2b74b);
+  box-shadow: 0 0 0 3px oklch(80% 0.16 75 / 0.22);
+}
+
+/* ── The brief card — a soft, warm panel ────────────────────────────── */
+.forge-card {
+  background: var(--p31-surface, #241c14);
+  border: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  border-radius: var(--p31-radius-lg, 20px);
+  padding: 1.25rem;
+  text-align: left;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.forge-card-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--p31-accent, #e2b74b);
+}
+.forge-card-title { font-size: 1.2rem; font-weight: 700; margin: 0; }
+.forge-card-goal { color: var(--p31-text-secondary, #cbbfae); font-size: 0.95rem; line-height: 1.5; margin: 0; }
+.forge-card-meta { color: var(--p31-text-tertiary, #8a8276); font-size: 0.85rem; margin: 0; }
+.forge-card-meta strong { color: var(--p31-text-secondary, #cbbfae); font-weight: 600; }
+
+/* ── The refine row — one line, gentle ──────────────────────────────── */
+.forge-refine {
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+}
+.forge-refine-input {
+  flex: 1;
+  min-height: var(--p31-touch-min, 48px);
+  padding: 0.75rem 1rem;
+  background: var(--p31-surface, #241c14);
+  border: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  border-radius: var(--p31-radius-full, 9999px);
+  color: var(--p31-text, #faf6ee);
+  font-family: var(--p31-font-sans, system-ui, sans-serif);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color calc(0.15s * var(--motion-scale)) ease;
+}
+.forge-refine-input:focus { border-color: var(--p31-accent, #e2b74b); }
+.forge-refine-btn {
+  min-height: var(--p31-touch-min, 48px);
+  padding: 0 1.25rem;
+  background: var(--p31-surface2, #3a2f1e);
+  border: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  border-radius: var(--p31-radius-full, 9999px);
+  color: var(--p31-text, #faf6ee);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.forge-refine-btn:hover { border-color: var(--p31-accent, #e2b74b); }
+.forge-refine-btn:disabled { opacity: 0.45; cursor: default; }
+
+/* ── The rendered surface ───────────────────────────────────────────── */
+.forge-surface {
+  width: 100%;
+  background: var(--p31-surface, #241c14);
+  border: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  border-radius: var(--p31-radius-lg, 20px);
+  padding: 1.25rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+.forge-gate {
+  display: inline-block;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--p31-radius-full, 9999px);
+}
+.forge-gate--pass { background: oklch(72% 0.16 145 / 0.18); color: var(--p31-accent-green, #7ed99b); }
+.forge-gate--incomplete,
+.forge-gate--needs-review { background: oklch(83% 0.16 65 / 0.18); color: var(--p31-accent, #e2b74b); }
+.forge-gate--needs-revision { background: oklch(68% 0.16 25 / 0.18); color: var(--p31-accent-red, #e48a80); }
+.forge-gate--unknown { background: oklch(100% 0.02 60 / 0.1); color: var(--p31-text-tertiary, #8a8276); }
+
+/* ── Next-gate — the specific, actionable fix for a non-passing run.
+   Never a wall: each collapsed axis names exactly what to change. ─── */
+.forge-nextgate {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  background: var(--p31-surface, #241c14);
+  border: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  border-radius: var(--p31-radius-lg, 20px);
+  text-align: left;
+}
+.forge-nextgate__title {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--p31-accent, #e2b74b);
+  margin: 0 0 0.5rem;
+}
+.forge-nextgate__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.forge-nextgate__item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+.forge-nextgate__axis {
+  flex-shrink: 0;
+  font-weight: 600;
+  color: var(--p31-text-secondary, #cbbfae);
+}
+.forge-nextgate__action {
+  color: var(--p31-text, #faf6ee);
+}
+
+/* ── Error — soft, warm, not alarming ───────────────────────────────── */
+.forge-error {
+  color: var(--p31-accent-red, #e48a80);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 30rem;
+}
+
+/* ── The quiet menu ─────────────────────────────────────────────────── */
+.studio__menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: oklch(17% 0.03 55 / 0.6);
+}
+.studio__menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(20rem, 88vw);
+  z-index: 95;
+  background: var(--p31-surface, #241c14);
+  border-left: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  animation: menu-in calc(0.2s * var(--motion-scale)) ease;
+}
+@keyframes menu-in { from { transform: translateX(100%); } to { transform: translateX(0); } }
+.studio__menu h2 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+  color: var(--p31-text-secondary, #cbbfae);
+  font-weight: 600;
+}
+.studio__menu button {
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--p31-text, #faf6ee);
+  font-family: var(--p31-font-sans, system-ui, sans-serif);
+  font-size: 0.95rem;
+  padding: 0.85rem 0.5rem;
+  min-height: var(--p31-touch-min, 48px);
+  border-radius: var(--p31-radius-md, 14px);
+  cursor: pointer;
+}
+.studio__menu button:hover:not(:disabled) { background: var(--p31-surface2, #3a2f1e); }
+.studio__menu button:disabled { opacity: 0.4; cursor: default; }
+.studio__menu hr {
+  border: none;
+  border-top: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  margin: 0.5rem 0;
+}
+.studio__menu-danger { color: var(--p31-accent-red, #e48a80) !important; }
+
+/* ── Wave 3 — the tier pill in the header ─────────────────────────────── */
+.studio__tier-pill {
+  min-height: var(--p31-touch-min, 48px);
+  padding: 0 1rem;
+  background: var(--p31-surface, #241c14);
+  border: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  border-radius: var(--p31-radius-full, 9999px);
+  color: var(--p31-accent, #e2b74b);
+  font-family: var(--p31-font-sans, system-ui, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color calc(0.15s * var(--motion-scale)) var(--p31-spring-effects),
+    box-shadow calc(0.15s * var(--motion-scale)) var(--p31-spring-effects),
+    transform calc(0.15s * var(--motion-scale)) var(--p31-spring-fast-spatial);
+}
+.studio__tier-pill:hover { border-color: var(--p31-accent, #e2b74b); box-shadow: 0 0 0 3px oklch(80% 0.16 75 / 0.14); }
+.studio__tier-pill:active { transform: scale(0.97); }
+
+/* ── Wave 3 — the quiet passkey door on the welcome ───────────────────── */
+.forge-auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.forge-auth-state {
+  font-size: 0.82rem;
+  color: var(--p31-accent-gold, #e2b74b);
+  letter-spacing: 0.03em;
+}
+
+/* ── Wave 3 — the warm upgrade prompt (never an error wall) ───────────── */
+.forge-upgrade {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--p31-surface, #241c14);
+  border: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  border-radius: var(--p31-radius-lg, 20px);
+  padding: 1.25rem;
+  text-align: center;
+}
+.forge-upgrade__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--p31-accent, #e2b74b);
+}
+.forge-upgrade__title { font-size: 1.25rem; font-weight: 700; margin: 0; }
+.forge-upgrade__copy {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--p31-text-secondary, #cbbfae);
+  max-width: 32ch;
+}
+
+/* ── Wave 3 — the plans panel (the tier table) ────────────────────────── */
+.studio__plans {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 95;
+  width: min(34rem, 92vw);
+  max-height: 86dvh;
+  overflow-y: auto;
+  background: var(--p31-surface, #241c14);
+  border: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  border-radius: var(--p31-radius-lg, 20px);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: plans-in calc(0.2s * var(--motion-scale)) var(--p31-spring-default-spatial) both;
+  box-shadow: 0 24px 64px oklch(17% 0.03 55 / 0.6);
+}
+@keyframes plans-in {
+  from { opacity: 0; transform: translate(-50%, -48%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+.studio__plans h2 { font-size: 1.15rem; margin: 0; color: var(--p31-text-primary, #faf6ee); }
+.studio__plans-intro {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--p31-text-secondary, #cbbfae);
+}
+.studio__plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.75rem;
+}
+.studio__plan {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  background: var(--p31-glass-bg, oklch(100% 0.02 60 / 0.05));
+  border: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  border-radius: var(--p31-radius-lg, 20px);
+  padding: 1rem;
+}
+.studio__plan--current { border-color: var(--p31-accent, #e2b74b); }
+.studio__plan-name { font-weight: 700; color: var(--p31-text-primary, #faf6ee); }
+.studio__plan-price { color: var(--p31-accent, #e2b74b); font-weight: 700; }
+.studio__plan-features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  color: var(--p31-text-secondary, #cbbfae);
+}
+.studio__plan-features li::before { content: '· '; color: var(--p31-accent, #e2b74b); }
+.studio__plan-current {
+  margin-top: 0.25rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p31-accent-gold, #e2b74b);
+}
+.studio__plans-close { align-self: center; min-width: 200px; }
+
+/* ── Lumi — the Forge's face (mirrors the Loom's grammar) ───────────── */
+.lumi-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  animation: lumi-bob calc(3s * var(--motion-scale)) ease-in-out infinite;
+}
+.lumi-anim { display: flex; align-items: center; justify-content: center; }
+.lumi { width: 132px; height: 132px; animation: none; }
+@keyframes lumi-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.lumi-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--p31-radius-full, 9999px);
+  background: radial-gradient(circle, oklch(80% 0.16 75 / 0.38), transparent 70%);
+  filter: blur(10px);
+  transform: scale(1);
+  transition: transform calc(0.6s * var(--motion-scale)) ease, opacity calc(0.6s * var(--motion-scale)) ease;
+  pointer-events: none;
+}
+.lumi-wrap--greeting .lumi-glow { transform: scale(1.18); }
+.lumi-wrap--wave .lumi-anim { animation: lumi-wave calc(1.8s * var(--motion-scale)) ease-in-out; }
+@keyframes lumi-wave {
+  0% { transform: rotate(0deg); }
+  12% { transform: rotate(-9deg); }
+  26% { transform: rotate(7deg); }
+  40% { transform: rotate(-6deg); }
+  54% { transform: rotate(4deg); }
+  68% { transform: rotate(-2deg); }
+  82% { transform: rotate(1deg); }
+  100% { transform: rotate(0deg); }
+}
+.lumi-wrap--calm { animation: lumi-bob calc(6s * var(--motion-scale)) ease-in-out infinite; }
+/* Thinking — the working state. Slower bob + a breathing glow, no smile.
+ * Transform-only; the glow breathes via opacity on the (already-composited)
+ * glow span, never the SVG. */
+.lumi-wrap--thinking .lumi-anim { animation: lumi-bob calc(4.5s * var(--motion-scale)) ease-in-out infinite; }
+.lumi-wrap--thinking .lumi-glow {
+  animation: lumi-think calc(2.4s * var(--motion-scale)) ease-in-out infinite;
+}
+@keyframes lumi-think {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 0.95; transform: scale(1.06); }
+}
+.lumi-body { fill: var(--p31-accent, #e2b74b); }
+.lumi-face, .lumi-face--hidden { transition: opacity calc(0.3s * var(--motion-scale)) ease; }
+.lumi-face { opacity: 1; }
+.lumi-face--hidden { opacity: 0; }
+
+/* ── Step indicator — dots + text, hidden on the welcome ────────────── */
+.studio__steps {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1.25rem 0.9rem;
+}
+.studio__dots { display: flex; gap: 0.3rem; }
+.studio__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--p31-radius-full, 9999px);
+  background: var(--p31-surface2, #3a2f1e);
+  transition: background calc(0.2s * var(--motion-scale)) var(--p31-spring-effects);
+}
+.studio__dot.done { background: var(--p31-accent-gold, #e2b74b); }
+.studio__dot.active { background: var(--p31-accent, #e2b74b); box-shadow: 0 0 10px oklch(80% 0.16 75 / 0.5); }
+.studio__steps-text {
+  font-size: 0.78rem;
+  color: var(--p31-text-tertiary, #8a8276);
+  letter-spacing: 0.04em;
+}
+
+/* ── Chapter transition — a transform-only fade-rise on entry ───────── */
+.studio__chapter { animation: chapter-in calc(0.28s * var(--motion-scale)) var(--p31-spring-default-spatial) both; }
+@keyframes chapter-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Celebration pulse — a translucent amber ring blooming from Lumi once.
+   Drives the "celebrated" beat via animationend (reduced-motion collapses to
+   ~instant with no separate code path). ─────────────────────────────── */
+.chapter-pulse {
+  position: absolute;
+  inset: -24px;
+  border-radius: var(--p31-radius-full, 9999px);
+  background: radial-gradient(circle, oklch(80% 0.16 75 / 0.5), transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+}
+.chapter-pulse--active { animation: chapter-pulse-out calc(1.2s * var(--motion-scale)) ease-out; }
+@keyframes chapter-pulse-out {
+  0% { opacity: 0.6; transform: scale(0.7); }
+  60% { opacity: 0.25; transform: scale(1.15); }
+  100% { opacity: 0; transform: scale(1.3); }
+}
+.forge-celebration { color: var(--p31-accent, #e2b74b); font-size: 1.25rem; font-weight: 700; }
+
+/* ── Refinement thread — the visible conversation under the brief card ─
+   Capped so it never pushes the action bar off-screen. */
+.forge-thread {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 30dvh;
+  overflow-y: auto;
+}
+.forge-thread-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--p31-text-tertiary, #8a8276);
+}
+.forge-thread-turn {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--p31-radius-lg, 20px);
+  max-width: 85%;
+}
+.forge-thread-turn--human {
+  background: var(--p31-surface2, #3a2f1e);
+  align-self: flex-end;
+  border-bottom-right-radius: var(--p31-radius-sm, 8px);
+}
+.forge-thread-turn--agent {
+  background: var(--p31-surface, #241c14);
+  border: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  align-self: flex-start;
+  border-bottom-left-radius: var(--p31-radius-sm, 8px);
+}
+
+/* ── Schema chapter — the readable Layer 2 ──────────────────────────── */
+.forge-schema {
+  width: 100%;
+  background: var(--p31-surface, #241c14);
+  border: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  border-radius: var(--p31-radius-lg, 20px);
+  padding: 1.25rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.forge-schema-title { font-size: 1.1rem; font-weight: 700; margin: 0; }
+.forge-schema-meta { color: var(--p31-text-secondary, #cbbfae); font-size: 0.85rem; margin: 0; }
+.forge-schema-desc { color: var(--p31-text-secondary, #cbbfae); font-size: 0.9rem; line-height: 1.5; margin: 0; }
+.forge-schema-code {
+  font-family: var(--p31-font-mono, monospace);
+  font-size: 0.72rem;
+  background: var(--p31-bg, #1a1410);
+  border-radius: var(--p31-radius-md, 14px);
+  padding: 0.75rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  max-height: 12rem;
+  overflow-y: auto;
+  color: var(--p31-text-secondary, #cbbfae);
+}
+.forge-schema-details { margin: 0; }
+.forge-schema-details summary {
+  cursor: pointer;
+  min-height: var(--p31-touch-min, 48px);
+  display: inline-flex;
+  align-items: center;
+  color: var(--p31-text-tertiary, #8a8276);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ── Welcome memory line — "You were working on <title>" ────────────── */
+.forge-memory {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--p31-accent-gold, #e2b74b);
+}
+
+/* ── Clarify gate — the thin-brief questions (48px floor) ───────────── */
+.forge-clarify {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.forge-clarify-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--p31-accent, #e2b74b);
+}
+.forge-clarify-intro {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--p31-text-secondary, #cbbfae);
+  max-width: 30ch;
+}
+.forge-clarify-q {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  background: var(--p31-surface, #241c14);
+  border: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  border-radius: var(--p31-radius-lg, 20px);
+  padding: 0.85rem 1rem;
+}
+.forge-clarify-q.done { border-color: var(--p31-accent-green, #7ed99b); }
+.forge-clarify-prompt { margin: 0; font-size: 0.95rem; font-weight: 600; }
+.forge-clarify-row { display: flex; gap: 0.5rem; }
+.forge-clarify-input {
+  flex: 1;
+  min-height: var(--p31-touch-min, 48px);
+  padding: 0.6rem 0.9rem;
+  background: var(--p31-surface2, #3a2f1e);
+  border: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  border-radius: var(--p31-radius-full, 9999px);
+  color: var(--p31-text, #faf6ee);
+  font-family: var(--p31-font-sans, system-ui, sans-serif);
+  font-size: 0.9rem;
+  outline: none;
+}
+.forge-clarify-input:focus { border-color: var(--p31-accent, #e2b74b); }
+.forge-clarify-send {
+  min-height: var(--p31-touch-min, 48px);
+  padding: 0 1.25rem;
+  background: var(--p31-accent, #e2b74b);
+  border: none;
+  border-radius: var(--p31-radius-full, 9999px);
+  color: var(--p31-bg, #1a1410);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.forge-clarify-send:disabled { opacity: 0.45; cursor: default; }
+.forge-clarify-answered { color: var(--p31-accent-green, #7ed99b); font-size: 0.82rem; font-weight: 600; }
+.forge-clarify-skipall {
+  align-self: flex-start;
+  min-height: var(--p31-touch-min, 48px);
+  padding: 0 0.5rem;
+  border: none;
+  background: none;
+  color: var(--p31-text-secondary, #cbbfae);
+  font-family: var(--p31-font-sans, system-ui, sans-serif);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.forge-clarify-skipall:hover { color: var(--p31-text-primary, #faf6ee); }
+
+/* ── CTA validation prompt — warm, not a red alert ──────────────────── */
+.forge-hint {
+  color: var(--p31-accent, #e2b74b);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 30rem;
+}
+/* ── StageTrace — the glass-box thinking block (DeepSeek/Claude pattern) ─
+   One-line agent blurbs with a dropdown into the paragraph detail. The
+   header collapses the whole block to a summary once the run finishes. ── */
+.stagetrace {
+  width: 100%;
+  background: var(--p31-surface, #241c14);
+  border: 1px solid var(--p31-glass-border, oklch(100% 0.02 60 / 0.12));
+  border-radius: var(--p31-radius-lg, 20px);
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+}
+.stagetrace-head {
+  width: 100%;
+  min-height: var(--p31-touch-min, 48px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--p31-text, #faf6ee);
+  cursor: pointer;
+  padding: 0.4rem 0.5rem;
+  font-family: var(--p31-font-sans, system-ui, sans-serif);
+}
+.stagetrace-head__title { font-weight: 600; font-size: 0.95rem; }
+.stagetrace-head__summary { color: var(--p31-accent-green, #7ed99b); font-size: 0.85rem; font-weight: 600; }
+.stagetrace-head__expand { color: var(--p31-text-tertiary, #8a8276); font-weight: 500; }
+.stagetrace-head__chevron { color: var(--p31-text-tertiary, #8a8276); font-size: 0.85rem; }
+.stagetrace-list {
+  list-style: none;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  max-height: 40dvh;
+  overflow-y: auto;
+}
+.stagetrace-row { display: block; }
+.stagetrace-row__summary {
+  min-height: var(--p31-touch-min, 48px);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.45rem 0.5rem;
+  border-radius: var(--p31-radius-md, 14px);
+  font-size: 0.9rem;
+  color: var(--p31-text, #faf6ee);
+}
+.stagetrace-row--running .stagetrace-row__summary { background: var(--p31-surface2, #3a2f1e); }
+.stagetrace-row--running .stagetrace-row__label { color: var(--p31-text-secondary, #cbbfae); }
+.stagetrace-row--streaming .stagetrace-row__label { color: var(--p31-accent, #e2b74b); }
+.stagetrace-glyph { width: 1.1em; color: var(--p31-accent, #e2b74b); flex-shrink: 0; }
+.stagetrace-row--done .stagetrace-glyph { color: var(--p31-accent-green, #7ed99b); }
+.stagetrace-row__label { font-weight: 600; }
+.stagetrace-row__sum { color: var(--p31-text-tertiary, #8a8276); font-size: 0.82rem; margin-left: auto; text-align: right; }
+.stagetrace-row__dur { color: var(--p31-text-tertiary, #8a8276); font-size: 0.75rem; flex-shrink: 0; }
+.stagetrace-row__badge {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--p31-accent, #e2b74b);
+  flex-shrink: 0;
+}
+.stagetrace-row__detail { padding: 0 0.5rem 0.6rem 2rem; }
+.stagetrace-detail {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--p31-text-secondary, #cbbfae);
+}
+
+/* Skeleton rows — the same geometry as a live row, rendered up front so the
+   timeline is stable from the first frame (no shift when events arrive). */
+.stagetrace-row--pending .stagetrace-row__summary {
+  min-height: var(--p31-touch-min, 48px);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: var(--p31-radius-md, 14px);
+  font-size: 0.9rem;
+  background: oklch(100% 0.02 60 / 0.04);
+  color: var(--p31-text-tertiary, #8a8276);
+}
+.stagetrace-row--pending .stagetrace-glyph { color: var(--p31-text-tertiary, #8a8276); }
+
+/* The 4-step pipeline progress bar — a position, not a spinner. */
+.stagetrace-progress {
+  display: flex;
+  gap: 0.35rem;
+  margin: 0.6rem 0 0.25rem;
+}
+.stagetrace-progress__step {
+  flex: 1;
+  height: 3px;
+  border-radius: var(--p31-radius-full, 9999px);
+  background: oklch(100% 0.02 60 / 0.14);
+  transition: background 200ms ease;
+}
+.stagetrace-progress__step.is-done {
+  background: var(--p31-accent-green, #7ed99b);
+}
+.stagetrace-progress__step.is-current {
+  background: var(--p31-accent, #e2b74b);
+  animation: stagetrace-progress-pulse calc(1.2s * var(--motion-scale)) ease-in-out infinite;
+}
+@keyframes stagetrace-progress-pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+/* Success pulse on completion — transform-only, scaled by --motion-scale. */
+.stagetrace--pulse {
+  animation: stagetrace-pulse 0.45s ease;
+}
+@keyframes stagetrace-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.015); }
+  100% { transform: scale(1); }
+}
+
+/* ── The conversation timeline — one column, chat-flow, glass box. ──── */
+.forge-timeline {
+  width: 100%;
+  max-width: 46rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: stretch;
+}
+.forge-msg {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+.forge-msg__from {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.forge-msg__name {
+  font-size: 0.8rem;
+  color: var(--p31-text-tertiary, #8a8276);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.forge-msg .forge-schema { text-align: left; }

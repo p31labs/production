@@ -1,0 +1,42 @@
+{
+  "name": "@p31ca/forge-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for the P31 Forge — generate themed, evidence-blocked documents from any MCP client.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "p31-forge-mcp": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md",
+    "server.json"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build && npm run test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0",
+    "vitest": "^3.0.0"
+  },
+  "mcpName": "com.p31ca/forge-mcp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/p31labs/P31-local-workspace.git",
+    "directory": "packages/forge-mcp"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

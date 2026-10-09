@@ -17,7 +17,7 @@ import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { execSync } from 'node:child_process'
 
-const gate = resolve('/home/p31/P31-local-workspace/packages/design-core/scripts/token-audit.mjs')
+const gate = resolve('/home/p31/production/packages/design-core/scripts/token-audit.mjs')
 const tmp = mkdtempSync(join(tmpdir(), 'forge-token-audit-nc-'))
 
 let failed = true

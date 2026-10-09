@@ -1,0 +1,12 @@
+name = "btcpay-gateway"
+main = "src/index.ts"
+compatibility_date = "2026-09-02"
+compatibility_flags = ["nodejs_compat"]
+
+# Secrets (set via `wrangler secret put`):
+#   BTCPAY_URL      — base URL of the BTCPay Server (e.g. https://pay.example.com)
+#   BTCPAY_API_KEY  — Greenfield API key (btcpay.store.cancreateinvoice + canviewinvoices)
+#   BTCPAY_STORE_ID — store GUID
+
+[observability]
+enabled = true

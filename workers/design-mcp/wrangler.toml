@@ -1,0 +1,12 @@
+name = "p31-design-mcp"
+main = "src/index.ts"
+compatibility_date = "2026-07-26"
+
+[observability]
+enabled = true
+
+# Enterprise-Managed Authorization (Okta XAA) — optional. When set, the worker
+# validates incoming XAA assertions. Leave empty for public/stateless mode.
+[vars]
+XAA_ISSUER = ""
+XAA_AUD = ""

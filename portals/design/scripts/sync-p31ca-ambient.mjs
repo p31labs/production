@@ -15,8 +15,8 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DESIGN_ROOT = path.resolve(__dirname, '..');
-const P31CA = '/home/p31/P31-local-workspace/apps/p31ca/src';
-const CONTROLS = '/home/p31/P31-local-workspace/packages/controls/src';
+const P31CA = '/home/p31/production/apps/p31ca/src';
+const CONTROLS = '/home/p31/production/packages/controls/src';
 const VENDOR = path.join(DESIGN_ROOT, 'vendor', 'p31ca-ambient');
 
 const copies = [
@@ -319,7 +319,7 @@ fs.writeFileSync(path.join(VENDOR, 'package.json'), JSON.stringify(pkg, null, 2)
 // 5) sync stamp
 fs.writeFileSync(path.join(VENDOR, 'sync.json'), JSON.stringify({
   syncedAt: new Date().toISOString(),
-  canon: '/home/p31/P31-local-workspace/apps/p31ca/src',
+  canon: '/home/p31/production/apps/p31ca/src',
   files: copies.map(([, , d]) => d).concat(['src/stores/themeStore.ts']),
 }, null, 2) + '\n');
 

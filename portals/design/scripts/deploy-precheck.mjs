@@ -43,7 +43,7 @@ const preview = spawn('npx', ['vite', 'preview', '--port', '5190', '--strictPort
 try {
   await new Promise((r) => setTimeout(r, 4000));
   execSync(
-    `node /home/p31/P31-local-workspace/tools/design-parity/layout-invariants.mjs http://localhost:5190`,
+    `node /home/p31/production/tools/design-parity/layout-invariants.mjs http://localhost:5190`,
     { cwd: DESIGN_DIR, stdio: 'inherit', timeout: 60_000 },
   );
 } catch (e) {
@@ -59,7 +59,7 @@ console.log('✓ deploy-precheck: structural layout gate passed');
 // documented Wave-B adapter debt; Topbar is grandfathered pending P7b.
 try {
   execSync(
-    'node /home/p31/P31-local-workspace/tools/canon-audit/canon-source-audit.mjs --target /home/p31/production/portals/design/src --allow production/portals/design/src/tokens.css,production/portals/design/src/surfaces/ambient.css,production/portals/design/src/components/Topbar.tsx',
+    'node /home/p31/production/tools/canon-audit/canon-source-audit.mjs --target /home/p31/production/portals/design/src --allow production/portals/design/src/tokens.css,production/portals/design/src/surfaces/ambient.css,production/portals/design/src/components/Topbar.tsx',
     { cwd: DESIGN_DIR, stdio: 'inherit', timeout: 60_000 },
   );
 } catch {
@@ -72,8 +72,8 @@ console.log('✓ deploy-precheck: fork gate passed');
 // token discipline + baseline governance. Previously registered but never
 // invoked (furniture); now enforced here.
 for (const gate of [
-  ['token-audit', 'node /home/p31/P31-local-workspace/packages/design-core/scripts/token-audit.mjs'],
-  ['canon-purity', 'node /home/p31/P31-local-workspace/packages/design-core/scripts/canon-purity.mjs'],
+  ['token-audit', 'node /home/p31/production/packages/design-core/scripts/token-audit.mjs'],
+  ['canon-purity', 'node /home/p31/production/packages/design-core/scripts/canon-purity.mjs'],
   ['image-distinctness', 'node tests/acceptance/check-image-distinctness.mjs'],
   ['acceptance-ratchet', 'node tests/acceptance/ratchet.mjs 5'],
 ]) {
