@@ -75,11 +75,22 @@ for (const f of readdirSync(contractsDir)) {
 // CSS actually uses: dash variants (`cls-*`), BEM elements (`cls__*`), and BEM
 // modifiers (`cls--*`). The old `cls + '-'` guess missed BEM children, e.g.
 // `.spoon-btn` under `.spoon-dial`, `.notif-toast__body` under `.notif-stack`.
+//
+// Child classes: components that render sibling classes with a DIFFERENT prefix
+// than their cssClass (TSX-verified — see token-consumption-matcher-bugs.md).
+// Until registry.json carries a childClasses array (blocked on the catalog
+// pipeline reconciliation), keep this small explicit map keyed by cssClass.
+const CHILD_CLASSES = {
+  'spoon-dial': ['spoon-btn', 'spoon-dot', 'spoon-crisis-btn'],
+  'notif-stack': ['notif-toast'],
+  'page-header-route': ['page-lede', 'page-actions', 'hero-eyebrow'],
+  'section-strip': ['section-tab'],
+};
+
 const belongs = (cname, cls) =>
-  cname === cls ||
-  cname.startsWith(cls + '-') ||
-  cname.startsWith(cls + '__') ||
-  cname.startsWith(cls + '--');
+  [cls, ...(CHILD_CLASSES[cls] || [])].some(
+    (b) => cname === b || cname.startsWith(b + '-') || cname.startsWith(b + '__') || cname.startsWith(b + '--'),
+  );
 
 let missingComponents = 0;
 const unconsumed = [];
