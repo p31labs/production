@@ -80,3 +80,31 @@ StatusBadge under-claims (CSS uses, contract omits): --p31-text-xs, --p31-accent
 ## Topbar (topbar) over-claims: --p31-accent-gold, --p31-accent-green
 Topbar under-claims (CSS uses, contract omits): --p31-glass-blur, --p31-text, --p31-glass-shadow, --p31-glass-radius, --p31-space-tiny, --p31-space-xs, --p31-space-sm, --p31-z-topbar, --p31-duration-fast, --p31-easing-standard, --p31-scale-lg, --p31-space-2, --p31-text-primary, --p31-text-sm
 --p31-accent-alt, --p31-glass-bg-overlay, --p31-glass-border-strong-hover, --p31-glow-cyan, --p31-glow-neon, --p31-glow-magenta, --p31-glow-violet, --p31-glow-amber, --p31-glow-mint, --p31-glow-coral, --p31-neon-dim, --p31-neon-cyan, --p31-neon-magenta, --p31-neon-violet, --p31-neon-amber, --p31-neon-mint, --p31-neon-coral, --p31-neon-orange, --p31-neon-blue, --p31-neon-lavender … +142
+---
+
+## Adjudication (subagent, 2026-10-09)
+
+The 26 "over-claims" are **not** a clean drop/add pass. They decompose into:
+
+1. **NO-CSS (14 components)** — CalmIndicator, CalmOverlay, CandyHeader, Checkbox,
+   CommandTrigger, Crown, Dropdown, Footer, MobileBottomNav, ModePill, SidebarNav,
+   SpoonCluster, StatusCluster, TopbarSection. Their `cssClass` appears in **no**
+   `design-core/src/css/*.css`. The consuming CSS is absent (portal shell, web-component
+   shadow root, or unwritten). These are an **implementation gap**, not a contract bug —
+   do not drop tokens on this evidence alone.
+2. **CSS-VIOLATION** — BottomNav (`height:64px` should be `var(--p31-topbar-height)`),
+   CrisisOverlay (`z-index:9999` ≠ `--p31-z-crisis`), SectionStrip (`border-radius:9999px`
+   should be `var(--p31-radius-candy)`), NotificationStack (flat `--p31-text`/`--p31-surface`
+   used instead of semantic). Fix the CSS, not the contract.
+3. **KEEP (false positive)** — tokens consumed via a child class or imperative JS that the
+   static matcher misses (Starfield's `mountStarfield()`, CrisisOverlay's `.p31-crisis-button`,
+   SectionStrip's `.section-tab`, SpoonDial's `.spoon-btn`, NotificationStack's `.notif-toast*`,
+   PageHeader's `.page-lede`).
+4. **DROP (genuine inherited)** — Badge `--p31-font-sans`, Topbar `--p31-accent-gold/green`,
+   NotificationStack `--p31-accent-gold`.
+
+Two systematic gate defects were found (see fix-plan `token-consumption-matcher-bugs.md`):
+the child-class naming gap and the selector-group pollution (Topbar's +142 under-claims are
+regex artifacts, not real tokens). Plus: most under-claims are flat-only tokens with no
+`SEMANTIC_MAP` DTCG path — they cannot be added to a contract verbatim; each needs a new
+semantic slot first.
