@@ -1,8 +1,8 @@
 {
-  "comment": "Design-vocabulary synonym map — canonical component name → alternates. Search expands queries through this ring so 'primary button' resolves to Button, not a blog post. Hand-curated; regenerate with gen-synonyms.mjs when the catalog grows.",
   "Button": ["primary button", "CTA", "call to action", "action button", "click target", "submit"],
   "Badge": ["chip", "tag", "label", "pill"],
   "GlassCard": ["card", "glass panel", "surface", "tile", "feature card"],
+  "Card": ["card", "container", "surface", "box", "tile", "panel"],
   "GlassPanel": ["panel", "section", "surface", "container", "elevated surface"],
   "SpoonDial": ["spoon", "spoons", "cognitive load", "energy level", "accessibility control"],
   "SpoonCluster": ["spoon", "spoons", "energy"],
@@ -25,7 +25,6 @@
   "Checkbox": ["check", "selection", "toggle checkbox"],
   "Chameleon": ["theme switcher", "brand switcher", "mode switcher"],
   "Starfield": ["stars", "space", "ambient", "background animation"],
-  "Dome": ["geodesic dome", "spaceship", "cockpit", "LED"],
   "ModePill": ["mode", "theme pill", "spark pill"],
   "CalmIndicator": ["calm", "sensory", "state"],
   "StatusCluster": ["status cluster", "status group"],
