@@ -39,20 +39,48 @@ under names that either collide with the scope (`p31ca`) or are codenames
 
 1. Marked all four `private: true` (they are apps/workers, not publishable
    libraries).
-2. `pnpm deprecate`d all four (unpublish returned 403 — npm's publish-protection
-   policy; deprecation is the recoverable signal).
-3. Add a **pre-publish guard**: fail `pnpm -r publish` if any non-`@p31ca/`
-   package is non-private. (See below — not yet implemented.)
+2. `pnpm deprecate`d all four. Unpublish 403'd — see "Root cause of the 403"
+   below; deprecation is the recoverable signal.
+3. Added `scripts/check-publish-surface.mjs` — a pre-publish guard that derives
+   the publish surface from `pnpm-workspace.yaml` (self-syncing) and fails on any
+   non-private package not scoped `@p31ca/`. Wired into `pnpm gate` AND the new
+   `publish:release` script (which runs the guard + scope gate + full gate before
+   `pnpm -r publish`). Negative control verified (`tools/__pubctrl` → exit 1).
+
+## Root cause of the unpublish 403
+
+`npm unpublish` and `pnpm unpublish` both returned 403 `Forbidden`, and
+`npm profile get` returned the same. The registry notice explains it:
+
+> npm tokens that bypass 2FA are being restricted for account changes and
+> direct publishing. Learn how to prepare: https://gh.io/npm-gat-bypass2fa-deprecation
+
+The `classicwilly` account authenticates with a **2FA-bypassing automation
+token** (granular access token). npm now blocks such tokens from *account
+changes* (`profile get`, `unpublish`) while still allowing *package writes*
+(`publish`, `deprecate`). That is why deprecation succeeded but unpublish did
+not — it is a token-permission policy, **not** the 72-hour window or a
+downloads limit.
+
+**Release-workflow risk:** the same notice says these tokens are also being
+restricted for **direct publishing**. When that lands, the current token will
+stop being able to `pnpm publish` at all. Before the next release, re-auth with a
+2FA-bound token (`npm login` interactively with 2FA, or a token with TFA mode
+`auth-and-writes`), or migrate to OIDC / trusted publishing.
 
 ## Remaining
 
-Add `scripts/check-publish-surface.mjs`: walk `packages apps workers portals
-monetization`, fail if any `name` does not start with `@p31ca/` and is not
-`private`. Wire into the root `gate`. (Implemented 2026-10-10.)
+- **Unpublish (optional, blocked on token):** to actually remove the four
+  orphaned names, authenticate with a 2FA-bound token and retry
+  `npm unpublish <name>@<version> --force`. Without it, they stay deprecated.
+- **Publishing token migration (required before next release):** replace the
+  2FA-bypass token with a 2FA-bound token or OIDC trusted publishing; otherwise
+  `publish:release` will fail when npm completes the direct-publishing
+  restriction.
 
 ## Impact
 
-- Four orphaned unscoped names now sit deprecated on npm. They cannot be
-  unpublished (403) — same class as the lost original npm scope: resolvable, not
-  removable.
-- Any future `pnpm -r publish` without the guard re-exposes this class of bug.
+- Four orphaned unscoped names now sit deprecated on npm (resolvable, not
+  removable without a 2FA-bound token).
+- The guard + `publish:release` make a bare `pnpm -r publish` impossible to run
+  without first passing the publish-surface and scope checks.

@@ -15,11 +15,22 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ROOT = new URL('..', import.meta.url).pathname;
-const DIRS = ['packages', 'apps', 'workers', 'portals', 'monetization'];
+
+// Derive the publish surface from pnpm-workspace.yaml so the guard can never
+// drift from the workspace config. We only support the `base/*` glob form the
+// root workspace uses; nested workspaces (portals/, shell/, monetization/,
+// apps/counterscale) carry their own pnpm-workspace.yaml and are NOT part of
+// this surface — pnpm -r publish from the root never traverses into them.
+const ws = readFileSync(join(ROOT, 'pnpm-workspace.yaml'), 'utf8');
+const baseDirs = ws
+  .split('\n')
+  .filter((l) => /^\s*-\s+\S+\/\*/.test(l))
+  .map((l) => l.trim().replace(/^-\s*/, '').replace(/\/\*$/, ''))
+  .filter(Boolean);
 
 const offenders = [];
-for (const d of DIRS) {
-  const dir = join(ROOT, d);
+for (const base of baseDirs) {
+  const dir = join(ROOT, base);
   if (!existsSync(dir)) continue;
   for (const entry of readdirSync(dir)) {
     const p = join(dir, entry, 'package.json');
@@ -28,7 +39,7 @@ for (const d of DIRS) {
     try { j = JSON.parse(readFileSync(p, 'utf8')); } catch { continue; }
     if (!j.name || j.private) continue;
     if (j.name.startsWith('@p31ca/')) continue;
-    offenders.push(`${j.name} (${dir}/${entry})`);
+    offenders.push(`${j.name} (${base}/${entry})`);
   }
 }
 

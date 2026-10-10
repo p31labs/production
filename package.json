@@ -21,7 +21,8 @@
     "mcp:manage": "node /home/p31/.config/opencode/mcp-manager.mjs",
     "theme-check": "node scripts/theme-check.mjs",
     "fleet": "node scripts/fleet.mjs",
-    "gate:negative": "node scripts/negative-controls.mjs"
+    "gate:negative": "node scripts/negative-controls.mjs",
+    "publish:release": "node scripts/check-publish-surface.mjs && node scripts/check-p31-scope.mjs && pnpm gate && pnpm -r publish --access public --no-git-checks"
   },
   "packageManager": "pnpm@11.28.5"
 }
