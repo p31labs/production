@@ -18,7 +18,36 @@ colors:
     primary: "oklch(0.95 0.02 230)"
     secondary: "oklch(0.78 0.02 235)"
 typography:
-  fontFamily: "Space Grotesk"
+  display:
+    fontFamily: Space Grotesk
+    fontSize: 96px
+    fontWeight: 800
+    lineHeight: 1.05
+  h1:
+    fontFamily: Space Grotesk
+    fontSize: 51px
+    fontWeight: 700
+    lineHeight: 1.1
+  h2:
+    fontFamily: Space Grotesk
+    fontSize: 38px
+    fontWeight: 700
+    lineHeight: 1.2
+  body:
+    fontFamily: Space Grotesk
+    fontSize: 16px
+    fontWeight: 400
+    lineHeight: 1.5
+  caption:
+    fontFamily: Space Grotesk
+    fontSize: 14px
+    fontWeight: 500
+    lineHeight: 1.4
+  mono:
+    fontFamily: JetBrains Mono
+    fontSize: 14px
+    fontWeight: 500
+    lineHeight: 1.4
 spacing:
   xs: "4px"
   sm: "8px"

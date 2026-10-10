@@ -212,6 +212,10 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
+  '@babel/runtime@7.29.10':
+    resolution: {integrity: sha512-NpugTzbKgGrNe45Ui32cN8vCFFMxVtP/9rtfwv0nP5FRDAjvYBxJcLVpYA9mr1jxP6cnIT7x9LUzuDTbWYYNRA==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/runtime@7.29.7':
     resolution: {integrity: sha512-Nq8OhGWiZIZGV6hLHoyAKLLcJihP/xFeBMGJoUrxTX2psI8dCifzLhZISFb+VWS3wFMRDmCGw5R+dOySCqPLhw==}
     engines: {node: '>=6.9.0'}
@@ -917,7 +921,7 @@ packages:
     version: 0.2.0
 
   '@p31ca/design-core@file:vendor/p31-design-core-3.0.1.tgz':
-    resolution: {integrity: sha512-/mT6MkfkRMAfYs2m488/V6+dQogZxq7RtOdz8R4j8dm0U3gPveJFaF2B4vFuVsTA6i0i647i8SoU/MwLS+VPww==, tarball: file:vendor/p31-design-core-3.0.1.tgz}
+    resolution: {integrity: sha512-45ZTKYGqDRF7XVrwpBQcVbKOR+afJc60+tD/w6caaN9ZTAWZvbzEdsE0QEyib7c5eXj5o+1OBD7jxfxF/c4cEA==, tarball: file:vendor/p31-design-core-3.0.1.tgz}
     version: 3.0.1
     peerDependencies:
       '@p31ca/canon': 0.2.0
@@ -4025,6 +4029,8 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/helper-plugin-utils': 7.29.7
 
+  '@babel/runtime@7.29.10': {}
+
   '@babel/runtime@7.29.7': {}
 
   '@babel/template@7.29.7':
@@ -4702,7 +4708,7 @@ snapshots:
   '@testing-library/dom@10.4.1':
     dependencies:
       '@babel/code-frame': 7.29.7
-      '@babel/runtime': 7.29.7
+      '@babel/runtime': 7.29.10
       '@types/aria-query': 5.0.4
       aria-query: 5.3.0
       dom-accessibility-api: 0.5.16
