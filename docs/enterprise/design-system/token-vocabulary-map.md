@@ -12,36 +12,59 @@ owner: will
 
 Decision (locked 2026-10-10): migrate CLI tooling to `p31.*` DTCG.
 
-## Category-level translation (machine-readable rules)
+## The four-layer bridge (corrected 2026-10-10)
 
-The generator applies these rules to each yml leaf; any leaf matching no rule
-goes to the gaps list. **Canonical target is always the nested semantic form**
-(from `SEMANTIC_MAP`); the flat `p31.*-*` forms are non-canonical aliases and
-are NOT emitted. `{name}`/`{rest}` = token's own tail, snake_case → dot.
+The prior "17 rules" were **guessed** and produced non-existent paths
+(`p31.accent.cyan` does not exist). The real relationship is four layers of ONE
+pipeline, bridged by `SEMANTIC_MAP` (source: `theme-store.ts`):
 
-| # | yml rule | p31 target (nested, canonical) |
-|---|---|---|
-| 1 | `primitive.color.{cyan,violet,gold,green,red,iris}` | `p31.accent.{name}` |
-| 2 | `primitive.color.glass_{rest}` | `p31.glass.{rest}` |
-| 3 | `primitive.color.{surface,surface2,void,void_deep,void_s1..s4}` | `p31.{surface,void,...}` |
-| 4 | `primitive.color.neon_{rest}` | `p31.neon.{rest}` |
-| 5 | `primitive.color.starfield_{rest}` | `p31.starfield.{rest}` |
-| 6 | `primitive.color.text_tertiary` | `p31.text.tertiary` |
-| 7 | `primitive.radius.xl` | `p31.radius.xl` |
-| 8 | `primitive.typography.{font_sans,font_mono}` | `p31.font.{sans,mono}` |
-| 9 | `spacing.{name}` | `p31.layout.spacing.{name}` |
-| 10 | `z_index.{name}` | `p31.z.{name}` |
-| 11 | `animation.duration.{name}` | `p31.duration-{name}` |
-| 12 | `animation.easing.{name}` | `p31.easing-{name}` |
-| 13 | `touch.{name}` | `p31.touch-{name}` |
-| 14 | `scale.{name}` | `p31.scale.{name}` |
-| 15 | `typography.font_family.{name}` | `p31.font.family.{name}` |
-| 16 | `color.quantum.{name}` | `p31.quantum-{name}` |
-| 17 | `border.radius.{name}` | `p31.radius.{name}` |
+```
+short name         accent                       ← componentDefs.ts / registry.json
+semantic path      color.accent.default         ← SEMANTIC_MAP key
+DTCG path          p31.color.accent.default     ← tokens.dtc.json  (p31. + semantic path)
+CSS var            --p31-accent                 ← dist/tokens.css  (flat, palette)
+```
 
-> The `{rest}`/`{name}` targets with a dash (`duration-{name}`, `touch-{name}`,
-> `quantum-{name}`) are the p31 flat-form category names; the generator emits
-> them nested (`p31.duration.fast`) regardless, per the "nested output" rule.
+`SEMANTIC_MAP['color.accent.default'] = { palette: 'accent' }` is the literal
+bridge: the `palette` field names the CSS var; the key is the semantic path.
+
+**Verified facts:**
+
+- 85 `SEMANTIC_MAP` keys; 79 map to a real DTCG path (`p31.${semPath}`); the
+  6 that don't (`type.emphasized.*`) are css-dependent/non-portable, dropped
+  intentionally by `gen-tokens.mjs`.
+- **8 palettes are ambiguous** — one short name → many semantic paths:
+
+| short name | maps to |
+|---|---|
+| `accent` | `color.action.primary`, `color.action.primary-hover`, `color.accent.default`, `color.accent.muted` |
+| `accent-gold` / `-green` / `-red` / `-violet` | `color.accent.{x}.default`, `color.accent.{x}.muted` |
+| `glass-bg` | `color.action.ghost-hover`, `glass.background` |
+| `surface2` | `color.action.secondary`, `surface.overlay` |
+| `text-primary` | `color.action.primary-text`, `color.action.secondary-text`, `color.text.primary` |
+
+**Consequence:** the component short names (`accent`, `accent-green`) cannot be
+uniquely mapped to a DTCG path — `accent` alone is 4 different tokens. A
+correct migration must decide which semantic path each short name resolves to,
+or migrate component defs to full semantic paths (`color.accent.default`).
+
+## Category-level translation (guessed — SUPERSEDED, keep for history only)
+
+The following 17 rows were derived from yml category names and are **wrong**
+(targets like `p31.accent.{name}` do not exist). Do NOT repoint consumers
+against them. Replaced by the SEMANTIC_MAP-derived bridge above.
+
+| # | yml rule | p31 target | status |
+|---|---|---|---|
+| 1 | `primitive.color.{cyan,violet,gold,green,red,iris}` | `p31.accent.{name}` | ✗ wrong |
+| 2 | `primitive.color.glass_{rest}` | `p31.glass.{rest}` | ✗ wrong |
+| 3 | `primitive.color.{surface,void,...}` | `p31.{surface,void,...}` | ✗ wrong |
+| 4 | `primitive.color.neon_{rest}` | `p31.neon.{rest}` | ✗ wrong |
+| 5 | `primitive.color.starfield_{rest}` | `p31.starfield.{rest}` | ✗ wrong |
+| 6 | `primitive.color.text_tertiary` | `p31.text.tertiary` | ✗ wrong |
+| 7 | `primitive.radius.xl` | `p31.radius.xl` | ✗ wrong (full, not xl) |
+| 8 | `primitive.typography.{font_sans,font_mono}` | `p31.font.{sans,mono}` | ✗ wrong |
+| 9–17 | spacing/z_index/animation/touch/scale/typography/color/border | (guessed) | ✗ wrong |
 
 ## Genuine gaps (non-portable or add-to-p31)
 
