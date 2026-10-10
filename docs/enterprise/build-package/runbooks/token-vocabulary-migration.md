@@ -113,6 +113,11 @@ Deliverable: `docs/enterprise/design-system/token-vocabulary-map.md`.
   the translation table → emits ONLY the groups step 1 classifies as tokens.
   The non-token groups are preserved from a sidecar
   (`cli/tokens/tokens-meta.yml`) that is split out in step 3a.
+- **Output form:** the generator emits the **nested** form (`p31.radius.sm`) —
+  the form the current yml consumers read. Verify against
+  `cli/tokens/export-design-system.mjs` and `build-sovereign.mjs` before step 4.
+  The 21 dual-form tokens (flat `p31.radius-sm` + nested `p31.radius.sm`) must
+  be emitted **once, in the nested form**, not duplicated.
 - Prove idempotence: run twice, `diff` empty.
 - `cli/tokens/gen-components-yml.mjs` — reads `componentDefs.ts` → emits
   `components.yml`, resolving `tool`/`props.options`/`aiGuidance` shape decisions
