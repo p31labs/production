@@ -43,7 +43,7 @@ const scanForRemovedImport = (dir) => {
       for (let i = 0; i < lines.length; i++) {
         if (REMOVED_EXPORT.test(lines[i])) {
           console.error(`\n✗ migration guard: ${full}:${i + 1} still imports @p31ca/design-core/css/tokens.css (removed by SSOT Path A).`)
-          console.error('  Migrate to `@p31ca/canon/tokens.css` and add "@p31ca/canon": "file:vendor/p31ca-canon-0.1.0.tgz" to dependencies.')
+          console.error('  Migrate to `@p31ca/canon/tokens.css` and add "@p31ca/canon": "file:vendor/p31ca-canon-<version>.tgz" to dependencies.')
           process.exit(1)
         }
       }
@@ -93,8 +93,16 @@ const refreshDep = (pkg) => {
 const prev = readManifest()
 const storedDes = new Map(Object.entries(prev))
 
+// Derive versions from the canonical workspace packages so the sync never
+// hardcodes a stale version — the root cause of the 3.0.0 drift.
+const readVersion = (dir) => JSON.parse(readFileSync(path.join(dir, 'package.json'), 'utf8')).version
+const coreVersion = readVersion(canonicalCore)
+const canonRoot = '/home/p31/production/packages/canon'
+const canonVersion = readVersion(canonRoot)
+
 const tarballs = [
-  { key: 'design-core', path: path.join(vendor, 'p31-design-core-3.0.0.tgz'), pkg: '@p31ca/design-core', packed: 'p31ca-design-core-3.0.0.tgz' },
+  { key: 'design-core', path: path.join(vendor, `p31-design-core-${coreVersion}.tgz`), pkg: '@p31ca/design-core', packed: `p31ca-design-core-${coreVersion}.tgz` },
+  { key: 'canon', path: path.join(vendor, `p31ca-canon-${canonVersion}.tgz`), pkg: '@p31ca/canon', packed: `p31ca-canon-${canonVersion}.tgz` },
   { key: 'ui', path: path.join(vendor, 'p31ca-ui-1.3.1.tgz'), pkg: '@p31ca/ui', packed: 'p31ca-ui-1.3.1.tgz' },
 ]
 
@@ -105,6 +113,7 @@ console.log('Running canon-purity gate…')
 execSync('node scripts/canon-purity.mjs', { cwd: canonicalCore, stdio: 'inherit' })
 
 pack(canonicalCore, '', '')
+pack(canonRoot, '', '')
 pack(uiSrc, '', '')
 rmSync(path.join(vendor, '@p31ca-ui-1.3.1.tgz'), { force: true })
 
