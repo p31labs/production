@@ -3,7 +3,7 @@
 ## Repository
 - Live: `design.p31ca.org` · Source: this directory (`production/portals/design/`)
 - Stack: React 19 · Vite 6 · React Router 6 · Tailwind v4 · Zustand · Vitest · Cloudflare Pages
-- Design canon: `@p31ca/design-core` **3.0.0** (vendored tarball `vendor/p31-design-core-3.0.0.tgz`)
+- Design canon: `@p31ca/design-core` **3.0.1** (vendored tarball `vendor/p31-design-core-3.0.1.tgz`)
 - Canon source: `production/packages/design-core/` · Deploy: `pnpm deploy`
 
 ## Read before editing
@@ -38,7 +38,7 @@ The `.last-run.json` is written to `test-results/` — `--last-failed` reads it.
 
 ## Escalation
 - Gate failure after revert → Workspace Architect (Runbook §3.2)
-- Vendor/canon drift → re-pack 3.0.0 tarball from design-core; `pnpm install`
+- Vendor/canon drift → re-pack the current-version tarball from design-core (pnpm sync:vendor); `pnpm install`
 - Live incident → Runbook §3.5; log in `docs/INCIDENT_LOG.md`
 ## Freeze rule (RB-SPINE-001)
 The design portal is the **reference**. It does not adopt; it is adopted from.
