@@ -1,0 +1,67 @@
+# P31 Design System — Quantum Material (full)
+
+> Neurodivergent-first, sovereign design system. Dark-first glass, OKLCH, spoon-aware.
+
+## Design philosophy
+
+- Quantum Material: 16px base unit, 863 Hz Larmor frequency. One base, one ratio, infinite scale.
+- Perceptual color: OKLCH only. Hue+chroma fixed, lightness moves; light theme matches dark.
+- Glass, not chrome: surfaces are translucent (4% white + blur), borders 8% white.
+- Spoon-aware: at spoons 0-1, no motion, no blur, CrisisOverlay only.
+
+## Components (32)
+
+- **Badge** (badge, core) — Compact status label. Crisis mode keeps colors but forces opaque surfaces.
+- **BottomNav** (bottom-nav, core) — Fixed bottom navigation bar for mobile-first apps. Use for primary app navigation.
+- **Button** (btn, core) — Primary action button. Use for CTAs, form submissions, and key actions.
+- **CalmIndicator** (calm-indicator, core) — Calm pill in the status cluster — reads spoon level and opens the calm overlay.
+- **CalmOverlay** (calm-overlay, core) — Calm mode — the regulation instrument (CALM-MODE.md). Renders nothing; drives data-calm on <html> to hide chrome and keep the ambient. Store-agnostic — spoons/onExit are props.
+- **CandyHeader** (candy-header, core) — Candy-rounded glass header for the sovereign stack.
+- **Card** (card, core) — Elevated surface with an optional interactive affordance.
+- **Chameleon** (chameleon, core) — Adaptive theme controls: brand × world × age × sensory modes. Zero-reload token swaps.
+- **ChatShell** (chat-shell, core) — Conversational shell with a header, drawer, and chat surface.
+- **Checkbox** (checkbox, core) — Tri-state checkbox (checked / unchecked / indeterminate).
+- **CommandPalette** (cmdk, core) — Keyboard-friendly command palette (⌘K). Use for site-wide search and command invocation.
+- **CommandTrigger** (command-trigger, core) — Topbar search affordance — a button with a keyboard hint that opens the command palette.
+- **CrisisOverlay** (crisis-overlay, core) — Full-screen crisis mode overlay. Shown when spoons=0. Only exit control visible.
+- **Crown** (crown, core) — Compact brand crown mark with a label.
+- **Dropdown** (dropdown, core) — Selectable dropdown menu with options.
+- **Footer** (site-footer, core) — Site footer with configurable columns, branding, and legal text.
+- **GlassCard** (glass-card, core) — Padded glassmorphic card for content grouping. Use for feature cards, paper listings, and content tiles.
+- **GlassPanel** (glass-panel, core) — Elevated glassmorphic surface with backdrop blur. Use for modals, drawers, and elevated content areas.
+- **MetricBadge** (metric-badge, core) — Compact metric display with icon. Use for dashboard KPIs and telemetry.
+- **MobileBottomNav** (mobile-bottom-nav, core) — Mobile bottom navigation bar — flagship items only (suite pattern). Store-agnostic.
+- **ModePill** (mode-pill, core) — Primary mode control (SPARK / MAKER / WORKSHOP) with a tone dot.
+- **NotificationStack** (notif-stack, core) — Stacked, severity-tinted notification toasts (bottom-right). Store-agnostic — items/onDismiss are props; colors via data-kind.
+- **PageHeader** (page-header-route, core) — Inner-page hero: mono eyebrow, gradient title, and lede. Use at the top of content routes.
+- **SectionStrip** (section-strip, core) — Desktop pill navigation strip. Use for primary section navigation on wide viewports.
+- **SidebarNav** (sidebar-nav, core) — Flat suite navigation rail (emoji + label), active state per route. Store-agnostic — items/activePath/onNavigate are props.
+- **SpoonCluster** (spoon-cluster, core) — Spoon dots in the status cluster — read-only metabolic status.
+- **SpoonDial** (spoon-dial, core) — Cognitive load selector (0-5 spoons). Use for neurodivergent-first accessibility control.
+- **Starfield** (starfield-bg, core) — Animated starfield background. Use for ambient backgrounds in shell and marketing.
+- **StatusBadge** (badge, core) — Status indicator badge. Use for system status, health indicators, and state labels.
+- **StatusCluster** (status-cluster, core) — Read-only status row in the topbar right region. Scrolls horizontally with edge fades when it outgrows the bar.
+- **Topbar** (topbar, core) — Unified app-chrome shell — slot-based three-region layout. Brand / center / statusCluster / mode / trailing / identity, with variant (app|marketing|game) and mobile overrides. The identity slot is auth-agnostic (SignInLink / IdentityChip / AccountMenu fills).
+- **TopbarSection** (topbar-section, core) — Vertically-centered, gap-consistent slot group inside a Topbar. Owns internal spacing; the Topbar owns arrangement.
+
+## Token vocabulary
+
+All visual values resolve to `p31.*` DTCG tokens. Key groups:
+
+- `p31.color.*` — accent, text, status, action colors (OKLCH).
+- `p31.glass.*` — glass surfaces and borders (alpha-tinted).
+- `p31.surface.*` — the near-black void tiers.
+- `p31.radius.*` — sm/md/lg/full radii.
+- `p31.layout.spacing.*` — the 4/8/16/24/32 scale.
+- `p31.font.family.*` — Space Grotesk / JetBrains Mono.
+- `p31.z.*` — elevation (topbar, modal, crisis).
+
+Resolve any token via the MCP tool `token_resolve(p31.color.accent.default)`.
+
+## Rules (non-negotiable)
+
+1. Every color resolves to a token. No hardcoded hex or raw rgba.
+2. The shell owns geometry; the component owns appearance.
+3. Themes are value swaps at the semantic tier, never component forks.
+4. Crisis = no motion, no blur, CrisisOverlay only.
+5. A missing token/component is a contribution proposal, not a workaround.

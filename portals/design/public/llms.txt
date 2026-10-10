@@ -1,0 +1,36 @@
+# P31 Design System — Quantum Material
+
+> A neurodivergent-first, sovereign design system. Dark-first glass, OKLCH tokens, spoon-aware. One source of truth: W3C DTCG. 32 components, each with a contract and a lifecycle tier.
+
+## Foundations
+
+- [Tokens (DTCG)](https://design.p31ca.org/tokens) — the full `p31.*` token tree, OKLCH, with dotted paths and values.
+- [Tokens JSON](https://design.p31ca.org/tokens) — machine source: `@p31ca/canon/tokens/tokens.dtc.json`.
+- Color, typography, spacing, motion, radius — see `/tokens` for the live explorer.
+
+## Components
+
+32 compositions in `@p31ca/design-core/compositions`, rendered live in the catalog.
+
+- [Catalog](https://design.p31ca.org/catalog) — every component, grouped, live-rendered.
+- [Playground](https://design.p31ca.org/playground) — live component lab + Intent DSL.
+- [A2UI](https://design.p31ca.org/a2ui) — generative UI: intent → declarative data → rendered.
+
+## Agents
+
+- [AGENTS.md](https://design.p31ca.org/llms-full.txt) — the operating contract for agents building on the system (imports, token rule, the ten mistakes).
+- DESIGN.md — machine-readable design context (YAML tokens + rationale), shipped in `@p31ca/design-core`.
+- MCP server — `component_catalog`, `token_resolve`, `component_schema`, and composition tools.
+- [Registry (JSON)](https://design.p31ca.org/catalog) — shadcn-style registry: `packages/design-core/registry.json`.
+
+## Governance
+
+- [Contributing](https://design.p31ca.org/llms-full.txt) — proposal → triage → review bar → lifecycle tiers.
+- Lifecycle tiers: `core` (stable), `experimental` (additive), `deprecated` (retiring).
+- Ten gates, each with a proven negative control, in `pnpm gate`.
+
+## Package surface
+
+- `@p31ca/canon` — tokens (`tokens.css`, `tokens.dtc.json`).
+- `@p31ca/design-core` — components (`compositions`), CSS (`css/*`), contracts.
+- Import: `import { GlassCard, Button } from '@p31ca/design-core/compositions'; import '@p31ca/canon/tokens.css';`
