@@ -129,6 +129,35 @@ and the 8 consumers keep reading it unchanged — not to repoint them. The shape
 mapping (yml `tool`/`props.options`/old-style `primitive.*` tokens) is the
 design task to scope next.
 
+**Field-mapping audit (2026-10-10):** the 8 consumers read these yml fields —
+`css_class`, `description`, `props`, `slots`, `tokens`, `variants`, `version`,
+`aiGuidance` (export-design-system only), `tool` (export-design-system only).
+Clean 1:1 mappings exist for `css_class`, `description`, `slots`, `variants`,
+`version`. The mismatches are:
+
+- `tool` — yml-only render-function name; no `componentDefs.ts` equivalent.
+- `props.options` — yml-only; `componentDefs.ts` props are React-style
+  (`type`/`required`/`default`/`description`) with no `options`.
+- `aiGuidance` — yml strings vs defs arrays.
+- `tokens` — **three divergent vocabularies**, not a rename:
+  1. `tokens.yml` / `components.yml`: `primitive.color.glass_surface` (old DTCG)
+  2. `componentDefs.ts`: `glass.bg`, `radius.full`, `accent` (short paths)
+  3. canon `tokens.dtc.json`: `p31.glass.bg`, `p31.radius.full` (DTCG)
+
+  Verified: `glass.bg`, `radius.full`, `topbar.height` do **not** exist in
+  `tokens.yml`. The defs paths match canon, not tokens.yml.
+
+**Conclusion:** the generator is NOT a mechanical shape mapping. The 8 CLI
+consumers operate on the OLD token system (`tokens.yml` + `primitive.*`
+paths), while `componentDefs.ts`, canon, and the (now-fixed) design-mcp worker
+operate on the NEW system (short paths / `p31.*` DTCG). Building a
+`componentDefs.ts → components.yml` generator requires a **token-system
+migration decision** first: which vocabulary is canonical, and what the
+`primitive.* ↔ glass.bg ↔ p31.*` mapping table is. That is architectural, not
+scriptable, and is the same class of reconciliation as the token deprecation
+work already done for the canon side — but for the CLI tooling side, which has
+not been migrated.
+
 **design-mcp build verdict (2026-10-10):** `npx tsc --noEmit` fails with 8
 errors, ALL pre-existing (validator.ts untouched by this change; `./icons-data`
 module never committed; `proposer.ts:368` proposeIcon type). This change
