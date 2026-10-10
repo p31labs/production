@@ -18,10 +18,21 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function main() {
-  const compFile = path.join(__dirname, 'components.yml');
+  const compFile = path.join(__dirname, '..', '..', 'packages', 'design-core', 'registry.json');
   const tokensFile = path.join(__dirname, 'tokens.yml');
 
-  const components = yaml.parse(fs.readFileSync(compFile, 'utf8'));
+  const reg = JSON.parse(fs.readFileSync(compFile, 'utf8'));
+  const components = { components: {} };
+  for (const item of reg.items || []) {
+    components.components[item.name] = {
+      description: item.description,
+      css_class: item.cssClass,
+      tokens: item.tokens || [],
+      slots: item.slots || [],
+      variants: item.variants || [],
+      props: item.props || {},
+    };
+  }
   const tokens = yaml.parse(fs.readFileSync(tokensFile, 'utf8'));
 
   function dt(pathStr) {
