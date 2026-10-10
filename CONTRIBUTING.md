@@ -1,50 +1,68 @@
-# Contributing
+<!-- P31-HEADER
+id: p31_contributing_20261010_v1.0
+type: runbook
+component: workspace
+status: live
+retention: keep-forever
+created: 2026-10-10T00:00:00Z
+owner: will
+-->
 
-## Current status: not accepting external contributions
+# Contributing to P31
 
-P31 is a controlled, family-first product with a narrow core team. The portals
-serve real families, and every surface is reviewed against design-core
-conventions (OKLCH tokens, zero hardcoded hex, progressive disclosure as a
-security posture) before it reaches a person.
+The design system is a product whose customers are the surfaces built on it.
+Contributions are how the outside comes in: a component born in a product that
+earns its place in the system, a pattern that repeats across surfaces, a token
+that was missing.
 
-Right now the project is **not accepting external contributions** — no
-pull-request-driven features, ports, or refactors from outside the core team.
-This is deliberate and applies until further notice. The only exception is
-security research, which is always welcome: see [SECURITY.md](SECURITY.md) and
-report privately to security@p31ca.org.
+## Component proposal
 
-## What is on the table
+To propose a component, open an issue using the component-proposal template.
+Include:
 
-- **Security reports**: always encouraged, via the private channel.
-- **Questions and context**: issues asking clarifying questions about how the
-  platform works are read, though there is no SLA on responses.
+- **Use case** — what this solves, in one sentence.
+- **Examples in the wild** — 3–5 places this pattern appears (product screens,
+  other design systems, named precedents).
+- **Why existing components don't fit** — the specific gap.
+- **Proposed design** — props, states, variants, accessibility considerations.
+- **Owner** — who will build it.
+- **Timeline** — when.
 
-## What is not
+## Triage
 
-- Feature pull requests
-- Dependency or toolchain changes proposed externally
-- New portals or portals-to-convergence work
-- Refactors of `p31-dispatch`, `p31-passport`, or the passport/PIN isolation
-  paths
+A maintainer reviews the proposal and decides one of:
 
-## When this changes
+- **Accept** — move to build.
+- **Adapt existing** — an existing component covers it with a variant or prop.
+- **Defer** — valid but not yet; record the reasoning.
+- **Reject** — out of scope; record the reasoning.
 
-When contribution channels open — timelines, a proper CONTRIBUTING guide with
-DCO/CLA expectations, and governance for the design system
-(`@p31ca/design-core`) and substrate — it will be announced clearly in this
-repository and on the project sites. Until that announcement, assume the
-project remains closed to external contributions.
+## Review bar
 
-## License note
+A component enters the system only if it:
 
-This repository is AGPL-3.0. External code that is eventually accepted will be
-expected to remain compatible with AGPL-3.0 (see the LICENSE file at the repo
-root).
+1. Is **reused across 2+ surfaces** or is a **named primitive** (not a one-off).
+2. Meets the **accessibility baseline** (touch targets, ARIA, contrast, focus).
+3. Has a **contract** (`tokenContract` in `packages/canon/src/contracts`).
+4. Has a **changeset** (`.changeset/*.md`).
+5. Has a **docs page** (`docs/components/<Name>.md`).
 
-## Note on the workspace README
+## Lifecycle tiers
 
-The production README displays an MIT license badge and MIT license
-section, but the on-disk LICENSE file in that repository is the full GNU
-AGPL-3.0 text. The workspace badge is a known inconsistency owned by a separate
-team; it is flagged here rather than corrected here. Licenses in this
-repository are AGPL-3.0 and match the LICENSE file.
+| tier | meaning |
+|---|---|
+| `core` | stable, semver-stable, documented, promoted to the catalog |
+| `experimental` | additive; breaking changes allowed at will; marked in the catalog |
+| `deprecated` | has a `$deprecated` entry, removal target named, codemod exists |
+
+## Token changes
+
+Token changes follow the same discipline as code: semver, deprecation before
+removal, `$replacement` where a successor exists, a codemod for breaking moves.
+See `docs/enterprise/design-system/token-vocabulary-map.md`.
+
+## The gates
+
+`pnpm gate` runs ten checks, each with a proven negative control. A contribution
+that violates a gate is not mergable until the gate is fixed or the fix is filed
+as `docs/fix-plans/<issue>.md`. Prose is advice; gates are enforcement.
