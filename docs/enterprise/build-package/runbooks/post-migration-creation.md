@@ -70,15 +70,25 @@ contribution model, component lifecycle tiers (`registry.json` has `status`, not
 
 Without a release cadence, every design-system commit risks version drift.
 
-**A1 — Wire pnpm native versioning.** Add a `versioning` block to
-`pnpm-workspace.yaml`. **NOTE: blocked** — the trio is NOT in lockstep
-(`canon@0.2.0`, `design-core@3.0.1`, `ui@1.2.1`); a `versioning.fixed` group
-would fail `pnpm change check`. The fixed group is aspirational until the trio
-is deliberately aligned (a breaking major bump). Decide: align the trio, or keep
-the group commented until then.
+**A1 — Independent versioning, not lockstep (decided 2026-10-10).** Do NOT add
+a `versioning.fixed` group. The trio's divergence (`canon@0.2.0` pre-1.0,
+`design-core@3.0.1` mature, `ui@1.2.1` between) reflects real maturity
+differences — forcing alignment is a fiction, and lockstep forces major bumps
+for unrelated changes (the research warns against exactly this). The coupling is
+already expressed via `peerDependencies: { @p31ca/canon: workspace:* }`, which
+pnpm rewrites to a concrete range on publish.
 
-**A2 — `release:check` script:** full gate + `pnpm change check` +
-`pnpm publish --dry-run` before any publish.
+Replace the fixed group with:
+1. **A compatibility gate** — on publish, verify each package's
+   `peerDependencies` on sibling packages resolve to real published versions
+   (no dangling `workspace:*`). The existing `check-workspace-protocol.mjs`
+   covers the local side; add a publish-time peer resolution check.
+2. **A per-package changelog** — each releases on its own cadence.
+3. **A "supported combinations" note** — `canon@0.2.x` + `design-core@3.0.x` +
+   `ui@1.2.x` is the current supported set, recorded in the changelog.
+
+**A2 — `release:check` script** (done): full gate + `pnpm change check` +
+`pnpm -r run --if-present prepack` + `pnpm publish --dry-run`.
 
 **A3 — Wire the codemod into the release path:** a publish cannot run unless a
 changelog entry names the migration.
@@ -133,16 +143,16 @@ Existing (all stay green) + new:
 | Decision | Basis |
 |---|---|
 | Release first, contribution second | Version drift compounds silently; contribution is additive |
-| pnpm native versioning over Changesets | `pnpm change check` already in gate; one less toolchain |
+| Independent versioning over `versioning.fixed` | Trio versions reflect real maturity differences; peerDeps already express the coupling; lockstep forces unrelated major bumps |
 | Tier in `registry.json`, not a separate file | Registry is the single source |
 | Docs site is a consumer, not a special case | "if it can't build with the system, that's a signal" |
 | Creation is Track D, not the whole runbook | Infrastructure is done; this is the bridge |
 
 ## What to watch for
 
-- **`pnpm change check` fails after adding `versioning.fixed`** — trio out of
-  lockstep (canon 0.2.0 vs design-core 3.0.1 vs ui 1.2.1). Align deliberately or
-  keep the group commented.
+- **A published package's `peerDependencies` dangle `workspace:*`** — the
+  publish-time compatibility check (A1.1) should fail; the range must resolve to
+  a real published version.
 - **A component has no `tier`** — gate fails; that's the point.
 - **Docs site can't build with only the system packages** — a component/token is
   missing; that's a finding, not a docs problem.
