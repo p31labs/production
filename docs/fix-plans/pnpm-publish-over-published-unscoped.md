@@ -4,7 +4,7 @@
 id: p31_fix_plan_publish_over_published_unscoped_20261010_v1.0
 type: fix-plan
 component: workspace
-status: open
+status: resolved
 retention: keep-forever
 created: 2026-10-10T00:00:00Z
 owner: will
@@ -70,13 +70,11 @@ stop being able to `pnpm publish` at all. Before the next release, re-auth with 
 
 ## Remaining
 
-- **Unpublish (optional, blocked on token):** to actually remove the four
-  orphaned names, authenticate with a 2FA-bound token and retry
-  `npm unpublish <name>@<version> --force`. Without it, they stay deprecated.
-- **Publishing token migration (required before next release):** replace the
-  2FA-bypass token with a 2FA-bound token or OIDC trusted publishing; otherwise
-  `publish:release` will fail when npm completes the direct-publishing
-  restriction.
+Resolved 2026-10-10: re-authenticated `classicwilly` with 2FA (`auth-and-writes`),
+unpublished all four. npm now holds the names as `0.0.0-stage` placeholders
+("Temporary package placeholder for staged publishing") — the real versions are
+gone and the names (notably `p31ca`) are reserved against squatting. Both open
+items closed: the token migration and the unpublish.
 
 ## Impact
 
@@ -84,3 +82,11 @@ stop being able to `pnpm publish` at all. Before the next release, re-auth with 
   removable without a 2FA-bound token).
 - The guard + `publish:release` make a bare `pnpm -r publish` impossible to run
   without first passing the publish-surface and scope checks.
+
+## Outcome (final)
+
+- All four accidental versions (`planetary-planet@0.0.1`, `p31ca@0.0.1`,
+  `epcp-command-center-tests@1.0.0`, `p31-social-worker@2.0.0`) removed.
+- `npm view <name>` returns `0.0.0-stage` (npm name-reservation placeholder).
+- Account 2FA is `auth-and-writes`; the 2FA-bypass token is no longer the
+  release path. `publish:release` runs guard → scope → full gate → publish.
