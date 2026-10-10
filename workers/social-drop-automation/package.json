@@ -24,5 +24,6 @@
     "cron"
   ],
   "author": "P31 Labs",
-  "license": "MIT"
+  "license": "MIT",
+  "private": true
 }
