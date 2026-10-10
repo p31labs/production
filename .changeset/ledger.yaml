@@ -1,0 +1,4 @@
+"@p31ca/canon@0.2.0":
+  dir: packages/canon
+  intents:
+    - canon-deprecation

@@ -1,6 +1,6 @@
 {
   "name": "@p31ca/design-core",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "private": true,
   "type": "module",
   "description": "P31 Unified Design System — Quantum Material (OKLCH/color-mix) token stance, tokens, primitives, compositions, recipes, MCP server, agentic intent pipeline.",

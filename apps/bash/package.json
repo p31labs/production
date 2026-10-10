@@ -1,7 +1,7 @@
 {
   "name": "@p31ca/bash",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "dev": "astro dev",
@@ -16,8 +16,8 @@
     "@p31ca/design-core": "workspace:*",
     "@p31ca/quantum-core": "workspace:*",
     "@p31ca/ui": "workspace:*",
-    "astro": "^5.17.1",
     "@tailwindcss/vite": "^4.2.1",
+    "astro": "^5.17.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "tailwindcss": "^4.2.1",

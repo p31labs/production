@@ -1,5 +1,12 @@
 # @p31ca/ui — Changelog
 
+## 1.2.1
+
+### Patch Changes
+
+- Updated dependencies:
+  - @p31ca/design-core@3.0.1
+
 ## 1.3.0 — 2026-07-19
 
 ### Added

@@ -1,6 +1,6 @@
 {
   "name": "@p31ca/canon",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "Apache-2.0",
   "publishConfig": {
     "access": "public",
@@ -121,11 +121,11 @@
     "./tokens.css": "./dist/tokens.css"
   },
   "devDependencies": {
-    "style-dictionary": "^4.4.0",
-    "culori": "^4.0.2"
+    "culori": "^4.0.2",
+    "style-dictionary": "^4.4.0"
   },
   "dependencies": {
-    "zod": "^4.6.5",
-    "@p31ca/sovereign-primitives": "workspace:*"
+    "@p31ca/sovereign-primitives": "workspace:*",
+    "zod": "^4.6.5"
   }
 }

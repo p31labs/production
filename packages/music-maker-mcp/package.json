@@ -1,6 +1,6 @@
 {
   "name": "@p31ca/music-maker-mcp",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
   "description": "MCP server exposing the spatial music maker to agents. Agents call music_observe → music_place/clear/name (committed through the canon gate) → music_trigger (ephemeral presence), over HTTP to the deployed worker.",

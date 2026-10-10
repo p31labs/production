@@ -1,6 +1,6 @@
 {
   "name": "@p31ca/music-maker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
   "description": "The spatial music maker — a collaborative instrument where a family places sounds in a 3D field and hears each other play, live, across devices. Hosts the control server surface at #/control.",

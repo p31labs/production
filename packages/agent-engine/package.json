@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0",
   "description": "Core engine for creating and managing personalized AI agents in the P31 ecosystem",
   "type": "module",
   "main": "./dist/index.js",
@@ -62,17 +62,17 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "uuid": "^10.0.0",
-    "zod": "^3.24.0",
+    "@p31ca/canon": "workspace:*",
     "@p31ca/sovereign-primitives": "workspace:*",
-    "@p31ca/canon": "workspace:*"
+    "uuid": "^10.0.0",
+    "zod": "^3.24.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
     "@types/uuid": "^10.0.0",
     "typescript": "^5.7.0",
-    "vitest": "^4.1.0",
-    "vite": "^8.0.1"
+    "vite": "^8.0.1",
+    "vitest": "^4.1.0"
   },
   "name": "@p31ca/agent-engine",
   "publishConfig": {

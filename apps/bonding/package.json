@@ -1,6 +1,6 @@
 {
   "name": "bonding",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "@p31ca/design-system": "file:../../packages/design-system",
-    "@p31ca/ui": "file:../../packages/ui",
     "@p31ca/interface-generator": "workspace:*",
+    "@p31ca/ui": "file:../../packages/ui",
     "@react-three/drei": "^9.0.0",
     "@react-three/fiber": "^8.0.0",
     "@react-three/postprocessing": "^2.0.0",

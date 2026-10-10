@@ -1,6 +1,6 @@
 {
   "name": "@p31ca/governance",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "type": "module",
   "description": "P31 governance components — the visual vocabulary of the audit/agent layer: ChainTimeline, VerifyButton, EnforcementGauge, RefusalFeed, ProposalQueue, SovereignBadge, LumiIdentityCard.",

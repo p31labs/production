@@ -1,6 +1,6 @@
 {
   "name": "@p31ca/design-mcp-v3",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "private": true,
   "type": "module",
   "description": "Canonical P31 design MCP server (2026-07-28 stateless spec). Merge target for p31-design-mcp (workers/design-mcp) tool surface. Hub-readied spoke; gateway added at 3+ spokes.",

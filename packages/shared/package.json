@@ -1,6 +1,6 @@
 {
   "name": "@p31ca/shared",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
   "description": "System-wide shared modules for the P31 Labs ecosystem (DEPRECATED: use @p31ca/shared-core, @p31ca/sovereign-primitives, @p31ca/cognitive-passport, @p31ca/protocol-commons, @p31ca/geodesic-core)",

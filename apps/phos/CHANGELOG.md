@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.1
+
+### Patch Changes
+
+- Updated dependencies:
+  - @p31ca/interface-generator@0.1.1
+
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]

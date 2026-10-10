@@ -1,5 +1,12 @@
 # @p31ca/design-core — Changelog
 
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies:
+  - @p31ca/canon@0.2.0
+
 ## Unreleased
 
 ### Added

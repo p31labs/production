@@ -1,6 +1,6 @@
 {
   "name": "@p31ca/ui-astro",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

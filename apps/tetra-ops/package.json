@@ -1,6 +1,6 @@
 {
   "name": "tetra-ops",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,7 +9,6 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit",
     "deploy": "pnpm build && npx wrangler pages deploy dist --project-name p31ca-ops --branch=main --commit-dirty=true"
   },
   "dependencies": {

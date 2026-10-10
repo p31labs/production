@@ -1,9 +1,9 @@
 {
   "name": "@p31ca/loom",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
-  "description": "The Loom \u2014 the design system as a live graph where human and agent are co-present.",
+  "description": "The Loom — the design system as a live graph where human and agent are co-present.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -23,11 +23,11 @@
   "dependencies": {
     "@p31ca/canon": "workspace:*",
     "@p31ca/field": "workspace:*",
+    "@p31ca/sovereign-primitives": "workspace:*",
     "@xyflow/react": "^12.3.5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "three": "0.185.1",
-    "@p31ca/sovereign-primitives": "workspace:*"
+    "three": "0.185.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",
