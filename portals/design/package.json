@@ -31,8 +31,8 @@
   },
   "dependencies": {
     "@p31ca/p31ca-ambient": "file:vendor/p31ca-ambient",
-    "@p31ca/canon": "file:vendor/p31ca-canon-0.1.0.tgz",
-    "@p31ca/design-core": "file:vendor/p31-design-core-3.0.0.tgz",
+    "@p31ca/canon": "file:vendor/p31ca-canon-0.2.0.tgz",
+    "@p31ca/design-core": "file:vendor/p31-design-core-3.0.1.tgz",
     "motion": "^13.4.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

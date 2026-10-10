@@ -8,3 +8,5 @@
 # project discovery on `run`/`exec` when `packages:` is absent (#14047).
 packages:
   - '.'
+minimumReleaseAgeExclude:
+  - '@p31ca/sovereign-primitives@0.0.2'
