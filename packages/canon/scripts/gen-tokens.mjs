@@ -295,7 +295,7 @@ if (existsSync(deprecationsPath)) {
   }
   // DTCG deprecation workflow stage 2 — emit a build warning for deprecated
   // tokens so anyone regenerating sees the surface shrinking.
-  console.warn(`⚠️  ${Object.keys(deprecations).length} tokens are deprecated — see deprecations.json (removal v0.3.0)`)
+  console.warn(`⚠️  ${Object.keys(deprecations).length} tokens are deprecated — see deprecations.json (removal v1.0.0)`)
 }
 
 writeFileSync(dtcgPath, JSON.stringify(dtcg, null, 2) + '\n')

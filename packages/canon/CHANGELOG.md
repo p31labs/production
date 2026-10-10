@@ -5,13 +5,13 @@
 Initial release. 256 CSS custom properties emitted; the design-system trio
 (`@p31ca/canon`, `@p31ca/design-core`, `@p31ca/ui`) ship independently.
 
-## Unreleased (0.2.0)
+## 0.2.0 (published)
 
 ### Deprecated (152 tokens)
 
 152 emitted tokens have no consumer anywhere in `design-core/src/css`. They are
 marked `$deprecated` (DTCG) in `deprecations.json` and merged into the
-`tokens.dtc.json` export. **Removal in v0.3.0.**
+`tokens.dtc.json` export. **Removal in v1.0.0.**
 
 Categories:
 

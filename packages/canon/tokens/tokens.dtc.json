@@ -74,7 +74,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "Superseded by the primary accent token. Removal in v0.3.0."
+      "$deprecated": "Superseded by the primary accent token. Removal in v1.0.0."
     },
     "text": {
       "$value": {
@@ -122,7 +122,7 @@
         "alpha": 0.1
       },
       "$type": "color",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "glass-bg-light": {
       "$value": {
@@ -159,7 +159,7 @@
         "alpha": 0.25
       },
       "$type": "color",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "neon": {
       "$value": {
@@ -183,7 +183,7 @@
         "alpha": 0.35
       },
       "$type": "color",
-      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
     },
     "neon-faint": {
       "$value": {
@@ -219,7 +219,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
     },
     "neon-magenta": {
       "$value": {
@@ -231,7 +231,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
     },
     "neon-violet": {
       "$value": {
@@ -243,7 +243,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
     },
     "neon-amber": {
       "$value": {
@@ -255,7 +255,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
     },
     "neon-mint": {
       "$value": {
@@ -267,7 +267,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
     },
     "neon-coral": {
       "$value": {
@@ -279,7 +279,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
     },
     "neon-orange": {
       "$value": {
@@ -291,7 +291,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
     },
     "neon-blue": {
       "$value": {
@@ -303,7 +303,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
     },
     "neon-lavender": {
       "$value": {
@@ -315,7 +315,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
     },
     "neon-pink": {
       "$value": {
@@ -327,7 +327,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v0.3.0."
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
     },
     "surface-s1": {
       "$value": {
@@ -339,7 +339,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "surface-s2": {
       "$value": {
@@ -351,7 +351,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "surface-s3": {
       "$value": {
@@ -363,7 +363,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "surface-s4": {
       "$value": {
@@ -375,7 +375,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "status-online": {
       "$value": {
@@ -387,7 +387,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "status-offline": {
       "$value": {
@@ -399,7 +399,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "status-warning": {
       "$value": {
@@ -446,7 +446,7 @@
         "sans-serif"
       ],
       "$type": "fontFamily",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "duration-fast": {
       "$value": {
@@ -461,7 +461,7 @@
         "unit": "ms"
       },
       "$type": "duration",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "duration-slow": {
       "$value": {
@@ -478,7 +478,7 @@
         1
       ],
       "$type": "cubicBezier",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "easing-snappy": {
       "$value": [
@@ -488,12 +488,12 @@
         1
       ],
       "$type": "cubicBezier",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "speed-factor": {
       "$value": 1,
       "$type": "number",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "spring-expressive-fast-spatial": {
       "$value": [
@@ -503,7 +503,7 @@
         0.9
       ],
       "$type": "cubicBezier",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "spring-expressive-fast-spatial-ms": {
       "$value": {
@@ -511,7 +511,7 @@
         "unit": "ms"
       },
       "$type": "duration",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "spring-expressive-fast-effects": {
       "$value": [
@@ -521,7 +521,7 @@
         1
       ],
       "$type": "cubicBezier",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "spring-expressive-fast-effects-ms": {
       "$value": {
@@ -529,7 +529,7 @@
         "unit": "ms"
       },
       "$type": "duration",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "spring-expressive-default-spatial": {
       "$value": [
@@ -539,7 +539,7 @@
         1
       ],
       "$type": "cubicBezier",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "spring-expressive-default-spatial-ms": {
       "$value": {
@@ -547,7 +547,7 @@
         "unit": "ms"
       },
       "$type": "duration",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "spring-expressive-default-effects": {
       "$value": [
@@ -557,7 +557,7 @@
         1
       ],
       "$type": "cubicBezier",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "spring-expressive-default-effects-ms": {
       "$value": {
@@ -565,7 +565,7 @@
         "unit": "ms"
       },
       "$type": "duration",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "spring-expressive-slow-spatial": {
       "$value": [
@@ -575,7 +575,7 @@
         1
       ],
       "$type": "cubicBezier",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "spring-expressive-slow-spatial-ms": {
       "$value": {
@@ -583,7 +583,7 @@
         "unit": "ms"
       },
       "$type": "duration",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "spring-expressive-slow-effects": {
       "$value": [
@@ -593,7 +593,7 @@
         1
       ],
       "$type": "cubicBezier",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "spring-expressive-slow-effects-ms": {
       "$value": {
@@ -601,7 +601,7 @@
         "unit": "ms"
       },
       "$type": "duration",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "spring-standard-spatial": {
       "$value": [
@@ -611,7 +611,7 @@
         1
       ],
       "$type": "cubicBezier",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "spring-standard-spatial-ms": {
       "$value": {
@@ -619,7 +619,7 @@
         "unit": "ms"
       },
       "$type": "duration",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "elevation-level1-tint": {
       "$value": 0.05,
@@ -677,7 +677,7 @@
         "alpha": 0.6
       },
       "$type": "color",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "starfield-particle-coral": {
       "$value": {
@@ -690,7 +690,7 @@
         "alpha": 0.5
       },
       "$type": "color",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "blur-subtle": {
       "$value": {
@@ -698,7 +698,7 @@
         "unit": "px"
       },
       "$type": "dimension",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "blur-standard": {
       "$value": {
@@ -706,7 +706,7 @@
         "unit": "px"
       },
       "$type": "dimension",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "blur-strong": {
       "$value": {
@@ -714,7 +714,7 @@
         "unit": "px"
       },
       "$type": "dimension",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "space-tiny": {
       "$value": {
@@ -736,7 +736,7 @@
         "unit": "px"
       },
       "$type": "dimension",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "touch-recommended": {
       "$value": {
@@ -744,7 +744,7 @@
         "unit": "px"
       },
       "$type": "dimension",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "touch-large": {
       "$value": {
@@ -752,7 +752,7 @@
         "unit": "px"
       },
       "$type": "dimension",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "z-starfield": {
       "$value": 0,
@@ -765,7 +765,7 @@
     "z-toast": {
       "$value": 9999,
       "$type": "number",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "z-crisis": {
       "$value": 99999,
@@ -796,7 +796,7 @@
         "unit": "px"
       },
       "$type": "dimension",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "glass-surface": {
       "$value": {
@@ -835,7 +835,7 @@
         "unit": "px"
       },
       "$type": "dimension",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "spacing-sm": {
       "$value": {
@@ -871,7 +871,7 @@
         "unit": "px"
       },
       "$type": "dimension",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "radius-none": {
       "$value": {
@@ -879,7 +879,7 @@
         "unit": "px"
       },
       "$type": "dimension",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "h1": {
       "$value": {
@@ -957,7 +957,7 @@
         "unit": "ms"
       },
       "$type": "duration",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "easing-standard": {
       "$value": [
@@ -976,7 +976,7 @@
         1
       ],
       "$type": "cubicBezier",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "easing-accelerate": {
       "$value": [
@@ -986,7 +986,7 @@
         1
       ],
       "$type": "cubicBezier",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "card-padding": {
       "$value": {
@@ -994,7 +994,7 @@
         "unit": "px"
       },
       "$type": "dimension",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "duration-base": {
       "$value": {
@@ -1113,7 +1113,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "color-emerald": {
       "$value": {
@@ -1125,7 +1125,7 @@
         ]
       },
       "$type": "color",
-      "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
     },
     "space-6": {
       "$value": {
@@ -1232,7 +1232,7 @@
               }
             }
           },
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "primary-hover": {
           "$value": {
@@ -1341,7 +1341,7 @@
               }
             }
           },
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "primary-text": {
           "$value": {
@@ -1439,7 +1439,7 @@
               }
             }
           },
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "secondary": {
           "$value": {
@@ -1537,7 +1537,7 @@
               }
             }
           },
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "secondary-text": {
           "$value": {
@@ -1635,7 +1635,7 @@
               }
             }
           },
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "ghost": {
           "$value": {
@@ -1648,7 +1648,7 @@
             "alpha": 0
           },
           "$type": "color",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "ghost-hover": {
           "$value": {
@@ -1757,7 +1757,7 @@
               }
             }
           },
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         }
       },
       "text": {
@@ -1857,7 +1857,7 @@
               }
             }
           },
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "secondary": {
           "$value": {
@@ -1955,7 +1955,7 @@
               }
             }
           },
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "muted": {
           "$value": {
@@ -2053,7 +2053,7 @@
               }
             }
           },
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         }
       },
       "accent": {
@@ -2153,7 +2153,7 @@
               }
             }
           },
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "violet": {
           "default": {
@@ -2252,7 +2252,7 @@
                 }
               }
             },
-            "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
           },
           "muted": {
             "$value": {
@@ -2350,7 +2350,7 @@
                 }
               }
             },
-            "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
           }
         },
         "gold": {
@@ -2450,7 +2450,7 @@
                 }
               }
             },
-            "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
           },
           "muted": {
             "$value": {
@@ -2548,7 +2548,7 @@
                 }
               }
             },
-            "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
           }
         },
         "green": {
@@ -2648,7 +2648,7 @@
                 }
               }
             },
-            "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
           },
           "muted": {
             "$value": {
@@ -2738,7 +2738,7 @@
                 }
               }
             },
-            "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
           }
         },
         "red": {
@@ -2838,7 +2838,7 @@
                 }
               }
             },
-            "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
           },
           "muted": {
             "$value": {
@@ -2936,7 +2936,7 @@
                 }
               }
             },
-            "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
           }
         },
         "muted": {
@@ -3035,7 +3035,7 @@
               }
             }
           },
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         }
       }
     },
@@ -3047,7 +3047,7 @@
             "unit": "px"
           },
           "$type": "dimension",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "md": {
           "$value": {
@@ -3055,7 +3055,7 @@
             "unit": "px"
           },
           "$type": "dimension",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "lg": {
           "$value": {
@@ -3063,7 +3063,7 @@
             "unit": "px"
           },
           "$type": "dimension",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         }
       }
     },
@@ -3126,7 +3126,7 @@
           ]
         },
         "$type": "color",
-        "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
       },
       "error": {
         "$value": {
@@ -3149,7 +3149,7 @@
           ]
         },
         "$type": "color",
-        "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
       }
     },
     "glass": {
@@ -3260,7 +3260,7 @@
             }
           }
         },
-        "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
       },
       "border": {
         "$value": {
@@ -3487,7 +3487,7 @@
             }
           }
         },
-        "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
       },
       "raised": {
         "$value": {
@@ -3585,7 +3585,7 @@
             }
           }
         },
-        "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
       },
       "overlay": {
         "$value": {
@@ -3683,7 +3683,7 @@
             }
           }
         },
-        "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
       }
     },
     "font": {
@@ -3694,7 +3694,7 @@
             "unit": "px"
           },
           "$type": "dimension",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "md": {
           "$value": {
@@ -3702,7 +3702,7 @@
             "unit": "px"
           },
           "$type": "dimension",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "lg": {
           "$value": {
@@ -3710,7 +3710,7 @@
             "unit": "px"
           },
           "$type": "dimension",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         }
       },
       "family": {
@@ -3724,7 +3724,7 @@
             "sans-serif"
           ],
           "$type": "fontFamily",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "mono": {
           "$value": [
@@ -3735,7 +3735,7 @@
             "monospace"
           ],
           "$type": "fontFamily",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         }
       }
     },
@@ -3747,7 +3747,7 @@
             "unit": "ms"
           },
           "$type": "duration",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         }
       },
       "easing": {
@@ -3759,7 +3759,7 @@
             1
           ],
           "$type": "cubicBezier",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         }
       },
       "spring": {
@@ -3773,7 +3773,7 @@
                 0.9
               ],
               "$type": "cubicBezier",
-              "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+              "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
             },
             "effects": {
               "$value": [
@@ -3783,7 +3783,7 @@
                 1
               ],
               "$type": "cubicBezier",
-              "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+              "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
             }
           },
           "default": {
@@ -3795,7 +3795,7 @@
                 1
               ],
               "$type": "cubicBezier",
-              "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+              "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
             },
             "effects": {
               "$value": [
@@ -3805,7 +3805,7 @@
                 1
               ],
               "$type": "cubicBezier",
-              "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+              "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
             }
           },
           "slow": {
@@ -3817,7 +3817,7 @@
                 1
               ],
               "$type": "cubicBezier",
-              "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+              "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
             },
             "effects": {
               "$value": [
@@ -3827,7 +3827,7 @@
                 1
               ],
               "$type": "cubicBezier",
-              "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+              "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
             }
           }
         },
@@ -3840,7 +3840,7 @@
               1
             ],
             "$type": "cubicBezier",
-            "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
           }
         }
       },
@@ -3859,21 +3859,21 @@
         "tint": {
           "$value": 0.05,
           "$type": "number",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         }
       },
       "level2": {
         "tint": {
           "$value": 0.08,
           "$type": "number",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         }
       },
       "level3": {
         "tint": {
           "$value": 0.11,
           "$type": "number",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         }
       }
     },
@@ -3888,7 +3888,7 @@
           ]
         },
         "$type": "color",
-        "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
       },
       "connection": {
         "$value": {
@@ -3900,7 +3900,7 @@
           ]
         },
         "$type": "color",
-        "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
       },
       "rhythm": {
         "$value": {
@@ -3912,7 +3912,7 @@
           ]
         },
         "$type": "color",
-        "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
       },
       "creation": {
         "$value": {
@@ -3924,7 +3924,7 @@
           ]
         },
         "$type": "color",
-        "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
       }
     },
     "layout": {
@@ -3935,7 +3935,7 @@
             "unit": "px"
           },
           "$type": "dimension",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "sm": {
           "$value": {
@@ -3943,7 +3943,7 @@
             "unit": "px"
           },
           "$type": "dimension",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "md-tight": {
           "$value": {
@@ -3951,7 +3951,7 @@
             "unit": "px"
           },
           "$type": "dimension",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "md": {
           "$value": {
@@ -3959,7 +3959,7 @@
             "unit": "px"
           },
           "$type": "dimension",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "lg-tight": {
           "$value": {
@@ -3967,7 +3967,7 @@
             "unit": "px"
           },
           "$type": "dimension",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "lg": {
           "$value": {
@@ -3975,7 +3975,7 @@
             "unit": "px"
           },
           "$type": "dimension",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         },
         "xl": {
           "$value": {
@@ -3983,14 +3983,14 @@
             "unit": "px"
           },
           "$type": "dimension",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         }
       },
       "density": {
         "factor": {
           "$value": 1,
           "$type": "number",
-          "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
         }
       }
     },
@@ -4010,12 +4010,12 @@
       "modal": {
         "$value": 80,
         "$type": "number",
-        "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
       },
       "crisis": {
         "$value": 99999,
         "$type": "number",
-        "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
       }
     },
     "topbar": {
@@ -4047,7 +4047,7 @@
           ]
         },
         "$type": "color",
-        "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
       },
       "teal": {
         "$value": {
@@ -4059,7 +4059,7 @@
           ]
         },
         "$type": "color",
-        "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
       },
       "remembrance": {
         "$value": {
@@ -4071,7 +4071,7 @@
           ]
         },
         "$type": "color",
-        "$deprecated": "Deprecated: no consumer. Removal in v0.3.0."
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
       }
     }
   },
