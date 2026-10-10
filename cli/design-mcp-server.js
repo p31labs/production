@@ -81,29 +81,28 @@ function flattenTokens(node, prefix = '') {
 const COMPONENTS = [];
 
 function loadComponents() {
-  const compFile = path.join(__dirname, 'tokens', 'components.yml');
-  if (!fs.existsSync(compFile)) return;
-  const comps = yaml.parse(fs.readFileSync(compFile, 'utf8'));
-  for (const [name, c] of Object.entries(comps.components || {})) {
+  // Canonical source of truth is packages/design-core/registry.json (32
+  // components, Storybook-derived), NOT the stale cli/tokens/components.yml.
+  const regFile = path.join(__dirname, '..', 'packages', 'design-core', 'registry.json');
+  if (!fs.existsSync(regFile)) return;
+  const reg = JSON.parse(fs.readFileSync(regFile, 'utf8'));
+  for (const item of reg.items || []) {
     const props = {};
-    if (c.props) {
-      for (const [pname, pdef] of Object.entries(c.props)) {
-        props[pname] = {
-          type: pdef.type || 'string',
-          default: pdef.default,
-        };
+    if (item.props) {
+      for (const [pname, pdef] of Object.entries(item.props)) {
+        props[pname] = { type: pdef.type || 'string', default: pdef.default };
         if (pdef.options) props[pname].options = pdef.options;
         if (pdef.range) props[pname].range = pdef.range;
       }
     }
     COMPONENTS.push({
-      name,
-      description: c.description,
-      css_class: c.css_class,
-      variants: c.variants || [],
+      name: item.name,
+      description: item.description,
+      css_class: item.cssClass,
+      variants: item.variants || [],
       props,
-      slots: c.slots || [],
-      tokens: c.tokens || [],
+      slots: item.slots || [],
+      tokens: item.tokens || [],
     });
   }
 }

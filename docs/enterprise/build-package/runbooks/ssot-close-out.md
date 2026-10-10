@@ -42,7 +42,7 @@ Closed (larger than open):
 | Thread | State |
 |---|---|
 | SSOT token consolidation (flip) | Closed `0be3bbe` |
-| npm scope `@p31/` → `@p31ca/` | Closed `df263a4` |
+| npm scope migration → `@p31ca/` | Closed `df263a4` |
 | 4 orphaned unscoped publishes deprecated | Closed `13f7932` |
 | Publish-surface guard | Closed `d132fd6` |
 | 152 tokens deprecated (DTCG `$deprecated`) | Closed `190d17d` |
