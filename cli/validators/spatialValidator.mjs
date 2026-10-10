@@ -30,7 +30,7 @@ const ROOT = join(__dirname, '..');
 class SpatialValidator {
   constructor(tokensPath) {
     const raw = readFileSync(tokensPath, 'utf-8');
-    this.tokens = parse(raw);
+    this.tokens = parse(raw).p31 || {};
     this.fixes = [];
   }
 
@@ -45,7 +45,7 @@ class SpatialValidator {
   }
 
   getSpacingToken(value) {
-    const spacing = this.tokens.spacing || {};
+    const spacing = this.tokens.layout?.spacing || {};
     for (const [key, token] of Object.entries(spacing)) {
       if (token.$value && token.$value.includes(value)) return `--p31-space-${key}`;
     }
@@ -360,7 +360,7 @@ const args = process.argv.slice(2);
 const getOpt = (flag) => { const i = args.indexOf(flag); return i !== -1 ? args[i + 1] : undefined; };
 
 const tokensPath = getOpt('--tokens') || join(ROOT, '..', 'cli', 'tokens', 'tokens.yml');
-const componentsPath = getOpt('--components') || join(ROOT, '..', 'cli', 'tokens', 'components.yml');
+const componentsPath = getOpt('--components') || join(ROOT, '..', '..', 'packages', 'design-core', 'registry.json');
 const srcDir = getOpt('--src') || join(ROOT, '..', 'apps', 'p31ca', 'src');
 const strict = args.includes('--strict');
 const fix = args.includes('--fix');
