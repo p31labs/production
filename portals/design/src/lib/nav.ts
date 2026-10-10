@@ -43,18 +43,18 @@ export const SECTION_GROUPS: { id: NavSectionId; label: string; emoji: string; d
  *  this commit; route re-homing (deep-link moves) is the next step. */
 export const NAV_SECTIONS: NavSection[] = [
   { path: '/', label: 'Home / Launcher', icon: 'home', emoji: '🏠', description: 'At a glance: the Quantum Material language and where to start', flagship: true, section: 'components' },
-  { path: '/tokens', label: 'Tokens', icon: 'tokens', emoji: '🎨', description: 'W3C DTCG token explorer — OKLCH swatches, variables, values', section: 'foundations' },
-  { path: '/glass', label: 'Glass Lab', icon: 'glass', emoji: '🧊', description: 'Glassmorphism laboratory and surface recipes', section: 'components' },
-  { path: '/icons', label: 'Icons', icon: 'image', emoji: '🖼️', description: 'P31 icon system — inline, stroked, glow-driven', section: 'foundations' },
-  { path: '/a11y', label: 'Accessibility', icon: 'a11y', emoji: '♿', description: 'Neuroinclusion, spoon ladder, and sensory defaults', section: 'foundations' },
-  { path: '/catalog', label: 'Catalog', icon: 'catalog', emoji: '🧩', description: 'Canonical component catalog with live previews and contracts', flagship: true, section: 'components' },
-  { path: '/marketplace', label: 'Marketplace', icon: 'marketplace', emoji: '🛍️', description: 'Design shop — install components, compositions, and recipes', flagship: true, section: 'resources' },
-  { path: '/playground', label: 'Playground', icon: 'layout', emoji: '🧪', description: 'Live component lab + Intent DSL QA gates', flagship: true, section: 'components' },
-  { path: '/a2ui', label: 'A2UI', icon: 'sparkles', emoji: '✨', description: 'Generative UI — agent intent → declarative data → rendered from the catalog', flagship: true, section: 'agents' },
-  { path: '/recipes', label: 'Recipes', icon: 'recipes', emoji: '📖', description: 'Copy-paste recipes for common P31 patterns', section: 'patterns' },
-  { path: '/brands', label: 'Brands', icon: 'brands', emoji: '🌐', description: 'Multi-brand orchestration through the Chameleon', section: 'foundations' },
-  { path: '/dome', label: 'Dome', icon: 'dome', emoji: '🔮', description: 'Spaceship Earth cockpit — geodesic dome + starfield with LED controller', flagship: true, section: 'patterns' },
-  { path: '/mcp', label: 'MCP Console', icon: 'terminal', emoji: '💻', description: 'Live design-core MCP server console and tool calls', section: 'agents' },
+  { path: '/foundations/tokens', label: 'Tokens', icon: 'tokens', emoji: '🎨', description: 'W3C DTCG token explorer — OKLCH swatches, variables, values', section: 'foundations' },
+  { path: '/components/glass', label: 'Glass Lab', icon: 'glass', emoji: '🧊', description: 'Glassmorphism laboratory and surface recipes', section: 'components' },
+  { path: '/foundations/icons', label: 'Icons', icon: 'image', emoji: '🖼️', description: 'P31 icon system — inline, stroked, glow-driven', section: 'foundations' },
+  { path: '/foundations/accessibility', label: 'Accessibility', icon: 'a11y', emoji: '♿', description: 'Neuroinclusion, spoon ladder, and sensory defaults', section: 'foundations' },
+  { path: '/components', label: 'Catalog', icon: 'catalog', emoji: '🧩', description: 'Canonical component catalog with live previews and contracts', flagship: true, section: 'components' },
+  { path: '/resources/marketplace', label: 'Marketplace', icon: 'marketplace', emoji: '🛍️', description: 'Design shop — install components, compositions, and recipes', flagship: true, section: 'resources' },
+  { path: '/components/playground', label: 'Playground', icon: 'layout', emoji: '🧪', description: 'Live component lab + Intent DSL QA gates', flagship: true, section: 'components' },
+  { path: '/agents/a2ui', label: 'A2UI', icon: 'sparkles', emoji: '✨', description: 'Generative UI — agent intent → declarative data → rendered from the catalog', flagship: true, section: 'agents' },
+  { path: '/patterns/recipes', label: 'Recipes', icon: 'recipes', emoji: '📖', description: 'Copy-paste recipes for common P31 patterns', section: 'patterns' },
+  { path: '/foundations/brands', label: 'Brands', icon: 'brands', emoji: '🌐', description: 'Multi-brand orchestration through the Chameleon', section: 'foundations' },
+  { path: '/patterns/dome', label: 'Dome', icon: 'dome', emoji: '🔮', description: 'Spaceship Earth cockpit — geodesic dome + starfield with LED controller', flagship: true, section: 'patterns' },
+  { path: '/agents/mcp', label: 'MCP Console', icon: 'terminal', emoji: '💻', description: 'Live design-core MCP server console and tool calls', section: 'agents' },
 ];
 
 export const FLAGSHIP_PATHS = NAV_SECTIONS.filter((s) => s.flagship).map((s) => s.path);

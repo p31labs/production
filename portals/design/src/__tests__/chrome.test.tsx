@@ -80,8 +80,8 @@ describe('Portal chrome', () => {
       <MemoryRouter>
         <SectionStrip
           items={[
-            { id: '/glass', label: 'Glass Lab' },
-            { id: '/mcp', label: 'MCP Console' },
+            { id: '/components/glass', label: 'Glass Lab' },
+            { id: '/agents/mcp', label: 'MCP Console' },
           ]}
         />
       </MemoryRouter>

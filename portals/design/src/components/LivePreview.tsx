@@ -73,9 +73,9 @@ const PREVIEWS: Record<string, Renderer> = {
   SectionStrip: () => (
     <SectionStrip
       items={[
-        { id: '/tokens', label: 'Tokens' },
+        { id: '/foundations/tokens', label: 'Tokens' },
         { id: '/components', label: 'Components' },
-        { id: '/glass', label: 'Glass Lab' },
+        { id: '/components/glass', label: 'Glass Lab' },
       ]}
       onSelect={() => {}}
     />
@@ -90,8 +90,8 @@ const PREVIEWS: Record<string, Renderer> = {
   Footer: () => (
     <Footer
       columns={[
-        { title: 'System', links: [{ label: 'Tokens', href: '/tokens' }] },
-        { title: 'Explore', links: [{ label: 'Glass Lab', href: '/glass' }] },
+        { title: 'System', links: [{ label: 'Tokens', href: '/foundations/tokens' }] },
+        { title: 'Explore', links: [{ label: 'Glass Lab', href: '/components/glass' }] },
       ]}
     />
   ),

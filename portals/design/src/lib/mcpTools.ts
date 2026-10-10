@@ -34,8 +34,10 @@ export const MCP_HANDLERS: Record<string, string> = {
   dome: 'mcp_design_dome',
 }
 
-/** Map a route path to its MCP tool name (for per-route data-mcp-tool). */
+/** Map a route path to its MCP tool name (for per-route data-mcp-tool).
+ *  Nested section paths (/foundations/tokens) resolve by their last segment. */
 export function mcpToolForPath(path: string): string {
-  const key = path.replace(/^\/+/, '') || 'showcase'
-  return MCP_TOOLS[key] ?? MCP_TOOLS.shell
+  const segments = path.split('/').filter(Boolean);
+  const key = segments[segments.length - 1] || 'showcase';
+  return MCP_TOOLS[key] ?? MCP_TOOLS.shell;
 }

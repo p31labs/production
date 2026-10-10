@@ -212,7 +212,7 @@
 /* ── Dome card centering — when it's the trailing card on its own row (it is:
    13 surfaces on a 3-4 col auto-fill grid), span + center so it sits under the
    middle column. :last-child guards against future surface-count changes. ── */
-.launcher-card[data-path="/dome"]:last-child {
+.launcher-card[data-path="/patterns/dome"]:last-child {
   grid-column: 1 / -1;
   justify-self: center;
   width: min(360px, 100%);

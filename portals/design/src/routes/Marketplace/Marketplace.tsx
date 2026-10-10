@@ -246,9 +246,9 @@ const SAFE_RENDERERS: Record<string, (p: RenderProps) => ReactNode> = {
   SectionStrip: () => (
     <SectionStrip
       items={[
-        { id: '/tokens', label: 'Tokens', active: true },
+        { id: '/foundations/tokens', label: 'Tokens', active: true },
         { id: '/components', label: 'Components' },
-        { id: '/glass', label: 'Glass Lab' },
+        { id: '/components/glass', label: 'Glass Lab' },
       ]}
       onSelect={() => undefined}
     />
@@ -267,8 +267,8 @@ const SAFE_RENDERERS: Record<string, (p: RenderProps) => ReactNode> = {
       brandLabel={String(p.brandLabel ?? 'P31 Labs')}
       tagline="Sovereign, neuroinclusive interface foundation."
       columns={[
-        { title: 'System', links: [{ label: 'Tokens', href: '/tokens' }, { label: 'Components', href: '/components' }] },
-        { title: 'Explore', links: [{ label: 'Glass Lab', href: '/glass' }, { label: 'Brands', href: '/brands' }] },
+        { title: 'System', links: [{ label: 'Tokens', href: '/foundations/tokens' }, { label: 'Components', href: '/components' }] },
+        { title: 'Explore', links: [{ label: 'Glass Lab', href: '/components/glass' }, { label: 'Brands', href: '/foundations/brands' }] },
       ]}
     />
   ),
@@ -355,10 +355,10 @@ const SAFE_RENDERERS: Record<string, (p: RenderProps) => ReactNode> = {
       <SidebarNav
         items={[
           { path: '/', label: 'Home', emoji: '🏠' },
-          { path: '/catalog', label: 'Catalog', emoji: '🧩' },
-          { path: '/marketplace', label: 'Marketplace', emoji: '🛍️' },
+          { path: '/components', label: 'Catalog', emoji: '🧩' },
+          { path: '/resources/marketplace', label: 'Marketplace', emoji: '🛍️' },
         ]}
-        activePath="/catalog"
+        activePath="/components"
       />
     </div>
   ),
@@ -366,10 +366,10 @@ const SAFE_RENDERERS: Record<string, (p: RenderProps) => ReactNode> = {
     <MobileBottomNav
       items={[
         { path: '/', label: 'Home', emoji: '🏠' },
-        { path: '/catalog', label: 'Catalog', emoji: '🧩' },
-        { path: '/marketplace', label: 'Marketplace', emoji: '🛍️' },
+        { path: '/components', label: 'Catalog', emoji: '🧩' },
+        { path: '/resources/marketplace', label: 'Marketplace', emoji: '🛍️' },
       ]}
-      activePath="/catalog"
+      activePath="/components"
     />
   ),
   CalmOverlay: (p) => (
@@ -408,8 +408,8 @@ export const SAFE_PROPS: Record<string, RenderProps> = {
   Crown: { label: 'P31' },
   CandyHeader: { eyebrow: 'System', title: 'Candy Header', lede: 'A candy-rounded glass header for the sovereign stack.' },
   Dropdown: { label: 'Action' },
-  SidebarNav: { activePath: '/catalog' },
-  MobileBottomNav: { activePath: '/catalog' },
+  SidebarNav: { activePath: '/components' },
+  MobileBottomNav: { activePath: '/components' },
   CalmOverlay: { spoons: 0 },
   NotificationStack: {},
   CrisisOverlay: { visible: true, message: 'Crisis mode' },
@@ -591,7 +591,7 @@ export default function Marketplace() {
         <SurfaceSection title="Beyond the portal">
           <div className="glass-tile">
             <SurfaceGrid columns={3} className="surface-grid--tiles">
-              <a href="https://mcp.p31ca.org" target="_blank" rel="noopener noreferrer" className="surface-card">
+              <a href="https://agents/mcp.p31ca.org" target="_blank" rel="noopener noreferrer" className="surface-card">
                 <div className="surface-card-header">
                   <span className="surface-card-icon" style={{ background: 'var(--p31-accent-dim)' }}>
                     <P31Icon name="terminal" size={20} />

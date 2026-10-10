@@ -82,7 +82,7 @@ function AppShell() {
   const sessionTriggerRef = useRef<HTMLButtonElement>(null);
   const [modeIdx, setModeIdx] = useState(0);
 
-  const ambientEager = pathname === '/dome' || pathname === '/glass';
+  const ambientEager = pathname === '/patterns/dome' || pathname === '/components/glass';
   const ambientReady = useAmbientReady(ambientEager);
 
   useEffect(() => {
@@ -115,7 +115,7 @@ function AppShell() {
   return (
     <>
       <a href="#main-content" className="skip-link">Skip to main content</a>
-      <DomeBackground orbitable={pathname === '/dome'} ready={ambientReady} />
+      <DomeBackground orbitable={pathname === '/patterns/dome'} ready={ambientReady} />
       <Topbar
         mode={mode}
         onElevate={() => setModeIdx((i) => (i + 1) % MODES.length)}
@@ -138,19 +138,36 @@ function AppShell() {
           <Suspense fallback={<SurfaceSkeleton />}>
             <Routes>
               <Route path="/" element={<Showcase />} />
-              <Route path="/marketplace" element={<Marketplace />} />
-              <Route path="/catalog" element={<Catalog />} />
-              <Route path="/components" element={<Navigate to="/catalog" replace />} />
-              <Route path="/tokens" element={<Tokens />} />
-              <Route path="/glass" element={<GlassLab />} />
-              <Route path="/brands" element={<Brands />} />
-              <Route path="/recipes" element={<Recipes />} />
-              <Route path="/playground" element={<Playground />} />
-              <Route path="/mcp" element={<McpConsole />} />
-              <Route path="/a11y" element={<Accessibility />} />
-              <Route path="/icons" element={<Icons />} />
-              <Route path="/a2ui" element={<A2ui />} />
-              <Route path="/dome" element={<Dome />} />
+              {/* Foundations — the token tree, rendered */}
+              <Route path="/foundations/tokens" element={<Tokens />} />
+              <Route path="/foundations/icons" element={<Icons />} />
+              <Route path="/foundations/accessibility" element={<Accessibility />} />
+              <Route path="/foundations/brands" element={<Brands />} />
+              {/* Components — the 32 compositions, live */}
+              <Route path="/components" element={<Catalog />} />
+              <Route path="/components/glass" element={<GlassLab />} />
+              <Route path="/components/playground" element={<Playground />} />
+              {/* Patterns — multi-component solutions */}
+              <Route path="/patterns/recipes" element={<Recipes />} />
+              <Route path="/patterns/dome" element={<Dome />} />
+              {/* Resources — reference + governance */}
+              <Route path="/resources/marketplace" element={<Marketplace />} />
+              {/* Agents — AGENTS.md, DESIGN.md, MCP */}
+              <Route path="/agents/mcp" element={<McpConsole />} />
+              <Route path="/agents/a2ui" element={<A2ui />} />
+              {/* Legacy redirects — permanent, preserve deep links */}
+              <Route path="/tokens" element={<Navigate to="/foundations/tokens" replace />} />
+              <Route path="/icons" element={<Navigate to="/foundations/icons" replace />} />
+              <Route path="/a11y" element={<Navigate to="/foundations/accessibility" replace />} />
+              <Route path="/brands" element={<Navigate to="/foundations/brands" replace />} />
+              <Route path="/catalog" element={<Navigate to="/components" replace />} />
+              <Route path="/glass" element={<Navigate to="/components/glass" replace />} />
+              <Route path="/playground" element={<Navigate to="/components/playground" replace />} />
+              <Route path="/recipes" element={<Navigate to="/patterns/recipes" replace />} />
+              <Route path="/dome" element={<Navigate to="/patterns/dome" replace />} />
+              <Route path="/marketplace" element={<Navigate to="/resources/marketplace" replace />} />
+              <Route path="/mcp" element={<Navigate to="/agents/mcp" replace />} />
+              <Route path="/a2ui" element={<Navigate to="/agents/a2ui" replace />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Suspense>
