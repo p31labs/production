@@ -9,7 +9,7 @@ export function registerValidateCommand(program: Command) {
     .command('validate:spacing')
     .description('Validate that components and templates follow spatial rules (no external margins)')
     .option('--tokens <path>', 'Path to tokens.yml', 'cli/tokens/tokens.yml')
-    .option('--components <path>', 'Path to components.yml', 'cli/tokens/components.yml')
+    .option('--components <path>', 'Path to registry.json', 'packages/design-core/registry.json')
     .option('--src <path>', 'Source directory to scan for templates', 'apps/p31ca/src')
     .option('--strict', 'Fail on first violation (default: report all)')
     .option('--fix', 'Automatically fix violations (experimental)')

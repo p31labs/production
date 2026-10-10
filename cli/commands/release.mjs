@@ -19,7 +19,7 @@ const ROOT = path.resolve(__dirname, '..', '..');
 
 const FILES_TO_RELEASE = [
   { file: 'cli/tokens/tokens.yml', prefix: 'tokens', label: 'Design Tokens' },
-  { file: 'cli/tokens/components.yml', prefix: 'components', label: 'Component Registry' },
+  { file: 'packages/design-core/registry.json', prefix: 'components', label: 'Component Registry' },
 ];
 
 const RELEASE_ORDER = { patch: 0, minor: 1, major: 2 };

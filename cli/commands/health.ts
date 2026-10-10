@@ -9,7 +9,7 @@ export function registerHealthCommand(program: Command) {
     .command('health')
     .description('Run P31-Q design system health check')
     .option('--tokens <path>', 'Path to tokens.yml', 'cli/tokens/tokens.yml')
-    .option('--components <path>', 'Path to components.yml', 'cli/tokens/components.yml')
+    .option('--components <path>', 'Path to registry.json', 'packages/design-core/registry.json')
     .option('--src <path>', 'Source directory to scan', 'apps/p31ca/src')
     .option('--machine-readable', 'Output JSON for AI agents')
     .action((options) => {
