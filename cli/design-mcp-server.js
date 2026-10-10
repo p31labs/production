@@ -245,12 +245,13 @@ function executeTool(name, args) {
       const value = tokenResolve(args.path);
       if (value === null) return { error: `Token path not found: "${args.path}"`, status: 'error' };
       const raw = dt(args.path);
+      const serialized = typeof value === 'string' ? value : JSON.stringify(value);
       return {
         path: args.path,
-        value: String(value),
+        value: serialized,
         raw: raw && raw['$value'] != null ? raw : value,
         type: (raw && raw['$type']) || typeof value,
-        resolved: value !== String(raw),
+        resolved: typeof value !== 'string' || value !== String(raw),
         status: 'ok',
       };
     }
