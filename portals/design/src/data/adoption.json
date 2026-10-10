@@ -1,0 +1,204 @@
+{
+  "generatedAt": "2026-10-10T23:16:24.670Z",
+  "surfaces": 8,
+  "components": [
+    {
+      "name": "SpoonDial",
+      "surfaces": [
+        "portals/chat",
+        "portals/design",
+        "portals/qpj",
+        "portals/shell",
+        "workers/command-center"
+      ],
+      "surfaceCount": 5
+    },
+    {
+      "name": "Button",
+      "surfaces": [
+        "portals/chat",
+        "portals/design",
+        "portals/qpj",
+        "portals/shell",
+        "workers/command-center"
+      ],
+      "surfaceCount": 5
+    },
+    {
+      "name": "GlassPanel",
+      "surfaces": [
+        "portals/chat",
+        "portals/design",
+        "portals/qpj",
+        "portals/shell",
+        "workers/command-center"
+      ],
+      "surfaceCount": 5
+    },
+    {
+      "name": "ChatShell",
+      "surfaces": [
+        "portals/chat",
+        "portals/qpj",
+        "portals/shell",
+        "workers/design-mcp"
+      ],
+      "surfaceCount": 4
+    },
+    {
+      "name": "StatusBadge",
+      "surfaces": [
+        "portals/design",
+        "portals/qpj",
+        "portals/shell",
+        "workers/command-center"
+      ],
+      "surfaceCount": 4
+    },
+    {
+      "name": "MetricBadge",
+      "surfaces": [
+        "portals/design",
+        "portals/qpj",
+        "portals/shell",
+        "workers/command-center"
+      ],
+      "surfaceCount": 4
+    },
+    {
+      "name": "Starfield",
+      "surfaces": [
+        "portals/chat",
+        "portals/shell",
+        "workers/command-center"
+      ],
+      "surfaceCount": 3
+    },
+    {
+      "name": "Chameleon",
+      "surfaces": [
+        "portals/design",
+        "portals/qpj",
+        "portals/shell"
+      ],
+      "surfaceCount": 3
+    },
+    {
+      "name": "GlassCard",
+      "surfaces": [
+        "portals/design",
+        "portals/qpj",
+        "portals/shell"
+      ],
+      "surfaceCount": 3
+    },
+    {
+      "name": "PageHeader",
+      "surfaces": [
+        "portals/design",
+        "portals/qpj",
+        "workers/design-mcp"
+      ],
+      "surfaceCount": 3
+    },
+    {
+      "name": "CrisisOverlay",
+      "surfaces": [
+        "portals/chat",
+        "portals/shell"
+      ],
+      "surfaceCount": 2
+    },
+    {
+      "name": "SectionStrip",
+      "surfaces": [
+        "portals/design",
+        "workers/design-mcp"
+      ],
+      "surfaceCount": 2
+    },
+    {
+      "name": "CalmOverlay",
+      "surfaces": [
+        "portals/design",
+        "portals/forge"
+      ],
+      "surfaceCount": 2
+    },
+    {
+      "name": "CommandPalette",
+      "surfaces": [
+        "portals/design",
+        "portals/shell"
+      ],
+      "surfaceCount": 2
+    },
+    {
+      "name": "MobileBottomNav",
+      "surfaces": [
+        "portals/design",
+        "portals/forge"
+      ],
+      "surfaceCount": 2
+    },
+    {
+      "name": "NotificationStack",
+      "surfaces": [
+        "portals/design",
+        "portals/shell"
+      ],
+      "surfaceCount": 2
+    },
+    {
+      "name": "Topbar",
+      "surfaces": [
+        "portals/design"
+      ],
+      "surfaceCount": 1
+    },
+    {
+      "name": "NOTIFICATION_DURATION",
+      "surfaces": [
+        "portals/design"
+      ],
+      "surfaceCount": 1
+    },
+    {
+      "name": "SidebarNav",
+      "surfaces": [
+        "portals/design"
+      ],
+      "surfaceCount": 1
+    },
+    {
+      "name": "EvidenceBlock",
+      "surfaces": [
+        "portals/forge"
+      ],
+      "surfaceCount": 1
+    },
+    {
+      "name": "MetricRowBlock",
+      "surfaces": [
+        "portals/forge"
+      ],
+      "surfaceCount": 1
+    },
+    {
+      "name": "GovernanceOverviewBlock",
+      "surfaces": [
+        "portals/forge"
+      ],
+      "surfaceCount": 1
+    },
+    {
+      "name": "CardBody",
+      "surfaces": [
+        "portals/shell"
+      ],
+      "surfaceCount": 1
+    }
+  ],
+  "componentCount": 23,
+  "unused": []
+}

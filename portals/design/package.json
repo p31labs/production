@@ -18,7 +18,7 @@
     "gen:tokens": "tsx node_modules/@p31ca/design-core/scripts/gen-tokens.mts",
     "v:gate": "node /home/p31/production/tools/portal-vendor-sync/v-gate.mjs --target /home/p31/production/portals/design",
     "build:pwa": "vite build && node scripts/token-presence.mjs && node scripts/contrast-audit.mjs && node scripts/spacing-audit.mjs && node scripts/surface-audit.mjs && node scripts/ambient-perf-audit.mjs && node scripts/css-integrity.mjs && node scripts/token-tier-audit.mjs && node scripts/undefined-class-audit.mjs && npx playwright test",
-    "gate": "node scripts/check-vendor-freshness.mjs && pnpm typecheck && pnpm lint && pnpm test && pnpm test:parity && pnpm build:pwa && node ../../tools/canon-audit/canon-source-audit.mjs --target /home/p31/production/portals/design/src --allow production/portals/design/src/tokens.css,production/portals/design/src/surfaces/ambient.css,production/portals/design/src/components/Topbar.tsx && pnpm v:gate",
+    "gate": "node scripts/check-agent-readiness.mjs && node scripts/check-tier-promotion.mjs && node scripts/check-vendor-freshness.mjs && pnpm typecheck && pnpm lint && pnpm test && pnpm test:parity && pnpm build:pwa && node ../../tools/canon-audit/canon-source-audit.mjs --target /home/p31/production/portals/design/src --allow production/portals/design/src/tokens.css,production/portals/design/src/surfaces/ambient.css,production/portals/design/src/components/Topbar.tsx && pnpm v:gate",
     "gate:self-test": "node tests/acceptance/gate-self-test.mjs",
     "check:image-distinctness": "node tests/acceptance/check-image-distinctness.mjs",
     "acceptance:ratchet": "node tests/acceptance/ratchet.mjs 5",

@@ -35,6 +35,7 @@ const A2ui = lazy(() => import('./routes/A2ui/A2ui'));
 const Dome = lazy(() => import('./routes/Dome/Dome'));
 const FoundationsPage = lazy(() => import('./routes/Foundations/FoundationsPage'));
 const ComponentPage = lazy(() => import('./routes/Component/ComponentPage'));
+const AdoptionPage = lazy(() => import('./routes/Adoption/Adoption'));
 
 const MODES = ['spark', 'maker', 'workshop'] as const;
 type Mode = (typeof MODES)[number];
@@ -170,6 +171,7 @@ function AppShell() {
               <Route path="/patterns/dome" element={<Dome />} />
               {/* Resources — reference + governance */}
               <Route path="/resources/marketplace" element={<Marketplace />} />
+              <Route path="/resources/adoption" element={<AdoptionPage />} />
               {/* Agents — AGENTS.md, DESIGN.md, MCP */}
               <Route path="/agents/mcp" element={<McpConsole />} />
               <Route path="/agents/a2ui" element={<A2ui />} />
