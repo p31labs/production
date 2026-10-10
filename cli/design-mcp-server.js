@@ -138,11 +138,11 @@ function scanComponentUsage() {
 const TOOLS = [
   {
     name: 'token_resolve',
-    description: 'Resolve a DTCG token path to its computed value. Use dotted paths like "semantic.color.accent.default" or "primitive.color.cyan". Returns value, type, and resolved references.',
+    description: 'Resolve a DTCG token path to its computed value. Use dotted paths like "p31.color.accent.default" or "p31.radius.full". Returns value, type, and resolved references.',
     inputSchema: {
       type: 'object',
       properties: {
-        path: { type: 'string', description: 'Dotted token path (e.g. primitive.color.cyan, semantic.color.accent.default, component.glass_card.background)' },
+        path: { type: 'string', description: 'Dotted token path (e.g. p31.color.accent.default, p31.glass.background, p31.radius.full)' },
       },
       required: ['path'],
     },
@@ -174,7 +174,7 @@ const TOOLS = [
     inputSchema: {
       type: 'object',
       properties: {
-        prefix: { type: 'string', description: 'Optional filter prefix (e.g. "primitive.color", "semantic", "component")' },
+        prefix: { type: 'string', description: 'Optional filter prefix (e.g. "p31.color", "p31.glass", "p31.radius")' },
       },
     },
   },

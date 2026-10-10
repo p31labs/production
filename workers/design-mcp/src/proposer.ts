@@ -52,51 +52,51 @@ export interface IconProposalResult {
 // ─── Keyword heuristics ─────────────────────────────────────────────────────
 
 const KEYWORD_TO_TOKEN: Record<string, string[]> = {
-  crisis: ['semantic.color.accent.red', 'primitive.shadow.glow_cyan'],
-  emergency: ['semantic.color.accent.red'],
-  success: ['semantic.color.accent.green'],
-  warning: ['semantic.color.accent.gold'],
-  data: ['primitive.typography.font_mono', 'primitive.spacing.sm'],
-  table: ['primitive.typography.font_mono'],
-  list: ['primitive.spacing.sm'],
-  status: ['semantic.color.accent.green', 'semantic.color.accent.violet'],
-  indicator: ['semantic.color.accent.default'],
-  glass: ['primitive.color.glass_surface', 'primitive.color.glass_border'],
-  strong: ['primitive.color.glass_surface_strong'],
-  subtle: ['primitive.color.glass_surface_subtle'],
-  button: ['semantic.color.accent.default', 'primitive.color.void'],
-  click: ['semantic.color.accent.default', 'primitive.color.void'],
-  toggle: ['semantic.color.accent.default'],
-  switch: ['semantic.color.accent.default'],
-  meter: ['semantic.color.accent.default', 'semantic.color.text.tertiary'],
-  grid: ['primitive.spacing.md'],
-  label: ['primitive.typography.font_mono', 'semantic.color.text.tertiary'],
-  badge: ['semantic.color.accent.green', 'semantic.color.accent.violet'],
-  overlay: ['semantic.color.background.default'],
-  starfield: ['semantic.color.background.default'],
-  theme: ['semantic.color.background.default', 'theme.light.background.default'],
-  spinner: ['semantic.color.accent.default'],
-  loading: ['semantic.color.accent.default'],
-  progress: ['semantic.color.accent.default', 'semantic.color.accent.green'],
-  chart: ['primitive.typography.font_mono', 'primitive.spacing.sm'],
-  graph: ['primitive.typography.font_mono', 'primitive.spacing.sm'],
-  metric: ['primitive.typography.font_mono', 'semantic.color.accent.default'],
-  alert: ['semantic.color.accent.red', 'semantic.color.accent.gold'],
-  toast: ['semantic.color.accent.default', 'primitive.color.glass_surface'],
-  modal: ['primitive.color.glass_surface', 'primitive.color.glass_border'],
-  dialog: ['primitive.color.glass_surface', 'primitive.color.glass_border'],
-  menu: ['primitive.color.glass_surface', 'semantic.color.text.primary'],
-  nav: ['semantic.color.text.primary', 'semantic.color.text.secondary'],
-  card: ['primitive.color.glass_surface', 'primitive.color.glass_border', 'primitive.radius.xl'],
-  surface: ['primitive.color.glass_surface', 'primitive.color.glass_border'],
-  input: ['primitive.color.glass_surface', 'semantic.color.text.primary'],
-  form: ['primitive.spacing.sm', 'primitive.spacing.md'],
-  field: ['primitive.spacing.sm', 'semantic.color.text.primary'],
-  avatar: ['primitive.color.glass_surface', 'semantic.color.accent.default'],
-  image: ['primitive.color.glass_surface'],
-  media: ['primitive.color.glass_surface'],
-  video: ['primitive.color.glass_surface'],
-  player: ['primitive.color.glass_surface', 'primitive.color.glass_border'],
+  crisis: ['p31.color.accent.red.default', 'p31.elevation.level1.tint'],
+  emergency: ['p31.color.accent.red.default'],
+  success: ['p31.color.accent.green.default'],
+  warning: ['p31.color.accent.gold.default'],
+  data: ['p31.font.family.mono', 'p31.layout.spacing.sm'],
+  table: ['p31.font.family.mono'],
+  list: ['p31.layout.spacing.sm'],
+  status: ['p31.color.accent.green.default', 'p31.color.accent.violet.default'],
+  indicator: ['p31.color.accent.default'],
+  glass: ['p31.glass.surface', 'p31.glass.border'],
+  strong: ['p31.glass-bg-strong'],
+  subtle: ['p31.glass-bg-light'],
+  button: ['p31.color.accent.default', 'p31.surface.background'],
+  click: ['p31.color.accent.default', 'p31.surface.background'],
+  toggle: ['p31.color.accent.default'],
+  switch: ['p31.color.accent.default'],
+  meter: ['p31.color.accent.default', 'p31.color.text.muted'],
+  grid: ['p31.layout.spacing.md'],
+  label: ['p31.font.family.mono', 'p31.color.text.muted'],
+  badge: ['p31.color.accent.green.default', 'p31.color.accent.violet.default'],
+  overlay: ['p31.surface.background'],
+  starfield: ['p31.surface.background'],
+  theme: ['p31.surface.background', 'p31.theme.light.background.default'],
+  spinner: ['p31.color.accent.default'],
+  loading: ['p31.color.accent.default'],
+  progress: ['p31.color.accent.default', 'p31.color.accent.green.default'],
+  chart: ['p31.font.family.mono', 'p31.layout.spacing.sm'],
+  graph: ['p31.font.family.mono', 'p31.layout.spacing.sm'],
+  metric: ['p31.font.family.mono', 'p31.color.accent.default'],
+  alert: ['p31.color.accent.red.default', 'p31.color.accent.gold.default'],
+  toast: ['p31.color.accent.default', 'p31.glass.surface'],
+  modal: ['p31.glass.surface', 'p31.glass.border'],
+  dialog: ['p31.glass.surface', 'p31.glass.border'],
+  menu: ['p31.glass.surface', 'p31.color.text.primary'],
+  nav: ['p31.color.text.primary', 'p31.color.text.secondary'],
+  card: ['p31.glass.surface', 'p31.glass.border', 'p31.radius.full'],
+  surface: ['p31.glass.surface', 'p31.glass.border'],
+  input: ['p31.glass.surface', 'p31.color.text.primary'],
+  form: ['p31.layout.spacing.sm', 'p31.layout.spacing.md'],
+  field: ['p31.layout.spacing.sm', 'p31.color.text.primary'],
+  avatar: ['p31.glass.surface', 'p31.color.accent.default'],
+  image: ['p31.glass.surface'],
+  media: ['p31.glass.surface'],
+  video: ['p31.glass.surface'],
+  player: ['p31.glass.surface', 'p31.glass.border'],
 };
 
 const KEYWORD_TO_FAMILY: Record<string, 'regular' | 'advanced'> = {
@@ -179,9 +179,9 @@ export function suggestTokens(keywords: string[]): string[] {
     if (matched) matched.forEach((t) => seen.add(t));
   }
   if (seen.size === 0) {
-    seen.add('primitive.color.glass_surface');
-    seen.add('primitive.color.glass_border');
-    seen.add('primitive.radius.xl');
+    seen.add('p31.glass.surface');
+    seen.add('p31.glass.border');
+    seen.add('p31.radius.full');
   }
   return Array.from(seen);
 }
@@ -515,7 +515,7 @@ export function proposeToken(
     .map(p => ({ path: p, score: keywords.filter(k => p.toLowerCase().includes(k)).length }))
     .filter(r => r.score > 0)
     .sort((a, b) => b.score - a.score);
-  const similarTo = scored.length > 0 ? scored[0].path : 'primitive.color.glass_surface';
+  const similarTo = scored.length > 0 ? scored[0].path : 'p31.glass.surface';
 
   const confidence = scored.length > 0
     ? Math.min(1, 0.3 + scored[0].score * 0.15)

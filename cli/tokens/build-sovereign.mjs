@@ -61,7 +61,7 @@ function getRaw(pathStr, tokens) {
 
 /**
  * Recursively resolve a value that may contain {references}.
- * E.g. "{primitive.color.cyan}" → "#00F0FF"
+ * E.g. "{p31.color.accent.default}" → the OKLCH value
  */
 function resolveValue(value, tokens, visited = new Set()) {
   if (typeof value !== 'string') return String(value);
@@ -280,7 +280,7 @@ function buildSemanticManifest(tokens) {
     if (node == null) return null;
 
     if (typeof node === 'object' && '$value' in node) {
-      // Derive CSS variable name: primitive.color.glass_surface → --p31-color-glass-surface
+      // Derive CSS variable name: p31.glass.background → --p31-glass-background
       const cssName = '--p31-' + parts.slice(1).join('-');
       const resolved = resolveValue(String(node.$value), tokens);
       return [{ css: cssName, raw: node.$value, resolved }];

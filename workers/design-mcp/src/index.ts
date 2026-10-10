@@ -247,7 +247,7 @@ const TOOLS = [
     inputSchema: {
       type: 'object' as const,
       properties: {
-        path: { type: 'string' as const, description: 'Dotted token path (e.g. semantic.color.accent.default)' },
+        path: { type: 'string' as const, description: 'Dotted token path (e.g. p31.color.accent.default)' },
       },
       required: ['path'],
     },
@@ -1404,7 +1404,7 @@ async function handleRequest(request: Request, env?: Record<string, string | und
   // Tool listing page (human-friendly)
   if (request.method === 'GET' && url.pathname === '/') {
     const toolList = TOOLS.map(t => `  <li><strong>${t.name}</strong> — ${t.description}</li>`).join('\n');
-    const html = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>P31 Design System MCP</title><style>body{font-family:system-ui,sans-serif;background:#0A0A0F;color:#F5F5F7;max-width:800px;margin:60px auto;padding:0 24px;}h1{color:#00F0FF;}pre{background:rgba(255,255,255,0.04);padding:12px;border-radius:8px;overflow-x:auto;}code{font-family:monospace;color:#A78BFA;}li{margin:8px 0;}</style></head><body><h1>P31 Design System MCP</h1><p>Streamable HTTP endpoint. Send JSON-RPC requests via POST.</p><h2>Tools (${TOOLS.length})</h2><ul>${toolList}</ul><h2>Example</h2><pre><code>curl -X POST ${url.origin}/ \\\n  -H "Content-Type: application/json" \\\n  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"token_resolve","arguments":{"path":"semantic.color.accent.default"}}}'</code></pre><p style="color:rgba(245,245,247,0.3);margin-top:40px;font-size:12px;">P31 Labs &middot; Sovereign Design System &middot; ${new Date().toISOString()}</p></body></html>`;
+    const html = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>P31 Design System MCP</title><style>body{font-family:system-ui,sans-serif;background:#0A0A0F;color:#F5F5F7;max-width:800px;margin:60px auto;padding:0 24px;}h1{color:#00F0FF;}pre{background:rgba(255,255,255,0.04);padding:12px;border-radius:8px;overflow-x:auto;}code{font-family:monospace;color:#A78BFA;}li{margin:8px 0;}</style></head><body><h1>P31 Design System MCP</h1><p>Streamable HTTP endpoint. Send JSON-RPC requests via POST.</p><h2>Tools (${TOOLS.length})</h2><ul>${toolList}</ul><h2>Example</h2><pre><code>curl -X POST ${url.origin}/ \\\n  -H "Content-Type: application/json" \\\n  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"token_resolve","arguments":{"path":"p31.color.accent.default"}}}'</code></pre><p style="color:rgba(245,245,247,0.3);margin-top:40px;font-size:12px;">P31 Labs &middot; Sovereign Design System &middot; ${new Date().toISOString()}</p></body></html>`;
     return new Response(html, { headers: { 'Content-Type': 'text/html;profile=mcp-app' } });
   }
 
