@@ -271,17 +271,27 @@ const dtcg = {
 }
 
 // Merge the deprecation manifest (flat --p31-* → $deprecated) into the DTCG
-// tree. The p31 subtree is flat — its keys are the CSS var name minus the
-// --p31- prefix — so the mapping is `p31[name]`. Tokens whose value was not
-// portable (dropped from the export) are simply absent and stay un-merged.
+// tree. The p31 subtree is mixed flat-leaves + nested groups, so flatten it to
+// a --p31-path-segments → node map and match by CSS var name. Tokens whose
+// value was not portable (dropped from the export) are absent and stay un-merged.
 const deprecationsPath = join(tokensDir, '..', 'deprecations.json')
 if (existsSync(deprecationsPath)) {
   const deprecations = JSON.parse(readFileSync(deprecationsPath, 'utf8'))
-  for (const [cssName, meta] of Object.entries(deprecations)) {
-    const key = cssName.replace(/^--p31-/, '')
-    if (p31[key] && typeof p31[key] === 'object') {
-      p31[key].$deprecated = meta.$deprecated
+  const flat = new Map()
+  const walk = (node, path) => {
+    for (const [k, v] of Object.entries(node)) {
+      if (k.startsWith('$')) continue
+      if (v && typeof v === 'object' && !Array.isArray(v) && v.$value === undefined) {
+        walk(v, [...path, k])
+      } else {
+        flat.set(`--p31-${[...path, k].join('-')}`, v)
+      }
     }
+  }
+  walk(p31, [])
+  for (const [cssName, meta] of Object.entries(deprecations)) {
+    const node = flat.get(cssName)
+    if (node && typeof node === 'object') node.$deprecated = meta.$deprecated
   }
 }
 
