@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import { AnimatePresence } from 'motion/react';
 import DomeBackground from './components/DomeBackground';
 import { Topbar } from './components/Topbar';
@@ -13,6 +13,7 @@ import { SessionSummary } from './components/SessionSummary';
 import { useNotifStore } from './lib/useNotifStore';
 import { mcpToolForPath } from './lib/mcpTools';
 import { useSpoonsStore } from './lib/useSpoonsStore';
+import { FOUNDATION_BRANCHES } from './data/foundations';
 import './surfaces/session.css';
 /* The ambient instrument is part of the 570KB vendor-p31ca-ambient chunk.
    It stays lazy and mounts only after the load event (useAmbientReady), so
@@ -32,6 +33,8 @@ const Accessibility = lazy(() => import('./routes/Accessibility/Accessibility'))
 const Icons = lazy(() => import('./routes/Icons/Icons'));
 const A2ui = lazy(() => import('./routes/A2ui/A2ui'));
 const Dome = lazy(() => import('./routes/Dome/Dome'));
+const FoundationsPage = lazy(() => import('./routes/Foundations/FoundationsPage'));
+const ComponentPage = lazy(() => import('./routes/Component/ComponentPage'));
 
 const MODES = ['spark', 'maker', 'workshop'] as const;
 type Mode = (typeof MODES)[number];
@@ -72,6 +75,21 @@ function SurfaceSkeleton() {
       </div>
     </div>
   );
+}
+
+/** Foundation + component page param routers — resolve the dynamic segment. */
+function FoundationBranch() {
+  const { branch } = useParams();
+  const cfg = FOUNDATION_BRANCHES[branch ?? ''];
+  if (!cfg) {
+    return <div className="warning" role="alert">⚠️ Unknown foundation “{branch}”. Try color, typography, spacing, motion, radius, elevation, glass.</div>;
+  }
+  return <FoundationsPage {...cfg} />;
+}
+
+function ComponentRoute() {
+  const { name } = useParams();
+  return <ComponentPage name={name ?? ''} />;
 }
 
 function AppShell() {
@@ -155,6 +173,9 @@ function AppShell() {
               {/* Agents — AGENTS.md, DESIGN.md, MCP */}
               <Route path="/agents/mcp" element={<McpConsole />} />
               <Route path="/agents/a2ui" element={<A2ui />} />
+              {/* Foundation + component pages — schema-driven, from the DTCG tree / catalog */}
+              <Route path="/foundations/:branch" element={<FoundationBranch />} />
+              <Route path="/components/:name" element={<ComponentRoute />} />
               {/* Legacy redirects — permanent, preserve deep links */}
               <Route path="/tokens" element={<Navigate to="/foundations/tokens" replace />} />
               <Route path="/icons" element={<Navigate to="/foundations/icons" replace />} />

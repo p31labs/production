@@ -917,7 +917,7 @@ packages:
     resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
 
   '@p31ca/canon@file:vendor/p31ca-canon-0.2.0.tgz':
-    resolution: {integrity: sha512-gXowiF+hhHo8ntO2PTBHp+t3MkwG2XvcuPfVkhYUzFQ/8Qx7gWon9No2lOTWtawbQVJbVDfZknDEY8iZ4qQ9hw==, tarball: file:vendor/p31ca-canon-0.2.0.tgz}
+    resolution: {integrity: sha512-Vzd5pII/aUMjuyFGv/vMlr8vBqmyf47cEZReANc4EM9laRb5PtzUXI1Wnn6IhSPcshWSqVf0A8btMo+/qOwK0A==, tarball: file:vendor/p31ca-canon-0.2.0.tgz}
     version: 0.2.0
 
   '@p31ca/design-core@file:vendor/p31-design-core-3.0.1.tgz':

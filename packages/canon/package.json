@@ -118,7 +118,8 @@
     "./theming/theme-css": "./dist/theming/theme-css.js",
     "./theming/theme-store": "./dist/theming/theme-store.js",
     "./tokens": "./dist/tokens.js",
-    "./tokens.css": "./dist/tokens.css"
+    "./tokens.css": "./dist/tokens.css",
+    "./tokens.dtc.json": "./tokens/tokens.dtc.json"
   },
   "devDependencies": {
     "culori": "^4.0.2",
