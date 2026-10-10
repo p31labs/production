@@ -41,3 +41,16 @@ Per component, locate or author the consuming CSS:
 - 14/26 of the over-claim adjudication is blocked on this — the tokens cannot be
   adjudicated (drop vs CSS-fix) until the CSS is found.
 - Not a token-deprecation issue; it is a contract-grounding gap.
+## Location scan (2026-10-09)
+
+Whole-repo grep for each `cssClass` (excluding `registry.json`/`dist`/`node_modules`):
+
+| Component | cssClass | Where the CSS actually is |
+|---|---|---|
+| CalmOverlay | calm-overlay | `portals/workspace/src/workspace.css` + `CalmOverlay.tsx` (portal, not canon) |
+| Crown | crown | `cli/tokens/*` (a separate token subsystem) |
+| Footer | site-footer | `compositions/Footer.tsx` (React, no canon CSS) |
+| CalmIndicator, CandyHeader, CommandTrigger, SpoonCluster, StatusCluster, TopbarSection | — | only in `forge-schema.json`/`_worker.bundle` — **unwritten or web-component shadow root** |
+| Checkbox, Dropdown | checkbox/dropdown | class name too generic to locate |
+
+So most of the 14 are genuinely unwritten (aspirational contracts), not "CSS lives elsewhere." Mark those `status: 'planned'` until the CSS exists; re-home the few that live in portals/subsystems.
