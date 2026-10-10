@@ -10,3 +10,4 @@ packages:
   - '.'
 minimumReleaseAgeExclude:
   - '@p31ca/sovereign-primitives@0.0.2'
+  - '@p31ca/canon@0.2.0'
