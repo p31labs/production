@@ -65,12 +65,12 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "accent",
-      "accent-green",
-      "accent-gold",
-      "accent-red",
+      "color.accent.default",
+      "color.accent.green.default",
+      "color.accent.gold.default",
+      "color.accent.red.default",
       "radius.full",
-      "font.sans"
+      "font.family.sans"
     ],
     "variants": [
       "default"
@@ -121,10 +121,9 @@ export const COMPONENT_CATALOG = [
     "status": "stable",
     "tokens": [
       "topbar.height",
-      "glass.bg",
-      "glass.blur",
+      "glass.background",
       "glass.border",
-      "spacing.sm"
+      "layout.spacing.sm"
     ],
     "variants": [
       "default",
@@ -182,11 +181,10 @@ export const COMPONENT_CATALOG = [
     "version": "1.0.0",
     "status": "stable",
     "tokens": [
-      "accent",
+      "color.accent.default",
       "radius.md",
-      "spacing.sm",
-      "spacing.lg",
-      "font.weight"
+      "layout.spacing.sm",
+      "layout.spacing.lg"
     ],
     "variants": [
       "primary",
@@ -256,9 +254,9 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "accent-green",
-      "accent-red",
-      "glass.bg",
+      "color.accent.green.default",
+      "color.accent.red.default",
+      "glass.background",
       "radius.full"
     ],
     "variants": [
@@ -310,11 +308,8 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "void",
-      "accent",
-      "text.primary",
-      "cloud",
-      "glass.blur",
+      "color.accent.default",
+      "color.text.primary",
       "z.floating"
     ],
     "variants": [
@@ -322,8 +317,9 @@ export const COMPONENT_CATALOG = [
     ],
     "slots": [],
     "accessibility": [
-      "data-calm on <html> hides chrome, keeps ambient",
-      "Escape exits calm (keyboard reachable)"
+      "role=dialog aria-modal=true",
+      "aria-label=\"Calm mode\"",
+      "Return button is keyboard reachable"
     ],
     "props": {
       "spoons": {
@@ -347,7 +343,7 @@ export const COMPONENT_CATALOG = [
       "sighFirst": {
         "type": "boolean",
         "required": false,
-        "default": "true",
+        "default": null,
         "description": "Physiological sigh for 60s before coherence (default true)"
       }
     },
@@ -381,8 +377,8 @@ export const COMPONENT_CATALOG = [
       "glass.surface",
       "glass.border",
       "radius.candy",
-      "text.primary",
-      "accent"
+      "color.text.primary",
+      "color.accent.default"
     ],
     "variants": [
       "default"
@@ -438,12 +434,11 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "surface.bg",
+      "surface.background",
       "glass.border",
-      "text.primary",
-      "text.secondary",
-      "radius.md",
-      "shadow"
+      "color.text.primary",
+      "color.text.secondary",
+      "radius.md"
     ],
     "variants": [
       "default",
@@ -515,11 +510,7 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "theme.*",
-      "brand.*",
-      "accent",
-      "sensory.muted",
-      "sensory.warmLight"
+      "color.accent.default"
     ],
     "variants": [
       "default"
@@ -576,10 +567,10 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "surface.bg",
+      "surface.background",
       "glass.border",
-      "text.primary",
-      "text.secondary",
+      "color.text.primary",
+      "color.text.secondary",
       "radius.lg"
     ],
     "variants": [
@@ -658,11 +649,11 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "accent",
-      "text.primary",
-      "text.secondary",
+      "color.accent.default",
+      "color.text.primary",
+      "color.text.secondary",
       "radius.sm",
-      "border"
+      "glass.border"
     ],
     "variants": [
       "default",
@@ -733,10 +724,9 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "glass.bg",
+      "glass.background",
       "glass.border",
-      "glass.blur",
-      "accent",
+      "color.accent.default",
       "radius.md",
       "z.modal"
     ],
@@ -818,11 +808,11 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "glass.bg",
+      "glass.background",
       "glass.border",
       "radius.full",
-      "text.secondary",
-      "font.mono"
+      "color.text.secondary",
+      "font.family.mono"
     ],
     "variants": [
       "default",
@@ -886,9 +876,9 @@ export const COMPONENT_CATALOG = [
     "version": "1.0.0",
     "status": "stable",
     "tokens": [
-      "bg",
-      "text",
-      "accent",
+      "surface.background",
+      "color.text.primary",
+      "color.accent.default",
       "z.crisis"
     ],
     "variants": [
@@ -945,9 +935,9 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "accent",
-      "text.primary",
-      "font.sans"
+      "color.accent.default",
+      "color.text.primary",
+      "font.family.sans"
     ],
     "variants": [
       "default"
@@ -992,11 +982,11 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "surface.bg",
+      "surface.background",
       "glass.border",
-      "text.primary",
-      "text.secondary",
-      "accent",
+      "color.text.primary",
+      "color.text.secondary",
+      "color.accent.default",
       "radius.md"
     ],
     "variants": [
@@ -1067,11 +1057,10 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "surface.bg",
-      "text.primary",
-      "text.secondary",
-      "border.subtle",
-      "spacing.lg"
+      "surface.background",
+      "color.text.primary",
+      "color.text.secondary",
+      "layout.spacing.lg"
     ],
     "variants": [
       "default"
@@ -1162,11 +1151,10 @@ export const COMPONENT_CATALOG = [
     "version": "1.0.0",
     "status": "stable",
     "tokens": [
-      "glass.bg",
-      "glass.blur",
+      "glass.background",
       "glass.border",
       "glass.radius",
-      "spacing.lg"
+      "layout.spacing.lg"
     ],
     "variants": [
       "default",
@@ -1228,11 +1216,9 @@ export const COMPONENT_CATALOG = [
     "version": "1.0.0",
     "status": "stable",
     "tokens": [
-      "glass.bg",
-      "glass.blur",
+      "glass.background",
       "glass.border",
-      "glass.radius",
-      "glass.shadow"
+      "glass.radius"
     ],
     "variants": [
       "default",
@@ -1293,11 +1279,11 @@ export const COMPONENT_CATALOG = [
     "version": "1.0.0",
     "status": "stable",
     "tokens": [
-      "glass.bg",
+      "glass.background",
       "glass.border",
       "radius.sm",
       "scale.xs",
-      "text.secondary"
+      "color.text.secondary"
     ],
     "variants": [
       "default",
@@ -1366,9 +1352,8 @@ export const COMPONENT_CATALOG = [
     "tokens": [
       "glass.surface",
       "glass.border",
-      "glass.blur",
-      "accent",
-      "text.secondary",
+      "color.accent.default",
+      "color.text.secondary",
       "radius.full"
     ],
     "variants": [
@@ -1439,10 +1424,10 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "accent",
-      "accent-gold",
-      "accent-green",
-      "glass.bg",
+      "color.accent.default",
+      "color.accent.gold.default",
+      "color.accent.green.default",
+      "glass.background",
       "radius.full"
     ],
     "variants": [
@@ -1497,12 +1482,12 @@ export const COMPONENT_CATALOG = [
     "tokens": [
       "glass.surface",
       "glass.border",
-      "accent",
-      "accent-green",
-      "accent-gold",
-      "accent-red",
-      "text.primary",
-      "text.secondary",
+      "color.accent.default",
+      "color.accent.green.default",
+      "color.accent.gold.default",
+      "color.accent.red.default",
+      "color.text.primary",
+      "color.text.secondary",
       "z.floating"
     ],
     "variants": [
@@ -1573,9 +1558,8 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "title.gradient",
-      "text.secondary",
-      "spacing.lg"
+      "color.text.secondary",
+      "layout.spacing.lg"
     ],
     "variants": [
       "default",
@@ -1655,11 +1639,11 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "glass.bg",
+      "glass.background",
       "glass.border",
       "radius.candy",
-      "accent",
-      "text.secondary"
+      "color.accent.default",
+      "color.text.secondary"
     ],
     "variants": [
       "default"
@@ -1728,10 +1712,10 @@ export const COMPONENT_CATALOG = [
     "tokens": [
       "glass.surface",
       "glass.border",
-      "accent",
-      "text.secondary",
+      "color.accent.default",
+      "color.text.secondary",
       "radius.full",
-      "font.sans"
+      "font.family.sans"
     ],
     "variants": [
       "default"
@@ -1801,7 +1785,7 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "accent",
+      "color.accent.default",
       "glass.border",
       "radius.full"
     ],
@@ -1853,10 +1837,10 @@ export const COMPONENT_CATALOG = [
     "status": "stable",
     "tokens": [
       "radius.full",
-      "glass.bg",
+      "glass.background",
       "glass.border",
-      "accent",
-      "text.tertiary"
+      "color.accent.default",
+      "color.text.muted"
     ],
     "variants": [
       "default",
@@ -1982,9 +1966,9 @@ export const COMPONENT_CATALOG = [
     "tokens": [
       "radius.full",
       "scale.xs",
-      "accent.green",
-      "accent.red",
-      "accent.gold"
+      "color.accent.green.default",
+      "color.accent.red.default",
+      "color.accent.gold.default"
     ],
     "variants": [
       "success",
@@ -2043,8 +2027,8 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "glass.bg",
-      "space.xs"
+      "glass.background",
+      "layout.spacing.xs"
     ],
     "variants": [
       "default"
@@ -2083,7 +2067,7 @@ export const COMPONENT_CATALOG = [
   },
   {
     "name": "Topbar",
-    "description": "Unified app-chrome shell — slot-based three-region layout. Brand / center / statusCluster / mode / trailing, with variant (app|marketing|game) and mobile overrides.",
+    "description": "Unified app-chrome shell — slot-based three-region layout. Brand / center / statusCluster / mode / trailing / identity, with variant (app|marketing|game) and mobile overrides. The identity slot is auth-agnostic (SignInLink / IdentityChip / AccountMenu fills).",
     "cssClass": "topbar",
     "category": "chrome",
     "source": "canonical",
@@ -2092,14 +2076,13 @@ export const COMPONENT_CATALOG = [
     "status": "stable",
     "tokens": [
       "topbar.height",
-      "glass.bg",
-      "glass.blur",
+      "glass.background",
       "glass.border",
-      "spacing.sm",
+      "layout.spacing.sm",
       "radius.candy",
-      "accent",
-      "accent-gold",
-      "accent-green"
+      "color.accent.default",
+      "color.accent.gold.default",
+      "color.accent.green.default"
     ],
     "variants": [
       "app",
@@ -2111,7 +2094,8 @@ export const COMPONENT_CATALOG = [
       "center",
       "status",
       "mode",
-      "trailing"
+      "trailing",
+      "identity"
     ],
     "accessibility": [
       "role=banner",
@@ -2159,7 +2143,13 @@ export const COMPONENT_CATALOG = [
         "type": "ReactNode",
         "required": false,
         "default": null,
-        "description": "Pinned trailing actions + identity"
+        "description": "Pinned trailing actions (utility cluster)"
+      },
+      "identity": {
+        "type": "ReactNode",
+        "required": false,
+        "default": null,
+        "description": "Identity region — fenced from trailing; SignInLink / IdentityChip / AccountMenu fill"
       },
       "mobileLeading": {
         "type": "ReactNode",
@@ -2214,8 +2204,8 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "space.xs",
-      "glass.bg"
+      "layout.spacing.xs",
+      "glass.background"
     ],
     "variants": [
       "default"
@@ -2260,7 +2250,7 @@ export const COMPONENT_CATALOG = [
 
 export const catalog: z.infer<typeof CatalogSchema> = CatalogSchema.parse({
   v: 2,
-  generatedAt: "2026-09-30T17:19:01.064Z",
+  generatedAt: "2026-10-10T15:02:16.306Z",
   components: COMPONENT_CATALOG,
 })
 

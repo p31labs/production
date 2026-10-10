@@ -3,7 +3,7 @@
   "name": "p31ca",
   "homepage": "https://design.p31ca.org",
   "generatedFrom": "src/genui/catalog.json",
-  "generatedAt": "2026-09-30T19:07:22.474Z",
+  "generatedAt": "2026-10-10T15:02:31.512Z",
   "counts": {
     "components": 32,
     "chrome": 18,
@@ -25,12 +25,12 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "badge",
       "tokens": [
-        "accent",
-        "accent-green",
-        "accent-gold",
-        "accent-red",
+        "color.accent.default",
+        "color.accent.green.default",
+        "color.accent.gold.default",
+        "color.accent.red.default",
         "radius.full",
-        "font.sans"
+        "font.family.sans"
       ],
       "variants": [
         "default"
@@ -79,10 +79,9 @@
       "cssClass": "bottom-nav",
       "tokens": [
         "topbar.height",
-        "glass.bg",
-        "glass.blur",
+        "glass.background",
         "glass.border",
-        "spacing.sm"
+        "layout.spacing.sm"
       ],
       "variants": [
         "default",
@@ -135,11 +134,10 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "btn",
       "tokens": [
-        "accent",
+        "color.accent.default",
         "radius.md",
-        "spacing.sm",
-        "spacing.lg",
-        "font.weight"
+        "layout.spacing.sm",
+        "layout.spacing.lg"
       ],
       "variants": [
         "primary",
@@ -204,9 +202,9 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "calm-indicator",
       "tokens": [
-        "accent-green",
-        "accent-red",
-        "glass.bg",
+        "color.accent.green.default",
+        "color.accent.red.default",
+        "glass.background",
         "radius.full"
       ],
       "variants": [
@@ -250,17 +248,14 @@
       "name": "CalmOverlay",
       "type": "registry:component",
       "category": "chrome",
-      "description": "Calm-mode overlay shown at spoon level 0. Breathing circle rest stop. Store-agnostic — spoons/onReturn are props.",
+      "description": "Calm mode — the regulation instrument (CALM-MODE.md). Renders nothing; drives data-calm on <html> to hide chrome and keep the ambient. Store-agnostic — spoons/onExit are props.",
       "status": "stable",
       "version": "3.0.0",
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "calm-overlay",
       "tokens": [
-        "void",
-        "accent",
-        "text.primary",
-        "cloud",
-        "glass.blur",
+        "color.accent.default",
+        "color.text.primary",
         "z.floating"
       ],
       "variants": [
@@ -277,19 +272,25 @@
           "type": "number",
           "required": true,
           "default": null,
-          "description": "Current spoon level; overlay renders only at 0"
+          "description": "Current spoon level; calm activates at 0"
         },
-        "onReturn": {
+        "onExit": {
           "type": "() => void",
           "required": true,
           "default": null,
-          "description": "Return handler (consumer restores spoons)"
+          "description": "Exit handler (Esc / tap LED chip / spoon-restore)"
         },
-        "className": {
-          "type": "string",
+        "onEnterCalm": {
+          "type": "() => void",
           "required": false,
           "default": null,
-          "description": "Additional CSS classes"
+          "description": "Entry hook — consumer applies the LED calm preset + haptic pattern"
+        },
+        "sighFirst": {
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Physiological sigh for 60s before coherence (default true)"
         }
       },
       "files": [
@@ -319,8 +320,8 @@
         "glass.surface",
         "glass.border",
         "radius.candy",
-        "text.primary",
-        "accent"
+        "color.text.primary",
+        "color.accent.default"
       ],
       "variants": [
         "default"
@@ -374,12 +375,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "card",
       "tokens": [
-        "surface.bg",
+        "surface.background",
         "glass.border",
-        "text.primary",
-        "text.secondary",
-        "radius.md",
-        "shadow"
+        "color.text.primary",
+        "color.text.secondary",
+        "radius.md"
       ],
       "variants": [
         "default",
@@ -448,11 +448,7 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "chameleon",
       "tokens": [
-        "theme.*",
-        "brand.*",
-        "accent",
-        "sensory.muted",
-        "sensory.warmLight"
+        "color.accent.default"
       ],
       "variants": [
         "default"
@@ -504,10 +500,10 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "chat-shell",
       "tokens": [
-        "surface.bg",
+        "surface.background",
         "glass.border",
-        "text.primary",
-        "text.secondary",
+        "color.text.primary",
+        "color.text.secondary",
         "radius.lg"
       ],
       "variants": [
@@ -583,11 +579,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "checkbox",
       "tokens": [
-        "accent",
-        "text.primary",
-        "text.secondary",
+        "color.accent.default",
+        "color.text.primary",
+        "color.text.secondary",
         "radius.sm",
-        "border"
+        "glass.border"
       ],
       "variants": [
         "default",
@@ -655,10 +651,9 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "cmdk",
       "tokens": [
-        "glass.bg",
+        "glass.background",
         "glass.border",
-        "glass.blur",
-        "accent",
+        "color.accent.default",
         "radius.md",
         "z.modal"
       ],
@@ -736,11 +731,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "command-trigger",
       "tokens": [
-        "glass.bg",
+        "glass.background",
         "glass.border",
         "radius.full",
-        "text.secondary",
-        "font.mono"
+        "color.text.secondary",
+        "font.family.mono"
       ],
       "variants": [
         "default",
@@ -802,9 +797,9 @@
       "importPath": "@p31ca/design-core/crisis-overlay",
       "cssClass": "crisis-overlay",
       "tokens": [
-        "bg",
-        "text",
-        "accent",
+        "surface.background",
+        "color.text.primary",
+        "color.accent.default",
         "z.crisis"
       ],
       "variants": [
@@ -856,9 +851,9 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "crown",
       "tokens": [
-        "accent",
-        "text.primary",
-        "font.sans"
+        "color.accent.default",
+        "color.text.primary",
+        "font.family.sans"
       ],
       "variants": [
         "default"
@@ -900,11 +895,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "dropdown",
       "tokens": [
-        "surface.bg",
+        "surface.background",
         "glass.border",
-        "text.primary",
-        "text.secondary",
-        "accent",
+        "color.text.primary",
+        "color.text.secondary",
+        "color.accent.default",
         "radius.md"
       ],
       "variants": [
@@ -972,11 +967,10 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "site-footer",
       "tokens": [
-        "surface.bg",
-        "text.primary",
-        "text.secondary",
-        "border.subtle",
-        "spacing.lg"
+        "surface.background",
+        "color.text.primary",
+        "color.text.secondary",
+        "layout.spacing.lg"
       ],
       "variants": [
         "default"
@@ -1063,11 +1057,10 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "glass-card",
       "tokens": [
-        "glass.bg",
-        "glass.blur",
+        "glass.background",
         "glass.border",
         "glass.radius",
-        "spacing.lg"
+        "layout.spacing.lg"
       ],
       "variants": [
         "default",
@@ -1123,11 +1116,9 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "glass-panel",
       "tokens": [
-        "glass.bg",
-        "glass.blur",
+        "glass.background",
         "glass.border",
-        "glass.radius",
-        "glass.shadow"
+        "glass.radius"
       ],
       "variants": [
         "default",
@@ -1184,11 +1175,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "metric-badge",
       "tokens": [
-        "glass.bg",
+        "glass.background",
         "glass.border",
         "radius.sm",
         "scale.xs",
-        "text.secondary"
+        "color.text.secondary"
       ],
       "variants": [
         "default",
@@ -1253,9 +1244,8 @@
       "tokens": [
         "glass.surface",
         "glass.border",
-        "glass.blur",
-        "accent",
-        "text.secondary",
+        "color.accent.default",
+        "color.text.secondary",
         "radius.full"
       ],
       "variants": [
@@ -1323,10 +1313,10 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "mode-pill",
       "tokens": [
-        "accent",
-        "accent-gold",
-        "accent-green",
-        "glass.bg",
+        "color.accent.default",
+        "color.accent.gold.default",
+        "color.accent.green.default",
+        "glass.background",
         "radius.full"
       ],
       "variants": [
@@ -1379,12 +1369,12 @@
       "tokens": [
         "glass.surface",
         "glass.border",
-        "accent",
-        "accent-green",
-        "accent-gold",
-        "accent-red",
-        "text.primary",
-        "text.secondary",
+        "color.accent.default",
+        "color.accent.green.default",
+        "color.accent.gold.default",
+        "color.accent.red.default",
+        "color.text.primary",
+        "color.text.secondary",
         "z.floating"
       ],
       "variants": [
@@ -1452,9 +1442,8 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "page-header-route",
       "tokens": [
-        "title.gradient",
-        "text.secondary",
-        "spacing.lg"
+        "color.text.secondary",
+        "layout.spacing.lg"
       ],
       "variants": [
         "default",
@@ -1530,11 +1519,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "section-strip",
       "tokens": [
-        "glass.bg",
+        "glass.background",
         "glass.border",
         "radius.candy",
-        "accent",
-        "text.secondary"
+        "color.accent.default",
+        "color.text.secondary"
       ],
       "variants": [
         "default"
@@ -1599,10 +1588,10 @@
       "tokens": [
         "glass.surface",
         "glass.border",
-        "accent",
-        "text.secondary",
+        "color.accent.default",
+        "color.text.secondary",
         "radius.full",
-        "font.sans"
+        "font.family.sans"
       ],
       "variants": [
         "default"
@@ -1669,7 +1658,7 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "spoon-cluster",
       "tokens": [
-        "accent",
+        "color.accent.default",
         "glass.border",
         "radius.full"
       ],
@@ -1719,10 +1708,10 @@
       "cssClass": "spoon-dial",
       "tokens": [
         "radius.full",
-        "glass.bg",
+        "glass.background",
         "glass.border",
-        "accent",
-        "text.tertiary"
+        "color.accent.default",
+        "color.text.muted"
       ],
       "variants": [
         "default",
@@ -1838,9 +1827,9 @@
       "tokens": [
         "radius.full",
         "scale.xs",
-        "accent.green",
-        "accent.red",
-        "accent.gold"
+        "color.accent.green.default",
+        "color.accent.red.default",
+        "color.accent.gold.default"
       ],
       "variants": [
         "success",
@@ -1893,8 +1882,8 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "status-cluster",
       "tokens": [
-        "glass.bg",
-        "space.xs"
+        "glass.background",
+        "layout.spacing.xs"
       ],
       "variants": [
         "default"
@@ -1933,21 +1922,20 @@
       "name": "Topbar",
       "type": "registry:component",
       "category": "chrome",
-      "description": "Unified app-chrome shell — slot-based three-region layout. Brand / center / statusCluster / mode / trailing, with variant (app|marketing|game) and mobile overrides.",
+      "description": "Unified app-chrome shell — slot-based three-region layout. Brand / center / statusCluster / mode / trailing / identity, with variant (app|marketing|game) and mobile overrides. The identity slot is auth-agnostic (SignInLink / IdentityChip / AccountMenu fills).",
       "status": "stable",
       "version": "3.0.0",
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "topbar",
       "tokens": [
         "topbar.height",
-        "glass.bg",
-        "glass.blur",
+        "glass.background",
         "glass.border",
-        "spacing.sm",
+        "layout.spacing.sm",
         "radius.candy",
-        "accent",
-        "accent-gold",
-        "accent-green"
+        "color.accent.default",
+        "color.accent.gold.default",
+        "color.accent.green.default"
       ],
       "variants": [
         "app",
@@ -1959,7 +1947,8 @@
         "center",
         "status",
         "mode",
-        "trailing"
+        "trailing",
+        "identity"
       ],
       "a11y": [
         "role=banner",
@@ -2007,7 +1996,13 @@
           "type": "ReactNode",
           "required": false,
           "default": null,
-          "description": "Pinned trailing actions + identity"
+          "description": "Pinned trailing actions (utility cluster)"
+        },
+        "identity": {
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Identity region — fenced from trailing; SignInLink / IdentityChip / AccountMenu fill"
         },
         "mobileLeading": {
           "type": "ReactNode",
@@ -2062,8 +2057,8 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "topbar-section",
       "tokens": [
-        "space.xs",
-        "glass.bg"
+        "layout.spacing.xs",
+        "glass.background"
       ],
       "variants": [
         "default"
