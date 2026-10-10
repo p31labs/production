@@ -1,6 +1,6 @@
 <!-- P31-HEADER
 id: p31_contributing_20261010_v1.0
-type: runbook
+type: spec
 component: workspace
 status: live
 retention: keep-forever

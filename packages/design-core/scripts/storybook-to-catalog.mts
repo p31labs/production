@@ -50,6 +50,7 @@ interface CatalogEntry {
   importPath: string
   version: string
   status: 'stable' | 'beta' | 'deprecated'
+  tier: 'core' | 'experimental' | 'deprecated'
   tokens: string[]
   variants: string[]
   slots: string[]
@@ -124,6 +125,7 @@ for (const [name, def] of Object.entries(COMPONENT_DEFS)) {
     importPath: def.importPath || '@p31ca/design-core/compositions',
     version: def.version || '2.2.0',
     status: def.status || 'stable',
+    tier: def.tier || 'core',
     tokens: def.tokens || [],
     variants: def.variants || [],
     slots: def.slots || [],
@@ -152,6 +154,7 @@ for (const key of Object.keys(manifestComponents)) {
     importPath: '@p31ca/design-core/generated',
     version: '2.2.0',
     status: 'stable',
+    tier: 'core',
     tokens: [],
     variants: [],
     slots: [],
@@ -215,6 +218,7 @@ export const ComponentEntrySchema = z.object({
   importPath: z.string(),
   version: z.string(),
   status: z.enum(['stable', 'beta', 'deprecated']),
+  tier: z.enum(['core', 'experimental', 'deprecated']),
   tokens: z.array(z.string()),
   variants: z.array(z.string()),
   slots: z.array(z.string()),

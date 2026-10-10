@@ -85,9 +85,9 @@ function main() {
       category: isChrome ? 'chrome' : c.category,
       description: c.description,
       status: c.status ?? 'stable',
-      // Lifecycle tier — the promotion/retirement path (distinct from `status`
-      // and from `confidence.tier`). stable→core, beta→experimental, deprecated→deprecated.
-      tier: ({ stable: 'core', beta: 'experimental', deprecated: 'deprecated' })[c.status] ?? 'core',
+      // Lifecycle promotion tier — hand-curated in componentDefs.ts, copied
+      // through verbatim (distinct from `status` and from `confidence.tier`).
+      tier: c.tier ?? 'core',
       version: c.version ?? '3.0.0',
       importPath: c.importPath ?? '@p31ca/design-core/compositions',
       cssClass: c.cssClass ?? '',

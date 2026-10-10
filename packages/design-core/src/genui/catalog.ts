@@ -38,6 +38,7 @@ export const ComponentEntrySchema = z.object({
   importPath: z.string(),
   version: z.string(),
   status: z.enum(['stable', 'beta', 'deprecated']),
+  tier: z.enum(['core', 'experimental', 'deprecated']),
   tokens: z.array(z.string()),
   variants: z.array(z.string()),
   slots: z.array(z.string()),
@@ -64,6 +65,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "2.2.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.color.accent.default",
       "p31.color.accent.green.default",
@@ -119,6 +121,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "1.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.topbar.height",
       "p31.glass.background",
@@ -180,6 +183,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "1.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.color.accent.default",
       "p31.radius.md",
@@ -253,6 +257,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "3.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.color.accent.green.default",
       "p31.color.accent.red.default",
@@ -307,6 +312,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "3.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.color.accent.default",
       "p31.color.text.primary",
@@ -373,6 +379,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "2.2.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.glass.surface",
       "p31.glass.border",
@@ -433,6 +440,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "2.2.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.surface.background",
       "p31.glass.border",
@@ -509,6 +517,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "2.2.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.color.accent.default"
     ],
@@ -566,6 +575,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "2.2.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.surface.background",
       "p31.glass.border",
@@ -648,6 +658,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "2.2.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.color.accent.default",
       "p31.color.text.primary",
@@ -723,6 +734,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "2.2.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.glass.background",
       "p31.glass.border",
@@ -807,6 +819,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "3.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.glass.background",
       "p31.glass.border",
@@ -875,6 +888,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/crisis-overlay",
     "version": "1.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.surface.background",
       "p31.color.text.primary",
@@ -934,6 +948,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "2.2.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.color.accent.default",
       "p31.color.text.primary",
@@ -981,6 +996,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "2.2.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.surface.background",
       "p31.glass.border",
@@ -1056,6 +1072,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "3.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.surface.background",
       "p31.color.text.primary",
@@ -1150,6 +1167,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "1.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.glass.background",
       "p31.glass.border",
@@ -1215,6 +1233,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "1.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.glass.background",
       "p31.glass.border",
@@ -1278,6 +1297,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "1.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.glass.background",
       "p31.glass.border",
@@ -1349,6 +1369,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "3.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.glass.surface",
       "p31.glass.border",
@@ -1423,6 +1444,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "3.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.color.accent.default",
       "p31.color.accent.gold.default",
@@ -1479,6 +1501,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "3.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.glass.surface",
       "p31.glass.border",
@@ -1557,6 +1580,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "2.2.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.color.text.secondary",
       "p31.layout.spacing.lg"
@@ -1638,6 +1662,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "2.2.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.glass.background",
       "p31.glass.border",
@@ -1709,6 +1734,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "3.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.glass.surface",
       "p31.glass.border",
@@ -1784,6 +1810,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "3.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.color.accent.default",
       "p31.glass.border",
@@ -1835,6 +1862,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "1.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.radius.full",
       "p31.glass.background",
@@ -1896,6 +1924,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/starfield",
     "version": "1.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.z.starfield",
       "p31.starfield.hearth",
@@ -1963,6 +1992,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "1.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.radius.full",
       "p31.scale.xs",
@@ -2026,6 +2056,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "3.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.glass.background",
       "p31.layout.spacing.xs"
@@ -2074,6 +2105,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "3.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.topbar.height",
       "p31.glass.background",
@@ -2203,6 +2235,7 @@ export const COMPONENT_CATALOG = [
     "importPath": "@p31ca/design-core/compositions",
     "version": "3.0.0",
     "status": "stable",
+    "tier": "core",
     "tokens": [
       "p31.layout.spacing.xs",
       "p31.glass.background"
@@ -2250,7 +2283,7 @@ export const COMPONENT_CATALOG = [
 
 export const catalog: z.infer<typeof CatalogSchema> = CatalogSchema.parse({
   v: 2,
-  generatedAt: "2026-10-10T15:06:02.959Z",
+  generatedAt: "2026-10-10T17:56:41.505Z",
   components: COMPONENT_CATALOG,
 })
 
