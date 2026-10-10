@@ -70,6 +70,17 @@ for (const f of readdirSync(contractsDir)) {
   for (const k of Object.keys(mod)) if (k.endsWith('Contract')) contracts.push(mod[k]);
 }
 
+// A CSS class belongs to a component if it is the component's cssClass, or a
+// prefix/suffix extension of it. Support the three conventions the design-core
+// CSS actually uses: dash variants (`cls-*`), BEM elements (`cls__*`), and BEM
+// modifiers (`cls--*`). The old `cls + '-'` guess missed BEM children, e.g.
+// `.spoon-btn` under `.spoon-dial`, `.notif-toast__body` under `.notif-stack`.
+const belongs = (cname, cls) =>
+  cname === cls ||
+  cname.startsWith(cls + '-') ||
+  cname.startsWith(cls + '__') ||
+  cname.startsWith(cls + '--');
+
 let missingComponents = 0;
 const unconsumed = [];
 for (const c of contracts) {
@@ -77,7 +88,7 @@ for (const c of contracts) {
   if (!cls) continue;
   const consumed = new Set();
   for (const [cname, vars] of classVars) {
-    if (cname === cls || cname.startsWith(cls + '-')) {
+    if (belongs(cname, cls)) {
       for (const v of vars) consumed.add(v);
     }
   }

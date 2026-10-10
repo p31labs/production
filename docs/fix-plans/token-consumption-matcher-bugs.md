@@ -52,11 +52,53 @@ plus one misdiagnosis (corrected 2026-10-09):
    var should be contract-addressable) or accept it as a documented non-DTCG
    carve-out.
 
+## Progress (2026-10-10)
+
+**BEM matching — FIXED.** The matcher's `belongs()` now accepts BEM elements
+(`cls__*`) and modifiers (`cls--*`) in addition to dash variants (`cls-*`).
+This clears false over-claims from BEM children (`sidebar-nav__item`,
+`status-cluster__scroller`, `mobile-bottom-nav__btn`, `notif-toast__*`,
+`topbar-section--*`), e.g. `--p31-accent` dropped from NotificationStack.
+
+**Child-class gap — inventory complete, fix is a pipeline change (not done).**
+Authoritative child classes, verified from the component TSX (not CSS
+proximity, which misled — `status-dot`/`mobile-only` are NOT the components'
+classes):
+
+| Component | cssClass | childClasses (TSX-verified) |
+|---|---|---|
+| SpoonDial | `spoon-dial` | `spoon-btn`, `spoon-dot`, `spoon-crisis-btn` |
+| NotificationStack | `notif-stack` | `notif-toast` |
+| PageHeader | `page-header-route` | `page-lede`, `page-actions`, `hero-eyebrow` |
+| SectionStrip | `section-strip` | `section-tab` |
+
+Adding `childClasses` is NOT a one-file edit: `registry.json` is generated
+(`components.yml` → `componentDefs.ts` → `storybook-to-catalog.mts` →
+`catalog.json` → `gen-registry.mjs` → `registry.json`), and that pipeline has
+pre-existing **naming drift** (the yml/defs catalog uses `spoon-meter`,
+`starfield`, `glass-strong`; the 32-item registry uses `SpoonDial`, `Starfield`,
+`GlassCard`). The childClasses field must be added at the source-of-truth layer
+and propagated, or maintained as a small explicit map in the matcher.
+
+**Flat-only under-claims — SEMANTIC_MAP decision remains.** The dominant
+under-claims (`--p31-scale-*`, `--p31-text-*`, `--p31-duration-*`,
+`--p31-easing-*`, `--p31-space-*`, `--p31-void`) are `GLOBAL_COMPAT` flat vars
+with no DTCG path; they are not "contract omissions" until each gets a
+`SEMANTIC_MAP` slot or a documented non-DTCG carve-out.
+
+## Remaining
+
+1. Decide childClasses delivery: (a) add `child_classes` to `componentDefs.ts`
+   + `components.yml` and propagate, or (b) keep a small `CHILD_CLASSES` map in
+   `token-consumption.mjs`. Option (a) is correct but touches the drifted
+   catalog pipeline; option (b) is fast but reintroduces a maintained list.
+2. Per flat-only token: add a `SEMANTIC_MAP` slot or mark non-DTCG.
+
 ## Impact
 
-- Until fixed, `token-consumption.mjs`'s over/under-claim counts are not a
-  reliable adjudication surface: 14 of the 26 "over-claims" are NO-CSS
-  components (CSS lives elsewhere), most of the rest are child-class or
-  flat-only-token artifacts rather than contract errors.
+- The BEM fix narrows the over-claim surface; childClasses + SEMANTIC_MAP are
+  the remaining work to make the counts trustworthy.
+- Until childClasses and the SEMANTIC_MAP decision land, the over/under-claim
+  counts remain advisory only.
 - The deprecation gate (`check-deprecated-tokens.mjs`) is unaffected — it scans
   all `var()` references, not class-scoped consumption.
