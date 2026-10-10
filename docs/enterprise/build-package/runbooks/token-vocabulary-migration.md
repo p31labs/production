@@ -31,21 +31,32 @@ Three token vocabularies coexist:
 | Short paths | `glass.bg`, `radius.full`, `accent` | `componentDefs.ts`, design-mcp worker |
 | Canon DTCG | `p31.glass.bg` | `packages/canon/tokens/tokens.dtc.json` |
 
-**Corrected counts (apples-to-apples):**
+**Corrected counts (apples-to-apples, verified 2026-10-10):**
 
 - `tokens.dtc.json` = 452 leaves TOTAL, but that is NOT the vocabulary. It
-  decomposes to: **`p31` subtree = 205 tokens** (the parity gate flattens 184 of
-  them to CSS — the 21 delta is group descriptors / non-flattenable structure),
-  **`themes` = 243** (per-theme value overrides, **out of scope** — they are
-  value swaps, not token names), plus `$schema`/`$extensions`.
-- `tokens.yml` = 238 leaves TOTAL, decomposing to `primitive` 71 + `semantic` 20
-  + `component` 74 + other token groups (~73). It ALSO carries 12 non-token
-  groups that DTCG does not have: `version`, `metadata`, `breakpoints`,
-  `bounding_boxes`, `layout_containers`, `spacing_rules`, `cascade_layers`,
-  `svg_rules`, `agent_prompt_injection`, `examples`, `property-overrides`,
-  `version_history`.
-- The migration therefore maps `tokens.yml`'s 238 token leaves → the `p31`
-  subtree's 205, with the overlap/gap determined in step 1 (not assumed).
+  decomposes to: **`p31` subtree = 184 distinct tokens**, **`themes` = 243**
+  (per-theme value overrides, **out of scope** — value swaps, not token names),
+  plus `$schema`/`$extensions`.
+- **The `p31` subtree also carries 21 duplicate aliases** (205 raw leaves):
+  each of 21 tokens is emitted twice — once nested (`p31.radius.sm`) and once
+  flat (`p31.radius-sm`), both flattening to the same `--p31-radius-sm`. Values
+  are identical (verified). This is a canon-side data-cleanup item (de-duplicate
+  the export), not a vocabulary-migration item. The 21 pairs are: `radius-*`
+  (5), `status-*` (3), `elevation-level*-tint` (3), `starfield-*` (3),
+  `radius-candy`, `z-*` (4), `topbar-height`, `glass-surface`.
+- `tokens.yml` = 238 leaves TOTAL. The token/non-token split is NOT a fixed
+  list — it must be determined by step 1's inventory. Verified so far:
+  `primitive` (71), `semantic` (20), `component` (74) are tokens; **`breakpoints`
+  (5), `touch` (3), `z_index` (5) are ALSO token groups** (previously
+  misclassified as non-token); `theme` and `property-overrides` have
+  non-standard structures (theme = nested hex values without `$value`;
+  property-overrides = 58 `$value` leaves + 18 brand-config keys). Truly
+  non-token groups: `metadata`, `version`, `version_history`, `examples`,
+  `agent_prompt_injection`, `svg_rules`, `cascade_layers`, `spacing_rules`,
+  `layout_containers`, `bounding_boxes`.
+- The migration therefore maps `tokens.yml`'s token leaves → the `p31`
+  subtree's 184 distinct tokens, with the overlap/gap determined in step 1 (not
+  assumed).
 - The **`component` group = 74 leaves across 13 components** (`glass_panel`,
   `header_candy`, `crown_xs`, `spoon_icon`, `glass_card`, `glass_strong`,
   `glass_subtle`, `btn_primary`, `btn_secondary`, `btn_ghost`, `starfield`,
@@ -64,10 +75,14 @@ Three token vocabularies coexist:
 
 ### 1. Inventory
 
-Enumerate every leaf token in `tokens.yml` (238) with its full path, and every
-leaf in the `p31` subtree of `tokens.dtc.json` (205). Produce the table:
+Enumerate every leaf token in `tokens.yml` with its full path, and every
+distinct token in the `p31` subtree of `tokens.dtc.json` (184, after collapsing
+the 21 nested/flat aliases). Produce the table:
 `yml path → p31.* path → present-in-canon?`. Flag yml tokens with no canonical
-`p31.*` target, and `p31.*` tokens with no yml equivalent.
+`p31.*` target, and `p31.*` tokens with no yml equivalent. This step also
+finalizes the token/non-token split in `tokens.yml` (the `breakpoints`/`touch`/
+`z_index`/`theme`/`property-overrides` classification is NOT settled by the
+heuristic above — the inventory is authoritative).
 
 Deliverable: `docs/enterprise/design-system/token-vocabulary-inventory.md`.
 
@@ -82,15 +97,14 @@ Deliverable: `docs/enterprise/design-system/token-vocabulary-map.md`.
 
 ### 3. Generate (partial merge, NOT full derivation)
 
-`tokens.yml` carries 12 non-token groups that `tokens.dtc.json` cannot produce.
-So the generator is a **partial merge**, not a full emit:
+`tokens.yml` carries non-token groups that `tokens.dtc.json` cannot produce
+(their exact set is settled by step 1's inventory). So the generator is a
+**partial merge**, not a full emit:
 
 - `cli/tokens/gen-tokens-yml.mjs` — reads `tokens.dtc.json` `p31` subtree +
-  the translation table → emits ONLY the token groups (`primitive`, `semantic`,
-  `component`, `root`, `scale`, `spacing`, `typography`, `color`, `touch`,
-  `z_index`, `animation`, `shadow`, `border`, `theme`). The 12 non-token groups
-  are preserved from a sidecar (`cli/tokens/tokens-meta.yml`) that is split out
-  in step 3a.
+  the translation table → emits ONLY the groups step 1 classifies as tokens.
+  The non-token groups are preserved from a sidecar
+  (`cli/tokens/tokens-meta.yml`) that is split out in step 3a.
 - Prove idempotence: run twice, `diff` empty.
 - `cli/tokens/gen-components-yml.mjs` — reads `componentDefs.ts` → emits
   `components.yml`, resolving `tool`/`props.options`/`aiGuidance` shape decisions
@@ -120,6 +134,10 @@ generated artifacts (or are deleted if no consumer remains). Update the
 
 ## Not in scope (separate, still open)
 
+- **Canon-side duplicate aliases** — the `p31` subtree has 21 tokens emitted
+  twice (nested `p31.radius.sm` + flat `p31.radius-sm`, identical values). This
+  is a data-quality cleanup for `gen-tokens.mjs`/`tokens.dtc.json`, not the CLI
+  migration. File separately or fold into step 2.
 - **design-mcp deploy** — build/typecheck pass; the worker is NOT yet deployed.
   `cd workers/design-mcp && npx wrangler deploy` (needs credentials). The
   running worker may be stale until this happens.
