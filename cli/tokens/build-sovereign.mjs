@@ -251,13 +251,20 @@ function main() {
  * components, interactive states (spoons/speed-factor), and brand overrides.
  */
 function buildSemanticManifest(tokens) {
-  // Load component definitions from components.yml for tool-token bindings
-  const COMPS_FILE = path.join(__dirname, 'components.yml');
+  // Load component definitions from registry.json for tool-token bindings
+  const COMPS_FILE = path.join(__dirname, '..', '..', 'packages', 'design-core', 'registry.json');
   let components = {};
   try {
     const raw = fs.readFileSync(COMPS_FILE, 'utf8');
-    const compsYaml = yaml.parse(raw);
-    components = compsYaml.components || {};
+    const reg = JSON.parse(raw);
+    for (const item of reg.items || []) {
+      components[item.name] = {
+        description: item.description,
+        css_class: item.cssClass,
+        tokens: item.tokens || [],
+        props: item.props || {},
+      };
+    }
   } catch {
     // proceed without component bindings
   }
@@ -374,7 +381,7 @@ function buildSemanticManifest(tokens) {
     references: {
       designSystem: 'design-system.json',
       tokensCss: 'packages/design-core/src/css/tokens.css',
-      componentsYml: 'cli/tokens/components.yml',
+      componentsJson: 'packages/design-core/registry.json',
       tokensYml: 'cli/tokens/tokens.yml',
     },
   };
