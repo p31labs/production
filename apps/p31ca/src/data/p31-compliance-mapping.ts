@@ -23,7 +23,7 @@ export interface ComplianceRow {
   expected?: string
 }
 
-export const VERIFY_REPRO = 'git clone https://github.com/p31labs/P31-local-workspace && cd apps/loom && pnpm verify'
+export const VERIFY_REPRO = 'git clone https://github.com/p31labs/production && cd apps/loom && pnpm verify'
 
 export const COMPLIANCE_ROWS: ComplianceRow[] = [
   {

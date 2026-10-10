@@ -510,5 +510,5 @@ if (navigator.modelContext) {
 ---
 
 **Maintainer:** P31 Labs — trimtab-signal  
-**Support:** [GitHub Issues](https://github.com/p31labs/P31-local-workspace/issues)  
+**Support:** [GitHub Issues](https://github.com/p31labs/production/issues)  
 **License:** MIT

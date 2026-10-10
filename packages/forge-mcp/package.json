@@ -33,7 +33,7 @@
   "mcpName": "com.p31ca/forge-mcp",
   "repository": {
     "type": "git",
-    "url": "https://github.com/p31labs/P31-local-workspace.git",
+    "url": "https://github.com/p31labs/production.git",
     "directory": "packages/forge-mcp"
   },
   "publishConfig": {

@@ -39,7 +39,7 @@ export function FeedbackButton() {
             Join Discord
           </a>
           <a
-            href="https://github.com/p31labs/P31-local-workspace/issues/new"
+            href="https://github.com/p31labs/production/issues/new"
             target="_blank"
             rel="noopener noreferrer"
             className="block w-full text-center py-2.5 rounded-lg border border-white/10 bg-white/5 text-cloud/60 text-xs hover:text-ink transition-colors"

@@ -7,6 +7,6 @@
   "tools": 90,
   "categories": ["Autonomous Agents", "Identity & Security", "Health & Wellness", "Research & Data"],
   "license": "Apache-2.0",
-  "repository": "https://github.com/p31labs/P31-local-workspace",
+  "repository": "https://github.com/p31labs/production",
   "keywords": ["sovereign", "spoon-aware", "post-quantum", "KERI", "did:key", "MCP", "neurodivergent", "family-mesh", "local-ai", "LOVE-economy"]
 }

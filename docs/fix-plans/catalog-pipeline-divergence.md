@@ -120,9 +120,28 @@ Two ways forward:
   string `aiGuidance`, old-style `primitive.*` tokens vs array `aiGuidance` +
   short token paths).
 
-Also outstanding, unrelated but found: `p31labs/P31-local-workspace` →
-`p31labs/production` stale GitHub URLs in `workers/federation-bridge`,
-`workers/mcp-registry`, `workers/personal-swarm`, `apps/p31ca/src/data/*`.
+**Source-of-truth verdict (2026-10-10):** `componentDefs.ts` is
+HAND-MAINTAINED — single commit (`0be3bbe`, the SSOT arc), no generator writes
+it, header "Source of truth" is a convention not a generated fact. Per the
+review's decision tree, the correct fix is to ADD a generator
+(`componentDefs.ts` → `components.yml`) so the yml becomes a derived artifact
+and the 8 consumers keep reading it unchanged — not to repoint them. The shape
+mapping (yml `tool`/`props.options`/old-style `primitive.*` tokens) is the
+design task to scope next.
+
+**design-mcp build verdict (2026-10-10):** `npx tsc --noEmit` fails with 8
+errors, ALL pre-existing (validator.ts untouched by this change; `./icons-data`
+module never committed; `proposer.ts:368` proposeIcon type). This change
+introduces zero new type errors, but the Worker was already not buildable — the
+`./icons-data` lazy import at `index.ts:126` would also fail at runtime. The
+repoint is correct but not independently deployable until the pre-existing
+build failures are fixed.
+
+Also outstanding, unrelated but found: stale GitHub URLs swept —
+`p31labs/P31-local-workspace` → `p31labs/production` (35 occurrences across 25
+live source/config files). Remaining refs are intentionally frozen (grant
+submissions in `docs/grants/*`, workpackages, changelogs) or in the duplicate
+`software/` tree (a separate consolidation issue).
 
 ## Impact
 

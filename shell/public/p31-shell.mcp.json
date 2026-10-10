@@ -6,7 +6,7 @@
   "description": "Sovereign OS for families — spoon-aware AI assistant, post-quantum identity, P2P mesh, LOVE economy, research library, sandbox playground, and 200+ MCP tools across 12+ servers.",
   "homepage": "https://p31-shell.trimtab-signal.workers.dev",
   "license": "Apache-2.0",
-  "repository": "https://github.com/p31labs/P31-local-workspace",
+  "repository": "https://github.com/p31labs/production",
   "authors": [{ "name": "P31 Labs, Inc." }],
   "keywords": ["sovereign", "spoon-aware", "post-quantum", "KERI", "did", "MCP", "neurodivergent", "family-mesh", "local-ai", "ZKP"],
   "capabilities": {

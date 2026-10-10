@@ -6,7 +6,7 @@ description: >
   zero-knowledge proof support, and local WebLLM inference.
 version: "1.0.0"
 homepage: https://p31-shell.trimtab-signal.workers.dev
-repository: https://github.com/p31labs/P31-local-workspace
+repository: https://github.com/p31labs/production
 license: Apache-2.0
 mcp:
   endpoint: https://p31-shell.trimtab-signal.workers.dev/mcp

@@ -8,7 +8,7 @@
  * production telemetry and swarm remediation (CWP-2026-041 §1).
  *
  * Usage:
- *   WORKER_NAME=personal-swarm GH_REPO=p31labs/P31-local-workspace \
+ *   WORKER_NAME=personal-swarm GH_REPO=p31labs/production \
  *     node cf-monitor.mjs
  *
  * Requirements:
@@ -18,7 +18,7 @@
  *
  * Env:
  *   WORKER_NAME   worker to tail (default: personal-swarm)
- *   GH_REPO       owner/repo for issues (default: p31labs/P31-local-workspace)
+ *   GH_REPO       owner/repo for issues (default: p31labs/production)
  *   MIN_ISSUE_GAP seconds between any two issue creations (default: 300)
  *   STATE_FILE    fingerprint store (default: .cf-monitor-state.json)
  */
@@ -27,7 +27,7 @@ import { spawn } from "node:child_process";
 import { readFileSync, writeFileSync, appendFileSync } from "node:fs";
 
 const WORKER_NAME = process.env.WORKER_NAME || "personal-swarm";
-const GH_REPO = process.env.GH_REPO || "p31labs/P31-local-workspace";
+const GH_REPO = process.env.GH_REPO || "p31labs/production";
 const MIN_ISSUE_GAP = Number(process.env.MIN_ISSUE_GAP || "300");
 const STATE_FILE = process.env.STATE_FILE || ".cf-monitor-state.json";
 const LABELS = ["cf-monitor", "bug"];

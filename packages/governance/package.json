@@ -9,7 +9,7 @@
   "homepage": "https://p31ca.org",
   "repository": {
     "type": "git",
-    "url": "https://github.com/p31labs/P31-local-workspace.git",
+    "url": "https://github.com/p31labs/production.git",
     "directory": "packages/governance"
   },
   "scripts": {

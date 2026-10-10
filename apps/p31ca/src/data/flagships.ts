@@ -70,7 +70,7 @@ export const FLAGSHIPS: Flagship[] = [
     stack: ['did:key', 'ML-DSA-65', 'AIC-JWT', 'Durable Objects'],
     links: [
       { label: 'Meet Lumi', href: 'https://loom.p31ca.org' },
-      { label: 'Lumi identity source', href: 'https://github.com/p31labs/P31-local-workspace' },
+      { label: 'Lumi identity source', href: 'https://github.com/p31labs/production' },
     ],
     artifact: 'token',
     artifactPrompt: 'Watch the token expire, then renew it.',

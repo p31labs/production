@@ -2,7 +2,7 @@
 
 ## Development Setup
 ```bash
-git clone https://github.com/p31labs/P31-local-workspace.git
+git clone https://github.com/p31labs/production.git
 cd production
 pnpm install
 ```

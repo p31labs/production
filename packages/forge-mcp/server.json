@@ -2,7 +2,7 @@
   "name": "com.p31ca/forge-mcp",
   "version": "0.1.0",
   "description": "P31 Forge — themed, evidence-blocked document generation. Two-mode theming (hub: warm terracotta; scene: deep cyan). Every claim carries a source.",
-  "repository": "https://github.com/p31labs/P31-local-workspace",
+  "repository": "https://github.com/p31labs/production",
   "homepage": "https://p31ca.org",
   "license": "MIT",
   "transport": "stdio",

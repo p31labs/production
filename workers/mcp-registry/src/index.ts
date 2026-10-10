@@ -1940,7 +1940,7 @@ function wellKnownCard() {
     transport: { type: 'streamable-http', endpoint: 'https://mcp-registry.trimtab-signal.workers.dev/mcp' },
     capabilities: { tools: true },
     authentication: { required: false },
-    repository: 'https://github.com/p31labs/P31-local-workspace',
+    repository: 'https://github.com/p31labs/production',
     homepage: 'https://mcp.p31ca.org',
     keywords: ['mcp', 'marketplace', 'registry', 'sovereign', 'post-quantum'],
     license: 'Apache-2.0',

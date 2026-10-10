@@ -63,10 +63,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/p31labs/P31-local-workspace.git"
+    "url": "git+https://github.com/p31labs/production.git"
   },
   "bugs": {
-    "url": "https://github.com/p31labs/P31-local-workspace/issues"
+    "url": "https://github.com/p31labs/production/issues"
   },
   "homepage": "https://p31ca.org/cli",
   "author": "P31 Labs",

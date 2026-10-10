@@ -157,7 +157,7 @@ app.get('/nodeinfo/2.1', (c) =>
     software: {
       name: 'p31-federation-bridge',
       version: '0.1.0',
-      repository: 'https://github.com/p31labs/P31-local-workspace',
+      repository: 'https://github.com/p31labs/production',
     },
     protocols: ['activitypub'],
     services: { inbound: [], outbound: [] },

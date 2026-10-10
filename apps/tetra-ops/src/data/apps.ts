@@ -115,7 +115,7 @@ export const APPS: AppEntry[] = [
     description: 'Design tokens, glass, motion, typography, and starfield — the canonical visual system.',
     icon: '🎨',
     category: 'design',
-    url: 'https://github.com/p31labs/P31-local-workspace/tree/main/packages/design-core',
+    url: 'https://github.com/p31labs/production/tree/main/packages/design-core',
     status: 'live',
   },
   {
@@ -125,7 +125,7 @@ export const APPS: AppEntry[] = [
     description: 'Shared React component library — AppNav, SiteNav, SpoonDial, GlassCard, GlowButton, and 12+ more.',
     icon: '🧩',
     category: 'design',
-    url: 'https://github.com/p31labs/P31-local-workspace/tree/main/packages/ui',
+    url: 'https://github.com/p31labs/production/tree/main/packages/ui',
     status: 'live',
   },
 ];
