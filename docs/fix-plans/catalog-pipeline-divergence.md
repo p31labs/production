@@ -67,40 +67,74 @@ Catalog 3 (`cli/component-registry.js`) uses yet another scheme (`phos-glass`,
 
 `components.yml` labels itself "Single source of truth" (line 2) but was never
 reconciled when the component set moved to Storybook + `compositions/*.tsx`.
-The Storybook-derived pipeline (manifest → `catalog.json` → `registry.json`)
-became authoritative by virtue of being regenerated from live code, while the
-yml/defs catalog and `cli/component-registry.js` froze.
+The canonical source became `packages/design-core/src/componentDefs.ts` (32
+components, header "Source of truth"), and `components.yml` (27) froze.
 
-## Recommendation (needs decision)
+**Correction to the symptom table:** `componentDefs.ts` is CURRENT (32, not
+stale). The stale layer is `components.yml` (27) alone. `catalog.json` and
+`registry.json` are both generated from `componentDefs.ts` and are in sync.
 
-Make **catalog 2 (`registry.json`, Storybook-derived) authoritative**:
+**Not-stale classes:** the CSS variant classes `glass-strong`, `glass-subtle`,
+`btn-primary`, `btn-secondary`, `btn-ghost` DO exist in the current CSS (2
+files each). `components.yml` listed `GlassStrong`/`GlassSubtle` as *separate
+components*, but they are now *variants* of GlassCard/Button — the drift was
+component-level, not CSS-level. Hardcoded template strings in `design-mcp`
+referencing these classes are correct and were left untouched.
 
-1. Regenerate `componentDefs.ts` from the Storybook manifest (or from
-   `registry.json`), so `design-mcp` and the generator serve the same 32
-   components with the same classes.
-2. Deprecate or delete `cli/tokens/components.yml` and
-   `cli/component-registry.js`, re-pointing any remaining consumers to
-   `registry.json`.
-3. Reconcile the 3 same-name drifts to the registry values (`btn`,
-   `starfield-bg`, `badge`), and resolve the `StatusBadge`/`Badge → badge`
-   collision.
-4. Fix the stale `p31labs/P31-local-workspace` reference in
-   `workers/design-mcp/src/index.ts:988`.
+## Progress (2026-10-10)
+
+**design-mcp Worker fixed (the live server).** The Worker served the stale 27
+components through `propose_component` and `audit_tokens` (via the
+`components.yml`-derived `components` export in `data.ts`), while its tool
+handlers already used the current `COMPONENT_DEFS` (32). Repointed:
+
+- `workers/design-mcp/src/proposer.ts` — `components.components` → `COMPONENT_DEFS` (scoreComponents + proposeComponent).
+- `workers/design-mcp/src/index.ts` — `propose_component` + `audit_tokens` → `COMPONENT_DEFS`; `componentsUrl` → `packages/design-core/src/componentDefs.ts`.
+- `workers/design-mcp/src/data.ts` — removed the dead `components` export (511 lines) and the stale `SpoonMeter` CATALOG append (no `.tsx`, no CSS).
+- `workers/design-mcp/build.mjs` — stopped generating `components` from `components.yml` (tokens + icons remain).
+
+`SpoonMeter` confirmed fully stale: no `compositions/SpoonMeter.tsx`, no
+`.spoon-meter` in CSS.
+
+## Remaining (needs decision)
+
+`components.yml` (stale 27) is still read LIVE by 8 CLI consumers, none of
+which were changed this turn:
+
+1. `cli/tokens/build-sovereign.mjs` — tool→token bindings (line 255)
+2. `cli/tokens/export-a2ui.mjs` (line 21)
+3. `cli/tokens/export-design-system.mjs` (line 25)
+4. `cli/design-mcp-server.js` (line 84)
+5. `cli/commands/health.ts` — default `--components` path
+6. `cli/commands/release.mjs` — "Component Registry" entry
+7. `cli/commands/validate.ts` — default `--components` path
+8. `cli/validators/spatialValidator.mjs` (line 363)
+
+Two ways forward:
+
+- **Dual-source sync (low risk):** regenerate `components.yml` from
+  `componentDefs.ts` (32, current) so all 8 consumers get current data without
+  code changes. Keeps two sources — drift can recur.
+- **Single source (correct, larger):** repoint the 8 consumers to
+  `componentDefs.ts`. Requires handling the shape difference (yml `tool` field,
+  string `aiGuidance`, old-style `primitive.*` tokens vs array `aiGuidance` +
+  short token paths).
+
+Also outstanding, unrelated but found: `p31labs/P31-local-workspace` →
+`p31labs/production` stale GitHub URLs in `workers/federation-bridge`,
+`workers/mcp-registry`, `workers/personal-swarm`, `apps/p31ca/src/data/*`.
 
 ## Impact
 
-- The `design-mcp` MCP server and the component generator currently expose a
-  stale 27-component catalog (missing 19 current components, carrying 14
-  dropped ones, and disagreeing on 3 class names with `registry.json`).
-- Any agent composing UI against `design-mcp`'s output uses classes
-  (`btn-primary`, `status-badge`, `spoon-meter`) that do not exist in the
-  current CSS (`btn`, `badge`, `spoon-dial`).
-- Until reconciled, the matcher's child-class work (and any component-level
-  adjudication) sits on a moving target.
+- The live `design-mcp` Worker now serves the current 32-component catalog in
+  every code path.
+- The 8 CLI tools still read the stale 27-component `components.yml` until the
+  dual-source/single-source decision lands.
+- `cli/component-registry.js` remains a third stale catalog (separate shape,
+  `phos-*` classes) feeding the `component-registry` MCP.
 
 ## Relationship to token-consumption-matcher-bugs
 
-This supersedes the childClasses delivery decision: once one authoritative
-catalog exists, `childClasses` can be added there (or derived from
-`compositions/*.tsx`) without the four-layer ambiguity described in
-`token-consumption-matcher-bugs.md`.
+With one authoritative catalog (`componentDefs.ts`, already 32), `childClasses`
+can be added there or derived from `compositions/*.tsx`, resolving the
+four-layer ambiguity in `token-consumption-matcher-bugs.md`.

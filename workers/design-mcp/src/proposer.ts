@@ -3,7 +3,7 @@
  * Generates new component and icon proposals from natural-language descriptions.
  */
 
-import { components, icons, iconCatalog, tokens } from './data';
+import { icons, iconCatalog, tokens, COMPONENT_DEFS } from './data';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -143,7 +143,7 @@ export function tokenize(text: string): string[] {
 
 export function scoreComponents(
   keywords: string[],
-  componentMap: Record<string, any> = components.components || {},
+  componentMap: Record<string, any> = COMPONENT_DEFS,
 ): { name: string; score: number }[] {
   console.log('scoreComponents keys:', Object.keys(componentMap).slice(0, 10));
   const results: { name: string; score: number }[] = [];
@@ -298,7 +298,7 @@ export function proposeComponent(
   existingComponents?: Record<string, any>,
 ): ProposalResult {
   const keywords = tokenize(description);
-  const componentMap = existingComponents || (components.components || {});
+  const componentMap = existingComponents || COMPONENT_DEFS;
   const scored = scoreComponents(keywords, componentMap);
   console.log('proposeComponent scored:', JSON.stringify(scored.slice(0, 3)));
   const bestMatch = scored.length > 0 && scored[0].score > 0 ? scored[0].name : 'GlassCard';

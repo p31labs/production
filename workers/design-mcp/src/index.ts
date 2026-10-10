@@ -11,7 +11,7 @@
  * Bind to: mcp.p31ca.org (or custom domain)
  */
 
-import { tokens, components, TOKENS_DTC, COMPONENT_DEFS, CATALOG, getCatalogEntry } from './data';
+import { tokens, TOKENS_DTC, COMPONENT_DEFS, CATALOG, getCatalogEntry } from './data';
 import { guardXaa } from './xaa-auth';
 import {
   proposeComponent,
@@ -985,7 +985,7 @@ function renderLayout(input: any): any {
 
       case 'generate_component': {
         const name = (args as any).name;
-        const componentsUrl = 'https://github.com/p31labs/P31-local-workspace/blob/main/cli/tokens/components.yml';
+        const componentsUrl = 'https://github.com/p31labs/production/blob/main/packages/design-core/src/componentDefs.ts';
         const cliCommand = `andromeda generate${name ? ` --component ${name}` : ''}`;
         const available = Object.keys(COMP_LIST);
         return {
@@ -1025,7 +1025,7 @@ function renderLayout(input: any): any {
       case 'propose_component': {
         const description = String(args.description || '').trim();
         if (!description) return { error: 'Missing "description" field.', status: 'error' };
-        const result = proposeComponent(description, args.style, args.interactive, components.components || {});
+        const result = proposeComponent(description, args.style, args.interactive, COMPONENT_DEFS);
         return { ...result, status: 'ok' };
       }
 
@@ -1063,7 +1063,7 @@ function renderLayout(input: any): any {
       }
 
       case 'audit_tokens': {
-        const result = auditTokens(tokens, components);
+        const result = auditTokens(tokens, COMPONENT_DEFS);
         return { ...result, status: 'ok' };
       }
 
