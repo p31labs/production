@@ -96,8 +96,25 @@ Deliverable: `docs/enterprise/design-system/token-vocabulary-inventory.md`.
 
 ### 2. Map
 
-For each gap, decide: (a) rename to the canon path, (b) add a missing token to
-canon, or (c) mark non-portable (CLI-only, not shipped). The 74-leaf `component`
+**Categorization first, per-token adjudication second.** The 56 unmatched
+primitives cluster into **9 semantic groups** by yml category (verified
+2026-10-10), not 56 scattered decisions:
+
+| yml cluster | count | p31 target |
+|---|---|---|
+| `color.accent` (cyan/violet/gold/green/red/iris) | 6 | `p31.accent.*` |
+| `color.glass_*` | 10 | `p31.glass.*` |
+| `color.surface/void/void_sN` | 8 | `p31.surface.*` / `p31.void` |
+| `color.neon_*` | 12 | `p31.neon.*` |
+| `color.starfield_*` | 5 | `p31.starfield.*` |
+| `shadow.glow_*` + `shadow.glass` | 9 | `p31.shadow.*` |
+| `color.text_tertiary` | 1 | `p31.text.tertiary` |
+| `radius.xl` | 1 | `p31.radius.xl` |
+| `typography.font_sans/mono` | 2 | `p31.font.*` |
+
+Proceed category-by-category: for each, produce the category-level translation
+row (`primitive.color.cyan` → `p31.accent.cyan`), then adjudicate exceptions
+token-by-token (rename / add-missing / non-portable). The 74-leaf `component`
 group is the hard part — each of its 13 components needs disposition against the
 CSS variant classes, not a global rename.
 
