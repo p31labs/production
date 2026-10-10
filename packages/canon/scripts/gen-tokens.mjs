@@ -293,6 +293,9 @@ if (existsSync(deprecationsPath)) {
     const node = flat.get(cssName)
     if (node && typeof node === 'object') node.$deprecated = meta.$deprecated
   }
+  // DTCG deprecation workflow stage 2 — emit a build warning for deprecated
+  // tokens so anyone regenerating sees the surface shrinking.
+  console.warn(`⚠️  ${Object.keys(deprecations).length} tokens are deprecated — see deprecations.json (removal v0.3.0)`)
 }
 
 writeFileSync(dtcgPath, JSON.stringify(dtcg, null, 2) + '\n')
