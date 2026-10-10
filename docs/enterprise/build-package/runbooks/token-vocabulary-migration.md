@@ -10,11 +10,12 @@ owner: will
 
 # Token-Vocabulary Migration — CLI tooling → p31.* DTCG
 
-> **Status: PLANNED — do not start until this runbook is approved.** The
-> characterization is complete (`docs/fix-plans/catalog-pipeline-divergence.md`);
-> the migration below is the execution plan.
+> **Status: active — awaiting user approval to begin.** The characterization is
+> complete (`docs/fix-plans/catalog-pipeline-divergence.md`); the steps below
+> are the execution plan. Do not start step 1 until the user approves the
+> vocabulary decision.
 
-## Decision
+## Decision (recommended, pending approval)
 
 **Migrate the CLI tooling to the `p31.*` DTCG vocabulary** (canonical, matching
 `@p31ca/canon@0.2.0`). Do **not** re-express `componentDefs.ts` in `primitive.*` —
@@ -28,17 +29,28 @@ Three token vocabularies coexist:
 |---|---|---|
 | Old DTCG | `primitive.color.glass_surface` | `cli/tokens/tokens.yml`, `components.yml` component `tokens` |
 | Short paths | `glass.bg`, `radius.full`, `accent` | `componentDefs.ts`, design-mcp worker |
-| Canon DTCG | `p31.glass.bg` | `packages/canon/tokens/tokens.dtc.json` (452 leaf tokens) |
+| Canon DTCG | `p31.glass.bg` | `packages/canon/tokens/tokens.dtc.json` |
 
-- `tokens.yml` has 238 leaf tokens across `primitive` (color/spacing/radius/
-  typography/blur/shadow), `semantic` (color), `component` (glass_panel,
-  glass_strong, btn_primary, …), plus `root`/`scale`/`spacing`/`typography`/
-  `color`/`touch`/`z_index`/`animation`/`shadow`/`border`/`breakpoints`/`theme`
-  and non-token groups (`metadata`, `examples`, `agent_prompt_injection`,
-  `version_history`, `property-overrides`, `svg_rules`, `cascade_layers`,
-  `bounding_boxes`, `layout_containers`, `spacing_rules`).
-- `glass.bg`, `radius.full`, `topbar.height` do **not** exist in `tokens.yml`
-  (verified) — the defs short paths match canon, not `tokens.yml`.
+**Corrected counts (apples-to-apples):**
+
+- `tokens.dtc.json` = 452 leaves TOTAL, but that is NOT the vocabulary. It
+  decomposes to: **`p31` subtree = 205 tokens** (the parity gate flattens 184 of
+  them to CSS — the 21 delta is group descriptors / non-flattenable structure),
+  **`themes` = 243** (per-theme value overrides, **out of scope** — they are
+  value swaps, not token names), plus `$schema`/`$extensions`.
+- `tokens.yml` = 238 leaves TOTAL, decomposing to `primitive` 71 + `semantic` 20
+  + `component` 74 + other token groups (~73). It ALSO carries 12 non-token
+  groups that DTCG does not have: `version`, `metadata`, `breakpoints`,
+  `bounding_boxes`, `layout_containers`, `spacing_rules`, `cascade_layers`,
+  `svg_rules`, `agent_prompt_injection`, `examples`, `property-overrides`,
+  `version_history`.
+- The migration therefore maps `tokens.yml`'s 238 token leaves → the `p31`
+  subtree's 205, with the overlap/gap determined in step 1 (not assumed).
+- The **`component` group = 74 leaves across 13 components** (`glass_panel`,
+  `header_candy`, `crown_xs`, `spoon_icon`, `glass_card`, `glass_strong`,
+  `glass_subtle`, `btn_primary`, `btn_secondary`, `btn_ghost`, `starfield`,
+  `starfield_brand_p31ca`, `starfield_brand_phosphorus31`) — the per-component
+  disposition, not a find-replace.
 - 8 CLI consumers read `components.yml` / `tokens.yml` (all still on old DTCG):
   `cli/tokens/build-sovereign.mjs`, `cli/tokens/export-a2ui.mjs`,
   `cli/tokens/export-design-system.mjs`, `cli/design-mcp-server.js`,
@@ -53,30 +65,38 @@ Three token vocabularies coexist:
 ### 1. Inventory
 
 Enumerate every leaf token in `tokens.yml` (238) with its full path, and every
-leaf token in `tokens.dtc.json` (452). Produce a table: `yml path → p31.* path →
-present-in-canon?`. Flag tokens that exist in `tokens.yml` but have no canonical
-`p31.*` target, and tokens that exist in canon but not in `tokens.yml`.
+leaf in the `p31` subtree of `tokens.dtc.json` (205). Produce the table:
+`yml path → p31.* path → present-in-canon?`. Flag yml tokens with no canonical
+`p31.*` target, and `p31.*` tokens with no yml equivalent.
 
-Deliverable: `docs/enterprise/design-system/token-vocabulary-inventory.md`
-(yml→p31 map + gap list).
+Deliverable: `docs/enterprise/design-system/token-vocabulary-inventory.md`.
 
 ### 2. Map
 
 For each gap, decide: (a) rename to the canon path, (b) add a missing token to
-canon, or (c) mark non-portable (CLI-only, not shipped). The `component` group
-in `tokens.yml` (`glass_panel`, `btn_primary`, `starfield_brand_*`) is the
-hardest — these are component-level tokens that may need per-component
-disposition, not a global rename.
+canon, or (c) mark non-portable (CLI-only, not shipped). The 74-leaf `component`
+group is the hard part — each of its 13 components needs disposition against the
+CSS variant classes, not a global rename.
 
-Deliverable: `docs/enterprise/design-system/token-vocabulary-map.md`
-(final translation table + disposition).
+Deliverable: `docs/enterprise/design-system/token-vocabulary-map.md`.
 
-### 3. Generate
+### 3. Generate (partial merge, NOT full derivation)
 
-Write `cli/tokens/gen-tokens-yml.mjs`: reads `tokens.dtc.json`, applies the
-translation table, emits `tokens.yml`. Prove idempotence — run twice, `diff`
-empty. Do the same for `components.yml` from `componentDefs.ts` (with the
-`tool`/`props.options`/`aiGuidance` shape decisions resolved here).
+`tokens.yml` carries 12 non-token groups that `tokens.dtc.json` cannot produce.
+So the generator is a **partial merge**, not a full emit:
+
+- `cli/tokens/gen-tokens-yml.mjs` — reads `tokens.dtc.json` `p31` subtree +
+  the translation table → emits ONLY the token groups (`primitive`, `semantic`,
+  `component`, `root`, `scale`, `spacing`, `typography`, `color`, `touch`,
+  `z_index`, `animation`, `shadow`, `border`, `theme`). The 12 non-token groups
+  are preserved from a sidecar (`cli/tokens/tokens-meta.yml`) that is split out
+  in step 3a.
+- Prove idempotence: run twice, `diff` empty.
+- `cli/tokens/gen-components-yml.mjs` — reads `componentDefs.ts` → emits
+  `components.yml`, resolving `tool`/`props.options`/`aiGuidance` shape decisions
+  here.
+
+Deliverable: both generators + the `tokens-meta.yml` split.
 
 ### 4. Repoint
 
@@ -88,24 +108,27 @@ Migrate each of the 8 consumers, one commit each, smallest first:
 ### 5. Gate
 
 Add `scripts/check-token-vocabulary.mjs`: fails if any source file references
-`primitive.` paths (outside `docs/` and the frozen grant/history set). Wire into
-`pnpm gate` with a negative control.
+`primitive.` token paths. Exclusions: `docs/**`, `packages/canon/**`,
+`cli/tokens/tokens-meta.yml` (the preserved sidecar), and the generator itself
+(`cli/tokens/gen-*.mjs`). Wire into `pnpm gate` with a negative control.
 
 ### 6. Delete
 
 Remove `tokens.yml` and `components.yml` as hand-maintained files; they become
 generated artifacts (or are deleted if no consumer remains). Update the
-`design-mcp` worker's `build.mjs` to read from the generated sources.
+`design-mcp` worker's `build.mjs` to read the generated sources.
 
 ## Not in scope (separate, still open)
 
+- **design-mcp deploy** — build/typecheck pass; the worker is NOT yet deployed.
+  `cd workers/design-mcp && npx wrangler deploy` (needs credentials). The
+  running worker may be stale until this happens.
 - `cli/component-registry.js` — third catalog (`phos-*` classes), its own
   reconciliation.
 - `tools (1)/` duplicate tree — filesystem consolidation, not vocabulary.
-- design-mcp worker deploy — build is fixed; deploy needs wrangler credentials.
 
 ## Estimated effort
 
-2–4 sessions. Steps 1–2 are pure analysis; 3–5 are the mechanical bulk; 6 is
-cleanup. Do not attempt as a single sweep — the `component` group token
-disposition (step 2) is per-component judgment, not a find-replace.
+2–4 sessions. Steps 1–2 are pure analysis; 3–5 are the mechanical bulk (the
+`component` group disposition in step 2 is the per-component judgment); 6 is
+cleanup. Do not attempt as a single sweep.
