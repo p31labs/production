@@ -54,7 +54,7 @@
     "./css/index.css": "./src/css/index.css"
   },
   "peerDependencies": {
-    "@p31ca/canon": ">=0.1.0",
+    "@p31ca/canon": "workspace:*",
     "react": ">=18.0.0"
   },
   "dependencies": {
