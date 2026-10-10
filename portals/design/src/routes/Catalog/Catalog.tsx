@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { StatusBadge, GlassPanel } from '@p31ca/design-core/compositions';
 import { LiveExample } from '../../lib/livePreview';
@@ -133,7 +134,12 @@ export default function Catalog() {
                                 />
                               </>
                             }
-                            foot={<span className="qm-cat-import mono">{e.importPath}</span>}
+                            foot={
+                              <div className="qm-cat-foot">
+                                <span className="qm-cat-import mono">{e.importPath}</span>
+                                <Link to={`/components/${e.name}`} className="qm-cat-view">View page →</Link>
+                              </div>
+                            }
                           />
                         ))}
                       </motion.div>

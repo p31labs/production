@@ -41,6 +41,7 @@ export default function ComponentPage({ name }: ComponentPageProps) {
   }
 
   const Live = (Compositions as unknown as Record<string, ComponentType<any> | undefined>)[entry.name];
+  const tier = (entry.tier ?? 'core') as 'core' | 'experimental' | 'deprecated';
   const props = (entry.props ?? {}) as Record<string, { type?: string; default?: unknown; description?: string; required?: boolean }>;
 
   return (
@@ -81,6 +82,18 @@ export default function ComponentPage({ name }: ComponentPageProps) {
         </div>
       </section>
 
+      {/* ④ Anatomy — compound components only */}
+      {(entry.slots ?? []).length > 1 && (
+        <section aria-label="Anatomy">
+          <h2>Anatomy</h2>
+          <ul>
+            {(entry.slots ?? []).map((slot) => (
+              <li key={slot}><code>{slot}</code></li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {/* ⑤ Props */}
       {Object.keys(props).length > 0 && (
         <section aria-label="Props">
@@ -117,6 +130,19 @@ export default function ComponentPage({ name }: ComponentPageProps) {
           <ul>{entry.accessibility!.map((a) => <li key={a}>{a}</li>)}</ul>
         </section>
       )}
+
+      {/* ⑧ Status — lifecycle tier + deprecation, a distinct section */}
+      <section aria-label="Status">
+        <h2>Status</h2>
+        <p>
+          <span className={`badge tier-${tier}`}>{tier}</span>{' '}
+          {tier === 'deprecated'
+            ? 'Deprecated — see the migration note before using.'
+            : tier === 'experimental'
+              ? 'Experimental — breaking changes allowed at will.'
+              : 'Core — semver-stable and promoted.'}
+        </p>
+      </section>
 
       {/* ⑨ Where to next */}
       <footer className="surface-footer">
