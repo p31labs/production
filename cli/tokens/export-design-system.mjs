@@ -22,7 +22,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const TOKENS_FILE = path.join(__dirname, 'tokens.yml');
-const COMPS_FILE  = path.join(__dirname, 'components.yml');
+const COMPS_FILE  = path.join(__dirname, '..', '..', 'packages', 'design-core', 'registry.json');
 const ICONS_DIR   = '/home/p31/p31-icon-pack/icons';
 
 // ─── Token resolution helpers ──────────────────────────────────────────
@@ -57,11 +57,7 @@ function resolveValue(value, tokens, visited = new Set()) {
   });
 }
 
-const TOKEN_GROUP_NAMES = [
-  'root', 'scale', 'spacing', 'typography', 'animation',
-  'shadow', 'border', 'breakpoints', 'primitive',
-  'semantic', 'component', 'theme'
-];
+const TOKEN_GROUP_NAMES = ['p31'];
 
 function walkNode(obj, tokens, opts = {}, visited = new Set()) {
   const { allowedKeys } = opts;
@@ -169,7 +165,19 @@ function resolveTokenRef(pathStr, tokens) {
 function main() {
   console.error('Loading sources...');
   const tokens      = yaml.parse(fs.readFileSync(TOKENS_FILE, 'utf8'));
-  const components  = yaml.parse(fs.readFileSync(COMPS_FILE, 'utf8'));
+  const reg = JSON.parse(fs.readFileSync(COMPS_FILE, 'utf8'));
+  const components = { components: {} };
+  for (const item of reg.items || []) {
+    components.components[item.name] = {
+      description: item.description,
+      css_class: item.cssClass,
+      tokens: item.tokens || [],
+      slots: item.slots || [],
+      variants: item.variants || [],
+      props: item.props || {},
+      tool: null,
+    };
+  }
 
   console.error('Resolving design tokens...');
   const resolvedTokens = {};
