@@ -1,10 +1,9 @@
-// Auto-generated from cli/tokens/tokens.yml + p31-icon-pack/icons (build.mjs)
-// Component definitions are NOT generated here — they bridge from
-// packages/design-core/src/componentDefs.ts (see bottom of this file).
+// Auto-generated from cli/tokens/tokens.yml + p31-icon-pack/icons
+// Component definitions bridge to packages/design-core/src/componentDefs.ts.
 // DO NOT EDIT — run: node workers/design-mcp/build.mjs
 
 export const tokens = {
-  "version": "3.0-quantum",
+  "version": "3.1-willow",
   "metadata": {
     "name": "p31-quantum",
     "description": "P31 Labs Quantum Design System — mathematically perfect, visually breathtaking",
@@ -349,10 +348,63 @@ export const tokens = {
       }
     }
   },
+  "touch": {
+    "min": {
+      "$value": "48px",
+      "$type": "dimension",
+      "$description": "Minimum touch target for accessibility (WCAG 2.5.8)",
+      "usage": "buttons, interactive controls"
+    },
+    "recommended": {
+      "$value": "56px",
+      "$type": "dimension",
+      "$description": "Recommended touch target for child-friendly UIs",
+      "usage": "willow portal, mobile-first interfaces"
+    },
+    "large": {
+      "$value": "64px",
+      "$type": "dimension",
+      "$description": "Large touch target for maximum accessibility",
+      "usage": "primary actions, emergency controls"
+    }
+  },
+  "z_index": {
+    "starfield": {
+      "$value": 0,
+      "$type": "number",
+      "usage": "background canvas layer"
+    },
+    "topbar": {
+      "$value": 10,
+      "$type": "number",
+      "usage": "header and navigation bars"
+    },
+    "toast": {
+      "$value": 9999,
+      "$type": "number",
+      "usage": "notification popups"
+    },
+    "crisis": {
+      "$value": 99999,
+      "$type": "number",
+      "usage": "crisis overlay, PIN overlay"
+    },
+    "skip_link": {
+      "$value": 100,
+      "$type": "number",
+      "usage": "skip-to-content link"
+    }
+  },
   "animation": {
     "larmor_hz": {
       "$value": 863,
       "$type": "number"
+    },
+    "speed_factor": {
+      "$value": 1,
+      "$type": "number",
+      "$description": "Global animation speed multiplier (0–1). Applied as calc(var(--p31-duration-*) * var(--p31-speed-factor)). Set via data-spoons: 0→0, 1→0, 2→0.25, 3→0.5, 4→0.75, 5→1",
+      "usage": "crisis mode=0, low=0, reduced=0.25, standard=0.5, calm=0.75, brisk=1.0"
     },
     "duration": {
       "fast": {
@@ -581,12 +633,14 @@ export const tokens = {
         "$type": "color"
       },
       "text_secondary": {
-        "$value": "oklch(75% 0.01 240)",
-        "$type": "color"
+        "$value": "oklch(80% 0.01 240)",
+        "$type": "color",
+        "$description": "Raised from L75→L80: APCA body-text ≥60 on dark surfaces"
       },
       "text_tertiary": {
-        "$value": "oklch(55% 0.01 240)",
-        "$type": "color"
+        "$value": "oklch(78% 0.01 240)",
+        "$type": "color",
+        "$description": "Raised from L55→L78: APCA body-text ≥60 on dark surfaces"
       },
       "glass_surface": {
         "$value": "oklch(100% 0.01 240 / 0.04)",
@@ -607,6 +661,144 @@ export const tokens = {
       "glass_surface_subtle": {
         "$value": "oklch(100% 0.01 240 / 0.03)",
         "$type": "color"
+      },
+      "glass_surface_body": {
+        "$value": "oklch(100% 0.01 75 / 0.18)",
+        "$type": "color",
+        "$description": "Shell --p31-glass-bg: body cards, starfield visible"
+      },
+      "glass_surface_strong_tier": {
+        "$value": "oklch(100% 0.01 75 / 0.22)",
+        "$type": "color",
+        "$description": "Shell --p31-glass-bg-strong: elevated overlays"
+      },
+      "glass_surface_overlay": {
+        "$value": "oklch(100% 0.01 75 / 0.10)",
+        "$type": "color",
+        "$description": "Shell --p31-glass-bg-overlay: drawers, overlays"
+      },
+      "glass_surface_light_tier": {
+        "$value": "oklch(100% 0.01 75 / 0.10)",
+        "$type": "color",
+        "$description": "Shell --p31-glass-bg-light: light glass"
+      },
+      "glass_border_tier": {
+        "$value": "oklch(100% 0.01 75 / 0.16)",
+        "$type": "color",
+        "$description": "Shell --p31-glass-border"
+      },
+      "glass_border_hover_tier": {
+        "$value": "oklch(100% 0.01 75 / 0.25)",
+        "$type": "color",
+        "$description": "Shell --p31-glass-border-hover"
+      },
+      "starfield_hearth": {
+        "$value": "oklch(55% 0.15 35)",
+        "$type": "color",
+        "$description": "Warm coral hearth glow for starfield ambient layer"
+      },
+      "starfield_teal": {
+        "$value": "oklch(60% 0.08 185)",
+        "$type": "color",
+        "$description": "Cool teal ambient glow for starfield upper layer"
+      },
+      "starfield_remembrance": {
+        "$value": "oklch(95% 0.01 80)",
+        "$type": "color",
+        "$description": "Warm white fixed-position remembrance stars"
+      },
+      "starfield_particle_teal": {
+        "$value": "oklch(70% 0.12 185 / 0.6)",
+        "$type": "color"
+      },
+      "starfield_particle_coral": {
+        "$value": "oklch(65% 0.14 40 / 0.5)",
+        "$type": "color"
+      },
+      "neon_cyan": {
+        "$value": "oklch(90.5% 0.155 194.8)",
+        "$type": "color",
+        "$description": "#00FFFF — primary phosphor cyan (LED mode default)"
+      },
+      "neon_magenta": {
+        "$value": "oklch(70.2% 0.322 328.4)",
+        "$type": "color",
+        "$description": "#FF00FF — phosphor magenta (secondary rail)"
+      },
+      "neon_violet": {
+        "$value": "oklch(67.0% 0.234 309.1)",
+        "$type": "color",
+        "$description": "#BF5FFF — phosphor violet (bonding axis)"
+      },
+      "neon_amber": {
+        "$value": "oklch(88.7% 0.182 95.3)",
+        "$type": "color",
+        "$description": "#FFD700 — phosphor amber (DUNA board, warnings)"
+      },
+      "neon_mint": {
+        "$value": "oklch(87.6% 0.228 152.5)",
+        "$type": "color",
+        "$description": "#00FF88 — phosphor mint (coherence, success)"
+      },
+      "neon_coral": {
+        "$value": "oklch(71.2% 0.181 22.8)",
+        "$type": "color",
+        "$description": "#FF6B6B — phosphor coral (error, tension)"
+      },
+      "neon_orange": {
+        "$value": "oklch(75.4% 0.164 50.4)",
+        "$type": "color",
+        "$description": "#FF8C42 — phosphor orange (heat, engagement)"
+      },
+      "neon_blue": {
+        "$value": "oklch(80.4% 0.146 219.5)",
+        "$type": "color",
+        "$description": "#00D4FF — phosphor blue (relay, mesh links)"
+      },
+      "neon_lavender": {
+        "$value": "oklch(62% 0.279 290.8)",
+        "$type": "color",
+        "$description": "#7A27FF raised from L53.9→L62 for APCA non-text ≥30 on void"
+      },
+      "neon_pink": {
+        "$value": "oklch(67.4% 0.293 340.4)",
+        "$type": "color",
+        "$description": "#FF00CC — phosphor pink (creative axis)"
+      },
+      "neon_dim": {
+        "$value": "oklch(90.5% 0.155 194.8 / 0.35)",
+        "$type": "color",
+        "$description": "Neon cyan at 35% alpha — secondary text on dark"
+      },
+      "neon_faint": {
+        "$value": "oklch(90.5% 0.155 194.8 / 0.08)",
+        "$type": "color",
+        "$description": "Neon cyan at 8% alpha — borders, dividers"
+      },
+      "neon_ghost": {
+        "$value": "oklch(90.5% 0.155 194.8 / 0.03)",
+        "$type": "color",
+        "$description": "Neon cyan at 3% alpha — glass card surface"
+      },
+      "void_s1": {
+        "$value": "oklch(0% 0 0)",
+        "$type": "color",
+        "$description": "Ship --s1: absolute OLED black"
+      },
+      "void_s2": {
+        "$value": "oklch(4.9% 0 0)",
+        "$type": "color",
+        "$description": "Ship --s2: #0a0a0a"
+      },
+      "void_s3": {
+        "$value": "oklch(6.9% 0 0)",
+        "$type": "color",
+        "$description": "Ship --s3: #111111"
+      },
+      "void_s4": {
+        "$value": "oklch(10.5% 0 0)",
+        "$type": "color",
+        "$description": "Ship --s4: #1a1a1a"
       }
     },
     "spacing": {
@@ -693,6 +885,31 @@ export const tokens = {
       "glow_cyan_hover": {
         "$value": "0 0 30px rgba(0,240,255,0.4)",
         "$type": "shadow"
+      },
+      "glow_neon": {
+        "$value": "0 0 6px oklch(90.5% 0.155 194.8), 0 0 20px oklch(90.5% 0.155 194.8 / 0.3)",
+        "$type": "shadow",
+        "$description": "Ship --glow-cyan: neon phosphor glow preset"
+      },
+      "glow_magenta": {
+        "$value": "0 0 6px oklch(70.2% 0.322 328.4), 0 0 20px oklch(70.2% 0.322 328.4 / 0.3)",
+        "$type": "shadow"
+      },
+      "glow_violet": {
+        "$value": "0 0 6px oklch(67.0% 0.234 309.1), 0 0 20px oklch(67.0% 0.234 309.1 / 0.3)",
+        "$type": "shadow"
+      },
+      "glow_amber": {
+        "$value": "0 0 6px oklch(88.7% 0.182 95.3), 0 0 20px oklch(88.7% 0.182 95.3 / 0.3)",
+        "$type": "shadow"
+      },
+      "glow_mint": {
+        "$value": "0 0 6px oklch(87.6% 0.228 152.5), 0 0 20px oklch(87.6% 0.228 152.5 / 0.3)",
+        "$type": "shadow"
+      },
+      "glow_coral": {
+        "$value": "0 0 6px oklch(71.2% 0.181 22.8), 0 0 20px oklch(71.2% 0.181 22.8 / 0.3)",
+        "$type": "shadow"
       }
     }
   },
@@ -714,6 +931,19 @@ export const tokens = {
         "primary": "{primitive.color.text_primary}",
         "secondary": "{primitive.color.text_secondary}",
         "tertiary": "{primitive.color.text_tertiary}"
+      },
+      "status": {
+        "online": "{primitive.color.green}",
+        "offline": "{primitive.color.text_tertiary}",
+        "warning": "{primitive.color.gold}",
+        "error": "{primitive.color.red}",
+        "info": "{primitive.color.cyan}"
+      },
+      "neon": {
+        "base": "{primitive.color.neon_cyan}",
+        "dim": "{primitive.color.neon_dim}",
+        "faint": "{primitive.color.neon_faint}",
+        "ghost": "{primitive.color.neon_ghost}"
       }
     }
   },
@@ -795,6 +1025,28 @@ export const tokens = {
       "padding": "{primitive.spacing.sm} {primitive.spacing.lg}",
       "border_radius": "{primitive.radius.md}",
       "font_size": "14px"
+    },
+    "starfield": {
+      "container_position": "fixed",
+      "container_inset": "0",
+      "container_z_index": "0",
+      "container_pointer_events": "none",
+      "container_bg": "{primitive.color.void_deep}",
+      "canvas_display": "block",
+      "canvas_width": "100%",
+      "canvas_height": "100%"
+    },
+    "starfield_brand_p31ca": {
+      "hearth_color": "{primitive.color.starfield_hearth}",
+      "teal_color": "{primitive.color.starfield_teal}",
+      "particle_count": "80",
+      "speed": "0.15"
+    },
+    "starfield_brand_phosphorus31": {
+      "hearth_color": "oklch(55% 0.10 70)",
+      "teal_color": "oklch(60% 0.06 130)",
+      "particle_count": "60",
+      "speed": "0.08"
     }
   },
   "theme": {
@@ -1104,6 +1356,37 @@ export const tokens = {
       },
       "typography": {
         "font-family": "{typography.font_family.inter}"
+      },
+      "glass": {
+        "glass_surface": {
+          "$value": "oklch(14% 0.02 260 / 0.35)"
+        },
+        "glass_border": {
+          "$value": "oklch(100% 0.01 240 / 0.12)"
+        },
+        "glass_surface_hover": {
+          "$value": "oklch(14% 0.02 260 / 0.45)"
+        },
+        "glass_border_hover": {
+          "$value": "oklch(100% 0.01 240 / 0.25)"
+        },
+        "glass_blur": {
+          "$value": "24px"
+        }
+      },
+      "starfield": {
+        "hearth_color": {
+          "$value": "oklch(55% 0.15 35)"
+        },
+        "teal_color": {
+          "$value": "oklch(60% 0.08 185)"
+        },
+        "particle_count": {
+          "$value": 80
+        },
+        "speed": {
+          "$value": 0.15
+        }
       }
     },
     "phosphorus31": {
@@ -1118,6 +1401,37 @@ export const tokens = {
       },
       "typography": {
         "font-family": "{typography.font_family.atkinson}"
+      },
+      "glass": {
+        "glass_surface": {
+          "$value": "oklch(99% 0.01 85 / 0.55)"
+        },
+        "glass_border": {
+          "$value": "oklch(80% 0.02 75 / 0.3)"
+        },
+        "glass_surface_hover": {
+          "$value": "oklch(99% 0.01 85 / 0.65)"
+        },
+        "glass_border_hover": {
+          "$value": "oklch(70% 0.03 70 / 0.4)"
+        },
+        "glass_blur": {
+          "$value": "16px"
+        }
+      },
+      "starfield": {
+        "hearth_color": {
+          "$value": "oklch(55% 0.10 70)"
+        },
+        "teal_color": {
+          "$value": "oklch(60% 0.06 130)"
+        },
+        "particle_count": {
+          "$value": 60
+        },
+        "speed": {
+          "$value": 0.08
+        }
       },
       "nonprofit": {
         "trust_indicators": {
@@ -1137,9 +1451,157 @@ export const tokens = {
           "touch_target_min": "48px"
         }
       }
+    },
+    "willow": {
+      "$description": "The Sapling — child/teen companion portal. Warm, playful, accessible.",
+      "semantic-color": {
+        "primary": {
+          "$value": "oklch(65% 0.18 45)"
+        },
+        "secondary": {
+          "$value": "oklch(60% 0.15 200)"
+        }
+      },
+      "typography": {
+        "font-family": "\"Comic Sans MS\", \"Chalkboard SE\", cursive, sans-serif",
+        "font-display": "\"Comic Sans MS\", \"Chalkboard SE\", cursive"
+      },
+      "glass": {
+        "glass_surface": {
+          "$value": "rgba(255, 248, 240, 0.7)"
+        },
+        "glass_border": {
+          "$value": "rgba(200, 180, 160, 0.25)"
+        },
+        "glass_surface_hover": {
+          "$value": "rgba(255, 248, 240, 0.85)"
+        },
+        "glass_border_hover": {
+          "$value": "rgba(200, 180, 160, 0.35)"
+        },
+        "glass_blur": {
+          "$value": "16px"
+        }
+      },
+      "starfield": {
+        "hearth_color": {
+          "$value": "hsl(25, 80%, 50%)"
+        },
+        "teal_color": {
+          "$value": "hsl(200, 60%, 60%)"
+        },
+        "particle_count": {
+          "$value": 70
+        },
+        "speed": {
+          "$value": 0.08
+        }
+      },
+      "radii": {
+        "sm": {
+          "$value": "12px"
+        },
+        "md": {
+          "$value": "20px"
+        },
+        "lg": {
+          "$value": "28px"
+        },
+        "xl": {
+          "$value": "40px"
+        },
+        "full": {
+          "$value": "9999px"
+        }
+      },
+      "spacing": {
+        "xs": {
+          "$value": "0.5rem"
+        },
+        "sm": {
+          "$value": "0.75rem"
+        },
+        "md": {
+          "$value": "1.25rem"
+        },
+        "lg": {
+          "$value": "2rem"
+        },
+        "xl": {
+          "$value": "2.5rem"
+        },
+        "xxl": {
+          "$value": "4rem"
+        }
+      },
+      "duration": {
+        "fast": {
+          "$value": "200ms"
+        },
+        "normal": {
+          "$value": "400ms"
+        },
+        "slow": {
+          "$value": "600ms"
+        }
+      },
+      "easing": {
+        "default": {
+          "$value": "cubic-bezier(0.34, 1.56, 0.64, 1)"
+        }
+      },
+      "touch": {
+        "min": {
+          "$value": "56px"
+        },
+        "recommended": {
+          "$value": "64px"
+        }
+      },
+      "z_index": {
+        "starfield": {
+          "$value": 0
+        },
+        "topbar": {
+          "$value": 10
+        },
+        "toast": {
+          "$value": 9999
+        },
+        "crisis": {
+          "$value": 99999
+        }
+      },
+      "dark_mode": {
+        "glass_surface": {
+          "$value": "rgba(30, 28, 26, 0.8)"
+        },
+        "glass_border": {
+          "$value": "rgba(80, 75, 70, 0.3)"
+        },
+        "text": {
+          "$value": "oklch(90% 0.01 80)"
+        },
+        "text_secondary": {
+          "$value": "oklch(65% 0.02 80)"
+        }
+      }
     }
   },
   "version_history": [
+    {
+      "version": "3.1-willow",
+      "date": "2026-07-29",
+      "changes": [
+        "Added willow brand to property-overrides (warm palette, child-friendly tokens)",
+        "Added touch section (min, recommended, large touch targets)",
+        "Added z_index section (starfield, topbar, toast, crisis, skip_link)",
+        {
+          "Willow portal": "Comic Sans, rounded radii, warm amber/terracotta palette"
+        }
+      ],
+      "author": "P31 Labs Engineering"
+    },
     {
       "version": 2,
       "date": "2026-07-23",
@@ -1177,7 +1639,6 @@ export const tokens = {
     }
   ]
 } as const;
-
 
 export const icons = [
   {
@@ -1384,7 +1845,7 @@ export { COMPONENT_DEFS, getComponentDef, listComponents, listComponentsByCatego
 
 export const CATALOG = {
   v: 2,
-  generatedAt: '2026-09-15',
+  generatedAt: '2026-10-10',
   components: Object.entries(COMPONENT_DEFS).map(([name, def]) => ({
     name,
     description: def.description,

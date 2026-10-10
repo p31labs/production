@@ -98,7 +98,7 @@ export function validateComponent(name: string, component: any, tokens: any, all
   }
 
   if (component.props) {
-    for (const [key, def] of Object.entries(component.props)) {
+    for (const [key, def] of Object.entries(component.props as Record<string, any>)) {
       if (!def.type) {
         errors.push(`Prop "${key}" missing "type" field`);
       }
@@ -183,8 +183,7 @@ export function auditTokens(tokens: any, components: any): AuditResult {
       for (const key of Object.keys(node)) {
         if (key.startsWith('$') || key === 'metadata') continue;
         const isComponent = key === 'component' || path.startsWith('component.');
-        const inComponentDefs = inTokenTree && key === 'component';
-        walk(node[key], path ? `${path}.${key}` : key, inTokenTree && !isComponent, inComponentDefs);
+        walk(node[key], path ? `${path}.${key}` : key, inTokenTree && !isComponent);
       }
     }
   }

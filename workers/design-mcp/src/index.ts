@@ -11,7 +11,7 @@
  * Bind to: mcp.p31ca.org (or custom domain)
  */
 
-import { tokens, TOKENS_DTC, COMPONENT_DEFS, CATALOG, getCatalogEntry } from './data';
+import { tokens, TOKENS_DTC, COMPONENT_DEFS, CATALOG, getCatalogEntry, icons, iconCatalog } from './data';
 import { guardXaa } from './xaa-auth';
 import {
   proposeComponent,
@@ -122,13 +122,8 @@ let _iconsData: { icons: any[]; iconCatalog: Record<string, any> } | null = null
 
 async function loadIconsData(): Promise<{ icons: any[]; iconCatalog: Record<string, any> }> {
   if (_iconsData) return _iconsData;
-  try {
-    const mod = await import('./icons-data') as { icons: readonly any[]; iconCatalog: Record<string, any> };
-    _iconsData = { icons: [...(mod.icons ?? [])], iconCatalog: mod.iconCatalog ?? {} };
-    return _iconsData;
-  } catch {
-    return { icons: [], iconCatalog: {} };
-  }
+  _iconsData = { icons: [...icons] as any[], iconCatalog: iconCatalog as Record<string, any> };
+  return _iconsData;
 }
 
 /** Metadata-only icon data (SVG strings stripped) for list/search resources. */

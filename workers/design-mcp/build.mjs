@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const TOKENS_FILE = path.resolve(__dirname, '..', '..', 'cli', 'tokens', 'tokens.yml');
-const ICONS_DIR = '/home/p31/p31-icon-pack/icons';
+const ICONS_DIR = path.resolve(__dirname, '..', '..', 'p31-icon-pack', 'icons');
 const OUT_FILE = path.join(__dirname, 'src', 'data.ts');
 
 const tokens = yaml.parse(fs.readFileSync(TOKENS_FILE, 'utf8'));
@@ -58,6 +58,7 @@ const iconCatalogEntries = allIcons.map(i => `    ${JSON.stringify(i.id)}: { fam
 const tokensJson = JSON.stringify(tokens, null, 2);
 
 const output = `// Auto-generated from cli/tokens/tokens.yml + p31-icon-pack/icons
+// Component definitions bridge to packages/design-core/src/componentDefs.ts.
 // DO NOT EDIT — run: node workers/design-mcp/build.mjs
 
 export const tokens = ${tokensJson} as const;
@@ -69,8 +70,38 @@ ${iconCatalogEntries}
 };
 `;
 
-fs.writeFileSync(OUT_FILE, output);
-console.log(`Generated ${OUT_FILE} (${(output.length / 1024).toFixed(1)} KB)`);
+const bridge = [
+  '',
+  "import { TOKENS_DTC } from '../../../packages/design-core/src/mcp/tokens-dtc';",
+  "import { COMPONENT_DEFS, getComponentDef, listComponents, listComponentsByCategory } from './generated/componentDefs';",
+  'export { TOKENS_DTC };',
+  'export { COMPONENT_DEFS, getComponentDef, listComponents, listComponentsByCategory };',
+  '',
+  'export const CATALOG = {',
+  '  v: 2,',
+  `  generatedAt: '${new Date().toISOString().slice(0, 10)}',`,
+  '  components: Object.entries(COMPONENT_DEFS).map(([name, def]) => ({',
+  '    name,',
+  '    description: def.description,',
+  '    cssClass: def.css_class,',
+  '    category: def.category,',
+  '    tokens: def.tokens,',
+  '    aiGuidance: {',
+  '      useWhen: def.aiGuidance?.useWhen || [],',
+  '      avoidWhen: def.aiGuidance?.avoidWhen || [],',
+  '    },',
+  "    stories: [{ name: 'Default', link: `/storybook/?path=/story/${name.toLowerCase()}` }],",
+  '  })),',
+  '};',
+  '',
+  'export function getCatalogEntry(name: string): Record<string, any> | null {',
+  '  return CATALOG.components.find((c) => c.name === name) || null;',
+  '}',
+  '',
+].join('\n');
+
+fs.writeFileSync(OUT_FILE, output + bridge);
+console.log(`Generated ${OUT_FILE} (${((output + bridge).length / 1024).toFixed(1)} KB)`);
 
 // ─── Generate skills manifest from SKILL.md files ─────────────────
 

@@ -350,7 +350,7 @@ export function proposeIcon(
   colors?: string[],
 ): IconProposalResult {
   const keywords = tokenize(description);
-  const familyChoice = family || KEYWORD_TO_FAMILY[keywords[0] || ''] || 'regular';
+  const familyChoice: 'regular' | 'advanced' = (family || KEYWORD_TO_FAMILY[keywords[0] || ''] || 'regular') === 'advanced' ? 'advanced' : 'regular';
 
   const scoredIcons = scoreIcons(keywords);
   const similarTo = scoredIcons.length > 0 ? scoredIcons[0].name : 'default';
