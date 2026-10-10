@@ -65,12 +65,12 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "color.accent.default",
-      "color.accent.green.default",
-      "color.accent.gold.default",
-      "color.accent.red.default",
-      "radius.full",
-      "font.family.sans"
+      "p31.color.accent.default",
+      "p31.color.accent.green.default",
+      "p31.color.accent.gold.default",
+      "p31.color.accent.red.default",
+      "p31.radius.full",
+      "p31.font.family.sans"
     ],
     "variants": [
       "default"
@@ -120,10 +120,10 @@ export const COMPONENT_CATALOG = [
     "version": "1.0.0",
     "status": "stable",
     "tokens": [
-      "topbar.height",
-      "glass.background",
-      "glass.border",
-      "layout.spacing.sm"
+      "p31.topbar.height",
+      "p31.glass.background",
+      "p31.glass.border",
+      "p31.layout.spacing.sm"
     ],
     "variants": [
       "default",
@@ -181,10 +181,10 @@ export const COMPONENT_CATALOG = [
     "version": "1.0.0",
     "status": "stable",
     "tokens": [
-      "color.accent.default",
-      "radius.md",
-      "layout.spacing.sm",
-      "layout.spacing.lg"
+      "p31.color.accent.default",
+      "p31.radius.md",
+      "p31.layout.spacing.sm",
+      "p31.layout.spacing.lg"
     ],
     "variants": [
       "primary",
@@ -254,10 +254,10 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "color.accent.green.default",
-      "color.accent.red.default",
-      "glass.background",
-      "radius.full"
+      "p31.color.accent.green.default",
+      "p31.color.accent.red.default",
+      "p31.glass.background",
+      "p31.radius.full"
     ],
     "variants": [
       "is-calm",
@@ -308,9 +308,9 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "color.accent.default",
-      "color.text.primary",
-      "z.floating"
+      "p31.color.accent.default",
+      "p31.color.text.primary",
+      "p31.z.floating"
     ],
     "variants": [
       "default"
@@ -374,11 +374,11 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "glass.surface",
-      "glass.border",
-      "radius.candy",
-      "color.text.primary",
-      "color.accent.default"
+      "p31.glass.surface",
+      "p31.glass.border",
+      "p31.radius.candy",
+      "p31.color.text.primary",
+      "p31.color.accent.default"
     ],
     "variants": [
       "default"
@@ -434,11 +434,11 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "surface.background",
-      "glass.border",
-      "color.text.primary",
-      "color.text.secondary",
-      "radius.md"
+      "p31.surface.background",
+      "p31.glass.border",
+      "p31.color.text.primary",
+      "p31.color.text.secondary",
+      "p31.radius.md"
     ],
     "variants": [
       "default",
@@ -510,7 +510,7 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "color.accent.default"
+      "p31.color.accent.default"
     ],
     "variants": [
       "default"
@@ -567,11 +567,11 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "surface.background",
-      "glass.border",
-      "color.text.primary",
-      "color.text.secondary",
-      "radius.lg"
+      "p31.surface.background",
+      "p31.glass.border",
+      "p31.color.text.primary",
+      "p31.color.text.secondary",
+      "p31.radius.lg"
     ],
     "variants": [
       "default"
@@ -649,11 +649,11 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "color.accent.default",
-      "color.text.primary",
-      "color.text.secondary",
-      "radius.sm",
-      "glass.border"
+      "p31.color.accent.default",
+      "p31.color.text.primary",
+      "p31.color.text.secondary",
+      "p31.radius.sm",
+      "p31.glass.border"
     ],
     "variants": [
       "default",
@@ -724,11 +724,11 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "glass.background",
-      "glass.border",
-      "color.accent.default",
-      "radius.md",
-      "z.modal"
+      "p31.glass.background",
+      "p31.glass.border",
+      "p31.color.accent.default",
+      "p31.radius.md",
+      "p31.z.modal"
     ],
     "variants": [
       "default"
@@ -808,11 +808,11 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "glass.background",
-      "glass.border",
-      "radius.full",
-      "color.text.secondary",
-      "font.family.mono"
+      "p31.glass.background",
+      "p31.glass.border",
+      "p31.radius.full",
+      "p31.color.text.secondary",
+      "p31.font.family.mono"
     ],
     "variants": [
       "default",
@@ -876,10 +876,10 @@ export const COMPONENT_CATALOG = [
     "version": "1.0.0",
     "status": "stable",
     "tokens": [
-      "surface.background",
-      "color.text.primary",
-      "color.accent.default",
-      "z.crisis"
+      "p31.surface.background",
+      "p31.color.text.primary",
+      "p31.color.accent.default",
+      "p31.z.crisis"
     ],
     "variants": [
       "default"
@@ -935,9 +935,9 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "color.accent.default",
-      "color.text.primary",
-      "font.family.sans"
+      "p31.color.accent.default",
+      "p31.color.text.primary",
+      "p31.font.family.sans"
     ],
     "variants": [
       "default"
@@ -982,12 +982,12 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "surface.background",
-      "glass.border",
-      "color.text.primary",
-      "color.text.secondary",
-      "color.accent.default",
-      "radius.md"
+      "p31.surface.background",
+      "p31.glass.border",
+      "p31.color.text.primary",
+      "p31.color.text.secondary",
+      "p31.color.accent.default",
+      "p31.radius.md"
     ],
     "variants": [
       "default"
@@ -1057,10 +1057,10 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "surface.background",
-      "color.text.primary",
-      "color.text.secondary",
-      "layout.spacing.lg"
+      "p31.surface.background",
+      "p31.color.text.primary",
+      "p31.color.text.secondary",
+      "p31.layout.spacing.lg"
     ],
     "variants": [
       "default"
@@ -1151,10 +1151,10 @@ export const COMPONENT_CATALOG = [
     "version": "1.0.0",
     "status": "stable",
     "tokens": [
-      "glass.background",
-      "glass.border",
-      "glass.radius",
-      "layout.spacing.lg"
+      "p31.glass.background",
+      "p31.glass.border",
+      "p31.glass.radius",
+      "p31.layout.spacing.lg"
     ],
     "variants": [
       "default",
@@ -1216,9 +1216,9 @@ export const COMPONENT_CATALOG = [
     "version": "1.0.0",
     "status": "stable",
     "tokens": [
-      "glass.background",
-      "glass.border",
-      "glass.radius"
+      "p31.glass.background",
+      "p31.glass.border",
+      "p31.glass.radius"
     ],
     "variants": [
       "default",
@@ -1279,11 +1279,11 @@ export const COMPONENT_CATALOG = [
     "version": "1.0.0",
     "status": "stable",
     "tokens": [
-      "glass.background",
-      "glass.border",
-      "radius.sm",
-      "scale.xs",
-      "color.text.secondary"
+      "p31.glass.background",
+      "p31.glass.border",
+      "p31.radius.sm",
+      "p31.scale.xs",
+      "p31.color.text.secondary"
     ],
     "variants": [
       "default",
@@ -1350,11 +1350,11 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "glass.surface",
-      "glass.border",
-      "color.accent.default",
-      "color.text.secondary",
-      "radius.full"
+      "p31.glass.surface",
+      "p31.glass.border",
+      "p31.color.accent.default",
+      "p31.color.text.secondary",
+      "p31.radius.full"
     ],
     "variants": [
       "default"
@@ -1424,11 +1424,11 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "color.accent.default",
-      "color.accent.gold.default",
-      "color.accent.green.default",
-      "glass.background",
-      "radius.full"
+      "p31.color.accent.default",
+      "p31.color.accent.gold.default",
+      "p31.color.accent.green.default",
+      "p31.glass.background",
+      "p31.radius.full"
     ],
     "variants": [
       "spark",
@@ -1480,15 +1480,15 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "glass.surface",
-      "glass.border",
-      "color.accent.default",
-      "color.accent.green.default",
-      "color.accent.gold.default",
-      "color.accent.red.default",
-      "color.text.primary",
-      "color.text.secondary",
-      "z.floating"
+      "p31.glass.surface",
+      "p31.glass.border",
+      "p31.color.accent.default",
+      "p31.color.accent.green.default",
+      "p31.color.accent.gold.default",
+      "p31.color.accent.red.default",
+      "p31.color.text.primary",
+      "p31.color.text.secondary",
+      "p31.z.floating"
     ],
     "variants": [
       "default"
@@ -1558,8 +1558,8 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "color.text.secondary",
-      "layout.spacing.lg"
+      "p31.color.text.secondary",
+      "p31.layout.spacing.lg"
     ],
     "variants": [
       "default",
@@ -1639,11 +1639,11 @@ export const COMPONENT_CATALOG = [
     "version": "2.2.0",
     "status": "stable",
     "tokens": [
-      "glass.background",
-      "glass.border",
-      "radius.candy",
-      "color.accent.default",
-      "color.text.secondary"
+      "p31.glass.background",
+      "p31.glass.border",
+      "p31.radius.candy",
+      "p31.color.accent.default",
+      "p31.color.text.secondary"
     ],
     "variants": [
       "default"
@@ -1710,12 +1710,12 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "glass.surface",
-      "glass.border",
-      "color.accent.default",
-      "color.text.secondary",
-      "radius.full",
-      "font.family.sans"
+      "p31.glass.surface",
+      "p31.glass.border",
+      "p31.color.accent.default",
+      "p31.color.text.secondary",
+      "p31.radius.full",
+      "p31.font.family.sans"
     ],
     "variants": [
       "default"
@@ -1785,9 +1785,9 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "color.accent.default",
-      "glass.border",
-      "radius.full"
+      "p31.color.accent.default",
+      "p31.glass.border",
+      "p31.radius.full"
     ],
     "variants": [
       "default"
@@ -1836,11 +1836,11 @@ export const COMPONENT_CATALOG = [
     "version": "1.0.0",
     "status": "stable",
     "tokens": [
-      "radius.full",
-      "glass.background",
-      "glass.border",
-      "color.accent.default",
-      "color.text.muted"
+      "p31.radius.full",
+      "p31.glass.background",
+      "p31.glass.border",
+      "p31.color.accent.default",
+      "p31.color.text.muted"
     ],
     "variants": [
       "default",
@@ -1897,10 +1897,10 @@ export const COMPONENT_CATALOG = [
     "version": "1.0.0",
     "status": "stable",
     "tokens": [
-      "z.starfield",
-      "starfield.hearth",
-      "starfield.teal",
-      "starfield.remembrance"
+      "p31.z.starfield",
+      "p31.starfield.hearth",
+      "p31.starfield.teal",
+      "p31.starfield.remembrance"
     ],
     "variants": [
       "default",
@@ -1964,11 +1964,11 @@ export const COMPONENT_CATALOG = [
     "version": "1.0.0",
     "status": "stable",
     "tokens": [
-      "radius.full",
-      "scale.xs",
-      "color.accent.green.default",
-      "color.accent.red.default",
-      "color.accent.gold.default"
+      "p31.radius.full",
+      "p31.scale.xs",
+      "p31.color.accent.green.default",
+      "p31.color.accent.red.default",
+      "p31.color.accent.gold.default"
     ],
     "variants": [
       "success",
@@ -2027,8 +2027,8 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "glass.background",
-      "layout.spacing.xs"
+      "p31.glass.background",
+      "p31.layout.spacing.xs"
     ],
     "variants": [
       "default"
@@ -2075,14 +2075,14 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "topbar.height",
-      "glass.background",
-      "glass.border",
-      "layout.spacing.sm",
-      "radius.candy",
-      "color.accent.default",
-      "color.accent.gold.default",
-      "color.accent.green.default"
+      "p31.topbar.height",
+      "p31.glass.background",
+      "p31.glass.border",
+      "p31.layout.spacing.sm",
+      "p31.radius.candy",
+      "p31.color.accent.default",
+      "p31.color.accent.gold.default",
+      "p31.color.accent.green.default"
     ],
     "variants": [
       "app",
@@ -2204,8 +2204,8 @@ export const COMPONENT_CATALOG = [
     "version": "3.0.0",
     "status": "stable",
     "tokens": [
-      "layout.spacing.xs",
-      "glass.background"
+      "p31.layout.spacing.xs",
+      "p31.glass.background"
     ],
     "variants": [
       "default"
@@ -2250,7 +2250,7 @@ export const COMPONENT_CATALOG = [
 
 export const catalog: z.infer<typeof CatalogSchema> = CatalogSchema.parse({
   v: 2,
-  generatedAt: "2026-10-10T15:02:16.306Z",
+  generatedAt: "2026-10-10T15:06:02.959Z",
   components: COMPONENT_CATALOG,
 })
 

@@ -3,7 +3,7 @@
   "name": "p31ca",
   "homepage": "https://design.p31ca.org",
   "generatedFrom": "src/genui/catalog.json",
-  "generatedAt": "2026-10-10T15:02:31.512Z",
+  "generatedAt": "2026-10-10T15:06:03.015Z",
   "counts": {
     "components": 32,
     "chrome": 18,
@@ -25,12 +25,12 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "badge",
       "tokens": [
-        "color.accent.default",
-        "color.accent.green.default",
-        "color.accent.gold.default",
-        "color.accent.red.default",
-        "radius.full",
-        "font.family.sans"
+        "p31.color.accent.default",
+        "p31.color.accent.green.default",
+        "p31.color.accent.gold.default",
+        "p31.color.accent.red.default",
+        "p31.radius.full",
+        "p31.font.family.sans"
       ],
       "variants": [
         "default"
@@ -78,10 +78,10 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "bottom-nav",
       "tokens": [
-        "topbar.height",
-        "glass.background",
-        "glass.border",
-        "layout.spacing.sm"
+        "p31.topbar.height",
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.layout.spacing.sm"
       ],
       "variants": [
         "default",
@@ -134,10 +134,10 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "btn",
       "tokens": [
-        "color.accent.default",
-        "radius.md",
-        "layout.spacing.sm",
-        "layout.spacing.lg"
+        "p31.color.accent.default",
+        "p31.radius.md",
+        "p31.layout.spacing.sm",
+        "p31.layout.spacing.lg"
       ],
       "variants": [
         "primary",
@@ -202,10 +202,10 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "calm-indicator",
       "tokens": [
-        "color.accent.green.default",
-        "color.accent.red.default",
-        "glass.background",
-        "radius.full"
+        "p31.color.accent.green.default",
+        "p31.color.accent.red.default",
+        "p31.glass.background",
+        "p31.radius.full"
       ],
       "variants": [
         "is-calm",
@@ -254,9 +254,9 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "calm-overlay",
       "tokens": [
-        "color.accent.default",
-        "color.text.primary",
-        "z.floating"
+        "p31.color.accent.default",
+        "p31.color.text.primary",
+        "p31.z.floating"
       ],
       "variants": [
         "default"
@@ -317,11 +317,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "candy-header",
       "tokens": [
-        "glass.surface",
-        "glass.border",
-        "radius.candy",
-        "color.text.primary",
-        "color.accent.default"
+        "p31.glass.surface",
+        "p31.glass.border",
+        "p31.radius.candy",
+        "p31.color.text.primary",
+        "p31.color.accent.default"
       ],
       "variants": [
         "default"
@@ -375,11 +375,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "card",
       "tokens": [
-        "surface.background",
-        "glass.border",
-        "color.text.primary",
-        "color.text.secondary",
-        "radius.md"
+        "p31.surface.background",
+        "p31.glass.border",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.radius.md"
       ],
       "variants": [
         "default",
@@ -448,7 +448,7 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "chameleon",
       "tokens": [
-        "color.accent.default"
+        "p31.color.accent.default"
       ],
       "variants": [
         "default"
@@ -500,11 +500,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "chat-shell",
       "tokens": [
-        "surface.background",
-        "glass.border",
-        "color.text.primary",
-        "color.text.secondary",
-        "radius.lg"
+        "p31.surface.background",
+        "p31.glass.border",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.radius.lg"
       ],
       "variants": [
         "default"
@@ -579,11 +579,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "checkbox",
       "tokens": [
-        "color.accent.default",
-        "color.text.primary",
-        "color.text.secondary",
-        "radius.sm",
-        "glass.border"
+        "p31.color.accent.default",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.radius.sm",
+        "p31.glass.border"
       ],
       "variants": [
         "default",
@@ -651,11 +651,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "cmdk",
       "tokens": [
-        "glass.background",
-        "glass.border",
-        "color.accent.default",
-        "radius.md",
-        "z.modal"
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.color.accent.default",
+        "p31.radius.md",
+        "p31.z.modal"
       ],
       "variants": [
         "default"
@@ -731,11 +731,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "command-trigger",
       "tokens": [
-        "glass.background",
-        "glass.border",
-        "radius.full",
-        "color.text.secondary",
-        "font.family.mono"
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.radius.full",
+        "p31.color.text.secondary",
+        "p31.font.family.mono"
       ],
       "variants": [
         "default",
@@ -797,10 +797,10 @@
       "importPath": "@p31ca/design-core/crisis-overlay",
       "cssClass": "crisis-overlay",
       "tokens": [
-        "surface.background",
-        "color.text.primary",
-        "color.accent.default",
-        "z.crisis"
+        "p31.surface.background",
+        "p31.color.text.primary",
+        "p31.color.accent.default",
+        "p31.z.crisis"
       ],
       "variants": [
         "default"
@@ -851,9 +851,9 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "crown",
       "tokens": [
-        "color.accent.default",
-        "color.text.primary",
-        "font.family.sans"
+        "p31.color.accent.default",
+        "p31.color.text.primary",
+        "p31.font.family.sans"
       ],
       "variants": [
         "default"
@@ -895,12 +895,12 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "dropdown",
       "tokens": [
-        "surface.background",
-        "glass.border",
-        "color.text.primary",
-        "color.text.secondary",
-        "color.accent.default",
-        "radius.md"
+        "p31.surface.background",
+        "p31.glass.border",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.color.accent.default",
+        "p31.radius.md"
       ],
       "variants": [
         "default"
@@ -967,10 +967,10 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "site-footer",
       "tokens": [
-        "surface.background",
-        "color.text.primary",
-        "color.text.secondary",
-        "layout.spacing.lg"
+        "p31.surface.background",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.layout.spacing.lg"
       ],
       "variants": [
         "default"
@@ -1057,10 +1057,10 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "glass-card",
       "tokens": [
-        "glass.background",
-        "glass.border",
-        "glass.radius",
-        "layout.spacing.lg"
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.glass.radius",
+        "p31.layout.spacing.lg"
       ],
       "variants": [
         "default",
@@ -1116,9 +1116,9 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "glass-panel",
       "tokens": [
-        "glass.background",
-        "glass.border",
-        "glass.radius"
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.glass.radius"
       ],
       "variants": [
         "default",
@@ -1175,11 +1175,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "metric-badge",
       "tokens": [
-        "glass.background",
-        "glass.border",
-        "radius.sm",
-        "scale.xs",
-        "color.text.secondary"
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.radius.sm",
+        "p31.scale.xs",
+        "p31.color.text.secondary"
       ],
       "variants": [
         "default",
@@ -1242,11 +1242,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "mobile-bottom-nav",
       "tokens": [
-        "glass.surface",
-        "glass.border",
-        "color.accent.default",
-        "color.text.secondary",
-        "radius.full"
+        "p31.glass.surface",
+        "p31.glass.border",
+        "p31.color.accent.default",
+        "p31.color.text.secondary",
+        "p31.radius.full"
       ],
       "variants": [
         "default"
@@ -1313,11 +1313,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "mode-pill",
       "tokens": [
-        "color.accent.default",
-        "color.accent.gold.default",
-        "color.accent.green.default",
-        "glass.background",
-        "radius.full"
+        "p31.color.accent.default",
+        "p31.color.accent.gold.default",
+        "p31.color.accent.green.default",
+        "p31.glass.background",
+        "p31.radius.full"
       ],
       "variants": [
         "spark",
@@ -1367,15 +1367,15 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "notif-stack",
       "tokens": [
-        "glass.surface",
-        "glass.border",
-        "color.accent.default",
-        "color.accent.green.default",
-        "color.accent.gold.default",
-        "color.accent.red.default",
-        "color.text.primary",
-        "color.text.secondary",
-        "z.floating"
+        "p31.glass.surface",
+        "p31.glass.border",
+        "p31.color.accent.default",
+        "p31.color.accent.green.default",
+        "p31.color.accent.gold.default",
+        "p31.color.accent.red.default",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.z.floating"
       ],
       "variants": [
         "default"
@@ -1442,8 +1442,8 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "page-header-route",
       "tokens": [
-        "color.text.secondary",
-        "layout.spacing.lg"
+        "p31.color.text.secondary",
+        "p31.layout.spacing.lg"
       ],
       "variants": [
         "default",
@@ -1519,11 +1519,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "section-strip",
       "tokens": [
-        "glass.background",
-        "glass.border",
-        "radius.candy",
-        "color.accent.default",
-        "color.text.secondary"
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.radius.candy",
+        "p31.color.accent.default",
+        "p31.color.text.secondary"
       ],
       "variants": [
         "default"
@@ -1586,12 +1586,12 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "sidebar-nav",
       "tokens": [
-        "glass.surface",
-        "glass.border",
-        "color.accent.default",
-        "color.text.secondary",
-        "radius.full",
-        "font.family.sans"
+        "p31.glass.surface",
+        "p31.glass.border",
+        "p31.color.accent.default",
+        "p31.color.text.secondary",
+        "p31.radius.full",
+        "p31.font.family.sans"
       ],
       "variants": [
         "default"
@@ -1658,9 +1658,9 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "spoon-cluster",
       "tokens": [
-        "color.accent.default",
-        "glass.border",
-        "radius.full"
+        "p31.color.accent.default",
+        "p31.glass.border",
+        "p31.radius.full"
       ],
       "variants": [
         "default"
@@ -1707,11 +1707,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "spoon-dial",
       "tokens": [
-        "radius.full",
-        "glass.background",
-        "glass.border",
-        "color.accent.default",
-        "color.text.muted"
+        "p31.radius.full",
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.color.accent.default",
+        "p31.color.text.muted"
       ],
       "variants": [
         "default",
@@ -1763,10 +1763,10 @@
       "importPath": "@p31ca/design-core/starfield",
       "cssClass": "starfield-bg",
       "tokens": [
-        "z.starfield",
-        "starfield.hearth",
-        "starfield.teal",
-        "starfield.remembrance"
+        "p31.z.starfield",
+        "p31.starfield.hearth",
+        "p31.starfield.teal",
+        "p31.starfield.remembrance"
       ],
       "variants": [
         "default",
@@ -1825,11 +1825,11 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "badge",
       "tokens": [
-        "radius.full",
-        "scale.xs",
-        "color.accent.green.default",
-        "color.accent.red.default",
-        "color.accent.gold.default"
+        "p31.radius.full",
+        "p31.scale.xs",
+        "p31.color.accent.green.default",
+        "p31.color.accent.red.default",
+        "p31.color.accent.gold.default"
       ],
       "variants": [
         "success",
@@ -1882,8 +1882,8 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "status-cluster",
       "tokens": [
-        "glass.background",
-        "layout.spacing.xs"
+        "p31.glass.background",
+        "p31.layout.spacing.xs"
       ],
       "variants": [
         "default"
@@ -1928,14 +1928,14 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "topbar",
       "tokens": [
-        "topbar.height",
-        "glass.background",
-        "glass.border",
-        "layout.spacing.sm",
-        "radius.candy",
-        "color.accent.default",
-        "color.accent.gold.default",
-        "color.accent.green.default"
+        "p31.topbar.height",
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.layout.spacing.sm",
+        "p31.radius.candy",
+        "p31.color.accent.default",
+        "p31.color.accent.gold.default",
+        "p31.color.accent.green.default"
       ],
       "variants": [
         "app",
@@ -2057,8 +2057,8 @@
       "importPath": "@p31ca/design-core/compositions",
       "cssClass": "topbar-section",
       "tokens": [
-        "layout.spacing.xs",
-        "glass.background"
+        "p31.layout.spacing.xs",
+        "p31.glass.background"
       ],
       "variants": [
         "default"
