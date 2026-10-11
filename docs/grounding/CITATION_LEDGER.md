@@ -145,3 +145,77 @@ curl -s "https://zenodo.org/api/records?q=%22Grammar%20of%20Governance%22" | jq 
 # FIPS 203
 # fetch https://csrc.nist.gov/pubs/fips/203/final
 ```
+
+---
+
+## Agent-governance citations (2026-10-11, fetched at audit time)
+
+Added for the agent-governance crosswalk / provenance / grant deliverables.
+Every entry below was re-fetched by direct HTTP fetch this session. The one
+correction to the working brief is recorded in the first row.
+
+| # | Citation | Re-fetch URL | Result |
+|---|---|---|---|
+| 1 | Accountability paper — **DOI `10.5281/zenodo.21387487`** (NOT `.21387488`) | `https://zenodo.org/api/records/21387487` | ✅ 200 — title "Implementing Agentic-AI Accountability: A Minimal, From-Scratch Reference Stack Mapped to the IMDA MGF, EU AI Act, NIST, and ISO/IEC 42001"; Verma (Adsit.Work), 2026-07-16; five principles **Provenance, Contemporaneity, Reproducibility, Disclosure, Independence** verbatim in abstract; 0.47 ms/append, 4.0 MB/1000, <0.1 ms chain overhead; self-assessed "D3 artifact" |
+| 2 | Accountability software — **concept DOI `10.5281/zenodo.21387488`** | `https://zenodo.org/api/records/21403580` | ✅ 200 — "incident-ledger" v1.1.0 (the *software*, not the paper); checkpoint/Merkle layer (RFC 6962) added in 1.1.0 |
+| 3 | SCITT AI Agent Execution Profile | `https://datatracker.ietf.org/doc/draft-emirdag-scitt-ai-agent-execution/` | ✅ 200 — `draft-emirdag-scitt-ai-agent-execution-00` (individual I-D, Pinar Emirdag / VERIDIC Inc., 2026-04-11, **expires 2026-10-15**); AIR (AgentInteractionRecord) COSE_Sign1, ES256, chain_hash = SHA-256(content_hash ‖ prev_chain_hash ‖ action_timestamp_ms ‖ agent_id), 4-step verification, EU AI Act Art 12/19 mapping, ML-DSA named as future PQC candidate |
+| 4 | WCA (Warrant Certificate Authorities) | `https://datatracker.ietf.org/doc/draft-bondar-wca/` | ✅ 200 — `draft-bondar-wca-00` (individual I-D, Roman Bondar, 2026-03-01, **expired & archived 2026-09-02**); "semantic laundering", Warrant Attestation Levels WAL-0..3, reference-monitor properties |
+| 5 | Humanity AI — Communities Leading on AI open call | `https://humanityai.ai/open-call` | ✅ 200 — deadline **2026-10-21 4:59 PM PT / 7:59 PM ET**; $10M total, tiers $75K–$150K / $150K–$500K / $500K–$1M; lead must be U.S. 501(c)(3); **issue areas: Education · Labor & economy · Humanities/arts/culture** (no "healthcare" area); approaches: (1) shape how AI is governed/used, (2) build AI on community terms, (3) challenge AI; out of scope: AI literacy, AI adoption, research-only; open-weight/open-source prioritized |
+
+**Tier assignments for the crosswalk:** rows 1–5 are **Tier A** (primary source
+fetched). The SCITT draft and WCA draft are individual Internet-Drafts with no
+IETF standing (per their own boilerplate) — cited as "work in progress", not as
+normative standard. WCA is additionally **expired**; cite as historical, not
+active.
+
+**Correction carried into the docs:** the accountability paper is
+`10.5281/zenodo.21387487`; `10.5281/zenodo.21387488` is the *incident-ledger
+software* concept DOI. Do not cite `.21387488` as the paper.
+
+---
+
+## Agent-governance citations — second pass (2026-10-11, fetched at audit time)
+
+Added after the second research pass. All re-fetched this session.
+
+| # | Citation | Re-fetch URL | Result |
+|---|---|---|---|
+| 6 | **RFC 9943** — SCITT architecture | `https://datatracker.ietf.org/doc/rfc9943/` | ✅ 200 — **Proposed Standard (June 2026)**; "An Architecture for Trustworthy and Transparent Digital Supply Chains" (was `draft-ietf-scitt-architecture`). This is the strongest citation available: a real RFC, not an individual draft. |
+| 7 | Agent Action Capsule Profile | `https://datatracker.ietf.org/doc/draft-mih-scitt-agent-action-capsule/` | ✅ 200 — `draft-mih-scitt-agent-action-capsule-05` (S. Mih / Action State Group, 2026-09-26, expires 2027-03-30). Abstract verbatim: *"A Capsule is recorded on every verdict, including refusals: a blocked or denied Capsule is the auditor-grade evidence that a gate worked."* JCS (RFC 8785) digests, Ed25519 COSE envelopes. Active (revision -05). |
+| 8 | OMP Domain Profile — EU AI Act Art. 12 | `https://datatracker.ietf.org/doc/draft-veridom-omp-euaia/` | ✅ 200 — `draft-veridom-omp-euaia-00` (Adebayo / Apalowo / Makanjuola, latest 2026-04-03, **expired & archived**). Names a **three-layer integrity architecture: SHA-256, RFC 3161, institution signature**. Cite as historical. |
+| 9 | OAgents behavioral envelope | `https://zenodo.org/api/records/19425021` | ✅ 200 — "OAgents: A Behavioral Envelope Standard … An Implementation Profile of the NIST AI Risk Management Framework (AI RMF 1.0)" (Longmire, 2026-04-05, `10.5281/zenodo.19425021`). 26 components, 7 categories, 3 conformance levels; **pre-execution gates + post-execution verification**. |
+
+**Tier assignments:** #6 (RFC 9943) and #9 (OAgents) are **Tier A**. #7
+(capsule profile) is **Tier A** but is an individual Internet-Draft (no IETF
+standing) — cite as "work in progress". #8 (OMP) is **Tier A / expired** — cite
+as historical, not active.
+
+**Carried into the docs:** the capsule profile (`-05`) is now the primary SCITT
+anchor for the negative-controls claim ("a blocked Capsule is the evidence a
+gate worked"); RFC 9943 upgrades "SCITT" from draft to Proposed Standard; the
+OMP profile names the RFC 3161 + institution-signature gap P31's ledger has not
+yet closed.
+
+---
+
+## Agent-governance citations — third pass (2026-10-11, fetched at audit time)
+
+Added after the grant-reframe pass. All re-fetched this session.
+
+| # | Citation | Re-fetch URL | Result |
+|---|---|---|---|
+| 10 | **RFC 9942** — COSE Receipts | `https://datatracker.ietf.org/doc/rfc9942/` | ✅ 200 — **Proposed Standard (June 2026)**; signed Merkle inclusion/consistency proofs; `RFC9162_SHA256` VDS. P31's checkpoints (`lib/ledger.mjs:72-80`) are RFC 9162-shaped but not issued as COSE Receipts. |
+| 11 | AgentROA | `https://datatracker.ietf.org/doc/draft-nivalto-agentroa-route-authorization/` | ✅ 200 — `draft-nivalto-agentroa-route-authorization-01` (J. Michalak / Nivalto, 2026-04-16, **expires 2026-10-16**); ROA envelope + ARA per-hop receipt + AER execution receipt; enforcement at a separate process boundary, receipts produced on PERMIT *and* DENY. |
+| 12 | Fending — MCP accountability measurement | `https://zenodo.org/api/records?q=%22Measuring Agent Governance Posture%22` | ✅ 200 — `10.5281/zenodo.20972251` (Fending / Ordovera Advisory, 2026-06-27); 945 servers / 17,563 population; **71% exhibit ≥1 gap (95% CI 67.6–74.0%); 81% authenticate but only 17% attribute actions to a principal; 20% remote-only opaque**. Dataset: `10.5281/zenodo.20970604`. |
+| 13 | Capsule OTel Correlation Extension | `https://datatracker.ietf.org/doc/draft-palanisamy-scitt-aac-otel/` | ✅ 200 — `draft-palanisamy-scitt-aac-otel-00` (Palanisamy + Mih, 2026-10-02, expires 2027-04-05); `org.agentactioncapsule.otel` block carrying trace/span correlation with digest-only tiers. |
+
+**Tier assignments:** #10 and #12 are **Tier A**. #11 and #13 are **Tier A** but
+individual Internet-Drafts (no IETF standing) — cite as "work in progress".
+The EMILIA ↔ Capsule seam is GitHub prior work (`emilia-protocol/examples/scitt/
+capsule-seam-vector.mjs`), not a numbered standard — cited as prior art, not
+normative.
+
+**Carried into the docs:** Fending's 71%/17% numbers are now the empirical need
+statement in the crosswalk, the evidence doc, and the grant angle; RFC 9942 and
+AgentROA are added to the crosswalk standards table; the OTel extension is
+named as a gap (P31 does not yet emit trace/span correlation).
