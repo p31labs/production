@@ -1,0 +1,219 @@
+{
+  "schema": "p31.grantPipeline/3.0.0",
+  "updated": "2026-10-11",
+  "supersedes": "grant-pipeline-v2.json (2026-07-10)",
+  "entity": {
+    "legalName": "P31 Labs, Inc.",
+    "ein": "42-1888158",
+    "stateOfIncorporation": "GA",
+    "incorporationDate": "2026-05-04",
+    "irsStatus": "501(c)(3) public charity",
+    "irsEffectiveDate": "2026-04-03",
+    "irsLetterDate": "2026-05-13",
+    "irsLetterNumber": "947",
+    "irsPublication78": true,
+    "deductibilityCode": "PC",
+    "publicCharityStatus": "170(b)(1)(A)(vi)",
+    "fiscalSponsor": null,
+    "website": "https://phosphorus31.org",
+    "github": "https://github.com/p31labs"
+  },
+  "contact": {
+    "primary": "William R. Johnson",
+    "email": "willyj1587@gmail.com",
+    "emailAlt": "trimtab.signal@proton.me",
+    "orcid": "0009-0002-2492-9079",
+    "phone": "(912) 227-4980"
+  },
+  "activeGrants": [
+    {
+      "id": "humanity-ai-communities-leading-on-ai",
+      "program": "Humanity AI — Communities Leading on AI",
+      "title": "Community-Governed AI Infrastructure for Neurodivergent Households and Family Caregivers",
+      "requestedAmount": 250000,
+      "currency": "USD",
+      "termMonths": 24,
+      "deadline": "2026-10-21",
+      "deadlineTime": "4:59 PM PT / 7:59 PM ET",
+      "submitTarget": "2026-10-18",
+      "status": "loi_drafted",
+      "priority": "critical",
+      "rail": "nonprofit_prime",
+      "url": "https://humanityai.ai/open-call",
+      "documents": ["HUMANITY-AI-LOI.md", "HUMANITY-AI-AGENT-GOVERNANCE.md"],
+      "budget": {
+        "council_stipends": 30000,
+        "operator_salary": 120000,
+        "engineering": 60000,
+        "pilot_support_25_households": 15000,
+        "independent_review": 18000,
+        "admin": 7000
+      },
+      "consentToShareWithFunders": true,
+      "nextAction": "Final review against application PDF; submit by 2026-10-18."
+    },
+    {
+      "id": "otf-internet-freedom-fund",
+      "program": "Open Technology Fund — Internet Freedom Fund",
+      "title": "Privacy Payments for Care Economies (GNU Taler bridge)",
+      "requestedAmount": 150000,
+      "currency": "USD",
+      "termMonths": 12,
+      "deadline": "rolling",
+      "status": "concept_note_drafted",
+      "priority": "high",
+      "rail": "either",
+      "url": "https://docs.opentech.fund",
+      "documents": ["OTF-CONCEPT-NOTE.md"],
+      "riskNote": "D.D.C. granted OTF summary judgment 2026-03-26 (release of FY2025 funds; $43.5M FY2024 disbursed) but administration appealed; OTF states it faces imminent closure if termination upheld. File, but do not treat as the anchor check.",
+      "nextAction": "Submit Stage 1 concept note via OTF portal this week."
+    },
+    {
+      "id": "nlnet-restack",
+      "program": "NLnet Restack (Open Internet Stack)",
+      "title": "Post-Quantum Identity and Credential Infrastructure for Care",
+      "requestedAmount": 50000,
+      "currency": "EUR",
+      "deadline": "2026-11-03",
+      "deadlineTime": "12:00 CET",
+      "status": "drafted_awaiting_policy",
+      "priority": "high",
+      "rail": "nonprofit_prime",
+      "url": "https://nlnet.nl/restack",
+      "documents": ["NLNET-RESTACK-APPLICATION.md"],
+      "riskNote": "GenAI policy is v1.1 (2026-01-26) as of 2026-10-11; no revision published. Submit under v1.1 with disclosure + prompt-provenance log.",
+      "nextAction": "Submit by 2026-11-03 12:00 CET under policy v1.1; attach prompt-provenance log."
+    },
+    {
+      "id": "sloan-digital-technology",
+      "program": "Alfred P. Sloan Foundation — Digital Technology",
+      "title": "Open Reusable PQC + Self-Sovereign Identity Infrastructure",
+      "requestedAmount": 250000,
+      "currency": "USD",
+      "deadline": "rolling_loi",
+      "status": "not_started",
+      "priority": "medium",
+      "rail": "nonprofit_prime",
+      "url": "https://sloan.org/programs/digital-technology",
+      "programContact": "Joshua M. Greenberg (greenberg@sloan.org)",
+      "nextAction": "Draft 2-page technical LOI by 2026-11-15; lead PQC + identity, not community narrative."
+    },
+    {
+      "id": "gates-dpi",
+      "program": "Gates Foundation — Digital Public Infrastructure",
+      "title": "Self-Sovereign Identity for People Excluded from Formal Systems (Civitas ID model)",
+      "requestedAmount": 500000,
+      "currency": "USD",
+      "termMonths": 24,
+      "deadline": "invitation",
+      "status": "relationship_building",
+      "priority": "medium",
+      "rail": "nonprofit_prime",
+      "url": null,
+      "precedent": "Civitas ID $500K/2yr (Aug 2026) for open-source identity for undocumented populations",
+      "nextAction": "Surface via Humanity AI consent mechanism to Omidyar; warm intro to Gates, not a cold LOI. 2027 play."
+    },
+    {
+      "id": "nist-sbir-pqc",
+      "program": "NIST SBIR — PQC / identity",
+      "requestedAmount": 100000,
+      "currency": "USD",
+      "phase": "Phase I (≤$100K); Phase II ≤$400K",
+      "deadline": "TBD (no active NOFO)",
+      "status": "partner_route",
+      "priority": "low",
+      "rail": "for_profit_sbc_prime",
+      "url": "https://nist.gov/tpo/sbir",
+      "topicNote": "sbir.gov lists a Cryptography/PQC topic with cycle deadlines 2026-11-04, 2027-03-04, 2027-07-07 (agency TBD — verify before pitching).",
+      "nextAction": "Reauthorized through 2031. Find for-profit SBC partner Q1 2027. Monitor monthly."
+    },
+    {
+      "id": "knight-ethics-governance-ai",
+      "program": "Knight Foundation — Ethics and Governance of AI Fund",
+      "title": "Community-Governed AI Infrastructure (11 gates + provenance ledger)",
+      "requestedAmount": null,
+      "currency": "USD",
+      "deadline": "monitor_2027",
+      "status": "watchlist",
+      "priority": "low",
+      "rail": "nonprofit_prime",
+      "url": null,
+      "fundNote": "Fiscal sponsor The Miami Foundation; supported by Knight + Luminate. Seeks orgs that bolster civil-society voice in shaping AI in the public interest. Also Knight/Luminate AI Ethics & Governance Initiative (MIT Media Lab + Harvard Berkman-Klein).",
+      "nextAction": "Monitor for 2027 open call; agent-governance asset is a direct fit."
+    }
+  ],
+  "history": [
+    {
+      "id": "nlnet-ngi-taler-14th",
+      "program": "NLnet NGI TALER (14th)",
+      "title": "LOVE-Ledger",
+      "requestedAmount": "€15,000",
+      "submitted": "2026-08-01",
+      "status": "submitted_before_restack_shift",
+      "outcome": "carry-over into Restack unconfirmed"
+    },
+    {
+      "id": "nlnet-ngi-fediversity-12th",
+      "program": "NLnet NGI Fediversity (12th)",
+      "title": "PHOS-Sovereign",
+      "requestedAmount": "€25,000",
+      "submitted": "2026-08-01",
+      "status": "submitted_before_restack_shift",
+      "outcome": "carry-over into Restack unconfirmed"
+    },
+    {
+      "id": "nlnet-ngi-zero-commons",
+      "program": "NLnet NGI Zero Commons",
+      "title": "K4-Mesh-Core",
+      "requestedAmount": "€35,000",
+      "status": "closed",
+      "outcome": "fund closed 2026-06-01; retarget to Restack sibling funds"
+    },
+    {
+      "id": "asan-mini-grant",
+      "program": "ASAN Teighlor McGee Mini-Grant",
+      "requestedAmount": "$6,250",
+      "submitted": "2026-06-13",
+      "status": "submitted",
+      "outcome": "awaiting decision (not independently confirmed)"
+    },
+    {
+      "id": "pollination-project",
+      "program": "Pollination Project",
+      "requestedAmount": "$500",
+      "submitted": "2026-03-10",
+      "status": "submitted",
+      "outcome": "awaiting decision"
+    },
+    {
+      "id": "awesome-foundation",
+      "program": "Awesome Foundation",
+      "requestedAmount": "$1,000",
+      "submitted": "2026-03-10",
+      "status": "submitted",
+      "outcome": "awaiting decision"
+    },
+    {
+      "id": "nidilrr-switzer",
+      "program": "NIDILRR Switzer Fellowship",
+      "requestedAmount": "$80,000",
+      "deadline": "2027-01-15",
+      "status": "inquiry_sent",
+      "outcome": "no response; track FY2027"
+    }
+  ],
+  "immediateActions": [
+    "Fix factual errors in CASE-STUDY.md + HUMANITY-AI-LOI.md (done 2026-10-11)",
+    "Finalize + submit Humanity AI LOI by 2026-10-18 (consent = YES)",
+    "File OTF IFF concept note this week",
+    "Verify NLnet GenAI policy status by 2026-10-25",
+    "Draft Sloan 2-page LOI by 2026-11-15",
+    "Identify for-profit SBC partner (NIST SBIR) and Georgia legal-aid partner (LSC TIG) in Q1 2027"
+  ],
+  "metrics": {
+    "activeRequestsUSD": 1150000,
+    "activeRequestsEUR": 50000,
+    "closestDeadline": "2026-10-21 (Humanity AI)",
+    "firstCheckCandidate": "Humanity AI (higher probability) or OTF IFF (faster, unstable)"
+  }
+}

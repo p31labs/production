@@ -36,7 +36,7 @@ crisis-mode, `data-spoons` motion scaling). **PHOS-Sovereign** makes it decentra
 - **Sovereign identity** — Ed25519 `did:key` + quantum-safe `did:jwk` (ML-DSA-65); keys never leave
   the browser. Supports `did:web` resolution per W3C DID Core v1.1 (Candidate Recommendation).
 - **Post-quantum credentials** — ML-DSA-65 SD-JWT VC issuance, composite signatures
-  (Ed25519 + ML-DSA-65), NIST IR 8547 compliant. (CWP-2026-029/030)
+  (Ed25519 + ML-DSA-65), aligned with NIST IR 8547. (CWP-2026-029/030)
 
 ### 3. What we will build with NGI Fediversity funding
 
@@ -104,7 +104,7 @@ P31 is the **only project** that simultaneously aligns with NGI's values (open, 
 | DID Core v1.1 | ✅ CR Snapshot 2026-03-05 | `apps/phos/src/lib/did.ts` — 24 tests passing |
 | RFC 9964 (AKP JWK) | ✅ Proposed Standard 2026-05-19 | `apps/phos/src/lib/crypto.ts` — ML-DSA-65 did:jwk |
 | SD-JWT VC draft-17 | ✅ IESG Publication Requested 2026-07-06 | `software/workers/ledger-bridge/src/sdjwt.ts` — 17 tests passing |
-| NIST IR 8547 | ✅ No deprecated algorithms | `docs/grants/NIST-IR-8547-COMPLIANCE.md` |
+| NIST IR 8547 | 🟡 Alignment in progress | `docs/grants/NIST-IR-8547-COMPLIANCE.md` |
 | ML-DSA-65 (FIPS 204) | ✅ Post-quantum signatures | `@noble/post-quantum` v0.6.1 |
 | Composite signatures | ✅ Ed25519 + ML-DSA-65 | `apps/phos/src/lib/crypto.ts` — defence-in-depth |
 | Test coverage | ✅ 384 tests | 361 PHOS + 23 ledger-bridge |
@@ -241,7 +241,7 @@ P31 is post-quantum-ready. The following capabilities implement NIST PQC standar
 | On-chain PQC anchoring | Base Sepolia | `P31TransparencyAnchor` contract |
 | X-Wing hybrid KEM | ML-KEM-768 + X25519 | `ledger-bridge/src/kem.ts` |
 
-**Compliance status:** NIST IR 8547 compliant — no deprecated algorithms. RFC 9964 (ML-DSA for JOSE/COSE) published May 2026. See `docs/CRYPTOGRAPHIC-INVENTORY.md`.
+**Compliance status:** aligned with NIST IR 8547 (see docs/grants/NIST-IR-8547-COMPLIANCE.md). RFC 9964 (ML-DSA for JOSE/COSE) published May 2026. See `docs/CRYPTOGRAPHIC-INVENTORY.md`.
 
 ## DID Compliance Certificate
 

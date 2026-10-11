@@ -26,7 +26,7 @@ crisis-mode, `data-spoons` motion scaling). **PHOS-Sovereign** makes it decentra
 - **Sovereign identity** — Ed25519 `did:key` + quantum-safe `did:jwk` (ML-DSA-65); keys never leave
   the browser. Supports `did:web` resolution per W3C DID Core v1.1 (Candidate Recommendation).
 - **Post-quantum credentials** — ML-DSA-65 SD-JWT VC issuance, composite signatures
-  (Ed25519 + ML-DSA-65), NIST IR 8547 compliant. (CWP-2026-029/030)
+  (Ed25519 + ML-DSA-65), aligned with NIST IR 8547. (CWP-2026-029/030)
 
 ## 3. What we will build with NGI Fediversity funding
 

@@ -39,7 +39,7 @@ the user* (spoons saved, care generated), not value extracted. Three pillars:
   issue LOVE care-credits without linking withdrawals to spends.
 - **Post-quantum cryptography** — ML-DSA-65 (NIST FIPS 204) for signatures, composite
   (Ed25519 + ML-DSA-65) for defence-in-depth, SD-JWT VC draft-17 for credentials.
-  NIST IR 8547 compliant — no deprecated algorithms. (CWP-2026-029/030)
+  aligned with NIST IR 8547 (see docs/grants/NIST-IR-8547-COMPLIANCE.md). (CWP-2026-029/030)
 
 ### 3. What we will build with NGI TALER funding
 
@@ -64,7 +64,7 @@ the user* (spoons saved, care generated), not value extracted. Three pillars:
   - `LOVESBT` — `0x521cAD1b54CDDB2B6B53a30EBe050C429F9c6C55`
   - `P31TransparencyAnchor` — `0xd930Fc4d429BbE6B8CEcca9e4C77386dB528e267`
 - **Post-quantum credentials:** ML-DSA-65 SD-JWT VC issuance via `POST /credential/issue`
-  with `post_quantum: true`. NIST IR 8547 compliant.
+  with `post_quantum: true`, in the NIST IR 8547 migration window.
 - **Federation Bridge:** ActivityPub federation for care attestations (CWP-2026-031 Phase 3).
   HTTP Signatures (RFC 9421) + Object Integrity Proofs (FEP-8b32).
 - **Unified Shell:** Single role-based interface merging PHOS + Pilot Dashboard + Sovereign Agent
@@ -83,7 +83,7 @@ the user* (spoons saved, care generated), not value extracted. Three pillars:
 | RFC 9964 (AKP JWK) | Proposed Standard, 2026-05-19 | `kty:AKP`, `alg:ML-DSA-65`, JWK Thumbprint |
 | W3C DID Core v1.1 | Candidate Recommendation, 2026-03-05 | `did:key`, `did:jwk`, `did:web` |
 | SD-JWT VC draft-17 | IESG Publication Requested, 2026-07-06 | `typ:dc+sd-jwt`, KB-JWT key binding |
-| NIST IR 8547 | RSA/ECC deprecated 2030 | ML-DSA-65 primary, no deprecated algorithms |
+| NIST IR 8547 | RSA/ECC deprecated 2030 | ML-DSA-65 primary (one legacy path pending) |
 | WCAG 2.2 | W3C Recommendation | Crisis mode, spoon-aware, skip links, dyslexia mode |
 | ActivityPub | W3C Recommendation | Federation Bridge, HTTP Signatures (RFC 9421) |
 | **Test coverage** | **384 tests passing** | 361 PHOS + 23 ledger-bridge |
@@ -125,7 +125,7 @@ P31 is the **only project** that simultaneously aligns with NGI's values (open, 
 | DID Core v1.1 | ✅ CR Snapshot 2026-03-05 | `apps/phos/src/lib/did.ts` — 24 tests passing |
 | RFC 9964 (AKP JWK) | ✅ Proposed Standard 2026-05-19 | `apps/phos/src/lib/crypto.ts` — ML-DSA-65 did:jwk |
 | SD-JWT VC draft-17 | ✅ IESG Publication Requested 2026-07-06 | `software/workers/ledger-bridge/src/sdjwt.ts` — 17 tests passing |
-| NIST IR 8547 | ✅ No deprecated algorithms | `docs/grants/NIST-IR-8547-COMPLIANCE.md` |
+| NIST IR 8547 | 🟡 Alignment in progress | `docs/grants/NIST-IR-8547-COMPLIANCE.md` |
 | ML-DSA-65 (FIPS 204) | ✅ Post-quantum signatures | `@noble/post-quantum` v0.6.1 |
 | Composite signatures | ✅ Ed25519 + ML-DSA-65 | `apps/phos/src/lib/crypto.ts` — defence-in-depth |
 | Test coverage | ✅ 384 tests | 361 PHOS + 23 ledger-bridge |
@@ -250,7 +250,7 @@ P31 is post-quantum-ready. The following capabilities implement NIST PQC standar
 | On-chain PQC anchoring | Base Sepolia | `P31TransparencyAnchor` contract |
 | X-Wing hybrid KEM | ML-KEM-768 + X25519 | `ledger-bridge/src/kem.ts` |
 
-**Compliance status:** NIST IR 8547 compliant — no deprecated algorithms. RFC 9964 (ML-DSA for JOSE/COSE) published May 2026. See `docs/CRYPTOGRAPHIC-INVENTORY.md`.
+**Compliance status:** aligned with NIST IR 8547 (see docs/grants/NIST-IR-8547-COMPLIANCE.md). RFC 9964 (ML-DSA for JOSE/COSE) published May 2026. See `docs/CRYPTOGRAPHIC-INVENTORY.md`.
 
 ## DID Compliance Certificate
 

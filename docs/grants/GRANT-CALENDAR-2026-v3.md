@@ -5,17 +5,10 @@
 **Operator:** William R. Johnson
 **Entity:** Georgia Domestic Nonprofit corporation (incorporated May 4, 2026); 501(c)(3) application pending — ✅ **IRS determination confirmed 2026-09-23**
 
----
-
-## 🔴 CRITICAL — Deadline August 1, 2026 (12:00 CEST)
-
-| Program | Call | Amount | Proposal | Status |
-|---------|------|--------|----------|--------|
-| **NGI TALER** | 14th Open Call | €15,000 | LOVE-Ledger | ✅ Ready |
-| **NGI Fediversity** | 12th Open Call | €25,000 | PHOS-Sovereign | ✅ Ready |
-
-**Total EUR at risk:** €40,000
-**Action:** Submit both via NLnet portal (https://nlnet.nl/propose/) before August 1, 12:00 CEST. All other NGI Zero calls are paused for the "Open Internet Stack" transition.
+> **⚠️ SUPERSEDED for NGI/NLnet rows (2026-10-11).** NLnet moved the TALER and
+> Fediversity submissions to the **Restack** fund (**2026-11-03, 12:00 CET**)
+> during the Open Internet Stack transition. The Aug-1 block below is a July
+> snapshot — see `GRANT-CALENDAR-2026-v4.md` for the live calendar.
 
 ---
 

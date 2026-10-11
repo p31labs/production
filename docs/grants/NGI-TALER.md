@@ -29,7 +29,7 @@ the user* (spoons saved, care generated), not value extracted. Three pillars:
   issue LOVE care-credits without linking withdrawals to spends.
 - **Post-quantum cryptography** — ML-DSA-65 (NIST FIPS 204) for signatures, composite
   (Ed25519 + ML-DSA-65) for defence-in-depth, SD-JWT VC draft-17 for credentials.
-  NIST IR 8547 compliant — no deprecated algorithms. (CWP-2026-029/030)
+  aligned with NIST IR 8547 (see docs/grants/NIST-IR-8547-COMPLIANCE.md). (CWP-2026-029/030)
 
 ## 3. What we will build with NGI TALER funding
 
@@ -54,7 +54,7 @@ the user* (spoons saved, care generated), not value extracted. Three pillars:
   - `LOVESBT` — `0x521cAD1b54CDDB2B6B53a30EBe050C429F9c6C55`
   - `P31TransparencyAnchor` — `0xd930Fc4d429BbE6B8CEcca9e4C77386dB528e267`
 - **Post-quantum credentials:** ML-DSA-65 SD-JWT VC issuance via `POST /credential/issue`
-  with `post_quantum: true`. NIST IR 8547 compliant.
+  with `post_quantum: true`, in the NIST IR 8547 migration window.
 - **Federation Bridge:** ActivityPub federation for care attestations (CWP-2026-031 Phase 3).
   HTTP Signatures (RFC 9421) + Object Integrity Proofs (FEP-8b32).
 - **Unified Shell:** Single role-based interface merging PHOS + Pilot Dashboard + Sovereign Agent
@@ -73,7 +73,7 @@ the user* (spoons saved, care generated), not value extracted. Three pillars:
 | RFC 9964 (AKP JWK) | Proposed Standard, 2026-05-19 | `kty:AKP`, `alg:ML-DSA-65`, JWK Thumbprint |
 | W3C DID Core v1.1 | Candidate Recommendation, 2026-03-05 | `did:key`, `did:jwk`, `did:web` |
 | SD-JWT VC draft-17 | IESG Publication Requested, 2026-07-06 | `typ:dc+sd-jwt`, KB-JWT key binding |
-| NIST IR 8547 | RSA/ECC deprecated 2030 | ML-DSA-65 primary, no deprecated algorithms |
+| NIST IR 8547 | RSA/ECC deprecated 2030 | ML-DSA-65 primary (one legacy path pending) |
 | WCAG 2.2 | W3C Recommendation | Crisis mode, spoon-aware, skip links, dyslexia mode |
 | ActivityPub | W3C Recommendation | Federation Bridge, HTTP Signatures (RFC 9421) |
 | **Test coverage** | **384 tests passing** | 361 PHOS + 23 ledger-bridge |

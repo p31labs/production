@@ -10,7 +10,7 @@ verified-standards baseline already implemented.
 |----------|--------|---------------|--------|
 | **ML-DSA (FIPS 204)** | Finalised (NIST) | `ml_dsa65` in `ledger-bridge` | None — ahead of curve |
 | **ML-KEM (FIPS 203)** | Finalised (NIST) | `ml_kem768` in `quantum-core` + X-Wing KEM (CWP-2026-042 §1) | None |
-| **X-Wing hybrid KEM** (draft-ietf-lamp-xwing-00) | IETF draft, 2026-06-23 | Implemented `ledger-bridge/src/kem.ts` | Pin to draft-00; revisit on draft update |
+| **X-Wing hybrid KEM** (`draft-connolly-cfrg-xwing-kem`) | IETF draft, 2026-06-23 | Implemented via the KAT-validated preset `ml_kem768_x25519` (`@noble/post-quantum/hybrid.js`) in `workers/ledger-bridge/src/kem.ts` | Track the draft; the noble preset is validated against its official KAT vectors |
 | **DID Core v1.1** | W3C Candidate Rec, 2026-03-05 | `did:key`/`did:jwk`/`did:web` resolver | Monitor PR (expected Q4 2026) |
 | **RFC 9964** (ML-DSA for JOSE/COSE) | Published | `did:jwk` `kty:AKP`, `alg:ML-DSA-65` | None |
 | **SD-JWT VC draft-17** | At IESG for publication, 2026-07-06 | `typ:dc+sd-jwt`, `_sd_alg:sha-256` | Keep **dual-typ** acceptance (`dc+sd-jwt` + legacy `vc+sd-jwt`) |

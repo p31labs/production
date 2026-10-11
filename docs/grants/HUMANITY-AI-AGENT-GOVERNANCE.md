@@ -43,7 +43,7 @@ two that apply:
 | **Issue area: Labor & economy** | Unpaid care *is* work. Caregivers whose labor the AI mediates need the same accountability a worker organizing around enforceable standards asks for. |
 | **Issue area: Education** | A caregiver's day is a curriculum. A signed, legible audit trail of what the AI did is a *learning scaffold* — the household learns to govern by reading the trail. |
 | **Approach: Shape how AI is governed and used** | The governance stack *is* the guardrail: fail-closed gates, signed approvals, a chain no one edits unnoticed. |
-| **Approach: Build AI on community terms** | The stack is free and open-source (Apache/MIT, no paywall); the community holds the governance, not a vendor. |
+| **Approach: Build AI on community terms** | The 11 gates + hash-chained ledger are exactly the **"audit approaches that ensure AI systems work as intended"** the call names; free and open-source (no paywall); the community holds the governance, not a vendor. |
 | **Out of scope (compliant)** | Not AI-literacy (we build, not teach), not AI-adoption (we do not deploy a vendor model), not research-only (working code + a seated community council). |
 | **Priority: open-weight/open-source** | Everything P31 ships is open; no closed-model dependency is required for the governance layer. |
 
@@ -87,6 +87,7 @@ The evidence that "we implement the standard you are drafting":
 | Standard | P31's counterpart |
 |---|---|
 | **RFC 9943** (SCITT, Proposed Standard) | hash-chained append-only ledger + `verify-chain`; the SCITT architecture P31's ledger instantiates |
+| **RFC 9942** (COSE Receipts, Proposed Standard) | P31's Merkle checkpoints (every 100 entries, `lib/ledger.mjs:72-80`) are RFC 9162-shaped; RFC 9942 is the receipt format a SCITT Transparency Service would issue over them |
 | **Agent Action Capsule Profile** (`draft-mih-scitt-agent-action-capsule-05`) | its central claim is P31's law: *"a blocked or denied Capsule is the auditor-grade evidence that a gate worked"* — P31's `negative-controls.mjs` plants violations and asserts the gate blocks them |
 | SCITT AI Agent Execution Profile (`draft-emirdag-scitt-ai-agent-execution-00`) | hash chain + verify walk; composite Ed25519 + ML-DSA-65 tokens where the draft still mandates ES256 and names ML-DSA a *future* candidate |
 | **OAgents** (`10.5281/zenodo.19425021`, NIST AI RMF 1.0 profile) | the same "behavioral envelope": pre-execution gates (`veto-check`, `token-check`) + post-execution verification (`verify-chain`, `audit-*`) |

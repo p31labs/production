@@ -15,7 +15,7 @@ That is the gap P31 occupies.
 P31 does not have a PQC *roadmap*. It has a deployed surface. Verified by direct inspection:
 
 **ML-KEM-768 (FIPS 203) — key encapsulation, live.**
-- `software/workers/ledger-bridge/src/kem.ts` implements the X-Wing hybrid KEM (ML-KEM-768 + X25519, draft-ietf-lamp-xwing-00) with real `ml_kem768` keygen/encapsulate/decapsulate from `@noble/post-quantum`, FIPS 203 Table 3 sizes enforced (pk 1184 / ct 1088).
+- `workers/ledger-bridge/src/kem.ts` implements the X-Wing hybrid KEM (X25519 + ML-KEM-768, `draft-connolly-cfrg-xwing-kem`) via the KAT-validated preset `ml_kem768_x25519` from `@noble/post-quantum/hybrid.js` — X-Wing sizes pk 1216 / ct 1120 / ss 32, verified against all three official KAT vectors.
 - `apps/phos/src/workers/love-ledger/taler-cbs/pqc.ts` ships a full `MLKEM`/`MLDSA`/`HybridPQCScheme` class set with the security-level → variant tables.
 - `software/packages/quantum-core/test/quantum-core.test.ts` locks FIPS 203 byte sizes in tests.
 
@@ -44,7 +44,7 @@ The frontier labs sell the *model*. P31 sells the *substrate* — the trusted, P
 
 What is NOT done, verified on disk:
 - **No external hash anchoring.** The Loom's cross-anchor is computed but the write path is not live (`apps/loom/docs/AUDIT_STANDARDS.md` §5 — "Write path (not yet live)"). Nothing is committed to a public transparency log or witness chain.
-- **Stubs remain.** `workers (1)/care-api/src/lib/pqc.ts` still uses a random 32-byte ML-KEM placeholder; some MCP KEM handlers return mock output. Real crypto is shipped in ledger-bridge, love-ledger, sovereign-primitives, forge — but not everywhere yet.
+- **Stubs remain.** `workers/care-api/src/lib/pqc.ts` still uses an ECDSA P-256 stub with a random-byte ML-KEM placeholder; its verifier previously failed **open** and now fails closed pending real wiring (`docs/fix-plans/care-api-pqc-fail-open.md`). Some MCP KEM handlers return mock output. Real crypto is shipped in ledger-bridge, love-ledger, sovereign-primitives, forge — but not everywhere yet.
 - **No full key-management lifecycle.** Rotation/revocation for ML-DSA-65 and SLH-DSA-128s keys across portals is not a managed service; no HSM-backed CA.
 - **No certification.** The medical-device manual is policy, not a certificate. No FIPS 140-3 validation, no ACVP testing, no external audit of the PQC surface.
 

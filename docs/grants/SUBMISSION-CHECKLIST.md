@@ -1,5 +1,14 @@
 # NGI Submission Checklist — P31 Labs
 
+> **STATUS RECONCILIATION (2026-10-11).** NLnet retired the NGI Zero open calls
+> during the Open Internet Stack transition. The TALER (14th) and Fediversity
+> (12th) packages below were prepared for the **2026-08-01** run, but NLnet
+> moved submissions forward to the **2026-11-03, 12:00 CET** deadline under the
+> new **Restack** fund (Open Internet Stack). Treat **2026-11-03** as the live
+> deadline. Carry-over of the Aug-1 packages is **not yet confirmed** by NLnet —
+> the unchecked portal/confirmation items below remain open. See
+> `docs/grants/OPEN-INTERNET-STACK-RETARGET.md` and `GRANT-CALENDAR-2026-v3.md`.
+
 ## NGI TALER (14th Open Call)
 
 - [x] Proposal narrative complete (`NGI-TALER.md`)
@@ -40,13 +49,18 @@
 
 ## Deadline
 
-**2026-08-01, 12:00 CEST** — 18 days from CWP date.
+- **Superseded:** 2026-08-01, 12:00 CEST (original run).
+- **Live:** **2026-11-03, 12:00 CET** — Restack (Open Internet Stack). See
+  `GRANT-CALENDAR-2026-v3.md`.
 
 ## Notes
 
-- Both proposals submitted in parallel (TALER + Fediversity)
-- Budget: TALER €15,000 + Fediversity €25,000 = €40,000 total
-- P31 has not previously received NGI funding (no cumulative cap concern)
+- Both packages were prepared in parallel (TALER + Fediversity) for the Aug-1 run.
+- Budget: TALER €15,000 + Fediversity €25,000 = €40,000 total.
+- P31 has not previously received NGI funding (no cumulative cap concern).
+- **Reconciliation caveat:** portal submission + NLnet confirmation are
+  unconfirmed after the deadline move (2026-10-11). Do not treat the Aug-1
+  packages as accepted until NLnet confirms.
 
 ## Pending (manual — cannot be executed from the build agent)
 
