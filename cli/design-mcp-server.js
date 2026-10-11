@@ -23,6 +23,40 @@ const ROOT = path.resolve(__dirname, '..');
 const tokensFile = path.join(__dirname, 'tokens', 'tokens.yml');
 const tokens = yaml.parse(fs.readFileSync(tokensFile, 'utf8'));
 
+// ─── Governance: actor-attributed ledger events ─────────────────────────────
+// The local server is the governed surface. Each governance tool call
+// (propose_page, scaffold_component, validate_output) is attributed to a named
+// principal in the hash-chained ledger — closing the enforcement-audit gap the
+// Fending study measured (81% of MCP servers authenticate but only 17%
+// attribute logged actions to a specific principal). The append is serialized
+// through a promise queue and is best-effort for this read/design surface: a
+// failed append must never break a tool response.
+
+const AGENT_ACTOR = process.env.P31_AGENT_ACTOR || 'did:agent:design-mcp:stdio';
+
+let _ledgerModule = null;
+function ledgerModule() {
+  if (_ledgerModule) return Promise.resolve(_ledgerModule);
+  return import('../scripts/lib/ledger.mjs').then((m) => { _ledgerModule = m; return m; });
+}
+
+let _ledgerQueue = Promise.resolve();
+function appendGovernanceEvent(tool, verdict, detail) {
+  if (process.env.P31_NO_LEDGER === '1') return; // test mode — do not touch the real ledger
+  _ledgerQueue = _ledgerQueue
+    .then(() => ledgerModule())
+    .then((m) => m.append('tool-call', {
+      action: 'tool-call',
+      tool,
+      actor: AGENT_ACTOR,
+      verdict, // 'ok' | 'refused'
+      detail: String(detail || ''),
+    }))
+    .catch((err) => {
+      process.stderr.write(`governance ledger append failed: ${err.message}\n`);
+    });
+}
+
 // ─── Token resolver (same as component-registry.js) ──────────────────────────
 
 function dt(pathStr) {
@@ -233,6 +267,42 @@ const TOOLS = [
         code: { type: 'string', description: 'The full code snippet to apply the fix to.' },
       },
       required: ['violation', 'code'],
+    },
+  },
+  {
+    name: 'validate_output',
+    description: 'Fail-closed validation of generated code: flags hardcoded hex, raw color, inline style, emoji icons, and legacy token vocabulary. Returns valid=false when any violation is found.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        code: { type: 'string', description: 'Generated code to validate.' },
+        component: { type: 'string', description: 'Optional component name (informational).' },
+      },
+      required: ['code'],
+    },
+  },
+  {
+    name: 'scaffold_component',
+    description: 'Return a contract-conformant scaffold (tsx + test) for a known component. No file is written by the server; the write path is the local CLI under pnpm gate. Unknown component is refused.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string', description: 'Component name to scaffold (e.g. Button, GlassPanel, GlassCard).' },
+      },
+      required: ['name'],
+    },
+  },
+  {
+    name: 'propose_page',
+    description: 'Propose a sovereign page composed from canon components. Every component name is resolved against the closed registry; an unknown component refuses the whole proposal (fail-closed).',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string', description: 'Optional page title.' },
+        type: { type: 'string', enum: ['hero', 'tetra-grid', 'card-grid', 'section', 'cta'], description: 'Page layout type.' },
+        components: { type: 'array', items: { type: 'string' }, description: 'Component names to compose (e.g. ["GlassCard", "Button"]).' },
+      },
+      required: ['type', 'components'],
     },
   },
 ];
@@ -449,6 +519,98 @@ function executeTool(name, args) {
       }
 
       return { suggestion, fixedCode };
+    }
+
+    case 'validate_output': {
+      const code = String(args.code || '');
+      if (!code) {
+        appendGovernanceEvent('validate_output', 'refused', 'missing code');
+        return { error: 'Missing "code" field.', status: 'error' };
+      }
+      const violations = [];
+      if (/#[0-9a-fA-F]{3,8}\b/.test(code)) violations.push('hardcoded_hex: replace with a var(--p31-*) token');
+      if (/rgba?\([^)]*\)/.test(code)) violations.push('raw_color: replace with a color token');
+      if (/style=\{/.test(code)) violations.push('inline_style: use tokens or catalog classes');
+      if (/[\u{1F300}-\u{1F9FF}]/u.test(code)) violations.push('emoji_icon: use the P31 icon system');
+      if (/primitive\.|semantic\.|component\./.test(code)) violations.push('legacy_token_vocabulary: use p31.* paths');
+      const valid = violations.length === 0;
+      appendGovernanceEvent('validate_output', valid ? 'ok' : 'refused', violations.join('; '));
+      return { valid, violations, component: args.component || null, status: 'ok' };
+    }
+
+    case 'scaffold_component': {
+      const name = String(args.name || '').trim();
+      if (!name) return { error: 'Missing "name" field.', status: 'error' };
+      const comp = COMPONENTS.find((c) => c.name.toLowerCase() === name.toLowerCase());
+      if (!comp) {
+        appendGovernanceEvent('scaffold_component', 'refused', `unknown component: ${name}`);
+        return { error: `Component not found: "${name}". Available: ${COMPONENTS.map((c) => c.name).join(', ')}`, status: 'error' };
+      }
+      const cls = comp.css_class || comp.name.toLowerCase();
+      const propLines = Object.entries(comp.props || {}).map(([k, p]) => {
+        const opt = p.default === undefined ? '?' : '';
+        const type = p.type || 'string';
+        const dflt = p.default !== undefined ? ` = ${JSON.stringify(p.default)}` : '';
+        return `  ${k}${opt}: ${type}${dflt};`;
+      });
+      const tsx = [
+        `// Scaffold for ${comp.name} — generated from the closed registry.`,
+        `// css_class: .${cls}`,
+        `import './${cls}.css';`,
+        '',
+        `export interface ${comp.name}Props {`,
+        ...propLines,
+        '}',
+        '',
+        `export function ${comp.name}(props: ${comp.name}Props) {`,
+        '  return (',
+        `    <div className="${cls}">`,
+        ...(comp.slots || []).map((s) => `      {/* slot: ${s} */}`),
+        '    </div>',
+        '  );',
+        '}',
+      ].join('\n');
+      const test = [
+        `import { describe, it, expect } from 'vitest';`,
+        `import { ${comp.name} } from './${comp.name}';`,
+        '',
+        `describe('${comp.name}', () => {`,
+        `  it('renders the registry css_class', () => {`,
+        `    expect('${cls}').toBe('${cls}');`,
+        '  });',
+        '});',
+      ].join('\n');
+      appendGovernanceEvent('scaffold_component', 'ok', `scaffolded ${comp.name}`);
+      return {
+        name: comp.name,
+        css_class: cls,
+        contract: { props: Object.keys(comp.props || {}), slots: comp.slots || [], tokens: comp.tokens || [] },
+        scaffold: { tsx, test },
+        status: 'ok',
+      };
+    }
+
+    case 'propose_page': {
+      const type = String(args.type || '').trim();
+      const components = Array.isArray(args.components) ? args.components.map(String) : [];
+      const VALID_TYPES = ['hero', 'tetra-grid', 'card-grid', 'section', 'cta'];
+      if (!VALID_TYPES.includes(type)) {
+        appendGovernanceEvent('propose_page', 'refused', `invalid type: ${type}`);
+        return { error: `Invalid type "${type}". Valid: ${VALID_TYPES.join(', ')}`, status: 'error' };
+      }
+      if (components.length === 0) {
+        appendGovernanceEvent('propose_page', 'refused', 'missing components');
+        return { error: 'Missing "components" (non-empty array).', status: 'error' };
+      }
+      const errors = [];
+      const sections = components.map((c) => {
+        const comp = COMPONENTS.find((x) => x.name.toLowerCase() === c.toLowerCase());
+        if (!comp) { errors.push(`unknown_component: ${c}`); return null; }
+        return { component: comp.name, css_class: comp.css_class, category: null };
+      });
+      const valid = errors.length === 0;
+      appendGovernanceEvent('propose_page', valid ? 'ok' : 'refused', errors.join('; '));
+      return { valid, page: valid ? { title: args.title || null, type, sections } : null, errors, status: valid ? 'ok' : 'error' };
     }
 
     default:

@@ -118,22 +118,22 @@ describe('scoreComponents', () => {
 });
 
 describe('suggestTokens', () => {
-  it('maps crisis keywords to red and glow tokens', () => {
+  it('maps crisis keywords to red and elevation tokens', () => {
     const tokens = suggestTokens(['crisis', 'emergency']);
-    expect(tokens).toContain('semantic.color.accent.red');
-    expect(tokens).toContain('primitive.shadow.glow_cyan');
+    expect(tokens).toContain('p31.color.accent.red.default');
+    expect(tokens).toContain('p31.elevation.level1.tint');
   });
 
   it('maps data keywords to mono font and spacing', () => {
     const tokens = suggestTokens(['data', 'table']);
-    expect(tokens).toContain('primitive.typography.font_mono');
-    expect(tokens).toContain('primitive.spacing.sm');
+    expect(tokens).toContain('p31.font.family.mono');
+    expect(tokens).toContain('p31.layout.spacing.sm');
   });
 
   it('falls back to glass tokens when no match', () => {
     const tokens = suggestTokens(['unknown', 'thing']);
-    expect(tokens).toContain('primitive.color.glass_surface');
-    expect(tokens).toContain('primitive.color.glass_border');
+    expect(tokens).toContain('p31.glass.surface');
+    expect(tokens).toContain('p31.glass.border');
   });
 });
 
@@ -207,7 +207,7 @@ describe('validateProposal', () => {
       aiGuidance: { useWhen: 'Use in good contexts.', avoidWhen: 'Avoid in bad contexts.', examples: ['Example 1'] },
       props: {},
       slots: ['default'],
-      tokens: ['primitive.color.glass_surface'],
+      tokens: ['p31.glass.surface'],
     });
     expect(result.warnings).toHaveLength(0);
   });

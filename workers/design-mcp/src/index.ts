@@ -27,6 +27,7 @@ import {
 import { validateComponent, auditTokens, auditIcons, type ValidationResult, type AuditResult, type AuditIconsResult } from './validator';
 import { scanUI, type MCPAnnotation } from './handlers/scan-ui';
 import { handleToggleDrawer, handleNavigate, handleSetSpoonLevel, handleListContracts, handleGetContract, handleValidateContract, handleClarify, handleProposeFromSpec, componentPreviewHtmlInline } from './handlers/tools';
+import { handleProposePage, handleScaffoldComponent, handleValidateOutput } from './handlers/governance';
 import skillsData from './generated/skills.json';
 const SKILLS = skillsData as Record<string, { title: string; body: string; has_evals: boolean }>;
 
@@ -644,6 +645,42 @@ const TOOLS = [
       required: ['name'],
     },
   },
+  {
+    name: 'propose_page',
+    description: 'Propose a sovereign page composed from canon components. Every component name is resolved against the closed catalog; an unknown component refuses the whole proposal (fail-closed).',
+    inputSchema: {
+      type: 'object' as const,
+      properties: {
+        title: { type: 'string' as const, description: 'Optional page title.' },
+        type: { type: 'string' as const, enum: ['hero', 'tetra-grid', 'card-grid', 'section', 'cta'], description: 'Page layout type.' },
+        components: { type: 'array' as const, items: { type: 'string' as const }, description: 'Component names to compose (e.g. ["GlassCard", "Button"]).' },
+      },
+      required: ['type', 'components'],
+    },
+  },
+  {
+    name: 'scaffold_component',
+    description: 'Return a contract-conformant scaffold (tsx + test + story) for a known component. No file is written by the worker; the write path is the local CLI under pnpm gate. Unknown component is refused.',
+    inputSchema: {
+      type: 'object' as const,
+      properties: {
+        name: { type: 'string' as const, description: 'Component name to scaffold (e.g. Button, GlassPanel, GlassCard).' },
+      },
+      required: ['name'],
+    },
+  },
+  {
+    name: 'validate_output',
+    description: 'Fail-closed validation of generated code: flags hardcoded hex, raw color, inline style, emoji icons, legacy token vocabulary, and contract forbidden patterns. Returns valid=false when any violation is found.',
+    inputSchema: {
+      type: 'object' as const,
+      properties: {
+        code: { type: 'string' as const, description: 'Generated code to validate.' },
+        component: { type: 'string' as const, description: 'Optional component name to also check against its contract forbidden patterns.' },
+      },
+      required: ['code'],
+    },
+  },
 ];
 
 // ─── Layout generator ──────────────────────────────────────────────────────
@@ -1208,6 +1245,18 @@ function renderLayout(input: any): any {
           const skill = SKILLS[skillName];
           if (!skill) return { error: `Skill not found: "${skillName}"`, status: 'error' };
           return { name: skillName, body: skill.body, status: 'ok' };
+        }
+
+        case 'propose_page': {
+          return await handleProposePage(args as { title?: string; type: string; components: string[] });
+        }
+
+        case 'scaffold_component': {
+          return await handleScaffoldComponent(args as { name: string });
+        }
+
+        case 'validate_output': {
+          return await handleValidateOutput(args as { code: string; component?: string });
         }
 
       default:
