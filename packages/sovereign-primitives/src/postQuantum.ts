@@ -40,8 +40,15 @@ export interface SLHDSASignature {
 export interface HybridEncrypted {
   ciphertext: Uint8Array<ArrayBuffer>;
   iv: Uint8Array<ArrayBuffer>;
-  kemCiphertext: Uint8Array<ArrayBuffer>;
-  algorithm: 'AES-256-GCM+ML-KEM-768';
+  kemCiphertext: Uint8Array<ArrayBuffer>; // X-Wing ciphertext (1120 bytes), self-contained
+  algorithm: 'AES-256-GCM+X-Wing';
+}
+
+export interface XWingKEMKeyPair {
+  publicKey: Uint8Array<ArrayBuffer>; // X-Wing public key, 1216 bytes
+  secretKey: Uint8Array<ArrayBuffer>; // X-Wing secret key (32-byte seed)
+  algorithm: 'X25519+ML-KEM-768 (X-Wing)';
+  createdAt: number;
 }
 
 // ── WebCrypto helpers (universal: browser, CF Workers, Node 18+) ──────────
@@ -113,6 +120,36 @@ async function loadPQC(): Promise<boolean> {
     return true;
   } catch {
     // @noble/post-quantum not installed — run: npm add @noble/post-quantum
+    return false;
+  }
+}
+
+// ── X-Wing hybrid KEM (draft-connolly-cfrg-xwing-kem) ─────────────────────
+// ML-KEM-768 + X25519 composed with the spec transcript combiner. Delegates to
+// the maintained, KAT-validated preset `ml_kem768_x25519`. The ciphertext is
+// self-contained, so decapsulation needs only the recipient's secret key.
+
+interface XWingKEM {
+  keygen(seed?: Uint8Array<ArrayBuffer>): {
+    publicKey: Uint8Array<ArrayBuffer>;
+    secretKey: Uint8Array<ArrayBuffer>;
+  };
+  encapsulate(
+    publicKey: Uint8Array<ArrayBuffer>,
+    msgRand?: Uint8Array<ArrayBuffer>,
+  ): { cipherText: Uint8Array<ArrayBuffer>; sharedSecret: Uint8Array<ArrayBuffer> };
+  decapsulate(cipherText: Uint8Array<ArrayBuffer>, secretKey: Uint8Array<ArrayBuffer>): Uint8Array<ArrayBuffer>;
+}
+
+let xWing: XWingKEM | null = null;
+
+async function loadXWing(): Promise<boolean> {
+  if (xWing) return true;
+  try {
+    const mod = await import('@noble/post-quantum/hybrid.js');
+    xWing = (mod.ml_kem768_x25519 ?? mod.XWing) as unknown as XWingKEM;
+    return !!xWing;
+  } catch {
     return false;
   }
 }
@@ -211,28 +248,18 @@ export async function generateSigningKeyPair(): Promise<HybridKeyPair> {
   };
 }
 
-export async function generateKEMKeyPair(): Promise<HybridKeyPair> {
-  // Classical: P-256 ECDH (X25519 not in WebCrypto standard — use P-256)
-  const classical = await crypto.subtle.generateKey(
-    { name: 'ECDH', namedCurve: 'P-256' }, true, ['deriveKey', 'deriveBits'],
-  );
-  const classicalPub = new Uint8Array(await crypto.subtle.exportKey('raw', classical.publicKey));
-  const classicalPriv = new Uint8Array(await crypto.subtle.exportKey('pkcs8', classical.privateKey));
-
-  const pqcAvailable = await loadPQC();
-  let pqcPub = new Uint8Array(0);
-  let pqcPriv = new Uint8Array(0);
-
-  if (pqcAvailable && mlKem768) {
-    const kp = mlKem768.keygen();
-    pqcPub = kp.publicKey;
-    pqcPriv = kp.secretKey;
+export async function generateKEMKeyPair(): Promise<XWingKEMKeyPair> {
+  const available = await loadXWing();
+  if (!available || !xWing) {
+    throw new Error(
+      'X-Wing KEM unavailable: install @noble/post-quantum (>=0.6.1) which provides ml_kem768_x25519.',
+    );
   }
-
+  const kp = xWing.keygen();
   return {
-    classical: { publicKey: classicalPub, privateKey: classicalPriv },
-    pqc: { publicKey: pqcPub, privateKey: pqcPriv },
-    algorithm: 'X25519+ML-KEM-768',
+    publicKey: kp.publicKey,
+    secretKey: kp.secretKey,
+    algorithm: 'X25519+ML-KEM-768 (X-Wing)',
     createdAt: Date.now(),
   };
 }
@@ -290,72 +317,39 @@ export async function hybridVerify(
 
 export async function hybridEncrypt(
   plaintext: Uint8Array<ArrayBuffer>,
-  recipientPublicKeys: { classical: Uint8Array<ArrayBuffer>; pqc: Uint8Array<ArrayBuffer> },
+  recipientPublicKey: Uint8Array<ArrayBuffer>,
 ): Promise<HybridEncrypted> {
-  // Classical ECDH key exchange
-  const ephemeral = await crypto.subtle.generateKey(
-    { name: 'ECDH', namedCurve: 'P-256' }, true, ['deriveBits'],
-  );
-  const recipientClassical = await crypto.subtle.importKey(
-    'raw', recipientPublicKeys.classical, { name: 'ECDH', namedCurve: 'P-256' }, false, [],
-  );
-  const classicalShared = new Uint8Array(await crypto.subtle.deriveBits(
-    { name: 'ECDH', public: recipientClassical }, ephemeral.privateKey, 256,
-  ));
-
-  // ML-KEM-768 encapsulation
-  let kemShared = new Uint8Array(32);
-  let kemCiphertext = new Uint8Array(0);
-
-  const pqcAvailable = await loadPQC();
-  if (pqcAvailable && mlKem768 && recipientPublicKeys.pqc.length > 0) {
-    const { cipherText, sharedSecret } = mlKem768.encapsulate(recipientPublicKeys.pqc);
-    kemCiphertext = cipherText;
-    kemShared = sharedSecret;
+  const available = await loadXWing();
+  if (!available || !xWing) {
+    throw new Error('X-Wing KEM unavailable: install @noble/post-quantum (>=0.6.1).');
   }
 
-  // Combine shared secrets via HKDF
-  const combined = new Uint8Array(classicalShared.length + kemShared.length);
-  combined.set(classicalShared);
-  combined.set(kemShared, classicalShared.length);
-  const symmetricKey = await hkdf(combined, 'P31-hybrid-encrypt-v1');
+  // X-Wing encapsulation — ciphertext is self-contained (carries the X25519
+  // ephemeral), so the recipient needs only their secret key to open it.
+  const { cipherText, sharedSecret } = xWing.encapsulate(recipientPublicKey);
+
+  const symmetricKey = await hkdf(sharedSecret, 'P31-xwing-aes-256-gcm-v1');
 
   // AES-256-GCM encrypt
   const { ciphertext, iv } = await aesEncrypt(plaintext, symmetricKey);
 
-  return { ciphertext, iv, kemCiphertext, algorithm: 'AES-256-GCM+ML-KEM-768' };
+  return { ciphertext, iv, kemCiphertext: cipherText, algorithm: 'AES-256-GCM+X-Wing' };
 }
 
 export async function hybridDecrypt(
   encrypted: HybridEncrypted,
-  privateKeys: { classical: Uint8Array<ArrayBuffer>; pqc: Uint8Array<ArrayBuffer> },
-  senderPublicKey: Uint8Array<ArrayBuffer>,
+  secretKey: Uint8Array<ArrayBuffer>,
 ): Promise<Uint8Array<ArrayBuffer>> {
-  // Classical ECDH
-  const myClassical = await crypto.subtle.importKey(
-    'pkcs8', privateKeys.classical, { name: 'ECDH', namedCurve: 'P-256' }, false, ['deriveBits'],
-  );
-  const senderKey = await crypto.subtle.importKey(
-    'raw', senderPublicKey, { name: 'ECDH', namedCurve: 'P-256' }, false, [],
-  );
-  const classicalShared = new Uint8Array(await crypto.subtle.deriveBits(
-    { name: 'ECDH', public: senderKey }, myClassical, 256,
-  ));
-
-  // ML-KEM-768 decapsulation
-  let kemShared = new Uint8Array(32);
-  if (encrypted.kemCiphertext.length > 0 && privateKeys.pqc.length > 0) {
-    const pqcAvailable = await loadPQC();
-    if (pqcAvailable && mlKem768) {
-      kemShared = mlKem768.decapsulate(encrypted.kemCiphertext, privateKeys.pqc);
-    }
+  const available = await loadXWing();
+  if (!available || !xWing) {
+    throw new Error('X-Wing KEM unavailable: install @noble/post-quantum (>=0.6.1).');
   }
 
+  // X-Wing decapsulation
+  const sharedSecret = xWing.decapsulate(encrypted.kemCiphertext, secretKey);
+
   // Reconstruct symmetric key
-  const combined = new Uint8Array(classicalShared.length + kemShared.length);
-  combined.set(classicalShared);
-  combined.set(kemShared, classicalShared.length);
-  const symmetricKey = await hkdf(combined, 'P31-hybrid-encrypt-v1');
+  const symmetricKey = await hkdf(sharedSecret, 'P31-xwing-aes-256-gcm-v1');
 
   return aesDecrypt(encrypted.ciphertext, encrypted.iv, symmetricKey);
 }
@@ -365,6 +359,7 @@ export async function hybridDecrypt(
 export async function assessPQCReadiness(): Promise<{
   pqcAvailable: boolean;
   slhdsaAvailable: boolean;
+  xwingAvailable: boolean;
   algorithms: string[];
   nistStandards: string[];
   recommendation: string;
@@ -372,19 +367,22 @@ export async function assessPQCReadiness(): Promise<{
 }> {
   const available = await loadPQC();
   const slhdsaAvailable = await loadSLHDSA();
+  const xwingAvailable = await loadXWing();
   const algorithms = available
     ? ['ML-KEM-768 (FIPS 203)', 'ML-DSA-65 (FIPS 204)']
-    : ['Ed25519 (classical only)', 'P-256 ECDH (classical only)'];
+    : ['Ed25519 (classical only)'];
+  if (xwingAvailable) algorithms.push('X-Wing: X25519+ML-KEM-768 (draft-connolly-cfrg-xwing-kem)');
   if (slhdsaAvailable) algorithms.push('SLH-DSA-128s (FIPS 205)');
   return {
     pqcAvailable: available,
     slhdsaAvailable,
+    xwingAvailable,
     algorithms,
     nistStandards: ['FIPS 203', 'FIPS 204', 'FIPS 205', 'FIPS 197'],
     recommendation: available
       ? slhdsaAvailable
-        ? 'Hybrid mode active. Classical + ML-DSA-65 + SLH-DSA-128s on all new keys.'
-        : 'Hybrid mode active. Classical + PQC signatures on all new keys.'
+        ? 'Hybrid mode active. X-Wing KEM + ML-DSA-65 + SLH-DSA-128s on all new keys.'
+        : 'Hybrid mode active. X-Wing KEM + PQC signatures on all new keys.'
       : 'Install @noble/post-quantum: npm add @noble/post-quantum. Classical only until installed.',
     migrationPhase: available ? (slhdsaAvailable ? 3 : 2) : 1,
   };
@@ -393,7 +391,7 @@ export async function assessPQCReadiness(): Promise<{
 // ── Legacy compat shim (replaces the old stub-based PostQuantumCryptoManager) ──
 
 export const QUANTUM_SAFE_CONFIG = {
-  defaultAlgorithm: 'ML-KEM-768' as const,
+  defaultAlgorithm: 'X-Wing (X25519+ML-KEM-768)' as const,
   signatureAlgorithm: 'ML-DSA-65' as const,
   slhdsaAlgorithm: 'SLH-DSA-128s' as const,
   hybridEncryption: true,

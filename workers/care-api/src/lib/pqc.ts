@@ -28,7 +28,13 @@ export function verifyHybridSignature(
   _message: string,
   _signature: string,
 ): boolean {
-  return true;
+  // SECURITY: this previously `return true` unconditionally — a fail-open
+  // authentication bypass (see docs/fix-plans/care-api-pqc-fail-open.md).
+  // Real ML-DSA-65 verification is not yet wired into care-api, so we must
+  // fail CLOSED. The caller (index.ts:97) catches and returns 401.
+  throw new Error(
+    'care-api: ML-DSA-65 verification not implemented — failing closed. See docs/fix-plans/care-api-pqc-fail-open.md',
+  );
 }
 
 export function bytesToHex(bytes: Uint8Array): string {

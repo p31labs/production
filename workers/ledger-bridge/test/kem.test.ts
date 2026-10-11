@@ -1,4 +1,6 @@
 import { describe, it, expect } from "vitest";
+import { readFileSync } from "node:fs";
+import { ml_kem768_x25519 } from "@noble/post-quantum/hybrid.js";
 import {
   generateXWingKeyPair,
   encapsulateXWing,
@@ -63,28 +65,60 @@ describe("X-Wing endpoints (via worker fetch)", () => {
   const GET = (path: string) =>
     worker.fetch(new Request(`https://x.test${path}`), env);
 
-  it("GET /kem/xwing/public returns base64 keys", async () => {
+  it("GET /kem/xwing/public returns the public key (never the secret key)", async () => {
     const res = await GET("/kem/xwing/public");
     expect(res.status).toBe(200);
     const j = await res.json();
     expect(b64ToBytes(j.publicKey).length).toBe(XWING_PK_LEN);
-    expect(b64ToBytes(j.secretKey).length).toBe(XWING_SK_LEN);
+    expect(j.secretKey).toBeUndefined();
     expect(j.lengths.ciphertext).toBe(XWING_CT_LEN);
+    expect(j.lengths.secretKey).toBe(XWING_SK_LEN);
   });
 
-  it("full HTTP round-trip yields matching shared secrets", async () => {
+  it("encapsulate uses the returned public key", async () => {
     const pub = await (await GET("/kem/xwing/public")).json();
     const enc = await (await POST("/kem/xwing/encapsulate", { publicKey: pub.publicKey })).json();
+    expect(enc.ciphertext).toBeTruthy();
     expect(enc.sharedSecret).toBeTruthy();
-    const dec = await (await POST("/kem/xwing/decapsulate", {
-      ciphertext: enc.ciphertext,
-      secretKey: pub.secretKey,
-    })).json();
-    expect(dec.sharedSecret).toBe(enc.sharedSecret);
   });
 
   it("encapsulate rejects missing publicKey", async () => {
     const res = await POST("/kem/xwing/encapsulate", {});
     expect(res.status).toBe(400);
+  });
+});
+
+describe("X-Wing known-answer vectors (draft-connolly-cfrg-xwing-kem)", () => {
+  interface Kat {
+    seed: string;
+    eseed: string;
+    ss: string;
+    sk: string;
+    pk: string;
+    ct: string;
+  }
+  const vectors = JSON.parse(
+    readFileSync(new URL("./vectors/xwing-kat.json", import.meta.url), "utf8"),
+  ) as Kat[];
+  const hex = (h: string) => Uint8Array.from(Buffer.from(h, "hex"));
+  const eq = (a: Uint8Array, b: Uint8Array) => Buffer.from(a).equals(Buffer.from(b));
+
+  it("has the three official vectors", () => {
+    expect(vectors.length).toBe(3);
+  });
+
+  it("keygen/encapsulate/decapsulate reproduce pk, sk, ct and ss", () => {
+    for (const v of vectors) {
+      const kp = ml_kem768_x25519.keygen(hex(v.seed));
+      expect(eq(kp.publicKey, hex(v.pk))).toBe(true);
+      expect(eq(kp.secretKey, hex(v.sk))).toBe(true);
+
+      const enc = ml_kem768_x25519.encapsulate(kp.publicKey, hex(v.eseed));
+      expect(eq(enc.cipherText, hex(v.ct))).toBe(true);
+      expect(eq(enc.sharedSecret, hex(v.ss))).toBe(true);
+
+      const dec = ml_kem768_x25519.decapsulate(hex(v.ct), kp.secretKey);
+      expect(eq(dec, hex(v.ss))).toBe(true);
+    }
   });
 });

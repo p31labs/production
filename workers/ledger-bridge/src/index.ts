@@ -208,13 +208,14 @@ export default {
       });
     }
 
-    // ── X-Wing hybrid KEM (draft-ietf-lamp-xwing-00) ─────────────────────
+    // ── X-Wing hybrid KEM (draft-connolly-cfrg-xwing-kem) ────────────────
     // Hybrid post-quantum key exchange: ML-KEM-768 + X25519.
     if (url.pathname === "/kem/xwing/public") {
+      // Public key only. Never return the secret key over an unauthenticated
+      // endpoint — secret-key generation is a client/secure-context operation.
       const kp = generateXWingKeyPair();
       return j({
         publicKey: bytesToB64(kp.publicKey),
-        secretKey: bytesToB64(kp.secretKey),
         lengths: {
           publicKey: kp.publicKey.length,
           secretKey: kp.secretKey.length,

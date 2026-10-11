@@ -18,9 +18,11 @@ import { readFileSync, writeFileSync } from 'fs';
 import { COMPONENTS } from '../workers/component-registry/src/registry.js';
 
 const DEFAULT_DS_PATH = 'apps/phos/public/.well-known/design-system.json';
-const dsPath = process.argv[2] || DEFAULT_DS_PATH;
-const dryRun = process.argv.includes('--dry-run');
-const updateAliases = process.argv.includes('--update-aliases');
+const args = process.argv.slice(2);
+const dryRun = args.includes('--dry-run');
+const updateAliases = args.includes('--update-aliases');
+// The path is any positional arg; flags are never mistaken for the ds path.
+const dsPath = args.find((a) => !a.startsWith('--')) || DEFAULT_DS_PATH;
 
 console.error(`Loading design system from: ${dsPath}`);
 
@@ -161,6 +163,34 @@ for (const comp of COMPONENTS) {
   }
 }
 
+// Persist the alias suggestions so components reference canonical tokens.
+// Reads/writes the machine-readable component manifest; the alias map is
+// additive (never destructive), so a re-run converges rather than churns.
+const MANIFEST_PATH = 'portals/shell/docs/components.manifest.json';
+
+function applyAliasUpdates(suggestions, { dryRun }) {
+  const aliasMap = Object.fromEntries(suggestions.map((s) => [s.token, s.cssVar]));
+  const count = Object.keys(aliasMap).length;
+
+  if (count === 0) {
+    console.log('\n💡 --update-aliases: nothing to apply (registry already references canonical tokens).');
+    return;
+  }
+
+  if (dryRun) {
+    console.log(`\n💡 --update-aliases (dry run): would apply ${count} alias mapping(s):`);
+    for (const [token, cssVar] of Object.entries(aliasMap)) {
+      console.log(`  ${token} -> ${cssVar}`);
+    }
+    return;
+  }
+
+  const manifest = JSON.parse(readFileSync(MANIFEST_PATH, 'utf8'));
+  manifest.token_aliases = { ...(manifest.token_aliases || {}), ...aliasMap };
+  writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + '\n');
+  console.log(`\n💡 --update-aliases: applied ${count} alias mapping(s) to ${MANIFEST_PATH}`);
+}
+
 console.log('\n=== Component Registry Sync Report ===\n');
 console.log(`Total components: ${COMPONENTS.length}`);
 console.log(`Total tokens in design-system.json: ${allTokens.size}`);
@@ -183,17 +213,19 @@ if (issues.length > 0) {
   console.log('');
 }
 
-if (issues.length === 0 && suggestions.length === 0) {
-  console.log('✅ All components are fully synced with design-system.json');
-  process.exit(0);
-} else if (issues.length === 0) {
-  console.log('✅ No missing tokens. Apply alias suggestions to improve consistency.');
-  if (!dryRun && updateAliases) {
-    console.log('\n💡 Updating component registry with alias mappings...');
-    // TODO: Implement alias update logic
-  }
-  process.exit(0);
-} else {
+if (issues.length > 0) {
   console.log('❌ Sync incomplete. Fix missing tokens before deploying.');
   process.exit(1);
 }
+
+console.log(
+  suggestions.length > 0
+    ? '✅ No missing tokens. Apply alias suggestions to improve consistency.'
+    : '✅ All components are fully synced with design-system.json'
+);
+
+if (updateAliases) {
+  applyAliasUpdates(suggestions, { dryRun });
+}
+
+process.exit(0);

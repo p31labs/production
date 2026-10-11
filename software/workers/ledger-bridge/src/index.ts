@@ -206,7 +206,7 @@ export default {
       });
     }
 
-    // ── X-Wing hybrid KEM (draft-ietf-lamp-xwing-00) ─────────────────────
+    // ── X-Wing hybrid KEM (draft-connolly-cfrg-xwing-kem) ─────────────────────
     // Hybrid post-quantum key exchange: ML-KEM-768 + X25519.
     if (url.pathname === "/kem/xwing/public") {
       const kp = generateXWingKeyPair();

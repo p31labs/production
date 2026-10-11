@@ -177,7 +177,7 @@
 | Shell (browser) | WebMCP | Chrome 149+ | navigator.modelContext | active (trial) |
 | Shell (browser) | KERI | Local + Mesh | CESR + SAID | active |
 | Shell (browser) | SD-JWT | ledger-bridge | RFC 9901 | active |
-| Shell (browser) | X-Wing KEM | ledger-bridge | draft-ietf-lamp-xwing | active |
+| Shell (browser) | X-Wing KEM | ledger-bridge | draft-connolly-cfrg-xwing-kem | active |
 | Shell (browser) | Care Proof | ledger-bridge | Ed25519 + ML-DSA-65 dual-sig | active |
 | Shell (browser) | x402 | mcp-x402-gateway | HTTP 402 + PAYMENT-REQUIRED | active (edge) |
 | Shell (browser) | Taler | taler-bridge-billing | GNU Taler CBS + WASM | active (edge) |
@@ -672,7 +672,7 @@ shell-browser,webmcp,browser-agent,navigator.modelContext,Chrome 149+ trial,acti
 shell-browser,protocol,mcp,json-rpc-2.0,9 servers ~200+ tools,active,protocol,2026-08-17
 shell-browser,protocol,keri,cesr+said,KEL hash chain,active,protocol,2026-08-17
 shell-browser,protocol,sdjwt,rfc-9901,ledger-bridge,active,protocol,2026-08-17
-shell-browser,protocol,kem-xwing,draft-ietf-lamp-xwing,ledger-bridge,active,protocol,2026-08-17
+shell-browser,protocol,kem-xwing,draft-connolly-cfrg-xwing-kem,ledger-bridge,active,protocol,2026-08-17
 deploy,cf-worker,p31-shell,worker,p31-shell.trimtab-signal.workers.dev,active,deploy,2026-08-17
 deploy,cf-pages,spaceship-relay,pages,spaceship-earth.pages.dev,active,deploy,2026-08-17
 deploy,cf-pages,portal-children,pages,willow.p31ca.org,active,deploy,2026-08-17
