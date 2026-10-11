@@ -120,6 +120,7 @@ const isSubstrate = /(^|\/)(STATE|INBOX|HISTORY|AGENTS)\.md$/.test(file) || file
       /\.workspace\/tokens\/.*\.token$/,
       /\.workspace\/keys\//,
       /\.workspace\/deletions\.jsonl$/,
+      /\.workspace\/.*\.bak$/,   // transient backups (negative-controls, scope lock)
       /\.cas\//,
       /\.trash\//,
     ];

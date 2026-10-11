@@ -17,6 +17,12 @@ const SCRIPT = (n) => join(ROOT, 'scripts', n);
 let pass = 0;
 let fail = 0;
 
+// Belt-and-suspenders: remove any stale ledger backup a killed prior run left.
+// The per-block try/finally below prevents a leak on exception; this guards
+// against a SIGKILL/panic between the copy and the unlink.
+const STALE_LEDGER_BAK = join(ROOT, '.workspace', 'ledger.jsonl.bak');
+if (existsSync(STALE_LEDGER_BAK)) { unlinkSync(STALE_LEDGER_BAK); }
+
 function run(name, script, args = []) {
   try {
     execSync(`node ${SCRIPT(script)} ${args.join(' ')}`, { stdio: 'pipe', cwd: ROOT });
@@ -48,17 +54,20 @@ console.log('P31 negative controls — proving every gate can fail\n');
   if (existsSync(ledger)) {
     const backup = ledger + '.bak';
     copyFileSync(ledger, backup);
-    const lines = readFileSync(ledger, 'utf8').split('\n');
-    if (lines[0]) {
-      const entry = JSON.parse(lines[0]);
-      entry.operation = 'hard-delete'; // tamper
-      lines[0] = JSON.stringify(entry);
-      writeFileSync(ledger, lines.join('\n'));
+    try {
+      const lines = readFileSync(ledger, 'utf8').split('\n');
+      if (lines[0]) {
+        const entry = JSON.parse(lines[0]);
+        entry.operation = 'hard-delete'; // tamper
+        lines[0] = JSON.stringify(entry);
+        writeFileSync(ledger, lines.join('\n'));
+      }
+      const r = run('verify-chain detects tamper', 'verify-chain');
+      check('verify-chain fails on tampered ledger', r.blocked);
+    } finally {
+      copyFileSync(backup, ledger);
+      unlinkSync(backup);
     }
-    const r = run('verify-chain detects tamper', 'verify-chain');
-    check('verify-chain fails on tampered ledger', r.blocked);
-    copyFileSync(backup, ledger);
-    unlinkSync(backup);
   } else {
     console.log('  - ledger empty, skipping chain negative control');
   }
@@ -70,12 +79,15 @@ console.log('P31 negative controls — proving every gate can fail\n');
   if (existsSync(ledger)) {
     const backup = ledger + '.bak';
     copyFileSync(ledger, backup);
-    const { append } = await import('./lib/ledger.mjs');
-    await append('execute', { action: 'soft-delete', path: './test', reason: 'test', token_id: undefined });
-    const r = run('token-check rejects token-less execute', 'token-check');
-    check('token-check fails on token-less execute', r.blocked);
-    copyFileSync(backup, ledger);
-    unlinkSync(backup);
+    try {
+      const { append } = await import('./lib/ledger.mjs');
+      await append('execute', { action: 'soft-delete', path: './test', reason: 'test', token_id: undefined });
+      const r = run('token-check rejects token-less execute', 'token-check');
+      check('token-check fails on token-less execute', r.blocked);
+    } finally {
+      copyFileSync(backup, ledger);
+      unlinkSync(backup);
+    }
   }
 }
 
@@ -85,13 +97,16 @@ console.log('P31 negative controls — proving every gate can fail\n');
   if (existsSync(ledger)) {
     const backup = ledger + '.bak';
     copyFileSync(ledger, backup);
-    const { append } = await import('./lib/ledger.mjs');
-    await append('execute', { action: 'soft-delete', path: './test2', dest: './.trash/x', reason: 'test', token_id: 'tok-1', at: new Date().toISOString() });
-    await append('execute', { action: 'hard-delete', path: './test2', reason: 'test', token_id: 'tok-1', at: new Date(Date.now() - 24 * 3600 * 1000).toISOString() });
-    const r = run('soft-delete-check rejects premature hard delete', 'soft-delete-check');
-    check('soft-delete-check fails on premature hard delete', r.blocked);
-    copyFileSync(backup, ledger);
-    unlinkSync(backup);
+    try {
+      const { append } = await import('./lib/ledger.mjs');
+      await append('execute', { action: 'soft-delete', path: './test2', dest: './.trash/x', reason: 'test', token_id: 'tok-1', at: new Date().toISOString() });
+      await append('execute', { action: 'hard-delete', path: './test2', reason: 'test', token_id: 'tok-1', at: new Date(Date.now() - 24 * 3600 * 1000).toISOString() });
+      const r = run('soft-delete-check rejects premature hard delete', 'soft-delete-check');
+      check('soft-delete-check fails on premature hard delete', r.blocked);
+    } finally {
+      copyFileSync(backup, ledger);
+      unlinkSync(backup);
+    }
   }
 }
 
@@ -140,6 +155,44 @@ console.log('P31 negative controls — proving every gate can fail\n');
   unlinkSync(plant);
   if (hadLock) { copyFileSync(lockBackup, lockPath); unlinkSync(lockBackup); }
   else { unlinkSync(lockPath); }
+}
+
+// 9. Safety: a soft-delete with a token but no CAS snapshot and no trash
+//    record must fail audit-safety (the forbidden V1→V4 edge).
+{
+  const ledger = join(ROOT, '.workspace', 'ledger.jsonl');
+  if (existsSync(ledger)) {
+    const backup = ledger + '.bak';
+    copyFileSync(ledger, backup);
+    try {
+      const { append } = await import('./lib/ledger.mjs');
+      await append('execute', { action: 'soft-delete', path: './negctrl-safety', reason: 'test', token_id: 'tok-negctrl', at: new Date().toISOString() });
+      const r = run('audit-safety rejects snapshot-less delete', 'audit-safety');
+      check('audit-safety fails on snapshot-less delete', r.blocked);
+    } finally {
+      copyFileSync(backup, ledger);
+      unlinkSync(backup);
+    }
+  }
+}
+
+// 10. Provenance: a soft-delete with a CAS snapshot but no trash destination
+//     must fail audit-provenance (snapshot-before-delete invariant).
+{
+  const ledger = join(ROOT, '.workspace', 'ledger.jsonl');
+  if (existsSync(ledger)) {
+    const backup = ledger + '.bak';
+    copyFileSync(ledger, backup);
+    try {
+      const { append } = await import('./lib/ledger.mjs');
+      await append('execute', { action: 'soft-delete', path: './negctrl-prov', reason: 'test', token_id: 'tok-negctrl', cas_hash: 'c0ffee'.repeat(10) + 'dead', at: new Date().toISOString() });
+      const r = run('audit-provenance rejects dest-less delete', 'audit-provenance');
+      check('audit-provenance fails on dest-less delete', r.blocked);
+    } finally {
+      copyFileSync(backup, ledger);
+      unlinkSync(backup);
+    }
+  }
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);
