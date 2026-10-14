@@ -537,6 +537,8 @@
   @media (min-width:64rem){.hd-lg-px-16{padding-inline:calc(.25rem * 16)}}
   @media (min-width:64rem){.he-lg-px-16{padding-inline:calc(.25rem * 16)}}
   @media ((min-width:64rem)){.dc99-lg-px-16{padding-inline:calc(.25rem * 16)}}
+  @media (min-width:64rem){.in0x-lg-px-16{padding-inline:calc(.25rem * 16)}}
+  @media (min-width:64rem){.jo7d-lg-px-16{padding-inline:calc(.25rem * 16)}}
   @media (min-width:64rem){.hiee-lg-text-6xl{font-size:3.75rem;line-height:1}}
   @media (min-width:64rem){.fp-lg-text-6xl{font-size:3.75rem;line-height:1}}
   @media (min-width:64rem){.he-lg-text-7xl{font-size:4.5rem;line-height:1}}
@@ -571,6 +573,8 @@
   .nf-max-w-4xl{max-width:56rem}
   .fp-max-w-4xl{max-width:56rem}
   .en7f-max-w-4xl{max-width:56rem}
+  .in0x-max-w-4xl{max-width:56rem}
+  .jo7d-max-w-4xl{max-width:56rem}
   .gebb-max-w-5xl{max-width:64rem}
   .waa0-max-w-5xl{max-width:64rem}
   .sf-max-w-5xl{max-width:64rem}
@@ -713,6 +717,8 @@
   @media (min-width:48rem){.hd-md-px-12{padding-inline:calc(.25rem * 12)}}
   @media (min-width:48rem){.he-md-px-12{padding-inline:calc(.25rem * 12)}}
   @media ((min-width:48rem)){.dc99-md-px-12{padding-inline:calc(.25rem * 12)}}
+  @media (min-width:48rem){.in0x-md-px-12{padding-inline:calc(.25rem * 12)}}
+  @media (min-width:48rem){.jo7d-md-px-12{padding-inline:calc(.25rem * 12)}}
   @media (min-width:48rem){.en7f-md-text-3xl{font-size:1.875rem;line-height:1.2}}
   @media (min-width:48rem){.hiee-md-text-3xl{font-size:1.875rem;line-height:1.2}}
   @media (min-width:48rem){.fp-md-text-3xl{font-size:1.875rem;line-height:1.2}}
@@ -855,6 +861,7 @@
   .sd-mx-auto{margin-inline:auto}
   .msh-mx-auto{margin-inline:auto}
   .dc99-mx-auto{margin-inline:auto}
+  .in0x-mx-auto{margin-inline:auto}
   .qb-my-6{margin-block:calc(.25rem * 6)}
   .en7f-no-underline{text-decoration-line:none}
   .hiee-no-underline{text-decoration-line:none}
@@ -1035,6 +1042,7 @@
   .hd-px-6{padding-inline:calc(.25rem * 6)}
   .he-px-6{padding-inline:calc(.25rem * 6)}
   .dc99-px-6{padding-inline:calc(.25rem * 6)}
+  .in0x-px-6{padding-inline:calc(.25rem * 6)}
   .en7f-px-8{padding-inline:calc(.25rem * 8)}
   .hiee-px-8{padding-inline:calc(.25rem * 8)}
   .rec9-px-8{padding-inline:calc(.25rem * 8)}
