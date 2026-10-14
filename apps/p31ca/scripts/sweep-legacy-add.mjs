@@ -36,6 +36,16 @@ if (fileArg) {
   }
 }
 
+// Normalize selectors + media queries so both entry paths emit the file's
+// canonical format: `.sel{body}` and `@media (min-width:…){.sel{body}}`.
+// sel is stored WITHOUT the leading dot (dedup + sort key stay clean); the
+// dot is added at emit time. Without this, a `--file` sel that carries a dot
+// (or a media query that already has parens) writes malformed rules.
+for (const r of rules) {
+  r.sel = r.sel.replace(/^\./, '');
+  if (r.media) r.media = r.media.replace(/^\(+/, '').replace(/\)+$/, '');
+}
+
 const src = readFileSync(LEGACY, 'utf8');
 const lines = src.split('\n');
 const layerStart = lines.findIndex((l) => l.includes('@layer utilities'));
@@ -52,13 +62,13 @@ let inserted = 0;
 let skipped = 0;
 const newLines = [];
 for (const r of rules) {
-  if (src.includes(`.${r.sel}{`) || src.includes(`{${r.sel}{`)) {
+  if (src.includes(`.${r.sel}{`) || src.includes(`{.${r.sel}{`)) {
     skipped += 1;
     continue;
   }
   const line = r.media
-    ? `  @media (${r.media}){${r.sel}{${r.body}}}`
-    : `  ${r.sel}{${r.body}}`;
+    ? `  @media (${r.media}){.${r.sel}{${r.body}}}`
+    : `  .${r.sel}{${r.body}}`;
   const nameKey = r.sel.slice(r.sel.indexOf('-') + 1);
   newLines.push({ line, key: nameKey });
   inserted += 1;
