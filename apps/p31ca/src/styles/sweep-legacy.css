@@ -377,8 +377,6 @@
   @media (hover:hover){@supports (color:color-mix(in lab,red,red)){.sf-hover-text-white-80:hover{color:color-mix(in oklab,#fff 80%,transparent)}}}
   @media (hover:hover){.sf-hover-text-white-90:hover{color:#ffffffe6}}
   @media (hover:hover){@supports (color:color-mix(in lab,red,red)){.sf-hover-text-white-90:hover{color:color-mix(in oklab,#fff 90%,transparent)}}}
-  @media (hover:hover){.si88-hover-underline:hover{text-decoration-line:underline}}
-  @media (hover:hover){.si3a-hover-underline:hover{text-decoration-line:underline}}
   .in9f-inline-block{display:inline-block}
   .fp-inline-block{display:inline-block}
   .abf6-inline-flex{display:inline-flex}
