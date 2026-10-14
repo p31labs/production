@@ -7,7 +7,7 @@
  * Tailwind v4 reads camelCase class names (bg-hubRose) as kebab-case theme
  * keys (--color-hub-rose), so the existing markup keeps working unchanged.
  */
-@import "tailwindcss";
+@import "tailwindcss/index.css";
 
 @source "./src";
 

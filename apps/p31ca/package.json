@@ -17,7 +17,8 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
-    "@astrojs/react": "^6.0.6",
+    "@astrojs/markdown-remark": "^7.3.2",
+    "@astrojs/react": "^7.0.1",
     "@fontsource/lexend": "^5.3.0",
     "@p31ca/canon": "workspace:*",
     "@p31ca/canon-astro": "workspace:*",
@@ -29,7 +30,8 @@
     "@p31ca/shell-chrome": "workspace:*",
     "@p31ca/ui": "workspace:*",
     "@tailwindcss/postcss": "^4.3.3",
-    "astro": "^6.4.8",
+    "astro": "^7.3.8",
+    "cookie": "^2.0.1",
     "mermaid": "^12.0.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
@@ -39,10 +41,12 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
-    "@astrojs/cloudflare": "^13.4.0",
+    "@astrojs/cloudflare": "^14.3.4",
     "@types/node": "^25.6.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "esbuild": "^0.28.2",
+    "vite": "^8.3.4",
     "wrangler": "^4.149.0"
   },
   "private": true
