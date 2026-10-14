@@ -1,0 +1,7 @@
+# Copy to .dev.vars (gitignored) for local `wrangler dev`.
+# Values are placeholders — never commit real secrets.
+ADMIN_TOKEN=placeholder-admin-token
+REVIEW_SIGNING_KEY=placeholder-signing-key
+REVIEW_SIGNING_KEY_PREV=placeholder-previous-signing-key
+INTERNAL_USAGE_KEY=placeholder-usage-key
+ADMIN_SECRET=placeholder-admin-secret
