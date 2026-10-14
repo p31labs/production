@@ -128,7 +128,7 @@ a{color:inherit;text-decoration:none}
 /* ── Blocks ────────────────────────────────────────────────────── */
 .block{margin-bottom:var(--space-6)}
 .eyebrow{font-size:11px;font-weight:700;letter-spacing:0.14em;color:var(--accent);text-transform:uppercase;margin-bottom:8px}
-.hero h1{font-size:38px;font-weight:800;letter-spacing:-0.02em;margin-bottom:12px;line-height:1.1}
+.hero h2{font-size:38px;font-weight:800;letter-spacing:-0.02em;margin-bottom:12px;line-height:1.1}
 .hero .lede{color:var(--ink-soft);font-size:16px;max-width:52ch;line-height:1.55;margin-bottom:24px}
 .hero .actions{display:flex;gap:12px}
 .metric-row{display:flex;gap:var(--space-4);flex-wrap:wrap}
@@ -224,6 +224,7 @@ a{color:inherit;text-decoration:none}
   <div id="body">
     <nav id="sidebar" aria-label="Primary"></nav>
     <main id="main">
+      <h1 class="sr-only">P31 Shell</h1>
       <div id="errorBoundary" role="alert">
         <div class="err-icon" aria-hidden="true">⚠</div>
         <h2>This cartridge failed to load.</h2>
@@ -310,7 +311,7 @@ const BLOCKS={
   hero:(b)=>`
     <section class="block hero">
       <p class="eyebrow">${b.eyebrow||'P31'}</p>
-      <h1>${b.title}</h1>
+      <h2>${b.title}</h2>
       <p class="lede">${b.lede}</p>
       ${b.actions?`<div class="actions">${b.actions.map(a=>`<button type="button" class="btn ${a.primary?'primary':''}">${a.label}</button>`).join('')}</div>`:''}
     </section>`,

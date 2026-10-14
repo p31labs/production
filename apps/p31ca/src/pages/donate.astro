@@ -1,94 +1,106 @@
 ---
+/**
+ * /donate — the donation landing surface.
+ *
+ * Link-out only: every channel below is an external destination. There is
+ * NO payment logic in this repository — no invoice creation, no checkout
+ * embed, no payment processor call. The page hands the visitor to a hosted
+ * channel and gets out of the way.
+ *
+ * Every href resolves from src/data/p31-mesh-constants.json (the
+ * verify-content-consistency allowlist). No feature is gated on donating.
+ */
 import MarketingShell from '../layouts/MarketingShell.astro';
 import SectionHeader from '../components/marketing/SectionHeader.astro';
-import CanonFooter from '../components/islands/CanonFooter.tsx';
+import Footer from '../components/marketing/Footer.astro';
+import constants from '../data/p31-mesh-constants.json';
 
-const BTCPAY_STORE_ID = '5nPURCXnK5UMYQF2K9LYSo52nzSEYfJXm8tncnQbKLF9';
-const BTCPAY_HOST = 'https://btcpay.p31ca.org';
+const channels = [
+  {
+    key: 'opencollective',
+    label: 'Open Collective',
+    href: constants.openCollectiveUrl,
+    desc: 'Transparent, recurring giving with a public ledger. See exactly where every dollar goes.',
+    note: 'Fiscal hosting being finalized.',
+  },
+  {
+    key: 'github-sponsors',
+    label: 'GitHub Sponsors',
+    href: constants.githubSponsorsUrl,
+    desc: 'Sponsor the open-source work on GitHub. Recurring, and one-time tiers.',
+    note: 'Profile pending platform approval.',
+  },
+  {
+    key: 'btcpay',
+    label: 'Bitcoin / BTCPay',
+    href: constants.btcpayDonateUrl,
+    desc: 'Self-hosted, no-processor crypto donations — for donors who value privacy.',
+    note: 'Self-hosted, no middleman, no fees.',
+  },
+];
 ---
 
-<MarketingShell theme="sunlight" title="Donate — P31 Labs" description="Support P31 Labs — a 501(c)(3) confirmed nonprofit. Accepting Bitcoin, USD, EUR, GBP via BTCPay — no middleman, no fees, self-custody.">
-
+<MarketingShell
+  theme="sunlight"
+  title="Donate — P31 Labs"
+  description="Support P31 Labs, a 501(c)(3) public charity. The software stays free — grants and donations fund the work. Give via Open Collective, GitHub Sponsors, or self-hosted BTCPay."
+>
   <main id="main-content" class="section">
-    <div class="max-w-4xl mx-auto px-6 md:px-12 lg:px-16">
-      <SectionHeader title="Support P31 Labs" description="P31 Labs is a Georgia nonprofit with 501(c)(3) status confirmed (IRS determination 2026-09-23) — donations may be tax-deductible. Direct, self-custody giving. No fiscal host, no platform fees." align="left" />
+    <div class="doa1-max-w-4xl doa1-mx-auto doa1-px-6 doa1-md-px-12 doa1-lg-px-16">
+      <SectionHeader
+        level="1"
+        title="Support P31 Labs"
+        description="The software stays free. Grants and donations fund the work — we do not sell the software, and no feature is ever locked behind a donation."
+        align="left"
+      />
 
-      <div class="mt-12 space-y-8">
-        <div class="glass-card p-8">
-          <h3 class="text-lg font-bold mb-5" style="color: var(--p31-text);">Bitcoin / Self-custody</h3>
-          <p class="text-sm mb-6" style="color: var(--p31-text-secondary);">Pay with BTC, USD, EUR, or GBP via our self-hosted BTCPay Server. No middleman. No fees.</p>
-          <form method="POST" action="https://btcpay.p31ca.org/api/v1/invoices" class="btcpay-form btcpay-form--block" id="btcpayForm">
-            <input type="hidden" name="storeId" value="5nPURCXnK5UMYQF2K9LYSo52nzSEYfJXm8tncnQbKLF9" />
-            <input type="hidden" name="jsonResponse" value="true" />
-            <input type="hidden" name="checkoutDesc" value="Donation to P31 Labs" />
-            <input type="hidden" name="browserRedirect" value="https://p31ca.org/donate?btcpay=success" />
-            <input type="hidden" name="notifyEmail" value="willyj1587@gmail.com" />
-            <input type="hidden" name="checkoutQueryString" value="lang=en" />
-            <div class="btcpay-custom-container">
-              <input class="btcpay-input-price" type="number" name="price" min="1" max="50000" step="1" value="10" data-price="10" style="width:209px;" />
-              <select name="currency" class="mt-3">
-                <option value="USD" selected>USD</option>
-                <option value="BTC">BTC</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-              </select>
-            </div>
-            <button type="submit" class="submit mt-4" name="submit" style="min-width:209px;min-height:57px;border-radius:4px;border-style:none;background-color:var(--p31-accent);cursor:pointer;" title="Pay with BTCPay Server, a Self-Hosted Bitcoin Payment Processor">
-              <span style="color:#fff; font-weight: 700;">Donate with BTCPay</span>
-            </button>
-          </form>
-          <div id="btcpay-success" class="mt-4 text-sm hidden" style="color: var(--p31-notif-green);">Thank you! Your donation has been received.</div>
-        </div>
+      <div class="doa1-mt-12 doa1-space-y-8">
 
-        <div class="glass-card p-8">
-          <h3 class="text-lg font-bold mb-5" style="color: var(--p31-text);">Other ways to support</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <a href="https://ko-fi.com/trimtab69420" target="_blank" rel="noopener noreferrer" class="p-4 rounded-xl text-center" style="background: var(--p31-surface); color: var(--p31-text);">
-              <div class="font-bold">Ko-fi</div>
-              <div class="text-xs mt-1" style="color: var(--p31-text-tertiary);">0% fees</div>
-            </a>
-            <a href="https://hcb.hackclub.com/donations/start/p31-labs" target="_blank" rel="noopener noreferrer" class="p-4 rounded-xl text-center" style="background: var(--p31-surface); color: var(--p31-text);">
-              <div class="font-bold">Hack Club</div>
-              <div class="text-xs mt-1" style="color: var(--p31-text-tertiary);">Fiscal host</div>
-            </a>
+        {/* ── THE 501(c)(3) STATEMENT (verbatim) ── */}
+        <section class="glass-card">
+          <div class="doa1-p-8">
+            <p class="doa1-text-sm doa1-leading-relaxed" style="color: var(--p31-text-secondary);">
+              P31 Labs, Inc. is a 501(c)(3) tax-exempt public charity (EIN 42-1888158;
+              exemption effective 2026-04-03). Contributions are tax-deductible to the
+              extent allowed by law. Your gift funds free, privacy-preserving software
+              for neurodivergent people and family caregivers.
+              <strong style="color: var(--p31-text);">The software stays free — grants and
+              donations fund the work, we do not sell the software.</strong>
+            </p>
           </div>
-        </div>
+        </section>
+
+        {/* ── CHANNELS (link-out only) ── */}
+        <section>
+          <h2 class="doa1-text-lg doa1-font-bold doa1-mb-5" style="color: var(--p31-text);">Ways to give</h2>
+          <div data-p31="grid" data-cols="3" data-even class="doa1-gap-4">
+            {channels.map((c) => (
+              <a
+                href={c.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="glass-card doa1-p-6 doa1-rounded-xl doa1-block doa1-transition"
+                style="border: 1px solid var(--p31-glass-border, rgba(255,255,255,0.1));"
+              >
+                <h3 class="doa1-text-base doa1-font-bold doa1-mb-2" style="color: var(--p31-text);">{c.label}</h3>
+                <p class="doa1-text-sm doa1-leading-relaxed" style="color: var(--p31-text-secondary);">{c.desc}</p>
+                <p class="doa1-mt-3 doa1-text-xs doa1-font-mono" style="color: var(--p31-text-tertiary);">{c.note}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        {/* ── PRINCIPLE ── */}
+        <section class="doa1-text-center doa1-py-4">
+          <p class="doa1-text-sm doa1-max-w-xl doa1-mx-auto" style="color: var(--p31-text-tertiary);">
+            Every channel above opens on the provider's own site. We never handle your
+            payment details, and we never gate the software on a gift.
+          </p>
+        </section>
+
       </div>
     </div>
   </main>
 
-  <CanonFooter client:load />
-
-  <script is:inline>
-    (function() {
-      const form = document.getElementById('btcpayForm');
-      const success = document.getElementById('btcpay-success');
-      if (!form) return;
-
-      if (new URLSearchParams(location.search).get('btcpay') === 'success') {
-        success.classList.remove('hidden');
-      }
-
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState === 4 && xhr.status === 200 && xhr.responseText) {
-            try {
-              const data = JSON.parse(xhr.responseText);
-              if (window.btcpay && data.invoiceId) {
-                window.btcpay.appendInvoiceFrame(data.invoiceId);
-              } else if (data.invoiceId) {
-                window.location.href = 'https://btcpay.p31ca.org/i/' + data.invoiceId;
-              }
-            } catch(err) {
-              console.error('BTCPay response parse error:', err);
-            }
-          }
-        };
-        xhr.open('POST', form.getAttribute('action'), true);
-        xhr.send(new FormData(form));
-      });
-    })();
-  </script>
+  <Footer />
 </MarketingShell>

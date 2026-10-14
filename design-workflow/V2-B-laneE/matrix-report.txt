@@ -1,0 +1,58 @@
+P31 V2-B laneE matrix-run — target: /home/p31/production/design-workflow/V2-B-laneE/matrix-fixture/bad.html (label: matrix-fixture/bad.html)
+browser: 150.0.7871.100
+matrix: 6 widths × 2 spoons × 2 motion × 2 pointer = 48 cells + 1 zoom cell
+target fixture limitation: portal node_modules build NOT available this cycle (runbook B-1) — running against the D-embedded/ui served-UI fixture as the matrix target.
+media neutralization: CSSOM for inline styles + Node-side extraction of <link> sheets (file:// external sheets are CSSOM-inaccessible in this Chromium: "Cannot access rules").
+fixture note: served-UI fixture has ZERO <a>/<button> elements — the coarse 44px assertion passes vacuously (target count recorded per cell).
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+FAIL  w=320  spoons=0  motion=reduce  pointer=coarse  zoom=1.0  scroll=500/320  pMatches=coarse  mediaRe=1  targets=[button@28x28]  overflow scrollWidth=500>innerWidth=320; targets<44px: button@28x28
+FAIL  w=320  spoons=0  motion=reduce  pointer=fine  zoom=1.0  scroll=500/320  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  overflow scrollWidth=500>innerWidth=320
+FAIL  w=320  spoons=0  motion=no-preference  pointer=coarse  zoom=1.0  scroll=500/320  pMatches=coarse  mediaRe=1  targets=[button@28x28]  overflow scrollWidth=500>innerWidth=320; targets<44px: button@28x28
+FAIL  w=320  spoons=0  motion=no-preference  pointer=fine  zoom=1.0  scroll=500/320  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  overflow scrollWidth=500>innerWidth=320
+FAIL  w=320  spoons=3  motion=reduce  pointer=coarse  zoom=1.0  scroll=500/320  pMatches=coarse  mediaRe=1  targets=[button@28x28]  overflow scrollWidth=500>innerWidth=320; targets<44px: button@28x28
+FAIL  w=320  spoons=3  motion=reduce  pointer=fine  zoom=1.0  scroll=500/320  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  overflow scrollWidth=500>innerWidth=320
+FAIL  w=320  spoons=3  motion=no-preference  pointer=coarse  zoom=1.0  scroll=500/320  pMatches=coarse  mediaRe=1  targets=[button@28x28]  overflow scrollWidth=500>innerWidth=320; targets<44px: button@28x28
+FAIL  w=320  spoons=3  motion=no-preference  pointer=fine  zoom=1.0  scroll=500/320  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  overflow scrollWidth=500>innerWidth=320
+FAIL  w=375  spoons=0  motion=reduce  pointer=coarse  zoom=1.0  scroll=500/375  pMatches=coarse  mediaRe=1  targets=[button@28x28]  overflow scrollWidth=500>innerWidth=375; targets<44px: button@28x28
+FAIL  w=375  spoons=0  motion=reduce  pointer=fine  zoom=1.0  scroll=500/375  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  overflow scrollWidth=500>innerWidth=375
+FAIL  w=375  spoons=0  motion=no-preference  pointer=coarse  zoom=1.0  scroll=500/375  pMatches=coarse  mediaRe=1  targets=[button@28x28]  overflow scrollWidth=500>innerWidth=375; targets<44px: button@28x28
+FAIL  w=375  spoons=0  motion=no-preference  pointer=fine  zoom=1.0  scroll=500/375  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  overflow scrollWidth=500>innerWidth=375
+FAIL  w=375  spoons=3  motion=reduce  pointer=coarse  zoom=1.0  scroll=500/375  pMatches=coarse  mediaRe=1  targets=[button@28x28]  overflow scrollWidth=500>innerWidth=375; targets<44px: button@28x28
+FAIL  w=375  spoons=3  motion=reduce  pointer=fine  zoom=1.0  scroll=500/375  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  overflow scrollWidth=500>innerWidth=375
+FAIL  w=375  spoons=3  motion=no-preference  pointer=coarse  zoom=1.0  scroll=500/375  pMatches=coarse  mediaRe=1  targets=[button@28x28]  overflow scrollWidth=500>innerWidth=375; targets<44px: button@28x28
+FAIL  w=375  spoons=3  motion=no-preference  pointer=fine  zoom=1.0  scroll=500/375  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  overflow scrollWidth=500>innerWidth=375
+FAIL  w=390  spoons=0  motion=reduce  pointer=coarse  zoom=1.0  scroll=500/390  pMatches=coarse  mediaRe=1  targets=[button@28x28]  overflow scrollWidth=500>innerWidth=390; targets<44px: button@28x28
+FAIL  w=390  spoons=0  motion=reduce  pointer=fine  zoom=1.0  scroll=500/390  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  overflow scrollWidth=500>innerWidth=390
+FAIL  w=390  spoons=0  motion=no-preference  pointer=coarse  zoom=1.0  scroll=500/390  pMatches=coarse  mediaRe=1  targets=[button@28x28]  overflow scrollWidth=500>innerWidth=390; targets<44px: button@28x28
+FAIL  w=390  spoons=0  motion=no-preference  pointer=fine  zoom=1.0  scroll=500/390  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  overflow scrollWidth=500>innerWidth=390
+FAIL  w=390  spoons=3  motion=reduce  pointer=coarse  zoom=1.0  scroll=500/390  pMatches=coarse  mediaRe=1  targets=[button@28x28]  overflow scrollWidth=500>innerWidth=390; targets<44px: button@28x28
+FAIL  w=390  spoons=3  motion=reduce  pointer=fine  zoom=1.0  scroll=500/390  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  overflow scrollWidth=500>innerWidth=390
+FAIL  w=390  spoons=3  motion=no-preference  pointer=coarse  zoom=1.0  scroll=500/390  pMatches=coarse  mediaRe=1  targets=[button@28x28]  overflow scrollWidth=500>innerWidth=390; targets<44px: button@28x28
+FAIL  w=390  spoons=3  motion=no-preference  pointer=fine  zoom=1.0  scroll=500/390  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  overflow scrollWidth=500>innerWidth=390
+FAIL  w=768  spoons=0  motion=reduce  pointer=coarse  zoom=1.0  scroll=768/768  pMatches=coarse  mediaRe=1  targets=[button@28x28]  targets<44px: button@28x28
+PASS  w=768  spoons=0  motion=reduce  pointer=fine  zoom=1.0  scroll=768/768  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  clean
+FAIL  w=768  spoons=0  motion=no-preference  pointer=coarse  zoom=1.0  scroll=768/768  pMatches=coarse  mediaRe=1  targets=[button@28x28]  targets<44px: button@28x28
+PASS  w=768  spoons=0  motion=no-preference  pointer=fine  zoom=1.0  scroll=768/768  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  clean
+FAIL  w=768  spoons=3  motion=reduce  pointer=coarse  zoom=1.0  scroll=768/768  pMatches=coarse  mediaRe=1  targets=[button@28x28]  targets<44px: button@28x28
+PASS  w=768  spoons=3  motion=reduce  pointer=fine  zoom=1.0  scroll=768/768  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  clean
+FAIL  w=768  spoons=3  motion=no-preference  pointer=coarse  zoom=1.0  scroll=768/768  pMatches=coarse  mediaRe=1  targets=[button@28x28]  targets<44px: button@28x28
+PASS  w=768  spoons=3  motion=no-preference  pointer=fine  zoom=1.0  scroll=768/768  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  clean
+FAIL  w=1440  spoons=0  motion=reduce  pointer=coarse  zoom=1.0  scroll=1440/1440  pMatches=coarse  mediaRe=1  targets=[button@28x28]  targets<44px: button@28x28
+PASS  w=1440  spoons=0  motion=reduce  pointer=fine  zoom=1.0  scroll=1440/1440  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  clean
+FAIL  w=1440  spoons=0  motion=no-preference  pointer=coarse  zoom=1.0  scroll=1440/1440  pMatches=coarse  mediaRe=1  targets=[button@28x28]  targets<44px: button@28x28
+PASS  w=1440  spoons=0  motion=no-preference  pointer=fine  zoom=1.0  scroll=1440/1440  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  clean
+FAIL  w=1440  spoons=3  motion=reduce  pointer=coarse  zoom=1.0  scroll=1440/1440  pMatches=coarse  mediaRe=1  targets=[button@28x28]  targets<44px: button@28x28
+PASS  w=1440  spoons=3  motion=reduce  pointer=fine  zoom=1.0  scroll=1440/1440  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  clean
+FAIL  w=1440  spoons=3  motion=no-preference  pointer=coarse  zoom=1.0  scroll=1440/1440  pMatches=coarse  mediaRe=1  targets=[button@28x28]  targets<44px: button@28x28
+PASS  w=1440  spoons=3  motion=no-preference  pointer=fine  zoom=1.0  scroll=1440/1440  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  clean
+FAIL  w=2560  spoons=0  motion=reduce  pointer=coarse  zoom=1.0  scroll=2560/2560  pMatches=coarse  mediaRe=1  targets=[button@28x28]  targets<44px: button@28x28
+PASS  w=2560  spoons=0  motion=reduce  pointer=fine  zoom=1.0  scroll=2560/2560  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  clean
+FAIL  w=2560  spoons=0  motion=no-preference  pointer=coarse  zoom=1.0  scroll=2560/2560  pMatches=coarse  mediaRe=1  targets=[button@28x28]  targets<44px: button@28x28
+PASS  w=2560  spoons=0  motion=no-preference  pointer=fine  zoom=1.0  scroll=2560/2560  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  clean
+FAIL  w=2560  spoons=3  motion=reduce  pointer=coarse  zoom=1.0  scroll=2560/2560  pMatches=coarse  mediaRe=1  targets=[button@28x28]  targets<44px: button@28x28
+PASS  w=2560  spoons=3  motion=reduce  pointer=fine  zoom=1.0  scroll=2560/2560  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  clean
+FAIL  w=2560  spoons=3  motion=no-preference  pointer=coarse  zoom=1.0  scroll=2560/2560  pMatches=coarse  mediaRe=1  targets=[button@28x28]  targets<44px: button@28x28
+PASS  w=2560  spoons=3  motion=no-preference  pointer=fine  zoom=1.0  scroll=2560/2560  pMatches=fine  mediaRe=1  targets=n/a (pointer:fine — 44px floor is coarse-only)  clean
+SKIP  w=320  spoons=3  motion=no-preference  pointer=coarse  zoom=2.0  scroll=-  pMatches=-  mediaRe=-  targets=-  NOTE: zoom: pageScaleFactor had no effect (innerWidth=320)
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+SUMMARY: 12 PASS | 36 FAIL | 1 SKIP | 9.653s

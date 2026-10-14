@@ -1,0 +1,4 @@
+# Local operator artifacts — never committed.
+# scripts/key-rotate.mjs writes secret-listing backups here (names +
+# metadata + sha256 fingerprint; Cloudflare never returns secret values).
+.secret-backups/

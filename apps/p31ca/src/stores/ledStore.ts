@@ -99,9 +99,20 @@ export const useLedStore = create<LedState>()(
       applyPreset: (p) => set(p),
       reset: () => set({ ...DEFAULTS }),
     }),
-    { name: 'p31:led:v1' },
+    { name: 'p31:led:v1', skipHydration: true },
   ),
 )
+
+/** Rehydrate the LED store after the first paint so server-rendered markup
+ *  (default state) matches the client's initial render — no React #423/#425
+ *  hydration mismatch. Idempotent: safe to call on every island mount. */
+export function rehydrateLedStore() {
+  try {
+    void useLedStore.persist.rehydrate()
+  } catch {
+    /* storage unavailable */
+  }
+}
 
 /** Serialize the current LED state into a shareable query string. */
 export function ledPresetToUrl(): string {

@@ -28,6 +28,7 @@
     "scripts/postinstall.js"
   ],
   "dependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "boxen": "^5.1.2",

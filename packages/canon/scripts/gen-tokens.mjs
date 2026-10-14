@@ -22,11 +22,11 @@
  *
  * Run: node scripts/gen-tokens.mjs  (from packages/canon)
  */
-import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs'
+import { writeFileSync, appendFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs'
 import { join, dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import StyleDictionary from 'style-dictionary'
-import { THEMES, THEME_IDS, DEFAULT_THEME, BASE, SEMANTIC_MAP, GLOBAL_COMPAT, COMPAT_ROOT, CONDITIONAL_CSS } from '../src/theming/theme-store.ts'
+import { THEMES, THEME_IDS, DEFAULT_THEME, BASE, SEMANTIC_MAP, GLOBAL_COMPAT, COMPAT_ROOT, CONDITIONAL_CSS, ROSE_MODE } from '../src/theming/theme-store.ts'
+import { buildTokenArtifacts } from './sd-config.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const root = resolve(here, '..')
@@ -49,8 +49,15 @@ function typeFor(name) {
     name.startsWith('scale-') || name.startsWith('radius-') ||
     name.startsWith('space-') || name.startsWith('spacing-') ||
     name.startsWith('type-') || name.startsWith('blur-') ||
-    name.startsWith('touch-') || name === 'base' ||
-    name === 'topbar-height' || name === 'glass-blur' ||
+    name.startsWith('touch-') || name.startsWith('fluid-') ||
+    name.startsWith('control-') || name.startsWith('gap-') ||
+    name.startsWith('page-') || name.startsWith('prose-') ||
+    name.startsWith('form-') || name.startsWith('shell-') ||
+    name.startsWith('grid-') || name.startsWith('split-') ||
+    name === 'focus-offset' ||
+    name === 'base' ||
+    name === 'topbar-height' || name === 'header-height' ||
+    name === 'glass-blur' ||
     name === 'glass-radius' || name === 'card-padding' ||
     ['h1', 'h2', 'h3', 'h4', 'body', 'body-sm', 'label', 'caption'].includes(name)
   ) return 'dimension'
@@ -80,6 +87,10 @@ function oklchToObject(value) {
 function dimToObject(value) {
   const m = String(value).match(/^([\d.]+)([a-z%]*)$/i)
   if (!m) return null
+  // `ch` is a valid CSS unit but not portable in the DTCG dimension schema
+  // (canon v2's --p31-prose-max is 65ch) — treat it like other CSS-only
+  // values: dropped from the DTCG export, kept in the CSS emit layer.
+  if (m[2] === 'ch') return null
   // A bare `0` dimension is semantically 0px — DTCG rejects empty unit.
   const unit = m[2] || (parseFloat(m[1]) === 0 ? 'px' : '')
   return { value: parseFloat(m[1]), unit }
@@ -124,6 +135,11 @@ function dtcgValue(type, raw) {
 function dt(value, type, desc) {
   const structured = dtcgValue(type, value)
   const node = { $value: structured ?? value, $type: type }
+  if (typeof value === 'string' && value.length) {
+    // The RAW CSS string rides as a vendor extension so the SD v5 pipeline
+    // emits byte-identical CSS (no reserialization of oklch/dimensions).
+    node.$extensions = { p31: { css: value } }
+  }
   if (structured === null) {
     // css-function value: mark non-portable so the export step can drop it.
     node.$description = `${desc ?? ''} [css-dependent: '${value}']`.trim()
@@ -205,17 +221,29 @@ for (const [path, slot] of Object.entries(SEMANTIC_MAP)) {
   const defaultStructured = dtcgValue(slot.type, defaultValue)
   if (defaultStructured === null) continue // css-dependent — not portable
   const node = { $value: defaultStructured, $type: slot.type }
+  if (typeof defaultValue === 'string' && defaultValue.length) {
+    // Raw CSS string for the SD v5 emission — the default-theme value must
+    // not be reserialized from the structured form.
+    node.$extensions = { p31: { css: defaultValue } }
+  }
 
-  // Per-theme overrides ride along; Style Dictionary ignores unknown $extensions.
+  // Per-theme overrides ride along in two forms: `themes` (structured, for
+  // external DTCG consumers) and `themesCss` (raw store strings, for the SD
+  // v5 CSS emission — every theme block carries every semantic slot, exactly
+  // like the pre-v5 export). Style Dictionary ignores unknown $extensions.
   const themesExt = {}
+  const themesCss = {}
   for (const id of THEME_IDS) {
     const v = resolveSlot(slot, id)
+    if (v === undefined) continue
+    themesCss[id] = v
     const sv = dtcgValue(slot.type, v)
-    if (v !== undefined && sv !== null && JSON.stringify(sv) !== JSON.stringify(defaultStructured)) themesExt[id] = sv
+    if (sv !== null && JSON.stringify(sv) !== JSON.stringify(defaultStructured)) themesExt[id] = sv
   }
-  if (Object.keys(themesExt).length) {
-    node.$extensions = { p31: { themes: themesExt } }
-  }
+  const extP31 = { ...(node.$extensions?.p31 ?? {}) }
+  if (Object.keys(themesExt).length) extP31.themes = themesExt
+  extP31.themesCss = themesCss
+  node.$extensions = { p31: extP31 }
 
   // Nest under `p31` using dotted path — e.g. 'color.action.primary' → p31.color.action.primary
   const parts = path.split('.')
@@ -249,6 +277,40 @@ for (const id of THEME_IDS) {
   themes[id] = { p31: themeP31 }
 }
 
+// ---------------------------------------------------------------------
+// 1c. Accent MODES — ratified unification D1.
+// ---------------------------------------------------------------------
+// Cyan is the canonical estate accent (default + every theme). The rose
+// family the hub renders today is a MODE: tokens carry `$extensions.mode:
+// "rose"` and emit as a [data-theme="rose"] block — a semantic-tier value
+// swap (Seven Laws #3), never a component or theme fork.
+const modes = {}
+for (const [full, value] of Object.entries(ROSE_MODE)) {
+  const name = bare(full)
+  const node = dt(value, typeFor(name), `Rose accent mode — runtime var ${full}`)
+  node.$extensions = { mode: 'rose', ...(node.$extensions ?? {}) }
+  modes[name] = node
+}
+
+// D3 — the ONE header token. --p31-topbar-height (56px legacy, 64px in
+// canon) is DEPRECATED: the DTCG carries it as a validated alias ref to
+// p31.header-height, the CSS emits var(--p31-header-height). Removed at
+// Phase 3 port time. The GLOBAL_COMPAT entry with the same bare name is
+// css-dependent (var()) and drops out of the primitive loop above.
+// NOTE (resume 2026-10-14): the node is nested at the PRE-EDIT path
+// p31.topbar.height — the path bottom-nav.contract.ts / topbar.contract.ts
+// resolve against (validate-contracts walkTokens builds dotted paths from
+// nested groups). A flat p31['topbar-height'] leaf breaks that resolution.
+p31.topbar = {
+  height: {
+    $value: '{p31.header-height}',
+    $type: 'dimension',
+    $deprecated: 'Use --p31-header-height (4rem) — the single header token (unification D3). Alias removed at Phase 3 port time.',
+    $description: 'DEPRECATED alias of --p31-header-height (4rem).',
+    $extensions: { p31: { css: 'var(--p31-header-height)' } },
+  },
+}
+
 // DTCG top-level metadata. `$schema` declares the Format Module version this
 // export conforms to; `$extensions.p31` carries the vendor namespace (P31)
 // with version + provenance. This matches the version @p31ca/design-core already
@@ -262,11 +324,12 @@ const dtcg = {
     p31: {
       version: '2025.10',
       name: 'P31 Labs Design System',
-      description: 'Design canon DTCG export — primitives, semantic slots, per-theme palettes.',
+      description: 'Design canon DTCG export — primitives, semantic slots, per-theme palettes, accent modes (rose).',
     },
   },
   p31,
   themes,
+  modes: { rose: modes },
   component: {},
 }
 
@@ -301,57 +364,119 @@ if (existsSync(deprecationsPath)) {
 writeFileSync(dtcgPath, JSON.stringify(dtcg, null, 2) + '\n')
 
 // ---------------------------------------------------------------------
-// 2. CSS output — runtime names, [data-theme] selectors
+// 2. CSS output — SD v5 generates the portable-token layer from the DTCG
+//    export (sd-config.mjs); this script appends the css-emit layer:
+//    values with no portable DTCG form (calc/clamp/var/blur/color-mix/hex/
+//    rgba/…), the COMPAT_ROOT :root overrides, and CONDITIONAL_CSS. That is
+//    the documented architectural split (see file header) — SD is the token
+//    generator, this script owns the css-emit layer. Same cascade positions
+//    as the pre-v5 export: same @layer canon.tokens, later-in-layer wins.
 // ---------------------------------------------------------------------
-/**
- * Resolve every SEMANTIC_MAP slot to a --p31-<dashed-path> CSS var for one
- * theme. This is what makes the semantic tier a RUNTIME contract, not just a
- * DTCG naming layer: components read `var(--p31-color-action-primary)`, which
- * must resolve in CSS exactly as `p31.color.action.primary` resolves in DTCG.
- */
-function semanticCssVars(themeId) {
-  const vars = {}
-  for (const [path, slot] of Object.entries(SEMANTIC_MAP)) {
-    const value = resolveSlot(slot, themeId)
-    if (value === undefined) continue
-    vars[`--p31-${path.split('.').join('-')}`] = value
+/** GLOBAL_COMPAT entries whose value has no portable DTCG form. */
+function cssOnlyPairs(record, typeOf) {
+  const out = []
+  for (const [full, value] of Object.entries(record)) {
+    if (dtcgValue(typeOf(bare(full)), value) === null) out.push([full, value])
   }
-  return vars
+  return out
 }
 
-/** Emit `selector { --p31-*: value; }` from a theme's palette + semantic vars. */
-function cssBlock(selector, themeId, { globals = false, compatRoot = false } = {}) {
-  const tokens = {
-    ...(globals ? GLOBAL_COMPAT : {}),
-    ...THEMES[themeId].tokens,
-    ...semanticCssVars(themeId),
+const compatCssOnly = cssOnlyPairs(GLOBAL_COMPAT, typeFor)
+const baseCssOnly = cssOnlyPairs(BASE, typeFor)
+
+// Flat dashed-name set of every token the DTCG p31 tree carries (primitives
+// + semantic slots). The SD v5 layer emits exactly these; the css-emit
+// supplement must NOT re-emit them (later-in-layer wins would invert the
+// pre-v5 cascade, e.g. semantic scale.xs 12px vs BASE scale-xs calc()).
+const dtcgEmittedNames = new Set()
+{
+  const walkFlat = (node, path) => {
+    for (const [k, v] of Object.entries(node)) {
+      if (k.startsWith('$')) continue
+      if (v && typeof v === 'object' && !Array.isArray(v) && v.$value === undefined) {
+        walkFlat(v, [...path, k])
+      } else {
+        dtcgEmittedNames.add(`--p31-${[...path, k].join('-')}`)
+      }
+    }
   }
-  // Compat root values win over the theme palette AND the semantic slots at
-  // :root (e.g. canon's semantic radius.md literal vs design-core's palette
-  // --p31-radius-md). Themes keep canon's semantic values.
-  if (compatRoot) Object.assign(tokens, COMPAT_ROOT)
-  const lines = Object.entries(tokens)
-    .map(([prop, value]) => `  ${prop}: ${value};`)
-    .join('\n')
-  return `${selector} {\n${lines}\n}\n`
+  walkFlat(p31, [])
+}
+const baseCssOnlyRoot = baseCssOnly.filter(([p]) => !dtcgEmittedNames.has(p))
+const baseCssOnlyTheme = baseCssOnly.filter(([p]) => !dtcgEmittedNames.has(p))
+// Per-theme palette entries with no portable form (e.g. glass-shadow rgba
+// strings) — the DTCG themes tree drops them, so they ride the css-emit layer.
+// Same dtcgEmittedNames filter: never re-emit a name the SD layer covers
+// (themes spread BASE, whose css-only entries must not shadow the semantic
+// slots the SD layer emits, e.g. scale.xs 12px vs BASE scale-xs calc()).
+const themeCssOnly = new Map(
+  THEME_IDS.map((id) => [
+    id,
+    cssOnlyPairs(THEMES[id].tokens, typeFor).filter(([p]) => !dtcgEmittedNames.has(p)),
+  ]),
+)
+const semanticCssOnlyRoot = []
+const semanticCssOnlyTheme = new Map(THEME_IDS.map((id) => [id, []]))
+for (const [path, slot] of Object.entries(SEMANTIC_MAP)) {
+  const name = `--p31-${path.split('.').join('-')}`
+  const vDefault = resolveSlot(slot, DEFAULT_THEME)
+  if (vDefault !== undefined && dtcgValue(slot.type, vDefault) === null) {
+    semanticCssOnlyRoot.push([name, vDefault])
+  }
+  for (const id of THEME_IDS) {
+    const v = resolveSlot(slot, id)
+    if (v !== undefined && dtcgValue(slot.type, v) === null) {
+      semanticCssOnlyTheme.get(id).push([name, v])
+    }
+  }
 }
 
-// Layer order is declared once. Later layers win. The declaration must appear
-// before any layered rule. Consumers override from unlayered CSS regardless;
-// layered rules inside p31.components can be beaten by p31.utilities.
-const LAYER_ORDER = '@layer p31.tokens, p31.reset, p31.base, p31.layout, p31.components, p31.utilities;\n'
-
-let css = '/**\n * @p31ca/canon — tokens.css. Do not edit directly; run `pnpm gen:tokens`.\n * Derived from src/theming/theme-store.ts (single source of truth).\n * Names are the runtime --p31-* contract; values change per theme.\n * Palette vars (--p31-bg, --p31-accent, …) AND semantic slots\n * (color.action.*, space.inline.*, font.size.*, motion.*) are emitted here.\n */\n\n'
-css += LAYER_ORDER + '\n'
-css += '@layer p31.tokens {\n'
-css += cssBlock(':root', DEFAULT_THEME, { globals: true, compatRoot: true })
+let cssSupplement = ''
+cssSupplement +=
+  '\n/* ── css-emit layer — values with no portable DTCG form (calc/clamp/var/\n' +
+  '   blur/color-mix/hex/…) + COMPAT_ROOT overrides. Same layer; later wins.\n' +
+  '   DEPRECATED (unification D3): --p31-topbar-height aliases the ONE header\n' +
+  '   token --p31-header-height (4rem); removed at Phase 3 port time. ── */\n'
+cssSupplement += '@layer canon.tokens {\n:root {\n'
+for (const [p, v] of [
+  ...compatCssOnly,
+  ...baseCssOnlyRoot,
+  ...themeCssOnly.get(DEFAULT_THEME),
+  ...semanticCssOnlyRoot,
+  ...Object.entries(COMPAT_ROOT),
+]) {
+  cssSupplement += `  ${p}: ${v};\n`
+}
+cssSupplement += '}\n'
 for (const id of THEME_IDS) {
-  css += '\n' + cssBlock(`[data-theme="${id}"]`, id)
+  // BASE css-only values (calc/clamp/var scale + control tokens) are
+  // theme-independent; the pre-v5 export carried them in every theme block
+  // (themes spread BASE) — reproduce that name coverage + cascade order
+  // (palette before semantic, as pre-v5).
+  const rows = [...baseCssOnlyTheme, ...themeCssOnly.get(id), ...semanticCssOnlyTheme.get(id)]
+  if (!rows.length) continue
+  cssSupplement += `[data-theme="${id}"] {\n${rows.map(([p, v]) => `  ${p}: ${v};`).join('\n')}\n}\n`
 }
-css += '}\n'
-css += '\n/* ── design-core compatibility (unlayered) — Phase 1 absorption ── */\n'
-css += CONDITIONAL_CSS
-writeFileSync(join(distDir, 'tokens.css'), css)
+cssSupplement += '}\n'
+cssSupplement += '\n/* ── design-core compatibility (unlayered) — Phase 1 absorption ── */\n'
+cssSupplement += CONDITIONAL_CSS
+
+// ---------------------------------------------------------------------
+// 3. SD v5 build — dist/tokens.css (token layer), dist/tokens.mjs (typed
+//    JS), tokens/dist/tokens.resolved.json (agent-consumable).
+// ---------------------------------------------------------------------
+try {
+  await buildTokenArtifacts({
+    root,
+    meta: { $schema: dtcg.$schema, $extensions: dtcg.$extensions },
+  })
+} catch (err) {
+  console.error('\nSD v5 BUILD FAILED — emitted tokens.dtc.json is not spec-conformant.\n')
+  console.error(String(err.message ?? err))
+  process.exit(1)
+}
+appendFileSync(join(distDir, 'tokens.css'), cssSupplement)
+const finalCss = readFileSync(join(distDir, 'tokens.css'), 'utf8')
 
 // ---------------------------------------------------------------------
 // 2b. Typed name contract — src/tokens.ts
@@ -362,6 +487,15 @@ writeFileSync(join(distDir, 'tokens.css'), css)
 // maps, manifest schemas) type their keys against real canon names — a
 // typo'd token name becomes a compile error, not a silent fallback. Additive:
 // nothing here changes tokens.css or the DTCG export.
+function semanticCssVars(themeId) {
+  const vars = {}
+  for (const [path, slot] of Object.entries(SEMANTIC_MAP)) {
+    const value = resolveSlot(slot, themeId)
+    if (value === undefined) continue
+    vars[`--p31-${path.split('.').join('-')}`] = value
+  }
+  return vars
+}
 const nameSet = new Set()
 for (const full of Object.keys(BASE)) nameSet.add(full)
 for (const full of Object.keys(GLOBAL_COMPAT)) nameSet.add(full)
@@ -386,31 +520,10 @@ export const P31_TOKEN_NAMES: readonly P31TokenName[] = ${JSON.stringify(sortedN
 `
 writeFileSync(join(root, 'src', 'tokens.ts'), tokensTs)
 
-// ---------------------------------------------------------------------
-// 3. SD validates the DTCG export (SD never emits CSS here)
-// ---------------------------------------------------------------------
-try {
-  const sd = new StyleDictionary({
-    usesDtcg: true,
-    source: ['tokens/tokens.dtc.json'],
-    platforms: {
-      json: {
-        transformGroup: 'js',
-        buildPath: 'tokens/dist/',
-        files: [{ destination: 'tokens.resolved.json', format: 'json/nested' }],
-      },
-    },
-  })
-  await sd.hasInitialized
-  await sd.buildAllPlatforms()
-} catch (err) {
-  console.error('\nDTCG VALIDATION FAILED — emitted tokens.dtc.json is not spec-conformant.\n')
-  console.error(String(err.message ?? err))
-  process.exit(1)
-}
-
 const themeCount = THEME_IDS.length
 const semanticCount = Object.keys(SEMANTIC_MAP).length
-console.log(`gen:tokens — ${themeCount} themes + ${semanticCount} semantic slots from theme-store.ts`)
-console.log(`  dist/tokens.css           (${css.length} bytes, ${Object.keys(THEMES[DEFAULT_THEME].tokens).length} vars in :root + ${themeCount} [data-theme] blocks)`)
+console.log(`gen:tokens — ${themeCount} themes + 1 accent mode (rose) + ${semanticCount} semantic slots from theme-store.ts`)
+console.log(`  dist/tokens.css           (${finalCss.length} bytes — SD v5 token layer + css-emit supplement)`)
+console.log(`  dist/tokens.mjs           (typed JS — SD v5)`)
+console.log(`  tokens/dist/tokens.resolved.json (SD v5, resolved)`)
 console.log(`  tokens/tokens.dtc.json    (${(await import('node:fs')).statSync(dtcgPath).size} bytes, DTCG — SD validated)`)

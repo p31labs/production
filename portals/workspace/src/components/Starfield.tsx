@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Starfield as CanonStarfield } from '@p31ca/design-core/compositions'
 import { useWorkspaceStore, type StarfieldConfig } from '@/store/workspaceStore'
 import { useNotifStore } from '@/store/useNotifStore'
 import './starfield.css'
@@ -37,21 +38,14 @@ export function genStars(count: number, seed: number): Star[] {
 const FLARE_MS = 1400
 
 /**
- * Starfield — the ambient seeded canvas behind every workspace surface.
- *
- * Full connection (per the port):
- *   - reads `--p31-star` each frame, so it recolors with the theme engine
- *   - subscribes to the notification store — `burst` notifications flare a
- *     set of random stars (the QPJ behavior)
- *   - calm floor: `spoons === 0` or `prefers-reduced-motion` renders a single
- *     static frame and stops the rAF loop (battery/CPU safe)
- *   - WCAG 2.2.2: a pause/stop control is exposed via Settings → Starfield
- *     (`flaring` off stops motion; the config drives count/speed/seed/flares)
+ * FlareCanvas — the portal's notification-flare layer, drawn on its own
+ * transparent canvas ABOVE the canon starfield (later sibling = paints on
+ * top). Reads `--p31-star` each frame so it recolors with the theme engine;
+ * `burst` notifications flare the seeded star set; calm or reduced-motion
+ * renders only the settle sweep, never a rAF loop.
  */
-export function Starfield() {
+function FlareCanvas({ cfg, calm }: { cfg: StarfieldConfig; calm: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
-  const starfield = useWorkspaceStore((s) => s.starfield)
-  const calm = useWorkspaceStore((s) => s.crisis)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -59,20 +53,12 @@ export function Starfield() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const cfg: StarfieldConfig = starfield
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const reduce = calm || prefersReduced
 
-    const count = cfg.count
-    const seed = cfg.seed
-    const twinkleSpeed = cfg.twinkleSpeed
-    const flareCount = cfg.flareCount
-    const flaring = cfg.flaring
-
-    let stars: Star[] = genStars(count, seed)
+    const flareStars = genStars(cfg.flareCount, cfg.seed)
     let flareAt = 0
     let flareRef = 0
-    let flareStars: Star[] = []
 
     const starColor = () => {
       const css = getComputedStyle(document.documentElement)
@@ -84,22 +70,21 @@ export function Starfield() {
     const resize = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
-      stars = genStars(count, seed)
     }
 
     const draw = () => {
       const w = canvas.width
       const h = canvas.height
       ctx.clearRect(0, 0, w, h)
-      ctx.fillStyle = starColor()
       const now = Date.now()
-      const flareOn = flaring && now - flareAt < FLARE_MS
-      for (const s of stars) {
-        const twinkle = 0.35 + 0.3 * Math.sin(s.tw + now * 0.001 * s.ts * twinkleSpeed)
-        const isFlaring = flareOn && flareStars.includes(s) ? 1 : 0
-        ctx.globalAlpha = Math.min(1, twinkle + isFlaring * 0.55)
+      const flareOn = cfg.flaring && now - flareAt < FLARE_MS
+      if (!flareOn) return
+      ctx.fillStyle = starColor()
+      for (const s of flareStars) {
+        const twinkle = 0.4 + 0.3 * Math.sin(s.tw + now * 0.001 * s.ts * cfg.twinkleSpeed)
+        ctx.globalAlpha = Math.min(1, twinkle)
         ctx.beginPath()
-        ctx.arc(s.x * w, s.y * h, s.r * (isFlaring ? 1.6 : 1), 0, Math.PI * 2)
+        ctx.arc(s.x * w, s.y * h, s.r * 1.6, 0, Math.PI * 2)
         ctx.fill()
       }
       ctx.globalAlpha = 1
@@ -113,9 +98,8 @@ export function Starfield() {
     const unsub = useNotifStore.subscribe((state, prev) => {
       if (state.items.length === prev.items.length) return
       const evt = state.items[state.items.length - 1]
-      if (evt?.burst && flaring) {
+      if (evt?.burst && cfg.flaring) {
         flareAt = Date.now()
-        flareStars = stars.slice().sort(() => Math.random() - 0.5).slice(0, flareCount)
       }
     })
 
@@ -123,10 +107,9 @@ export function Starfield() {
     window.addEventListener('resize', resize)
 
     if (reduce) {
-      draw()
       // Low-frequency settle: catch late flares without a full rAF loop.
       const settle = window.setInterval(() => {
-        if (flaring && Date.now() - flareAt < FLARE_MS && flareStars.length > 0) draw()
+        if (cfg.flaring && Date.now() - flareAt < FLARE_MS) draw()
       }, 500)
       return () => {
         window.clearInterval(settle)
@@ -141,9 +124,31 @@ export function Starfield() {
       window.removeEventListener('resize', resize)
       unsub()
     }
-  }, [starfield, calm])
+  }, [cfg, calm])
 
-  return <canvas className="starfield" ref={canvasRef} aria-hidden="true" />
+  return <canvas ref={canvasRef} className="starfield" aria-hidden="true" />
+}
+
+/**
+ * Starfield — consumer wrapper over the canon Starfield composition.
+ *
+ * The canon component owns the ambient star layer (mountStarfield, calm
+ * floor at spoons 0, reduced-motion handling). The portal adds ONE
+ * extension on top via the documented children... sibling composition: the
+ * notification-flare canvas. Ambient config (count/seed/twinkleSpeed) is
+ * canon-owned; flareCount/flaring continue to drive the flare layer.
+ */
+export function Starfield() {
+  const starfield = useWorkspaceStore((s) => s.starfield)
+  const calm = useWorkspaceStore((s) => s.crisis)
+  const spoons = useWorkspaceStore((s) => s.spoons)
+
+  return (
+    <>
+      <CanonStarfield spoons={spoons} className="starfield" />
+      <FlareCanvas cfg={starfield} calm={calm} />
+    </>
+  )
 }
 
 export default Starfield

@@ -7,6 +7,9 @@ export interface Env {
   SHELL_ORIGIN: string;
   /** 64-hex-char seed (openssl rand -hex 32) used to deterministically derive the Ed25519 JWKS signing key. */
   JWKS_PRIVATE_KEY_SEED?: string;
+  /** Feature flag — when 'true', URL-form client_ids are resolved via Client ID
+   *  Metadata Documents (CIMD, preferred by MCP 2026-07-28 over RFC 7591 DCR). */
+  CIMD_ENABLED?: string;
 }
 
 export interface OAuthSession {
@@ -15,6 +18,8 @@ export interface OAuthSession {
   code_verifier: string;
   state: string;
   redirect_uri: string;
+  /** RFC 8707 resource indicator carried through the authorize request (nullable). */
+  resource: string | null;
   created_at: number;
   expires_at: number;
 }
@@ -30,6 +35,8 @@ export interface OAuthToken {
   did_key: string;
   per_user_salt: string;
   dpop_jkt: string | null;
+  /** RFC 8707 resource indicator recorded at authorization time (nullable). */
+  resource: string | null;
   created_at: number;
 }
 
@@ -51,6 +58,8 @@ export interface PARRequest {
   state: string;
   code_challenge: string;
   code_challenge_method?: string;
+  /** RFC 8707 resource indicator (optional). */
+  resource?: string;
 }
 
 export interface PARResponse {

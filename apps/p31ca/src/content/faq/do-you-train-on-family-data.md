@@ -1,6 +1,6 @@
 ---
 q: Do you use my family's data to train models?
-a: No. P31 keeps no server-side identity store, collects no analytics, and does not train on family data. What is stored is the public DID on your device and the audit chain, which records actions, not personal content.
+a: No. P31 keeps no server-side identity store, collects no analytics, and does not train on family data. What is stored is the public DID on your device and the audit chain, which records actions, not personal content. The code is 100% open source — you can read the zero-telemetry part yourself.
 category: family
 ---
 

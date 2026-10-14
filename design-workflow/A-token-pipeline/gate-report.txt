@@ -1,0 +1,37 @@
+— gate (a): build succeeds for all targets
+PASS  a-build-all-targets
+      all 5 targets exited 0 (all, css-full, css-mobile, embedded, js)
+— gate (b): dist artifacts exist and are non-empty
+PASS  b-dist-artifacts
+      css-full/tokens.css: 4479 B
+      css-mobile/tokens.mobile.css: 2065 B
+      embedded/tokens.min.css: 393 B
+      js/tokens.mjs: 9301 B
+      tokens.manifest.json: 5127 B
+— gate (c): parity — every emitted token name present in merged source
+PASS  c-token-parity
+      merged source: 234 names; manifest emitted: 113 names; stray: none
+— gate (d): embedded gz size budget
+PASS  d-embedded-gz-budget
+      tokens.min.css raw 393 B → gzip 213 B (budget 2048 B)
+— gate (e): negative controls — each MUST exit non-zero
+PASS  e-i-unresolved-alias
+      exit code: 1
+      ❌ tier-emitter: unresolved alias reference {nonexistent.token} in token fluid.space.md
+PASS  e-ii-unknown-target
+      exit code: 1
+      ❌ tier-emitter: unknown --target: bogus (expected: all|css-full|css-mobile|embedded|js)
+PASS  e-iii-missing-type (bonus)
+      exit code: 1
+      ❌ tier-emitter: token without $type: fluid.space.lg
+
+— GATE SUMMARY —
+PASS  a-build-all-targets
+PASS  b-dist-artifacts
+PASS  c-token-parity
+PASS  d-embedded-gz-budget
+PASS  e-i-unresolved-alias
+PASS  e-ii-unknown-target
+PASS  e-iii-missing-type (bonus)
+
+RESULT: ALL GATES PASS

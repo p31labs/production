@@ -1,9 +1,14 @@
 ---
 import { getCollection } from 'astro:content';
 import MarketingShell from '../layouts/MarketingShell.astro';
-import SectionHeader from '../components/marketing/SectionHeader.astro';
 import Footer from '../components/marketing/Footer.astro';
 import Avatar from '../components/marketing/Avatar.astro';
+import { PageHeader } from '@p31ca/canon-astro';
+// Phase 3 Batch 1 — canon adoption chain (tokens → layers → recipes → canon-v2).
+import '@p31ca/canon/tokens.css';
+import '@p31ca/canon/css/layers.css';
+import '@p31ca/canon-parts/recipes.css';
+import '@p31ca/design-core/css/canon-v2.css';
 
 const members = await getCollection('team');
 const board = members.filter((m) => m.data.type === 'board');
@@ -15,42 +20,45 @@ const advisory = members.filter((m) => m.data.type === 'advisory');
 <MarketingShell
   title="Team — P31 Labs"
   description="The people building sovereign infrastructure for neurodivergent families."
+  theme="rose"
 >
   <main id="main-content" class="section">
-    <div class="max-w-4xl mx-auto px-6 md:px-12 lg:px-16">
-      <SectionHeader
-        title="Team"
-        description="The people building sovereign infrastructure for neurodivergent families."
-        align="left"
-      />
+    <div class="te7e-max-w-4xl te7e-mx-auto te7e-px-6 te7e-md-px-12 te7e-lg-px-16">
+      <div class="sh-space-y-4">
+        <PageHeader
+          title="Team"
+          subtitle="The people building sovereign infrastructure for neurodivergent families."
+        />
+        <div class="sh-h-1 sh-w-16 sh-rounded-full p31-header-bar" style="background: var(--p31-accent);"></div>
+      </div>
 
-      <div class="mt-16 space-y-8">
+      <div class="te7e-mt-16 te7e-space-y-8">
 
         <section>
-          <h3 class="text-xl font-bold" style="color: var(--p31-text);">Staff</h3>
-          <div class="mt-4 space-y-4">
+          <h2 class="te7e-text-xl te7e-font-bold" style="color: var(--p31-text);">Staff</h2>
+          <div class="te7e-mt-4 te7e-space-y-4">
             {staff.length === 0 && (
-              <p class="text-base" style="color: var(--p31-text-secondary);">Building the team. The founder's bio is below.</p>
+              <p class="te7e-text-base" style="color: var(--p31-text-secondary);">Building the team. The founder's bio is below.</p>
             )}
             {staff.map((m) => (
               <div class="glass-card" key={m.id}>
-                <div class="p-6 flex gap-4 items-start">
+                <div class="te7e-p-6 te7e-flex te7e-gap-4 te7e-items-start">
                   <Avatar name={m.data.name} />
-                  <div class="space-y-2">
-                    <div class="flex flex-wrap items-baseline gap-2">
-                      <h4 class="text-lg font-bold" style="color: var(--p31-text);">{m.data.name}</h4>
-                      <span class="text-sm" style="color: var(--p31-accent);">{m.data.role}</span>
+                  <div class="te7e-space-y-2">
+                    <div class="te7e-flex te7e-flex-wrap te7e-items-baseline te7e-gap-2">
+                      <h3 class="te7e-text-lg te7e-font-bold" style="color: var(--p31-text);">{m.data.name}</h3>
+                      <span class="te7e-text-sm" style="color: var(--p31-accent);">{m.data.role}</span>
                     </div>
-                    <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">{m.data.bio}</p>
+                    <p class="te7e-text-base te7e-leading-relaxed" style="color: var(--p31-text-secondary);">{m.data.bio}</p>
                     {m.data.pickle && (
-                      <span class="inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-semibold"
-                            style="border-color: var(--p31-glass-border, rgba(255,255,255,0.16)); color: var(--p31-text-tertiary);">
+                      <span class="te7e-inline-flex te7e-items-center te7e-gap-1 te7e-rounded-full te7e-border te7e-px-2-5 te7e-py-0-5 te7e-text-xs te7e-font-semibold"
+                            style="border-color: var(--p31-glass-border); color: var(--p31-text-tertiary);">
                         pickle · {m.data.pickle}
                       </span>
                     )}
                     {m.data.linkedin && (
                       <a href={m.data.linkedin} target="_blank" rel="noopener noreferrer"
-                         class="inline-flex items-center gap-1 text-sm" style="color: var(--p31-accent);">
+                         class="te7e-inline-flex te7e-items-center te7e-gap-1 te7e-text-sm" style="color: var(--p31-accent);">
                         LinkedIn ↗
                       </a>
                     )}
@@ -62,21 +70,21 @@ const advisory = members.filter((m) => m.data.type === 'advisory');
         </section>
 
         <section>
-          <h3 class="text-xl font-bold" style="color: var(--p31-text);">Board</h3>
-          <div class="mt-4 space-y-4">
+          <h2 class="te7e-text-xl te7e-font-bold" style="color: var(--p31-text);">Board</h2>
+          <div class="te7e-mt-4 te7e-space-y-4">
             {board.length === 0 && (
-              <p class="text-base" style="color: var(--p31-text-secondary);">
+              <p class="te7e-text-base" style="color: var(--p31-text-secondary);">
                 Board seats are being formed as the organization grows. This section will fill in as the board is seated.
               </p>
             )}
             {board.map((m) => (
               <div class="glass-card" key={m.id}>
-                <div class="p-6 flex gap-4 items-start">
+                <div class="te7e-p-6 te7e-flex te7e-gap-4 te7e-items-start">
                   <Avatar name={m.data.name} />
-                  <div class="space-y-2">
-                    <h4 class="text-lg font-bold" style="color: var(--p31-text);">{m.data.name}</h4>
-                    <span class="text-sm" style="color: var(--p31-accent);">{m.data.role}</span>
-                    <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">{m.data.bio}</p>
+                  <div class="te7e-space-y-2">
+                    <h3 class="te7e-text-lg te7e-font-bold" style="color: var(--p31-text);">{m.data.name}</h3>
+                    <span class="te7e-text-sm" style="color: var(--p31-accent);">{m.data.role}</span>
+                    <p class="te7e-text-base te7e-leading-relaxed" style="color: var(--p31-text-secondary);">{m.data.bio}</p>
                   </div>
                 </div>
               </div>
@@ -85,21 +93,21 @@ const advisory = members.filter((m) => m.data.type === 'advisory');
         </section>
 
         <section>
-          <h3 class="text-xl font-bold" style="color: var(--p31-text);">Advisory</h3>
-          <div class="mt-4 space-y-4">
+          <h2 class="te7e-text-xl te7e-font-bold" style="color: var(--p31-text);">Advisory</h2>
+          <div class="te7e-mt-4 te7e-space-y-4">
             {advisory.length === 0 && (
-              <p class="text-base" style="color: var(--p31-text-secondary);">
+              <p class="te7e-text-base" style="color: var(--p31-text-secondary);">
                 Advisory council seats are open. If you work in care infrastructure, quantum foundations, or family tech, reach out.
               </p>
             )}
             {advisory.map((m) => (
               <div class="glass-card" key={m.id}>
-                <div class="p-6 flex gap-4 items-start">
+                <div class="te7e-p-6 te7e-flex te7e-gap-4 te7e-items-start">
                   <Avatar name={m.data.name} />
-                  <div class="space-y-2">
-                    <h4 class="text-lg font-bold" style="color: var(--p31-text);">{m.data.name}</h4>
-                    <span class="text-sm" style="color: var(--p31-accent);">{m.data.role}</span>
-                    <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">{m.data.bio}</p>
+                  <div class="te7e-space-y-2">
+                    <h3 class="te7e-text-lg te7e-font-bold" style="color: var(--p31-text);">{m.data.name}</h3>
+                    <span class="te7e-text-sm" style="color: var(--p31-accent);">{m.data.role}</span>
+                    <p class="te7e-text-base te7e-leading-relaxed" style="color: var(--p31-text-secondary);">{m.data.bio}</p>
                   </div>
                 </div>
               </div>
@@ -108,8 +116,8 @@ const advisory = members.filter((m) => m.data.type === 'advisory');
         </section>
 
         <section>
-          <h3 class="text-xl font-bold" style="color: var(--p31-text);">Contributors</h3>
-          <p class="mt-4 text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+          <h2 class="te7e-text-xl te7e-font-bold" style="color: var(--p31-text);">Contributors</h2>
+          <p class="te7e-mt-4 te7e-text-base te7e-leading-relaxed" style="color: var(--p31-text-secondary);">
             P31 is open source. The <a href="/get-involved" style="color: var(--p31-accent);">Get Involved</a> page covers how to contribute — code, research, or community — and every contribution goes through review before it lands.
           </p>
         </section>

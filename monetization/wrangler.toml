@@ -13,6 +13,11 @@ compatibility_date = "2026-09-02"
 directory = "./dist"
 binding = "ASSETS"
 
+# Feature flags — empty = off. OAUTH21_ENABLED "true" activates the OAuth 2.1 /
+# RFC 8707 audience-bound role tokens (docs/ZERO-TRUST.md §4).
+[vars]
+OAUTH21_ENABLED = ""
+
 [[services]]
 binding = "REVENUE_LEDGER"
 service = "revenue-ledger"
@@ -52,3 +57,13 @@ service = "p31-sbt"
 [[services]]
 binding = "DORA_GATEWAY"
 service = "p31-ci"
+
+# Auth D1 — passkey persistence + OAuth 2.1 session state (docs/ZERO-TRUST.md §4).
+# Schema: migrations/0001_auth.sql. Created with
+#   wrangler d1 create p31-monetization-auth   (replace database_id with the
+#   UUID it returns — repo convention, cf. workers/config-gateway/wrangler.toml).
+[[d1_databases]]
+binding = "AUTH_DB"
+database_name = "p31-monetization-auth"
+database_id = "REPLACE_ME_WITH_D1_ID"
+migrations_dir = "migrations"

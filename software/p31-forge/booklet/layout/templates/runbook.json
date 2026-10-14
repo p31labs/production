@@ -1,0 +1,17 @@
+{
+  "name": "runbook",
+  "type": "runbook",
+  "page": { "widthIn": 8.5, "heightIn": 11, "margin": "20mm 20mm 22mm 20mm", "background": "#0F172A" },
+  "defaultTheme": "ops",
+  "themes": ["ops", "professional", "ink"],
+  "cover": false,
+  "packing": { "mode": "flow" },
+  "gates": {
+    "readability": false,
+    "pageCountRange": [1, 12],
+    "requiredSections": ["overview", "symptoms", "impact assessment", "diagnostic steps", "fix steps", "escalation", "post actions"]
+  },
+  "footer": "P31 LABS // RUNBOOK",
+  "footerColor": "#64748b",
+  "accent": "#38bdf8"
+}

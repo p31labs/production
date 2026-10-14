@@ -1,30 +1,20 @@
+import { CalmOverlay as CanonCalmOverlay } from '@p31ca/design-core/compositions'
 import { useWorkspaceStore } from '@/store/workspaceStore'
 
 /**
- * CalmOverlay — shown when the family member sets the workspace to calm mode
- * (spoon level 0). No "crisis" language — calm, warm, safe. Motion pauses,
- * dense surfaces hide, and the breathing circle offers a rest stop.
+ * CalmOverlay — canon wrapper (consume-don't-fork).
+ *
+ * The canon component is store-agnostic: `spoons === 0` activates the
+ * two-phase calm timeline and drives `data-calm` / `data-calm-phase` on
+ * <html>; `onExit` ends the session. This wrapper maps the workspace store's
+ * calm flag (crisis ⇔ spoons 0) onto that contract and owns nothing visual.
  */
 export function CalmOverlay() {
-  const calm = useWorkspaceStore((s) => s.crisis)
+  const crisis = useWorkspaceStore((s) => s.crisis)
+  const spoons = useWorkspaceStore((s) => s.spoons)
   const setCalm = useWorkspaceStore((s) => s.setCalm)
 
-  if (!calm) return null
-
-  return (
-    <div className="calm-overlay active" role="dialog" aria-modal="true" aria-label="Calm mode">
-      <div className="calm-circle" />
-      <h1 style={{ fontSize: 36, fontWeight: 700, color: 'var(--p31-text-primary)', marginBottom: 8 }}>
-        Take a breath.
-      </h1>
-      <p style={{ color: 'var(--p31-cloud)', maxWidth: 480, marginBottom: 32, fontSize: 18, textAlign: 'center' }}>
-        Calm mode — everything has slowed down. You can rest here as long as you need.
-      </p>
-      <button className="btn btn-primary" type="button" style={{ padding: '12px 32px', fontSize: 18 }} onClick={() => setCalm(false)}>
-        Return to the workspace
-      </button>
-    </div>
-  )
+  return <CanonCalmOverlay spoons={crisis ? 0 : spoons} onExit={() => setCalm(false)} />
 }
 
 export default CalmOverlay

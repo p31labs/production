@@ -9,9 +9,9 @@ and the OAuth 2.1 / RFC 8707 migration path. It is the operational companion to
 
 | Capability | Code | Routes / hooks |
 |---|---|---|
-| Passkeys (SimpleWebAuthn → DID) | `src/lib/passkeys.ts` | `POST /api/webauthn/register/{options,verify}`, `POST /api/webauthn/login/{options,verify}` |
+| Passkeys (SimpleWebAuthn → DID) | `src/lib/passkeys.ts` + `src/lib/passkeyStore.ts` (D1) | `POST /api/webauthn/register/{options,verify}`, `POST /api/webauthn/login/{options,verify}` |
 | Cloudflare Access JWT validation | `src/lib/accessJwt.ts` | RBAC gate on `ADMIN_ROUTES` and `OPERATOR_ROUTES` |
-| OAuth 2.1 / RFC 8707 role tokens | documented, not yet implemented | `src/roles.ts` (untouched) |
+| OAuth 2.1 / RFC 8707 role tokens | implemented behind `OAUTH21_ENABLED` flag — `src/lib/oauth21.ts` (+ `src/lib/oauthSessionStore.ts`) | `/api/auth/token`, `/api/webauthn/login/verify`, RBAC gate; `src/roles.ts` unchanged |
 
 All three run inside `src/worker.ts`, the portal worker proxying `/api/*` to
 service bindings. Existing role-token RBAC is unchanged and remains the
@@ -37,13 +37,15 @@ The worker implements a four-route WebAuthn flow with `@simplewebauthn/server`:
 
 ### Passkey persistence
 
-Credential storage is a **module-level in-memory `Map`** (`credentials` in
-`src/lib/passkeys.ts`). This is per-isolate and is intentionally not durable:
-passkeys registered by a user are lost on worker redeploy or isolate eviction.
-This is a pragmatic scope for development and preview only.
+Credential storage routes through a `PasskeyStore` interface
+(`src/lib/passkeyStore.ts`). The default is a **module-level in-memory `Map`**
+(`createMemoryPasskeyStore`), which is per-isolate and intentionally not
+durable: passkeys registered by a user are lost on worker redeploy or isolate
+eviction. This remains the development/preview path.
 
-Production must move persistence to D1. When a D1 binding is added to this
-worker, add a `passkeys` table:
+When the `AUTH_DB` D1 binding is present (`wrangler.toml`), the worker binds
+`createD1PasskeyStore` once per isolate, persisting credentials to the
+`passkeys` table (schema in `migrations/0001_auth.sql`):
 
 ```sql
 CREATE TABLE IF NOT EXISTS passkeys (
@@ -57,10 +59,10 @@ CREATE TABLE IF NOT EXISTS passkeys (
 CREATE INDEX idx_passkeys_did ON passkeys(did);
 ```
 
-The migration from the Map is mechanical: replace the module-level reads/writes
-with D1 `SELECT`/`INSERT`/`UPDATE` statements keyed on `credential_id`, keeping
-the `verifyRegistrationResponse` / `verifyAuthenticationResponse` logic
-identical. Challenges may remain in the in-memory map (they are short-TTL).
+The Map → D1 migration is mechanical: all reads/writes go through the store
+(`get` / `listByDid` / `put` / `setCounter`), keeping the
+`verifyRegistrationResponse` / `verifyAuthenticationResponse` logic identical.
+Challenges remain in the in-memory map (they are short-TTL).
 
 ## 3. Cloudflare Access JWT validation
 
@@ -137,26 +139,41 @@ Never store service-token credentials in source; inject them as CI secrets or
 Current role tokens (HS256 JWTs from `src/roles.ts`) carry `sub`, `role`, `iat`,
 `exp` and no audience. The `aud` claim per RFC 8707 lets a resource server
 confirm a token was minted for *this* origin, preventing token reuse across
-hosts. `src/roles.ts` is intentionally unchanged in this work; the next step is:
+hosts. `src/roles.ts` remains intentionally unchanged; the migration is
+**implemented behind the `OAUTH21_ENABLED` feature flag** (default off, legacy
+path byte-for-byte preserved):
 
-1. Replace the bespoke HS256 issuance/verification with
-   `@cloudflare/workers-oauth-provider` (the Workers-first OAuth 2.1 provider).
-2. Add RFC 8707 audience binding: issue tokens with `aud` set to the portal
-   origin (`new URL(request.url).origin`) at `/api/auth/token` (and passkey
-   login), and enforce `aud` in verification.
-3. Keep the DID (`sub`) as the subject and keep the `viewer` / `operator` /
-   `admin` role claims, now carried as OAuth scopes or a role claim.
-4. Route Cloudflare Access-issued JWTs through the same verification boundary
+1. **Audience binding (done)** — `src/lib/oauth21.ts` issues tokens with `aud`
+   set to the portal origin (`new URL(request.url).origin`) at
+   `/api/auth/token` and passkey login, and `verifyRoleTokenOAuth21` enforces
+   `aud` (string equality or array membership) in the RBAC gate. When the flag
+   is on, the gate verifies audience-bound tokens first and falls back to the
+   legacy verifier so pre-existing CI tokens keep working until reissued.
+2. **Claims (done)** — the DID stays the `sub`; `viewer` / `operator` / `admin`
+   stay a role claim, plus `iat` / `exp` / `jti` per RFC 7519.
+3. **D1 session state (done)** — the `AUTH_DB` binding (`wrangler.toml`) backs
+   the passkey store (§Passkey persistence) and an issuance audit table
+   (`oauth_token_issuances`, `migrations/0001_auth.sql`); every flag-on token
+   issuance is recorded by `jti` via `src/lib/oauthSessionStore.ts`.
+4. **Provider swap (pending)** — replacing the bespoke HS256
+   issuance/verification with `@cloudflare/workers-oauth-provider` (the
+   Workers-first OAuth 2.1 provider, full authorization-code flow) is filed in
+   `docs/fix-plans/monetization-oauth21-provider-swap.md` and blocked on the
+   coordinated dependency-install wave (shared lockfile).
+5. Cloudflare Access-issued JWTs route through the same verification boundary
    (`src/lib/accessJwt.ts` stays as the Access-specific validator).
 
-Do not merge this migration until a D1 binding exists (for OAuth authorization
-codes / session state) and the passkey store has moved to D1.
+The gate the doc imposed on merging — "a D1 binding exists … and the passkey
+store has moved to D1" — is now satisfied; the flag is the remaining rollout
+lever. Flip it by setting `OAUTH21_ENABLED = "true"` in `wrangler.toml`
+`[vars]` (or `wrangler secret put OAUTH21_ENABLED`, input: `true`).
 
 ## 5. Testing checklist
 
 - `pnpm typecheck` — passes.
 - `pnpm lint` — 0 errors.
-- `pnpm test` — 6/6.
+- `pnpm test` — 20/20 (6 smoke + 14 auth-layer tests: `oauth21.test.ts`,
+  `passkeyStore.test.ts`).
 - `pnpm build` — production bundle builds.
 
 Manual validation after deploy (not part of the gates):

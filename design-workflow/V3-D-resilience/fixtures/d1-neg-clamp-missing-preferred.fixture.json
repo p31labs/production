@@ -1,0 +1,18 @@
+{
+  "name": "d1-neg-clamp-missing-preferred",
+  "note": "NEGATIVE CONTROL: clamp without preferred must FAIL validation",
+  "tokens": {
+    "h1": {
+      "$value": { "value": 51, "unit": "px" },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "clamp",
+          "resolvedBy": "window-size class + user text-size adjustment",
+          "bounds": { "min": "2.4rem", "max": "3.99rem" },
+          "unit": "rem"
+        }
+      }
+    }
+  }
+}

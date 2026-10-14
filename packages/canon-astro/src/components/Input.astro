@@ -1,0 +1,61 @@
+---
+import { inputTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  label?: string;
+  hideLabel?: boolean;
+  hint?: string;
+  error?: string;
+  width?: 'form' | 'full';
+  id?: string;
+  class?: string;
+  type?: string;
+  name?: string;
+  placeholder?: string;
+  value?: string;
+  defaultValue?: string;
+  autoComplete?: string;
+  required?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+  min?: string | number;
+  max?: string | number;
+  step?: string | number;
+  pattern?: string;
+  checked?: boolean;
+  defaultChecked?: boolean;
+  style?: Record<string, string | number>;
+}
+
+const { label, hideLabel = false, hint, error, width, id, class: cls = '', type, name, placeholder, value, defaultValue, autoComplete, required, disabled, readOnly, min, max, step, pattern, checked, defaultChecked, style } = Astro.props;
+
+const rest: Record<string, unknown> = {};
+if (type !== undefined) rest.type = type;
+if (name !== undefined) rest.name = name;
+if (placeholder !== undefined) rest.placeholder = placeholder;
+if (value !== undefined) rest.value = value;
+if (defaultValue !== undefined) rest.defaultValue = defaultValue;
+if (autoComplete !== undefined) rest.autoComplete = autoComplete;
+if (required !== undefined) rest.required = required;
+if (disabled !== undefined) rest.disabled = disabled;
+if (readOnly !== undefined) rest.readOnly = readOnly;
+if (min !== undefined) rest.min = min;
+if (max !== undefined) rest.max = max;
+if (step !== undefined) rest.step = step;
+if (pattern !== undefined) rest.pattern = pattern;
+if (checked !== undefined) rest.checked = checked;
+if (defaultChecked !== undefined) rest.defaultChecked = defaultChecked;
+
+const html = renderHtml(inputTree({
+  label,
+  hideLabel,
+  hint,
+  error,
+  width,
+  id,
+  className: cls,
+  style,
+  rest,
+}));
+---
+<Fragment set:html={html} />

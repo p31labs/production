@@ -1,0 +1,12 @@
+{
+  "type": "agenda",
+  "meta": { "title": "Call Sheet — Big Think Capital", "kicker": "P31 LABS", "date": "2026-10-12", "source": "calendar" },
+  "blocks": [
+    { "kind": "timeline", "data": { "entries": [
+      { "time": "11:55", "text": "One-pager open, number written ($27,000 / 3 months)" },
+      { "time": "12:00", "text": "Opener: 501(c)(3), SBA is for-profit, what nonprofit paper do you write?" },
+      { "time": "12:05", "text": "Referral ask: who in your network writes nonprofit paper?" },
+      { "time": "12:10", "text": "Close, thank, send follow-up email within 2 hours" }
+    ] } }
+  ]
+}

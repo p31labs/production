@@ -1,0 +1,29 @@
+/* UNLAYERED. @page rules must never be placed inside @layer (Chromium drops them).
+   scripts/template.mjs replaces the __PLACEHOLDER__ tokens per template before
+   inlining: __PAGE_SIZE__ ("11in 8.5in" / "8.5in 11in"), __MARGIN__
+   ("12mm 12mm 14mm 12mm"), __PAGE_BG__ (#090d17 / #ffffff),
+   __FOOTER__ (running footer text or "none"), __FOOTER_COLOR__,
+   __ACCENT__ (page-number color). */
+@media print {
+  @page {
+    size: __PAGE_SIZE__;
+    margin: __MARGIN__;
+    background: __PAGE_BG__;
+    @bottom-center {
+      content: __FOOTER__;
+      font-family: 'DejaVu Sans Mono', monospace;
+      font-size: 9.6pt; color: __FOOTER_COLOR__;
+    }
+    @bottom-right {
+      content: 'PAGE ' counter(page);
+      font-family: 'DejaVu Sans Mono', monospace;
+      font-size: 9.6pt; color: __ACCENT__;
+    }
+  }
+  @page cover-page {
+    margin: 0;
+    @bottom-center { content: none; }
+    @bottom-right { content: none; }
+  }
+}
+.cover { page: cover-page; }

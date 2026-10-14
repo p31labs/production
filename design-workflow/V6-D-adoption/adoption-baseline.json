@@ -1,0 +1,91 @@
+{
+  "id": "p31_v6_d3_adoption_baseline_20261011_v1.0",
+  "component": "design-workflow/V6-D-adoption",
+  "status": "baseline",
+  "created": "2026-10-11T00:00:00Z",
+  "owner": "lane-d-v6",
+  "runbook": "DESIGN-SYSTEM-PARALLEL-PATHS-RUNBOOK-V6.md §7 D-3",
+  "signals": {
+    "versionCurrency": {
+      "label": "1. installation / version currency",
+      "value": {
+        "vendored_design_core": "3.0.1",
+        "vendored_tarballs": [
+          "p31-design-core-3.0.1.tgz (current, pinned in package.json sync:vendor)",
+          "p31-design-core-2.1.0.tgz (history)",
+          "p31-design-core-2.2.0.tgz (history)",
+          "p31-design-core-2.3.0.tgz (history)",
+          "p31ca-canon-0.2.0.tgz (canon tokens)",
+          "p31ca-ambient/ (ambient surface)"
+        ],
+        "canon_package_version": "3.0.1",
+        "portal_pinned": "\"@p31ca/design-core\": \"file:vendor/p31-design-core-3.0.1.tgz\"",
+        "mcp_server_version_metadata": "2.2.0 (tool-registry.ts:16 — metadata lags package 3.0.1; finding)",
+        "currency": "CURRENT (vendor tarball == canon package version 3.0.1)",
+        "finding": "MCP SERVER_VERSION constant 2.2.0 not bumped to 3.0.1 — minor drift to fix in the design-core PR"
+      },
+      "method": "read production/portals/design/package.json (sync:vendor pins) + ls vendor/*.tgz + design-core package.json version + tool-registry.ts SERVER_VERSION. Read-only.",
+      "timestamp": "2026-10-11T00:00:00Z"
+    },
+    "componentConsumption": {
+      "label": "2. component consumption (import analysis)",
+      "value": {
+        "design_portal": {
+          "import_occurrences": 48,
+          "importing_files": 31,
+          "unique_composition_components": 15,
+          "components": [
+            "Button", "CalmOverlay", "Chameleon", "CommandPalette", "GlassCard",
+            "GlassPanel", "MetricBadge", "MobileBottomNav", "NotificationStack",
+            "PageHeader", "SectionStrip", "SidebarNav", "SpoonDial", "StatusBadge", "Topbar"
+          ],
+          "submodule_imports": {
+            "genui/catalog": 8,
+            "theming/theme-store": 7,
+            "starfield/jitterbug": 2,
+            "mcp/data": 2,
+            "agentic": 1
+          }
+        },
+        "p31ca_public": { "import_occurrences": 0, "note": "consumes via copied CSS (p31-core.css etc.), not via the package" },
+        "ws_planetary_planet": { "import_occurrences": 0, "note": "Astro marketing site; no design-core dependency" }
+      },
+      "method": "grep -r \"from '@p31ca/design-core\" across the three consumer surfaces (read-only); unique component names extracted from compositions import braces.",
+      "timestamp": "2026-10-11T00:00:00Z"
+    },
+    "tokenCompliance": {
+      "label": "3. token compliance (raw hex/rgba/px that should be tokens)",
+      "value": {
+        "scanner": "V6-D-adoption/compliance-scan.mjs (zero-dep, read-only walker)",
+        "surfaces": {
+          "design-portal-src": { "files": 70, "clean": 54, "hex_files": 0, "hex_hits": 0, "rgb_files": 0, "rgb_hits": 0, "px_files": 16, "px_hits": 61 },
+          "p31ca-public": { "files": 153, "clean": 5, "hex_files": 127, "hex_hits": 2045, "rgb_files": 86, "rgb_hits": 1378, "px_files": 91, "px_hits": 946 },
+          "ws-planetary-planet": { "files": 16, "clean": 12, "hex_files": 4, "hex_hits": 19, "rgb_files": 1, "rgb_hits": 3, "px_files": 1, "px_hits": 1 }
+        },
+        "totals": { "files": 239, "clean": 71, "hex_files": 131, "hex_hits": 2064, "rgb_files": 87, "rgb_hits": 1381, "px_files": 108, "px_hits": 1008 },
+        "headline": "design portal is COLOR-CLEAN (0 hex/rgb) but has 61 px-on-scalable hits; p31ca-public is the main raw-color surface (2045 hex hits); planetary-planet nearly clean (19 hex hits)",
+        "report": "V6-D-adoption/compliance-baseline.md (top 30 findings + per-surface counts)"
+      },
+      "method": "node compliance-scan.mjs — walker over read-only consumer dirs; flags #hex/#rgba/px-on-scalable in .css/.tsx/.html/.astro/.mdx; negative control fixture flags all three classes.",
+      "timestamp": "2026-10-11T00:00:00Z"
+    },
+    "patternAdherence": {
+      "label": "4. pattern adherence (data-theme / data-spoons attributes)",
+      "value": {
+        "design_portal_files_using": 6,
+        "p31ca_public_files_using": 9,
+        "ws_planetary_planet_files_using": 0,
+        "total_surfaces_using": 15,
+        "note": "grep counts files containing data-theme or data-spoons (theme/spoon-awareness pattern); planetary-planet does not participate (no canon dependency)."
+      },
+      "method": "grep -rl \"data-theme\\|data-spoons\" per surface (read-only). Attribute occurrences, not full theme-mix correctness.",
+      "timestamp": "2026-10-11T00:00:00Z"
+    }
+  },
+  "gate": "adoption-baseline",
+  "negative_controls": {
+    "d1_rate_limit": "usage-logger.mjs --rate-limit (65 calls → ≥1×429 observed and counted)",
+    "d1_expect_down": "usage-logger.mjs --expect-down (unreachable URL → transport failure exit 1)",
+    "d2_planted": "fixtures/negative-control.tsx (hex + rgba + px all flagged) + fixtures/positive-control.css (zero flags)"
+  }
+}

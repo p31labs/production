@@ -10,6 +10,81 @@ const BUS_CLI = join(__dirname, 'bus.mjs');
 const COG_ESTIMATOR = join(__dirname, 'cognitive-estimator.mjs');
 const SELF_HEALER = join(__dirname, 'self-healer.mjs');
 
+// ─── MCP 2026-07-28 stateless protocol (SEP-2575) — SDK v2 transport ───────
+// The hand-rolled stdio loop was replaced by the v2 SDK's serveStdio entry
+// (stdio subpath) in the SDK-v2 swap — see
+// docs/fix-plans/phos-forge-sdk-v2-remainder.md. Opening-era routing is the
+// SDK's: modern stateless clients (2026-07-28) negotiate via server/discover
+// with per-request `_meta` envelopes and get resultType/ttlMs/cacheScope on
+// cacheable results; legacy clients (initialize/notifications/initialized,
+// 2024-11-05..2025-11-25) are served a 2025-era instance from the same
+// factory. A batch-safe custom transport preserves the bridge's spawn-per-
+// request 'batch' mode (write initialize + request, close stdin, read the
+// last stdout line): stdin EOF is drained instead of aborting in-flight
+// requests, so slow tools (child-process backed) still answer before the
+// process exits naturally.
+
+import { serveStdio } from '@modelcontextprotocol/server/stdio';
+import { McpServer, fromJsonSchema } from '@modelcontextprotocol/server';
+
+const SERVER_INFO = { name: 'phos-forge-mcp', version: '2.0.0' };
+const TOOLS_LIST_TTL_MS = 300000;
+
+// Minimal Transport used in place of the SDK's StdioServerTransport so that
+// stdin end-of-file does NOT abort in-flight requests (the default transport
+// closes on EOF per the stdio binding). The x402 bridge drives this server in
+// 'batch' mode: spawn, write initialize + request, close stdin, take the last
+// stdout line. EOF here only drains the remaining buffer; the process exits
+// naturally once the last response is written and the event loop drains.
+class BatchSafeStdioTransport {
+  constructor() {
+    this.onmessage = null;
+    this.onclose = null;
+    this.onerror = null;
+    this._buf = '';
+    this._started = false;
+  }
+
+  _drain(final) {
+    const lines = this._buf.split('\n');
+    this._buf = final ? '' : lines.pop();
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      try {
+        this.onmessage?.(JSON.parse(trimmed));
+      } catch (_) { /* ignore malformed lines */ }
+    }
+    if (final && this._buf.trim()) {
+      try {
+        this.onmessage?.(JSON.parse(this._buf.trim()));
+      } catch (_) { /* ignore malformed lines */ }
+      this._buf = '';
+    }
+  }
+
+  async start() {
+    if (this._started) return;
+    this._started = true;
+    process.stdin.setEncoding('utf8');
+    process.stdin.on('data', (chunk) => {
+      this._buf += chunk;
+      this._drain(false);
+    });
+    process.stdin.on('end', () => {
+      this._drain(true);
+    });
+  }
+
+  async send(message) {
+    process.stdout.write(JSON.stringify(message) + '\n');
+  }
+
+  async close() {
+    this.onclose?.();
+  }
+}
+
 export default class PhosMCPServer extends EventEmitter {
   constructor() {
     super();
@@ -674,75 +749,40 @@ export default class PhosMCPServer extends EventEmitter {
       child.on('error', reject);
     });
   }
-
-  async handleRequest(request) {
-    if (request.method === 'initialize') {
-      return {
-        jsonrpc: '2.0',
-        id: request.id,
-        result: {
-          protocolVersion: '2024-11-05',
-          capabilities: { tools: {} },
-          serverInfo: { name: 'phos-forge-mcp', version: '2.0.0' },
-        },
-      };
-    }
-
-    if (request.method === 'tools/list') {
-      return {
-        jsonrpc: '2.0',
-        id: request.id,
-        result: {
-          tools: Object.entries(this.tools).map(([name, def]) => ({ name, ...def })),
-        },
-      };
-    }
-
-    if (request.method === 'tools/call') {
-      const { name, arguments: args } = request.params;
-      try {
-        const result = await this.callTool(name, args);
-        return { jsonrpc: '2.0', id: request.id, result };
-      } catch (err) {
-        return {
-          jsonrpc: '2.0',
-          id: request.id,
-          result: { content: [{ type: 'text', text: `Error: ${err.message}` }], isError: true },
-        };
-      }
-    }
-
-    return { jsonrpc: '2.0', id: request.id, error: { code: -32601, message: 'Method not found' } };
-  }
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const server = new PhosMCPServer();
-  server.on('error', (err) => console.error('MCP Server error:', err));
-  console.error('PHOS Forge MCP server ready (stdio transport)');
-  console.error('Supports tools:', Object.keys(server.tools).join(', '));
-  let buffer = '';
-  process.stdin.setEncoding('utf8');
-  process.stdin.on('data', (d) => {
-    buffer += d;
-    const lines = buffer.split('\n');
-    buffer = lines.pop();
-    for (const line of lines) {
-      if (!line.trim()) continue;
-      handleLine(line);
-    }
-  });
-  process.stdin.on('end', () => {
-    if (buffer.trim()) handleLine(buffer);
-  });
+  const phos = new PhosMCPServer();
 
-  async function handleLine(line) {
-    try {
-      const request = JSON.parse(line);
-      const response = await server.handleRequest(request);
-      if (response) process.stdout.write(JSON.stringify(response) + '\n');
-    } catch (e) {
-      process.stdout.write(JSON.stringify({ jsonrpc: '2.0', error: { code: -32700, message: 'Parse error' } }) + '\n');
+  // Byte-identical tool surface: every tool in phos.tools is registered from
+  // its hand-rolled def ({description, inputSchema}) via fromJsonSchema, so
+  // tools/list emits exactly the pre-swap inputSchema objects.
+  function createServer() {
+    const server = new McpServer(SERVER_INFO, {
+      capabilities: { tools: {} },
+      cacheHints: {
+        'tools/list': { ttlMs: TOOLS_LIST_TTL_MS, cacheScope: 'public' },
+      },
+    });
+    for (const [name, def] of Object.entries(phos.tools)) {
+      server.registerTool(name, {
+        description: def.description,
+        inputSchema: fromJsonSchema(def.inputSchema),
+      }, async (args) => {
+        try {
+          return await phos.callTool(name, args || {});
+        } catch (err) {
+          return { content: [{ type: 'text', text: `Error: ${err.message}` }], isError: true };
+        }
+      });
     }
+    return server;
   }
+
+  serveStdio(createServer, {
+    transport: new BatchSafeStdioTransport(),
+    onerror: (err) => console.error('MCP Server error:', err),
+  });
+  console.error('PHOS Forge MCP server ready (stdio transport)');
+  console.error('Supports tools:', Object.keys(phos.tools).join(', '));
 }

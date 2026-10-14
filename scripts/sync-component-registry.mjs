@@ -54,7 +54,7 @@ function collectTokens(obj, prefix = '') {
   }
 }
 
-collectTokens(ds.tokens);
+collectTokens(ds.tokens?.p31 || ds.tokens || {});
 
 console.error(`Found ${allTokens.size} tokens in design-system.json`);
 
@@ -133,6 +133,22 @@ const suggestions = [];
 
 for (const comp of COMPONENTS) {
   for (const token of comp.tokens) {
+    // Canonical p31.* DTCG dotted paths (componentDefs.ts vocabulary) map
+    // directly to the CSS variable name: p31.glass.background → --p31-glass-background.
+    if (token.startsWith('p31.')) {
+      const directCanonical = '--' + token.replace(/\./g, '-');
+      if (allTokens.has(directCanonical)) {
+        continue; // Token exists
+      }
+      issues.push({
+        component: comp.name,
+        token,
+        cssVar: directCanonical,
+        action: 'missing',
+      });
+      continue;
+    }
+
     const normalizedToken = token.replace(/\./g, '-');
     const mappedToken = TOKEN_MAP[normalizedToken] || TOKEN_MAP[token];
     

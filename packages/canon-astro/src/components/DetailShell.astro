@@ -1,0 +1,22 @@
+---
+import { detailShellTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { class: cls = '', style } = Astro.props;
+const summary = await Astro.slots.render('summary');
+const focus = await Astro.slots.render('focus');
+const actions = await Astro.slots.render('actions');
+
+const html = renderHtml(detailShellTree({
+  summary: summary ? { raw: summary } : null,
+  focus: focus ? { raw: focus } : null,
+  actions: actions ? { raw: actions } : null,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

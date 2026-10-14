@@ -1,0 +1,30 @@
+<!-- P31-HEADER
+id: p31_template_astro_surface_pkg_20261013_v1.0
+type: template
+component: templates/astro-surface
+status: live
+retention: keep-forever
+created: 2026-10-13T00:00:00Z
+owner: will
+-->
+
+{
+  "name": "@p31ca/surface-blueprint",
+  "private": true,
+  "type": "module",
+  "description": "BLUEPRINT ONLY — not a runnable package. Shape of a canon-wired Astro surface.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "^6.4.8",
+    "@p31ca/canon": "workspace:*",
+    "@p31ca/canon-astro-style": "workspace:*"
+  },
+  "devDependencies": {
+    "@astrojs/cloudflare": "^13.4.0",
+    "typescript": "^7.0.2"
+  }
+}

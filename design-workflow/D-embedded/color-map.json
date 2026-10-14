@@ -1,0 +1,42 @@
+{
+  "$comment": "Lane D auditable 1:1 map: LVGL define → canon DTCG token path in production/packages/canon/tokens/tokens.dtc.json. gen-p31-theme.mjs reads this file and FAILS CLOSED if a token is missing, deprecated, or not a color/dimension.",
+  "version": "1.0.0",
+  "source": "/home/p31/production/packages/canon/tokens/tokens.dtc.json",
+  "theme": "themes.cipher",
+  "themeRationale": "cipher is the first theme in the canon themes group and carries the dark-navy identity that matches Node Zero's existing screen (main/p31_ui.c: lv_color_hex(0x0A0A0F) at p31_ui.c:71). Live (non-deprecated) tokens only: p31.color.* and p31.surface.* groups are all marked deprecated in the canon file, so the theme palette (themes.cipher.p31.*) IS the surface/on-surface/accent source. Mapping to deprecated tokens is a hard failure by design.",
+  "colors": [
+    { "define": "P31_COLOR_BG",              "token": "themes.cipher.p31.bg" },
+    { "define": "P31_COLOR_SURFACE",         "token": "themes.cipher.p31.surface" },
+    { "define": "P31_COLOR_SURFACE2",        "token": "themes.cipher.p31.surface2" },
+    { "define": "P31_COLOR_ACCENT",          "token": "themes.cipher.p31.accent" },
+    { "define": "P31_COLOR_ACCENT_CYAN",     "token": "themes.cipher.p31.accent-cyan" },
+    { "define": "P31_COLOR_ACCENT_VIOLET",   "token": "themes.cipher.p31.accent-violet" },
+    { "define": "P31_COLOR_ACCENT_GOLD",     "token": "themes.cipher.p31.accent-gold" },
+    { "define": "P31_COLOR_ACCENT_GREEN",    "token": "themes.cipher.p31.accent-green" },
+    { "define": "P31_COLOR_ACCENT_RED",      "token": "themes.cipher.p31.accent-red" },
+    { "define": "P31_COLOR_ACCENT_IRIS",     "token": "themes.cipher.p31.accent-iris" },
+    { "define": "P31_COLOR_TEXT_PRIMARY",    "token": "themes.cipher.p31.text-primary" },
+    { "define": "P31_COLOR_TEXT_SECONDARY",  "token": "themes.cipher.p31.text-secondary" },
+    { "define": "P31_COLOR_TEXT_TERTIARY",   "token": "themes.cipher.p31.text-tertiary" },
+    { "define": "P31_COLOR_STATUS_SUCCESS",  "token": "p31.status.success" },
+    { "define": "P31_COLOR_STATUS_WARNING",  "token": "themes.cipher.p31.accent-gold",  "note": "p31.status.warning is deprecated; its value oklch(0.65 0.18 15) is bit-identical to accent-gold, so this maps to the live token." },
+    { "define": "P31_COLOR_STATUS_ERROR",    "token": "p31.status.error" },
+    { "define": "P31_COLOR_STATUS_INFO",     "token": "themes.cipher.p31.accent-cyan", "note": "p31.status.info is deprecated; its value oklch(0.65 0.18 195) is bit-identical to accent-cyan, so this maps to the live token." },
+    { "define": "P31_COLOR_GLASS_BG",        "token": "themes.cipher.p31.glass-bg",    "compositeOver": "P31_COLOR_BG" },
+    { "define": "P31_COLOR_GLASS_BORDER",    "token": "themes.cipher.p31.glass-border", "compositeOver": "P31_COLOR_BG" }
+  ],
+  "spacing": [
+    { "define": "P31_SPACE_SM", "token": "p31.spacing-sm" },
+    { "define": "P31_SPACE_MD", "token": "p31.spacing-md" },
+    { "define": "P31_SPACE_LG", "token": "p31.spacing-lg" }
+  ],
+  "radius": [
+    { "define": "P31_RADIUS_SM", "token": "p31.radius.sm" },
+    { "define": "P31_RADIUS_MD", "token": "p31.radius.md" }
+  ],
+  "fonts": [
+    { "define": "P31_FONT_TITLE", "lvgl": "&lv_font_montserrat_24", "canonRef": "p31.font-display (system-ui stack) — LVGL nearest available", "note": "Montserrat 24 is enabled in main/lv_conf.h (LV_FONT_MONTSERRAT_24 1)" },
+    { "define": "P31_FONT_BODY",  "lvgl": "&lv_font_montserrat_16", "canonRef": "p31.font-display (system-ui stack) — LVGL nearest available", "note": "Montserrat 16 enabled in main/lv_conf.h (LV_FONT_MONTSERRAT_16 1)" },
+    { "define": "P31_FONT_LABEL", "lvgl": "&lv_font_montserrat_14", "canonRef": "p31.font-display (system-ui stack) — LVGL nearest available", "note": "Montserrat 14 enabled in main/lv_conf.h (LV_FONT_MONTSERRAT_14 1)" }
+  ]
+}

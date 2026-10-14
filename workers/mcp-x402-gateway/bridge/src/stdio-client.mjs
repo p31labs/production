@@ -84,7 +84,14 @@ export class StdioBackend {
   _initialize() {
     if (this.initialized) return Promise.resolve();
     this.initialized = true;
-    return this.request({ jsonrpc: '2.0', id: genId(), method: 'initialize', params: {} }, 6000)
+    // 2026-07-28 stateless: try server/discover first; fall back to the
+    // deprecated legacy initialize when the backend does not speak discover.
+    return this.request({ jsonrpc: '2.0', id: genId(), method: 'server/discover', params: {} }, 6000)
+      .then((r) => {
+        if (r && r.error) {
+          return this.request({ jsonrpc: '2.0', id: genId(), method: 'initialize', params: {} }, 6000);
+        }
+      })
       .then(() => undefined)
       .catch(() => {
         this.initialized = false; // allow retry
@@ -144,6 +151,10 @@ export class StdioBackend {
           reject(e);
         }
       });
+      // Stateless-first probe: server/discover, then the legacy initialize as
+      // a fallback for pre-SEP-2575 backends, then the actual message. Batch
+      // mode reads only the last response line (the message's reply).
+      child.stdin.write(JSON.stringify({ jsonrpc: '2.0', id: genId(), method: 'server/discover', params: {} }) + '\n');
       child.stdin.write(JSON.stringify({ jsonrpc: '2.0', id: genId(), method: 'initialize', params: {} }) + '\n');
       child.stdin.write(JSON.stringify(msg) + '\n');
       child.stdin.end();

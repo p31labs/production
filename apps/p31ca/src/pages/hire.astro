@@ -13,6 +13,11 @@ import MarketingShell from '../layouts/MarketingShell.astro';
 
 import ExplorableChain from '../components/islands/ExplorableChain.tsx';
 import Footer from '../components/marketing/Footer.astro';
+import constants from '../data/p31-mesh-constants.json';
+import { papers } from '../data/p31-research.ts';
+
+// Named research anchor (verified against the Zenodo API 2026-09-23).
+const genesisPaper = papers.find((p) => p.id === 'zenodo-genesis-whitepaper');
 ---
 
 <MarketingShell
@@ -21,52 +26,51 @@ import Footer from '../components/marketing/Footer.astro';
   theme="sunlight"
 >
   <main id="main-content" class="section">
-    <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+    <div class="hiee-max-w-7xl hiee-mx-auto hiee-px-6 hiee-md-px-12 hiee-lg-px-16">
 
       {/* ── HERO: human first, one offer ── */}
-      <section class="pt-24 pb-16 md:pt-32 md:pb-20">
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-          <div class="space-y-6">
-            <p class="font-mono text-xs tracking-[0.2em] uppercase" style="color: var(--p31-accent);">
+      <section class="hiee-pt-24 hiee-pb-16 hiee-md-pt-32 hiee-md-pb-20">
+        <div class="hiee-grid hiee-md-grid-cols-2 hiee-gap-12 hiee-items-center">
+          <div class="hiee-space-y-6">
+            <p class="hiee-font-mono hiee-text-xs hiee-tracking--0-2em- hiee-uppercase" style="color: var(--p31-accent);">
               Production MCP servers · Cloudflare Workers · Post-quantum auth
             </p>
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight" style="color: var(--p31-text); letter-spacing: -0.02em;">
+            <h1 class="hiee-text-4xl hiee-md-text-5xl hiee-lg-text-6xl hiee-font-bold hiee-leading-tight" style="color: var(--p31-text); letter-spacing: -0.02em;">
               A production MCP server, built right, in 3 days.
             </h1>
-            <p class="text-lg md:text-xl leading-relaxed" style="color: var(--p31-text-secondary);">
-              I turn a REST API into a governed MCP server that Claude, Gemini, and every
-              other agent can use — with capability tokens and a tamper-evident audit trail
-              your security team will actually like.
+            <p class="hiee-text-lg hiee-md-text-xl hiee-leading-relaxed" style="color: var(--p31-text-secondary);">
+              I build production MCP servers on Cloudflare Workers for P31 Labs: $2,500 fixed, delivered in 3 days, with capability-token auth and a hash-chained audit of every tool call. The same pattern runs live in P31 Labs' own registry — 44 servers, 22 live, 124 tools (our live registry, as of 2026-10-13).
             </p>
-            <div class="flex flex-col sm:flex-row items-start gap-4 pt-2">
+            <div class="hiee-flex hiee-flex-col hiee-sm-flex-row hiee-items-start hiee-gap-4 hiee-pt-2">
               <a href="mailto:willyj1587@gmail.com?subject=MCP%20server%20build"
-                 class="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg font-bold no-underline"
+                 class="hiee-inline-flex hiee-items-center hiee-gap-2 hiee-px-8 hiee-py-3-5 hiee-rounded-lg hiee-font-bold hiee-no-underline"
                  style="background: var(--p31-accent); color: #000;">
                 Start a build →
               </a>
-              <div class="px-6 py-3.5 rounded-lg border" style="border-color: var(--p31-glass-border);">
-                <div class="text-xs uppercase tracking-wider" style="color: var(--p31-text-tertiary);">Fixed price</div>
-                <div class="text-xl font-bold" style="color: var(--p31-text);">$2,500</div>
+              <div class="hiee-px-6 hiee-py-3-5 hiee-rounded-lg hiee-border" style="border-color: var(--p31-glass-border);">
+                <div class="hiee-text-xs hiee-uppercase hiee-tracking-wider" style="color: var(--p31-text-tertiary);">Fixed price</div>
+                <div class="hiee-text-xl hiee-font-bold" style="color: var(--p31-text);">$2,500</div>
               </div>
             </div>
           </div>
 
           {/* Live proof panel */}
-          <div class="space-y-4">
-            <div class="rounded-2xl border p-5" style="border-color: var(--p31-glass-border); background: var(--p31-surface);">
-              <div class="flex items-center gap-2 mb-3">
-                <span class="w-2 h-2 rounded-full" style="background: #34D399; box-shadow: 0 0 6px rgba(52,211,153,0.6);" aria-hidden="true"></span>
-                <span class="text-sm font-semibold" style="color: var(--p31-text);">Live proof — I run an MCP registry</span>
+          <div class="hiee-space-y-4">
+            <div class="hiee-rounded-2xl hiee-border hiee-p-5" style="border-color: var(--p31-glass-border); background: var(--p31-surface);">
+              <div class="hiee-flex hiee-items-center hiee-gap-2 hiee-mb-3">
+                <span class="hiee-w-2 hiee-h-2 hiee-rounded-full" style="background: #34D399; box-shadow: 0 0 6px rgba(52,211,153,0.6);" aria-hidden="true"></span>
+                <span class="hiee-text-sm hiee-font-semibold" style="color: var(--p31-text);">Live proof — I run an MCP registry</span>
               </div>
-              <ul class="space-y-2 text-sm">
+              <ul class="hiee-space-y-2 hiee-text-sm">
                 <li><a href="https://mcp-registry.trimtab-signal.workers.dev" target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">mcp-registry.trimtab-signal.workers.dev</a></li>
                 <li><a href="https://marketplace-mcp.trimtab-signal.workers.dev" target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">marketplace-mcp.trimtab-signal.workers.dev</a></li>
-                <li><a href="https://loom.p31ca.org/api/loom-public/verify" target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">loom.p31ca.org/api/loom-public/verify</a></li>
+                <li><a href="https://loom-verify.pages.dev/api/loom/verify" target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">loom-verify.pages.dev/api/loom/verify</a></li>
+                <li>The build pattern is published in the {genesisPaper?.title ?? 'P31 Labs Genesis Whitepaper'} — <a href={`${constants.zenodoDoiBase}/${genesisPaper?.doi ?? ''}`} target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent); text-decoration: underline;">Zenodo DOI {genesisPaper?.doi}</a>.</li>
               </ul>
             </div>
-            <div class="rounded-2xl border p-5" style="border-color: var(--p31-glass-border); background: var(--p31-surface);">
-              <div class="font-mono text-xs uppercase tracking-widest mb-3" style="color: var(--p31-text-tertiary);">What you get</div>
-              <div class="grid grid-cols-1 gap-2 text-sm" style="color: var(--p31-text);">
+            <div class="hiee-rounded-2xl hiee-border hiee-p-5" style="border-color: var(--p31-glass-border); background: var(--p31-surface);">
+              <div class="hiee-font-mono hiee-text-xs hiee-uppercase hiee-tracking-widest hiee-mb-3" style="color: var(--p31-text-tertiary);">What you get</div>
+              <div class="hiee-grid hiee-grid-cols-1 hiee-gap-2 hiee-text-sm" style="color: var(--p31-text);">
                 <span>· Working MCP server (Streamable HTTP)</span>
                 <span>· Capability-token auth, not naked API keys</span>
                 <span>· Hash-chained audit of every tool call</span>
@@ -78,12 +82,12 @@ import Footer from '../components/marketing/Footer.astro';
       </section>
 
       {/* ── THE TRANSDUCER: explorable chain ── */}
-      <section class="mb-16">
-        <div class="max-w-3xl mx-auto">
-          <h2 class="text-2xl md:text-3xl font-bold text-center mb-2" style="color: var(--p31-text);">
+      <section class="hiee-mb-16">
+        <div class="hiee-max-w-3xl hiee-mx-auto">
+          <h2 class="hiee-text-2xl hiee-md-text-3xl hiee-font-bold hiee-text-center hiee-mb-2" style="color: var(--p31-text);">
             What "hash-chained audit" actually means
           </h2>
-          <p class="text-center mb-6" style="color: var(--p31-text-secondary);">
+          <p class="hiee-text-center hiee-mb-6" style="color: var(--p31-text-secondary);">
             Try it. Change a block, watch the chain break, then verify.
           </p>
           <ExplorableChain client:load />
@@ -91,29 +95,52 @@ import Footer from '../components/marketing/Footer.astro';
       </section>
 
       {/* ── THE OFFER DETAILS ── */}
-      <section class="mb-16">
-        <div class="grid md:grid-cols-3 gap-6">
-          {[
-            { n: '$2,500', t: 'Fixed price', d: 'No hourly meter. You know the cost up front.' },
-            { n: '3 days', t: 'Delivery', d: 'Working MCP server, deployed, with docs.' },
-            { n: '100%', t: 'Yours', d: 'Clean code, no lock-in. You own the server.' },
-          ].map((c) => (
-            <div class="glass-card p-6 rounded-xl text-center">
-              <div class="text-3xl font-extrabold mb-2" style="color: var(--p31-accent);">{c.n}</div>
-              <div class="font-semibold mb-1" style="color: var(--p31-text);">{c.t}</div>
-              <p class="text-sm" style="color: var(--p31-text-secondary);">{c.d}</p>
-            </div>
-          ))}
+      <section class="hiee-mb-16">
+        <div class="hiee-max-w-3xl hiee-mx-auto">
+          <h2 class="hiee-text-2xl hiee-md-text-3xl hiee-font-bold hiee-mb-2" style="color: var(--p31-text);">
+            What does it cost, and when?
+          </h2>
+          <div class="hiee-overflow-x-auto">
+            <table class="hiee-w-full hiee-text-left hiee-border-collapse">
+              <thead>
+                <tr class="hiee-border-b" style="border-color: var(--p31-glass-border);">
+                  <th class="hiee-py-3 hiee-pr-4 hiee-text-xs hiee-font-semibold hiee-uppercase hiee-tracking-wider" style="color: var(--p31-text);">Item</th>
+                  <th class="hiee-py-3 hiee-pr-4 hiee-text-xs hiee-font-semibold hiee-uppercase hiee-tracking-wider" style="color: var(--p31-text);">Answer</th>
+                  <th class="hiee-py-3 hiee-text-xs hiee-font-semibold hiee-uppercase hiee-tracking-wider" style="color: var(--p31-text);">Detail</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="hiee-border-b" style="border-color: var(--p31-glass-border);">
+                  <td class="hiee-py-3 hiee-pr-4 hiee-font-bold" style="color: var(--p31-accent);">Price</td>
+                  <td class="hiee-py-3 hiee-pr-4 hiee-text-sm hiee-font-semibold" style="color: var(--p31-text);">$2,500 fixed</td>
+                  <td class="hiee-py-3 hiee-text-sm" style="color: var(--p31-text-secondary);">No hourly meter. You know the cost up front.</td>
+                </tr>
+                <tr class="hiee-border-b" style="border-color: var(--p31-glass-border);">
+                  <td class="hiee-py-3 hiee-pr-4 hiee-font-bold" style="color: var(--p31-accent);">Delivery</td>
+                  <td class="hiee-py-3 hiee-pr-4 hiee-text-sm hiee-font-semibold" style="color: var(--p31-text);">3 days</td>
+                  <td class="hiee-py-3 hiee-text-sm" style="color: var(--p31-text-secondary);">Working MCP server, deployed, with docs.</td>
+                </tr>
+                <tr>
+                  <td class="hiee-py-3 hiee-pr-4 hiee-font-bold" style="color: var(--p31-accent);">Ownership</td>
+                  <td class="hiee-py-3 hiee-pr-4 hiee-text-sm hiee-font-semibold" style="color: var(--p31-text);">100% yours</td>
+                  <td class="hiee-py-3 hiee-text-sm" style="color: var(--p31-text-secondary);">Clean code, no lock-in. You own the server.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
       {/* ── CTA ── */}
-      <section class="pb-16">
-        <div class="glass-card p-10 rounded-2xl text-center">
-          <h2 class="text-2xl md:text-3xl font-bold mb-4" style="color: var(--p31-text);">
-            One email. A working MCP server in 3 days.
+      <section class="hiee-pb-16">
+        <div class="glass-card hiee-p-10 hiee-rounded-2xl hiee-text-center">
+          <h2 class="hiee-text-2xl hiee-md-text-3xl hiee-font-bold hiee-mb-4" style="color: var(--p31-text);">
+            How do I start?
           </h2>
-          <a href="mailto:willyj1587@gmail.com?subject=MCP%20server%20build" class="inline-flex items-center gap-2 px-10 py-4 rounded-lg font-bold no-underline" style="background: var(--p31-accent); color: #000;">
+          <p class="hiee-text-lg hiee-mb-6" style="color: var(--p31-text-secondary);">
+            One email. A working MCP server in 3 days.
+          </p>
+          <a href="mailto:willyj1587@gmail.com?subject=MCP%20server%20build" class="hiee-inline-flex hiee-items-center hiee-gap-2 hiee-px-10 hiee-py-4 hiee-rounded-lg hiee-font-bold hiee-no-underline" style="background: var(--p31-accent); color: #000;">
             willyj1587@gmail.com →
           </a>
         </div>

@@ -1,11 +1,15 @@
 ---
 /**
- * P31CA.ORG — Ownable Tech Stack for Families That Build
- * Scene homepage: CanonTopbar + dome background + hero + features +
- * the 8 flagship surfaces. Every metric is DOI/live-URL verified.
+ * P31CA.ORG — the technical hub.
+ * kilo.ai-pattern home: one hero with a thesis + one-line value statement,
+ * a live-proof stats strip (registry fetched at build AND client-side with
+ * graceful offline fallback), product sections, a how-to-start, footer nav.
+ * Every metric is live-URL verified (fetch:stats / fetch:love pipelines and
+ * ground-truth/content remain the single source of truth).
  */
 import MarketingShell from '../layouts/MarketingShell.astro';
 import SharedFooter from '../components/SharedFooter.astro';
+import LiveRegistryStats from '../components/islands/LiveRegistryStats.tsx';
 import {
   liveProducts,
   liveDeploymentCount,
@@ -13,9 +17,45 @@ import {
 import { FLAGSHIPS, FLAGSHIP_LIVE_COUNT } from '../data/flagships';
 import contentNonprofit from '../../ground-truth/content/nonprofit.json';
 import contentStats from '../../ground-truth/content/stats.json';
+import registryStats from '../../ground-truth/content/registry-stats.json';
 import researchData from '../data/p31-research.json';
 
 const publishedCount = (researchData as any).papers?.length ?? 23;
+
+/**
+ * Build-time live registry read (kilo.ai live-proof). On network failure the
+ * ground-truth snapshot (registry-stats.json) is used — the page still
+ * renders real, verified numbers. LiveRegistryStats re-reads client-side.
+ */
+const REGISTRY_URL = 'https://mcp-registry.trimtab-signal.workers.dev/servers';
+const registry = {
+  servers: registryStats.servers ?? 0,
+  live: registryStats.live ?? 0,
+  tools: registryStats.tools ?? 0,
+  snapshot: true,
+};
+try {
+  const res = await fetch(REGISTRY_URL, {
+    headers: { 'User-Agent': 'P31-HubBuild/1.0' },
+  });
+  if (res.ok) {
+    const data = await res.json();
+    const servers = (Array.isArray(data) ? data : data?.servers ?? []) as Array<{
+      status?: string;
+      toolCount?: number;
+      tools?: unknown[];
+    }>;
+    registry.servers = servers.length;
+    registry.live = servers.filter((s) => s?.status === 'live').length;
+    registry.tools = servers.reduce(
+      (sum, s) => sum + (Number(s?.toolCount) || (Array.isArray(s?.tools) ? s.tools.length : 0)),
+      0
+    );
+    registry.snapshot = false;
+  }
+} catch {
+  /* offline at build — ground-truth snapshot already loaded */
+}
 
 const researchItems = [
   { title: 'Tetrahedron Protocol (K4)', doi: '10.5281/zenodo.18627420', desc: `Geometric proof of K4 minimum isostatic structure. ${contentStats.zenodoViews}+ views, ${contentStats.zenodoDownloads}+ downloads.` },
@@ -30,159 +70,175 @@ const accentBy = {
   gold: 'var(--p31-accent-gold, #FBBF24)',
   green: 'var(--p31-accent-green, #34D399)',
 } as const;
+
+/** One representative deployment per family, in hub order — the full list lives on each about page. */
+const deploymentHighlights = liveProducts.slice(0, 8);
+const remainingDeployments = liveDeploymentCount - deploymentHighlights.length;
 ---
 
 <MarketingShell
   title="P31 Labs — Ownable Tech Stack for Families That Build"
-  description={`P31 Labs — agent governance that proves what happened. Hash-chained audit, post-quantum identity, ${FLAGSHIP_LIVE_COUNT} live flagship surfaces, ${publishedCount} open-access papers. EIN ${contentNonprofit.ein}.`}
+  description={`P31 Labs — open-source, post-quantum infrastructure for neurodivergent families. ${registry.live} live MCP servers, ${FLAGSHIP_LIVE_COUNT} live flagship surfaces, ${publishedCount} open-access papers. EIN ${contentNonprofit.ein}.`}
   theme="ocean"
   background="dome"
 >
 
-  <main class="max-w-7xl mx-auto px-6 pb-16">
-    <!-- Hero — Ownable scene -->
-    <section class="hero" aria-labelledby="hero-title">
-      <p class="hero__eyebrow">
-        <span>Act I · 01 · Invitation</span>
-        <span>Open Source · Ownable · Cognitively Diverse‑First</span>
-      </p>
-      <h1 id="hero-title" class="hero__title">
-        <span>Ownable Tech Stack for</span><br />
-        <span class="gradient-text">FAMILIES THAT BUILD</span>
+  <main class="home">
+
+    {/* ═══ Hero — the thesis, not a funnel ═══ */}
+    <section class="home-hero" data-align="center" aria-labelledby="hero-title">
+      <p class="home-hero__eyebrow">Act I · 01 · Invitation</p>
+      <h1 id="hero-title" class="home-hero__title">
+        Ownable Tech Stack for <span class="gradient-text">Families That Build</span>
       </h1>
-      <p class="hero__subtitle">
-        We built the stack — now you own it. Self-owned identity, care economy, and open research — all open source, all yours.
+      <p class="home-hero__lede">
+        This is the stack — now you own it. Self-owned identity, a care economy, and open research.
       </p>
-      <div class="hero__ctas">
-        <a href="#features" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200" style="background: var(--p31-accent-gradient, var(--p31-accent)); color: #000;">Deploy Your Own</a>
-        <a href="https://github.com/p31labs" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold border transition-all duration-200" style="border-color: var(--p31-accent); color: var(--p31-accent);">GitHub ↗</a>
-        <a href="https://qpj.p31ca.org/#/entry" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200" style="background: var(--p31-accent-gradient, var(--p31-accent)); color: #000;">Start for your family →</a>
+      <div class="home-hero__ctas">
+        <a href="https://cli.p31ca.org/install" class="btn btn-primary">Deploy Your Own</a>
+        <a href="#products" class="btn btn-ghost">Explore the stack</a>
+        <a href="https://github.com/p31labs" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">GitHub ↗</a>
       </div>
     </section>
 
-    <!-- Features — Ownable by design -->
-    <section id="features" class="py-16 space-y-16">
-      <div class="text-center space-y-4">
-        <h2 class="text-3xl md:text-4xl font-bold" style="color: var(--p31-text);">Ownable by design</h2>
-        <p class="text-lg max-w-2xl mx-auto" style="color: var(--p31-text-secondary);">DID:key identity, ML-DSA-65 care co-signatures, SD-JWT credentials. No vendor lock-in.</p>
+    {/* ═══ Live proof — the registry strip, fetched at build + client ═══ */}
+    <section class="home-stats" aria-label="Live proof">
+      <div class="home-stats__cell">
+        <div class="home-stats__value" data-snapshot={registry.snapshot ? 'true' : 'false'}>
+          <LiveRegistryStats client:idle servers={registry.servers} live={registry.live} tools={registry.tools} />
+        </div>
+        <div class="home-stats__label">MCP registry · <a href="https://mcp-registry.trimtab-signal.workers.dev/servers" target="_blank" rel="noopener noreferrer" class="home-stats__sublink underline-draw">live endpoint</a></div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-        <div>
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3" style="background: color-mix(in srgb, var(--p31-accent) 20%, transparent); color: var(--p31-accent);">🔐</div>
-          <h3 class="font-semibold mb-2" style="color: var(--p31-text);">Self-owned identity</h3>
-          <p class="text-sm" style="color: var(--p31-text-secondary);">Your data, your keys, your choice.</p>
-        </div>
-        <div>
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3" style="background: color-mix(in srgb, var(--p31-accent) 20%, transparent); color: var(--p31-accent);">✨</div>
-          <h3 class="font-semibold mb-2" style="color: var(--p31-text);">Care economy</h3>
-          <p class="text-sm" style="color: var(--p31-text-secondary);">Cognitive-friendly design for families.</p>
-        </div>
-        <div>
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3" style="background: color-mix(in srgb, var(--p31-accent) 20%, transparent); color: var(--p31-accent);">🔓</div>
-          <h3 class="font-semibold mb-2" style="color: var(--p31-text);">100% open source</h3>
-          <p class="text-sm" style="color: var(--p31-text-secondary);">MIT Apache licensed, self-hostable.</p>
-        </div>
+      <div class="home-stats__cell">
+        <div class="home-stats__value">{FLAGSHIP_LIVE_COUNT}</div>
+        <div class="home-stats__label">live flagships</div>
+      </div>
+      <div class="home-stats__cell">
+        <div class="home-stats__value">{liveDeploymentCount}</div>
+        <div class="home-stats__label">live deployments</div>
+      </div>
+      <div class="home-stats__cell">
+        <div class="home-stats__value">{publishedCount}</div>
+        <div class="home-stats__label">open papers · Zenodo</div>
+      </div>
+      <div class="home-stats__cell">
+        <div class="home-stats__value">100%</div>
+        <div class="home-stats__label">open source</div>
       </div>
     </section>
 
-    <!-- The Flagships (updated content) -->
-    <section class="mb-16">
-      <div class="flex items-center gap-3 mb-6">
-        <div class="w-2 h-2 rounded-full bg-cyan-400" style="box-shadow:0 0 6px rgba(34,211,238,0.6);"></div>
-        <h2 class="text-sm font-semibold text-white/70 uppercase tracking-wider">The Flagships</h2>
-        <span class="text-xs text-white/70">{FLAGSHIPS.length} surfaces</span>
+    {/* One plain line of named specifics — developers buy specifics, not
+        aggregates. Every item is live-verified: ML-DSA-65 hybrid signing
+        (12 crypto tools live in the registry), the Loom hash-chained log,
+        32 components in the design registry, the /arcade games. */}
+    <p class="home-hero__specifics">
+      Post-quantum signing, hash-chained evidence logs, a design system with 32 components, and a game arcade — all in the stack.
+    </p>
+
+    {/* ═══ Products — each section flows into its destination ═══ */}
+    <section id="products" class="home-section" aria-labelledby="products-title">
+      <div class="home-section__head">
+        <span class="home-section__dot" aria-hidden="true"></span>
+        <h2 id="products-title" class="home-section__title">The flagships</h2>
+        <span class="home-section__count">{FLAGSHIPS.length} surfaces · {FLAGSHIP_LIVE_COUNT} live</span>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="home-grid home-grid--4" data-cols="4" data-even>
         {FLAGSHIPS.map((f) => {
           const accent = accentBy[f.accent as keyof typeof accentBy] ?? accentBy.cyan;
           return (
-            <a href={`/apps/${f.slug}`} class="group glass-panel p-5 rounded-xl block transition-all no-underline hover:-translate-y-0.5" style="border-color: var(--p31-glass-border);">
-              <div class="flex items-start justify-between mb-3">
-                <span class="text-2xl" aria-hidden="true">{f.icon}</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-full border font-mono" style={`color: ${accent}; border-color: color-mix(in oklab, ${accent} 40%, transparent);`}>
+            <a href={`/apps/${f.slug}`} class="group hub-card glass-panel in9f-p-5 in9f-rounded-xl in9f-block in9f-transition-all in9f-no-underline" style="border-color: var(--p31-glass-border);">
+              <div class="in9f-flex in9f-items-start in9f-justify-between in9f-mb-3">
+                <span class="in9f-text-2xl" aria-hidden="true">{f.icon}</span>
+                <span class="in9f-text--10px- in9f-px-2 in9f-py-0-5 in9f-rounded-full in9f-border in9f-font-mono" style={`color: ${accent}; border-color: color-mix(in oklab, ${accent} 40%, transparent);`}>
                   {f.status === 'live' ? 'LIVE' : 'VISION'}
                 </span>
               </div>
-              <h3 class="text-base font-bold text-white group-hover:brightness-110 transition-all mb-1">{f.name}</h3>
-              <p class="text-xs text-white/50 leading-relaxed mb-3">{f.tagline}</p>
-              <div class="text-[11px] font-semibold" style={`color: ${accent};`}>Explore <span aria-hidden="true">→</span></div>
+              <h3 class="in9f-text-base in9f-font-bold in9f-text-white in9f-group-hover-brightness-110 in9f-transition-all in9f-mb-1">{f.name}</h3>
+              <p class="in9f-text-xs in9f-text-white-50 in9f-leading-relaxed in9f-mb-3">{f.tagline}</p>
+              <div class="hub-card__cta in9f-text--11px- in9f-font-semibold" style={`color: ${accent};`}>Explore <span aria-hidden="true">→</span></div>
             </a>
           );
         })}
       </div>
     </section>
 
-    <!-- Live Deployments -->
-    <section class="mb-16">
-      <div class="flex items-center gap-3 mb-6">
-        <div class="w-2 h-2 rounded-full bg-emerald-400" style="box-shadow:0 0 6px rgba(52,211,153,0.6);"></div>
-        <h2 class="text-sm font-semibold text-white/70 uppercase tracking-wider">Live Deployments</h2>
-        <span class="text-xs text-white/70">{liveProducts.length} core</span>
+    {/* ═══ Live deployments — one condensed row, no card wall ═══ */}
+    <section class="home-section home-section--tight" aria-labelledby="deployments-title">
+      <div class="home-section__head">
+        <span class="home-section__dot home-section__dot--green" aria-hidden="true"></span>
+        <h2 id="deployments-title" class="home-section__title">Live deployments</h2>
+        <span class="home-section__count">{liveDeploymentCount} on Cloudflare</span>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {liveProducts.map((p) => (
-          <a href={p.url} target={p.url.startsWith('http') ? '_blank' : undefined} rel={p.url.startsWith('http') ? 'noopener noreferrer' : undefined} class="group glass-panel p-5 rounded-xl block transition-all" style="text-decoration:none;">
-            <div class="flex items-start justify-between mb-3">
-              <h3 class="text-sm font-bold text-white group-hover:text-hubRose transition-colors">{p.title}</h3>
-              <div class="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0 mt-1" style="box-shadow:0 0 4px rgba(52,211,153,0.5);"></div>
-            </div>
-            <p class="text-xs text-white/50 leading-relaxed mb-3">{p.subtitle}</p>
-            <div class="flex flex-wrap gap-1.5">
-              {p.stack.map((tag) => (
-                <span class="text-[10px] px-2 py-0.5 rounded-md bg-white/[0.05] text-white/70">{tag}</span>
-              ))}
-            </div>
+      <div class="home-chips">
+        {deploymentHighlights.map((p) => (
+          <a href={p.url} target={p.url.startsWith('http') ? '_blank' : undefined} rel={p.url.startsWith('http') ? 'noopener noreferrer' : undefined} class="home-chip">
+            {p.title}
           </a>
         ))}
+        {remainingDeployments > 0 && (
+          <a href="/about" class="home-chip home-chip--muted">+{remainingDeployments} more — full registry on each about page</a>
+        )}
       </div>
     </section>
 
-    <!-- Publications -->
-    <section class="mb-16">
-      <div class="flex items-center gap-3 mb-6">
-        <div class="w-2 h-2 rounded-full bg-cyan-400"></div>
-        <h2 class="text-sm font-semibold text-white/70 uppercase tracking-wider">Publications</h2>
-        <span class="text-xs text-white/70">{publishedCount} DOI-verified on Zenodo</span>
+    {/* ═══ Research — one job: open-research proof ═══ */}
+    <section id="research" class="home-section" aria-labelledby="research-title">
+      <div class="home-section__head">
+        <span class="home-section__dot home-section__dot--cyan" aria-hidden="true"></span>
+        <h2 id="research-title" class="home-section__title">Open research</h2>
+        <span class="home-section__count">{publishedCount} DOI-verified on Zenodo</span>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="home-grid home-grid--2" data-cols="2" data-even>
         {researchItems.map((r) => (
-          <div class="glass-panel p-5 rounded-xl">
-            <h3 class="text-sm font-bold text-white mb-2">{r.title}</h3>
+          <div class="hub-card glass-panel in9f-p-5 in9f-rounded-xl">
+            <h3 class="in9f-text-sm in9f-font-bold in9f-text-white in9f-mb-2">{r.title}</h3>
             {r.doi && (
-              <a href={`https://doi.org/${r.doi}`} target="_blank" rel="noopener noreferrer" class="text-[10px] text-cyan-400 hover:text-cyan-300 transition-colors mb-2 inline-block" style="text-decoration:none;">DOI: {r.doi}</a>
+              <a href={`https://doi.org/${r.doi}`} target="_blank" rel="noopener noreferrer" class="in9f-text--10px- in9f-text-cyan-400 in9f-hover-text-cyan-300 in9f-transition-colors in9f-mb-2 in9f-inline-block" style="text-decoration:none;">DOI: {r.doi}</a>
             )}
-            <p class="text-xs text-white/50 leading-relaxed">{r.desc}</p>
+            <p class="in9f-text-xs in9f-text-white-50 in9f-leading-relaxed">{r.desc}</p>
           </div>
         ))}
       </div>
-      <div class="mt-4 text-center">
-        <a href="/research" class="text-xs text-hubRose/90 hover:text-hubRose transition-colors no-underline">View all {publishedCount} publications &rarr;</a>
+      <div class="home-more">
+        <a href="/research" class="underline-draw in9f-text-xs in9f-text-hubRose-90 in9f-hover-text-hubRose in9f-transition-colors in9f-no-underline">View all {publishedCount} publications &rarr;</a>
       </div>
     </section>
 
-    <!-- Stats Bar -->
-    <section class="mb-16">
-      <div class="glass-panel p-6 rounded-xl">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div>
-            <div class="text-2xl font-extrabold text-white">{FLAGSHIP_LIVE_COUNT}</div>
-            <div class="text-[10px] text-white/40 mt-1 uppercase tracking-wider">Live Flagships</div>
-          </div>
-          <div>
-            <div class="text-2xl font-extrabold text-white">{liveDeploymentCount}</div>
-            <div class="text-[10px] text-white/40 mt-1 uppercase tracking-wider">Live Deployments</div>
-          </div>
-          <div>
-            <div class="text-2xl font-extrabold text-white">{publishedCount}</div>
-            <div class="text-[10px] text-white/40 mt-1 uppercase tracking-wider">Papers Published</div>
-          </div>
-          <div>
-            <div class="text-2xl font-extrabold text-white">100%</div>
-            <div class="text-[10px] text-white/40 mt-1 uppercase tracking-wider">Open Source</div>
-          </div>
+    {/* ═══ How to start — three concrete steps ═══ */}
+    <section id="start" class="home-section" aria-labelledby="start-title">
+      <div class="home-section__head">
+        <span class="home-section__dot" aria-hidden="true"></span>
+        <h2 id="start-title" class="home-section__title">How to start</h2>
+        <span class="home-section__count">build · read · care</span>
+      </div>
+      <div class="home-grid home-grid--3" data-cols="3" data-even>
+        <div class="hub-card glass-panel in9f-p-5 in9f-rounded-xl">
+          <div class="in9f-font-mono in9f-text--10px- in9f-uppercase in9f-tracking-wider in9f-mb-2" style="color: var(--p31-accent);">01 · Install</div>
+          <h3 class="in9f-text-sm in9f-font-bold in9f-text-white in9f-mb-2">One command, the whole stack</h3>
+          <p class="in9f-text-xs in9f-text-white-50 in9f-leading-relaxed in9f-mb-3">
+            <code class="in9f-font-mono in9f-text--11px-" style="color: var(--p31-accent);">npm i -g @p31ca/cli</code> — chat, deploy, manage PHOS surfaces, and inspect the mesh from a spoon-aware terminal.
+          </p>
+          <a href="https://cli.p31ca.org/install" target="_blank" rel="noopener noreferrer" class="in9f-text--11px- in9f-font-semibold in9f-no-underline" style="color: var(--p31-accent);">Install guide →</a>
+        </div>
+        <div class="hub-card glass-panel in9f-p-5 in9f-rounded-xl">
+          <div class="in9f-font-mono in9f-text--10px- in9f-uppercase in9f-tracking-wider in9f-mb-2" style="color: var(--p31-accent);">02 · Read</div>
+          <h3 class="in9f-text-sm in9f-font-bold in9f-text-white in9f-mb-2">The stack, in plain language</h3>
+          <p class="in9f-text-xs in9f-text-white-50 in9f-leading-relaxed in9f-mb-3">
+            Identity, care economy, and the audit layer — how the tetrahedral mesh works and why there is no vendor lock-in.
+          </p>
+          <a href="/about" class="in9f-text--11px- in9f-font-semibold in9f-no-underline" style="color: var(--p31-accent);">Read the overview →</a>
+        </div>
+        <div class="hub-card glass-panel in9f-p-5 in9f-rounded-xl">
+          <div class="in9f-font-mono in9f-text--10px- in9f-uppercase in9f-tracking-wider in9f-mb-2" style="color: var(--p31-accent);">03 · Build or care</div>
+          <h3 class="in9f-text-sm in9f-font-bold in9f-text-white in9f-mb-2">Clone it, or just use it</h3>
+          <p class="in9f-text-xs in9f-text-white-50 in9f-leading-relaxed in9f-mb-3">
+            Every repo is on GitHub. Families can skip the terminal and start with PHOS — no accounts, no tracking.
+          </p>
+          <a href="https://phos.p31ca.org" target="_blank" rel="noopener noreferrer" class="in9f-text--11px- in9f-font-semibold in9f-no-underline" style="color: var(--p31-accent);">Open PHOS →</a>
         </div>
       </div>
     </section>
+
   </main>
 
   <SharedFooter />

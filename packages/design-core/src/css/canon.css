@@ -73,7 +73,9 @@
   --p31-node-actions-width: 220px;
   --p31-chat-max-width: 808px;
   --p31-topbar-height: 56px;
-  --p31-header-height: 61px;
+  /* NOTE: --p31-header-height moved to the canon token layer
+     (canon.tokens, 4rem). The legacy 61px literal here was removed —
+     unlayered legacy CSS was beating the layered token. */
   --p31-chat-sidebar-width: 280px;
   --p31-speed-factor: 1;
 

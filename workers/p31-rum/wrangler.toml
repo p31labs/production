@@ -1,0 +1,16 @@
+# p31-rum — RUM beacon collector (Lane 2 of the Content-refresh + RUM wave).
+# Zero-dependency worker: no package.json, no node_modules, no lockfile
+# mutation. wrangler bundles src/index.ts with esbuild directly.
+#
+# Privacy contract (non-negotiable): stores ONLY name/value/page/ts.
+# No cookies, no IP logging, no user-agent, no referrer, no PII.
+# [observability] is deliberately OFF — Workers Logs would capture
+# per-request metadata; this collector never enables it.
+name = "p31-rum"
+main = "src/index.ts"
+compatibility_date = "2026-10-13"
+
+[[d1_databases]]
+binding = "RUM_DB"
+database_name = "p31-rum"
+database_id = "988b037b-2c28-49fa-b5e9-1c0895df7842"

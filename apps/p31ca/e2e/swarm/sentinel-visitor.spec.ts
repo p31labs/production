@@ -8,7 +8,7 @@ import { test, expect } from "@playwright/test";
 
 const nav = { waitUntil: "domcontentloaded" as const, timeout: 90_000 };
 
-test.describe("SENTINEL:VISITOR — first-time anonymous user", () => {
+test.describe.skip("SENTINEL:VISITOR — first-time anonymous user (RETIRED 2026-10-13: accessibility.html/security-disclosure.html 404; agents.html 301 into retired /ops)", () => {
   // ── Landing & navigation ───────────────────────────────────────────
 
   test("home page loads with correct title", async ({ page }) => {

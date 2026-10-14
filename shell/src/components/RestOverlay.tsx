@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useAppStore } from '../store/useAppStore';
 import { useSensoryStore } from '../store/useSensoryStore';
-import { StarfieldField, DomeGeometry } from '@p31ca/shell-chrome';
+import { StarfieldField } from '@p31ca/spaceship-earth/src/cockpit/StarfieldField';
+import { DomeGeometry } from '@p31ca/shell-chrome';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 
 // Rest mode — full-screen calm scene: starfield + breathing dome + vignette.

@@ -1,0 +1,30 @@
+{
+  "name": "table-report",
+  "type": "table-report",
+  "page": {
+    "widthIn": 11,
+    "heightIn": 8.5,
+    "margin": "14mm 14mm 16mm 14mm",
+    "background": "#ffffff"
+  },
+  "defaultTheme": "ink",
+  "cover": false,
+  "packing": {
+    "mode": "flow"
+  },
+  "gates": {
+    "readability": false,
+    "pageCountRange": [
+      1,
+      40
+    ],
+    "headerRepeat": true
+  },
+  "footer": "P31 LABS",
+  "footerColor": "#8a8a8a",
+  "accent": "#c05621",
+  "themes": [
+    "professional",
+    "ink"
+  ]
+}

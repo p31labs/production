@@ -1,0 +1,199 @@
+{
+  "name": "liveness-test-20261011",
+  "description": "p31-dads",
+  "url": "https://dads.trimtab-signal.workers.dev/mcp",
+  "protocol": "2026-07-28",
+  "tools": [
+    {
+      "name": "dads_trust_compute",
+      "description": "Compute EigenTrust via incremental delta propagation. Formula: Δt^(k+1) = (1-α) C^T Δt^(k) with ε-pruning.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "edges": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "selfId": {
+            "type": "string"
+          },
+          "genesisNodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "alpha": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "edges",
+          "selfId"
+        ]
+      }
+    },
+    {
+      "name": "dads_trust_tier",
+      "description": "Get trust tier from score. Thresholds: genesis≥1.0, high≥0.9, trusted≥0.7, basic≥0.1.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "trustScore": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "trustScore"
+        ]
+      }
+    },
+    {
+      "name": "dads_task_create",
+      "description": "Create task with category (self-care, household, creative, emotional, learning) and complexity (1-5).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "assigneeDid": {
+            "type": "string"
+          },
+          "assignerDid": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "self-care",
+              "household",
+              "creative",
+              "emotional",
+              "learning"
+            ]
+          },
+          "complexity": {
+            "type": "number",
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "assigneeDid",
+          "assignerDid"
+        ]
+      }
+    },
+    {
+      "name": "dads_task_complete",
+      "description": "Complete task → LOVE minting: LOVE = round(complexity × (0.8 + tier × 0.2) × categoryWeight × 10), clamped 1-50.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "string"
+          },
+          "actualTimeMs": {
+            "type": "number",
+            "description": "Time spent in ms (for time bonus)"
+          }
+        },
+        "required": [
+          "taskId"
+        ]
+      }
+    },
+    {
+      "name": "dads_task_verify",
+      "description": "Verify completed task (finalize LOVE).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "taskId"
+        ]
+      }
+    },
+    {
+      "name": "dads_task_list",
+      "description": "List tasks with optional status/assignee filter.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "assigneeDid": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "dads_love_mint",
+      "description": "Mint LOVE directly to DID. Formula documented: tier-based with category weights.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "toDid": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "fromDid": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "toDid",
+          "amount",
+          "reason",
+          "fromDid"
+        ]
+      }
+    }
+  ],
+  "oauth": {
+    "enabled": true,
+    "resource": "https://dads.trimtab-signal.workers.dev/mcp"
+  },
+  "categories": []
+}

@@ -1,0 +1,202 @@
+{
+  "id": "style-alignment-exclude",
+  "schemaVersion": 1,
+  "generatedBy": "scripts/style-alignment-inventory.mjs",
+  "purpose": "H4-collapse lane tracking: page-by-page Tailwind → @layer legacy sweep on apps/p31ca. exclude[] is the swept-file allowlist (empty seed: every inventoried file is a candidate). The sweep lane appends each completed file; re-run this script to refresh the remaining-candidate counts.",
+  "scan": {
+    "roots": [
+      "apps/p31ca/src/pages",
+      "apps/p31ca/src/components"
+    ],
+    "extensions": [
+      ".astro",
+      ".tsx",
+      ".jsx",
+      ".ts",
+      ".js"
+    ],
+    "heuristic": "class/className attribute values are tokenized on whitespace; a token is a Tailwind utility when its base (after stripping up to 4 leading variant prefixes and any [..] arbitrary-value suffix) starts with a curated utility root list."
+  },
+  "exclude": [
+    "apps/p31ca/src/components/SharedFooter.astro",
+    "apps/p31ca/src/components/background/StaticDome.astro",
+    "apps/p31ca/src/components/islands/ErrorBoundary.tsx",
+    "apps/p31ca/src/components/islands/ExplorableChain.tsx",
+    "apps/p31ca/src/components/islands/GovernanceGallery.tsx",
+    "apps/p31ca/src/components/islands/LumiTokenVisualizer.tsx",
+    "apps/p31ca/src/components/islands/MCPRegistryQuery.tsx",
+    "apps/p31ca/src/components/islands/MeatspaceMesh.tsx",
+    "apps/p31ca/src/components/islands/ModeGateDemo.tsx",
+    "apps/p31ca/src/components/islands/SpaceshipDome.tsx",
+    "apps/p31ca/src/components/marketing/Avatar.astro",
+    "apps/p31ca/src/components/marketing/FinalCTA.astro",
+    "apps/p31ca/src/components/marketing/FlagshipPage.astro",
+    "apps/p31ca/src/components/marketing/Footer.astro",
+    "apps/p31ca/src/components/marketing/GlassCard.astro",
+    "apps/p31ca/src/components/marketing/Header.astro",
+    "apps/p31ca/src/components/marketing/Hero.astro",
+    "apps/p31ca/src/components/marketing/LiveProofPanel.astro",
+    "apps/p31ca/src/components/marketing/MarketingStarfield.astro",
+    "apps/p31ca/src/components/marketing/ResearchCard.astro",
+    "apps/p31ca/src/components/marketing/StackDiagram.astro",
+    "apps/p31ca/src/components/marketing/TrustSignals.astro",
+    "apps/p31ca/src/pages/404.astro",
+    "apps/p31ca/src/pages/about.astro",
+    "apps/p31ca/src/pages/annual-report.astro",
+    "apps/p31ca/src/pages/arcade.astro",
+    "apps/p31ca/src/pages/blog/[slug].astro",
+    "apps/p31ca/src/pages/blog/index.astro",
+    "apps/p31ca/src/pages/blog/mcp-marketplace.astro",
+    "apps/p31ca/src/pages/compliance.astro",
+    "apps/p31ca/src/pages/enterprise.astro",
+    "apps/p31ca/src/pages/faq.astro",
+    "apps/p31ca/src/pages/financials.astro",
+    "apps/p31ca/src/pages/get-involved.astro",
+    "apps/p31ca/src/pages/hire.astro",
+    "apps/p31ca/src/pages/index.astro",
+    "apps/p31ca/src/pages/research.astro",
+    "apps/p31ca/src/pages/signin.astro",
+    "apps/p31ca/src/pages/signup.astro",
+    "apps/p31ca/src/pages/team.astro",
+    "apps/p31ca/src/pages/treasury.astro",
+    "apps/p31ca/src/pages/verify.astro",
+    "apps/p31ca/src/pages/ways-to-give.astro"
+  ],
+  "totals": {
+    "filesScanned": 83,
+    "filesWithUtilities": 8,
+    "classAttributes": 1382,
+    "utilityOccurrences": 12,
+    "uniqueUtilityClasses": 6,
+    "candidatesRemaining": 0,
+    "excluded": 43
+  },
+  "files": [
+    {
+      "path": "apps/p31ca/src/components/marketing/Header.astro",
+      "utilityOccurrences": 1,
+      "uniqueUtilities": 1,
+      "classes": [
+        {
+          "class": "group",
+          "occurrences": 1
+        }
+      ]
+    },
+    {
+      "path": "apps/p31ca/src/components/marketing/ResearchCard.astro",
+      "utilityOccurrences": 1,
+      "uniqueUtilities": 1,
+      "classes": [
+        {
+          "class": "underline-draw",
+          "occurrences": 1
+        }
+      ]
+    },
+    {
+      "path": "apps/p31ca/src/pages/arcade.astro",
+      "utilityOccurrences": 1,
+      "uniqueUtilities": 1,
+      "classes": [
+        {
+          "class": "group",
+          "occurrences": 1
+        }
+      ]
+    },
+    {
+      "path": "apps/p31ca/src/pages/blog/[slug].astro",
+      "utilityOccurrences": 3,
+      "uniqueUtilities": 3,
+      "classes": [
+        {
+          "class": "h-entry",
+          "occurrences": 1
+        },
+        {
+          "class": "p-name",
+          "occurrences": 1
+        },
+        {
+          "class": "prose",
+          "occurrences": 1
+        }
+      ]
+    },
+    {
+      "path": "apps/p31ca/src/pages/blog/index.astro",
+      "utilityOccurrences": 1,
+      "uniqueUtilities": 1,
+      "classes": [
+        {
+          "class": "group",
+          "occurrences": 1
+        }
+      ]
+    },
+    {
+      "path": "apps/p31ca/src/pages/index.astro",
+      "utilityOccurrences": 3,
+      "uniqueUtilities": 2,
+      "classes": [
+        {
+          "class": "group",
+          "occurrences": 1
+        },
+        {
+          "class": "underline-draw",
+          "occurrences": 2
+        }
+      ]
+    },
+    {
+      "path": "apps/p31ca/src/pages/signin.astro",
+      "utilityOccurrences": 1,
+      "uniqueUtilities": 1,
+      "classes": [
+        {
+          "class": "animate-scale-in",
+          "occurrences": 1
+        }
+      ]
+    },
+    {
+      "path": "apps/p31ca/src/pages/signup.astro",
+      "utilityOccurrences": 1,
+      "uniqueUtilities": 1,
+      "classes": [
+        {
+          "class": "animate-scale-in",
+          "occurrences": 1
+        }
+      ]
+    }
+  ],
+  "topUtilityClasses": [
+    {
+      "class": "group",
+      "occurrences": 4
+    },
+    {
+      "class": "underline-draw",
+      "occurrences": 3
+    },
+    {
+      "class": "animate-scale-in",
+      "occurrences": 2
+    },
+    {
+      "class": "h-entry",
+      "occurrences": 1
+    },
+    {
+      "class": "p-name",
+      "occurrences": 1
+    },
+    {
+      "class": "prose",
+      "occurrences": 1
+    }
+  ]
+}

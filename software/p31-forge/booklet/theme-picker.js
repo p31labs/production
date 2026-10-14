@@ -8,6 +8,11 @@
     { id: 'editorial', label: 'Editorial', swatch: '#1B365D' },
     { id: 'consulting', label: 'Consulting', swatch: '#3182CE' },
     { id: 'midnight', label: 'Midnight', swatch: '#4CC9F0' },
+    { id: 'ats', label: 'ATS', swatch: '#5eead4' },
+    { id: 'professional', label: 'Professional', swatch: '#1E40AF' },
+    { id: 'family', label: 'Family', swatch: '#B45309' },
+    { id: 'friends', label: 'Friends', swatch: '#EA580C' },
+    { id: 'ops', label: 'Ops', swatch: '#38BDF8' },
   ];
 
   function apply(theme) {

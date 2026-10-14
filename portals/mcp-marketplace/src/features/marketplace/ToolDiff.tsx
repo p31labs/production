@@ -37,7 +37,7 @@ export function ToolDiff({ current, baseline }: { current: ToolDef[]; baseline: 
         }
         return null
       })}
-      {rows.filter((n) => base.get(n) === cur.get(n) && base.get(n) !== undefined).length === 0 && !current.length && <div className="surface-card-desc">No tools exposed.</div>}
+      {rows.filter((n) => base.get(n) === cur.get(n) && base.get(n) !== undefined).length === 0 && !current.length && <div className="surface-card-desc">No tools yet.</div>}
     </div>
   )
 }

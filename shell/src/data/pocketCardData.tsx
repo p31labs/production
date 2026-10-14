@@ -1,13 +1,30 @@
+import type { CSSProperties, ReactNode } from 'react';
 import type { PocketCardTab } from '../store/useShellStore';
 
 export interface PocketCardSection {
   label: string;
-  content: React.ReactNode;
+  content: ReactNode;
 }
 
 export interface PocketCardPageData {
   title: string;
   sections: Record<PocketCardTab, PocketCardSection>;
+}
+
+// Section headings inside pocket-card tab content. The legacy markup used
+// h4 elements for these; the correct hierarchy for tab content is h3. The
+// inline style preserves the exact `.pocket-card__body h4` visual
+// (index.css:216) so the element swap is invisible.
+const sectionHeadingStyle: CSSProperties = {
+  margin: '0 0 6px',
+  fontSize: 'var(--p31-scale-xs)',
+  color: 'var(--p31-text)',
+  textTransform: 'uppercase',
+  letterSpacing: '0.06em',
+};
+
+function SectionHeading({ children }: { children: ReactNode }) {
+  return <h3 style={sectionHeadingStyle}>{children}</h3>;
 }
 
 export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
@@ -19,11 +36,11 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         content: (
           <>
             <div className="pocket-card__section">
-              <h4>Sovereign Identity</h4>
+              <SectionHeading>Sovereign Identity</SectionHeading>
               <p>Your shell owns a DID (Decentralized Identifier) backed by Ed25519 and ML-DSA-65 (post-quantum) keys. The KEL (Key Event Log) is an immutable, signed event chain proving every key rotation and credential issuance.</p>
             </div>
             <div className="pocket-card__section">
-              <h4>Key Concepts</h4>
+              <SectionHeading>Key Concepts</SectionHeading>
               <ul>
                 <li><code>DID</code> — your universal identifier (did:key)</li>
                 <li><code>Ed25519</code> — classical signing key</li>
@@ -40,7 +57,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Welcome',
         content: (
           <div className="pocket-card__section">
-            <h4>Welcome to your Identity Wallet</h4>
+            <SectionHeading>Welcome to your Identity Wallet</SectionHeading>
             <p>This is your sovereign identity cockpit. Your keys never leave this device unless you explicitly export them.</p>
             <p><strong>Quick start:</strong></p>
             <ul>
@@ -55,7 +72,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Walkthrough',
         content: (
           <div className="pocket-card__section">
-            <h4>Core Actions</h4>
+            <SectionHeading>Core Actions</SectionHeading>
             <p><strong>1. Export your identity</strong> — downloads a JSON file with DID, Ed25519, ML-DSA-65 public keys, and full KEL chain. Store it somewhere safe.</p>
             <p><strong>2. Prove control</strong> — signs a fresh challenge with your DID key. Use this to prove ownership to external verifiers.</p>
             <p><strong>3. Rotate keys</strong> — regenerate your Ed25519 or ML-DSA-65 keypair. The old key remains in the KEL for audit.</p>
@@ -67,7 +84,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Troubleshooting',
         content: (
           <div className="pocket-card__section">
-            <h4>Common Issues</h4>
+            <SectionHeading>Common Issues</SectionHeading>
             <ul>
               <li><strong>PQC key stuck on "Generating"</strong> — tap <strong>Init PQC</strong> in the Keys card. If it times out, refresh the page.</li>
               <li><strong>KEL shows "No events yet"</strong> — your KEL is empty until you perform an action (export, prove control, or key rotation).</li>
@@ -82,14 +99,14 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Dev',
         content: (
           <div className="pocket-card__section">
-            <h4>Live State</h4>
+            <SectionHeading>Live State</SectionHeading>
             <p>Hook: <code>useIdentityWallet()</code></p>
             <p>State keys: <code>did</code>, <code>edPub</code>, <code>mldsaPub</code>, <code>pqcReady</code>, <code>kelEvents</code>, <code>kelValid</code>, <code>trust</code>, <code>meshPeers</code>, <code>spoons</code></p>
-            <h4>Libraries</h4>
+            <SectionHeading>Libraries</SectionHeading>
             <p><code>src/lib/identity.ts</code> — DID/Ed25519</p>
             <p><code>src/lib/pqc.ts</code> — ML-DSA-65</p>
             <p><code>src/lib/keri.ts</code> — KEL store</p>
-            <h4>Debug</h4>
+            <SectionHeading>Debug</SectionHeading>
             <p>Open DevTools → Console → <code>window.__p31_identity</code> for the raw hook state snapshot.</p>
           </div>
         ),
@@ -105,11 +122,11 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         content: (
           <>
             <div className="pocket-card__section">
-              <h4>System Vitals</h4>
+              <SectionHeading>System Vitals</SectionHeading>
               <p>The Dashboard is your family's command center. It aggregates telemetry from every surface into a single glanceable view.</p>
             </div>
             <div className="pocket-card__section">
-              <h4>Cards</h4>
+              <SectionHeading>Cards</SectionHeading>
               <ul>
                 <li><code>Spoons</code> — energy budget (0–5)</li>
                 <li><code>Mesh</code> — peer connectivity count</li>
@@ -126,7 +143,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Welcome',
         content: (
           <div className="pocket-card__section">
-            <h4>Mission Control</h4>
+            <SectionHeading>Mission Control</SectionHeading>
             <p>This page surfaces the most important signals from your family's digital ecosystem.</p>
             <p><strong>Care Score</strong> (top-right) is a weighted composite: Spoons 40%, LOVE 30%, Mesh 20%, Rituals 10%.</p>
             <p>The sparkline at the bottom of the Spoon card shows your 7-day trend.</p>
@@ -137,7 +154,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Walkthrough',
         content: (
           <div className="pocket-card__section">
-            <h4>Daily Routine</h4>
+            <SectionHeading>Daily Routine</SectionHeading>
             <p><strong>1. Check Spoons</strong> — your energy level. If low (0–2), the rest overlay will appear.</p>
             <p><strong>2. Assess Zone</strong> — the Zone card shows which BLE zone you're in (home/away/focus).</p>
             <p><strong>3. Review LOVE</strong> — see recent inflows from bonding rituals.</p>
@@ -149,7 +166,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Troubleshooting',
         content: (
           <div className="pocket-card__section">
-            <h4>Common Issues</h4>
+            <SectionHeading>Common Issues</SectionHeading>
             <ul>
               <li><strong>Cards blank / no data</strong> — check mesh connectivity. If offline, cards show cached state.</li>
               <li><strong>Care Score stuck</strong> — spoons/LOVE/mesh data refreshes on mount. Pull down to refresh.</li>
@@ -163,12 +180,12 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Dev',
         content: (
           <div className="pocket-card__section">
-            <h4>Live State</h4>
+            <SectionHeading>Live State</SectionHeading>
             <p>Hook: <code>useAppStore()</code> → <code>spoons</code>, <code>loveBalance</code></p>
             <p>Hook: <code>useMeshPeers()</code> → peer count</p>
             <p>Hook: <code>useDunaStats()</code> → agent count</p>
             <p>Hook: <code>useZoneStore()</code> → scanner state</p>
-            <h4>Data Sources</h4>
+            <SectionHeading>Data Sources</SectionHeading>
             <p><code>src/lib/spoonHistory.ts</code> — 7-day sparkline</p>
             <p><code>src/features/hardware/zoneStore.ts</code> — BLE zones</p>
           </div>
@@ -185,11 +202,11 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         content: (
           <>
             <div className="pocket-card__section">
-              <h4>K₄ Counter-Architecture</h4>
+              <SectionHeading>K₄ Counter-Architecture</SectionHeading>
               <p>The bonding surface models your family mesh as a tetrahedron (K₄ complete graph): 4 atoms, 6 bonds. Symmetry and curvature metrics quantify trust.</p>
             </div>
             <div className="pocket-card__section">
-              <h4>Atom Tiers</h4>
+              <SectionHeading>Atom Tiers</SectionHeading>
               <ul>
                 <li><code>GHOST</code> — symmetry &lt;35%</li>
                 <li><code>STRUT</code> — symmetry 35–60%</li>
@@ -204,7 +221,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Welcome',
         content: (
           <div className="pocket-card__section">
-            <h4>Meatspace Tetra</h4>
+            <SectionHeading>Meatspace Tetra</SectionHeading>
             <p>This surface visualizes your physical-world bonding rituals as a live tetrahedron. Each atom is a family member or peer; each bond is an attestation.</p>
             <p>Complete rituals to earn LOVE and climb the trust tiers.</p>
           </div>
@@ -214,7 +231,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Walkthrough',
         content: (
           <div className="pocket-card__section">
-            <h4>First Ritual</h4>
+            <SectionHeading>First Ritual</SectionHeading>
             <p><strong>1. Discover peers</strong> — ensure mesh is online. Peers appear as ghost atoms.</p>
             <p><strong>2. Select a ritual</strong> — rituals are generated from your current bonds. Solo rituals (self-care) are always available.</p>
             <p><strong>3. Complete & attest</strong> — tap a ritual card to complete it. LOVE is minted immediately.</p>
@@ -226,7 +243,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Troubleshooting',
         content: (
           <div className="pocket-card__section">
-            <h4>Common Issues</h4>
+            <SectionHeading>Common Issues</SectionHeading>
             <ul>
               <li><strong>No peers visible</strong> — mesh may be offline. Check the Dashboard Mesh card.</li>
               <li><strong>Rituals not generating</strong> — you need at least 1 peer or a solo ritual trigger.</li>
@@ -240,10 +257,10 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Dev',
         content: (
           <div className="pocket-card__section">
-            <h4>Live State</h4>
+            <SectionHeading>Live State</SectionHeading>
             <p>Hook: <code>window.__p31_bonding</code> (verify hook)</p>
             <p>Keys: <code>meshPeers</code>, <code>quests</code>, <code>completed</code>, <code>loveDelta</code>, <code>tetrad.symmetry</code>, <code>tetrad.curvature</code></p>
-            <h4>Libraries</h4>
+            <SectionHeading>Libraries</SectionHeading>
             <p><code>src/lib/meatspace/tetrahedron.ts</code> — geometry</p>
             <p><code>src/lib/meatspace/game.ts</code> — atom/bond generation</p>
             <p><code>src/features/bonding/questEngine.ts</code> — ritual quests</p>
@@ -260,7 +277,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Info',
         content: (
           <div className="pocket-card__section">
-            <h4>L.O.V.E. Game Engine</h4>
+            <SectionHeading>L.O.V.E. Game Engine</SectionHeading>
             <p>The Game Builder lets you create spatial worlds and mint LOVE tokens through gameplay events. Worlds are persistent; LOVE minted here flows back into the family ledger.</p>
           </div>
         ),
@@ -269,7 +286,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Welcome',
         content: (
           <div className="pocket-card__section">
-            <h4>Welcome to the Game Builder</h4>
+            <SectionHeading>Welcome to the Game Builder</SectionHeading>
             <p>Create a world, set the rules, and mint LOVE through in-game actions. Your DID is the minting authority.</p>
             <p><strong>Tip:</strong> Use the Session status panel to queue actions and sync with Roblox.</p>
           </div>
@@ -279,7 +296,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Walkthrough',
         content: (
           <div className="pocket-card__section">
-            <h4>Your First World</h4>
+            <SectionHeading>Your First World</SectionHeading>
             <p><strong>1. Create</strong> — enter a world name and optional description.</p>
             <p><strong>2. Mint LOVE</strong> — specify amount + reason + optional session ID.</p>
             <p><strong>3. Queue actions</strong> — in Session status, set a session ID and queue actions like <code>block_placed</code> or <code>chat_message</code>.</p>
@@ -291,7 +308,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Troubleshooting',
         content: (
           <div className="pocket-card__section">
-            <h4>Common Issues</h4>
+            <SectionHeading>Common Issues</SectionHeading>
             <ul>
               <li><strong>World not creating</strong> — name is required. Check toast for error details.</li>
               <li><strong>Mint failed</strong> — ensure DID is initialized (check Identity tab).</li>
@@ -305,10 +322,10 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Dev',
         content: (
           <div className="pocket-card__section">
-            <h4>Live State</h4>
+            <SectionHeading>Live State</SectionHeading>
             <p>Hook: <code>window.__p31_game</code> (verify hook)</p>
             <p>Keys: <code>worlds</code>, <code>did</code>, <code>minted</code>, <code>pending</code>, <code>session</code></p>
-            <h4>Libraries</h4>
+            <SectionHeading>Libraries</SectionHeading>
             <p><code>src/lib/gameBuilder.ts</code> — worlds, mint, queue</p>
             <p><code>src/lib/robloxBridge.ts</code> — Roblox sync</p>
           </div>
@@ -324,7 +341,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Info',
         content: (
           <div className="pocket-card__section">
-            <h4>SIC-POVM & K₄ Architecture</h4>
+            <SectionHeading>SIC-POVM & K₄ Architecture</SectionHeading>
             <p>The Research Library surfaces papers on the Symmetric Informationally Complete Positive Operator-Valued Measure (SIC-POVM) representation and the K₄ counter-architecture for distributed care protocols.</p>
           </div>
         ),
@@ -333,7 +350,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Welcome',
         content: (
           <div className="pocket-card__section">
-            <h4>Research Library</h4>
+            <SectionHeading>Research Library</SectionHeading>
             <p>Browse the paper collection, visualize mathematical structures live, and explore the SIC-POVM starfield model.</p>
             <p>Use the carousel dots to switch between visualizations.</p>
           </div>
@@ -343,7 +360,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Walkthrough',
         content: (
           <div className="pocket-card__section">
-            <h4>Using the Library</h4>
+            <SectionHeading>Using the Library</SectionHeading>
             <p><strong>1. Scan papers</strong> — the list fetches from Zenodo. Filter by tag if needed.</p>
             <p><strong>2. Toggle math</strong> — enable KaTeX rendering to see equations inline.</p>
             <p><strong>3. Switch viz</strong> — use the carousel dots to change the live visualization.</p>
@@ -355,7 +372,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Troubleshooting',
         content: (
           <div className="pocket-card__section">
-            <h4>Common Issues</h4>
+            <SectionHeading>Common Issues</SectionHeading>
             <ul>
               <li><strong>No papers loading</strong> — Zenodo API may be rate-limited. Refresh or check network.</li>
               <li><strong>KaTeX errors</strong> — some equations require additional macros. Check console for details.</li>
@@ -369,10 +386,10 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Dev',
         content: (
           <div className="pocket-card__section">
-            <h4>Live State</h4>
+            <SectionHeading>Live State</SectionHeading>
             <p>Papers: <code>window.__p31_papers</code> or store</p>
             <p>Viz index: <code>currentIdx</code> state in ResearchPage</p>
-            <h4>Libraries</h4>
+            <SectionHeading>Libraries</SectionHeading>
             <p><code>src/lib/zenodo.ts</code> — paper fetcher</p>
             <p><code>src/features/research/</code> — viz components</p>
           </div>
@@ -388,7 +405,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Info',
         content: (
           <div className="pocket-card__section">
-            <h4>Component Prompt Engine</h4>
+            <SectionHeading>Component Prompt Engine</SectionHeading>
             <p>The Sandbox is a vibe-coding environment: describe a UI component in natural language and the assistant generates it live. Artifacts are rendered in a split-pane preview.</p>
           </div>
         ),
@@ -397,7 +414,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Welcome',
         content: (
           <div className="pocket-card__section">
-            <h4>Welcome to the Sandbox</h4>
+            <SectionHeading>Welcome to the Sandbox</SectionHeading>
             <p>This is your creative workspace. Type a prompt, watch the assistant build a component, and export the code.</p>
             <p>Use the sidebar to browse artifacts and the floating window for pop-out previews.</p>
           </div>
@@ -407,7 +424,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Walkthrough',
         content: (
           <div className="pocket-card__section">
-            <h4>First Component</h4>
+            <SectionHeading>First Component</SectionHeading>
             <p><strong>1. Prompt</strong> — type a description (e.g., "a glass card with a sparkline").</p>
             <p><strong>2. Preview</strong> — the component renders in the right pane.</p>
             <p><strong>3. Refine</strong> — iterate with follow-up prompts.</p>
@@ -419,7 +436,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Troubleshooting',
         content: (
           <div className="pocket-card__section">
-            <h4>Common Issues</h4>
+            <SectionHeading>Common Issues</SectionHeading>
             <ul>
               <li><strong>Preview blank</strong> — check the artifact panel for render errors.</li>
               <li><strong>Stream timeout</strong> — the assistant may have hit a token limit. Try a shorter prompt.</li>
@@ -433,10 +450,10 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Dev',
         content: (
           <div className="pocket-card__section">
-            <h4>Live State</h4>
+            <SectionHeading>Live State</SectionHeading>
             <p>Artifacts: <code>window.__p31_artifacts</code></p>
             <p>Agent: <code>window.__p31_assistantMode</code></p>
-            <h4>Libraries</h4>
+            <SectionHeading>Libraries</SectionHeading>
             <p><code>src/features/sandbox/</code> — artifact system</p>
             <p><code>src/hooks/useRegisterShellMCP.ts</code> — MCP registry</p>
           </div>
@@ -452,7 +469,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Info',
         content: (
           <div className="pocket-card__section">
-            <h4>Geodesic Dome Telemetry</h4>
+            <SectionHeading>Geodesic Dome Telemetry</SectionHeading>
             <p>The Cockpit renders a live 3D geodesic dome with per-node telemetry. The Kuramoto order parameter <code>r(t)</code> measures synchrony across all nodes.</p>
           </div>
         ),
@@ -461,7 +478,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Welcome',
         content: (
           <div className="pocket-card__section">
-            <h4>Welcome to the Cockpit</h4>
+            <SectionHeading>Welcome to the Cockpit</SectionHeading>
             <p>This is your ship's bridge. Drag to orbit, scroll to zoom, click ports for details.</p>
             <p>Use the effects toggles to customize the starfield, aurora, and quantum constellation.</p>
           </div>
@@ -471,7 +488,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Walkthrough',
         content: (
           <div className="pocket-card__section">
-            <h4>Dome Controls</h4>
+            <SectionHeading>Dome Controls</SectionHeading>
             <p><strong>1. Orbit</strong> — click and drag on the dome to rotate.</p>
             <p><strong>2. Zoom</strong> — scroll wheel zooms in/out.</p>
             <p><strong>3. Nodes</strong> — click a port to highlight its telemetry readout.</p>
@@ -483,7 +500,7 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Troubleshooting',
         content: (
           <div className="pocket-card__section">
-            <h4>Common Issues</h4>
+            <SectionHeading>Common Issues</SectionHeading>
             <ul>
               <li><strong>Dome blank</strong> — WebGL context lost. Try disabling other GPU-heavy tabs.</li>
               <li><strong>Frame drops</strong> — reduce star density or disable aurora/comet trails.</li>
@@ -497,10 +514,10 @@ export const POCKET_CARD_DATA: Record<string, PocketCardPageData> = {
         label: 'Dev',
         content: (
           <div className="pocket-card__section">
-            <h4>Live State</h4>
+            <SectionHeading>Live State</SectionHeading>
             <p>Hook: <code>window.__p31_effects</code></p>
             <p>Keys: <code>starDensity</code>, <code>starSpeed</code>, <code>aurora</code>, <code>quantum</code>, <code>domeAccent</code>, <code>cometTrails</code></p>
-            <h4>Libraries</h4>
+            <SectionHeading>Libraries</SectionHeading>
             <p><code>src/features/ship/DomeGeometry.tsx</code> — dome mesh</p>
             <p><code>src/features/ship/CosmosFX.tsx</code> — effects pipeline</p>
             <p><code>src/hooks/useKuramotoOrderParameter.ts</code> — synchrony</p>

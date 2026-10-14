@@ -60,27 +60,28 @@ const sections = [
   description="What we store, what we don't, and how to delete it. The zero-telemetry statement."
 >
   <main id="main-content" class="section">
-    <div class="max-w-3xl mx-auto px-6 md:px-12 lg:px-16">
+    <div class="pr06-max-w-3xl pr06-mx-auto pr06-px-6 pr06-md-px-12 pr06-lg-px-16">
       <SectionHeader
+        level="1"
         title="Privacy"
         description="What we store, what we don't, and how to delete it."
         align="left"
       />
 
-      <div class="mt-16 space-y-6">
+      <div class="pr06-mt-16 pr06-space-y-6">
         {sections.map((s) => (
           <section class="glass-card" key={s.title}>
-            <div class="p-8 space-y-3">
-              <h3 class="text-xl font-bold" style="color: var(--p31-text);">{s.title}</h3>
-              <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">{s.body}</p>
+            <div class="pr06-p-8 pr06-space-y-3">
+              <h2 class="pr06-text-xl pr06-font-bold" style="color: var(--p31-text);">{s.title}</h2>
+              <p class="pr06-text-base pr06-leading-relaxed" style="color: var(--p31-text-secondary);">{s.body}</p>
             </div>
           </section>
         ))}
 
         <section class="glass-card">
-          <div class="p-8 space-y-3">
-            <p class="text-sm" style="color: var(--p31-text-tertiary);">
-              <span class="font-mono">Effective: June 10, 2026</span>
+          <div class="pr06-p-8 pr06-space-y-3">
+            <p class="pr06-text-sm" style="color: var(--p31-text-tertiary);">
+              <span class="pr06-font-mono">Effective: June 10, 2026</span>
             </p>
           </div>
         </section>

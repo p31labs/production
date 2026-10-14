@@ -1,21 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import {
-  useLedStore,
-  LED_MODES,
-  MODE_LABELS,
-  MODE_USES_PALETTE,
-  LED_PRESETS,
-  applyNamedPreset,
-  applyCalmLedPhase,
-  ledPresetToUrl,
-  applyPresetFromUrl,
-  type LedMode,
-} from '../stores/ledStore'
+import { useLedStore, rehydrateLedStore, LED_MODES, MODE_LABELS, MODE_USES_PALETTE, LED_PRESETS, applyNamedPreset, applyCalmLedPhase, ledPresetToUrl, applyPresetFromUrl, type LedMode } from '../stores/ledStore'
 import { useEffectsStore } from '../stores/effectsStore'
 import { useSceneStore } from '../stores/sceneStore'
 import { SCENE_PRESETS } from '../lib/scenePresets'
 import { ENVIRONMENTS, ENVIRONMENT_IDS } from '../lib/themeEnvironments'
 import { useThemeStore } from '@p31ca/shell-chrome/stores'
+import { yieldToMain } from '../lib/yieldToMain'
 import Knob from './controller/Knob'
 
 type Tab = 'led' | 'scene' | 'lumi' | 'env' | 'dev'
@@ -54,6 +44,15 @@ export default function LedController() {
   useEffect(() => {
     if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('m')) {
       applyPresetFromUrl(window.location.search)
+    }
+    // Rehydrate the persisted stores AFTER first paint (skipHydration keeps
+    // the server-rendered default so hydration matches; this loads the
+    // user's saved LED/scene state without a #423/#425 mismatch).
+    rehydrateLedStore()
+    try {
+      void useSceneStore.persist.rehydrate()
+    } catch {
+      /* storage unavailable */
     }
   }, [])
 
@@ -165,6 +164,9 @@ export default function LedController() {
   }
 
   async function runScene() {
+    // INP: LUMI dynamically imports the intent classifier, then writes the
+    // LED/scene stores (a multi-knob re-render). Yield first.
+    await yieldToMain()
     const q = sceneQuery.trim()
     if (!q) return
     const { classifyLumiIntent } = await import('../lib/lumiIntent')
@@ -304,9 +306,13 @@ export default function LedController() {
                   type="button"
                   className="devpanel__preset"
                   onClick={() => {
-                    applyNamedPreset(p.id)
-                    setMsg(`Preset: ${p.label}`)
-                    setTimeout(() => setMsg(null), 1200)
+                    // INP: a named preset writes the whole LED store at once
+                    // (every knob re-renders). Yield a frame first.
+                    void yieldToMain().then(() => {
+                      applyNamedPreset(p.id)
+                      setMsg(`Preset: ${p.label}`)
+                      setTimeout(() => setMsg(null), 1200)
+                    })
                   }}
                 >
                   <span className="devpanel__preset-dot" style={{ background: (p.patch.color as string) || 'var(--p31-accent)' }} />
@@ -391,7 +397,11 @@ export default function LedController() {
                   key={p.id}
                   type="button"
                   className="devpanel__preset"
-                  onClick={() => scene.applyPreset(p.value)}
+                  onClick={() => {
+                    // INP: the scene preset re-renders all six scene knobs.
+                    // Yield a frame before the batch write.
+                    void yieldToMain().then(() => scene.applyPreset(p.value))
+                  }}
                 >
                   <span
                     className="devpanel__preset-dot"
@@ -499,7 +509,7 @@ export default function LedController() {
             <div className="devpanel__section-label">CLEANUP</div>
             <div className="devpanel__actions">
               <button type="button" onClick={led.reset}>RESET LED</button>
-              <button type="button" onClick={() => effects.setSpoons(3)}>SPOONS → 3</button>
+              <button type="button" onClick={() => { void yieldToMain().then(() => effects.setSpoons(3)) }}>SPOONS → 3</button>
               <button type="button" onClick={() => { ledPresetToUrl(); setMsg('copied') }}>SHARE</button>
             </div>
           </section>

@@ -78,8 +78,42 @@ export const BASE = {
   '--p31-radius-md': '16px',
   '--p31-radius-lg': '24px',
   '--p31-radius-full': '9999px',
-  '--p31-font-sans': "'Space Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+  // RATIFIED (unification D4, 2026-10-13): Lexend is the canonical family —
+  // the token store is authoritative and the CSS export is regenerated from
+  // it (fixes the DTCG-vs-CSS disagreement bug recorded in token-inventory.md).
+  '--p31-font-sans': "'Lexend', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
   '--p31-font-mono': "'JetBrains Mono', ui-monospace, 'SF Mono', 'Fira Code', monospace",
+  // ── Canon v2 — control + layout tokens (additive, theme-agnostic).
+  // The vessel contract (docs/plans/canon-v2-contract.md). New paths only —
+  // the parity/vocabulary gates fail if any pre-existing p31.* path or value
+  // changes. `--p31-space-4` also repairs suite.css's invalid reference.
+  '--p31-space-4': '16px',
+  '--p31-control-h': '2.75rem',
+  '--p31-control-h-max': '4rem',
+  '--p31-control-pad-x': 'var(--p31-space-3)',
+  '--p31-control-radius': 'var(--p31-radius-sm)',
+  '--p31-focus-ring': '2px solid var(--p31-accent)',
+  '--p31-focus-offset': '2px',
+  '--p31-gap-xs': 'var(--p31-space-xs)',
+  '--p31-gap-sm': 'var(--p31-space-sm)',
+  '--p31-gap-md': 'var(--p31-space-md)',
+  '--p31-gap-lg': 'var(--p31-space-lg)',
+  '--p31-gap-xl': 'var(--p31-space-xl)',
+  // ── H1 header contract — the sticky-topbar height. 64px; scroll-padding-top
+  // on <html> must match it so anchor jumps clear the bar (ADR-0001 §10).
+  '--p31-header-height': '4rem',
+  '--p31-page-max': '80rem',
+  '--p31-page-pad-x': 'clamp(var(--p31-space-3), 4vw, calc(var(--p31-space-4) * 2))',
+  '--p31-prose-max': '65ch',
+  '--p31-form-max': '33rem',
+  '--p31-page-title-size': 'clamp(1.75rem, 1.25rem + 2vw, 2.5rem)',
+  '--p31-shell-sidebar-w': '16rem',
+  '--p31-grid-min-sm': '15rem',
+  '--p31-grid-min-md': '17.5rem',
+  '--p31-grid-min-lg': '22.5rem',
+  '--p31-split-min-a': '20rem',
+  '--p31-split-min-b': '22.5rem',
+  '--p31-split-handle': '4px',
 };
 
 /**
@@ -578,8 +612,11 @@ export const SEMANTIC_MAP: Record<string, SemanticSlot> = {
 
   // -------------------------------------------------------------------------
   // Chrome geometry — the shell-owned measurements a component may consume.
+  // RATIFIED (unification D3): ONE header token — --p31-header-height: 4rem.
+  // topbar.height is DEPRECATED; it aliases the header token during the
+  // transition and is removed at Phase 3 port time.
   // -------------------------------------------------------------------------
-  'topbar.height': { literal: '64px', type: 'dimension' },
+  'topbar.height': { literal: 'var(--p31-header-height)', type: 'dimension' },
   'radius.candy':  { literal: '24px', type: 'dimension' },
   'scale.xs':      { literal: '12px', type: 'dimension' },
 
@@ -601,6 +638,69 @@ export const SEMANTIC_MAP: Record<string, SemanticSlot> = {
   // -------------------------------------------------------------------------
   'font.family.sans': { palette: 'font-sans', type: 'fontFamily' },
   'font.family.mono': { palette: 'font-mono', type: 'fontFamily' },
+
+  // -------------------------------------------------------------------------
+  // Device tiers (W4 human-simplification) — window-size-class thresholds,
+  // pointer-capability hints, and per-tier spacing/type/radius adjustments.
+  // Theme-agnostic literals: a tier describes the DEVICE, not the brand.
+  // Thresholds are read by JS (matchMedia) and mirrored in design-core's
+  // src/css/device.css media queries (CSS cannot read tokens inside @media
+  // conditions). New p31.device.* paths — additive only.
+  // -------------------------------------------------------------------------
+  // Window-size-class thresholds
+  'device.phone.max':      { literal: '600px',  type: 'dimension' },
+  'device.chromebook.min': { literal: '601px',  type: 'dimension' },
+  'device.chromebook.max': { literal: '1280px', type: 'dimension' },
+  'device.desktop.min':    { literal: '1281px', type: 'dimension' },
+  'device.embedded.max':   { literal: '480px',  type: 'dimension' },
+
+  // Pointer-capability hints (1 = primary/available, 0 = not).
+  'device.phone.pointer.coarse':      { literal: '1', type: 'number' },
+  'device.phone.pointer.fine':        { literal: '0', type: 'number' },
+  'device.chromebook.pointer.coarse': { literal: '1', type: 'number' }, // convertible: touch + trackpad
+  'device.chromebook.pointer.fine':   { literal: '1', type: 'number' },
+  'device.desktop.pointer.coarse':    { literal: '0', type: 'number' },
+  'device.desktop.pointer.fine':      { literal: '1', type: 'number' },
+  'device.embedded.pointer.coarse':   { literal: '1', type: 'number' },
+  'device.embedded.pointer.fine':     { literal: '0', type: 'number' },
+
+  // Per-tier spacing (3 steps)
+  'device.phone.spacing.xs':       { literal: '4px',  type: 'dimension' },
+  'device.phone.spacing.sm':       { literal: '8px',  type: 'dimension' },
+  'device.phone.spacing.md':       { literal: '12px', type: 'dimension' },
+  'device.chromebook.spacing.xs':  { literal: '4px',  type: 'dimension' },
+  'device.chromebook.spacing.sm':  { literal: '8px',  type: 'dimension' },
+  'device.chromebook.spacing.md':  { literal: '16px', type: 'dimension' },
+  'device.desktop.spacing.xs':     { literal: '4px',  type: 'dimension' },
+  'device.desktop.spacing.sm':     { literal: '8px',  type: 'dimension' },
+  'device.desktop.spacing.md':     { literal: '16px', type: 'dimension' },
+  'device.embedded.spacing.xs':    { literal: '2px',  type: 'dimension' },
+  'device.embedded.spacing.sm':    { literal: '4px',  type: 'dimension' },
+  'device.embedded.spacing.md':    { literal: '8px',  type: 'dimension' },
+
+  // Per-tier type scale (base/sm/lg)
+  'device.phone.type.base':       { literal: '16px', type: 'dimension' },
+  'device.phone.type.sm':         { literal: '14px', type: 'dimension' },
+  'device.phone.type.lg':         { literal: '20px', type: 'dimension' },
+  'device.chromebook.type.base':  { literal: '15px', type: 'dimension' },
+  'device.chromebook.type.sm':    { literal: '13px', type: 'dimension' },
+  'device.chromebook.type.lg':    { literal: '20px', type: 'dimension' },
+  'device.desktop.type.base':     { literal: '17px', type: 'dimension' },
+  'device.desktop.type.sm':       { literal: '15px', type: 'dimension' },
+  'device.desktop.type.lg':       { literal: '22px', type: 'dimension' },
+  'device.embedded.type.base':    { literal: '14px', type: 'dimension' },
+  'device.embedded.type.sm':      { literal: '12px', type: 'dimension' },
+  'device.embedded.type.lg':      { literal: '18px', type: 'dimension' },
+
+  // Per-tier radius (2 steps)
+  'device.phone.radius.sm':       { literal: '8px',  type: 'dimension' },
+  'device.phone.radius.md':       { literal: '12px', type: 'dimension' },
+  'device.chromebook.radius.sm':  { literal: '8px',  type: 'dimension' },
+  'device.chromebook.radius.md':  { literal: '16px', type: 'dimension' },
+  'device.desktop.radius.sm':     { literal: '8px',  type: 'dimension' },
+  'device.desktop.radius.md':     { literal: '16px', type: 'dimension' },
+  'device.embedded.radius.sm':    { literal: '4px',  type: 'dimension' },
+  'device.embedded.radius.md':    { literal: '8px',  type: 'dimension' },
 };
 
 // ============================================================================
@@ -663,7 +763,7 @@ export const GLOBAL_COMPAT: Record<string, string> = {
   '--p31-type-h2': 'clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl))',
   '--p31-type-h1': 'clamp(var(--p31-scale-xl), 5.6vw, var(--p31-scale-2xl))',
   '--p31-type-display': 'clamp(var(--p31-scale-2xl), 7vw, var(--p31-scale-3xl))',
-  '--p31-font-display': "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+  '--p31-font-display': "'Lexend', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
   '--p31-duration-fast': '100ms',
   '--p31-duration-normal': '300ms',
   '--p31-duration-slow': '500ms',
@@ -728,7 +828,9 @@ export const GLOBAL_COMPAT: Record<string, string> = {
   '--p31-z-toast': '9999',
   '--p31-z-crisis': '99999',
   '--p31-z-skip-link': '100',
-  '--p31-topbar-height': '64px',
+  // DEPRECATED (unification D3) — alias to the ONE header token during the
+  // transition; removed at Phase 3 port time.
+  '--p31-topbar-height': 'var(--p31-header-height)',
   '--p31-z-content': '1',
   '--p31-z-floating': '60',
   '--p31-space-3xl': '64px',
@@ -796,6 +898,25 @@ export const GLOBAL_COMPAT: Record<string, string> = {
   '--p31-color-amber': 'oklch(72% 0.15 50)',
   '--p31-color-emerald': 'oklch(60% 0.13 155)',
   '--p31-space-6': '24px',
+  // Fluid tokens (W4) — viewport-scaled clamp() pairs. Formula (documented in
+  // docs/enterprise/design-system/device-tiers.md):
+  //   clamp(MIN, MIN + slope × vi, MAX), slope = (MAX − MIN) ÷ Δvi
+  // MIN/MAX are rem-based so WCAG 1.4.4 (200% text resize) stays safe; the
+  // ideal leg uses vi (viewport-inline) and scales with zoom. Swap vi for cqi
+  // when the component is scoped to a container, not the viewport. These are
+  // CSS-function values — the DTCG export drops them (not portable) while the
+  // CSS emit keeps them, same convention as the existing type-* clamps.
+  '--p31-fluid-text-sm': 'clamp(0.8125rem, 0.8125rem + 0.25vi, 0.875rem)',
+  '--p31-fluid-text-base': 'clamp(0.9375rem, 0.9375rem + 0.5vi, 1.0625rem)',
+  '--p31-fluid-text-lg': 'clamp(1.125rem, 1.0625rem + 1vi, 1.3125rem)',
+  '--p31-fluid-text-xl': 'clamp(1.5rem, 1.3125rem + 2vi, 1.875rem)',
+  '--p31-fluid-text-display': 'clamp(2rem, 1.75rem + 4vi, 3rem)',
+  '--p31-fluid-space-xs': 'clamp(0.25rem, 0.25rem + 0.5vi, 0.5rem)',
+  '--p31-fluid-space-sm': 'clamp(0.5rem, 0.4375rem + 0.75vi, 0.75rem)',
+  '--p31-fluid-space-md': 'clamp(0.75rem, 0.625rem + 1.5vi, 1.25rem)',
+  '--p31-fluid-space-lg': 'clamp(1rem, 0.875rem + 2.5vi, 2rem)',
+  '--p31-fluid-space-xl': 'clamp(1.5rem, 1.25rem + 4vi, 3rem)',
+  '--p31-fluid-radius-md': 'clamp(0.5rem, 0.5rem + 0.5vi, 1rem)',
 };
 
 /**
@@ -821,10 +942,36 @@ export const COMPAT_ROOT: Record<string, string> = {
   '--p31-glass-bg': 'oklch(100% 0.01 240 / 0.04)',
   '--p31-glass-border': 'oklch(100% 0.01 240 / 0.08)',
   '--p31-glass-shadow': '0 8px 32px rgba(0,0,0,0.15)',
-  '--p31-font-sans': "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+  '--p31-font-sans': "'Lexend', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
   '--p31-font-mono': "ui-monospace, SFMono-Regular, 'Fira Code', 'Fira Mono', 'Roboto Mono', 'JetBrains Mono', Menlo, Monaco, Consolas, monospace",
-  '--p31-radius-md': 'calc(var(--p31-scale-md) / 2)',
-  '--p31-radius-lg': 'calc(var(--p31-scale-lg) / 2)',
+  // RATIFIED (unification D2): ONE radius scale — the DTCG's own 8/16/24.
+  // These :root values previously computed ≈10.7px/14.2px via calc() and
+  // contradicted the DTCG export; they now match it exactly.
+  '--p31-radius-md': '16px',
+  '--p31-radius-lg': '24px',
+};
+
+/**
+ * Rose accent mode — RATIFIED (unification D1, 2026-10-13).
+ *
+ * Cyan is the canonical estate accent; the rose family the hub has rendered
+ * for months becomes a theme MODE, never a fork (Seven Laws #3): these values
+ * ride as `$extensions.mode: "rose"` in the DTCG export and emit as a
+ * `[data-theme="rose"]` block in tokens.css — a semantic-tier value swap,
+ * applied by the surface via one attribute.
+ *
+ * Values are the live p31ca rose set verbatim
+ * (apps/p31ca/src/styles/global.css:9-14). KNOWN BUG carried deliberately for
+ * visual fidelity: `--p31-accent-violet` is hue 28 (orange) — filed as an
+ * owner question, not silently corrected here.
+ */
+export const ROSE_MODE: Record<string, string> = {
+  '--p31-accent': 'oklch(65% 0.14 45)',
+  '--p31-accent-alt': 'oklch(70% 0.09 150)',
+  '--p31-accent-green': 'oklch(70% 0.12 152)',
+  '--p31-accent-red': 'oklch(64% 0.13 22)',
+  '--p31-accent-gold': 'oklch(80% 0.135 88)',
+  '--p31-accent-violet': 'oklch(60% 0.1 28)',
 };
 
 /** design-core conditional override blocks, reproduced verbatim. Emitted

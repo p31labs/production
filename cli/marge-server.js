@@ -2,7 +2,8 @@
 // ═══════════════════════════════════════════════════════════════════════════
 // MARGE — Machine Agent for Responsive Governance & Ephemeralization
 // Design-system compliance agent: enforces 33 design invariants across all
-// PHOS surfaces. Zero external dependencies — regex-based analysis.
+// PHOS surfaces. Regex-based analysis core; stdio transport is the MCP v2
+// SDK (@modelcontextprotocol/server, stdio behind the /stdio subpath).
 // Stdio JSON-RPC pattern mirrors cognitive-prosthetic.js / love-registry.js.
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -738,70 +739,49 @@ function executeTool(name, args) {
   }
 }
 
-// ─── JSON-RPC over stdio ─────────────────────────────────────────────────────
+// ─── JSON-RPC over stdio — SDK v2 (@modelcontextprotocol/server 2.3.1) ─────
+// The hand-rolled stdio JSON-RPC loop was replaced by the v2 SDK's serveStdio
+// entry (stdio subpath). Opening-era routing is the SDK's: modern stateless
+// clients (2026-07-28) negotiate via server/discover with per-request `_meta`
+// envelopes and get resultType/ttlMs/cacheScope on cacheable results; legacy
+// clients (initialize/notifications/initialized, 2024-11-05..2025-11-25) are
+// served a 2025-era instance from the same factory. See
+// docs/fix-plans/marge-server-sdk-v2-remainder.md.
+//
+// Byte-identical tool surface: tools are registered from the TOOLS table
+// above via fromJsonSchema, so tools/list emits exactly the hand-rolled
+// inputSchema objects, and tool results keep the exact legacy payload shapes.
 
-let buffer = '';
-process.stdin.setEncoding('utf8');
-process.stdin.on('data', (chunk) => {
-  buffer += chunk;
-  const lines = buffer.split('\n');
-  buffer = lines.pop();
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed) continue;
-    try {
-      handleRequest(JSON.parse(trimmed));
-    } catch (_) {
-      /* ignore non-JSON lines */
-    }
-  }
-});
+const { serveStdio } = require('@modelcontextprotocol/server/stdio');
+const { McpServer, fromJsonSchema } = require('@modelcontextprotocol/server');
 
-function handleRequest(req) {
-  const { id, method, params } = req;
-  switch (method) {
-    case 'initialize':
-      respond(id, {
-        protocolVersion: '2024-11-05',
-        capabilities: { tools: {} },
-        serverInfo: { name: 'p31-marge', version: '1.0.0' },
-      });
-      break;
-    case 'notifications/initialized':
-      break;
-    case 'tools/list':
-      respond(id, { tools: TOOLS });
-      break;
-    case 'tools/call': {
-      const toolName = params?.name;
-      const toolArgs = params?.arguments || {};
-      const tool = TOOLS.find(t => t.name === toolName);
-      if (!tool) {
-        respondError(id, -32602, `Unknown tool: ${toolName}`);
-        break;
-      }
+const SERVER_INFO = { name: 'p31-marge', version: '1.0.0' };
+const TOOLS_LIST_TTL_MS = 300000;
+
+function createServer() {
+  const server = new McpServer(SERVER_INFO, {
+    capabilities: { tools: {} },
+    cacheHints: {
+      'tools/list': { ttlMs: TOOLS_LIST_TTL_MS, cacheScope: 'public' },
+    },
+  });
+  for (const tool of TOOLS) {
+    server.registerTool(tool.name, {
+      description: tool.description,
+      inputSchema: fromJsonSchema(tool.inputSchema),
+    }, async (args) => {
       try {
-        const out = executeTool(toolName, toolArgs);
-        respond(id, { content: [{ type: 'text', text: JSON.stringify(out, null, 2) }] });
+        const out = await executeTool(tool.name, args || {});
+        return { content: [{ type: 'text', text: JSON.stringify(out, null, 2) }] };
       } catch (e) {
-        respond(id, {
+        return {
           content: [{ type: 'text', text: JSON.stringify({ error: e.message, status: 'error' }) }],
           isError: true,
-        });
+        };
       }
-      break;
-    }
-    case 'ping':
-      respond(id, {});
-      break;
-    default:
-      if (id !== undefined) respondError(id, -32601, `Method not found: ${method}`);
+    });
   }
+  return server;
 }
 
-function respond(id, result) {
-  process.stdout.write(JSON.stringify({ jsonrpc: '2.0', id, result }) + '\n');
-}
-function respondError(id, code, message) {
-  process.stdout.write(JSON.stringify({ jsonrpc: '2.0', id, error: { code, message } }) + '\n');
-}
+serveStdio(createServer);

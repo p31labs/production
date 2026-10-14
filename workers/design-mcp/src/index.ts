@@ -3,7 +3,7 @@
  * MCP 2026-07-28 Stateless Core — no session handshake.
  *
  * Endpoints:
- *   POST /              MCP JSON-RPC (tools/list, tools/call, server/discover, ping)
+ *   POST /              MCP JSON-RPC (tools/list, tools/call, server/discover)
  *   GET  /health         Health check
  *   GET  /              Tool listing page (HTML)
  *
@@ -29,6 +29,8 @@ import { scanUI, type MCPAnnotation } from './handlers/scan-ui';
 import { handleToggleDrawer, handleNavigate, handleSetSpoonLevel, handleListContracts, handleGetContract, handleValidateContract, handleClarify, handleProposeFromSpec, componentPreviewHtmlInline } from './handlers/tools';
 import { handleProposePage, handleScaffoldComponent, handleValidateOutput } from './handlers/governance';
 import skillsData from './generated/skills.json';
+import { resolveDeviceTier, getTierTokens } from './tiers';
+import { McpServer, createMcpHandler, fromJsonSchema, ResourceTemplate, ProtocolError, ProtocolErrorCode } from '@modelcontextprotocol/server';
 const SKILLS = skillsData as Record<string, { title: string; body: string; has_evals: boolean }>;
 
 const BRAND_TOKENS_RESOLVED: Record<string, Record<string, any>> = {
@@ -139,19 +141,17 @@ async function loadIconMeta(): Promise<Array<Record<string, any>>> {
 // ─── MCP 2026-07-28 Stateless Core ──────────────────────────────────────
 
 const PROTOCOL_VERSION = '2026-07-28';
+const META_PROTOCOL = 'io.modelcontextprotocol/protocolVersion';
+const META_SERVER_INFO = 'io.modelcontextprotocol/serverInfo';
+const SERVER_INFO = { name: 'p31-design-system', version: '1.0.0' };
 
-interface RequestMeta {
-  protocolVersion?: string;
-  capabilities?: Record<string, any>;
-  clientInfo?: { name?: string; version?: string };
-}
-
-function extractMeta(body: any): RequestMeta {
-  return (body && body._meta) || {};
-}
-
-function metaEnvelope(): { _meta: { protocolVersion: string } } {
-  return { _meta: { protocolVersion: PROTOCOL_VERSION } };
+function metaEnvelope(): { _meta: Record<string, unknown> } {
+  return {
+    _meta: {
+      [META_PROTOCOL]: PROTOCOL_VERSION,
+      [META_SERVER_INFO]: SERVER_INFO,
+    },
+  };
 }
 
 // ─── Token resolver ─────────────────────────────────────────────────────────
@@ -679,6 +679,30 @@ const TOOLS = [
         component: { type: 'string' as const, description: 'Optional component name to also check against its contract forbidden patterns.' },
       },
       required: ['code'],
+    },
+  },
+  {
+    name: 'resolve_device_tier',
+    description: 'Resolve the delivery tier (mobile/tablet/desktop/embedded) from capability, never device brand. Independent pointer/hover flags are surfaced, never collapsed; unknown input fails closed.',
+    inputSchema: {
+      type: 'object' as const,
+      properties: {
+        widthDp: { type: 'number' as const, description: 'Viewport width in dp (CSS px).' },
+        pointer: { type: 'string' as const, description: 'Pointer capability: none | coarse | fine | mixed.' },
+        hover: { type: 'string' as const, description: 'Hover capability: none | hover | mixed.' },
+      },
+      required: ['widthDp', 'pointer', 'hover'],
+    },
+  },
+  {
+    name: 'get_tier_tokens',
+    description: 'Get the tier contract (touch floor, navigation, delivery surfaces) for a tier. Token VALUES resolve via token_resolve / list_tokens_dtc.',
+    inputSchema: {
+      type: 'object' as const,
+      properties: {
+        tier: { type: 'string' as const, description: 'Tier: embedded | mobile | tablet | desktop.' },
+      },
+      required: ['tier'],
     },
   },
 ];
@@ -1259,6 +1283,24 @@ function renderLayout(input: any): any {
           return await handleValidateOutput(args as { code: string; component?: string });
         }
 
+        case 'resolve_device_tier': {
+          try {
+            const r = resolveDeviceTier(args as { widthDp: number; pointer: string; hover: string });
+            return { ...r, status: 'ok' };
+          } catch (e) {
+            return { error: e instanceof Error ? e.message : String(e), status: 'error' };
+          }
+        }
+
+        case 'get_tier_tokens': {
+          try {
+            const r = getTierTokens(String((args as { tier?: string }).tier ?? ''));
+            return { ...r, status: 'ok' };
+          } catch (e) {
+            return { error: e instanceof Error ? e.message : String(e), status: 'error' };
+          }
+        }
+
       default:
         return { error: `Unknown tool: ${name}`, status: 'error' };
    }
@@ -1348,17 +1390,285 @@ function generateTemplateMarkdown(spec: Record<string, any>): string {
   return lines.join('\n');
 }
 
-// ─── HTTP handler (Streamable HTTP) ─────────────────────────────────────────
+// ─── MCP 2026-07-28 (SDK v2) ──────────────────────────────────────────────
+// The hand-rolled stateless dispatch was replaced by the split SDK v2
+// (`@modelcontextprotocol/server` → `McpServer` + `createMcpHandler`).
+// The SDK handler serves the modern 2026-07-28 surface (server/discover,
+// `_meta` envelope, resultType, ttlMs/cacheScope on cacheable results,
+// -32022 version mismatches) and keeps 2025-era clients working through its
+// default `legacy: 'stateless'` fallback; the worker's own deprecated
+// initialize/initialized branch is intercepted before the handler and kept
+// byte-identical (see handleRequest). Tools are registered from the TOOLS
+// table via fromJsonSchema (inputSchema emission is byte-identical);
+// resources and prompts are re-registered with the SDK's resource/prompt
+// APIs, preserving names, descriptions, and payloads. See
+// docs/fix-plans/design-mcp-worker-sdk-v2.md.
 
-function mcpResponse(id: any, result: any) {
-  return new Response(JSON.stringify({ jsonrpc: '2.0', id, ...metaEnvelope(), result }), {
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Content-Type',
+const LIST_TTL_MS = 60_000;
+const LIST_CACHE_HINT = { ttlMs: LIST_TTL_MS, cacheScope: 'public' } as const;
+
+function buildServer(): McpServer {
+  const server = new McpServer(SERVER_INFO, {
+    capabilities: { tools: {}, resources: {}, prompts: {} },
+    cacheHints: {
+      'tools/list': LIST_CACHE_HINT,
+      'resources/list': LIST_CACHE_HINT,
+      'prompts/list': LIST_CACHE_HINT,
     },
   });
+
+  for (const tool of TOOLS) {
+    server.registerTool(
+      tool.name,
+      { description: tool.description, inputSchema: fromJsonSchema(tool.inputSchema as unknown as Parameters<typeof fromJsonSchema>[0]) },
+      async (args) => {
+        try {
+          const out = await executeTool(tool.name, (args ?? {}) as Record<string, any>);
+          return { content: [{ type: 'text', text: JSON.stringify(out, null, 2) }] };
+        } catch (e: any) {
+          return {
+            content: [{ type: 'text', text: JSON.stringify({ error: e?.message ?? String(e), status: 'error' }) }],
+            isError: true,
+          };
+        }
+      },
+    );
+  }
+
+  // ── Resources (registered in resources/list order; dynamic /path reads
+  //    behind ResourceTemplates with `list: undefined`, matching the
+  //    hand-rolled read surface without altering resources/list) ─────────
+
+  server.registerResource('Design Tokens', 'design://tokens', {
+    description: 'P31 design tokens (DTCG 2.0). Append /path for a specific token.',
+    mimeType: 'application/json',
+  }, async () => ({
+    contents: [{
+      uri: 'design://tokens',
+      mimeType: 'application/json',
+      text: JSON.stringify({
+        version: (tokens as any).version,
+        metadata: (tokens as any).metadata,
+        sections: Object.keys(tokens).filter(k => !k.startsWith('$') && k !== 'version' && k !== 'metadata'),
+      }, null, 2),
+    }],
+  }));
+
+  server.registerResource('Design Tokens path', new ResourceTemplate('design://tokens/{path*}', { list: undefined }), {
+    mimeType: 'application/json',
+  }, async (uri, variables) => {
+    const pathStr = typeof variables?.path === 'string' ? variables.path : '';
+    const value = dt(pathStr);
+    return {
+      contents: [{ uri: uri.toString(), mimeType: 'application/json', text: value !== undefined ? JSON.stringify(value, null, 2) : 'null' }],
+    };
+  });
+
+  server.registerResource('Component Registry', 'design://components', {
+    description: 'P31 component definitions with props, slots, and tokens.',
+    mimeType: 'application/json',
+  }, async () => ({
+    contents: [{
+      uri: 'design://components',
+      mimeType: 'application/json',
+      text: JSON.stringify({
+        total: Object.keys(COMP_LIST).length,
+        components: Object.keys(COMP_LIST).map(k => {
+          const c = COMP_LIST[k] as Record<string, any>;
+          return { name: k, description: c.description, css_class: c.css_class };
+        }),
+      }, null, 2),
+    }],
+  }));
+
+  server.registerResource('Component Registry path', new ResourceTemplate('design://components/{path*}', { list: undefined }), {
+    mimeType: 'application/json',
+  }, async (uri, variables) => {
+    const name = typeof variables?.path === 'string' ? variables.path : '';
+    const comp = getComponent(name);
+    if (!comp) throw new ProtocolError(ProtocolErrorCode.InvalidParams, `Component not found: ${name}`);
+    return {
+      contents: [{ uri: uri.toString(), mimeType: 'application/json', text: JSON.stringify(comp, null, 2) }],
+    };
+  });
+
+  server.registerResource('Icon Catalog', 'design://icons', {
+    description: 'P31 icon pack manifest (regular + advanced). Append /id for a single icon.',
+    mimeType: 'application/json',
+  }, async () => ({
+    contents: [{
+      uri: 'design://icons',
+      mimeType: 'application/json',
+      text: JSON.stringify({ total: (await loadIconMeta()).length, icons: await loadIconMeta() }, null, 2),
+    }],
+  }));
+
+  server.registerResource('Icon Catalog path', new ResourceTemplate('design://icons/{path*}', { list: undefined }), {
+    mimeType: 'application/json',
+  }, async (uri, variables) => {
+    const name = typeof variables?.path === 'string' ? variables.path : '';
+    const { iconCatalog } = await loadIconsData();
+    const entry = iconCatalog[name];
+    if (!entry) throw new ProtocolError(ProtocolErrorCode.InvalidParams, `Icon not found: ${name}`);
+    return {
+      contents: [{ uri: uri.toString(), mimeType: 'application/json', text: JSON.stringify({ id: name, ...entry }, null, 2) }],
+    };
+  });
+
+  const previewResource = (name: string, title: string, description: string) => {
+    server.registerResource(title, `ui://p31/component/${name}`, {
+      description,
+      mimeType: 'text/html;profile=mcp-app',
+    }, async (uri) => ({
+      contents: [{ uri: uri.toString(), mimeType: 'text/html;profile=mcp-app', text: componentPreviewHtmlInline({ name: previewName(name) }).html }],
+    }));
+  };
+  previewResource('button', 'Button Preview', 'Live Button component preview with brand tokens. MCP Apps: renders in sandboxed iframe.');
+  previewResource('chat-composer', 'Chat Composer Preview', 'Live ChatComposer component preview with brand tokens. MCP Apps: renders in sandboxed iframe.');
+  previewResource('chat-message', 'Chat Message Preview', 'Live ChatMessage component preview with brand tokens. MCP Apps: renders in sandboxed iframe.');
+  previewResource('glass-panel', 'Glass Panel Preview', 'Live GlassPanel component preview with brand tokens. MCP Apps: renders in sandboxed iframe.');
+  previewResource('artifact-pane', 'Artifact Pane Preview', 'Live ArtifactPane component preview with brand tokens. MCP Apps: renders in sandboxed iframe.');
+
+  server.registerResource('Component preview path', new ResourceTemplate('ui://p31/component/{name}', { list: undefined }), {
+    mimeType: 'text/html;profile=mcp-app',
+  }, async (uri, variables) => {
+    const name = typeof variables?.name === 'string' ? variables.name : '';
+    return {
+      contents: [{ uri: uri.toString(), mimeType: 'text/html;profile=mcp-app', text: componentPreviewHtmlInline({ name: previewName(name) }).html }],
+    };
+  });
+
+  server.registerResource('Component Catalog', 'ui://p31/catalog', {
+    description: 'Full P31 component catalog rendered as HTML (MCP Apps compatible).',
+    mimeType: 'text/html;profile=mcp-app',
+  }, async (uri) => ({
+    contents: [{ uri: uri.toString(), mimeType: 'text/html;profile=mcp-app', text: renderCatalogHtml() }],
+  }));
+
+  server.registerResource('Icon Catalog', 'ui://p31/icons', {
+    description: 'P31 icon metadata (without SVG payloads). Full SVGs via ui://p31/icon/:id.',
+    mimeType: 'application/json',
+  }, async (uri) => ({
+    contents: [{
+      uri: uri.toString(),
+      mimeType: 'application/json',
+      text: JSON.stringify({ total: (await loadIconMeta()).length, icons: await loadIconMeta() }, null, 2),
+    }],
+  }));
+
+  server.registerResource('Icon path', new ResourceTemplate('ui://p31/icons/{id}', { list: undefined }), {
+    mimeType: 'application/json',
+  }, async (uri, variables) => {
+    const name = typeof variables?.id === 'string' ? variables.id : '';
+    if (!name) throw new ProtocolError(ProtocolErrorCode.InvalidParams, 'Icon name required');
+    const { iconCatalog } = await loadIconsData();
+    const entry = iconCatalog[name];
+    if (!entry) throw new ProtocolError(ProtocolErrorCode.InvalidParams, `Icon not found: ${name}`);
+    return {
+      contents: [{ uri: uri.toString(), mimeType: 'application/json', text: JSON.stringify({ id: name, ...entry }, null, 2) }],
+    };
+  });
+
+  server.registerResource('Design Core CSS', new ResourceTemplate('ui://p31/tokens/css', { list: undefined }), {
+    mimeType: 'text/css',
+  }, async (uri) => ({
+    contents: [{ uri: uri.toString(), mimeType: 'text/css', text: designCoreCss() }],
+  }));
+
+  server.registerResource('Skills manifest', new ResourceTemplate('p31://skills', { list: undefined }), {
+    mimeType: 'application/json',
+  }, async (uri) => ({
+    contents: [{
+      uri: uri.toString(),
+      mimeType: 'application/json',
+      text: JSON.stringify({
+        skills: Object.entries(skillsData).map(([name, skill]) => ({ name, title: skill.title })),
+      }, null, 2),
+    }],
+  }));
+
+  server.registerResource('Skill body', new ResourceTemplate('p31://skills/{name}', { list: undefined }), {
+    mimeType: 'text/markdown',
+  }, async (uri, variables) => {
+    const skillName = typeof variables?.name === 'string' ? variables.name : '';
+    const skill = SKILLS[skillName];
+    if (!skill) throw new ProtocolError(ProtocolErrorCode.InvalidParams, `Skill not found: ${skillName}`);
+    return {
+      contents: [{ uri: uri.toString(), mimeType: 'text/markdown', text: skill.body }],
+    };
+  });
+
+  // ── Prompts ──────────────────────────────────────────────────────────────
+
+  const PROMPTS = [
+    {
+      name: 'generate_landing_page',
+      listDescription: 'Generate a landing page layout with hero section, product grid, and CTA block.',
+      getDescription: 'Generate a landing page layout',
+      text: 'Generate a landing page layout using P31 design system components. Call layout_generate twice: (1) "hero" layout with title, subtitle, cta buttons, and stats (format: "a2ui"), (2) "card-grid" layout with products as GlassCard items. Rotate accent colors: cyan, violet, gold, green.',
+    },
+    {
+      name: 'generate_product_grid',
+      listDescription: 'Generate a responsive card grid of products.',
+      getDescription: 'Generate a product grid',
+      text: 'Generate a responsive card grid with layout_generate: type="card-grid", format="a2ui", heading, columns (default 3), items as GlassCard objects. Use accent colors for visual variety.',
+    },
+    {
+      name: 'generate_research_page',
+      listDescription: 'Generate a card grid of research papers.',
+      getDescription: 'Generate a research page',
+      text: 'Generate a research page with layout_generate: type="card-grid", format="a2ui", items as GlassCard objects with title, description, color, href. Published=green, In-review=gold, Preprint=violet.',
+    },
+  ];
+  for (const p of PROMPTS) {
+    server.registerPrompt(p.name, { description: p.listDescription }, async () => ({
+      description: p.getDescription,
+      messages: [{ role: 'user', content: { type: 'text', text: p.text } }],
+    }));
+  }
+
+  // Conformance (2026-07-28): `server/discover` must return top-level
+  // `protocolVersion` + capabilities + serverInfo. The SDK emits
+  // `supportedVersions` + `capabilities` and stamps serverInfo into `_meta`;
+  // add the missing top-level keys (additive only, no other behavior change).
+  const sdkServer = server.server as unknown as { _ondiscover: () => Record<string, unknown> };
+  const sdkDiscover = sdkServer._ondiscover.bind(sdkServer);
+  sdkServer._ondiscover = () => {
+    const base = sdkDiscover();
+    return {
+      protocolVersion: PROTOCOL_VERSION,
+      supportedProtocolVersions: Array.isArray(base.supportedVersions)
+        ? [...(base.supportedVersions as string[])]
+        : [PROTOCOL_VERSION],
+      ...base,
+    };
+  };
+
+  return server;
 }
+
+const mcpHandler = createMcpHandler(() => buildServer());
+
+/** The advertised preview URIs are lowercase slugs; COMPONENT_DEFS keys are
+ *  PascalCase. Resolve case-insensitively so ui://p31/component/button
+ *  renders the Button preview (the hand-rolled reader passed a bare string
+ *  to componentPreviewHtmlInline and always rendered the not-found div —
+ *  see docs/fix-plans/design-mcp-component-preview-arg-bug.md). */
+function previewName(slug: string): string {
+  const key = Object.keys(COMPONENT_DEFS).find(k => k.toLowerCase() === slug.toLowerCase());
+  return key ?? slug;
+}
+
+/** The SDK handler does not add CORS headers — re-apply the worker's own. */
+function withCors(res: Response): Response {
+  const headers = new Headers(res.headers);
+  headers.set('Access-Control-Allow-Origin', '*');
+  headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  headers.set('Access-Control-Allow-Headers', 'Content-Type');
+  return new Response(res.body, { status: res.status, headers });
+}
+
+// ─── HTTP handler (Streamable HTTP) ─────────────────────────────────────────
 
 function mcpError(id: any, code: number, message: string) {
   return new Response(JSON.stringify({ jsonrpc: '2.0', id, ...metaEnvelope(), error: { code, message } }), {
@@ -1498,158 +1808,37 @@ async function handleRequest(request: Request, env?: Record<string, string | und
     return mcpError(null, -32700, 'Parse error');
   }
 
-  const { id, method, params } = body || {};
+  const { id, method } = body || {};
 
-  const meta = extractMeta(body);
-
-  switch (method) {
-    case 'server/discover':
-      return mcpResponse(id, {
-        protocolVersion: PROTOCOL_VERSION,
-        capabilities: { tools: {}, resources: {}, prompts: {} },
-        serverInfo: { name: 'p31-design-system', version: '1.0.0' },
-      });
-
-    case 'resources/list':
-      return mcpResponse(id, {
-        resources: [
-          { uri: 'design://tokens', name: 'Design Tokens', description: 'P31 design tokens (DTCG 2.0). Append /path for a specific token.', mimeType: 'application/json' },
-          { uri: 'design://components', name: 'Component Registry', description: 'P31 component definitions with props, slots, and tokens.', mimeType: 'application/json' },
-          { uri: 'design://icons', name: 'Icon Catalog', description: 'P31 icon pack manifest (regular + advanced). Append /id for a single icon.', mimeType: 'application/json' },
-          { uri: 'ui://p31/component/button', name: 'Button Preview', description: 'Live Button component preview with brand tokens. MCP Apps: renders in sandboxed iframe.', mimeType: 'text/html;profile=mcp-app' },
-          { uri: 'ui://p31/component/chat-composer', name: 'Chat Composer Preview', description: 'Live ChatComposer component preview with brand tokens. MCP Apps: renders in sandboxed iframe.', mimeType: 'text/html;profile=mcp-app' },
-          { uri: 'ui://p31/component/chat-message', name: 'Chat Message Preview', description: 'Live ChatMessage component preview with brand tokens. MCP Apps: renders in sandboxed iframe.', mimeType: 'text/html;profile=mcp-app' },
-          { uri: 'ui://p31/component/glass-panel', name: 'Glass Panel Preview', description: 'Live GlassPanel component preview with brand tokens. MCP Apps: renders in sandboxed iframe.', mimeType: 'text/html;profile=mcp-app' },
-          { uri: 'ui://p31/component/artifact-pane', name: 'Artifact Pane Preview', description: 'Live ArtifactPane component preview with brand tokens. MCP Apps: renders in sandboxed iframe.', mimeType: 'text/html;profile=mcp-app' },
-          { uri: 'ui://p31/catalog', name: 'Component Catalog', description: 'Full P31 component catalog rendered as HTML (MCP Apps compatible).', mimeType: 'text/html;profile=mcp-app' },
-          { uri: 'ui://p31/icons', name: 'Icon Catalog', description: 'P31 icon metadata (without SVG payloads). Full SVGs via ui://p31/icon/:id.', mimeType: 'application/json' },
-        ],
-      });
-
-    case 'resources/read': {
-      const uri = params?.uri || '';
-      if (uri === 'design://tokens' || uri.startsWith('design://tokens/')) {
-        const pathStr = uri.replace('design://tokens/', '').replace('design://tokens', '');
-        if (pathStr) {
-          const value = dt(pathStr);
-          return mcpResponse(id, { contents: [{ uri, mimeType: 'application/json', text: value !== undefined ? JSON.stringify(value, null, 2) : 'null' }] });
-        } else {
-          const topLevel = Object.keys(tokens).filter(k => !k.startsWith('$') && k !== 'version' && k !== 'metadata');
-          return mcpResponse(id, { contents: [{ uri, mimeType: 'application/json', text: JSON.stringify({ version: tokens.version, metadata: tokens.metadata, sections: topLevel }, null, 2) }] });
-        }
-      } else if (uri === 'design://components' || uri.startsWith('design://components/')) {
-        const name = uri.replace('design://components/', '').replace('design://components', '');
-        if (name) {
-          const comp = getComponent(name);
-          if (!comp) return mcpError(id, -32602, `Component not found: ${name}`);
-          return mcpResponse(id, { contents: [{ uri, mimeType: 'application/json', text: JSON.stringify(comp, null, 2) }] });
-        } else {
-          const summaries = Object.keys(COMP_LIST).map(k => {
-            const c = COMP_LIST[k] as Record<string, any>;
-            return { name: k, description: c.description, css_class: c.css_class };
-          });
-          return mcpResponse(id, { contents: [{ uri, mimeType: 'application/json', text: JSON.stringify({ total: summaries.length, components: summaries }, null, 2) }] });
-        }
-      } else if (uri === 'design://icons' || uri.startsWith('design://icons/')) {
-        const { iconCatalog } = await loadIconsData();
-        const name = uri.replace('design://icons/', '').replace('design://icons', '');
-        if (name) {
-          const entry = iconCatalog[name];
-          if (!entry) return mcpError(id, -32602, `Icon not found: ${name}`);
-          return mcpResponse(id, { contents: [{ uri, mimeType: 'application/json', text: JSON.stringify({ id: name, ...entry }, null, 2) }] });
-        }
-        const meta = await loadIconMeta();
-        return mcpResponse(id, { contents: [{ uri, mimeType: 'application/json', text: JSON.stringify({ total: meta.length, icons: meta }, null, 2) }] });
-      } else if (uri === 'ui://p31/icons') {
-        const meta = await loadIconMeta();
-        return mcpResponse(id, { contents: [{ uri, mimeType: 'application/json', text: JSON.stringify({ total: meta.length, icons: meta }, null, 2) }] });
-      } else if (uri.startsWith('ui://p31/icons/')) {
-        const { iconCatalog } = await loadIconsData();
-        const name = uri.replace('ui://p31/icons/', '');
-        if (!name) return mcpError(id, -32602, `Icon name required`);
-        const entry = iconCatalog[name];
-        if (!entry) return mcpError(id, -32602, `Icon not found: ${name}`);
-        return mcpResponse(id, { contents: [{ uri, mimeType: 'application/json', text: JSON.stringify({ id: name, ...entry }, null, 2) }] });
-      } else if (uri === 'ui://p31/tokens/css') {
-        return mcpResponse(id, { contents: [{ uri, mimeType: 'text/css', text: designCoreCss() }] });
-      } else if (uri.startsWith('ui://p31/component/')) {
-        const name = uri.replace('ui://p31/component/', '');
-        const html = componentPreviewHtmlInline(name);
-        return mcpResponse(id, { contents: [{ uri, mimeType: 'text/html;profile=mcp-app', text: html }] });
-      } else if (uri === 'ui://p31/catalog') {
-        return mcpResponse(id, { contents: [{ uri, mimeType: 'text/html;profile=mcp-app', text: renderCatalogHtml() }] });
-      } else if (uri === 'p31://skills') {
-        const skills = Object.entries(skillsData).map(([name, skill]) => ({ name, title: skill.title }));
-        return mcpResponse(id, { contents: [{ uri, mimeType: 'application/json', text: JSON.stringify({ skills }, null, 2) }] });
-      } else if (uri.startsWith('p31://skills/')) {
-        const skillName = uri.replace('p31://skills/', '');
-        const skill = SKILLS[skillName];
-        if (!skill) return mcpError(id, -32602, `Skill not found: ${skillName}`);
-        return mcpResponse(id, { contents: [{ uri, mimeType: 'text/markdown', text: skill.body }] });
-      }
-      return mcpError(id, -32602, `Unknown resource URI: ${uri}`);
-    }
-
-    case 'prompts/list':
-      return mcpResponse(id, {
-        prompts: [
-          { name: 'generate_landing_page', description: 'Generate a landing page layout with hero section, product grid, and CTA block.' },
-          { name: 'generate_product_grid', description: 'Generate a responsive card grid of products.' },
-          { name: 'generate_research_page', description: 'Generate a card grid of research papers.' },
-        ],
-      });
-
-    case 'prompts/get': {
-      const promptName = params?.name;
-      if (promptName === 'generate_landing_page') {
-        const msg = 'Generate a landing page layout using P31 design system components. Call layout_generate twice: (1) "hero" layout with title, subtitle, cta buttons, and stats (format: "a2ui"), (2) "card-grid" layout with products as GlassCard items. Rotate accent colors: cyan, violet, gold, green.';
-        return mcpResponse(id, { description: 'Generate a landing page layout', messages: [{ role: 'user', content: { type: 'text', text: msg } }] });
-      } else if (promptName === 'generate_product_grid') {
-        const msg = 'Generate a responsive card grid with layout_generate: type="card-grid", format="a2ui", heading, columns (default 3), items as GlassCard objects. Use accent colors for visual variety.';
-        return mcpResponse(id, { description: 'Generate a product grid', messages: [{ role: 'user', content: { type: 'text', text: msg } }] });
-      } else if (promptName === 'generate_research_page') {
-        const msg = 'Generate a research page with layout_generate: type="card-grid", format="a2ui", items as GlassCard objects with title, description, color, href. Published=green, In-review=gold, Preprint=violet.';
-        return mcpResponse(id, { description: 'Generate a research page', messages: [{ role: 'user', content: { type: 'text', text: msg } }] });
-      }
-      return mcpError(id, -32602, `Prompt not found: ${promptName}`);
-    }
-
-    case 'tools/list':
-      return mcpResponse(id, { tools: TOOLS });
-
-    case 'tools/call': {
-      const toolName = params?.name;
-      const toolArgs = params?.arguments || {};
-      const tool = TOOLS.find(t => t.name === toolName);
-      if (!tool) return mcpError(id, -32602, `Unknown tool: ${toolName}`);
-      try {
-        const result = await executeTool(toolName, toolArgs);
-        return mcpResponse(id, { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] });
-      } catch (e: any) {
-        return mcpResponse(id, {
-          content: [{ type: 'text', text: JSON.stringify({ error: e.message, status: 'error' }) }],
-          isError: true,
-        });
-      }
-    }
-
-    case 'ping':
-      return mcpResponse(id, {});
-
-    case 'initialize':
-      return mcpResponse(id, {
+  // ── Deprecated legacy-compat branch (pre-SEP-2575) ────────────────────
+  // Intercepted BEFORE the SDK handler and kept byte-identical to the
+  // hand-rolled era: initialize pins 2024-11-05 with
+  // tools.listChanged: false; initialized is acknowledged 204. Do NOT
+  // extend; new clients negotiate via server/discover.
+  if (method === 'initialize') {
+    return new Response(JSON.stringify({
+      jsonrpc: '2.0',
+      id,
+      result: {
         protocolVersion: '2024-11-05',
         capabilities: { tools: { listChanged: false } },
         serverInfo: { name: 'p31-design-mcp', version: '0.1.0' },
-      });
-
-    case 'initialized':
-      return new Response(null, { status: 204, headers: { 'Access-Control-Allow-Origin': '*' } });
-
-    default:
-      if (id !== undefined) return mcpError(id, -32601, `Method not found: ${method}`);
-      return new Response(null, { status: 204 });
+      },
+    }), {
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    });
   }
+
+  if (method === 'initialized' || method === 'notifications/initialized') {
+    return new Response(null, { status: 204, headers: { 'Access-Control-Allow-Origin': '*' } });
+  }
+  // ── End deprecated legacy-compat branch ────────────────────────────────
+
+  // Everything else (server/discover, tools/*, resources/*, prompts/*, and
+  // claim-less legacy follow-up traffic) is served by the SDK v2 handler.
+  // The body was read above, so hand it over as parsedBody (the SDK never
+  // re-reads the consumed stream).
+  return withCors(await mcpHandler.fetch(request, { parsedBody: body ?? undefined }));
 }
 
 export default {

@@ -1,0 +1,10 @@
+{
+  "name": "res-pos-control-policy-range",
+  "tokens": {
+    "glass-bg": {
+      "$value": { "colorSpace": "oklch", "components": [1, 0.01, 240], "alpha": { "min": 0.03, "max": 0.09 } },
+      "$type": "color",
+      "$extensions": { "p31": { "policy": "range: resolved from surface L via capability flags (never collapsed)" } }
+    }
+  }
+}

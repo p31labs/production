@@ -1,0 +1,13 @@
+{
+  "type": "family-letter",
+  "meta": { "title": "A Note Home", "kicker": "P31 FAMILY", "date": "2026-10-12", "author": "Will", "source": "mail" },
+  "blocks": [
+    { "kind": "email", "data": {
+      "subject": "Sunday, from the workbench",
+      "greeting": "Dear family —",
+      "paragraphs": [ "The forge finally renders letters like this one: warm paper, serif type, an amber rule under the title.", "Nothing here is corporate. This is the same engine that builds the call kits, wearing different clothes." ],
+      "signoff": "Love, Will"
+    } },
+    { "kind": "signature", "data": { "name": "Will", "line": "P31 Labs · home" } }
+  ]
+}

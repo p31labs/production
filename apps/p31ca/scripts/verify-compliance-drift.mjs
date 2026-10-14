@@ -3,9 +3,12 @@
  * Compliance mapping drift check.
  *
  * Ensures the /compliance page data (apps/p31ca/src/data/p31-compliance-mapping.ts)
- * and the ENTERPRISE_PACKAGE.md §5 table do not diverge on the standards they
- * reference. Unlike a fixed list, this parses ALL RFC and draft identifiers
- * out of both files and diffs the two sets — any divergence fails the build.
+ * — the single source of truth — is never contradicted by the standards the
+ * /enterprise surface (apps/p31ca/src/pages/enterprise.astro) hardcodes.
+ * Unlike a fixed list, this parses ALL RFC and draft identifiers out of both
+ * files: any identifier cited on the enterprise surface that the mapping data
+ * does not know about fails the build (the surface may show a subset, never a
+ * claim the source of truth has never heard of).
  *
  * Run: node scripts/verify-compliance-drift.mjs  (from apps/p31ca)
  */
@@ -16,7 +19,7 @@ import { fileURLToPath } from 'node:url';
 const here = fileURLToPath(new URL('.', import.meta.url));
 const root = resolve(here, '..');
 const dataFile = resolve(root, 'src/data/p31-compliance-mapping.ts');
-const packageFile = resolve(root, '../../ENTERPRISE_PACKAGE.md');
+const packageFile = resolve(root, 'src/pages/enterprise.astro');
 
 const data = readFileSync(dataFile, 'utf-8');
 const pkg = readFileSync(packageFile, 'utf-8');
@@ -39,11 +42,8 @@ const dataIds = extract(data);
 const pkgIds = extract(pkg);
 
 const failures = [];
-for (const id of dataIds) {
-  if (!pkgIds.has(id)) failures.push(`compliance data references "${id}" but ENTERPRISE_PACKAGE §5 does not`);
-}
 for (const id of pkgIds) {
-  if (!dataIds.has(id)) failures.push(`ENTERPRISE_PACKAGE §5 references "${id}" but the compliance data file does not`);
+  if (!dataIds.has(id)) failures.push(`enterprise surface references "${id}" but the compliance mapping data does not`);
 }
 
 // The AAT revision must match between the two (e.g. -04 must be the same on both).
@@ -52,7 +52,7 @@ const aatPkgMatch = pkg.match(/draft-sharif-agent-audit-trail-\d+/);
 const aatData = aatDataMatch ? aatDataMatch[0] : undefined;
 const aatPkg = aatPkgMatch ? aatPkgMatch[0] : undefined;
 if (aatData && aatPkg && aatData !== aatPkg) {
-  failures.push(`AAT revision mismatch: data "${aatData}" vs §5 "${aatPkg}"`);
+  failures.push(`AAT revision mismatch: mapping data "${aatData}" vs enterprise surface "${aatPkg}"`);
 }
 
 // Regulatory date claims must match. The Digital Omnibus deferred the EU AI
@@ -61,7 +61,7 @@ if (aatData && aatPkg && aatData !== aatPkg) {
 // class of staleness that previously bit the compliance page.
 const hasDeferral = (t) => /Dec(ember)?\s*2,?\s*2027/i.test(t) && /Aug(ust)?\s*2,?\s*2028/i.test(t);
 if (hasDeferral(data) !== hasDeferral(pkg)) {
-  failures.push('Article 12 deferral dates (Dec 2027 / Aug 2028) differ between the compliance data file and ENTERPRISE_PACKAGE §5');
+  failures.push('Article 12 deferral dates (Dec 2027 / Aug 2028) differ between the compliance mapping data and the enterprise surface');
 }
 
 if (failures.length > 0) {
@@ -70,4 +70,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log('✅ Compliance mapping in sync (data file ↔ ENTERPRISE_PACKAGE §5)');
+console.log('✅ Compliance mapping in sync (mapping data ↔ enterprise surface)');

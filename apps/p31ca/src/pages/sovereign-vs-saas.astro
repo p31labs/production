@@ -1,0 +1,222 @@
+---
+/**
+ * /sovereign-vs-saas — "What the big players charge, and how P31 does it."
+ *
+ * The honest-math comparison page. Competitor figures are PUBLISHED pricing
+ * retrieved 2026-10-13, each row linked to the vendor's own pricing page.
+ * The survey figures in "The governance gap" come from Stacklok's State of
+ * MCP in Software 2026 (July 2026, with the Linux Foundation's AAIF), as
+ * reported by Forkast News — a cited survey, not an estimate.
+ * Our own costs are architecture math only: what the published Cloudflare
+ * Workers Paid allowances include, and what our fleet's shape consumes at
+ * family scale. We do not claim what our actual bill is, because the page
+ * cannot see it — and a number we cannot audit is a number we will not print.
+ *
+ * The registry count (42,753 servers as of 2026-10-13) and the DigitalOcean
+ * tool-matching figure (99.3%, internal testing) come from Forkast analyses;
+ * the observability market sizing is Mordor Intelligence (May 2026). Each is
+ * linked where cited. Their figures stay theirs; ours stay architecture math.
+ *
+ * Gates: no HTML comments (this note lives in frontmatter), H1→H2→H3 only,
+ * one filled-accent CTA per section, every external URL registered in
+ * src/data/p31-mesh-constants.json (verify-content-consistency).
+ */
+import MarketingShell from '../layouts/MarketingShell.astro';
+import SectionHeader from '../components/marketing/SectionHeader.astro';
+import Footer from '../components/marketing/Footer.astro';
+
+const RETRIEVED = '2026-10-13';
+
+const rows = [
+  {
+    capability: 'MCP registry for 50 seats',
+    theirs: '$1,250 / month',
+    theirsDetail: 'Mintive (MintMCP) Teams — 50 seats included, $25 per additional seat. Published pricing.',
+    theirsHref: 'https://www.mintmcp.com/pricing',
+    ours: 'Self-hosted registry',
+    oursDetail: 'One Worker behind our own domain: KV catalog, Durable Object ledger, queue ingest. 44 servers registered, 22 live, 124 tools — ours to keep.',
+    cost: 'Within the $5 plan\u2019s included allowances at our scale.',
+  },
+  {
+    capability: 'Agent tracing at 1M traces / month',
+    theirs: '\u2248$5,000 / month',
+    theirsDetail: 'LangSmith Plus — $39/seat plus pay-as-you-go traces. At the published LSU rate (0.005 LSU per base trace, $1.00/LSU \u2248 $5 per 1,000), 1M base traces \u2248 $5,000/mo. Before the July 2026 repricing the published rate was $2.50 per 1,000 (\u2248$2,514/mo at 1M).',
+    theirsHref: 'https://www.langchain.com/pricing',
+    ours: 'The Loom\u2019s hash-chained ledger on D1',
+    oursDetail: 'Every record links to the one before it via SHA-256; anyone can replay the chain at the public verify surface. D1\u2019s paid plan includes 25 billion rows read per month.',
+    cost: 'Within the $5 plan\u2019s included allowances at our scale.',
+  },
+  {
+    capability: 'Observability, 100-host reference workload',
+    theirs: '\u2248$5,315 / month',
+    theirsDetail: 'Datadog — Infrastructure Pro $15 + APM $31 per host/month (published rates) = $4,600/mo for 100 hosts; log ingestion ($0.10/GB) and indexing ($1.70 per million events) at published rates push a reference workload to \u2248$5,315/mo. Arithmetic at published rates \u2014 an estimate, not a quote.',
+    theirsHref: 'https://www.datadoghq.com/pricing/list',
+    ours: 'The ledgers + health probes',
+    oursDetail: 'The same append-only ledgers double as the audit trail, and the fleet health gate probes every server on a schedule. Workers Logs ships 20 million included log events per month.',
+    cost: 'Within the $5 plan\u2019s included allowances at our scale.',
+  },
+  {
+    capability: 'Frontend hosting per seat',
+    theirs: '$20 / month per developer seat',
+    theirsDetail: 'Vercel Pro — $20/mo base plan plus $20 per developer seat. Published pricing.',
+    theirsHref: 'https://vercel.com/pricing',
+    ours: 'Cloudflare Pages + Workers Paid',
+    oursDetail: 'Pages serves static requests and bandwidth free and unlimited; Workers Paid is $5 per account \u2014 10 million requests and 30 million CPU-milliseconds included per month, no per-seat charge.',
+    cost: '$5 / account \u2014 the whole family, every seat.',
+  },
+  {
+    capability: 'Object storage, 10 TB egress / month',
+    theirs: '\u2248$900 / month',
+    theirsDetail: 'AWS S3 \u2014 data transfer out to the internet at the published first-10TB rate of $0.09/GB: 10 TB \u2248 $900/mo, before request charges. Published pricing.',
+    theirsHref: 'https://aws.amazon.com/s3/pricing/',
+    ours: 'Cloudflare R2',
+    oursDetail: 'Zero egress fees at any volume. 10 GB stored free, then $0.015/GB-month. Papers, assets, and archives can be served to anyone, free of transfer bills.',
+    cost: '$0 egress \u2014 storage only, and the first 10 GB is free.',
+  },
+  {
+    capability: 'Agent runtime hosting',
+    theirs: 'Pro $50 / month \u00b7 Team $200 / month',
+    theirsDetail: 'Agent Droplets (launched 2026-10-01). Pro is $50/mo with a 15% discount on agent usage \u2014 at the standard rate that covers \u2248$58.82 of usage. Team is $200/mo with 20% off, covering $250.00. $5 free-trial credit for new customers; past the plan, usage keeps going at list price. Published pricing. DigitalOcean reports 99.3% tool-matching accuracy in internal testing \u2014 its bet is that the bottleneck for agents is not compute but tool integration (Forkast, 2026-09-23). Their bet is tool-matching; ours is governance \u2014 the same problem, different layer.',
+    theirsHref: 'https://www.digitalocean.com/pricing/agent-droplets',
+    theirsHref2: 'https://www.digitalocean.com/pricing/harness-runtime',
+    theirsLabel2: 'Harness Runtime pricing',
+    ours: 'Workers Paid, one flat account',
+    oursDetail: 'Harness, catalog, ledger, and queues all run on Workers Paid: 10 million requests and 30 million CPU-milliseconds included per month, no per-seat charge, no metered microVMs.',
+    cost: 'Within the $5 plan\u2019s included allowances at our scale.',
+  },
+  {
+    capability: 'Agent runtime, metered',
+    theirs: '$0.0997 / vCPU-hr + $0.0132 / GB-hr',
+    theirsDetail: 'Amazon Bedrock AgentCore v2, committed baseline (launching October 2026). v1 bills $0.0895/vCPU-hr + $0.00945/GB-hr; v2 consumption bills $0.1276/vCPU-hr + $0.0169/GB-hr. The metering never sleeps: a NAT gateway bills \u2248$33/mo while nothing runs.',
+    theirsHref: 'https://aws.amazon.com/bedrock/agentcore/pricing/',
+    theirsHref2: 'https://builder.aws.com/content/3CdN6NRi4qP4sjhHPWC0pLG6HXu/cost-breakdown-for-sagemaker-unified-studio-domain-and-project',
+    theirsLabel2: 'AWS Builder Center idle-cost breakdown',
+    ours: 'Flat allowances, no idle meter',
+    oursDetail: 'Workers Paid is a flat $5 with included allowances. When the fleet is quiet, nothing meters. Predictable vs metered is the real axis of this comparison.',
+    cost: 'Within the $5 plan\u2019s included allowances at our scale.',
+  },
+];
+---
+
+<MarketingShell
+  title="Sovereign vs SaaS — P31 Labs"
+  description="What the big players charge, and how P31 does it. Published pricing retrieved 2026-10-13, each row linked to the vendor's own page. Our costs are architecture math, never a claimed bill."
+>
+  <main id="main-content" class="section">
+    <div class="sod3-max-w-7xl sod3-mx-auto sod3-px-6 sod3-md-px-12 sod3-lg-px-16">
+      <SectionHeader
+        level="1"
+        title="Sovereign vs SaaS"
+        description={`What the big players charge, and how P31 does it. Competitor figures are published pricing, retrieved ${RETRIEVED}, each row linked to the vendor's own page. Our costs are architecture math only.`}
+      />
+
+      <section class="sod3-mb-16">
+        <h2 class="sod3-text-2xl sod3-font-bold sod3-mb-6" style="color: var(--p31-text);">The governance gap</h2>
+        <div class="glass-card sod3-p-8 sod3-space-y-4 sod3-text-sm sod3-leading-relaxed" style="color: var(--p31-text-secondary);">
+          <p>In July 2026, Stacklok and the Linux Foundation's AAIF asked 100 senior software engineers at US and UK companies how they use MCP. The headline — 41% of software orgs say MCP is in production — hides the real story.</p>
+          <p><strong style="color: var(--p31-text);">86%</strong> of MCP use is still experimenting or local development. <strong style="color: var(--p31-text);">9%</strong> runs in production with no governance. Only <strong style="color: var(--p31-text);">5%</strong> is governed, enterprise-wide production.</p>
+          <p>Security and compliance are the top blocker (49%). Governance is second (34%). So the scarce, expensive thing is not the protocol — it is the governance layer. That layer is the product. We run it on the $5 plan.</p>
+          <p>The official MCP Registry hit <strong style="color: var(--p31-text);">42,753 servers</strong> on October 13, 2026 — in Forkast's framing, connectivity is abundant, trust is unverified (<a href="https://forkast.news/bifurcation-tool-discovery-hits-42000-as-agent-governance-stalls/" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">Forkast, 2026-10-13 ↗</a>).</p>
+          <p>Mordor Intelligence sizes the agent observability and governance market at $1.23B (2025), $1.68B (2026), and $8.62B by 2031 (38.69% CAGR). As regulations start requiring real-time audit trails, observability turns into a compliance mandate — the Loom is that, for pennies (<a href="https://www.mordorintelligence.com/industry-reports/agent-observability-and-governance-market" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">Mordor, May 2026 ↗</a>).</p>
+          <p>Sources: <a href="https://stacklok.com/resources/state-of-mcp-in-software-2026/" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">Stacklok, State of MCP in Software 2026 ↗</a> · <a href="https://forkast.news/mcp-locked-in-its-architecture-today-now-the-hard-part-enterprise-adoption-at-scale" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">Forkast News, 2026-07-28 ↗</a></p>
+        </div>
+      </section>
+
+      <section class="sod3-mb-16">
+        <h2 class="sod3-text-2xl sod3-font-bold sod3-mb-6" style="color: var(--p31-text);">The table</h2>
+        <div class="glass-card sod3-p-6 sod3-rounded-xl sod3-overflow-x-auto">
+          <table class="sod3-w-full sod3-text-sm" style="border-collapse: collapse; min-width: 900px;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--p31-glass-border);">
+                <th class="sod3-text-left sod3-font-semibold sod3-p-3" style="color: var(--p31-text);">Capability</th>
+                <th class="sod3-text-left sod3-font-semibold sod3-p-3" style="color: var(--p31-text);">Their published price</th>
+                <th class="sod3-text-left sod3-font-semibold sod3-p-3" style="color: var(--p31-text);">P31 architecture</th>
+                <th class="sod3-text-left sod3-font-semibold sod3-p-3" style="color: var(--p31-text);">Our estimated cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row) => (
+                <tr style="border-bottom: 1px solid var(--p31-glass-border); vertical-align: top;">
+                  <td class="sod3-p-3 sod3-font-semibold" style="color: var(--p31-text);">{row.capability}</td>
+                  <td class="sod3-p-3" style="color: var(--p31-accent);">
+                    <div class="sod3-font-bold">{row.theirs}</div>
+                    <div class="sod3-mt-1 sod3-text-xs sod3-leading-relaxed" style="color: var(--p31-text-secondary);">
+                      {row.theirsDetail} <a href={row.theirsHref} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">See source ↗</a>{row.theirsHref2 && (<Fragment> · <a href={row.theirsHref2} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">{row.theirsLabel2} ↗</a></Fragment>)}
+                    </div>
+                  </td>
+                  <td class="sod3-p-3" style="color: var(--p31-text-secondary);">
+                    <div class="sod3-font-semibold" style="color: var(--p31-text);">{row.ours}</div>
+                    <div class="sod3-mt-1 sod3-text-xs sod3-leading-relaxed">{row.oursDetail}</div>
+                  </td>
+                  <td class="sod3-p-3 sod3-text-xs sod3-leading-relaxed" style="color: var(--p31-text-secondary);">{row.cost}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="sod3-mb-16">
+        <h2 class="sod3-text-2xl sod3-font-bold sod3-mb-6" style="color: var(--p31-text);">The method</h2>
+        <div class="glass-card sod3-p-8 sod3-space-y-4 sod3-text-sm sod3-leading-relaxed" style="color: var(--p31-text-secondary);">
+          <p><strong style="color: var(--p31-text);">Their numbers.</strong> Every competitor figure above is published pricing retrieved {RETRIEVED}, with a link to the vendor's own pricing page. Where a vendor prices by unit (traces, hosts, gigabytes), the number is arithmetic at those published rates, labeled as such. The governance-gap figures are a survey — Stacklok's State of MCP in Software 2026, 100 senior software engineers in the US and UK, run with the Linux Foundation's AAIF — cited as a survey, not an estimate.</p>
+          <p><strong style="color: var(--p31-text);">Our numbers.</strong> We state our architecture and the published Cloudflare Workers Paid allowances it fits inside. A 16-server MCP fleet, the hub and portals on Pages, D1 ledgers, KV, Queues, and Durable Objects all fit inside the plan's included allowances: 10 million requests and 30 million CPU-milliseconds per month, D1's 25 billion rows read, zero egress. That is architecture math, not a claim about our actual bill — we do not print a number we cannot audit.</p>
+          <p><strong style="color: var(--p31-text);">What this page is not.</strong> It is not a benchmark, not a negotiation tactic, and not an advertisement. SaaS observability and registries buy real things: compliance paperwork, support staff, managed uptime. This page exists so a family can see the actual arithmetic before choosing — ours included.</p>
+        </div>
+      </section>
+
+      <section class="sod3-mb-16">
+        <h2 class="sod3-text-2xl sod3-font-bold sod3-mb-6" style="color: var(--p31-text);">Sources</h2>
+        <div class="glass-card sod3-p-8">
+          <ul class="sod3-space-y-2 sod3-text-sm" style="color: var(--p31-text-secondary);">
+            {rows.map((row) => (
+              <Fragment>
+                <li>
+                  <span style="color: var(--p31-text);">{row.capability}</span> — <a href={row.theirsHref} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">{row.theirsHref}</a>
+                </li>
+                {row.theirsHref2 && (
+                  <li>
+                    <span style="color: var(--p31-text);">{row.capability} — {row.theirsLabel2}</span> — <a href={row.theirsHref2} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">{row.theirsHref2}</a>
+                  </li>
+                )}
+              </Fragment>
+            ))}
+            <li>
+              <span style="color: var(--p31-text);">Stacklok, State of MCP in Software 2026 (July 2026 survey, with the Linux Foundation's AAIF)</span> — <a href="https://stacklok.com/resources/state-of-mcp-in-software-2026/" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">https://stacklok.com/resources/state-of-mcp-in-software-2026/</a>
+            </li>
+            <li>
+              <span style="color: var(--p31-text);">Forkast News, MCP Locked In Its Architecture Today (2026-07-28)</span> — <a href="https://forkast.news/mcp-locked-in-its-architecture-today-now-the-hard-part-enterprise-adoption-at-scale" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">https://forkast.news/mcp-locked-in-its-architecture-today-now-the-hard-part-enterprise-adoption-at-scale</a>
+            </li>
+            <li>
+              <span style="color: var(--p31-text);">Forkast News, Bifurcation: Tool Discovery Hits 42,000 as Agent Governance Stalls (2026-10-13)</span> — <a href="https://forkast.news/bifurcation-tool-discovery-hits-42000-as-agent-governance-stalls/" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">https://forkast.news/bifurcation-tool-discovery-hits-42000-as-agent-governance-stalls/</a>
+            </li>
+            <li>
+              <span style="color: var(--p31-text);">Forkast News, Five Runtime Architectures, Five Bets on Where Agent Execution Lives (2026-09-23)</span> — <a href="https://forkast.news/five-runtime-architectures-five-bets-on-where-agent-execution-lives/" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">https://forkast.news/five-runtime-architectures-five-bets-on-where-agent-execution-lives/</a>
+            </li>
+            <li>
+              <span style="color: var(--p31-text);">Mordor Intelligence, Agent Observability and Governance Market (May 2026)</span> — <a href="https://www.mordorintelligence.com/industry-reports/agent-observability-and-governance-market" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">https://www.mordorintelligence.com/industry-reports/agent-observability-and-governance-market</a>
+            </li>
+            <li>
+              <span style="color: var(--p31-text);">Cloudflare Workers Paid allowances</span> — <a href="https://developers.cloudflare.com/workers/platform/pricing/" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">https://developers.cloudflare.com/workers/platform/pricing/</a>
+            </li>
+            <li>
+              <span style="color: var(--p31-text);">Cloudflare R2 pricing</span> — <a href="https://developers.cloudflare.com/r2/pricing/" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">https://developers.cloudflare.com/r2/pricing/</a>
+            </li>
+            <li>
+              <span style="color: var(--p31-text);">Cloudflare D1 pricing</span> — <a href="https://developers.cloudflare.com/d1/platform/pricing/" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">https://developers.cloudflare.com/d1/platform/pricing/</a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="sod3-text-center sod3-mb-16">
+        <p class="sod3-text-xl sod3-font-bold" style="color: var(--p31-text);">We don't sell this page. We run on it.</p>
+        <p class="sod3-mt-3 sod3-text-sm" style="color: var(--p31-text-tertiary, #a1a1a1);">
+          Same allowance table, written as steps: <a href="/runbook" style="color: var(--p31-accent); text-decoration: underline;">the $5 stack runbook</a>. Same evidence, verifiable live: <a href="/verify" style="color: var(--p31-accent); text-decoration: underline;">verify the Loom</a>.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+</MarketingShell>

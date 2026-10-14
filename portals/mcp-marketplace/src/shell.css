@@ -1,0 +1,53 @@
+/* ==========================================================================
+   P31 MCP Marketplace — shell-owned geometry only (Seven Laws, law 1).
+
+   Imported by globals.css as layer(shell) — the ONLY portal layer that may
+   outrank canon.components, and only with position/size/flow rules. No
+   color, background, border, radius, shadow, or typography here; canon owns
+   appearance. Faces ship NO CSS (the face layer stays empty).
+
+   The textarea cap is the render-gate control ceiling (≤64px, render-gate
+   A1): canon defaults multiline controls to 2× the control height, the
+   portal pins the ceiling the gate enforces. Geometry, so the shell owns it.
+   ========================================================================== */
+
+[data-p31-control='textarea'] {
+  min-height: var(--p31-control-h);
+  max-height: var(--p31-control-h-max);
+}
+
+/* Topbar slot geometry for the rebuilt chrome (the appearance — colors,
+   radius, weight — is inline token references in Topbar.tsx). */
+/* Header-height contract (H1): the sticky bar IS --p31-header-height tall,
+   so scroll-padding-top and the render-gate A8 parity check agree with the
+   rendered geometry. The legacy recipe adds its own margin — the shell
+   owns geometry, so it pins both wrapper and inner to the token. */
+[data-p31='shell-topbar'] {
+  height: var(--p31-header-height);
+}
+[data-p31='shell-topbar'] .topbar {
+  height: 100%;
+  margin-top: 0;
+}
+.topbar-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--p31-space-1);
+  padding: 6px 14px;
+  text-decoration: none;
+  min-height: 32px;
+}
+
+.topbar-search {
+  min-width: 9rem;
+  max-width: 14rem;
+}
+
+/* Settings sheet placement (the sheet's own geometry lives in the
+   grandfathered workspace.css; this keeps its anchor on the topbar slot). */
+.settings-sheet {
+  position: absolute;
+  right: 0;
+  top: calc(100% + var(--p31-space-2));
+  z-index: 60;
+}

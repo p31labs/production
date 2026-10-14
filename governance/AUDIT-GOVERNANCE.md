@@ -34,7 +34,7 @@ The governance framework is **structurally sound but chronologically backdated**
 |---|---|
 | **G-P3** | Compliance report (Mar 27) claims "501(c)(3) active, EIN published" + "CLINICALLY VALIDATED 350+ trials" — incorporation was April 3, board April 11, and 1023-EZ wasn't filed. Status asserted before it existed. |
 | **G-L1** | Whistleblower Policy cites **21 U.S.C. § 307** which does not exist. Real FDA employee protection (§ 399d) is food-specific. Replace with correct authorities. |
-| **G-L2** | Policy's reporting channel is `compliance@p31labs.org` — **domain is dead**. No SECURITY.md in governance. Live channel is `security@p31ca.org` (root SECURITY.md), unreferenced. |
+| **G-L2** | Policy's reporting channel is `compliance@p31labs.org` — **domain is dead**. No SECURITY.md in governance. Live channel is the security contact in the root SECURITY.md (`trimtab.signal@proton.me`), unreferenced. |
 | **G-P4** | `governance/` and `admin/` are **untracked in git** — zero version history, no way to prove which version was in force, no approval trail. |
 
 ## Medium
@@ -56,7 +56,7 @@ The governance framework is **structurally sound but chronologically backdated**
 
 1. **G-P1** re-date all framework docs to April 11, 2026 (matches board consent) — restore chronology integrity
 2. **G-P2** correct Class I → Class II in `admin/P31_COMPLIANCE_AND_REPORTS.md` + WCD docs (this is the record that would face FDA/court)
-3. **G-L1/G-L2** fix the nonexistent statute citation and the dead-domain reporting channels; wire governance to `security@p31ca.org`
+3. **G-L1/G-L2** fix the nonexistent statute citation and the dead-domain reporting channels; wire governance to the live security contact in root SECURITY.md
 4. **G-P4** commit `governance/` + `admin/` and add a document-control register
 5. **G-P3/G-P6** strip "active 501(c)(3) / clinically validated" until the determination letter and trial data exist
 6. **G-D2/G-D3** counsel review of personal-goodwill strategy; generate or de-claim the QMS artifacts

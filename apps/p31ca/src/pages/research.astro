@@ -11,10 +11,17 @@
  * /enterprise and /about).
  */
 import MarketingShell from '../layouts/MarketingShell.astro';
-import SectionHeader from '../components/marketing/SectionHeader.astro';
 import ResearchCard from '../components/marketing/ResearchCard.astro';
 import Footer from '../components/marketing/Footer.astro';
+import QuoteBlock from '../components/marketing/QuoteBlock.astro';
+import { PageHeader } from '@p31ca/canon-astro';
 import { papers } from '../data/p31-research.ts';
+import contentStats from '../../ground-truth/content/stats.json';
+// Phase 3 Batch 1 — canon adoption chain (tokens → layers → recipes → canon-v2).
+import '@p31ca/canon/tokens.css';
+import '@p31ca/canon/css/layers.css';
+import '@p31ca/canon-parts/recipes.css';
+import '@p31ca/design-core/css/canon-v2.css';
 
 const publishedCount = papers.length;
 
@@ -44,71 +51,117 @@ const plainCitation = `P31 Labs, Inc. (2026). P31 Research Series: Papers I–XX
 <MarketingShell
   title="Research — P31 Labs"
   description={`${publishedCount} papers on Zenodo. Citable, immutable, open. From the Tetrahedron Protocol to the Sovereign Stack.`}
+  theme="rose"
 >
   <main id="main-content" class="section">
-    <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
-      <SectionHeader
-        title="Research"
-        description={`${publishedCount} papers published on Zenodo. Citable, immutable, open. From SIC-POVM to the Sovereign Stack.`}
-      />
+    <div class="rec9-max-w-7xl rec9-mx-auto rec9-px-6 rec9-md-px-12 rec9-lg-px-16">
+      {/* /research is on the H3 center list — header centers, body prose stays left. */}
+      <div class="sh-space-y-4 page-header-block page-header-block--center">
+        <PageHeader
+          class="page-header-center"
+          title="Research"
+          subtitle={`${publishedCount} papers published on Zenodo. Citable, immutable, open. From SIC-POVM to the Sovereign Stack.`}
+        />
+        <div class="sh-h-1 sh-w-16 sh-rounded-full p31-header-bar" style="background: var(--p31-accent);"></div>
+      </div>
+
+      <p class="rec9-mt-6 rec9-text-lg rec9-leading-relaxed" style="color: var(--p31-text);">
+        P31's research is {publishedCount} open-access papers on Zenodo, each with a permanent DOI you can check in a browser. They cover the Tetrahedron Protocol, the Sovereign Stack, the care economy, and civil rights — real, citable work, not marketing claims. Two papers are also hosted here as PDFs. Everything below resolves to a live record.
+      </p>
+
+      <div class="rec9-mt-10">
+        <QuoteBlock
+          text="The optimal architecture for both biological and digital cognitive systems is not zero-dependency isolation but loosely coupled autonomy — maximum local sovereignty with asynchronous connections for learning and reality-testing."
+          citeName="William R. Johnson, “Consciousness, Memory, and the Architecture of Self-Preservation” (P31 Research Paper III)"
+          citeHref="https://doi.org/10.5281/zenodo.19416491"
+          citeNote="Zenodo DOI · full PDF hosted on this site"
+        />
+      </div>
+
+      <p class="rec9-mt-4 rec9-text-sm" style="color: var(--p31-text-tertiary);">
+        As of the last build (2026-10-13), the founding paper alone has {contentStats.zenodoViews}+ views and {contentStats.zenodoDownloads}+ downloads on Zenodo, counted live from the Zenodo API.
+      </p>
 
       {/* ── THE DOI TIMELINE ── */}
-      <section class="mb-16">
-        <h2 class="text-2xl font-bold mb-6" style="color: var(--p31-text);">Publication timeline</h2>
-        <div class="glass-card p-6 rounded-xl overflow-x-auto">
+      <section class="rec9-mb-16">
+        <h2 class="rec9-text-2xl rec9-font-bold rec9-mb-6" style="color: var(--p31-text);">Publication timeline</h2>
+        <div class="glass-card rec9-p-6 rec9-rounded-xl rec9-overflow-x-auto">
           <pre class="mermaid" set:html={researchTimeline} />
         </div>
       </section>
 
       {/* ── HOW TO CITE ── */}
-      <section class="mb-16">
-        <h2 class="text-2xl font-bold mb-6" style="color: var(--p31-text);">How to cite P31</h2>
-        <div class="space-y-6">
-          <div class="glass-card p-6 rounded-xl">
-            <h3 class="font-mono text-sm font-semibold mb-3" style="color: var(--p31-accent);">BIBTEX</h3>
-            <pre class="font-mono text-xs leading-relaxed overflow-x-auto" style="color: var(--p31-text-secondary);"><code>{bibtex}</code></pre>
+      <section class="rec9-mb-16">
+        <h2 class="rec9-text-2xl rec9-font-bold rec9-mb-6" style="color: var(--p31-text);">How to cite P31</h2>
+        <div class="rec9-space-y-6">
+          <div class="glass-card rec9-p-6 rec9-rounded-xl">
+            <h3 class="rec9-font-mono rec9-text-sm rec9-font-semibold rec9-mb-3" style="color: var(--p31-accent);">BIBTEX</h3>
+            <pre class="rec9-font-mono rec9-text-xs rec9-leading-relaxed rec9-overflow-x-auto" style="color: var(--p31-text-secondary);"><code>{bibtex}</code></pre>
           </div>
-          <div class="glass-card p-6 rounded-xl flex flex-col gap-4">
-            <h3 class="font-mono text-sm font-semibold" style="color: var(--p31-accent);">APA 7TH EDITION</h3>
-            <p class="text-sm leading-relaxed" style="color: var(--p31-text-secondary);">{plainCitation}</p>
+          <div class="glass-card rec9-p-6 rec9-rounded-xl rec9-flex rec9-flex-col rec9-gap-4">
+            <h3 class="rec9-font-mono rec9-text-sm rec9-font-semibold" style="color: var(--p31-accent);">APA 7TH EDITION</h3>
+            <p class="rec9-text-sm rec9-leading-relaxed" style="color: var(--p31-text-secondary);">{plainCitation}</p>
             <a
               href="https://zenodo.org/communities/p31labs"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-1 text-sm font-medium"
+              class="rec9-inline-flex rec9-items-center rec9-gap-1 rec9-text-sm rec9-font-medium"
               style="color: var(--p31-accent);"
             >
               View the community on Zenodo ↗
             </a>
-            <p class="text-xs mt-auto" style="color: var(--p31-text-tertiary, #a1a1a1);">
-              All DOIs resolve via <span class="font-mono">https://doi.org/</span> — the canonical resolver. No vendor lock-in.
+            <p class="rec9-text-xs rec9-mt-auto" style="color: var(--p31-text-tertiary);">
+              All DOIs resolve via <span class="rec9-font-mono">https://doi.org/</span> — the canonical resolver. No vendor lock-in.
             </p>
           </div>
         </div>
       </section>
 
       {/* ── PAPER GRID ── */}
-      <section class="mb-16">
-        <h2 class="text-2xl font-bold mb-6" style="color: var(--p31-text);">All {publishedCount} papers</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section class="rec9-mb-16">
+        <h2 class="rec9-text-2xl rec9-font-bold rec9-mb-6" style="color: var(--p31-text);">All {publishedCount} papers</h2>
+        <div data-p31="grid" data-cols="3" data-even class="rec9-gap-6">
           {papers.map((paper) => (
             <ResearchCard {...paper} />
           ))}
         </div>
       </section>
 
+      {/* ── PAPERS ON PAGES ── */}
+      <section class="rec9-mb-16">
+        <h2 class="rec9-text-2xl rec9-font-bold rec9-mb-6" style="color: var(--p31-text);">Papers on Pages</h2>
+        <div class="glass-card rec9-p-8 rec9-space-y-4">
+          <p class="rec9-text-sm rec9-leading-relaxed" style="color: var(--p31-text-secondary);">
+            Two of the {publishedCount} papers exist as PDFs in our own repo, and they are served from Pages — static bandwidth, zero egress, no transfer bill no matter how many people download them.
+          </p>
+          <ul class="rec9-space-y-3 rec9-text-sm">
+            <li class="rec9-flex rec9-flex-col rec9-md-flex-row rec9-md-items-center rec9-gap-2">
+              <a href="/papers/sovereign-stack-paper-xii-v2.pdf" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">Paper XII — The Sovereign Stack (PDF, v2)</a>
+              <span class="rec9-font-mono rec9-text-xs" style="color: var(--p31-text-tertiary);">10.5281/zenodo.19782969</span>
+            </li>
+            <li class="rec9-flex rec9-flex-col rec9-md-flex-row rec9-md-items-center rec9-gap-2">
+              <a href="/papers/consciousness-memory-architecture.pdf" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">Consciousness, Memory, and the Architecture of Self-Preservation (PDF)</a>
+              <span class="rec9-font-mono rec9-text-xs" style="color: var(--p31-text-tertiary);">10.5281/zenodo.19416491</span>
+            </li>
+          </ul>
+          <p class="rec9-text-sm rec9-leading-relaxed" style="color: var(--p31-text-secondary);">
+            The other {publishedCount - 2} papers are not in our repo, so they link to Zenodo through their DOIs — every card above resolves there. If we self-host all of them, the scale path is R2 behind this domain: same zero-egress economics as Pages, and R2 pricing is published.
+          </p>
+        </div>
+      </section>
+
       {/* ── CTA ── */}
-      <section class="text-center mb-16">
+      <section class="rec9-text-center rec9-mb-16">
         <a
           href="https://zenodo.org/communities/p31labs"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold transition"
-          style="background: var(--p31-accent); color: #0a0a0f;"
+          class="rec9-inline-flex rec9-items-center rec9-gap-2 rec9-rounded-full rec9-px-8 rec9-py-4 rec9-text-lg rec9-font-semibold rec9-transition"
+          style="background: var(--p31-accent); color: var(--p31-void);"
         >
           View all on Zenodo ↗
         </a>
-        <p class="mt-4 text-sm" style="color: var(--p31-text-tertiary, #a1a1a1);">
+        <p class="rec9-mt-4 rec9-text-sm" style="color: var(--p31-text-tertiary);">
           Every DOI verified live, 2026-09-23. No placeholder citations — a fabricated citation is worse than none.
         </p>
       </section>

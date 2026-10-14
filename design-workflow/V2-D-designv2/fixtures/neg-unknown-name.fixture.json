@@ -1,0 +1,10 @@
+{
+  "name": "neg-control-unknown-name",
+  "extends": ["Base"],
+  "tokens": {
+    "not-a-parent-token": {
+      "$value": { "value": 4, "unit": "px" },
+      "$type": "dimension"
+    }
+  }
+}

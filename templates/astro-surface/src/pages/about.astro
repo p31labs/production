@@ -1,0 +1,68 @@
+<!-- P31-HEADER
+id: p31_template_astro_surface_page_20261013_v1.0
+type: template
+component: templates/astro-surface
+status: live
+retention: keep-forever
+created: 2026-10-13T00:00:00Z
+owner: will
+-->
+
+---
+// BLUEPRINT ONLY — not runnable. This is what a PAGE-CONTRACTS-conformant
+// Astro page looks like after migration. Copy the shape, not the file.
+import ShellLayout from '../../layouts/ShellLayout.astro';
+import { site } from '../../site-config';
+---
+
+<ShellLayout title={`About — ${site.title}`} description="Who built this and why.">
+  {/*
+    C4 — ONE page root. The shell layout renders:
+      <main id="main-content">  (width:100%; max-width: var(--p31-page-max); margin-inline:auto)
+    The page adds content only. NO mx-auto, NO max-w-* here (C1–C3).
+  */}
+  <div data-p31="page" data-mode="flow">
+    {/*
+      H1/H2 — ONE header chain, title then description.
+      H3 — data-align="start" (default). "/about" is start in the
+      e6ff2571 reference; only the centeredHeaders list may center.
+    */}
+    <header data-p31="page-header" data-align="start">
+      <h1 data-p31="page-header-title">About</h1>
+      <p data-p31="page-header-subtitle">
+        Sovereign infrastructure for neurodivergent families, built by a father who needed it.
+      </p>
+    </header>
+
+    <p>
+      Body prose stays start-aligned even on centered-header pages (H4).
+      Copy may SAY "in production" here — prose is content, not a badge (B4).
+    </p>
+
+    {/*
+      G1/G2 — the grid carries data-p31="grid" + data-cols + data-even.
+      G3 — count matches the cards: 2 cards -> data-cols="2".
+      G5 — one grid per titled section; no page-local grid CSS (G4).
+    */}
+    <section>
+      <h2>How it works</h2>
+      <div data-p31="grid" data-cols="2" data-even>
+        <article data-p31="card">
+          <h3>Card one</h3>
+          <p>Card body.</p>
+          <a href="/one/" data-p31="card-cta">Read more <span data-p31="card-cta-arrow">→</span></a>
+        </article>
+        <article data-p31="card">
+          <h3>Card two</h3>
+          <p>Card body.</p>
+          <a href="/two/" data-p31="card-cta">Read more <span data-p31="card-cta-arrow">→</span></a>
+        </article>
+      </div>
+    </section>
+  </div>
+</ShellLayout>
+
+<!--
+  B1/B2 — no LiveProofPanel, no "Live in production" card, no ● Live pill.
+  The green-dot proof is gone estate-wide; if status matters, say it in prose.
+-->

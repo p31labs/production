@@ -1,0 +1,26 @@
+---
+import { listingShellTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  emptyTitle?: string;
+  emptyDescription?: string;
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { emptyTitle = 'Nothing here yet', emptyDescription, class: cls = '', style } = Astro.props;
+const controls = await Astro.slots.render('controls');
+const children = await Astro.slots.render('default');
+const empty = await Astro.slots.render('empty');
+
+const html = renderHtml(listingShellTree({
+  controls: controls ? { raw: controls } : null,
+  children: children ? { raw: children } : null,
+  empty: empty ? { raw: empty } : null,
+  emptyTitle,
+  emptyDescription,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

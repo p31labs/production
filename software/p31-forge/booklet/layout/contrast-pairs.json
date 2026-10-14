@@ -1,0 +1,41 @@
+{
+  "_doc": "WCAG 2.2 contrast pairs per theme. Each entry: [foreground, background, minimum-ratio]. Body/reading text requires 4.5:1; large text (headings, metric values) requires 3.0:1. The contrast gate in check-layout.py fails the build below these.",
+  "ats": [
+    ["#E0E4EC", "#090D17", 4.5],
+    ["#A5B1C5", "#090D17", 4.5],
+    ["#5EEAD4", "#090D17", 3.0],
+    ["#39FF14", "#090D17", 3.0],
+    ["#E0E4EC", "#1D293B", 4.5]
+  ],
+  "professional": [
+    ["#0F172A", "#FFFFFF", 4.5],
+    ["#475569", "#FFFFFF", 4.5],
+    ["#4B5563", "#FFFFFF", 4.5],
+    ["#1E40AF", "#FFFFFF", 3.0],
+    ["#0F172A", "#F8FAFC", 4.5]
+  ],
+  "ink": [
+    ["#1A1A1A", "#FFFFFF", 4.5],
+    ["#4F4B45", "#FFFFFF", 4.5],
+    ["#76716A", "#FFFFFF", 4.5],
+    ["#C05621", "#FFFFFF", 3.0]
+  ],
+  "family": [
+    ["#2D2416", "#FDF8F0", 4.5],
+    ["#6B5D4F", "#FDF8F0", 4.5],
+    ["#7A6B5B", "#FDF8F0", 4.5],
+    ["#B45309", "#FDF8F0", 3.0]
+  ],
+  "friends": [
+    ["#1C1917", "#FFF7ED", 4.5],
+    ["#57534E", "#FFF7ED", 4.5],
+    ["#EA580C", "#FFF7ED", 3.0]
+  ],
+  "ops": [
+    ["#E2E8F0", "#0F172A", 4.5],
+    ["#94A3B8", "#0F172A", 4.5],
+    ["#38BDF8", "#0F172A", 3.0],
+    ["#4ADE80", "#0F172A", 3.0],
+    ["#E2E8F0", "#1E293B", 4.5]
+  ]
+}

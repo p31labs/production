@@ -9,13 +9,17 @@
  * Discovery:
  *   GET /.well-known/mcp           server metadata
  *   GET /.well-known/mcp-pricing   per-tool pricing
- *   POST /mcp                      MCP JSON-RPC (initialize | tools/list | tools/call)
+ *   POST /mcp                      MCP JSON-RPC (stateless 2026-07-28:
+ *                                  server/discover | tools/list | tools/call;
+ *                                  a deprecated legacy branch still answers
+ *                                  2025-era initialize / initialized)
  */
 
 import { Hono } from "hono";
 import { paymentMiddleware } from "x402-hono";
 import { createFacilitatorConfig } from "@coinbase/x402";
 import { declareDiscoveryExtension } from "@x402/extensions/bazaar";
+import { McpServer, createMcpHandler, fromJsonSchema } from "@modelcontextprotocol/server";
 
 /** Build a Bazaar discovery declaration for a paid MCP tool (v1 body carries it; buyer clients echo it into the envelope). */
 function bazaarDeclaration(description: string, input: Record<string, unknown>) {
@@ -64,6 +68,12 @@ interface Env {
   OPERATOR_TOKEN?: string;
   /** External OAuth 2.1 IdP JWKS endpoint (set via `wrangler secret put OAUTH_JWKS_URL`). Optional — when absent, bearer validation is disabled. */
   OAUTH_JWKS_URL?: string;
+  /**
+   * RFC 9207 expected token issuer. When set, a valid bearer token's `iss`
+   * claim MUST equal this value exactly; when unset, falls back to the origin
+   * derived from OAUTH_JWKS_URL (issuerFromJwks).
+   */
+  OAUTH_ISSUER?: string;
   /** RFC 8707 resource URI that a valid bearer token's `aud` claim MUST match. */
   RESOURCE_ID: string;
 }
@@ -173,6 +183,91 @@ const OPERATOR_TOOLS = new Set(["allocator.rebalance", "compounder.trigger", "op
 /** Default spend cap (USD) for a capital operation; above DEFAULT_SPEND_OVER needs explicit confirmation. */
 const DEFAULT_SPEND_CAP_USD = 10;
 const CONFIRM_OVER_USD = 100;
+
+// ─── MCP 2026-07-28 (SDK v2) ───────────────────────────────────────────
+// The hand-rolled stateless dispatch was replaced by the split SDK v2
+// (`@modelcontextprotocol/server` → `McpServer` + `createMcpHandler`).
+// The SDK handler serves the modern 2026-07-28 surface (server/discover,
+// `_meta` envelope, resultType, ttlMs/cacheScope on cacheable results,
+// -32022 version mismatches) and keeps 2025-era clients working through its
+// default `legacy: 'stateless'` fallback (the initialize handshake) —
+// equivalent to the previous hand-rolled legacy-compat branch.
+// The x402 payment gate and the OAuth 2.1 / RFC 8707 bearer validation
+// (verifyOAuthBearer above) are unchanged and stay on the tools/call path
+// as middleware BEFORE the SDK handler (answered with the envelope-shaped
+// `mcpResult`/`mcpErr` bodies below).
+
+const PROTOCOL_VERSION = "2026-07-28";
+const META_PROTOCOL = "io.modelcontextprotocol/protocolVersion";
+
+function metaEnvelope() {
+  return { _meta: { [META_PROTOCOL]: PROTOCOL_VERSION } };
+}
+
+/** Envelope-shaped bodies for the auth-gate responses (kept from the hand-rolled era). */
+function mcpResult(id: any, result: any) {
+  return { jsonrpc: "2.0", id, ...metaEnvelope(), result: { resultType: "complete", ...result } };
+}
+
+function mcpErr(id: any, code: number, message: string) {
+  return { jsonrpc: "2.0", id, ...metaEnvelope(), error: { code, message } };
+}
+
+/** ExecutionContext hand-off: the SDK tool callback has no `c.executionCtx`, so the Hono route stashes it keyed by request. */
+const execCtxByRequest = new WeakMap<Request, ExecutionContext>();
+
+/** Fire-and-forget settlement record without an ExecutionContext (legacy-leg fallback). */
+function detached(p: Promise<unknown>): void {
+  void p.catch((e) => console.error("background record failed", String(e)));
+}
+
+function buildServer(env: Env): McpServer {
+  const server = new McpServer(
+    { name: "p31-capital-machine", version: "0.1.0-beta" },
+    {
+      capabilities: { tools: {} },
+      cacheHints: { "tools/list": { ttlMs: 60_000, cacheScope: "public" } },
+    },
+  );
+  for (const t of TOOLS) {
+    const priced = PRICING[t.name];
+    server.registerTool(
+      t.name,
+      { description: t.description, inputSchema: fromJsonSchema(t.inputSchema as unknown as Parameters<typeof fromJsonSchema>[0]) },
+      async (args, ctx) => {
+        const req = ctx.http?.req;
+        const did = req ? (req.headers.get("X-DID") || req.headers.get("X-User-DID")) : "";
+        const result = await executeTool(t.name, (args ?? {}) as Record<string, unknown>, env);
+
+        if (priced) {
+          const routingFee = priced.price ?? "0.01";
+          const execCtx = req ? execCtxByRequest.get(req) : undefined;
+          const ctxLike = execCtx ?? ({ waitUntil: detached, passThroughOnException: () => {} } as unknown as ExecutionContext);
+          recordX402Revenue(env, t.name, did ?? "", routingFee, ctxLike, {
+            routing_fee: routingFee,
+            operation: t.name,
+          });
+          consumeEntitlement(env, did ?? "", t.name, routingFee, ctxLike);
+        }
+
+        return {
+          content: [{ type: "text", text: result.ok ? JSON.stringify(result.data) : JSON.stringify({ error: result.error }) }],
+          isError: !result.ok,
+        };
+      },
+    );
+  }
+  return server;
+}
+
+/** The SDK handler does not add CORS headers — re-apply the worker's own. */
+function withCors(res: Response): Response {
+  const headers = new Headers(res.headers);
+  headers.set("Access-Control-Allow-Origin", "*");
+  headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-PAYMENT, X-Operator-Token");
+  return new Response(res.body, { status: res.status, headers });
+}
 
 /** Enforce spend limits on capital operations (mirrors si-wallet-mcp mandate pattern). */
 function enforceSpendLimit(name: string, args: Record<string, unknown>): string | null {
@@ -406,7 +501,9 @@ async function verifySignature(jwk: JsonWebKey, alg: string, signedData: Uint8Ar
  * Returns { sub, scope? } on success, or null when:
  *  - no Bearer header present,
  *  - OAUTH_JWKS_URL / RESOURCE_ID unset,
- *  - token malformed, unknown alg/kid, bad signature, expired, or `aud` ≠ RESOURCE_ID.
+ *  - token malformed, unknown alg/kid, bad signature, expired,
+ *  - `aud` ≠ RESOURCE_ID (RFC 8707), or
+ *  - `iss` ≠ OAUTH_ISSUER / issuer derived from the JWKS URL (RFC 9207 mix-up defense).
  * All wrapped in try/catch — never throws.
  */
 async function verifyOAuthBearer(request: Request, env: Env): Promise<{ sub: string; scope?: string } | null> {
@@ -441,6 +538,14 @@ async function verifyOAuthBearer(request: Request, env: Env): Promise<{ sub: str
     const aud = payload.aud;
     const audOk = Array.isArray(aud) ? aud.includes(env.RESOURCE_ID) : aud === env.RESOURCE_ID;
     if (!audOk) return null;
+
+    // RFC 9207: the token's issuer MUST match our configured authorization
+    // server (explicit OAUTH_ISSUER wins; otherwise derive from the JWKS URL).
+    // This closes the issuer-substitution / mix-up gap — a token minted by a
+    // different AS that happens to share our JWKS/aud is rejected here.
+    const iss = payload.iss;
+    const expectedIssuer = env.OAUTH_ISSUER ?? issuerFromJwks(env.OAUTH_JWKS_URL) ?? null;
+    if (typeof iss !== "string" || !expectedIssuer || iss !== expectedIssuer) return null;
 
     return { sub: String(payload.sub ?? ""), scope: typeof payload.scope === "string" ? payload.scope : undefined };
   } catch {
@@ -513,7 +618,7 @@ app.get("/.well-known/llms.txt", (c) =>
       "> Sovereign, hash-chained capital management for AI agents. Pay per call in USDC over x402.",
       "",
       "## Endpoints",
-      "- POST /mcp — MCP JSON-RPC (initialize | tools/list | tools/call)",
+      "- POST /mcp — MCP JSON-RPC (stateless 2026-07-28: server/discover | tools/list | tools/call)",
       "- GET /.well-known/mcp — server metadata",
       "- GET /.well-known/mcp-pricing — per-tool USDC pricing",
       "- GET /.well-known/oauth-authorization-server — RFC 8414 AS metadata (OAuth 2.1 resource server)",
@@ -630,27 +735,14 @@ app.use("/mcp", async (c, next) => {
 });
 
 app.post("/mcp", async (c) => {
-  const body = (await c.req.json().catch(() => ({}))) as {
-    jsonrpc?: string;
-    id?: string | number;
-    method?: string;
-    params?: { name?: string; arguments?: Record<string, unknown> };
-  };
-  const id = body.id ?? null;
+  const bodyText = await c.req.text().catch(() => "");
+  let body: any = null;
+  try { body = bodyText ? JSON.parse(bodyText) : null; } catch { body = null; }
+  const id = body?.id ?? null;
 
-  if (body.method === "initialize") {
-    return c.json({ jsonrpc: "2.0", id, result: { protocolVersion: "2025-06-18", capabilities: { tools: {} }, serverInfo: { name: "p31-capital-machine", version: "0.1.0-beta" } } });
-  }
-
-  if (body.method === "tools/list") {
-    return c.json({ jsonrpc: "2.0", id, result: { tools: TOOLS.map((t) => ({ name: t.name, description: t.description, inputSchema: t.inputSchema })) } });
-  }
-
-  if (body.method === "tools/call") {
-    const name = body.params?.name ?? "";
-    const args = body.params?.arguments ?? {};
-    const priced = PRICING[name];
-    const did = c.req.header("X-DID") || c.req.header("X-User-DID");
+  if (body && body.method === "tools/call") {
+    const name = body?.params?.name ?? "";
+    const args = body?.params?.arguments ?? {};
 
     // OAuth 2.1 resource-server gate: if a Bearer token was supplied it must
     // validate (RFC 8707 audience binding). Invalid → 401 MCP error result.
@@ -659,11 +751,10 @@ app.post("/mcp", async (c) => {
       const bearer = await verifyOAuthBearer(c.req.raw, c.env);
       if (bearer === null) {
         return c.json(
-          {
-            jsonrpc: "2.0",
-            id,
-            result: { content: [{ type: "text", text: JSON.stringify({ error: "invalid or unauthorized bearer token (RFC 8707 aud binding)" }) }], isError: true },
-          },
+          mcpResult(id, {
+            content: [{ type: "text", text: JSON.stringify({ error: "invalid or unauthorized bearer token (RFC 8707 aud binding)" }) }],
+            isError: true,
+          }),
           401,
         );
       }
@@ -674,46 +765,31 @@ app.post("/mcp", async (c) => {
       const expected = c.env.OPERATOR_TOKEN;
       if (!expected || supplied !== expected) {
         return c.json(
-          {
-            jsonrpc: "2.0",
-            id,
-            result: { content: [{ type: "text", text: JSON.stringify({ error: "operator token required (X-Operator-Token)" }) }], isError: true },
-          },
+          mcpResult(id, {
+            content: [{ type: "text", text: JSON.stringify({ error: "operator token required (X-Operator-Token)" }) }],
+            isError: true,
+          }),
           403,
         );
       }
       const spendError = enforceSpendLimit(name, args);
       if (spendError) {
         return c.json(
-          {
-            jsonrpc: "2.0",
-            id,
-            result: { content: [{ type: "text", text: JSON.stringify({ error: spendError }) }], isError: true },
-          },
+          mcpResult(id, {
+            content: [{ type: "text", text: JSON.stringify({ error: spendError }) }],
+            isError: true,
+          }),
           403,
         );
       }
     }
-
-    const result = await executeTool(name, args, c.env);
-
-    if (priced) {
-      const routingFee = priced.price ?? "0.01";
-      recordX402Revenue(c.env, name, did ?? "", routingFee, c.executionCtx as unknown as ExecutionContext, { routing_fee: routingFee, operation: name });
-      consumeEntitlement(c.env, did ?? "", name, routingFee, c.executionCtx as unknown as ExecutionContext);
-    }
-
-    return c.json({
-      jsonrpc: "2.0",
-      id,
-      result: {
-        content: [{ type: "text", text: result.ok ? JSON.stringify(result.data) : JSON.stringify({ error: result.error }) }],
-        isError: !result.ok,
-      },
-    });
   }
 
-  return c.json({ jsonrpc: "2.0", id, error: { code: -32601, message: `Method not found: ${body.method ?? ""}` } }, 400);
+  // Delegate to the SDK v2 stateless handler. The body was read above, so
+  // hand it over as parsedBody (the SDK never re-reads the consumed stream).
+  execCtxByRequest.set(c.req.raw, c.executionCtx as unknown as ExecutionContext);
+  const handler = createMcpHandler(() => buildServer(c.env));
+  return withCors(await handler.fetch(c.req.raw, { parsedBody: body ?? undefined }));
 });
 
 export default app;

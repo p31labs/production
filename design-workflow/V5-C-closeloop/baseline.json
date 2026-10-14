@@ -1,0 +1,25 @@
+{
+  "generated": "2026-10-11T00:00:00Z",
+  "note": "Pre-adoption baseline for the close-the-loop procedure (V5-C-closeloop/close-the-loop.md). Any drift at check time is a finding.",
+  "canon": {
+    "tokens.dtc.json.sha256": "2ed16e7518c3078b25511410f88ece80f1fcce1854b5c11af6421543891af446",
+    "state": "pre-adoption (F1/F2/versionPolicy/P5-P9 NOT yet merged)"
+  },
+  "mcp": {
+    "wrangler.toml.sha256": "90cf8facbc6a8e3fad3468c500a522c9ccf1a9db31b1f42c4035abcc2b8f42be",
+    "state": "pre-deploy (canonical worker NOT yet shipped)"
+  },
+  "handoff": {
+    "V4-handoff-manifest.sha256": "276e49c1785761b209cb1a4cc3e8945103b11b21fd1a7c33d292ab7ee2c9591b",
+    "artifacts": 23
+  },
+  "suites": {
+    "V1": "exit 0 (2026-10-11)",
+    "V2": "exit 0 (2026-10-11)",
+    "V3": "exit 0 (2026-10-11)",
+    "V4": "exit 0 (2026-10-11, receipt re-verified this cycle)"
+  },
+  "auth": {
+    "cloudflare": "present (OAuth, trimtab.signal@proton.me) — verified 2026-10-11"
+  }
+}

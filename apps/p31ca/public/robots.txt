@@ -28,4 +28,8 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
+# Sovereignty posture (2026-10-12): agents may read and use the content
+# (search=yes, ai-input=yes) but must not train on it (ai-train=no).
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
 Sitemap: https://p31ca.org/sitemap.xml

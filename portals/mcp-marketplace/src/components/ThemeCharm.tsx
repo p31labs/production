@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Checkbox } from '@p31ca/design-core/compositions'
 import {
   useThemeStore,
   resolveBrandTokens,
@@ -97,14 +98,8 @@ export function ThemeCharm({ className = '' }: { className?: string }) {
       {/* Sensory */}
       <div className="charm-row" role="group" aria-label="Sensory">
         <span className="charm-label">Sensory</span>
-        <label className="charm-toggle">
-          <input type="checkbox" checked={muted} onChange={(e) => setMuted(e.target.checked)} />
-          <span>Muted</span>
-        </label>
-        <label className="charm-toggle">
-          <input type="checkbox" checked={warmLight} onChange={(e) => setWarmLight(e.target.checked)} />
-          <span>Warm light</span>
-        </label>
+        <Checkbox label="Muted" checked={muted} onChange={(next) => setMuted(next)} />
+        <Checkbox label="Warm light" checked={warmLight} onChange={(next) => setWarmLight(next)} />
       </div>
     </div>
   )

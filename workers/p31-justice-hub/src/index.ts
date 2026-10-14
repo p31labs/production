@@ -16,6 +16,7 @@
  */
 
 import { DurableObject } from 'cloudflare:workers';
+import { McpServer, createMcpHandler, fromJsonSchema } from '@modelcontextprotocol/server';
 
 interface Env {
   JUSTICE_D1: D1Database;
@@ -24,6 +25,12 @@ interface Env {
   JUSTICE_KV: KVNamespace;
   ESCROW_DO: DurableObjectNamespace<EscrowEngineDO>;
   EVIDENCE_DO: DurableObjectNamespace<EvidenceVaultDO>;
+  /** OAuth 2.1 resource-server (RFC 8707). Optional — when unset, bearer validation is disabled and the server stays open (runbook §6). */
+  OAUTH_JWKS_URL?: string;
+  /** RFC 9207 expected token issuer (optional; falls back to the JWKS URL origin). */
+  OAUTH_ISSUER?: string;
+  /** RFC 8707 resource URI that a bearer token's `aud` claim MUST match. */
+  RESOURCE_ID?: string;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────
@@ -52,6 +59,178 @@ function cors(body: string, status = 200): Response {
 
 function json(data: unknown, status = 200): Response {
   return cors(JSON.stringify(data), status);
+}
+
+// ───────────────────────────────────────────────────────────────────────
+// OAuth 2.1 resource-server (RFC 8707 audience binding + RFC 9207 `iss`).
+// Ported from workers/p31-capital-machine-mcp/src/index.ts (fleet
+// reference, 2026-10-12 wave). WebCrypto only (RS256/ES256/Ed25519), zero
+// new dependencies, 15-minute JWKS cache. Active only when
+// OAUTH_JWKS_URL is configured (env opt-in): any supplied
+// `Authorization: Bearer` token then MUST validate (alg/kid/signature/exp,
+// aud == RESOURCE_ID, iss == fleet AS issuer) or the call is rejected with
+// HTTP 401 — never silently ignored. Without a Bearer header, behavior is
+// unchanged: public tool discovery stays open (runbook §6 do-nots).
+// ───────────────────────────────────────────────────────────────────────
+
+const OAUTH_AS_ISSUER = 'https://oauth-relay.trimtab-signal.workers.dev';
+const OAUTH_AS_JWKS_URL = 'https://oauth-relay.trimtab-signal.workers.dev/.well-known/jwks.json';
+const RESOURCE_URI = 'https://p31-justice-hub.trimtab-signal.workers.dev/mcp';
+const JWKS_CACHE_TTL_MS = 15 * 60 * 1000;
+
+let jwksCache: { source: string; fetchedAt: number; keys: Record<string, JsonWebKey> } | null = null;
+
+/** Base64url → base64, then decode to a string. */
+function b64urlDecode(s: string): string {
+  const base64 = s.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((4 - (s.length % 4)) % 4);
+  return atob(base64);
+}
+
+/** Base64url → bytes. */
+function b64urlToBytes(s: string): Uint8Array {
+  const binary = b64urlDecode(s);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+}
+
+/** Decode (without verifying) a JWT into header + payload. Returns null on malformed input. */
+function decodeJwt(token: string): { header: { kid?: string; alg?: string }; payload: Record<string, unknown> } | null {
+  const parts = token.split('.');
+  if (parts.length !== 3) return null;
+  try {
+    const header = JSON.parse(b64urlDecode(parts[0])) as { kid?: string; alg?: string };
+    const payload = JSON.parse(b64urlDecode(parts[1])) as Record<string, unknown>;
+    if (!header || typeof header !== 'object' || !payload || typeof payload !== 'object') return null;
+    return { header, payload };
+  } catch {
+    return null;
+  }
+}
+
+/** Fetch (with 15-min module-level cache) the JWKS for the fleet AS, keyed by kid. */
+async function fetchJwksKeys(source: string): Promise<Record<string, JsonWebKey>> {
+  const now = Date.now();
+  if (jwksCache && jwksCache.source === source && now - jwksCache.fetchedAt < JWKS_CACHE_TTL_MS) {
+    return jwksCache.keys;
+  }
+  const res = await fetch(source);
+  if (!res.ok) return {};
+  const body = (await res.json().catch(() => ({}))) as { keys?: unknown[] };
+  const keys: Record<string, JsonWebKey> = {};
+  for (const raw of body.keys ?? []) {
+    const jwk = raw as JsonWebKey & { kid?: string };
+    if (jwk && typeof jwk.kid === 'string') keys[jwk.kid] = jwk;
+  }
+  jwksCache = { source, fetchedAt: now, keys };
+  return keys;
+}
+
+/** WebCrypto algorithm descriptor for a supported JWS alg. */
+function webAlg(jwk: JsonWebKey, alg: string): { name: string; hash?: string; namedCurve?: string } {
+  if (alg === 'ES256') return { name: 'ECDSA', namedCurve: (jwk.crv as string) || 'P-256' };
+  if (alg === 'Ed25519') return { name: 'Ed25519' };
+  return { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' };
+}
+
+/** Verify a JWS signature over `signedData` with WebCrypto. Never throws. */
+async function verifySignature(jwk: JsonWebKey, alg: string, signedData: Uint8Array, signature: Uint8Array): Promise<boolean> {
+  const algSpec = webAlg(jwk, alg);
+  try {
+    const key = await crypto.subtle.importKey('jwk', jwk, algSpec as any, false, ['verify']);
+    return await crypto.subtle.verify(algSpec as any, key, signature, signedData);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Validate an RFC 8707-bound OAuth 2.1 bearer token.
+ * Returns { sub, scope? } on success, or null when:
+ *  - no Bearer header present,
+ *  - OAUTH_JWKS_URL / RESOURCE_ID unset,
+ *  - token malformed, unknown alg/kid, bad signature, expired,
+ *  - `aud` ≠ RESOURCE_ID (RFC 8707), or
+ *  - `iss` ≠ OAUTH_ISSUER / issuer derived from the JWKS URL (RFC 9207 mix-up defense).
+ * All wrapped in try/catch — never throws.
+ */
+async function verifyOAuthBearer(request: Request, env: Env): Promise<{ sub: string; scope?: string } | null> {
+  try {
+    const auth = request.headers.get('Authorization');
+    if (!auth || !auth.startsWith('Bearer ')) return null;
+    const token = auth.slice(7).trim();
+    if (!token || !env.OAUTH_JWKS_URL || !env.RESOURCE_ID) return null;
+
+    const decoded = decodeJwt(token);
+    if (!decoded) return null;
+
+    const alg = decoded.header.alg ?? '';
+    if (alg !== 'RS256' && alg !== 'ES256' && alg !== 'Ed25519') return null;
+    const kid = decoded.header.kid;
+    if (!kid) return null;
+
+    const keys = await fetchJwksKeys(env.OAUTH_JWKS_URL);
+    const jwk = keys[kid];
+    if (!jwk) return null;
+
+    const parts = token.split('.');
+    const signedData = new TextEncoder().encode(`${parts[0]}.${parts[1]}`);
+    const signature = b64urlToBytes(parts[2]);
+    if (!(await verifySignature(jwk, alg, signedData, signature))) return null;
+
+    const payload = decoded.payload;
+    const exp = payload.exp;
+    if (typeof exp !== 'number' || exp <= Math.floor(Date.now() / 1000)) return null;
+
+    // RFC 8707: the token's audience MUST be bound to our resource.
+    const aud = payload.aud;
+    const audOk = Array.isArray(aud) ? aud.includes(env.RESOURCE_ID) : aud === env.RESOURCE_ID;
+    if (!audOk) return null;
+
+    // RFC 9207: the token's issuer MUST match the fleet AS (explicit
+    // OAUTH_ISSUER wins; otherwise derive from the JWKS URL origin).
+    const iss = payload.iss;
+    const expectedIssuer = env.OAUTH_ISSUER ?? issuerFromJwks(env.OAUTH_JWKS_URL) ?? null;
+    if (typeof iss !== 'string' || !expectedIssuer || iss !== expectedIssuer) return null;
+
+    return { sub: String(payload.sub ?? ''), scope: typeof payload.scope === 'string' ? payload.scope : undefined };
+  } catch {
+    return null;
+  }
+}
+
+/** Derive the IdP issuer (origin) from a JWKS URL, or null. */
+function issuerFromJwks(jwksUrl: string): string | null {
+  try {
+    return new URL(jwksUrl).origin;
+  } catch {
+    return null;
+  }
+}
+
+/** RFC 8414 authorization-server metadata — points at the fleet AS (oauth-relay). */
+function oauthAsMetadata(resource: string): Record<string, unknown> {
+  return {
+    issuer: OAUTH_AS_ISSUER,
+    authorization_endpoint: `${OAUTH_AS_ISSUER}/authorize`,
+    token_endpoint: `${OAUTH_AS_ISSUER}/token`,
+    jwks_uri: OAUTH_AS_JWKS_URL,
+    response_types_supported: ['code'],
+    grant_types_supported: ['authorization_code'],
+    token_endpoint_auth_methods_supported: ['none'],
+    code_challenge_methods_supported: ['S256'],
+    authorization_response_iss_parameter_supported: true,
+    resource,
+  };
+}
+
+/** RFC 9728 protected-resource metadata for this resource server. */
+function protectedResourceMetadata(env: Env, resource: string, scopes: string[]): Record<string, unknown> {
+  return {
+    resource: env.RESOURCE_ID ?? resource,
+    authorization_servers: [OAUTH_AS_ISSUER],
+    scopes_supported: scopes,
+  };
 }
 
 // ─── DO: Evidence Vault (SHA-256 hash chain) ──────────────────────────
@@ -357,6 +536,80 @@ async function executeJusticeTool(name: string, args: any, env: Env): Promise<an
   }
 }
 
+// ─── MCP Server (SDK v2, stateless 2026-07-28) ─────────────────────────
+// The hand-rolled stateless dispatch was replaced by the split SDK v2
+// (`@modelcontextprotocol/server` → `McpServer` + `createMcpHandler`).
+// The SDK handler serves the modern 2026-07-28 surface (server/discover,
+// `_meta` envelope, resultType, ttlMs/cacheScope on cacheable results,
+// -32022 version mismatches) and keeps 2025-era clients working through its
+// default `legacy: 'stateless'` fallback (the initialize handshake) —
+// equivalent to the previous hand-rolled legacy-compat branch.
+// `executeJusticeTool` uses `env` (JUSTICE_D1, EVIDENCE_DO, ESCROW_DO), so
+// the handler is built per request inside `fetch` (closes over `env`).
+
+const PROTOCOL_VERSION = '2026-07-28';
+
+function buildServer(env: Env): McpServer {
+  const server = new McpServer(
+    { name: 'p31-justice-hub', version: '1.0.0' },
+    {
+      capabilities: { tools: {} },
+      cacheHints: { 'tools/list': { ttlMs: 60_000, cacheScope: 'public' } },
+    },
+  );
+  for (const t of JUSTICE_TOOLS) {
+    server.registerTool(
+      t.name,
+      { description: t.description, inputSchema: fromJsonSchema(t.inputSchema as unknown as Parameters<typeof fromJsonSchema>[0]) },
+      async (args) => {
+        const result = await executeJusticeTool(t.name, args as Record<string, unknown>, env);
+        return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+      },
+    );
+  }
+
+  // Conformance (2026-07-28): `server/discover` must return top-level
+  // `protocolVersion` + capabilities + serverInfo. The SDK emits
+  // `supportedVersions` + `capabilities` and stamps serverInfo into `_meta`;
+  // add the missing top-level keys (additive only, no other behavior change).
+  const sdkServer = server.server as unknown as { _ondiscover: () => Record<string, unknown> };
+  const sdkDiscover = sdkServer._ondiscover.bind(sdkServer);
+  sdkServer._ondiscover = () => {
+    const base = sdkDiscover();
+    return {
+      protocolVersion: PROTOCOL_VERSION,
+      supportedProtocolVersions: Array.isArray(base.supportedVersions)
+        ? [...(base.supportedVersions as string[])]
+        : [PROTOCOL_VERSION],
+      ...base,
+    };
+  };
+  return server;
+}
+
+/** The SDK handler does not add CORS headers — re-apply the worker's own. */
+function withCors(res: Response): Response {
+  const headers = new Headers(res.headers);
+  headers.set('Access-Control-Allow-Origin', '*');
+  headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  headers.set('Access-Control-Allow-Headers', 'Content-Type');
+  return new Response(res.body, { status: res.status, headers });
+}
+
+/** Envelope-shaped 401 body for a rejected bearer token (capital-machine mcpResult shape). */
+function oauthGateError(id: unknown): Record<string, unknown> {
+  return {
+    jsonrpc: '2.0',
+    id: id ?? null,
+    _meta: { 'io.modelcontextprotocol/protocolVersion': PROTOCOL_VERSION },
+    result: {
+      resultType: 'complete',
+      content: [{ type: 'text', text: JSON.stringify({ error: 'invalid or unauthorized bearer token (RFC 8707 aud binding)' }) }],
+      isError: true,
+    },
+  };
+}
+
 // ─── Streamable HTTP MCP Server ───────────────────────────────────────
 
 export default {
@@ -373,6 +626,16 @@ export default {
           'Access-Control-Allow-Headers': 'Content-Type',
         },
       });
+    }
+
+    // RFC 8414 — authorization-server metadata (points at the fleet AS).
+    if (url.pathname === '/.well-known/oauth-authorization-server' && method === 'GET') {
+      return cors(JSON.stringify(oauthAsMetadata(env.RESOURCE_ID ?? RESOURCE_URI)));
+    }
+
+    // RFC 9728 — protected-resource metadata (canonical path + alias).
+    if ((url.pathname === '/.well-known/oauth-protected-resource' || url.pathname === '/.well-known/resource-server') && method === 'GET') {
+      return cors(JSON.stringify(protectedResourceMetadata(env, RESOURCE_URI, ['justice:read', 'justice:write'])));
     }
 
     // MCP Server Card (Smithery discovery)
@@ -392,76 +655,32 @@ export default {
       }));
     }
 
-    // Streamable HTTP: GET /mcp returns SSE notification stream
+    // Streamable HTTP: GET /mcp returns endpoint metadata (stateless — no SSE)
     if (url.pathname === '/mcp' && method === 'GET') {
-      const body = new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode(
-            `event: endpoint\ndata: ${JSON.stringify({ tools: JUSTICE_TOOLS.length, service: 'p31-justice-hub' })}\n\n`
-          ));
-          controller.close();
-        },
-      });
-      return new Response(body, {
-        headers: {
-          'Content-Type': 'text/event-stream',
-          'Cache-Control': 'no-cache',
-          'Access-Control-Allow-Origin': '*',
-        },
-      });
+      return cors(JSON.stringify({
+        service: 'p31-justice-hub', transport: 'streamable-http', protocol: PROTOCOL_VERSION,
+        mcp: 'POST /mcp', tools: JUSTICE_TOOLS.map(t => t.name),
+      }));
     }
 
-    // Streamable HTTP: POST /mcp for JSON-RPC 2.0
+    // Streamable HTTP: POST /mcp for JSON-RPC 2.0 — served by the SDK v2 handler.
     if (url.pathname === '/mcp' && method === 'POST') {
-      try {
-        const body = await request.json<any>();
-        const { id: rpcId, method: rpcMethod, params } = body;
-
-        if (rpcMethod === 'initialize') {
-          const requested = params?.protocolVersion;
-          const protocolVersion = ['2025-11-25', '2025-06-18', '2025-03-26', '2024-11-05', '2024-10-07'].includes(requested) ? requested : '2025-11-25';
-          return cors(JSON.stringify({ jsonrpc: '2.0', id: rpcId, result: { protocolVersion, capabilities: { tools: {} }, serverInfo: { name: 'p31-justice-hub', version: '1.0.0' } } }));
-        }
-
-        if (rpcMethod === 'notifications/initialized') {
-          return cors(JSON.stringify({ jsonrpc: '2.0', id: rpcId, result: {} }));
-        }
-
-        if (rpcMethod === 'tools/list') {
-          return cors(JSON.stringify({ jsonrpc: '2.0', id: rpcId, result: { tools: JUSTICE_TOOLS } }));
-        }
-
-        if (rpcMethod === 'tools/call') {
-          const toolName = params?.name;
-          const toolArgs = params?.arguments || {};
-          const tool = JUSTICE_TOOLS.find(t => t.name === toolName);
-          if (!tool) {
-            return cors(JSON.stringify({
-              jsonrpc: '2.0', id: rpcId,
-              error: { code: -32602, message: `Unknown tool: ${toolName}` },
-            }), 400);
+      // OAuth 2.1 resource-server gate: if a Bearer token was supplied on a
+      // tools/call it MUST validate (RFC 8707 audience binding) — invalid ⇒
+      // 401 MCP error result, never silently ignored.
+      const auth = request.headers.get('Authorization') ?? '';
+      if (auth.startsWith('Bearer ')) {
+        let body: any = null;
+        try { body = await request.clone().json(); } catch { body = null; }
+        if (body?.method === 'tools/call') {
+          const bearer = await verifyOAuthBearer(request, env);
+          if (bearer === null) {
+            return cors(JSON.stringify(oauthGateError(body?.id ?? null)), 401);
           }
-          const result = await executeJusticeTool(toolName, toolArgs, env);
-          return cors(JSON.stringify({
-            jsonrpc: '2.0', id: rpcId,
-            result: { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] },
-          }));
         }
-
-        if (rpcMethod === 'ping') {
-          return cors(JSON.stringify({ jsonrpc: '2.0', id: rpcId, result: {} }));
-        }
-
-        return cors(JSON.stringify({
-          jsonrpc: '2.0', id: rpcId,
-          error: { code: -32601, message: `Method not found: ${rpcMethod}` },
-        }), 400);
-      } catch (e: any) {
-        return cors(JSON.stringify({
-          jsonrpc: '2.0', id: null,
-          error: { code: -32700, message: `Parse error: ${e.message}` },
-        }), 400);
       }
+      const handler = createMcpHandler(() => buildServer(env));
+      return withCors(await handler.fetch(request));
     }
 
     // Health
@@ -478,7 +697,8 @@ export default {
       return cors(JSON.stringify({
         service: 'p31-justice-hub',
         tools: JUSTICE_TOOLS.map(t => t.name),
-        mcp: 'POST /mcp (JSON-RPC 2.0), GET /mcp (SSE)',
+        mcp: 'POST /mcp',
+        protocol: PROTOCOL_VERSION,
       }));
     }
 

@@ -1,24 +1,32 @@
 ---
 import MarketingShell from '../layouts/MarketingShell.astro';
-import SectionHeader from '../components/marketing/SectionHeader.astro';
 import Footer from '../components/marketing/Footer.astro';
+import QuoteBlock from '../components/marketing/QuoteBlock.astro';
+import { PageHeader } from '@p31ca/canon-astro';
 import { papers } from '../data/p31-research.ts';
 import { FLAGSHIP_LIVE_COUNT } from '../data/flagships';
+import constants from '../data/p31-mesh-constants.json';
+// Phase 3 Batch 1 — canon adoption chain (PAGE-CONTRACTS + phase2 handoff):
+// tokens → layers → class recipes → attribute-scoped component CSS.
+import '@p31ca/canon/tokens.css';
+import '@p31ca/canon/css/layers.css';
+import '@p31ca/canon-parts/recipes.css';
+import '@p31ca/design-core/css/canon-v2.css';
 
 const publishedCount = papers.length;
 
 const stackDiagram = `
 flowchart TB
-    classDef core fill:#2563eb,stroke:#1e40af,color:#ffffff
-    classDef infra fill:#64748b,stroke:#334155,color:#ffffff
-    classDef external fill:#f59e0b,stroke:#b45309,color:#000000
+    classDef core fill:royalblue,stroke:navy,color:white
+    classDef infra fill:slategray,stroke:darkslategray,color:white
+    classDef external fill:goldenrod,stroke:darkgoldenrod,color:black
     subgraph Edge["Cloudflare edge"]
         W["12 Workers"]:::core
         D["10 D1 databases"]:::infra
         O["16 Durable Objects"]:::infra
     end
     subgraph Tools["Agent surface"]
-        M["36 MCP tools"]:::core
+        M["124 MCP tools<br/>as of 2026-10-13"]:::core
     end
     User["Family member"]:::external --> W
     W --> D
@@ -42,110 +50,142 @@ timeline
 <MarketingShell
   title="About — P31 Labs"
   description="Sovereign infrastructure for neurodivergent families, built by a father who needed it. The story of William Johnson, the stack, and the 501(c)(3)."
+  theme="rose"
 >
   <main id="main-content" class="section">
-    <div class="max-w-4xl mx-auto px-6 md:px-12 lg:px-16">
-      <SectionHeader
-        title="About"
-        description="Sovereign infrastructure for neurodivergent families, built by a father who needed it."
-        align="left"
-      />
+    <div class="abf6-max-w-4xl abf6-mx-auto abf6-px-6 abf6-md-px-12 abf6-lg-px-16">
+      <div class="sh-space-y-4">
+        <PageHeader
+          title="About"
+          subtitle="Sovereign infrastructure for neurodivergent families, built by a father who needed it."
+        />
+        <div class="sh-h-1 sh-w-16 sh-rounded-full p31-header-bar" style="background: var(--p31-accent);"></div>
+      </div>
 
-      <div class="mt-16 space-y-8">
+      <p class="abf6-mt-6 abf6-text-lg abf6-leading-relaxed" style="color: var(--p31-text);">
+        P31 Labs is a 501(c)(3) nonprofit building sovereign AI tools for neurodivergent families. The stack is open source, costs about $5 a month to run, and keeps identity and audit records under your control — not a company's. Everything is verifiable: 22 citable papers, live code, a public registry. This page tells who built it and why.
+      </p>
 
-        <!-- ── The world before ── -->
+      <div class="abf6-mt-16 abf6-space-y-8">
+
+        {/* ── The world before ── */}
         <section class="glass-card">
-          <div class="p-8 space-y-6">
-            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">The problem was the tools</h3>
-            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+          <div class="abf6-p-8 abf6-space-y-6">
+            <h2 class="abf6-text-2xl abf6-font-bold" style="color: var(--p31-text);">The problem was the tools</h2>
+            <p class="abf6-text-base abf6-leading-relaxed" style="color: var(--p31-text-secondary);">
               When assistive technology is extractive — when your family's data is the product, locked behind corporate walls, dependent on a subscription and a login you don't control — the people who need the tools most are the ones it fails. Neurodivergent families need care infrastructure that is <em>theirs</em>: private by default, sovereign by design, and provable.
             </p>
-            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+            <p class="abf6-text-base abf6-leading-relaxed" style="color: var(--p31-text-secondary);">
               None of it existed. So it had to be built.
+            </p>
+            <p class="abf6-text-base abf6-leading-relaxed" style="color: var(--p31-text-secondary);">
+              The same pattern holds at market scale. Worldwide sovereign cloud IaaS spending is forecast at <strong style="color: var(--p31-text);">$80 billion in 2026</strong>, up 35.6% from 2025 (<a href={constants.gartnerSovereignCloudIaaS2026Url} target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">Gartner press release, Feb 2026</a>) — and it targets governments and enterprises, not households. The family-sized intersection was empty.
             </p>
           </div>
         </section>
 
-        <!-- ── The turn ── -->
+        {/* ── The turn ── */}
         <section class="glass-card">
-          <div class="p-8 space-y-6">
-            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">The founder</h3>
-            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+          <div class="abf6-p-8 abf6-space-y-6">
+            <h2 class="abf6-text-2xl abf6-font-bold" style="color: var(--p31-text);">The founder</h2>
+            <p class="abf6-text-base abf6-leading-relaxed" style="color: var(--p31-text-secondary);">
               P31 Labs was founded by <strong style="color: var(--p31-text);">William Johnson</strong> — an AuDHD engineer and former DoD civilian. He spent sixteen years as a DoD civilian engineering technician (GS-0802-12) at Trident Refit Facility in Kings Bay, Georgia — work with an uncompromising reliability standard, where a single point of failure is not acceptable. That same ethos is the K4 topology underneath the whole stack: no single point of failure.
             </p>
-            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+            <p class="abf6-text-base abf6-leading-relaxed" style="color: var(--p31-text-secondary);">
               He is also a single father to two neurodivergent children. The stack was forged out of household survival during severe medical and legal hardship — stress-tested in a live, multi-adversarial environment, every line of code.
             </p>
-            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+            <QuoteBlock
+              text="The human mind does not store reality — it constructs it."
+              citeName="William R. Johnson, “Consciousness, Memory, and the Architecture of Self-Preservation” (P31 Research Paper III)"
+              citeHref="https://doi.org/10.5281/zenodo.19416491"
+              citeNote="Zenodo DOI · full PDF on the Research page"
+            />
+            <p class="abf6-text-base abf6-leading-relaxed" style="color: var(--p31-text-secondary);">
               What started as a personal need became an open-source stack anyone can deploy: a real proof layer — an audit chain you can verify in ninety seconds, post-quantum identity that lives on your device, and research that is open and citable.
             </p>
           </div>
         </section>
 
-        <!-- ── The build ── -->
+        {/* ── The build ── */}
         <section class="glass-card">
-          <div class="p-8 space-y-6">
-            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">The build</h3>
-            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
-              The whole stack runs on Cloudflare's edge network — zero server costs, open source, citable on Zenodo:
+          <div class="abf6-p-8 abf6-space-y-6">
+            <h2 class="abf6-text-2xl abf6-font-bold" style="color: var(--p31-text);">The build</h2>
+            <p class="abf6-text-base abf6-leading-relaxed" style="color: var(--p31-text-secondary);">
+              The whole stack runs on Cloudflare's edge network for about <strong style="color: var(--p31-text);">$5 a month</strong> on the paid plan — zero added server costs, open source, citable on Zenodo. The <a href="/runbook" style="color: var(--p31-accent);">$5 stack runbook</a> spells out the exact arithmetic.
             </p>
-            <pre class="mermaid" set:html={stackDiagram} />
-            <p class="text-sm" style="color: var(--p31-text-tertiary);">
-              {FLAGSHIP_LIVE_COUNT} flagship surfaces live today · {publishedCount} papers published on Zenodo · EIN 42-1888158
+            <pre id="about-stack-diagram" class="mermaid" set:html={stackDiagram} />
+            <p class="abf6-text-sm" style="color: var(--p31-text-tertiary);">
+              <a href={constants.mcpRegistryUrl} target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">Our live registry</a> lists 44 servers, 22 live, 124 tools (as of 2026-10-13) · {FLAGSHIP_LIVE_COUNT} live flagship surfaces · <a href={constants.zenodoCommunityUrl} target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">{publishedCount} DOI-verified papers on Zenodo</a> · EIN 42-1888158
             </p>
           </div>
         </section>
 
-        <!-- ── The K4 / tetrahedron ── -->
+        {/* ── The K4 / tetrahedron ── */}
         <section class="glass-card">
-          <div class="p-8 space-y-6">
-            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">The geometric anchor</h3>
-            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+          <div class="abf6-p-8 abf6-space-y-6">
+            <h2 class="abf6-text-2xl abf6-font-bold" style="color: var(--p31-text);">The geometric anchor</h2>
+            <p class="abf6-text-base abf6-leading-relaxed" style="color: var(--p31-text-secondary);">
               The K4 — four vertices, six edges, rigidity 6 — is the minimum isostatic structure. It's the geometric proof that anchors the research: a structure that cannot flex, that is exactly as connected as it needs to be. It's why the dome on this page is a geodesic, and why the research is about families that build.
             </p>
-            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+            <p class="abf6-text-base abf6-leading-relaxed" style="color: var(--p31-text-secondary);">
               Read it in <a href="/research" style="color: var(--p31-accent);">The Tetrahedron Protocol</a>, the founding paper.
+            </p>
+            <QuoteBlock
+              text="Just moving the little trim tab builds a low pressure that pulls the rudder around. Takes almost no effort at all. So I said that the little individual can be a trim tab."
+              citeName="R. Buckminster Fuller, 1972 Playboy interview"
+              citeHref={constants.fullerTrimTabSourceUrl}
+              citeNote="quoted in The Marginalian, 2015"
+            />
+            <p class="abf6-text-base abf6-leading-relaxed" style="color: var(--p31-text-secondary);">
+              That is the K4 idea at human scale — minimum leverage, maximum turn. <a href="https://doi.org/10.5281/zenodo.19782991" target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">Paper XIV</a> maps Fuller's fifty-year prediction onto the P31 timeline, and <a href="https://doi.org/10.5281/zenodo.19783001" target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">Paper XX</a> turns the trimtab into a design declaration.
             </p>
           </div>
         </section>
 
-        <!-- ── The org timeline ── -->
+        {/* ── The org timeline ── */}
         <section class="glass-card">
-          <div class="p-8 space-y-6">
-            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">The org timeline</h3>
+          <div class="abf6-p-8 abf6-space-y-6">
+            <h2 class="abf6-text-2xl abf6-font-bold" style="color: var(--p31-text);">The org timeline</h2>
             <pre class="mermaid" set:html={orgTimeline} />
           </div>
         </section>
 
-        <!-- ── The 501(c)(3) proof ── -->
+        {/* ── The 501(c)(3) proof ── */}
         <section class="glass-card">
-          <div class="p-8 space-y-6">
-            <h3 class="text-2xl font-bold" style="color: var(--p31-text);">The 501(c)(3) proof</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div class="rounded-xl border p-5" style="border-color: var(--p31-glass-border, rgba(255,255,255,0.1)); background: var(--p31-panel-surface, rgba(255,255,255,0.04));">
-                <div class="text-xs font-semibold tracking-widest uppercase" style="color: var(--p31-text-tertiary);">Status</div>
-                <div class="mt-1 text-lg font-bold" style="color: var(--p31-text);">501(c)(3)</div>
+          <div class="abf6-p-8 abf6-space-y-6">
+            <h2 class="abf6-text-2xl abf6-font-bold" style="color: var(--p31-text);">The 501(c)(3) proof</h2>
+            <div data-p31="grid" data-cols="2" data-even class="abf6-gap-4">
+              <div class="abf6-rounded-xl abf6-border abf6-p-5" style="border-color: var(--p31-glass-border); background: var(--p31-panel-surface);">
+                <div class="abf6-text-xs abf6-font-semibold abf6-tracking-widest abf6-uppercase" style="color: var(--p31-text-tertiary);">Status</div>
+                <div class="abf6-mt-1 abf6-text-lg abf6-font-bold" style="color: var(--p31-text);">501(c)(3)</div>
               </div>
-              <div class="rounded-xl border p-5" style="border-color: var(--p31-glass-border, rgba(255,255,255,0.1)); background: var(--p31-panel-surface, rgba(255,255,255,0.04));">
-                <div class="text-xs font-semibold tracking-widest uppercase" style="color: var(--p31-text-tertiary);">EIN</div>
-                <div class="mt-1 text-lg font-bold font-mono" style="color: var(--p31-text);">42-1888158</div>
+              <div class="abf6-rounded-xl abf6-border abf6-p-5" style="border-color: var(--p31-glass-border); background: var(--p31-panel-surface);">
+                <div class="abf6-text-xs abf6-font-semibold abf6-tracking-widest abf6-uppercase" style="color: var(--p31-text-tertiary);">EIN</div>
+                <div class="abf6-mt-1 abf6-text-lg abf6-font-bold abf6-font-mono" style="color: var(--p31-text);">42-1888158</div>
               </div>
             </div>
-            <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+            <p class="abf6-text-base abf6-leading-relaxed" style="color: var(--p31-text-secondary);">
               Donations are tax-deductible to the fullest extent of the law. Research is published on Zenodo under open licenses; code is on GitHub under AGPL.
             </p>
+            <h3 class="abf6-text-lg abf6-font-bold abf6-pt-2" style="color: var(--p31-text);">Citable evidence — named references</h3>
+            <ul class="abf6-space-y-2 abf6-text-sm" style="color: var(--p31-text-secondary);">
+              <li>The Tetrahedron Protocol: A Grand Unified Theory of Structural Resilience — <a href="https://doi.org/10.5281/zenodo.19004485" target="_blank" rel="noopener noreferrer" class="abf6-font-mono" style="color: var(--p31-accent);">10.5281/zenodo.19004485</a></li>
+              <li>Strategic Convergence of Geometric Security and Cognitive Resilience: P31 Labs Genesis Whitepaper — <a href="https://doi.org/10.5281/zenodo.19411363" target="_blank" rel="noopener noreferrer" class="abf6-font-mono" style="color: var(--p31-accent);">10.5281/zenodo.19411363</a></li>
+              <li>Paper XII: The Sovereign Stack — <a href="https://doi.org/10.5281/zenodo.19782969" target="_blank" rel="noopener noreferrer" class="abf6-font-mono" style="color: var(--p31-accent);">10.5281/zenodo.19782969</a></li>
+              <li>Paper III: Consciousness, Memory, and the Architecture of Self-Preservation — <a href="https://doi.org/10.5281/zenodo.19416491" target="_blank" rel="noopener noreferrer" class="abf6-font-mono" style="color: var(--p31-accent);">10.5281/zenodo.19416491</a></li>
+            </ul>
           </div>
         </section>
 
-        <!-- ── CTA ── -->
-        <section class="text-center py-10">
-          <div class="flex flex-wrap justify-center gap-4">
-            <a href="/team" class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition"
-               style="background: var(--p31-accent, #22d3ee); color: #0a0a0f;">
+        {/* ── CTA ── */}
+        <section class="abf6-text-center abf6-py-10">
+          <div class="abf6-flex abf6-flex-wrap abf6-justify-center abf6-gap-4">
+            <a href="/team" class="abf6-inline-flex abf6-items-center abf6-gap-2 abf6-rounded-full abf6-px-6 abf6-py-3 abf6-text-sm abf6-font-semibold abf6-transition"
+               style="background: var(--p31-accent); color: var(--p31-void);">
               Meet the team
             </a>
-            <a href="/research" class="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition border"
-               style="border-color: var(--p31-glass-border, rgba(255,255,255,0.16)); color: var(--p31-text);">
+            <a href="/research" class="abf6-inline-flex abf6-items-center abf6-gap-2 abf6-rounded-full abf6-px-6 abf6-py-3 abf6-text-sm abf6-font-semibold abf6-transition abf6-border"
+               style="border-color: var(--p31-glass-border); color: var(--p31-text);">
               Read the research
             </a>
           </div>

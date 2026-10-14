@@ -116,7 +116,7 @@
     color-mix(in oklch, var(--p31-void) 40%, transparent) 100%
   );
 
-  --p31-font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --p31-font-sans: 'Lexend', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --p31-font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --p31-text-xs: 0.75rem;
   --p31-text-sm: 0.875rem;
@@ -136,7 +136,7 @@
   --p31-space-7: 48px;
 
   --p31-radius-sm: 8px;
-  --p31-radius-md: 12px;
+  --p31-radius-md: 16px;
   --p31-radius-lg: 24px;
   --p31-radius-full: 9999px;
 

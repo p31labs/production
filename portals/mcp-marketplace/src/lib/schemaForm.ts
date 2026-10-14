@@ -10,8 +10,10 @@ export interface FormField {
   key: string
   kind: FieldKind
   label: string
+  type?: string
   description?: string
   default?: unknown
+  examples?: unknown[]
   enum?: string[]
   required: boolean
   isObject?: boolean
@@ -21,6 +23,7 @@ interface PropMeta {
   type?: string
   description?: string
   default?: unknown
+  examples?: unknown[]
   enum?: string[]
   items?: { type?: string }
 }
@@ -39,8 +42,10 @@ export function fieldsFromSchema(schema?: ToolSchema): FormField[] {
       key,
       kind,
       label: key,
+      type: t,
       description: p.description,
       default: p.default,
+      examples: p.examples,
       enum: Array.isArray(p.enum) ? p.enum : undefined,
       required: required.has(key),
       isObject: t === 'object',
@@ -56,12 +61,23 @@ export function defaultsFromSchema(schema?: ToolSchema): Record<string, unknown>
   return out
 }
 
+/** Prefill: schema `default`, else first `examples` value, else nothing. */
+export function prefillsFromSchema(schema?: ToolSchema): Record<string, unknown> {
+  const out: Record<string, unknown> = {}
+  for (const f of fieldsFromSchema(schema)) {
+    if (f.default !== undefined) out[f.key] = f.default
+    else if (f.examples && f.examples.length > 0) out[f.key] = f.examples[0]
+  }
+  return out
+}
+
 export function sampleArgs(schema?: ToolSchema): Record<string, unknown> {
   const props = (schema?.properties ?? {}) as Record<string, PropMeta>
   const out: Record<string, unknown> = {}
   for (const [key, p] of Object.entries(props)) {
     const t = p.type ?? 'string'
     if (Array.isArray(p.enum)) out[key] = p.enum[0]
+    else if (Array.isArray(p.examples) && p.examples.length > 0) out[key] = p.examples[0]
     else if (t === 'boolean') out[key] = false
     else if (t === 'number' || t === 'integer') out[key] = 0
     else if (t === 'object') out[key] = {}

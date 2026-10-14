@@ -1,0 +1,9 @@
+{
+  "type": "report",
+  "meta": { "title": "Mini Research Report", "kicker": "P31 Labs · Sovereign Research", "thesis": "A minimal report fixture for the template test harness.", "session": "fixture-report", "date": "2026-10-12", "source": "convergence" },
+  "exec": { "takeaway": "A tiny report with a plain takeaway for the test suite.", "keyFindings": ["Finding one: the packer works.", "Finding two: gates stay green."], "kpiItems": [ { "label": "Pages", "value": "3", "detail": "target" } ] },
+  "blocks": [
+    { "kind": "section", "id": "synthesis", "title": "Synthesis", "role": "body", "children": [ { "kind": "prose", "data": { "text": "The universal document system renders every type through one path. This fixture proves the report template still packs." } } ] },
+    { "kind": "section", "id": "evidence-appendix", "title": "Evidence Appendix", "role": "appendix", "forceBreakBefore": true, "children": [ { "kind": "table", "data": { "columns": ["ID", "Claim", "Source", "Verdict"], "rows": [ ["E1", "Chromium fragments grid cleanly between rows.", "experiment 2026-10-12", "verified"] ] } }, { "kind": "methodology", "data": { "text": "Fixture claims verified against the grounding ledgers." } } ] }
+  ]
+}

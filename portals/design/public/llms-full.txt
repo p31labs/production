@@ -65,3 +65,31 @@ Resolve any token via the MCP tool `token_resolve(p31.color.accent.default)`.
 3. Themes are value swaps at the semantic tier, never component forks.
 4. Crisis = no motion, no blur, CrisisOverlay only.
 5. A missing token/component is a contribution proposal, not a workaround.
+## Device tiers (manifest contract)
+
+Manifest schema pointer: `production/design-workflow/B-device-tiers/device-tiers.json`
+(v1.0.0). Per tier: `windowSizeClass`, `pointer`, `hover`, `touchTargetMin`,
+`navigation`, `delivery[]`, plus tier-specific `breakpointMinDp`/`breakpointMaxDp`
+(viewport tiers), `safeAreaInsets` (mobile/tablet), `assetsPartition: spiffs` +
+`maxGzipBytes: 102400` (embedded), and a `rationale`. Breakpoints also exist as DTCG
+dimension tokens (`breakpoints.tokens.json`): compact 600px/37.5rem, medium
+840px/52.5rem, expanded 1200px/75rem.
+
+| Tier | Class | Width (dp) | Pointer/hover | Touch floor | Navigation | Delivery |
+|------|-------|-----------|----------------|-------------|------------|----------|
+| embedded | null | — | null/null | 44 | minimal-html | embedded-css, lvgl-c |
+| mobile | compact | < 600 | coarse/none | 44 | bottom-nav | css-mobile |
+| tablet | medium | 600–840 | mixed/mixed | 44 | nav-rail | css-full |
+| desktop | expanded | ≥ 840 | fine/hover | 34 (fine-only) | sidebar | css-full |
+
+Embedded budgets (enforced by `D-embedded/embedded-budget.mjs`): served web UI
+≤ 100 KB gzip total (`maxGzipBytes: 102400` — SPIFFS `assets` partition discipline;
+current bundle 2,960 B gz); LVGL theme header `p31_theme.h` ≤ 8,192 B raw.
+
+Tier doctrine: tiers are semantic value swaps, never component forks — the embedded
+tier is a subset of the same DTCG tokens (`gen-p31-theme.mjs` → `p31_theme.h`),
+fewer of them, never hand-forked. Capability flags (coarse/fine/canHover) are
+independent axes, surfaced never collapsed: the resolver returns them alongside the
+width class and consumers reconcile the 44px floor per capability; unknown
+pointer/hover throws (fail closed).
+

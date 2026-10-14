@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/react';
 import { configure } from '@p31ca/sovereign-core';
-import { useThemeStore } from '@p31ca/shell-chrome';
+import { useThemeStore } from './store/useThemeStore';
 import { getTrustedTypesPolicy } from './lib/trustedTypes';
 import App from './App';
 import './index.css';

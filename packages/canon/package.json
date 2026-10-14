@@ -22,6 +22,7 @@
   "sideEffects": false,
   "scripts": {
     "gen:tokens": "node scripts/gen-tokens.mjs && node ../../tools/token-validation/src/validate.mjs --only",
+    "build:tokens": "node scripts/gen-tokens.mjs && node ../../tools/token-validation/src/validate.mjs --only",
     "gen:dsds": "node scripts/gen-dsds.mjs",
     "gen:exports": "node scripts/generate-exports.mjs",
     "gen:registry": "node scripts/gen-registry.mjs",
@@ -82,6 +83,7 @@
     "./css/base.css": "./dist/css/base.css",
     "./css/container.css": "./dist/css/container.css",
     "./css/glass.css": "./dist/css/glass.css",
+    "./css/layers.css": "./dist/css/layers.css",
     "./css/layout.css": "./dist/css/layout.css",
     "./css/link-glow.css": "./dist/css/link-glow.css",
     "./css/motion.css": "./dist/css/motion.css",
@@ -118,12 +120,11 @@
     "./theming/theme-css": "./dist/theming/theme-css.js",
     "./theming/theme-store": "./dist/theming/theme-store.js",
     "./tokens": "./dist/tokens.js",
-    "./tokens.css": "./dist/tokens.css",
-    "./tokens.dtc.json": "./tokens/tokens.dtc.json"
+    "./tokens.css": "./dist/tokens.css"
   },
   "devDependencies": {
     "culori": "^4.0.2",
-    "style-dictionary": "^4.4.0"
+    "style-dictionary": "^5.6.0"
   },
   "dependencies": {
     "@p31ca/sovereign-primitives": "workspace:*",

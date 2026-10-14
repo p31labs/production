@@ -1,0 +1,10 @@
+{
+  "name": "d2-neg-spacing-no-descriptor",
+  "note": "NEGATIVE CONTROL: fixed-px spacing WITHOUT a policy descriptor must be FLAGGED (rule C)",
+  "tokens": {
+    "spacing-md": {
+      "$value": { "value": 16, "unit": "px" },
+      "$type": "dimension"
+    }
+  }
+}

@@ -4,4 +4,4 @@ a: A way for care work to be recognized and exchanged — effort that markets do
 category: stack
 ---
 
-The love ledger, the value-form problem, and the care economy are covered in multiple papers in the P31 series (Zenodo, open-access). The idea is that care work — the kind a family does for each other — deserves a record, not just a market value.
+The love ledger, the value-form problem, and the care economy are covered across the 22 DOI-verified papers in the P31 series (Zenodo, open-access). The idea is that care work — the kind a family does for each other — deserves a record, not just a market value.

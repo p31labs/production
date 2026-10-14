@@ -1,0 +1,358 @@
+{
+  "shape": "C1-P4 brands/<name>/tokens.json rehearsal",
+  "baseFile": "brands-rehearsal/Base/tokens.json",
+  "brands": [
+    {
+      "file": "brands/aurora/tokens.json",
+      "name": "aurora",
+      "$extends": [
+        "../../Base/tokens.json"
+      ],
+      "versionPolicy": "minor",
+      "tokenNames": [
+        "base",
+        "radius-sm",
+        "radius-md",
+        "radius-lg",
+        "radius-full",
+        "font-sans",
+        "font-mono",
+        "bg",
+        "surface",
+        "surface2",
+        "accent",
+        "accent-cyan",
+        "accent-violet",
+        "accent-gold",
+        "accent-green",
+        "accent-red",
+        "accent-iris",
+        "text-primary",
+        "text-secondary",
+        "text-tertiary",
+        "glass-bg",
+        "glass-border"
+      ]
+    },
+    {
+      "file": "brands/cipher/tokens.json",
+      "name": "cipher",
+      "$extends": [
+        "../../Base/tokens.json"
+      ],
+      "versionPolicy": "minor",
+      "tokenNames": [
+        "base",
+        "radius-sm",
+        "radius-md",
+        "radius-lg",
+        "radius-full",
+        "font-sans",
+        "font-mono",
+        "bg",
+        "surface",
+        "surface2",
+        "accent",
+        "accent-cyan",
+        "accent-violet",
+        "accent-gold",
+        "accent-green",
+        "accent-red",
+        "accent-iris",
+        "text-primary",
+        "text-secondary",
+        "text-tertiary",
+        "glass-bg",
+        "glass-border"
+      ]
+    },
+    {
+      "file": "brands/family/tokens.json",
+      "name": "family",
+      "$extends": [
+        "../../Base/tokens.json"
+      ],
+      "versionPolicy": "minor",
+      "tokenNames": [
+        "base",
+        "radius-sm",
+        "radius-md",
+        "radius-lg",
+        "radius-full",
+        "font-sans",
+        "font-mono",
+        "bg",
+        "surface",
+        "surface2",
+        "accent",
+        "accent-cyan",
+        "accent-violet",
+        "accent-gold",
+        "accent-green",
+        "accent-red",
+        "accent-iris",
+        "text-primary",
+        "text-secondary",
+        "text-tertiary",
+        "glass-bg",
+        "glass-border"
+      ]
+    },
+    {
+      "file": "brands/garden/tokens.json",
+      "name": "garden",
+      "$extends": [
+        "../../Base/tokens.json"
+      ],
+      "versionPolicy": "minor",
+      "tokenNames": [
+        "base",
+        "radius-sm",
+        "radius-md",
+        "radius-lg",
+        "radius-full",
+        "font-sans",
+        "font-mono",
+        "bg",
+        "surface",
+        "surface2",
+        "accent",
+        "accent-cyan",
+        "accent-violet",
+        "accent-gold",
+        "accent-green",
+        "accent-red",
+        "accent-iris",
+        "text-primary",
+        "text-secondary",
+        "text-tertiary",
+        "glass-bg",
+        "glass-border"
+      ]
+    },
+    {
+      "file": "brands/mono/tokens.json",
+      "name": "mono",
+      "$extends": [
+        "../../Base/tokens.json"
+      ],
+      "versionPolicy": "minor",
+      "tokenNames": [
+        "base",
+        "radius-sm",
+        "radius-md",
+        "radius-lg",
+        "radius-full",
+        "font-sans",
+        "font-mono",
+        "bg",
+        "surface",
+        "surface2",
+        "accent",
+        "accent-cyan",
+        "accent-violet",
+        "accent-gold",
+        "accent-green",
+        "accent-red",
+        "accent-iris",
+        "text-primary",
+        "text-secondary",
+        "text-tertiary",
+        "glass-bg",
+        "glass-border"
+      ]
+    },
+    {
+      "file": "brands/ocean/tokens.json",
+      "name": "ocean",
+      "$extends": [
+        "../../Base/tokens.json"
+      ],
+      "versionPolicy": "minor",
+      "tokenNames": [
+        "base",
+        "radius-sm",
+        "radius-md",
+        "radius-lg",
+        "radius-full",
+        "font-sans",
+        "font-mono",
+        "bg",
+        "surface",
+        "surface2",
+        "accent",
+        "accent-cyan",
+        "accent-violet",
+        "accent-gold",
+        "accent-green",
+        "accent-red",
+        "accent-iris",
+        "text-primary",
+        "text-secondary",
+        "text-tertiary",
+        "glass-bg",
+        "glass-border"
+      ]
+    },
+    {
+      "file": "brands/retro/tokens.json",
+      "name": "retro",
+      "$extends": [
+        "../../Base/tokens.json"
+      ],
+      "versionPolicy": "minor",
+      "tokenNames": [
+        "base",
+        "radius-sm",
+        "radius-md",
+        "radius-lg",
+        "radius-full",
+        "font-sans",
+        "font-mono",
+        "bg",
+        "surface",
+        "surface2",
+        "accent",
+        "accent-cyan",
+        "accent-violet",
+        "accent-gold",
+        "accent-green",
+        "accent-red",
+        "accent-iris",
+        "text-primary",
+        "text-secondary",
+        "text-tertiary",
+        "glass-bg",
+        "glass-border"
+      ]
+    },
+    {
+      "file": "brands/sunlight/tokens.json",
+      "name": "sunlight",
+      "$extends": [
+        "../../Base/tokens.json"
+      ],
+      "versionPolicy": "minor",
+      "tokenNames": [
+        "base",
+        "radius-sm",
+        "radius-md",
+        "radius-lg",
+        "radius-full",
+        "font-sans",
+        "font-mono",
+        "bg",
+        "surface",
+        "surface2",
+        "accent",
+        "accent-cyan",
+        "accent-violet",
+        "accent-gold",
+        "accent-green",
+        "accent-red",
+        "accent-iris",
+        "text-primary",
+        "text-secondary",
+        "text-tertiary",
+        "glass-bg",
+        "glass-border"
+      ]
+    },
+    {
+      "file": "brands/sunset/tokens.json",
+      "name": "sunset",
+      "$extends": [
+        "../../Base/tokens.json"
+      ],
+      "versionPolicy": "minor",
+      "tokenNames": [
+        "base",
+        "radius-sm",
+        "radius-md",
+        "radius-lg",
+        "radius-full",
+        "font-sans",
+        "font-mono",
+        "bg",
+        "surface",
+        "surface2",
+        "accent",
+        "accent-cyan",
+        "accent-violet",
+        "accent-gold",
+        "accent-green",
+        "accent-red",
+        "accent-iris",
+        "text-primary",
+        "text-secondary",
+        "text-tertiary",
+        "glass-bg",
+        "glass-border"
+      ]
+    },
+    {
+      "file": "brands/volt/tokens.json",
+      "name": "volt",
+      "$extends": [
+        "../../Base/tokens.json"
+      ],
+      "versionPolicy": "minor",
+      "tokenNames": [
+        "base",
+        "radius-sm",
+        "radius-md",
+        "radius-lg",
+        "radius-full",
+        "font-sans",
+        "font-mono",
+        "bg",
+        "surface",
+        "surface2",
+        "accent",
+        "accent-cyan",
+        "accent-violet",
+        "accent-gold",
+        "accent-green",
+        "accent-red",
+        "accent-iris",
+        "text-primary",
+        "text-secondary",
+        "text-tertiary",
+        "glass-bg",
+        "glass-border"
+      ]
+    },
+    {
+      "file": "brands/zen/tokens.json",
+      "name": "zen",
+      "$extends": [
+        "../../Base/tokens.json"
+      ],
+      "versionPolicy": "minor",
+      "tokenNames": [
+        "base",
+        "radius-sm",
+        "radius-md",
+        "radius-lg",
+        "radius-full",
+        "font-sans",
+        "font-mono",
+        "bg",
+        "surface",
+        "surface2",
+        "accent",
+        "accent-cyan",
+        "accent-violet",
+        "accent-gold",
+        "accent-green",
+        "accent-red",
+        "accent-iris",
+        "text-primary",
+        "text-secondary",
+        "text-tertiary",
+        "glass-bg",
+        "glass-border"
+      ]
+    }
+  ]
+}

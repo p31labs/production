@@ -64,7 +64,7 @@ const IPHONE_13 = (() => {
   };
 })();
 
-test.describe('spike — AppShell field [iPhone 13]', () => {
+test.describe.skip('spike — AppShell field [iPhone 13] — SUPERSEDED 2026-10-13 (dome persistence removed by the MolecularHeart TBT fix; see spike-appshell-persistence.spec.ts header)', () => {
   test.use(IPHONE_13);
 
   test('20× nav holds canvas and GL on iPhone-class device', async ({ page }) => {
@@ -109,7 +109,7 @@ test.describe('spike — AppShell field [iPhone 13]', () => {
 /* ============================================================ */
 /*  2. device-pixelbook — 1366×768 Chromebook viewport          */
 /* ============================================================ */
-test.describe('spike — AppShell field [Pixelbook]', () => {
+test.describe.skip('spike — AppShell field [Pixelbook] — SUPERSEDED 2026-10-13 (dome persistence removed by the MolecularHeart TBT fix)', () => {
   test.use({ viewport: { width: 1366, height: 768 }, deviceScaleFactor: 1 });
 
   test('20× nav holds canvas and GL at Chromebook resolution', async ({ page }) => {
@@ -162,7 +162,7 @@ const SLOW_3G = {
   latency: 400,
 };
 
-test('spike — AppShell field [network: Slow3G] — 10× nav survives throttle', async ({
+test.skip('spike — AppShell field [SUPERSEDED 2026-10-13 — network: Slow3G] — 10× nav survives throttle', async ({
   page,
   context,
 }) => {
@@ -224,7 +224,7 @@ test('spike — AppShell field [network: Slow3G] — 10× nav survives throttle'
 /* ============================================================ */
 /*  4. network-offline-recovery — go dark, come back            */
 /* ============================================================ */
-test('spike — AppShell field [network: offline → online] — survives connectivity drop', async ({
+test.skip('spike — AppShell field [SUPERSEDED 2026-10-13 — network: offline → online] — survives connectivity drop', async ({
   page,
   context,
 }) => {
@@ -293,7 +293,7 @@ test('spike — AppShell field [network: offline → online] — survives connec
 /* ============================================================ */
 /*  5. tab-visibility — backgrounded tab cycle                  */
 /* ============================================================ */
-test('spike — AppShell field [visibility: hidden ↔ visible] — survives tab backgrounding', async ({
+test.skip('spike — AppShell field [SUPERSEDED 2026-10-13 — visibility: hidden ↔ visible] — survives tab backgrounding', async ({
   page,
 }) => {
   test.setTimeout(120_000);
@@ -347,7 +347,7 @@ test('spike — AppShell field [visibility: hidden ↔ visible] — survives tab
 /* ============================================================ */
 /*  6. console-clean — sniff for any JS errors                  */
 /* ============================================================ */
-test('spike — AppShell field [console: clean] — zero JS errors during 20× nav', async ({
+test.skip('spike — AppShell field [SUPERSEDED 2026-10-13 — console: clean] — zero JS errors during 20× nav', async ({
   page,
 }) => {
   test.setTimeout(120_000);
@@ -414,7 +414,7 @@ test('spike — AppShell field [console: clean] — zero JS errors during 20× n
 /* ============================================================ */
 /*  7. forced-gc — V8 collectGarbage between navs               */
 /* ============================================================ */
-test('spike — AppShell field [forced GC] — 20× nav with HeapProfiler.collectGarbage between', async ({
+test.skip('spike — AppShell field [SUPERSEDED 2026-10-13 — forced GC] — 20× nav with HeapProfiler.collectGarbage between', async ({
   page,
   context,
 }) => {
@@ -470,7 +470,7 @@ test('spike — AppShell field [forced GC] — 20× nav with HeapProfiler.collec
 /* ============================================================ */
 /*  8. overnight-100 — 100× nav with random idle                */
 /* ============================================================ */
-test('spike — AppShell field [overnight 100×] — slow-drift surface across 100 navs', async ({
+test.skip('spike — AppShell field [SUPERSEDED 2026-10-13 — overnight 100×] — slow-drift surface across 100 navs', async ({
   page,
 }) => {
   /* Long timeout: 100 navs at ~1.5s each + idle + first paint. */

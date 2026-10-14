@@ -1,0 +1,12 @@
+{
+  "name": "deck",
+  "type": "deck",
+  "page": { "widthIn": 11, "heightIn": 8.5, "margin": "16mm 16mm 18mm 16mm", "background": "#090d17" },
+  "defaultTheme": "ats",
+  "cover": true,
+  "packing": { "mode": "page-per-unit", "unit": "h2" },
+  "gates": { "readability": false, "pageCountRange": [3, 24], "noSplitAtoms": true },
+  "footer": "P31 LABS",
+  "footerColor": "#64748b",
+  "accent": "#5eead4"
+}

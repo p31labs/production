@@ -25,11 +25,11 @@ export default function LumiTokenVisualizer() {
   const low = secondsLeft < 120
 
   return (
-    <div className="rounded-2xl border p-6" style={{ borderColor: 'var(--p31-glass-border)', background: 'var(--p31-surface)' }}>
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-lg font-semibold" style={{ color: 'var(--p31-text)' }}>🔮 Lumi · capability token</span>
+    <div className="lv-rounded-2xl lv-border lv-p-6" style={{ borderColor: 'var(--p31-glass-border)', background: 'var(--p31-surface)' }}>
+      <div className="lv-flex lv-items-center lv-gap-2 lv-mb-4">
+        <span className="lv-text-lg lv-font-semibold" style={{ color: 'var(--p31-text)' }}>🔮 Lumi · capability token</span>
         <span
-          className="ml-auto text-xs font-mono px-2 py-0.5 rounded-full"
+          className="lv-ml-auto lv-text-xs lv-font-mono lv-px-2 lv-py-0-5 lv-rounded-full"
           style={{
             background: verified ? 'color-mix(in oklab, var(--p31-chain-verified, #788c5d) 15%, transparent)' : 'color-mix(in oklab, var(--p31-chain-broken, #c0392b) 15%, transparent)',
             color: verified ? 'var(--p31-chain-verified, #788c5d)' : 'var(--p31-chain-broken, #c0392b)',
@@ -40,46 +40,46 @@ export default function LumiTokenVisualizer() {
       </div>
 
       {/* Expiry countdown */}
-      <div className="mb-4">
-        <div className="flex items-center justify-between text-xs mb-1">
+      <div className="lv-mb-4">
+        <div className="lv-flex lv-items-center lv-justify-between lv-text-xs lv-mb-1">
           <span style={{ color: 'var(--p31-text-tertiary)' }}>Expires in</span>
-          <span className="font-mono" style={{ color: low ? 'var(--p31-chain-pending, #d97757)' : 'var(--p31-text)' }}>{mm}:{ss}</span>
+          <span className="lv-font-mono" style={{ color: low ? 'var(--p31-chain-pending, #d97757)' : 'var(--p31-text)' }}>{mm}:{ss}</span>
         </div>
-        <div className="h-1.5 rounded-full" style={{ background: 'var(--p31-glass-border)' }}>
+        <div className="lv-h-1-5 lv-rounded-full" style={{ background: 'var(--p31-glass-border)' }}>
           <div
-            className="h-full rounded-full transition-all"
+            className="lv-h-full lv-rounded-full lv-transition-all"
             style={{ width: `${(secondsLeft / 900) * 100}%`, background: low ? 'var(--p31-chain-pending, #d97757)' : 'var(--p31-chain-verified, #788c5d)' }}
           />
         </div>
       </div>
 
       {/* Scope checklist — the co-presence contract, made literal */}
-      <div className="space-y-1.5 text-sm mb-4">
-        <div className="flex items-center gap-2"><span style={{ color: 'var(--p31-chain-verified, #788c5d)' }}>✓</span><span style={{ color: 'var(--p31-text)' }}>propose changes</span></div>
-        <div className="flex items-center gap-2"><span style={{ color: 'var(--p31-chain-verified, #788c5d)' }}>✓</span><span style={{ color: 'var(--p31-text)' }}>review proposals</span></div>
-        <div className="flex items-center gap-2 opacity-50"><span style={{ color: 'var(--p31-text-tertiary)' }}>—</span><span style={{ color: 'var(--p31-text-secondary)' }}>approve (human only)</span></div>
-        <div className="flex items-center gap-2 opacity-50"><span style={{ color: 'var(--p31-text-tertiary)' }}>—</span><span style={{ color: 'var(--p31-text-secondary)' }}>reject (human only)</span></div>
-        <div className="flex items-center gap-2 opacity-50"><span style={{ color: 'var(--p31-text-tertiary)' }}>—</span><span style={{ color: 'var(--p31-text-secondary)' }}>act autonomously</span></div>
+      <div className="lv-space-y-1-5 lv-text-sm lv-mb-4">
+        <div className="lv-flex lv-items-center lv-gap-2"><span style={{ color: 'var(--p31-chain-verified, #788c5d)' }}>✓</span><span style={{ color: 'var(--p31-text)' }}>propose changes</span></div>
+        <div className="lv-flex lv-items-center lv-gap-2"><span style={{ color: 'var(--p31-chain-verified, #788c5d)' }}>✓</span><span style={{ color: 'var(--p31-text)' }}>review proposals</span></div>
+        <div className="lv-flex lv-items-center lv-gap-2 lv-opacity-50"><span style={{ color: 'var(--p31-text-tertiary)' }}>—</span><span style={{ color: 'var(--p31-text-secondary)' }}>approve (human only)</span></div>
+        <div className="lv-flex lv-items-center lv-gap-2 lv-opacity-50"><span style={{ color: 'var(--p31-text-tertiary)' }}>—</span><span style={{ color: 'var(--p31-text-secondary)' }}>reject (human only)</span></div>
+        <div className="lv-flex lv-items-center lv-gap-2 lv-opacity-50"><span style={{ color: 'var(--p31-text-tertiary)' }}>—</span><span style={{ color: 'var(--p31-text-secondary)' }}>act autonomously</span></div>
       </div>
 
-      <div className="flex gap-2">
+      <div className="lv-flex lv-gap-2">
         <button
           onClick={() => { setSecondsLeft(900); setRenewed((r) => r + 1) }}
-          className="px-3 py-1.5 rounded-lg text-xs font-semibold"
+          className="lv-px-3 lv-py-1-5 lv-rounded-lg lv-text-xs lv-font-semibold"
           style={{ background: 'var(--p31-accent)', color: 'var(--p31-bg, #141413)' }}
         >
           Renew token
         </button>
         <button
           onClick={() => setVerified((v) => !v)}
-          className="px-3 py-1.5 rounded-lg text-xs font-semibold border"
+          className="lv-px-3 lv-py-1-5 lv-rounded-lg lv-text-xs lv-font-semibold lv-border"
           style={{ borderColor: 'var(--p31-glass-border)', color: 'var(--p31-text)' }}
         >
           {verified ? 'Simulate tamper' : 'Re-verify'}
         </button>
       </div>
 
-      <p className="mt-4 text-xs" style={{ color: 'var(--p31-text-tertiary)' }}>
+      <p className="lv-mt-4 lv-text-xs" style={{ color: 'var(--p31-text-tertiary)' }}>
         The real token is a composite Ed25519 + ML-DSA-65 signature, 15-minute expiry, verified fail-closed at the Loom gate.{renewed > 0 && ` Renewed ${renewed}×.`}
       </p>
     </div>

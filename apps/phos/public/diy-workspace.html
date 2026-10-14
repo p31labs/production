@@ -135,7 +135,7 @@
                     </div>
                     <span className="text-[10px] font-mono uppercase tracking-[0.1em] text-p31-textSecondary">{part.template}</span>
                 </div>
-                <h3 className="text-[16px] font-bold text-p31-textPrimary">{part.name}</h3>
+                <span className="text-[16px] font-bold text-p31-textPrimary">{part.name}</span>
                 <p className="text-[13px] text-p31-textSecondary leading-relaxed">{part.desc}</p>
                 <div className="flex gap-2 mt-auto pt-2">
                     <span className="text-[10px] uppercase tracking-[0.1em] px-2 py-1 rounded-full bg-p31-accent/10 text-p31-accent font-mono">LEGO {part.lego}</span>
@@ -232,6 +232,7 @@
             if (spoons === 0) {
                 return (
                     <div className="min-h-screen flex flex-col items-center justify-center p-6 gap-8">
+                        <h1 className="sr-only">Crisis Mode</h1>
                         <div className="text-p31-danger font-mono text-xl animate-pulse">CRISIS_MODE: ACTIVE</div>
                         <p className="text-p31-textSecondary max-w-md text-center leading-relaxed">
                             Assembly paused. Cognitive resources depleted. Take a breath — the bricks will still be here when you return.
@@ -353,7 +354,7 @@
                             <div className="flex flex-col lg:flex-row gap-6 animate-[fadeIn_0.3s_ease-out]">
                                 {/* Left: Step Navigation */}
                                 <div className="w-full lg:w-[280px] flex flex-col gap-2">
-                                    <h3 className="text-[12px] uppercase tracking-[0.05em] text-p31-textSecondary font-bold mb-2 phos-ui-chrome">Assembly Steps</h3>
+                                    <p className="text-[12px] uppercase tracking-[0.05em] text-p31-textSecondary font-bold mb-2 phos-ui-chrome">Assembly Steps</p>
                                     {ASSEMBLY_STEPS.map(step => (
                                         <StepIndicator key={step.number} step={step}
                                             current={currentStep}

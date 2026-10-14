@@ -84,18 +84,18 @@ export default function ExplorableChain() {
 
   return (
     <div
-      className="w-full rounded-2xl border p-5"
+      className="ec-w-full ec-rounded-2xl ec-border ec-p-5"
       style={{ borderColor: 'var(--p31-glass-border)', background: 'var(--p31-surface)' }}
     >
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        <span className="font-mono text-xs uppercase tracking-widest" style={{ color: 'var(--p31-text-tertiary)' }}>
+      <div className="ec-flex ec-flex-wrap ec-items-center ec-gap-2 ec-mb-4">
+        <span className="ec-font-mono ec-text-xs ec-uppercase ec-tracking-widest" style={{ color: 'var(--p31-text-tertiary)' }}>
           Try it — break the chain
         </span>
-        <div className="ml-auto flex gap-2">
+        <div className="ec-ml-auto ec-flex ec-gap-2">
           <button
             type="button"
             onClick={() => setTamperedAt(tamperedAt === null ? 4 : null)}
-            className="px-3 py-1.5 rounded-lg text-xs font-semibold border"
+            className="ec-px-3 ec-py-1-5 ec-rounded-lg ec-text-xs ec-font-semibold ec-border"
             style={tamperedAt !== null
               ? { borderColor: 'var(--p31-accent-red, #FB7185)', color: 'var(--p31-accent-red, #FB7185)', background: 'color-mix(in oklab, #FB7185 12%, transparent)' }
               : { borderColor: 'var(--p31-glass-border)', color: 'var(--p31-text)' }}
@@ -109,7 +109,7 @@ export default function ExplorableChain() {
               // a broken chain re-verifies as broken
               if (brokenAt !== null) setVerified(false)
             }}
-            className="px-3 py-1.5 rounded-lg text-xs font-semibold"
+            className="ec-px-3 ec-py-1-5 ec-rounded-lg ec-text-xs ec-font-semibold"
             style={{ background: 'var(--p31-accent)', color: '#000' }}
           >
             ✓ Verify chain
@@ -118,24 +118,24 @@ export default function ExplorableChain() {
       </div>
 
       {/* Chain blocks */}
-      <div className="space-y-2">
+      <div className="ec-space-y-2">
         {tamperedChain.map((b, i) => {
           const isTampered = i === (tamperedAt ?? -1) - 1
           const linkBroken = i > 0 && tamperedChain[i].prevHash !== tamperedChain[i - 1].hash
           return (
-            <div key={b.seq} className="rounded-lg border px-3 py-2" style={{
+            <div key={b.seq} className="ec-rounded-lg ec-border ec-px-3 ec-py-2" style={{
               borderColor: linkBroken ? 'var(--p31-accent-red, #FB7185)' : isTampered ? 'var(--p31-accent-gold, #FBBF24)' : 'var(--p31-glass-border)',
               background: 'var(--p31-surface2)',
             }}>
-              <div className="flex items-center gap-2 text-xs">
-                <span className="font-mono" style={{ color: 'var(--p31-text-tertiary)' }}>#{b.seq}</span>
+              <div className="ec-flex ec-items-center ec-gap-2 ec-text-xs">
+                <span className="ec-font-mono" style={{ color: 'var(--p31-text-tertiary)' }}>#{b.seq}</span>
                 <span style={{ color: 'var(--p31-text)' }}>{b.data}</span>
-                {isTampered && <span className="ml-auto text-[10px] font-bold" style={{ color: 'var(--p31-accent-gold, #FBBF24)' }}>TAMPERED</span>}
-                {linkBroken && <span className="ml-auto text-[10px] font-bold" style={{ color: 'var(--p31-accent-red, #FB7185)' }}>LINK BROKEN</span>}
+                {isTampered && <span className="ec-ml-auto ec-text--10px- ec-font-bold" style={{ color: 'var(--p31-accent-gold, #FBBF24)' }}>TAMPERED</span>}
+                {linkBroken && <span className="ec-ml-auto ec-text--10px- ec-font-bold" style={{ color: 'var(--p31-accent-red, #FB7185)' }}>LINK BROKEN</span>}
               </div>
-              <div className="mt-1 font-mono text-[10px] flex gap-4" style={{ color: 'var(--p31-text-tertiary)' }}>
-                <span className="truncate">prev {b.prevHash.slice(0, 10)}</span>
-                <span className="truncate">hash {b.hash.slice(0, 10)}</span>
+              <div className="ec-mt-1 ec-font-mono ec-text--10px- ec-flex ec-gap-4" style={{ color: 'var(--p31-text-tertiary)' }}>
+                <span className="ec-truncate">prev {b.prevHash.slice(0, 10)}</span>
+                <span className="ec-truncate">hash {b.hash.slice(0, 10)}</span>
               </div>
             </div>
           )
@@ -144,7 +144,7 @@ export default function ExplorableChain() {
 
       {/* Verdict */}
       {verdict && (
-        <div className="mt-4 px-3 py-2 rounded-lg text-sm font-medium" style={{
+        <div className="ec-mt-4 ec-px-3 ec-py-2 ec-rounded-lg ec-text-sm ec-font-medium" style={{
           background: verdict.ok ? 'color-mix(in oklab, #34D399 12%, transparent)' : 'color-mix(in oklab, #FB7185 12%, transparent)',
           color: verdict.ok ? 'var(--p31-accent-green, #34D399)' : 'var(--p31-accent-red, #FB7185)',
         }}>
@@ -152,7 +152,7 @@ export default function ExplorableChain() {
         </div>
       )}
 
-      <p className="mt-3 text-xs" style={{ color: 'var(--p31-text-tertiary)' }}>
+      <p className="ec-mt-3 ec-text-xs" style={{ color: 'var(--p31-text-tertiary)' }}>
         This is a simplified demo of the property. The real Loom chain uses SHA-256 over RFC 8785-canonicalized records, and the live chain is independently verifiable.
       </p>
     </div>

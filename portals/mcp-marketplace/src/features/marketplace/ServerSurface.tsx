@@ -1,17 +1,46 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { PageHeaderV2, DetailShell, Tabs, ErrorState } from '@p31ca/design-core/canon-v2'
 import { useMarketplaceStore } from '@/store/marketplaceStore'
 import { getServer } from '@/lib/registryClient'
-import { CategoryChip, StatusBadge, HealthDot, VerifyBadge, ReviewBadge, DriftBadge, ScanBadge, CapabilityBadge, FreshnessBadge, RiskChip } from './components'
+import {
+  CategoryChip, StatusBadge, HealthDot, VerifyBadge, ReviewBadge, DriftBadge, ScanBadge, CapabilityBadge,
+  FreshnessBadge, SourceBadge, LoveBadge, ToolCount, PriceTierBadge,
+} from './components'
 import { ToolDiff } from './ToolDiff'
+import { ToolExplorer } from './ToolExplorer'
+import { ScopedPlayground } from './ScopedPlayground'
+import { InstallTab } from './InstallTab'
+
+type Tab = 'install' | 'tools' | 'playground' | 'details'
+
+const TABS: Array<{ id: Tab; label: string }> = [
+  { id: 'install', label: 'Install' },
+  { id: 'tools', label: 'Tools' },
+  { id: 'playground', label: 'Playground' },
+  { id: 'details', label: 'Details' },
+]
+
+const HEALTH_WORD: Record<string, string> = {
+  up: 'working',
+  degraded: 'partially working',
+  down: 'not working',
+}
 
 /**
- * ServerSurface — detail view for one server: live health, verify metadata,
- * and the tool list grouped by risk. "Open in Playground" jumps straight into
- * an interactive session for this server.
+ * ServerSurface — the per-server storefront (plan W3). The Install tab is
+ * the default. Badges live here (the detail page), not on catalog cards.
+ *
+ * Canon v2: PageHeaderV2 (name + description + the check action) over the
+ * DetailShell pattern — the summary column carries the badge stack and the
+ * action row; the focus region owns the canon Tabs and their content.
  */
 export function ServerSurface({ serverId }: { serverId?: string }) {
   const detail = useMarketplaceStore((s) => s.serverDetail)
   const loadServer = useMarketplaceStore((s) => s.loadServer)
+  const lens = useMarketplaceStore((s) => s.lens)
+  const selectTool = useMarketplaceStore((s) => s.selectTool)
+  const [tab, setTab] = useState<Tab>('install')
+  const [initialTool, setInitialTool] = useState<string | null>(null)
 
   useEffect(() => {
     if (serverId && (!detail || detail.id !== serverId)) {
@@ -21,98 +50,116 @@ export function ServerSurface({ serverId }: { serverId?: string }) {
 
   if (!detail) {
     return (
-      <div className="home-container">
-        <div className="landing-sub">Loading server…</div>
-      </div>
+      <div className="landing-sub" style={{ padding: 'var(--p31-space-6)' }}>Loading this server…</div>
     )
   }
 
-  const readTools = detail.tools.filter((t) => t.risk === 'read')
-  const writeTools = detail.tools.filter((t) => t.risk === 'write')
-
-  const openPlayground = (tool?: string) => {
-    useMarketplaceStore.getState().selectTool(tool ?? null)
-    window.location.hash = '#/playground'
+  const openToolInPlayground = (tool: string) => {
+    selectTool(tool)
+    setInitialTool(tool)
+    setTab('playground')
   }
 
+  const toolCount = detail.tools.length
+  const loveSettled = detail.review ? true : null
+
   return (
-    <div className="home-container">
-      <section className="home-hero">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--p31-space-3)', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: '2rem' }} aria-hidden="true">{detail.icon ?? '🧩'}</span>
-          <h1 className="greeting-h1">{detail.name}</h1>
-          <StatusBadge status={detail.status} />
-          <HealthDot health={detail.health} />
-          <CategoryChip category={detail.category} />
-        </div>
-        <p className="landing-sub">{detail.description}</p>
-        <div style={{ display: 'flex', gap: 'var(--p31-space-2)', flexWrap: 'wrap', alignItems: 'center' }}>
-          <VerifyBadge verify={detail.verify} />
-          <ReviewBadge review={detail.review} />
-          <ScanBadge scan={detail.scan} />
-          <DriftBadge drifted={detail.drifted} contentHash={detail.contentHash} baselineHash={detail.baselineHash} />
-          <CapabilityBadge capabilities={detail.capabilities} />
-          <FreshnessBadge checkedAt={detail.checkedAt} latencyMs={detail.latencyMs} />
-          <span className="chip" style={{ color: 'var(--p31-text-muted)', fontFamily: 'var(--p31-font-mono)', fontSize: 'var(--p31-text-xs)' }}>{detail.endpoint}</span>
-          {detail.readOnlySafe && <span className="chip" style={{ color: 'var(--p31-accent-green)' }}>read-only safe</span>}
-          {detail.localNote && <span className="chip" style={{ color: 'var(--p31-accent-gold)' }}>{detail.localNote}</span>}
-        </div>
-        <div style={{ display: 'flex', gap: 'var(--p31-space-3)', marginTop: 'var(--p31-space-4)' }}>
-          <button type="button" className="btn-sm" onClick={() => openPlayground()} style={{ background: 'var(--p31-accent)', color: 'var(--p31-void)', fontWeight: 600, padding: '8px 16px', borderRadius: 'var(--p31-radius-md)' }}>
-            🛠️ Open in Playground →
-          </button>
+    <>
+      <PageHeaderV2
+        title={<>{detail.icon ?? '🧩'} {detail.name}</>}
+        subtitle={detail.description}
+        actions={
           <button type="button" className="btn-sm" onClick={() => void getServer(detail.id).then((d) => useMarketplaceStore.setState({ serverDetail: d }))}>
-            ↻ re-probe
+            ↻ Check again
           </button>
-        </div>
-      </section>
+        }
+      />
 
       {detail.health !== 'up' && (
-        <div className="setup-err" style={{ marginBottom: 'var(--p31-space-3)' }}>
-          health: {detail.health} · {detail.healthDetail ?? 'no detail'}
-        </div>
+        <ErrorState
+          title={`This server is ${HEALTH_WORD[detail.health] ?? detail.health} right now.`}
+          description={detail.healthDetail ?? 'No details were given.'}
+        />
       )}
 
-      {detail.baselineTools && detail.baselineTools.length > 0 && (
-        <section style={{ marginBottom: 'var(--p31-space-5)' }}>
-          <h2 style={{ color: 'var(--p31-text-primary)' }}>Surface diff vs last review <span className="chip" style={{ color: 'var(--p31-text-muted)' }}>{detail.drifted ? 'drifted' : 'unchanged'}</span></h2>
-          <ToolDiff current={detail.tools} baseline={detail.baselineTools} />
-        </section>
+      {lens === 'governed' && (
+        <div className="chip" style={{ color: 'var(--p31-accent-gold)' }}>Admin view is on.</div>
       )}
 
-      <section style={{ marginBottom: 'var(--p31-space-5)' }}>
-        <h2 style={{ color: 'var(--p31-text-primary)' }}>Read-only tools <span className="chip" style={{ color: 'var(--p31-accent-green)' }}>{readTools.length}</span></h2>
-        <div className="launcher-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', marginTop: 'var(--p31-space-3)' }}>
-          {readTools.map((t) => (
-            <button key={t.name} type="button" className="surface-card" onClick={() => openPlayground(t.name)} style={{ textAlign: 'left' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--p31-space-2)' }}>
-                <span className="surface-card-icon">🔍</span>
-                <RiskChip risk={t.risk} />
-              </div>
-              <div className="surface-card-title" style={{ fontSize: 'var(--p31-text-sm)' }}>{t.name}</div>
-              <div className="surface-card-desc">{t.description ?? '—'}</div>
-            </button>
-          ))}
-          {readTools.length === 0 && <div className="landing-sub">None exposed.</div>}
-        </div>
-      </section>
+      <DetailShell
+        summary={
+          <div style={{ display: 'flex', gap: 'var(--p31-space-2)', flexWrap: 'wrap', alignItems: 'center' }}>
+            <StatusBadge status={detail.status} />
+            <ToolCount n={toolCount} />
+            <FreshnessBadge checkedAt={detail.checkedAt} latencyMs={detail.latencyMs} />
+            <PriceTierBadge tier={detail.priceTier} />
+            <HealthDot health={detail.health} />
+            <CategoryChip category={detail.category} />
+            <SourceBadge source={detail.source} />
+            <LoveBadge settled={loveSettled} />
+            <VerifyBadge verify={detail.verify} />
+            <ReviewBadge review={detail.review} />
+            <ScanBadge scan={detail.scan} />
+            <DriftBadge drifted={detail.drifted} contentHash={detail.contentHash} baselineHash={detail.baselineHash} />
+            <CapabilityBadge capabilities={detail.capabilities} />
+            {detail.readOnlySafe && <span className="chip" style={{ color: 'var(--p31-accent-green)' }}>safe to read</span>}
+            {detail.localNote && <span className="chip" style={{ color: 'var(--p31-accent-gold)' }}>{detail.localNote}</span>}
+          </div>
+        }
+        focus={
+          <>
+            <Tabs
+              items={TABS}
+              activeId={tab}
+              onSelect={(id) => setTab(id as Tab)}
+              ariaLabel="Server sections"
+            />
 
-      <section>
-        <h2 style={{ color: 'var(--p31-text-primary)' }}>Write / stateful tools <span className="chip" style={{ color: 'var(--p31-accent-red)' }}>{writeTools.length}</span></h2>
-        <div className="launcher-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', marginTop: 'var(--p31-space-3)' }}>
-          {writeTools.map((t) => (
-            <button key={t.name} type="button" className="surface-card" onClick={() => openPlayground(t.name)} style={{ textAlign: 'left' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--p31-space-2)' }}>
-                <span className="surface-card-icon">✍️</span>
-                <RiskChip risk={t.risk} />
-              </div>
-              <div className="surface-card-title" style={{ fontSize: 'var(--p31-text-sm)' }}>{t.name}</div>
-              <div className="surface-card-desc">{t.description ?? '—'}</div>
-            </button>
-          ))}
-          {writeTools.length === 0 && <div className="landing-sub">None exposed.</div>}
-        </div>
-      </section>
-    </div>
+            {tab === 'details' && (
+              <>
+                {detail.baselineTools && detail.baselineTools.length > 0 && (
+                  <section style={{ marginBottom: 'var(--p31-space-5)' }}>
+                    <h2 style={{ color: 'var(--p31-text-primary)' }}>Changes since last review <span className="chip" style={{ color: 'var(--p31-text-muted)' }}>{detail.drifted ? 'changed' : 'unchanged'}</span></h2>
+                    <ToolDiff current={detail.tools} baseline={detail.baselineTools} />
+                  </section>
+                )}
+                <section>
+                  <h2 style={{ color: 'var(--p31-text-primary)' }}>About</h2>
+                  <div className="surface-panel" style={{ flexDirection: 'column', gap: 'var(--p31-space-2)' }}>
+                    <div className="surface-card-desc">{detail.description}</div>
+                    <div style={{ display: 'flex', gap: 'var(--p31-space-2)', flexWrap: 'wrap' }}>
+                      <span className="chip" style={{ color: 'var(--p31-text-muted)' }}>made by {detail.author ?? '—'}</span>
+                      {detail.tags.map((t) => <span key={t} className="chip" style={{ color: 'var(--p31-accent-violet)' }}>{t}</span>)}
+                    </div>
+                  </div>
+                </section>
+              </>
+            )}
+
+            {tab === 'tools' && (
+              <section>
+                <h2 style={{ color: 'var(--p31-text-primary)' }}>Tools <span className="chip" style={{ color: 'var(--p31-text-muted)' }}>{toolCount}</span></h2>
+                <div style={{ marginTop: 'var(--p31-space-3)' }}>
+                  <ToolExplorer tools={detail.tools} onOpenTool={openToolInPlayground} />
+                </div>
+              </section>
+            )}
+
+            {tab === 'playground' && (
+              <ScopedPlayground
+                serverId={detail.id}
+                serverName={detail.name}
+                endpoint={detail.endpoint}
+                tools={detail.tools}
+                readOnlySafe={detail.readOnlySafe}
+                initialTool={initialTool}
+              />
+            )}
+
+            {tab === 'install' && <InstallTab id={detail.id} endpoint={detail.endpoint} name={detail.name} />}
+          </>
+        }
+      />
+    </>
   )
 }

@@ -1,0 +1,23 @@
+{
+  "name": "pos-control-parent-child",
+  "description": "C2 positive control (i): valid parent + child, both with explicit versionPolicy. Must PASS R1-R6.",
+  "brands": [
+    {
+      "name": "base",
+      "versionPolicy": "exact",
+      "tokens": {
+        "radius-sm": { "$value": { "value": 8, "unit": "px" }, "$type": "dimension" },
+        "accent": { "$value": { "colorSpace": "oklch", "components": [0.65, 0.18, 195] }, "$type": "color" }
+      }
+    },
+    {
+      "name": "garden",
+      "$extends": ["base"],
+      "versionPolicy": "minor",
+      "tokens": {
+        "radius-sm": { "$value": { "value": 10, "unit": "px" }, "$type": "dimension" },
+        "accent": { "$value": { "colorSpace": "oklch", "components": [0.7, 0.15, 145] }, "$type": "color" }
+      }
+    }
+  ]
+}

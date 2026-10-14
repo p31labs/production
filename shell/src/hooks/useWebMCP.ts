@@ -16,7 +16,7 @@
 import { useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { useShellStore } from '../store/useShellStore';
-import { useThemeStore, type ThemeId } from '@p31ca/shell-chrome';
+import { useThemeStore, type ThemeId } from '../store/useThemeStore';
 
 const TABS = ['home', 'bonding', 'dashboard', 'sandbox', 'cockpit', 'profile', 'research'];
 const THEMES: ThemeId[] = ['garden', 'ocean', 'aurora', 'zen', 'volt'];

@@ -1,6 +1,6 @@
 {
   "$schema": "https://p31.ca/schemas/design-system.json",
-  "version": "3.0-quantum",
+  "version": "3.1-willow",
   "metadata": {
     "name": "p31-quantum",
     "description": "P31 Labs Quantum Design System — mathematically perfect, visually breathtaking",
@@ -17,1233 +17,4168 @@
     }
   },
   "tokens": {
-    "root": {
-      "base_unit": {
+    "p31": {
+      "base": {
         "$type": "dimension",
-        "$value": "16px"
+        "$value": {
+          "value": 16,
+          "unit": "px"
+        }
       },
-      "tetrahedral_ratio": {
-        "$type": "number",
-        "$value": 1.3333
+      "radius": {
+        "sm": {
+          "$type": "dimension",
+          "$value": {
+            "value": 8,
+            "unit": "px"
+          }
+        },
+        "md": {
+          "$type": "dimension",
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          }
+        },
+        "lg": {
+          "$type": "dimension",
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          }
+        },
+        "full": {
+          "$type": "dimension",
+          "$value": {
+            "value": 9999,
+            "unit": "px"
+          }
+        },
+        "candy": {
+          "$type": "dimension",
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          }
+        }
       },
-      "golden_ratio": {
-        "$type": "number",
-        "$value": 1.618
+      "font-sans": {
+        "$type": "fontFamily",
+        "$value": [
+          "Space Grotesk",
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
+          "sans-serif"
+        ]
       },
-      "larmor_hz": {
-        "$type": "number",
-        "$value": 863
+      "font-mono": {
+        "$type": "fontFamily",
+        "$value": [
+          "JetBrains Mono",
+          "ui-monospace",
+          "SF Mono",
+          "Fira Code",
+          "monospace"
+        ]
       },
-      "sic_povm_overlap": {
-        "$type": "number",
-        "$value": 0.3333
+      "accent-alt": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.65,
+            0.18,
+            285
+          ]
+        }
       },
-      "k4_vertices": {
-        "$type": "number",
-        "$value": 4
+      "text": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.96,
+            0.005,
+            270
+          ]
+        }
       },
-      "beta_squared": {
+      "glass-border-hover": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            240
+          ],
+          "alpha": 0.15
+        }
+      },
+      "glass-bg-strong": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            75
+          ],
+          "alpha": 0.22
+        }
+      },
+      "glass-bg-overlay": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            75
+          ],
+          "alpha": 0.1
+        }
+      },
+      "glass-bg-light": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            75
+          ],
+          "alpha": 0.1
+        }
+      },
+      "glass-border-strong": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            75
+          ],
+          "alpha": 0.16
+        }
+      },
+      "glass-border-strong-hover": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            75
+          ],
+          "alpha": 0.25
+        }
+      },
+      "neon": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.905,
+            0.155,
+            194.8
+          ]
+        }
+      },
+      "neon-dim": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.905,
+            0.155,
+            194.8
+          ],
+          "alpha": 0.35
+        }
+      },
+      "neon-faint": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.905,
+            0.155,
+            194.8
+          ],
+          "alpha": 0.08
+        }
+      },
+      "neon-ghost": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.905,
+            0.155,
+            194.8
+          ],
+          "alpha": 0.03
+        }
+      },
+      "neon-cyan": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.905,
+            0.155,
+            194.8
+          ]
+        }
+      },
+      "neon-magenta": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7020000000000001,
+            0.322,
+            328.4
+          ]
+        }
+      },
+      "neon-violet": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.67,
+            0.234,
+            309.1
+          ]
+        }
+      },
+      "neon-amber": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.887,
+            0.182,
+            95.3
+          ]
+        }
+      },
+      "neon-mint": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.8759999999999999,
+            0.228,
+            152.5
+          ]
+        }
+      },
+      "neon-coral": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7120000000000001,
+            0.181,
+            22.8
+          ]
+        }
+      },
+      "neon-orange": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.754,
+            0.164,
+            50.4
+          ]
+        }
+      },
+      "neon-blue": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.804,
+            0.146,
+            219.5
+          ]
+        }
+      },
+      "neon-lavender": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.62,
+            0.279,
+            290.8
+          ]
+        }
+      },
+      "neon-pink": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.674,
+            0.293,
+            340.4
+          ]
+        }
+      },
+      "surface-s1": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "surface-s2": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.049,
+            0,
+            0
+          ]
+        }
+      },
+      "surface-s3": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.069,
+            0,
+            0
+          ]
+        }
+      },
+      "surface-s4": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.105,
+            0,
+            0
+          ]
+        }
+      },
+      "status-online": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.65,
+            0.18,
+            105
+          ]
+        }
+      },
+      "status-offline": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.78,
+            0.01,
+            240
+          ]
+        }
+      },
+      "status": {
+        "warning": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.18,
+              15
+            ]
+          }
+        },
+        "error": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.18,
+              20
+            ]
+          }
+        },
+        "info": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.18,
+              195
+            ]
+          }
+        },
+        "success": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.18,
+              105
+            ]
+          }
+        }
+      },
+      "font-display": {
+        "$type": "fontFamily",
+        "$value": [
+          "system-ui",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif"
+        ]
+      },
+      "duration-fast": {
+        "$type": "duration",
+        "$value": {
+          "value": 100,
+          "unit": "ms"
+        }
+      },
+      "duration-normal": {
+        "$type": "duration",
+        "$value": {
+          "value": 300,
+          "unit": "ms"
+        }
+      },
+      "duration-slow": {
+        "$type": "duration",
+        "$value": {
+          "value": 500,
+          "unit": "ms"
+        }
+      },
+      "easing-smooth": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.4,
+          0,
+          0.2,
+          1
+        ]
+      },
+      "easing-snappy": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.34,
+          1.56,
+          0.64,
+          1
+        ]
+      },
+      "speed-factor": {
         "$type": "number",
         "$value": 1
-      }
-    },
-    "scale": {
-      "xs": {
-        "$type": "dimension",
-        "$description": "Step -1: 12px",
-        "$value": "calc(var(--p31-base) * 0.75)"
       },
-      "sm": {
-        "$type": "dimension",
-        "$description": "Step 0: 16px",
-        "$value": "var(--p31-base)"
+      "spring-expressive-fast-spatial": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.42,
+          1.67,
+          0.21,
+          0.9
+        ]
       },
-      "md": {
-        "$type": "dimension",
-        "$description": "Step +1: 21px",
-        "$value": "calc(var(--p31-base) * 1.3333)"
+      "spring-expressive-fast-spatial-ms": {
+        "$type": "duration",
+        "$value": {
+          "value": 350,
+          "unit": "ms"
+        }
       },
-      "lg": {
-        "$type": "dimension",
-        "$description": "Step +2: 28px",
-        "$value": "calc(var(--p31-base) * 1.7777)"
+      "spring-expressive-fast-effects": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.31,
+          0.8,
+          0.34,
+          1
+        ]
       },
-      "xl": {
-        "$type": "dimension",
-        "$description": "Step +3: 38px",
-        "$value": "calc(var(--p31-base) * 2.3703)"
+      "spring-expressive-fast-effects-ms": {
+        "$type": "duration",
+        "$value": {
+          "value": 150,
+          "unit": "ms"
+        }
       },
-      "2xl": {
-        "$type": "dimension",
-        "$description": "Step +4: 50px",
-        "$value": "calc(var(--p31-base) * 3.1604)"
+      "spring-expressive-default-spatial": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.38,
+          1.21,
+          0.22,
+          1
+        ]
       },
-      "3xl": {
-        "$type": "dimension",
-        "$description": "Step +5: 67px",
-        "$value": "calc(var(--p31-base) * 4.2139)"
+      "spring-expressive-default-spatial-ms": {
+        "$type": "duration",
+        "$value": {
+          "value": 500,
+          "unit": "ms"
+        }
       },
-      "4xl": {
-        "$type": "dimension",
-        "$description": "Step +6: 90px",
-        "$value": "calc(var(--p31-base) * 5.6186)"
-      }
-    },
-    "spacing": {
-      "xs": {
-        "$type": "dimension",
-        "$value": "clamp(var(--p31-scale-xs), 1vw, var(--p31-scale-sm))"
+      "spring-expressive-default-effects": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.34,
+          0.8,
+          0.34,
+          1
+        ]
       },
-      "sm": {
-        "$type": "dimension",
-        "$value": "clamp(var(--p31-scale-sm), 1.5vw, var(--p31-scale-md))"
+      "spring-expressive-default-effects-ms": {
+        "$type": "duration",
+        "$value": {
+          "value": 200,
+          "unit": "ms"
+        }
       },
-      "md": {
-        "$type": "dimension",
-        "$value": "clamp(var(--p31-scale-md), 2.5vw, var(--p31-scale-lg))"
+      "spring-expressive-slow-spatial": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.38,
+          0.86,
+          0.22,
+          1
+        ]
       },
-      "lg": {
-        "$type": "dimension",
-        "$value": "clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl))"
+      "spring-expressive-slow-spatial-ms": {
+        "$type": "duration",
+        "$value": {
+          "value": 650,
+          "unit": "ms"
+        }
       },
-      "xl": {
-        "$type": "dimension",
-        "$value": "clamp(var(--p31-scale-xl), 5vw, var(--p31-scale-2xl))"
+      "spring-expressive-slow-effects": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.34,
+          0.8,
+          0.34,
+          1
+        ]
       },
-      "2xl": {
-        "$type": "dimension",
-        "$value": "clamp(var(--p31-scale-2xl), 6.5vw, var(--p31-scale-3xl))"
+      "spring-expressive-slow-effects-ms": {
+        "$type": "duration",
+        "$value": {
+          "value": 300,
+          "unit": "ms"
+        }
       },
-      "3xl": {
-        "$type": "dimension",
-        "$value": "clamp(var(--p31-scale-3xl), 8vw, var(--p31-scale-4xl))"
-      }
-    },
-    "typography": {
-      "base_unit": {
-        "$type": "dimension",
-        "$value": "var(--p31-base)"
+      "spring-standard-spatial": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.2,
+          0,
+          0,
+          1
+        ]
       },
-      "scale_ratio": {
+      "spring-standard-spatial-ms": {
+        "$type": "duration",
+        "$value": {
+          "value": 300,
+          "unit": "ms"
+        }
+      },
+      "elevation": {
+        "level1": {
+          "tint": {
+            "$type": "number",
+            "$value": 0.05
+          }
+        },
+        "level2": {
+          "tint": {
+            "$type": "number",
+            "$value": 0.08
+          }
+        },
+        "level3": {
+          "tint": {
+            "$type": "number",
+            "$value": 0.11
+          }
+        }
+      },
+      "starfield": {
+        "hearth": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.55,
+              0.15,
+              35
+            ]
+          }
+        },
+        "teal": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.6,
+              0.08,
+              185
+            ]
+          }
+        },
+        "remembrance": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.95,
+              0.01,
+              80
+            ]
+          }
+        }
+      },
+      "starfield-particle-teal": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.12,
+            185
+          ],
+          "alpha": 0.6
+        }
+      },
+      "starfield-particle-coral": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.65,
+            0.14,
+            40
+          ],
+          "alpha": 0.5
+        }
+      },
+      "blur-subtle": {
+        "$type": "dimension",
+        "$value": {
+          "value": 8,
+          "unit": "px"
+        }
+      },
+      "blur-standard": {
+        "$type": "dimension",
+        "$value": {
+          "value": 12,
+          "unit": "px"
+        }
+      },
+      "blur-strong": {
+        "$type": "dimension",
+        "$value": {
+          "value": 24,
+          "unit": "px"
+        }
+      },
+      "space-tiny": {
+        "$type": "dimension",
+        "$value": {
+          "value": 2,
+          "unit": "px"
+        }
+      },
+      "touch-min": {
+        "$type": "dimension",
+        "$value": {
+          "value": 48,
+          "unit": "px"
+        }
+      },
+      "touch-recommended": {
+        "$type": "dimension",
+        "$value": {
+          "value": 56,
+          "unit": "px"
+        }
+      },
+      "touch-large": {
+        "$type": "dimension",
+        "$value": {
+          "value": 64,
+          "unit": "px"
+        }
+      },
+      "z": {
+        "starfield": {
+          "$type": "number",
+          "$value": 0
+        },
+        "topbar": {
+          "$type": "number",
+          "$value": 10
+        },
+        "crisis": {
+          "$type": "number",
+          "$value": 99999
+        },
+        "floating": {
+          "$type": "number",
+          "$value": 60
+        },
+        "modal": {
+          "$type": "number",
+          "$value": 80
+        }
+      },
+      "z-toast": {
         "$type": "number",
-        "$value": 1.3333
+        "$value": 9999
       },
-      "font_family": {
-        "sans": {
-          "$type": "fontFamily",
-          "$value": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-        },
-        "mono": {
-          "$type": "fontFamily",
-          "$value": "ui-monospace, SFMono-Regular, 'Fira Code', 'Fira Mono', 'Roboto Mono', 'JetBrains Mono', Menlo, Monaco, Consolas, monospace"
-        },
-        "inter": {
-          "$type": "fontFamily",
-          "$description": "Modern, tech-forward sans-serif for p31ca (the edgy twin)",
-          "$value": "'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
-        },
-        "atkinson": {
-          "$type": "fontFamily",
-          "$description": "Accessibility-first sans-serif for phosphorus31 (the accessible twin)",
-          "$value": "'Atkinson Hyperlegible', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
-        }
-      },
-      "size": {
-        "caption": {
-          "$type": "dimension",
-          "$value": "clamp(var(--p31-scale-xs), 0.8vw, var(--p31-scale-sm))"
-        },
-        "body": {
-          "$type": "dimension",
-          "$value": "clamp(calc(var(--p31-base) * 0.95), 1vw + 0.5rem, var(--p31-scale-sm))"
-        },
-        "label": {
-          "$type": "dimension",
-          "$value": "var(--p31-scale-sm)"
-        },
-        "h3": {
-          "$type": "dimension",
-          "$value": "clamp(var(--p31-scale-md), 2vw, var(--p31-scale-lg))"
-        },
-        "h2": {
-          "$type": "dimension",
-          "$value": "clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl))"
-        },
-        "h1": {
-          "$type": "dimension",
-          "$value": "clamp(var(--p31-scale-xl), 5.6vw, var(--p31-scale-2xl))"
-        },
-        "display": {
-          "$type": "dimension",
-          "$value": "clamp(var(--p31-scale-2xl), 7vw, var(--p31-scale-3xl))"
-        }
-      },
-      "line_height": {
-        "tight": {
-          "$type": "number",
-          "$value": 1.1
-        },
-        "normal": {
-          "$type": "number",
-          "$value": 1.6
-        },
-        "loose": {
-          "$type": "number",
-          "$value": 1.8
-        }
-      },
-      "letter_spacing": {
-        "tight": {
-          "$type": "string",
-          "$value": "-0.02em"
-        },
-        "normal": {
-          "$type": "string",
-          "$value": "0em"
-        },
-        "wide": {
-          "$type": "string",
-          "$value": "0.05em"
-        }
-      },
-      "weight": {
-        "light": {
-          "$type": "number",
-          "$value": 300
-        },
-        "normal": {
-          "$type": "number",
-          "$value": 400
-        },
-        "medium": {
-          "$type": "number",
-          "$value": 500
-        },
-        "semibold": {
-          "$type": "number",
-          "$value": 600
-        },
-        "bold": {
-          "$type": "number",
-          "$value": 700
-        },
-        "extrabold": {
-          "$type": "number",
-          "$value": 800
-        }
-      }
-    },
-    "animation": {
-      "larmor_hz": {
+      "z-skip-link": {
         "$type": "number",
-        "$value": 863
+        "$value": 100
       },
-      "duration": {
-        "fast": {
-          "$type": "duration",
-          "$value": "100ms"
-        },
-        "normal": {
-          "$type": "duration",
-          "$value": "300ms"
-        },
-        "slow": {
-          "$type": "duration",
-          "$value": "500ms"
+      "topbar": {
+        "height": {
+          "$type": "dimension",
+          "$value": {
+            "value": 64,
+            "unit": "px"
+          }
         }
       },
-      "easing": {
-        "smooth": {
-          "$type": "string",
-          "$value": "cubic-bezier(0.4, 0, 0.2, 1)"
-        },
-        "snappy": {
-          "$type": "string",
-          "$value": "cubic-bezier(0.34, 1.56, 0.64, 1)"
-        },
-        "linear": {
-          "$type": "string",
-          "$value": "linear"
-        }
+      "z-content": {
+        "$type": "number",
+        "$value": 1
       },
-      "k4_vertex_pulse": {
-        "duration": {
-          "$type": "duration",
-          "$value": "2000ms"
-        },
-        "easing": {
-          "$type": "string",
-          "$value": "cubic-bezier(0.4, 0, 0.2, 1)"
-        },
-        "min_radius": {
-          "$type": "dimension",
-          "$value": "5px"
-        },
-        "max_radius": {
-          "$type": "dimension",
-          "$value": "7px"
-        },
-        "stagger_offset": {
-          "$type": "duration",
-          "$value": "300ms"
-        }
-      },
-      "k4_edge_draw": {
-        "duration": {
-          "$type": "duration",
-          "$value": "3000ms"
-        },
-        "easing": {
-          "$type": "string",
-          "$value": "linear"
-        },
-        "delay_offset": {
-          "$type": "duration",
-          "$value": "500ms"
-        }
-      },
-      "k4_orbit": {
-        "duration": {
-          "$type": "duration",
-          "$value": "12000ms"
-        },
-        "easing": {
-          "$type": "string",
-          "$value": "linear"
-        }
-      }
-    },
-    "shadow": {
-      "none": {
-        "$type": "shadow",
-        "$value": "none"
-      },
-      "xs": {
-        "$type": "shadow",
-        "$value": "0 1px 2px 0 rgba(0, 0, 0, 0.05)"
-      },
-      "sm": {
-        "$type": "shadow",
-        "$value": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
-      },
-      "md": {
-        "$type": "shadow",
-        "$value": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
-      },
-      "lg": {
-        "$type": "shadow",
-        "$value": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
-      },
-      "glow": {
-        "$type": "shadow",
-        "$value": "0 0 20px rgba(0, 240, 255, 0.4)"
-      }
-    },
-    "border": {
-      "width": {
-        "thin": {
-          "$type": "dimension",
-          "$value": "1px"
-        },
-        "normal": {
-          "$type": "dimension",
-          "$value": "2px"
-        },
-        "thick": {
-          "$type": "dimension",
-          "$value": "3px"
-        }
-      },
-      "radius": {
-        "none": {
-          "$type": "dimension",
-          "$value": "0"
-        },
-        "xs": {
-          "$type": "dimension",
-          "$value": "calc(var(--p31-scale-xs) / 2)"
-        },
-        "sm": {
-          "$type": "dimension",
-          "$value": "calc(var(--p31-scale-sm) / 2)"
-        },
-        "md": {
-          "$type": "dimension",
-          "$value": "calc(var(--p31-scale-md) / 2)"
-        },
-        "lg": {
-          "$type": "dimension",
-          "$value": "calc(var(--p31-scale-lg) / 2)"
-        },
-        "xl": {
-          "$type": "dimension",
-          "$value": "calc(var(--p31-scale-xl) / 2)"
-        },
-        "full": {
-          "$type": "dimension",
-          "$value": "9999px"
-        }
-      }
-    },
-    "breakpoints": {
-      "mobile": {
+      "space-3xl": {
         "$type": "dimension",
-        "$value": "0px"
+        "$value": {
+          "value": 64,
+          "unit": "px"
+        }
       },
-      "tablet": {
-        "$type": "dimension",
-        "$value": "768px"
-      },
-      "desktop": {
-        "$type": "dimension",
-        "$value": "1024px"
-      },
-      "wide": {
-        "$type": "dimension",
-        "$value": "1440px"
-      },
-      "ultrawide": {
-        "$type": "dimension",
-        "$value": "1920px"
-      }
-    },
-    "primitive": {
-      "color": {
-        "cyan": {
-          "$type": "color",
-          "$value": "oklch(65% 0.18 195)"
-        },
-        "violet": {
-          "$type": "color",
-          "$value": "oklch(65% 0.18 285)"
-        },
-        "gold": {
-          "$type": "color",
-          "$value": "oklch(65% 0.18 15)"
-        },
-        "green": {
-          "$type": "color",
-          "$value": "oklch(65% 0.18 105)"
-        },
-        "red": {
-          "$type": "color",
-          "$value": "oklch(65% 0.18 20)"
-        },
-        "iris": {
-          "$type": "color",
-          "$value": "oklch(65% 0.18 270)"
-        },
-        "void_deep": {
-          "$type": "color",
-          "$value": "oklch(8% 0.01 240)"
-        },
-        "void": {
-          "$type": "color",
-          "$value": "oklch(10% 0.01 240)"
-        },
+      "glass": {
         "surface": {
           "$type": "color",
-          "$value": "oklch(15% 0.015 240)"
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              240
+            ],
+            "alpha": 0.04
+          }
         },
-        "surface2": {
-          "$type": "color",
-          "$value": "oklch(22% 0.02 240)"
-        },
-        "text_primary": {
-          "$type": "color",
-          "$value": "oklch(96% 0.005 240)"
-        },
-        "text_secondary": {
-          "$type": "color",
-          "$value": "oklch(75% 0.01 240)"
-        },
-        "text_tertiary": {
-          "$type": "color",
-          "$value": "oklch(55% 0.01 240)"
-        },
-        "glass_surface": {
-          "$type": "color",
-          "$value": "oklch(100% 0.01 240 / 0.04)"
-        },
-        "glass_border": {
-          "$type": "color",
-          "$value": "oklch(100% 0.01 240 / 0.08)"
-        },
-        "glass_border_hover": {
-          "$type": "color",
-          "$value": "oklch(100% 0.01 240 / 0.15)"
-        },
-        "glass_surface_strong": {
-          "$type": "color",
-          "$value": "oklch(100% 0.01 240 / 0.08)"
-        },
-        "glass_surface_subtle": {
-          "$type": "color",
-          "$value": "oklch(100% 0.01 240 / 0.03)"
-        }
-      },
-      "spacing": {
-        "xs": {
+        "radius": {
           "$type": "dimension",
-          "$value": "clamp(var(--p31-scale-xs), 1vw, var(--p31-scale-sm))"
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          }
         },
-        "sm": {
-          "$type": "dimension",
-          "$value": "clamp(var(--p31-scale-sm), 1.5vw, var(--p31-scale-md))"
-        },
-        "md": {
-          "$type": "dimension",
-          "$value": "clamp(var(--p31-scale-md), 2.5vw, var(--p31-scale-lg))"
-        },
-        "lg": {
-          "$type": "dimension",
-          "$value": "clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl))"
-        },
-        "xl": {
-          "$type": "dimension",
-          "$value": "clamp(var(--p31-scale-xl), 5vw, var(--p31-scale-2xl))"
-        },
-        "xxl": {
-          "$type": "dimension",
-          "$value": "{spacing.2xl}"
-        }
-      },
-      "radius": {
-        "sm": {
-          "$type": "dimension",
-          "$value": "calc(var(--p31-scale-sm) / 2)"
-        },
-        "md": {
-          "$type": "dimension",
-          "$value": "calc(var(--p31-scale-md) / 2)"
-        },
-        "lg": {
-          "$type": "dimension",
-          "$value": "calc(var(--p31-scale-lg) / 2)"
-        },
-        "xl": {
-          "$type": "dimension",
-          "$value": "calc(var(--p31-scale-xl) / 2)"
-        },
-        "full": {
-          "$type": "dimension",
-          "$value": "9999px"
-        }
-      },
-      "typography": {
-        "font_sans": {
-          "$type": "fontFamily",
-          "$value": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-        },
-        "font_mono": {
-          "$type": "fontFamily",
-          "$value": "ui-monospace, SFMono-Regular, 'Fira Code', 'Fira Mono', 'Roboto Mono', 'JetBrains Mono', Menlo, Monaco, Consolas, monospace"
-        }
-      },
-      "blur": {
-        "subtle": {
-          "$type": "dimension",
-          "$value": "8px"
-        },
-        "standard": {
-          "$type": "dimension",
-          "$value": "12px"
-        },
-        "strong": {
-          "$type": "dimension",
-          "$value": "24px"
-        }
-      },
-      "shadow": {
-        "glass": {
-          "$type": "shadow",
-          "$value": "0 8px 32px rgba(0,0,0,0.15)"
-        },
-        "glow_cyan": {
-          "$type": "shadow",
-          "$value": "0 0 20px rgba(0,240,255,0.25)"
-        },
-        "glow_cyan_hover": {
-          "$type": "shadow",
-          "$value": "0 0 30px rgba(0,240,255,0.4)"
-        }
-      }
-    },
-    "semantic": {
-      "color": {
         "background": {
-          "default": "oklch(10% 0.01 240)",
-          "alt": "oklch(15% 0.015 240)"
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              230
+            ],
+            "alpha": 0.04
+          }
+        },
+        "border": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              230
+            ],
+            "alpha": 0.08
+          }
+        }
+      },
+      "glass-surface-hover": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            240
+          ],
+          "alpha": 0.06
+        }
+      },
+      "spacing-xs": {
+        "$type": "dimension",
+        "$value": {
+          "value": 4,
+          "unit": "px"
+        }
+      },
+      "spacing-sm": {
+        "$type": "dimension",
+        "$value": {
+          "value": 8,
+          "unit": "px"
+        }
+      },
+      "spacing-md": {
+        "$type": "dimension",
+        "$value": {
+          "value": 16,
+          "unit": "px"
+        }
+      },
+      "spacing-lg": {
+        "$type": "dimension",
+        "$value": {
+          "value": 24,
+          "unit": "px"
+        }
+      },
+      "spacing-xl": {
+        "$type": "dimension",
+        "$value": {
+          "value": 32,
+          "unit": "px"
+        }
+      },
+      "spacing-xxl": {
+        "$type": "dimension",
+        "$value": {
+          "value": 64,
+          "unit": "px"
+        }
+      },
+      "radius-none": {
+        "$type": "dimension",
+        "$value": {
+          "value": 0,
+          "unit": "px"
+        }
+      },
+      "h1": {
+        "$type": "dimension",
+        "$value": {
+          "value": 51,
+          "unit": "px"
+        }
+      },
+      "h2": {
+        "$type": "dimension",
+        "$value": {
+          "value": 38,
+          "unit": "px"
+        }
+      },
+      "h3": {
+        "$type": "dimension",
+        "$value": {
+          "value": 28,
+          "unit": "px"
+        }
+      },
+      "h4": {
+        "$type": "dimension",
+        "$value": {
+          "value": 21,
+          "unit": "px"
+        }
+      },
+      "body": {
+        "$type": "dimension",
+        "$value": {
+          "value": 16,
+          "unit": "px"
+        }
+      },
+      "body-sm": {
+        "$type": "dimension",
+        "$value": {
+          "value": 14,
+          "unit": "px"
+        }
+      },
+      "label": {
+        "$type": "dimension",
+        "$value": {
+          "value": 12,
+          "unit": "px"
+        }
+      },
+      "caption": {
+        "$type": "dimension",
+        "$value": {
+          "value": 7,
+          "unit": "px"
+        }
+      },
+      "duration-instant": {
+        "$type": "duration",
+        "$value": {
+          "value": 62.5,
+          "unit": "ms"
+        }
+      },
+      "duration-standard": {
+        "$type": "duration",
+        "$value": {
+          "value": 250,
+          "unit": "ms"
+        }
+      },
+      "duration-slower": {
+        "$type": "duration",
+        "$value": {
+          "value": 1000,
+          "unit": "ms"
+        }
+      },
+      "easing-standard": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.4,
+          0,
+          0.2,
+          1
+        ]
+      },
+      "easing-decelerate": {
+        "$type": "cubicBezier",
+        "$value": [
+          0,
+          0,
+          0.2,
+          1
+        ]
+      },
+      "easing-accelerate": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.4,
+          0,
+          1,
+          1
+        ]
+      },
+      "card-padding": {
+        "$type": "dimension",
+        "$value": {
+          "value": 24,
+          "unit": "px"
+        }
+      },
+      "duration-base": {
+        "$type": "duration",
+        "$value": {
+          "value": 431,
+          "unit": "ms"
+        }
+      },
+      "font-base": {
+        "$type": "fontFamily",
+        "$value": [
+          "13px"
+        ]
+      },
+      "font-scale": {
+        "$type": "fontFamily",
+        "$value": [
+          "1.333"
+        ]
+      },
+      "glass-bg-dark": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.1,
+            0.01,
+            60
+          ],
+          "alpha": 0.6
+        }
+      },
+      "quantum-cyan": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.87,
+            0.148,
+            203
+          ]
+        }
+      },
+      "space-base": {
+        "$type": "dimension",
+        "$value": {
+          "value": 1,
+          "unit": "rem"
+        }
+      },
+      "space-micro": {
+        "$type": "dimension",
+        "$value": {
+          "value": 4,
+          "unit": "px"
+        }
+      },
+      "space-2xs": {
+        "$type": "dimension",
+        "$value": {
+          "value": 6,
+          "unit": "px"
+        }
+      },
+      "space-2": {
+        "$type": "dimension",
+        "$value": {
+          "value": 8,
+          "unit": "px"
+        }
+      },
+      "space-3": {
+        "$type": "dimension",
+        "$value": {
+          "value": 12,
+          "unit": "px"
+        }
+      },
+      "space-5": {
+        "$type": "dimension",
+        "$value": {
+          "value": 32,
+          "unit": "px"
+        }
+      },
+      "space-7": {
+        "$type": "dimension",
+        "$value": {
+          "value": 48,
+          "unit": "px"
+        }
+      },
+      "accent-glow": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7148399999999999,
+            0.126,
+            215.221
+          ],
+          "alpha": 0.15
+        }
+      },
+      "z-dropdown": {
+        "$type": "number",
+        "$value": 100
+      },
+      "color-amber": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.72,
+            0.15,
+            50
+          ]
+        }
+      },
+      "color-emerald": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.6,
+            0.13,
+            155
+          ]
+        }
+      },
+      "space-6": {
+        "$type": "dimension",
+        "$value": {
+          "value": 24,
+          "unit": "px"
+        }
+      },
+      "color": {
+        "action": {
+          "primary": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.7,
+                0.15,
+                200
+              ]
+            }
+          },
+          "primary-hover": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.7,
+                0.15,
+                200
+              ],
+              "alpha": 0.8
+            }
+          },
+          "primary-text": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.95,
+                0.02,
+                230
+              ]
+            }
+          },
+          "secondary": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.22,
+                0.045,
+                240
+              ]
+            }
+          },
+          "secondary-text": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.95,
+                0.02,
+                230
+              ]
+            }
+          },
+          "ghost": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                1,
+                0,
+                0
+              ],
+              "alpha": 0
+            }
+          },
+          "ghost-hover": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                1,
+                0.01,
+                230
+              ],
+              "alpha": 0.04
+            }
+          }
+        },
+        "text": {
+          "primary": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.95,
+                0.02,
+                230
+              ]
+            }
+          },
+          "secondary": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.78,
+                0.02,
+                235
+              ]
+            }
+          },
+          "muted": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.55,
+                0.02,
+                235
+              ]
+            }
+          }
         },
         "accent": {
-          "default": "oklch(65% 0.18 195)",
-          "variant": "oklch(65% 0.18 285)",
-          "gold": "oklch(65% 0.18 15)",
-          "green": "oklch(65% 0.18 105)",
-          "red": "oklch(65% 0.18 20)",
-          "iris": "oklch(65% 0.18 270)"
-        },
-        "text": {
-          "primary": "oklch(96% 0.005 240)",
-          "secondary": "oklch(75% 0.01 240)",
-          "tertiary": "oklch(55% 0.01 240)"
+          "default": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.7,
+                0.15,
+                200
+              ]
+            }
+          },
+          "violet": {
+            "default": {
+              "$type": "color",
+              "$value": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.65,
+                  0.15,
+                  250
+                ]
+              }
+            },
+            "muted": {
+              "$type": "color",
+              "$value": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.65,
+                  0.05,
+                  250
+                ]
+              }
+            }
+          },
+          "gold": {
+            "default": {
+              "$type": "color",
+              "$value": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.72,
+                  0.15,
+                  40
+                ]
+              }
+            },
+            "muted": {
+              "$type": "color",
+              "$value": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.72,
+                  0.05,
+                  40
+                ]
+              }
+            }
+          },
+          "green": {
+            "default": {
+              "$type": "color",
+              "$value": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.7,
+                  0.15,
+                  160
+                ]
+              }
+            },
+            "muted": {
+              "$type": "color",
+              "$value": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.7,
+                  0.05,
+                  160
+                ]
+              }
+            }
+          },
+          "red": {
+            "default": {
+              "$type": "color",
+              "$value": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.7,
+                  0.15,
+                  20
+                ]
+              }
+            },
+            "muted": {
+              "$type": "color",
+              "$value": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.7,
+                  0.05,
+                  20
+                ]
+              }
+            }
+          },
+          "muted": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.7,
+                0.05,
+                200
+              ]
+            }
+          }
         }
-      }
-    },
-    "component": {
-      "glass_panel": {
-        "background": "oklch(100% 0.01 240 / 0.04)",
-        "backdrop_filter": "blur(12px)",
-        "webkit_backdrop_filter": "blur(12px)",
-        "border": "1px solid oklch(100% 0.01 240 / 0.08)",
-        "border_radius": "calc(var(--p31-scale-xl) / 2)",
-        "box_shadow": "0 8px 32px rgba(0,0,0,0.15)"
       },
-      "header_candy": {
-        "background": "rgba(57,255,20,0.12)",
-        "backdrop_filter": "blur(16px)",
-        "webkit_backdrop_filter": "blur(16px)",
-        "border": "1px solid rgba(0,240,255,0.8)",
-        "border_radius": "16px",
-        "box_shadow": "0 0 30px rgba(0,240,255,0.25), inset 0 0 20px rgba(57,255,20,0.15)",
-        "max_width": "1440px",
-        "padding_x": "16px",
-        "padding_y": "4px",
-        "offset_top": "12px"
+      "space": {
+        "inline": {
+          "sm": {
+            "$type": "dimension",
+            "$value": {
+              "value": 8,
+              "unit": "px"
+            }
+          },
+          "md": {
+            "$type": "dimension",
+            "$value": {
+              "value": 16,
+              "unit": "px"
+            }
+          },
+          "lg": {
+            "$type": "dimension",
+            "$value": {
+              "value": 24,
+              "unit": "px"
+            }
+          }
+        }
       },
-      "crown_xs": {
-        "width": "calc(var(--p31-base) * 2.5)",
-        "height": "calc(var(--p31-base) * 2.5)"
-      },
-      "spoon_icon": {
-        "width": "18px",
-        "height": "18px",
-        "gap": "calc(var(--p31-base) * 0.25)"
-      },
-      "glass_card": {
-        "background": "oklch(100% 0.01 240 / 0.04)",
-        "backdrop_filter": "blur(12px)",
-        "webkit_backdrop_filter": "blur(12px)",
-        "border": "1px solid oklch(100% 0.01 240 / 0.08)",
-        "border_radius": "calc(var(--p31-scale-xl) / 2)",
-        "padding": "clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl))",
-        "box_shadow": "0 8px 32px rgba(0,0,0,0.15)",
-        "border_hover": "oklch(100% 0.01 240 / 0.15)"
-      },
-      "glass_strong": {
-        "background": "oklch(100% 0.01 240 / 0.08)",
-        "backdrop_filter": "blur(24px)",
-        "webkit_backdrop_filter": "blur(24px)",
-        "border": "1px solid rgba(255,255,255,0.12)",
-        "border_radius": "calc(var(--p31-scale-xl) / 2)"
-      },
-      "glass_subtle": {
-        "background": "oklch(100% 0.01 240 / 0.03)",
-        "backdrop_filter": "blur(8px)",
-        "webkit_backdrop_filter": "blur(8px)",
-        "border": "1px solid rgba(255,255,255,0.06)",
-        "border_radius": "calc(var(--p31-scale-xl) / 2)"
-      },
-      "btn_primary": {
-        "background": "oklch(65% 0.18 195)",
-        "color": "oklch(10% 0.01 240)",
-        "font_weight": "700",
-        "padding": "clamp(var(--p31-scale-sm), 1.5vw, var(--p31-scale-md)) clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl))",
-        "border_radius": "calc(var(--p31-scale-md) / 2)",
-        "font_size": "14px",
-        "box_shadow": "0 0 20px rgba(0,240,255,0.25)"
-      },
-      "btn_secondary": {
-        "background": "rgba(255,255,255,0.06)",
-        "color": "oklch(96% 0.005 240)",
-        "font_weight": "600",
-        "padding": "clamp(var(--p31-scale-sm), 1.5vw, var(--p31-scale-md)) clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl))",
-        "border_radius": "calc(var(--p31-scale-md) / 2)",
-        "border": "1px solid rgba(255,255,255,0.1)",
-        "font_size": "14px"
-      },
-      "btn_ghost": {
-        "color": "oklch(75% 0.01 240)",
-        "font_weight": "600",
-        "padding": "clamp(var(--p31-scale-sm), 1.5vw, var(--p31-scale-md)) clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl))",
-        "border_radius": "calc(var(--p31-scale-md) / 2)",
-        "font_size": "14px"
-      }
-    },
-    "theme": {
-      "light": {
+      "surface": {
         "background": {
-          "default": "#F8FAFC",
-          "alt": "#FFFFFF"
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.1,
+              0.03,
+              240
+            ]
+          }
         },
-        "text": {
-          "primary": "#0F172A",
-          "secondary": "rgba(15,23,42,0.6)",
-          "tertiary": "rgba(15,23,42,0.3)"
+        "raised": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.15,
+              0.04,
+              240
+            ]
+          }
         },
-        "glass_surface": "rgba(0,0,0,0.03)",
-        "glass_border": "rgba(0,0,0,0.08)",
-        "glass_border_hover": "rgba(0,0,0,0.15)"
+        "overlay": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.22,
+              0.045,
+              240
+            ]
+          }
+        }
+      },
+      "font": {
+        "size": {
+          "sm": {
+            "$type": "dimension",
+            "$value": {
+              "value": 14,
+              "unit": "px"
+            }
+          },
+          "md": {
+            "$type": "dimension",
+            "$value": {
+              "value": 16,
+              "unit": "px"
+            }
+          },
+          "lg": {
+            "$type": "dimension",
+            "$value": {
+              "value": 20,
+              "unit": "px"
+            }
+          }
+        },
+        "family": {
+          "sans": {
+            "$type": "fontFamily",
+            "$value": [
+              "Space Grotesk",
+              "system-ui",
+              "-apple-system",
+              "Segoe UI",
+              "Roboto",
+              "sans-serif"
+            ]
+          },
+          "mono": {
+            "$type": "fontFamily",
+            "$value": [
+              "JetBrains Mono",
+              "ui-monospace",
+              "SF Mono",
+              "Fira Code",
+              "monospace"
+            ]
+          }
+        }
+      },
+      "motion": {
+        "duration": {
+          "fast": {
+            "$type": "duration",
+            "$value": {
+              "value": 150,
+              "unit": "ms"
+            }
+          }
+        },
+        "easing": {
+          "standard": {
+            "$type": "cubicBezier",
+            "$value": [
+              0.4,
+              0,
+              0.2,
+              1
+            ]
+          }
+        },
+        "spring": {
+          "expressive": {
+            "fast": {
+              "spatial": {
+                "$type": "cubicBezier",
+                "$value": [
+                  0.42,
+                  1.67,
+                  0.21,
+                  0.9
+                ]
+              },
+              "effects": {
+                "$type": "cubicBezier",
+                "$value": [
+                  0.31,
+                  0.8,
+                  0.34,
+                  1
+                ]
+              }
+            },
+            "default": {
+              "spatial": {
+                "$type": "cubicBezier",
+                "$value": [
+                  0.38,
+                  1.21,
+                  0.22,
+                  1
+                ]
+              },
+              "effects": {
+                "$type": "cubicBezier",
+                "$value": [
+                  0.34,
+                  0.8,
+                  0.34,
+                  1
+                ]
+              }
+            },
+            "slow": {
+              "spatial": {
+                "$type": "cubicBezier",
+                "$value": [
+                  0.38,
+                  0.86,
+                  0.22,
+                  1
+                ]
+              },
+              "effects": {
+                "$type": "cubicBezier",
+                "$value": [
+                  0.34,
+                  0.8,
+                  0.34,
+                  1
+                ]
+              }
+            }
+          },
+          "standard": {
+            "spatial": {
+              "$type": "cubicBezier",
+              "$value": [
+                0.2,
+                0,
+                0,
+                1
+              ]
+            }
+          }
+        },
+        "shapeMorph": {
+          "duration": {
+            "$type": "duration",
+            "$value": {
+              "value": 300,
+              "unit": "ms"
+            }
+          }
+        }
+      },
+      "frame": {
+        "structure": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.735,
+              0.117,
+              236.2
+            ]
+          }
+        },
+        "connection": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.753,
+              0.158,
+              76.8
+            ]
+          }
+        },
+        "rhythm": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.679,
+              0.118,
+              346.3
+            ]
+          }
+        },
+        "creation": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.62,
+              0.13,
+              165.5
+            ]
+          }
+        }
+      },
+      "layout": {
+        "spacing": {
+          "xs": {
+            "$type": "dimension",
+            "$value": {
+              "value": 4,
+              "unit": "px"
+            }
+          },
+          "sm": {
+            "$type": "dimension",
+            "$value": {
+              "value": 8,
+              "unit": "px"
+            }
+          },
+          "md-tight": {
+            "$type": "dimension",
+            "$value": {
+              "value": 12,
+              "unit": "px"
+            }
+          },
+          "md": {
+            "$type": "dimension",
+            "$value": {
+              "value": 16,
+              "unit": "px"
+            }
+          },
+          "lg-tight": {
+            "$type": "dimension",
+            "$value": {
+              "value": 20,
+              "unit": "px"
+            }
+          },
+          "lg": {
+            "$type": "dimension",
+            "$value": {
+              "value": 24,
+              "unit": "px"
+            }
+          },
+          "xl": {
+            "$type": "dimension",
+            "$value": {
+              "value": 32,
+              "unit": "px"
+            }
+          }
+        },
+        "density": {
+          "factor": {
+            "$type": "number",
+            "$value": 1
+          }
+        }
+      },
+      "scale": {
+        "xs": {
+          "$type": "dimension",
+          "$value": {
+            "value": 12,
+            "unit": "px"
+          }
+        }
       }
     }
   },
   "components": [
     {
-      "name": "GlassPanel",
-      "description": "Glassmorphic elevated surface with backdrop blur.",
-      "css_class": "glass-panel",
+      "name": "Badge",
+      "description": "Compact status label. Crisis mode keeps colors but forces opaque surfaces.",
+      "css_class": "badge",
+      "tool": "renderBadge",
       "aiGuidance": {
-        "useWhen": "You need a top-level surface that separates content sections with depth.",
-        "avoidWhen": "For compact inline content, use GlassCard or GlassSubtle instead.",
+        "useWhen": [
+          "Status labels",
+          "Tone tags (success/warning/error/info/neutral)"
+        ],
+        "avoidWhen": [
+          "Interactive controls",
+          "Primary call-to-action"
+        ],
         "examples": [
-          "Main content area wrapper",
-          "Settings panel container"
+          "<Badge tone=\"success\" label=\"online\" />"
         ]
       },
       "props": {
-        "padding": {
+        "tone": {
+          "type": "'success' | 'warning' | 'error' | 'info' | 'neutral'",
+          "default": "\"neutral\""
+        },
+        "label": {
           "type": "string",
-          "default": "md",
-          "options": [
-            "sm",
-            "md",
-            "lg"
+          "default": null
+        }
+      },
+      "slots": [],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
           ]
+        },
+        "p31.color.accent.green.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            160
+          ]
+        },
+        "p31.color.accent.gold.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.72,
+            0.15,
+            40
+          ]
+        },
+        "p31.color.accent.red.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            20
+          ]
+        },
+        "p31.radius.full": {
+          "value": 9999,
+          "unit": "px"
+        },
+        "p31.font.family.sans": [
+          "Space Grotesk",
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
+          "sans-serif"
+        ]
+      }
+    },
+    {
+      "name": "BottomNav",
+      "description": "Fixed bottom navigation bar for mobile-first apps. Use for primary app navigation.",
+      "css_class": "bottom-nav",
+      "tool": "renderBottomNav",
+      "aiGuidance": {
+        "useWhen": [
+          "Mobile app navigation",
+          "Primary navigation on small screens",
+          "Tab-based navigation"
+        ],
+        "avoidWhen": [
+          "Desktop-only navigation",
+          "Secondary navigation",
+          "More than 5 items"
+        ],
+        "examples": [
+          "<nav class=\"bottom-nav\">...</nav>",
+          "<BottomNav items={navItems} />"
+        ]
+      },
+      "props": {
+        "items": {
+          "type": "NavItem[]",
+          "default": null
+        },
+        "activeIndex": {
+          "type": "number",
+          "default": null
         }
       },
       "slots": [
         "default"
       ],
-      "variants": [],
-      "tokens": {
-        "primitive.color.glass_surface": "oklch(100% 0.01 240 / 0.04)",
-        "primitive.color.glass_border": "oklch(100% 0.01 240 / 0.08)",
-        "primitive.color.surface2": "oklch(22% 0.02 240)",
-        "primitive.color.void_deep": "oklch(8% 0.01 240)",
-        "primitive.radius.xl": "calc(var(--p31-scale-xl) / 2)",
-        "primitive.radius.sm": "calc(var(--p31-scale-sm) / 2)",
-        "primitive.radius.lg": "calc(var(--p31-scale-lg) / 2)",
-        "primitive.shadow.glass": "0 8px 32px rgba(0,0,0,0.15)",
-        "primitive.spacing.xl": "clamp(var(--p31-scale-xl), 5vw, var(--p31-scale-2xl))",
-        "primitive.spacing.xxl": "{spacing.2xl}"
-      }
-    },
-    {
-      "name": "GlassCard",
-      "description": "Compact glassmorphic card with padding.",
-      "css_class": "glass-card",
-      "aiGuidance": {
-        "useWhen": "Displaying a single piece of content in a grid or list.",
-        "avoidWhen": "For full-width sections, use GlassPanel instead.",
-        "examples": [
-          "Product card in a grid",
-          "Info card in a dashboard"
-        ]
-      },
-      "props": {
-        "color": {
-          "type": "string",
-          "default": "accent",
-          "options": [
-            "accent",
-            "violet",
-            "gold",
-            "green",
-            "red"
-          ]
-        },
-        "padding": {
-          "type": "string",
-          "default": "lg",
-          "options": [
-            "sm",
-            "md",
-            "lg"
-          ]
-        },
-        "interactive": {
-          "type": "boolean",
-          "default": true
-        }
-      },
-      "slots": [
+      "variants": [
         "default",
-        "header"
+        "mobile",
+        "tablet"
       ],
-      "variants": [],
       "tokens": {
-        "primitive.color.glass_surface": "oklch(100% 0.01 240 / 0.04)",
-        "primitive.color.glass_border": "oklch(100% 0.01 240 / 0.08)",
-        "primitive.color.glass_border_hover": "oklch(100% 0.01 240 / 0.15)",
-        "primitive.color.surface2": "oklch(22% 0.02 240)",
-        "primitive.color.void_deep": "oklch(8% 0.01 240)",
-        "primitive.radius.xl": "calc(var(--p31-scale-xl) / 2)",
-        "primitive.radius.sm": "calc(var(--p31-scale-sm) / 2)",
-        "primitive.radius.lg": "calc(var(--p31-scale-lg) / 2)",
-        "primitive.radius.full": "9999px",
-        "primitive.shadow.glass": "0 8px 32px rgba(0,0,0,0.15)",
-        "primitive.shadow.glow_cyan_hover": "0 0 30px rgba(0,240,255,0.4)",
-        "primitive.spacing.xs": "clamp(var(--p31-scale-xs), 1vw, var(--p31-scale-sm))",
-        "primitive.spacing.md": "clamp(var(--p31-scale-md), 2.5vw, var(--p31-scale-lg))",
-        "primitive.spacing.xl": "clamp(var(--p31-scale-xl), 5vw, var(--p31-scale-2xl))",
-        "primitive.spacing.xxl": "{spacing.2xl}",
-        "primitive.typography.font_sans": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
-        "semantic.color.background.alt": "oklch(15% 0.015 240)",
-        "semantic.color.accent.gold": "oklch(65% 0.18 15)",
-        "semantic.color.accent.red": "oklch(65% 0.18 20)",
-        "semantic.color.accent.iris": "oklch(65% 0.18 270)"
-      }
-    },
-    {
-      "name": "GlassStrong",
-      "description": "High-opacity glass surface with strong blur.",
-      "css_class": "glass-strong",
-      "aiGuidance": {
-        "useWhen": "Overlaying on busy or high-contrast backgrounds where text must remain readable.",
-        "avoidWhen": "On already-dark static backgrounds — use GlassSubtle or GlassCard instead.",
-        "examples": [
-          "Modal dialog backdrop",
-          "Floating toolbar over starfield"
-        ]
-      },
-      "props": {},
-      "slots": [
-        "default"
-      ],
-      "variants": [],
-      "tokens": {
-        "primitive.color.glass_surface_strong": "oklch(100% 0.01 240 / 0.08)",
-        "primitive.color.void_deep": "oklch(8% 0.01 240)",
-        "primitive.blur.strong": "24px",
-        "primitive.radius.xl": "calc(var(--p31-scale-xl) / 2)"
-      }
-    },
-    {
-      "name": "GlassSubtle",
-      "description": "Low-opacity glass surface with subtle blur.",
-      "css_class": "glass-subtle",
-      "aiGuidance": {
-        "useWhen": "Grouping related items without heavy visual weight.",
-        "avoidWhen": "For primary content areas or high-priority information.",
-        "examples": [
-          "Secondary sidebar panel",
-          "Input group wrapper"
-        ]
-      },
-      "props": {},
-      "slots": [
-        "default"
-      ],
-      "variants": [],
-      "tokens": {
-        "primitive.color.glass_surface_subtle": "oklch(100% 0.01 240 / 0.03)",
-        "primitive.color.surface2": "oklch(22% 0.02 240)",
-        "primitive.blur.subtle": "8px",
-        "primitive.radius.xl": "calc(var(--p31-scale-xl) / 2)"
+        "p31.topbar.height": {
+          "value": 64,
+          "unit": "px"
+        },
+        "p31.glass.background": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.04
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.layout.spacing.sm": {
+          "value": 8,
+          "unit": "px"
+        }
       }
     },
     {
       "name": "Button",
-      "description": "Button component with primary, secondary, and ghost variants.",
-      "css_class": "btn-primary",
+      "description": "Primary action button. Use for CTAs, form submissions, and key actions.",
+      "css_class": "btn",
+      "tool": "renderButton",
       "aiGuidance": {
-        "useWhen": "User needs to submit a form, confirm an action, or trigger a primary interaction.",
-        "avoidWhen": "Navigating between pages — use a link or TetraGrid navigation item instead.",
+        "useWhen": [
+          "Primary CTAs",
+          "Form submissions",
+          "Key actions requiring emphasis"
+        ],
+        "avoidWhen": [
+          "Secondary actions",
+          "Destructive actions without confirmation",
+          "Inline links"
+        ],
         "examples": [
-          "Submit order",
-          "Save changes",
-          "Confirm deletion"
+          "<button class=\"btn btn-primary\">...</button>",
+          "<Button variant=\"primary\">...</Button>"
         ]
       },
       "props": {
+        "children": {
+          "type": "ReactNode",
+          "default": null
+        },
         "variant": {
-          "type": "string",
-          "default": "primary",
-          "options": [
-            "primary",
-            "secondary",
-            "ghost"
-          ]
+          "type": "\"primary\" | \"secondary\" | \"ghost\"",
+          "default": "\"primary\""
         },
-        "size": {
-          "type": "string",
-          "default": "md",
-          "options": [
-            "sm",
-            "md",
-            "lg"
-          ]
-        }
-      },
-      "slots": [
-        "default"
-      ],
-      "variants": [
-        "btn-primary",
-        "btn-secondary",
-        "btn-ghost"
-      ],
-      "tokens": {
-        "semantic.color.accent.default": "oklch(65% 0.18 195)",
-        "primitive.color.void": "oklch(10% 0.01 240)",
-        "primitive.color.void_deep": "oklch(8% 0.01 240)",
-        "primitive.color.surface2": "oklch(22% 0.02 240)",
-        "primitive.spacing.sm": "clamp(var(--p31-scale-sm), 1.5vw, var(--p31-scale-md))",
-        "primitive.spacing.lg": "clamp(var(--p31-scale-lg), 3.5vw, var(--p31-scale-xl))",
-        "primitive.spacing.xl": "clamp(var(--p31-scale-xl), 5vw, var(--p31-scale-2xl))",
-        "primitive.radius.md": "calc(var(--p31-scale-md) / 2)",
-        "primitive.radius.sm": "calc(var(--p31-scale-sm) / 2)",
-        "primitive.radius.full": "9999px",
-        "primitive.shadow.glow_cyan": "0 0 20px rgba(0,240,255,0.25)",
-        "primitive.typography.font_sans": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-      }
-    },
-    {
-      "name": "SpoonMeter",
-      "description": "Real-time cognitive load indicator (0-5 scale).",
-      "css_class": "spoon-meter",
-      "aiGuidance": {
-        "useWhen": "Displaying current spoon level, adjusting UI density, or triggering crisis mode.",
-        "avoidWhen": "Decorative-only contexts where spoon state is irrelevant.",
-        "examples": [
-          "Header status bar",
-          "Settings accessibility panel"
-        ]
-      },
-      "props": {
-        "current": {
-          "type": "number",
-          "default": 3,
-          "range": [
-            0,
-            5
-          ]
-        },
-        "interactive": {
+        "disabled": {
           "type": "boolean",
-          "default": true
-        }
-      },
-      "slots": [],
-      "variants": [],
-      "tokens": {
-        "semantic.color.accent.default": "oklch(65% 0.18 195)",
-        "semantic.color.accent.gold": "oklch(65% 0.18 15)",
-        "semantic.color.accent.red": "oklch(65% 0.18 20)",
-        "semantic.color.accent.iris": "oklch(65% 0.18 270)",
-        "semantic.color.text.tertiary": "oklch(55% 0.01 240)",
-        "primitive.typography.font_sans": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-      }
-    },
-    {
-      "name": "TetraGrid",
-      "description": "4-column responsive grid for tetrahedral content layouts.",
-      "css_class": "tetra-grid",
-      "aiGuidance": {
-        "useWhen": "Arranging 2-12 items in a responsive grid that collapses from 4 → 2 → 1 columns.",
-        "avoidWhen": "For two-column layouts, use a custom CSS grid instead.",
-        "examples": [
-          "Icon gallery",
-          "Feature cards",
-          "Research paper list"
-        ]
-      },
-      "props": {},
-      "slots": [
-        "default"
-      ],
-      "variants": [],
-      "tokens": {
-        "primitive.spacing.xs": "clamp(var(--p31-scale-xs), 1vw, var(--p31-scale-sm))",
-        "primitive.spacing.md": "clamp(var(--p31-scale-md), 2.5vw, var(--p31-scale-lg))",
-        "primitive.spacing.xl": "clamp(var(--p31-scale-xl), 5vw, var(--p31-scale-2xl))",
-        "primitive.spacing.xxl": "{spacing.2xl}"
-      }
-    },
-    {
-      "name": "HonestLabel",
-      "description": "Disclaimer badge for contested-science content.",
-      "css_class": "honest-label",
-      "aiGuidance": {
-        "useWhen": "Marking content that requires scientific honesty or uncertainty disclosure.",
-        "avoidWhen": "For standard status indicators, use StatusBadge instead.",
-        "examples": [
-          "Contested research claim",
-          "Preliminary experimental result"
-        ]
-      },
-      "props": {},
-      "slots": [
-        "default"
-      ],
-      "variants": [],
-      "tokens": {
-        "primitive.typography.font_mono": "ui-monospace, SFMono-Regular, 'Fira Code', 'Fira Mono', 'Roboto Mono', 'JetBrains Mono', Menlo, Monaco, Consolas, monospace",
-        "primitive.typography.font_sans": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
-        "semantic.color.text.tertiary": "oklch(55% 0.01 240)"
-      }
-    },
-    {
-      "name": "StatusBadge",
-      "description": "Status indicator badge with Live/Beta/Research variants.",
-      "css_class": "status-badge",
-      "aiGuidance": {
-        "useWhen": "Communicating deployment status, release stage, or research phase.",
-        "avoidWhen": "For generic labels without status semantics.",
-        "examples": [
-          "Service health indicator",
-          "Release stage tag",
-          "Research phase marker"
-        ]
-      },
-      "props": {
-        "status": {
-          "type": "string",
-          "default": "live",
-          "options": [
-            "live",
-            "beta",
-            "research"
-          ]
+          "default": "false"
+        },
+        "onClick": {
+          "type": "() => void",
+          "default": null
         }
       },
       "slots": [
         "default"
       ],
       "variants": [
-        "status-badge-live",
-        "status-badge-beta",
-        "status-badge-research"
+        "primary",
+        "secondary",
+        "ghost"
       ],
       "tokens": {
-        "semantic.color.accent.green": "oklch(65% 0.18 105)",
-        "semantic.color.accent.default": "oklch(65% 0.18 195)",
-        "semantic.color.accent.variant": "oklch(65% 0.18 285)",
-        "semantic.color.accent.gold": "oklch(65% 0.18 15)",
-        "semantic.color.accent.red": "oklch(65% 0.18 20)",
-        "semantic.color.accent.iris": "oklch(65% 0.18 270)",
-        "primitive.radius.sm": "calc(var(--p31-scale-sm) / 2)",
-        "primitive.spacing.xs": "clamp(var(--p31-scale-xs), 1vw, var(--p31-scale-sm))",
-        "primitive.typography.font_sans": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-      }
-    },
-    {
-      "name": "CrisisOverlay",
-      "description": "Full-screen breathing overlay shown when spoons=0.",
-      "css_class": "crisis-overlay",
-      "aiGuidance": {
-        "useWhen": "User spoon level reaches 0; requires immediate calming UI with a single exit action.",
-        "avoidWhen": "For non-emergency modals or informational popups.",
-        "examples": [
-          "Spoons depleted screen",
-          "Sensory overload break"
-        ]
-      },
-      "props": {
-        "message": {
-          "type": "string",
-          "default": "Rest. Breathe. The mesh holds."
-        },
-        "buttonLabel": {
-          "type": "string",
-          "default": "I'm Ready"
-        }
-      },
-      "slots": [],
-      "variants": [],
-      "tokens": {
-        "semantic.color.background.default": "oklch(10% 0.01 240)",
-        "primitive.color.void_deep": "oklch(8% 0.01 240)",
-        "primitive.typography.font_sans": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-      }
-    },
-    {
-      "name": "Starfield",
-      "description": "200-star twinkling canvas background with animation loop.",
-      "css_class": "starfield",
-      "aiGuidance": {
-        "useWhen": "Adding ambient motion to the background of a hero or landing section.",
-        "avoidWhen": "When spoons=0 or prefers-reduced-motion is active — performance and accessibility.",
-        "examples": [
-          "PHOS landing background",
-          "Dashboard ambient layer"
-        ]
-      },
-      "props": {
-        "count": {
-          "type": "number",
-          "default": 200
-        },
-        "speed": {
-          "type": "number",
-          "default": 0.08
-        }
-      },
-      "slots": [],
-      "variants": [],
-      "tokens": {
-        "primitive.color.void_deep": "oklch(8% 0.01 240)",
-        "primitive.radius.full": "9999px",
-        "primitive.shadow.glow_cyan": "0 0 20px rgba(0,240,255,0.25)"
-      }
-    },
-    {
-      "name": "ThemeToggle",
-      "description": "Dark/light theme toggle button. Persists to localStorage under p31:theme.",
-      "css_class": "theme-toggle",
-      "aiGuidance": {
-        "useWhen": "Switching between dark and light visual themes in the header or settings.",
-        "avoidWhen": "When the app is dark-only or when theme is controlled by system preference only.",
-        "examples": [
-          "Header theme switcher",
-          "Accessibility settings"
-        ]
-      },
-      "props": {},
-      "slots": [],
-      "variants": [],
-      "tokens": {
-        "semantic.color.background.default": "oklch(10% 0.01 240)",
-        "theme.light.background.default": "#F8FAFC",
-        "theme.light.background.alt": "#FFFFFF",
-        "theme.light.text.primary": "#0F172A",
-        "theme.light.text.secondary": "rgba(15,23,42,0.6)",
-        "theme.light.text.tertiary": "rgba(15,23,42,0.3)",
-        "theme.light.glass_surface": "rgba(0,0,0,0.03)",
-        "theme.light.glass_border": "rgba(0,0,0,0.08)",
-        "theme.light.glass_border_hover": "rgba(0,0,0,0.15)",
-        "primitive.typography.font_sans": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-      }
-    },
-    {
-      "name": "CandyHeader",
-      "description": "Canonical P31 candy-pill header bar with phosphorous-green glass, cyan border, and glow shadow.",
-      "css_class": "candy-header",
-      "aiGuidance": {
-        "useWhen": "Top-of-page site navigation bar. Must use the canonical candy-pill glass styling.",
-        "avoidWhen": "Inline headers within card content — use GlassCard or GlassPanel instead.",
-        "examples": [
-          "p31ca.org site header",
-          "PHOS app shell header"
-        ]
-      },
-      "props": {
-        "brand": {
-          "type": "string",
-          "default": "p31ca",
-          "options": [
-            "p31ca",
-            "phosphorus"
-          ]
-        }
-      },
-      "slots": [
-        "default"
-      ],
-      "variants": [],
-      "tokens": {
-        "component.header_candy": {
-          "background": "rgba(57,255,20,0.12)",
-          "backdrop_filter": "blur(16px)",
-          "webkit_backdrop_filter": "blur(16px)",
-          "border": "1px solid rgba(0,240,255,0.8)",
-          "border_radius": "16px",
-          "box_shadow": "0 0 30px rgba(0,240,255,0.25), inset 0 0 20px rgba(57,255,20,0.15)",
-          "max_width": "1440px",
-          "padding_x": "16px",
-          "padding_y": "4px",
-          "offset_top": "12px"
-        },
-        "component.crown_xs": {
-          "width": "calc(var(--p31-base) * 2.5)",
-          "height": "calc(var(--p31-base) * 2.5)"
-        },
-        "component.spoon_icon": {
-          "width": "18px",
-          "height": "18px",
-          "gap": "calc(var(--p31-base) * 0.25)"
-        },
-        "primitive.color.cyan": "oklch(65% 0.18 195)",
-        "primitive.color.void": "oklch(10% 0.01 240)"
-      }
-    },
-    {
-      "name": "Crown",
-      "description": "Animated tetrahedral crown brand glyph for header and brand surfaces.",
-      "css_class": "crown",
-      "aiGuidance": {
-        "useWhen": "Brand identity in headers, loading states, or empty states.",
-        "avoidWhen": "Decorative-only contexts where brand is irrelevant.",
-        "examples": [
-          "Site nav brand mark",
-          "App loading splash"
-        ]
-      },
-      "props": {
-        "size": {
-          "type": "string",
-          "default": "md",
-          "options": [
-            "xs",
-            "sm",
-            "md",
-            "lg"
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
           ]
         },
-        "brand": {
-          "type": "string",
-          "default": "p31ca",
-          "options": [
-            "p31ca",
-            "phosphorus"
-          ]
-        }
-      },
-      "slots": [],
-      "variants": [],
-      "tokens": {
-        "component.crown_xs": {
-          "width": "calc(var(--p31-base) * 2.5)",
-          "height": "calc(var(--p31-base) * 2.5)"
+        "p31.radius.md": {
+          "value": 16,
+          "unit": "px"
         },
-        "primitive.color.cyan": "oklch(65% 0.18 195)",
-        "primitive.color.violet": "oklch(65% 0.18 285)",
-        "primitive.color.gold": "oklch(65% 0.18 15)",
-        "primitive.color.green": "oklch(65% 0.18 105)",
-        "primitive.color.iris": "oklch(65% 0.18 270)"
+        "p31.layout.spacing.sm": {
+          "value": 8,
+          "unit": "px"
+        },
+        "p31.layout.spacing.lg": {
+          "value": 24,
+          "unit": "px"
+        }
       }
     },
     {
-      "name": "SpoonDial",
-      "description": "Icon-mode spoon meter for compact header placement, showing 5 SVG spoons with active/inactive opacity.",
-      "css_class": "spoon-dial",
+      "name": "CalmIndicator",
+      "description": "Calm pill in the status cluster — reads spoon level and opens the calm overlay.",
+      "css_class": "calm-indicator",
+      "tool": "renderCalmIndicator",
       "aiGuidance": {
-        "useWhen": "Header spoon indicator where space is limited. Use mode=icon for compact display.",
-        "avoidWhen": "Full-width settings panel — use SpoonMeter instead.",
+        "useWhen": [
+          "Spoon-level status in the topbar",
+          "Calm overlay affordance"
+        ],
+        "avoidWhen": [
+          "Full calm overlay (use CalmOverlay)",
+          "Non-calm status"
+        ],
         "examples": [
-          "Site header right side",
-          "Compact app bar"
+          "<CalmIndicator spoons={2} onOpen={openCalm}/>"
         ]
       },
       "props": {
         "spoons": {
           "type": "number",
-          "default": 3,
-          "range": [
-            0,
-            5
-          ]
+          "default": null
+        },
+        "onOpen": {
+          "type": "() => void",
+          "default": null
         }
       },
       "slots": [],
-      "variants": [],
+      "variants": [
+        "is-calm",
+        "is-alert"
+      ],
       "tokens": {
-        "component.spoon_icon": {
-          "width": "18px",
-          "height": "18px",
-          "gap": "calc(var(--p31-base) * 0.25)"
+        "p31.color.accent.green.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            160
+          ]
         },
-        "semantic.color.accent.default": "oklch(65% 0.18 195)"
+        "p31.color.accent.red.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            20
+          ]
+        },
+        "p31.glass.background": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.04
+        },
+        "p31.radius.full": {
+          "value": 9999,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "name": "CalmOverlay",
+      "description": "Calm mode — the regulation instrument (CALM-MODE.md). Renders nothing; drives data-calm on <html> to hide chrome and keep the ambient. Store-agnostic — spoons/onExit are props.",
+      "css_class": "calm-overlay",
+      "tool": "renderCalmOverlay",
+      "aiGuidance": {
+        "useWhen": [
+          "Spoon level 0 / calm floor",
+          "Chrome-hiding calm mode (ambient stays)",
+          "LED/haptic-driven breathing guidance"
+        ],
+        "avoidWhen": [
+          "Normal navigation",
+          "Any non-crisis state"
+        ],
+        "examples": [
+          "<CalmOverlay spoons={spoons} onExit={() => setSpoons(1)} onEnterCalm={applyLedCalmPreset} />"
+        ]
+      },
+      "props": {
+        "spoons": {
+          "type": "number",
+          "default": null
+        },
+        "onExit": {
+          "type": "() => void",
+          "default": null
+        },
+        "onEnterCalm": {
+          "type": "() => void",
+          "default": null
+        },
+        "sighFirst": {
+          "type": "boolean",
+          "default": null
+        }
+      },
+      "slots": [],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        },
+        "p31.color.text.primary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.95,
+            0.02,
+            230
+          ]
+        },
+        "p31.z.floating": 60
+      }
+    },
+    {
+      "name": "CandyHeader",
+      "description": "Candy-rounded glass header for the sovereign stack.",
+      "css_class": "candy-header",
+      "tool": "renderCandyHeader",
+      "aiGuidance": {
+        "useWhen": [
+          "Rounded glass section headers",
+          "Branded page headers"
+        ],
+        "avoidWhen": [
+          "Standard top bars",
+          "Inline headings"
+        ],
+        "examples": [
+          "<CandyHeader eyebrow=\"System\" title=\"Candy Header\" lede=\"A candy-rounded glass header\" />"
+        ]
+      },
+      "props": {
+        "eyebrow": {
+          "type": "string",
+          "default": null
+        },
+        "title": {
+          "type": "string",
+          "default": null
+        },
+        "lede": {
+          "type": "string",
+          "default": null
+        }
+      },
+      "slots": [],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.glass.surface": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            240
+          ],
+          "alpha": 0.04
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.radius.candy": {
+          "value": 24,
+          "unit": "px"
+        },
+        "p31.color.text.primary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.95,
+            0.02,
+            230
+          ]
+        },
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        }
+      }
+    },
+    {
+      "name": "Card",
+      "description": "Elevated surface with an optional interactive affordance.",
+      "css_class": "card",
+      "tool": "renderCard",
+      "aiGuidance": {
+        "useWhen": [
+          "Content tiles",
+          "Feature cards",
+          "Interactive rows"
+        ],
+        "avoidWhen": [
+          "Modal containers",
+          "Primary chrome"
+        ],
+        "examples": [
+          "<Card title=\"Glass card\" description=\"Elevated surface\" interactive />"
+        ]
+      },
+      "props": {
+        "title": {
+          "type": "string",
+          "default": null
+        },
+        "description": {
+          "type": "string",
+          "default": null
+        },
+        "padding": {
+          "type": "\"sm\" | \"md\" | \"lg\"",
+          "default": "\"md\""
+        },
+        "interactive": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "text": {
+          "type": "string",
+          "default": null
+        }
+      },
+      "slots": [
+        "default"
+      ],
+      "variants": [
+        "default",
+        "interactive"
+      ],
+      "tokens": {
+        "p31.surface.background": {
+          "colorSpace": "oklch",
+          "components": [
+            0.1,
+            0.03,
+            240
+          ]
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.color.text.primary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.95,
+            0.02,
+            230
+          ]
+        },
+        "p31.color.text.secondary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.78,
+            0.02,
+            235
+          ]
+        },
+        "p31.radius.md": {
+          "value": 16,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "name": "Chameleon",
+      "description": "Adaptive theme controls: brand × world × age × sensory modes. Zero-reload token swaps.",
+      "css_class": "chameleon",
+      "tool": "renderChameleon",
+      "aiGuidance": {
+        "useWhen": [
+          "Theme switching",
+          "Brand switching",
+          "Accessibility (muted/dusk) controls"
+        ],
+        "avoidWhen": [
+          "Inline content panels",
+          "Nested dialog contexts",
+          "Restricted UI shells"
+        ],
+        "examples": [
+          "<Chameleon />",
+          "<Chameleon className=\"topbar-right\" />"
+        ]
+      },
+      "props": {
+        "className": {
+          "type": "string",
+          "default": null
+        },
+        "style": {
+          "type": "CSSProperties",
+          "default": null
+        }
+      },
+      "slots": [
+        "default"
+      ],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        }
+      }
+    },
+    {
+      "name": "ChatShell",
+      "description": "Conversational shell with a header, drawer, and chat surface.",
+      "css_class": "chat-shell",
+      "tool": "renderChatShell",
+      "aiGuidance": {
+        "useWhen": [
+          "Chat interfaces",
+          "Conversational AI surfaces",
+          "Message threads"
+        ],
+        "avoidWhen": [
+          "Static content",
+          "Document readers"
+        ],
+        "examples": [
+          "<ChatShell header={header} drawerOpen={open} onCloseDrawer={close} />"
+        ]
+      },
+      "props": {
+        "header": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "drawerLabel": {
+          "type": "string",
+          "default": null
+        },
+        "drawerOpen": {
+          "type": "boolean",
+          "default": null
+        },
+        "onCloseDrawer": {
+          "type": "() => void",
+          "default": null
+        },
+        "drawer": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "height": {
+          "type": "string",
+          "default": null
+        }
+      },
+      "slots": [
+        "default",
+        "drawer"
+      ],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.surface.background": {
+          "colorSpace": "oklch",
+          "components": [
+            0.1,
+            0.03,
+            240
+          ]
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.color.text.primary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.95,
+            0.02,
+            230
+          ]
+        },
+        "p31.color.text.secondary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.78,
+            0.02,
+            235
+          ]
+        },
+        "p31.radius.lg": {
+          "value": 24,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "name": "Checkbox",
+      "description": "Tri-state checkbox (checked / unchecked / indeterminate).",
+      "css_class": "checkbox",
+      "tool": "renderCheckbox",
+      "aiGuidance": {
+        "useWhen": [
+          "Form toggles",
+          "Multi-select lists",
+          "Indeterminate parent states"
+        ],
+        "avoidWhen": [
+          "Single binary actions that need a switch",
+          "Non-form UI"
+        ],
+        "examples": [
+          "<Checkbox label=\"Subscribe to care digests\" checked />"
+        ]
+      },
+      "props": {
+        "label": {
+          "type": "string",
+          "default": null
+        },
+        "checked": {
+          "type": "boolean",
+          "default": null
+        },
+        "indeterminate": {
+          "type": "boolean",
+          "default": null
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": null
+        },
+        "onChange": {
+          "type": "(checked: boolean) => void",
+          "default": null
+        }
+      },
+      "slots": [],
+      "variants": [
+        "default",
+        "indeterminate"
+      ],
+      "tokens": {
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        },
+        "p31.color.text.primary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.95,
+            0.02,
+            230
+          ]
+        },
+        "p31.color.text.secondary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.78,
+            0.02,
+            235
+          ]
+        },
+        "p31.radius.sm": {
+          "value": 8,
+          "unit": "px"
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        }
+      }
+    },
+    {
+      "name": "CommandPalette",
+      "description": "Keyboard-friendly command palette (⌘K). Use for site-wide search and command invocation.",
+      "css_class": "cmdk",
+      "tool": "renderCommandPalette",
+      "aiGuidance": {
+        "useWhen": [
+          "Site-wide search",
+          "Command invocation",
+          "Keyboard-first power users"
+        ],
+        "avoidWhen": [
+          "Inline search within forms",
+          "Primary navigation",
+          "Mobile-first (native) flows"
+        ],
+        "examples": [
+          "<CommandPalette open={open} onClose={close} items={commands} onSelect={run} />"
+        ]
+      },
+      "props": {
+        "open": {
+          "type": "boolean",
+          "default": null
+        },
+        "onClose": {
+          "type": "() => void",
+          "default": null
+        },
+        "items": {
+          "type": "CommandItem[]",
+          "default": null
+        },
+        "onSelect": {
+          "type": "(id: string) => void",
+          "default": null
+        },
+        "placeholder": {
+          "type": "string",
+          "default": "\"Search…\""
+        },
+        "leadingIcon": {
+          "type": "ReactNode",
+          "default": null
+        }
+      },
+      "slots": [
+        "default"
+      ],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.glass.background": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.04
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        },
+        "p31.radius.md": {
+          "value": 16,
+          "unit": "px"
+        },
+        "p31.z.modal": 80
+      }
+    },
+    {
+      "name": "CommandTrigger",
+      "description": "Topbar search affordance — a button with a keyboard hint that opens the command palette.",
+      "css_class": "command-trigger",
+      "tool": "renderCommandTrigger",
+      "aiGuidance": {
+        "useWhen": [
+          "Topbar center slot search",
+          "Command palette trigger"
+        ],
+        "avoidWhen": [
+          "Actual search input",
+          "Non-global search"
+        ],
+        "examples": [
+          "<CommandTrigger placeholder=\"Search or jump to…\" shortcut=\"⌘K\" onOpen={openPalette}/>"
+        ]
+      },
+      "props": {
+        "placeholder": {
+          "type": "string",
+          "default": "\"Search or jump to…\""
+        },
+        "shortcut": {
+          "type": "string",
+          "default": "\"⌘K\""
+        },
+        "onOpen": {
+          "type": "() => void",
+          "default": null
+        },
+        "compact": {
+          "type": "boolean",
+          "default": null
+        }
+      },
+      "slots": [],
+      "variants": [
+        "default",
+        "compact"
+      ],
+      "tokens": {
+        "p31.glass.background": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.04
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.radius.full": {
+          "value": 9999,
+          "unit": "px"
+        },
+        "p31.color.text.secondary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.78,
+            0.02,
+            235
+          ]
+        },
+        "p31.font.family.mono": [
+          "JetBrains Mono",
+          "ui-monospace",
+          "SF Mono",
+          "Fira Code",
+          "monospace"
+        ]
+      }
+    },
+    {
+      "name": "CrisisOverlay",
+      "description": "Full-screen crisis mode overlay. Shown when spoons=0. Only exit control visible.",
+      "css_class": "crisis-overlay",
+      "tool": "renderCrisisOverlay",
+      "aiGuidance": {
+        "useWhen": [
+          "Cognitive overload protection",
+          "Spoons=0 state",
+          "Emergency break glass"
+        ],
+        "avoidWhen": [
+          "Normal operation",
+          "Informational overlays",
+          "Non-critical warnings"
+        ],
+        "examples": [
+          "<div class=\"crisis-overlay\" data-spoons=\"0\">...</div>",
+          "<CrisisOverlay onReady={exitCrisis} />"
+        ]
+      },
+      "props": {
+        "onReady": {
+          "type": "() => void",
+          "default": null
+        },
+        "message": {
+          "type": "string",
+          "default": null
+        }
+      },
+      "slots": [
+        "default"
+      ],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.surface.background": {
+          "colorSpace": "oklch",
+          "components": [
+            0.1,
+            0.03,
+            240
+          ]
+        },
+        "p31.color.text.primary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.95,
+            0.02,
+            230
+          ]
+        },
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        },
+        "p31.z.crisis": 99999
+      }
+    },
+    {
+      "name": "Crown",
+      "description": "Compact brand crown mark with a label.",
+      "css_class": "crown",
+      "tool": "renderCrown",
+      "aiGuidance": {
+        "useWhen": [
+          "Brand marks",
+          "Topbar brand slot",
+          "Logo identifiers"
+        ],
+        "avoidWhen": [
+          "Standalone decorative marks",
+          "Icon buttons"
+        ],
+        "examples": [
+          "<Crown label=\"P31\" />"
+        ]
+      },
+      "props": {
+        "label": {
+          "type": "string",
+          "default": "\"P31\""
+        }
+      },
+      "slots": [],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        },
+        "p31.color.text.primary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.95,
+            0.02,
+            230
+          ]
+        },
+        "p31.font.family.sans": [
+          "Space Grotesk",
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
+          "sans-serif"
+        ]
+      }
+    },
+    {
+      "name": "Dropdown",
+      "description": "Selectable dropdown menu with options.",
+      "css_class": "dropdown",
+      "tool": "renderDropdown",
+      "aiGuidance": {
+        "useWhen": [
+          "Form selects",
+          "Menu pickers",
+          "Filter controls"
+        ],
+        "avoidWhen": [
+          "Multi-select trees",
+          "Command palettes"
+        ],
+        "examples": [
+          "<Dropdown label=\"Action\" options={[...]} onChange={fn} />"
+        ]
+      },
+      "props": {
+        "label": {
+          "type": "string",
+          "default": null
+        },
+        "value": {
+          "type": "string",
+          "default": null
+        },
+        "options": {
+          "type": "DropdownOption[]",
+          "default": null
+        },
+        "onChange": {
+          "type": "(value: string) => void",
+          "default": null
+        },
+        "ariaLabel": {
+          "type": "string",
+          "default": null
+        }
+      },
+      "slots": [],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.surface.background": {
+          "colorSpace": "oklch",
+          "components": [
+            0.1,
+            0.03,
+            240
+          ]
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.color.text.primary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.95,
+            0.02,
+            230
+          ]
+        },
+        "p31.color.text.secondary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.78,
+            0.02,
+            235
+          ]
+        },
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        },
+        "p31.radius.md": {
+          "value": 16,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "name": "Footer",
+      "description": "Site footer with configurable columns, branding, and legal text.",
+      "css_class": "site-footer",
+      "tool": "renderFooter",
+      "aiGuidance": {
+        "useWhen": [
+          "Page footers",
+          "Site-wide navigation",
+          "Legal/copyright notices"
+        ],
+        "avoidWhen": [
+          "Inline content areas",
+          "Modal footers",
+          "Inline content separators"
+        ],
+        "examples": [
+          "<Footer columns={systemColumns} />"
+        ]
+      },
+      "props": {
+        "columns": {
+          "type": "FooterColumn[]",
+          "default": null
+        },
+        "brandLabel": {
+          "type": "string",
+          "default": "\"P31\""
+        },
+        "brandIcon": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "tagline": {
+          "type": "string",
+          "default": "\"Sovereign, neuroinclusive interface foundation.\""
+        },
+        "copyright": {
+          "type": "string",
+          "default": null
+        },
+        "legalText": {
+          "type": "string",
+          "default": "\"MIT · built on DTCG tokens\""
+        },
+        "className": {
+          "type": "string",
+          "default": null
+        },
+        "style": {
+          "type": "CSSProperties",
+          "default": null
+        }
+      },
+      "slots": [
+        "default"
+      ],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.surface.background": {
+          "colorSpace": "oklch",
+          "components": [
+            0.1,
+            0.03,
+            240
+          ]
+        },
+        "p31.color.text.primary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.95,
+            0.02,
+            230
+          ]
+        },
+        "p31.color.text.secondary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.78,
+            0.02,
+            235
+          ]
+        },
+        "p31.layout.spacing.lg": {
+          "value": 24,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "name": "GlassCard",
+      "description": "Padded glassmorphic card for content grouping. Use for feature cards, paper listings, and content tiles.",
+      "css_class": "glass-card",
+      "tool": "renderGlassCard",
+      "aiGuidance": {
+        "useWhen": [
+          "Content grouping in grids",
+          "Feature cards",
+          "Paper/research listings",
+          "Dashboard tiles"
+        ],
+        "avoidWhen": [
+          "Navigation elements",
+          "Form inputs",
+          "Full-width backgrounds"
+        ],
+        "examples": [
+          "<div class=\"glass-card\">...</div>",
+          "<GlassCard strong>...</GlassCard>"
+        ]
+      },
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "strong": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "className": {
+          "type": "string",
+          "default": null
+        }
+      },
+      "slots": [
+        "default"
+      ],
+      "variants": [
+        "default",
+        "strong"
+      ],
+      "tokens": {
+        "p31.glass.background": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.04
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.glass.radius": {
+          "value": 24,
+          "unit": "px"
+        },
+        "p31.layout.spacing.lg": {
+          "value": 24,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "name": "GlassPanel",
+      "description": "Elevated glassmorphic surface with backdrop blur. Use for modals, drawers, and elevated content areas.",
+      "css_class": "glass-panel",
+      "tool": "renderGlassPanel",
+      "aiGuidance": {
+        "useWhen": [
+          "Elevated content above other UI",
+          "Modal/dialog backgrounds",
+          "Dropdown menus"
+        ],
+        "avoidWhen": [
+          "Inline content within a flow",
+          "Background surfaces"
+        ],
+        "examples": [
+          "<div class=\"glass-panel\">...</div>",
+          "<GlassPanel padding=\"lg\">...</GlassPanel>"
+        ]
+      },
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "padding": {
+          "type": "\"sm\" | \"md\" | \"lg\"",
+          "default": "\"md\""
+        },
+        "className": {
+          "type": "string",
+          "default": null
+        }
+      },
+      "slots": [
+        "default"
+      ],
+      "variants": [
+        "default",
+        "hover"
+      ],
+      "tokens": {
+        "p31.glass.background": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.04
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.glass.radius": {
+          "value": 24,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "name": "MetricBadge",
+      "description": "Compact metric display with icon. Use for dashboard KPIs and telemetry.",
+      "css_class": "metric-badge",
+      "tool": "renderMetricBadge",
+      "aiGuidance": {
+        "useWhen": [
+          "Dashboard KPIs",
+          "Telemetry displays",
+          "Compact metrics in navbars"
+        ],
+        "avoidWhen": [
+          "Primary content",
+          "Long values",
+          "Interactive controls"
+        ],
+        "examples": [
+          "<div class=\"metric-badge\"><span class=\"status-dot\"></span> Online</div>"
+        ]
+      },
+      "props": {
+        "icon": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "value": {
+          "type": "string | number",
+          "default": null
+        },
+        "label": {
+          "type": "string",
+          "default": null
+        },
+        "clickable": {
+          "type": "boolean",
+          "default": "false"
+        }
+      },
+      "slots": [
+        "default"
+      ],
+      "variants": [
+        "default",
+        "clickable"
+      ],
+      "tokens": {
+        "p31.glass.background": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.04
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.radius.sm": {
+          "value": 8,
+          "unit": "px"
+        },
+        "p31.scale.xs": {
+          "value": 12,
+          "unit": "px"
+        },
+        "p31.color.text.secondary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.78,
+            0.02,
+            235
+          ]
+        }
+      }
+    },
+    {
+      "name": "MobileBottomNav",
+      "description": "Mobile bottom navigation bar — flagship items only (suite pattern). Store-agnostic.",
+      "css_class": "mobile-bottom-nav",
+      "tool": "renderMobileBottomNav",
+      "aiGuidance": {
+        "useWhen": [
+          "Mobile bottom tab bars",
+          "Flagship item shortcuts",
+          "Compact nav under 768px"
+        ],
+        "avoidWhen": [
+          "Desktop primary nav",
+          "Nav with text labels needed"
+        ],
+        "examples": [
+          "<MobileBottomNav items={flagships} activePath={pathname} onNavigate={go} />"
+        ]
+      },
+      "props": {
+        "items": {
+          "type": "SidebarNavItem[]",
+          "default": null
+        },
+        "activePath": {
+          "type": "string",
+          "default": null
+        },
+        "onNavigate": {
+          "type": "(path: string) => void",
+          "default": null
+        },
+        "className": {
+          "type": "string",
+          "default": null
+        },
+        "ariaLabel": {
+          "type": "string",
+          "default": "\"Mobile navigation\""
+        }
+      },
+      "slots": [],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.glass.surface": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            240
+          ],
+          "alpha": 0.04
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        },
+        "p31.color.text.secondary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.78,
+            0.02,
+            235
+          ]
+        },
+        "p31.radius.full": {
+          "value": 9999,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "name": "ModePill",
+      "description": "Primary mode control (SPARK / MAKER / WORKSHOP) with a tone dot.",
+      "css_class": "mode-pill",
+      "tool": "renderModePill",
+      "aiGuidance": {
+        "useWhen": [
+          "Mode indicator (spark/maker/workshop)",
+          "Primary state control"
+        ],
+        "avoidWhen": [
+          "Read-only status (use a plain chip)",
+          "Non-mode toggles"
+        ],
+        "examples": [
+          "<ModePill mode=\"spark\" onCycle={cycleMode}/>"
+        ]
+      },
+      "props": {
+        "mode": {
+          "type": "'spark' | 'maker' | 'workshop'",
+          "default": null
+        },
+        "onCycle": {
+          "type": "() => void",
+          "default": null
+        }
+      },
+      "slots": [],
+      "variants": [
+        "spark",
+        "maker",
+        "workshop"
+      ],
+      "tokens": {
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        },
+        "p31.color.accent.gold.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.72,
+            0.15,
+            40
+          ]
+        },
+        "p31.color.accent.green.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            160
+          ]
+        },
+        "p31.glass.background": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.04
+        },
+        "p31.radius.full": {
+          "value": 9999,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "name": "NotificationStack",
+      "description": "Stacked, severity-tinted notification toasts (bottom-right). Store-agnostic — items/onDismiss are props; colors via data-kind.",
+      "css_class": "notif-stack",
+      "tool": "renderNotificationStack",
+      "aiGuidance": {
+        "useWhen": [
+          "Stacked toast notifications",
+          "Severity-tinted status (info/success/milestone/error)",
+          "Auto-dismiss queues"
+        ],
+        "avoidWhen": [
+          "Inline alerts",
+          "Modal-confirmation flows"
+        ],
+        "examples": [
+          "<NotificationStack items={notifs} onDismiss={dismiss} onClearAll={clearAll} />"
+        ]
+      },
+      "props": {
+        "items": {
+          "type": "Notification[]",
+          "default": null
+        },
+        "onDismiss": {
+          "type": "(id: string) => void",
+          "default": null
+        },
+        "onClearAll": {
+          "type": "() => void",
+          "default": null
+        },
+        "className": {
+          "type": "string",
+          "default": null
+        },
+        "ariaLabel": {
+          "type": "string",
+          "default": "\"Notifications\""
+        }
+      },
+      "slots": [],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.glass.surface": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            240
+          ],
+          "alpha": 0.04
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        },
+        "p31.color.accent.green.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            160
+          ]
+        },
+        "p31.color.accent.gold.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.72,
+            0.15,
+            40
+          ]
+        },
+        "p31.color.accent.red.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            20
+          ]
+        },
+        "p31.color.text.primary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.95,
+            0.02,
+            230
+          ]
+        },
+        "p31.color.text.secondary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.78,
+            0.02,
+            235
+          ]
+        },
+        "p31.z.floating": 60
+      }
+    },
+    {
+      "name": "PageHeader",
+      "description": "Inner-page hero: mono eyebrow, gradient title, and lede. Use at the top of content routes.",
+      "css_class": "page-header-route",
+      "tool": "renderPageHeader",
+      "aiGuidance": {
+        "useWhen": [
+          "Route/page headers",
+          "Content hero sections",
+          "Documentation pages"
+        ],
+        "avoidWhen": [
+          "Topbar/brand headers",
+          "Modal headers",
+          "List item headers"
+        ],
+        "examples": [
+          "<PageHeader eyebrow=\"System\" title=\"Tokens\" lede=\"...\" />"
+        ]
+      },
+      "props": {
+        "eyebrow": {
+          "type": "string",
+          "default": null
+        },
+        "title": {
+          "type": "string",
+          "default": null
+        },
+        "lede": {
+          "type": "string",
+          "default": null
+        },
+        "children": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "className": {
+          "type": "string",
+          "default": null
+        },
+        "style": {
+          "type": "CSSProperties",
+          "default": null
+        }
+      },
+      "slots": [
+        "default"
+      ],
+      "variants": [
+        "default",
+        "actions"
+      ],
+      "tokens": {
+        "p31.color.text.secondary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.78,
+            0.02,
+            235
+          ]
+        },
+        "p31.layout.spacing.lg": {
+          "value": 24,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "name": "SectionStrip",
+      "description": "Desktop pill navigation strip. Use for primary section navigation on wide viewports.",
+      "css_class": "section-strip",
+      "tool": "renderSectionStrip",
+      "aiGuidance": {
+        "useWhen": [
+          "Desktop primary navigation",
+          "Section switching",
+          "Router-agnostic nav"
+        ],
+        "avoidWhen": [
+          "Mobile navigation (use BottomNav)",
+          "More than 7 items",
+          "Modal contexts"
+        ],
+        "examples": [
+          "<SectionStrip items={sections} onSelect={navigate} />"
+        ]
+      },
+      "props": {
+        "items": {
+          "type": "SectionItem[]",
+          "default": null
+        },
+        "onSelect": {
+          "type": "(id: string) => void",
+          "default": null
+        },
+        "className": {
+          "type": "string",
+          "default": null
+        },
+        "style": {
+          "type": "CSSProperties",
+          "default": null
+        }
+      },
+      "slots": [
+        "default"
+      ],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.glass.background": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.04
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.radius.candy": {
+          "value": 24,
+          "unit": "px"
+        },
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        },
+        "p31.color.text.secondary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.78,
+            0.02,
+            235
+          ]
+        }
+      }
+    },
+    {
+      "name": "SidebarNav",
+      "description": "Flat suite navigation rail (emoji + label), active state per route. Store-agnostic — items/activePath/onNavigate are props.",
+      "css_class": "sidebar-nav",
+      "tool": "renderSidebarNav",
+      "aiGuidance": {
+        "useWhen": [
+          "Persistent side navigation",
+          "Flat suite nav (many sections)",
+          "Route-aware active state"
+        ],
+        "avoidWhen": [
+          "Mobile-only chrome",
+          "Hierarchical trees needing nesting"
+        ],
+        "examples": [
+          "<SidebarNav items={navSections} activePath={pathname} onNavigate={go} />"
+        ]
+      },
+      "props": {
+        "items": {
+          "type": "SidebarNavItem[]",
+          "default": null
+        },
+        "activePath": {
+          "type": "string",
+          "default": null
+        },
+        "onNavigate": {
+          "type": "(path: string) => void",
+          "default": null
+        },
+        "className": {
+          "type": "string",
+          "default": null
+        },
+        "ariaLabel": {
+          "type": "string",
+          "default": "\"Main navigation\""
+        }
+      },
+      "slots": [],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.glass.surface": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            240
+          ],
+          "alpha": 0.04
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        },
+        "p31.color.text.secondary": {
+          "colorSpace": "oklch",
+          "components": [
+            0.78,
+            0.02,
+            235
+          ]
+        },
+        "p31.radius.full": {
+          "value": 9999,
+          "unit": "px"
+        },
+        "p31.font.family.sans": [
+          "Space Grotesk",
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
+          "sans-serif"
+        ]
+      }
+    },
+    {
+      "name": "SpoonCluster",
+      "description": "Spoon dots in the status cluster — read-only metabolic status.",
+      "css_class": "spoon-cluster",
+      "tool": "renderSpoonCluster",
+      "aiGuidance": {
+        "useWhen": [
+          "Spoon-level visual in the topbar",
+          "Metabolic status"
+        ],
+        "avoidWhen": [
+          "Interactive spoon control",
+          "Non-status indicator"
+        ],
+        "examples": [
+          "<SpoonCluster level={3} total={5}/>"
+        ]
+      },
+      "props": {
+        "level": {
+          "type": "number",
+          "default": null
+        },
+        "total": {
+          "type": "number",
+          "default": "5"
+        }
+      },
+      "slots": [],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.radius.full": {
+          "value": 9999,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "name": "SpoonDial",
+      "description": "Cognitive load selector (0-5 spoons). Use for neurodivergent-first accessibility control.",
+      "css_class": "spoon-dial",
+      "tool": "renderSpoonDial",
+      "aiGuidance": {
+        "useWhen": [
+          "Accessibility controls",
+          "Cognitive load adjustment",
+          "Neurodivergent-first UX"
+        ],
+        "avoidWhen": [
+          "Primary navigation",
+          "Form inputs",
+          "Settings pages without context"
+        ],
+        "examples": [
+          "<div class=\"spoon-dial\">...</div>",
+          "<SpoonDial level={3} onChange={setSpoons} />"
+        ]
+      },
+      "props": {
+        "level": {
+          "type": "number",
+          "default": null
+        },
+        "onChange": {
+          "type": "(level: number) => void",
+          "default": null
+        }
+      },
+      "slots": [
+        "default"
+      ],
+      "variants": [
+        "default",
+        "crisis"
+      ],
+      "tokens": {
+        "p31.radius.full": {
+          "value": 9999,
+          "unit": "px"
+        },
+        "p31.glass.background": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.04
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        },
+        "p31.color.text.muted": {
+          "colorSpace": "oklch",
+          "components": [
+            0.55,
+            0.02,
+            235
+          ]
+        }
+      }
+    },
+    {
+      "name": "Starfield",
+      "description": "Animated starfield background. Use for ambient backgrounds in shell and marketing.",
+      "css_class": "starfield-bg",
+      "tool": "renderStarfield",
+      "aiGuidance": {
+        "useWhen": [
+          "Page backgrounds",
+          "Ambient effects",
+          "Shell backgrounds"
+        ],
+        "avoidWhen": [
+          "Content areas",
+          "Overlays on top of text",
+          "Crisis mode (spoons=0)"
+        ],
+        "examples": [
+          "<div class=\"starfield-bg\" aria-hidden=\"true\"></div>",
+          "<Starfield spoons={3} />"
+        ]
+      },
+      "props": {
+        "spoons": {
+          "type": "number",
+          "default": null
+        },
+        "warmStars": {
+          "type": "boolean",
+          "default": null
+        },
+        "reduceMotion": {
+          "type": "boolean",
+          "default": null
+        }
+      },
+      "slots": [
+        "default"
+      ],
+      "variants": [
+        "default",
+        "warm",
+        "reduced-motion"
+      ],
+      "tokens": {
+        "p31.z.starfield": 0,
+        "p31.starfield.hearth": {
+          "colorSpace": "oklch",
+          "components": [
+            0.55,
+            0.15,
+            35
+          ]
+        },
+        "p31.starfield.teal": {
+          "colorSpace": "oklch",
+          "components": [
+            0.6,
+            0.08,
+            185
+          ]
+        },
+        "p31.starfield.remembrance": {
+          "colorSpace": "oklch",
+          "components": [
+            0.95,
+            0.01,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "name": "StatusBadge",
+      "description": "Status indicator badge. Use for system status, health indicators, and state labels.",
+      "css_class": "badge",
+      "tool": "renderStatusBadge",
+      "aiGuidance": {
+        "useWhen": [
+          "System health indicators",
+          "Feature flags",
+          "Beta/alpha labels",
+          "Connection status"
+        ],
+        "avoidWhen": [
+          "Primary content",
+          "Long text",
+          "Interactive elements"
+        ],
+        "examples": [
+          "<span class=\"badge badge-success\">Live</span>",
+          "<StatusBadge status=\"online\" />"
+        ]
+      },
+      "props": {
+        "status": {
+          "type": "\"online\" | \"offline\" | \"busy\" | \"away\"",
+          "default": null
+        },
+        "label": {
+          "type": "string",
+          "default": null
+        }
+      },
+      "slots": [
+        "default"
+      ],
+      "variants": [
+        "success",
+        "warning",
+        "error",
+        "info"
+      ],
+      "tokens": {
+        "p31.radius.full": {
+          "value": 9999,
+          "unit": "px"
+        },
+        "p31.scale.xs": {
+          "value": 12,
+          "unit": "px"
+        },
+        "p31.color.accent.green.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            160
+          ]
+        },
+        "p31.color.accent.red.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            20
+          ]
+        },
+        "p31.color.accent.gold.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.72,
+            0.15,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "name": "StatusCluster",
+      "description": "Read-only status row in the topbar right region. Scrolls horizontally with edge fades when it outgrows the bar.",
+      "css_class": "status-cluster",
+      "tool": "renderStatusCluster",
+      "aiGuidance": {
+        "useWhen": [
+          "Multiple status pills (mode, spoons, calm, chips)",
+          "Overflowing status segments"
+        ],
+        "avoidWhen": [
+          "Interactive action buttons (those pin in trailing)",
+          "Fewer than 2 status segments"
+        ],
+        "examples": [
+          "<StatusCluster><ModePill mode=\"spark\"/><SpoonCluster level={3}/><CalmIndicator spoons={3}/></StatusCluster>"
+        ]
+      },
+      "props": {
+        "className": {
+          "type": "string",
+          "default": null
+        }
+      },
+      "slots": [
+        "default"
+      ],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.glass.background": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.04
+        },
+        "p31.layout.spacing.xs": {
+          "value": 4,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "name": "Topbar",
+      "description": "Unified app-chrome shell — slot-based three-region layout. Brand / center / statusCluster / mode / trailing / identity, with variant (app|marketing|game) and mobile overrides. The identity slot is auth-agnostic (SignInLink / IdentityChip / AccountMenu fills).",
+      "css_class": "topbar",
+      "tool": "renderTopbar",
+      "aiGuidance": {
+        "useWhen": [
+          "Authenticated app chrome",
+          "Site-wide navigation",
+          "Brand header",
+          "Persistent status (spoons/mode)"
+        ],
+        "avoidWhen": [
+          "Inline headers within content",
+          "Modal headers"
+        ],
+        "examples": [
+          "<Topbar brand={<Crown/>} center={<CommandTrigger/>} statusCluster={<StatusCluster><SpoonCluster level={3}/></StatusCluster>} mode={<ModePill mode=\"spark\"/>} trailing={<Avatar/>}/>"
+        ]
+      },
+      "props": {
+        "brand": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "left": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "center": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "right": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "statusCluster": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "mode": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "trailing": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "identity": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "mobileLeading": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "mobileTrailing": {
+          "type": "ReactNode",
+          "default": null
+        },
+        "variant": {
+          "type": "'app' | 'marketing' | 'game'",
+          "default": "\"app\""
+        },
+        "sticky": {
+          "type": "boolean",
+          "default": "true"
+        }
+      },
+      "slots": [
+        "brand",
+        "center",
+        "status",
+        "mode",
+        "trailing",
+        "identity"
+      ],
+      "variants": [
+        "app",
+        "marketing",
+        "game"
+      ],
+      "tokens": {
+        "p31.topbar.height": {
+          "value": 64,
+          "unit": "px"
+        },
+        "p31.glass.background": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.04
+        },
+        "p31.glass.border": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "p31.layout.spacing.sm": {
+          "value": 8,
+          "unit": "px"
+        },
+        "p31.radius.candy": {
+          "value": 24,
+          "unit": "px"
+        },
+        "p31.color.accent.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            200
+          ]
+        },
+        "p31.color.accent.gold.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.72,
+            0.15,
+            40
+          ]
+        },
+        "p31.color.accent.green.default": {
+          "colorSpace": "oklch",
+          "components": [
+            0.7,
+            0.15,
+            160
+          ]
+        }
+      }
+    },
+    {
+      "name": "TopbarSection",
+      "description": "Vertically-centered, gap-consistent slot group inside a Topbar. Owns internal spacing; the Topbar owns arrangement.",
+      "css_class": "topbar-section",
+      "tool": "renderTopbarSection",
+      "aiGuidance": {
+        "useWhen": [
+          "Building a custom Topbar region",
+          "Slot content grouping"
+        ],
+        "avoidWhen": [
+          "Standalone layout (use Topbar)",
+          "Page sections"
+        ],
+        "examples": [
+          "<TopbarSection slot=\"status\"><SpoonCluster level={3}/></TopbarSection>"
+        ]
+      },
+      "props": {
+        "slot": {
+          "type": "'leading' | 'brand' | 'center' | 'status' | 'mode' | 'trailing' | 'mobile-trailing'",
+          "default": null
+        },
+        "className": {
+          "type": "string",
+          "default": null
+        }
+      },
+      "slots": [
+        "default"
+      ],
+      "variants": [
+        "default"
+      ],
+      "tokens": {
+        "p31.layout.spacing.xs": {
+          "value": 4,
+          "unit": "px"
+        },
+        "p31.glass.background": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.04
+        }
       }
     }
   ],
@@ -1260,7 +4195,7 @@
         "--p31-text"
       ],
       "animated": true,
-      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\" width=\"100%\" height=\"100%\" role=\"img\" aria-label=\"K4 Tetrahedron animated icon\">\n  <title>K4 Tetrahedron</title>\n  <desc>A regular tetrahedron with glowing pulsing nodes representing sovereign foundational structure.</desc>\n  <style>\n    .k4-edge-p { stroke: var(--p31-accent, #00F0FF); stroke-width: 2; opacity: 0.4; stroke-dasharray: 200; stroke-dashoffset: 200; animation: edgeReveal 3s ease-out forwards; }\n    .k4-node-p { fill: var(--p31-accent, #00F0FF); }\n    .k4-node-s { fill: var(--p31-accent-violet, #A78BFA); }\n    .k4-node-n { fill: var(--p31-text, #F5F5F7); opacity: 0.9; }\n    .k4-center-p { fill: var(--p31-accent, #00F0FF); transform-origin: 100px 105px; animation: centerPulse 4s infinite ease-in-out; }\n    .k4-group { transform-origin: 100px 105px; animation: slowRotate 30s infinite linear; }\n    @keyframes edgeReveal { to { stroke-dashoffset: 0; opacity: 0.7; } }\n    @keyframes centerPulse { 0%, 100% { transform: scale(0.9); opacity: 0.6; filter: drop-shadow(0 0 4px var(--p31-accent, #00F0FF)); } 50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 14px var(--p31-accent, #00F0FF)); } }\n    @keyframes slowRotate { to { transform: rotate(360deg); } }\n    @media (prefers-reduced-motion: reduce) { .k4-edge-p { animation: none; stroke-dashoffset: 0; opacity: 0.5; } .k4-center-p, .k4-group { animation: none; } .k4-center-p { transform: scale(1); opacity: 0.8; } }\n  </style>\n  <g class=\"k4-group\">\n    <line x1=\"100\" y1=\"35\" x2=\"40\" y2=\"145\" class=\"k4-edge-p\"/>\n    <line x1=\"100\" y1=\"35\" x2=\"160\" y2=\"145\" class=\"k4-edge-p\"/>\n    <line x1=\"100\" y1=\"35\" x2=\"100\" y2=\"145\" class=\"k4-edge-p\"/>\n    <line x1=\"40\" y1=\"145\" x2=\"160\" y2=\"145\" class=\"k4-edge-p\"/>\n    <line x1=\"40\" y1=\"145\" x2=\"100\" y2=\"145\" class=\"k4-edge-p\"/>\n    <line x1=\"160\" y1=\"145\" x2=\"100\" y2=\"145\" class=\"k4-edge-p\"/>\n    <circle cx=\"100\" cy=\"35\" r=\"5\" class=\"k4-node-p\"/>\n    <circle cx=\"40\" cy=\"145\" r=\"5\" class=\"k4-node-s\"/>\n    <circle cx=\"160\" cy=\"145\" r=\"5\" class=\"k4-node-n\"/>\n    <circle cx=\"100\" cy=\"105\" r=\"10\" class=\"k4-center-p\"/>\n  </g>\n</svg>"
+      "svg": ""
     },
     {
       "id": "molecule",
@@ -1274,7 +4209,7 @@
         "--p31-text"
       ],
       "animated": true,
-      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\" width=\"100%\" height=\"100%\" role=\"img\" aria-label=\"Molecule animated icon\">\n  <title>Molecule / Atom</title>\n  <desc>A central nucleus with elliptical orbits and rotating electrons representing bonding and quantum mechanics.</desc>\n  <style>\n    .mo-orb-s { fill: none; stroke: var(--p31-accent-violet, #A78BFA); stroke-width: 1.5; opacity: 0.35; }\n    .mo-sys { transform-origin: 100px 100px; animation: moSpin 30s infinite linear; }\n    .mo-core-p { fill: var(--p31-accent-green, #34D399); transform-origin: 100px 100px; animation: moPulse 2.5s infinite alternate ease-in-out; }\n    .mo-elec-n { fill: var(--p31-text, #F5F5F7); opacity: 0.9; filter: drop-shadow(0 0 4px var(--p31-accent-green, #34D399)); }\n    @keyframes moSpin { to { transform: rotate(360deg); } }\n    @keyframes moPulse { 0% { transform: scale(0.9); filter: drop-shadow(0 0 4px var(--p31-accent-green, #34D399)); } 100% { transform: scale(1.12); filter: drop-shadow(0 0 14px var(--p31-accent-green, #34D399)); } }\n    @media (prefers-reduced-motion: reduce) { .mo-sys, .mo-core-p { animation: none; } .mo-core-p { transform: scale(1); opacity: 0.8; } }\n  </style>\n  <g class=\"mo-sys\">\n    <ellipse cx=\"100\" cy=\"100\" rx=\"75\" ry=\"25\" class=\"mo-orb-s\"/>\n    <ellipse cx=\"100\" cy=\"100\" rx=\"75\" ry=\"25\" class=\"mo-orb-s\" transform=\"rotate(60 100 100)\"/>\n    <ellipse cx=\"100\" cy=\"100\" rx=\"75\" ry=\"25\" class=\"mo-orb-s\" transform=\"rotate(120 100 100)\"/>\n    <circle cx=\"175\" cy=\"100\" r=\"4.5\" class=\"mo-elec-n\"/>\n    <circle cx=\"62\" cy=\"35\" r=\"4.5\" class=\"mo-elec-n\"/>\n    <circle cx=\"62\" cy=\"165\" r=\"4.5\" class=\"mo-elec-n\"/>\n  </g>\n  <circle cx=\"100\" cy=\"100\" r=\"14\" class=\"mo-core-p\"/>\n</svg>"
+      "svg": ""
     },
     {
       "id": "signal",
@@ -1288,7 +4223,7 @@
         "--p31-text"
       ],
       "animated": true,
-      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\" width=\"100%\" height=\"100%\" role=\"img\" aria-label=\"Signal animated icon\">\n  <title>Signal</title>\n  <desc>Radiating care signal with concentric elliptical waves representing coordination and communication in the P31 mesh.</desc>\n  <style>\n    .sg-wave { fill: none; stroke-width: 2; stroke-linecap: round; opacity: 0; }\n    .sg-wave-p { stroke: var(--p31-accent, #00F0FF); }\n    .sg-wave-s { stroke: var(--p31-accent-violet, #A78BFA); }\n    .sg-wave-n { stroke: var(--p31-text, #F5F5F7); opacity: 0.5; }\n    .sg-w1 { animation: sgRipple 4s infinite 0s; }\n    .sg-w2 { animation: sgRipple 4s infinite 0.8s; }\n    .sg-w3 { animation: sgRipple 4s infinite 1.6s; }\n    .sg-w4 { animation: sgRipple 4s infinite 2.4s; }\n    .sg-core-p { fill: var(--p31-accent, #00F0FF); transform-origin: 100px 100px; animation: sgCore 2.5s infinite alternate ease-in-out; }\n    @keyframes sgRipple { 0% { transform: scale(0.1); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 0; } }\n    @keyframes sgCore { 0% { transform: scale(0.85); filter: drop-shadow(0 0 2px var(--p31-accent, #00F0FF)); } 100% { transform: scale(1.15); filter: drop-shadow(0 0 16px var(--p31-accent, #00F0FF)); } }\n    @media (prefers-reduced-motion: reduce) { .sg-wave, .sg-core-p { animation: none; } .sg-wave { opacity: 0.15; transform: scale(0.5); } .sg-core-p { transform: scale(1); } }\n  </style>\n  <ellipse cx=\"100\" cy=\"100\" rx=\"20\" ry=\"50\" class=\"sg-wave sg-wave-p sg-w1\"/>\n  <ellipse cx=\"100\" cy=\"100\" rx=\"40\" ry=\"70\" class=\"sg-wave sg-wave-s sg-w2\"/>\n  <ellipse cx=\"100\" cy=\"100\" rx=\"60\" ry=\"90\" class=\"sg-wave sg-wave-n sg-w3\"/>\n  <ellipse cx=\"100\" cy=\"100\" rx=\"80\" ry=\"110\" class=\"sg-wave sg-wave-s sg-w4\"/>\n  <circle cx=\"100\" cy=\"100\" r=\"10\" class=\"sg-core-p\"/>\n</svg>"
+      "svg": ""
     },
     {
       "id": "mesh-node",
@@ -1302,7 +4237,7 @@
         "--p31-text"
       ],
       "animated": true,
-      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\" width=\"100%\" height=\"100%\" role=\"img\" aria-label=\"Mesh Node animated icon\">\n  <title>Mesh Node</title>\n  <desc>Interconnected nodes with streaming connections representing the distributed sovereign mesh infrastructure.</desc>\n  <style>\n    .ms-line-s { stroke: var(--p31-accent-violet, #A78BFA); stroke-width: 1.5; opacity: 0.4; stroke-dasharray: 8 6; animation: msStream 15s infinite linear; }\n    .ms-line-d { stroke: var(--p31-accent-violet, #A78BFA); stroke-width: 1; opacity: 0.15; }\n    .ms-node-n { fill: var(--p31-text, #F5F5F7); animation: msBlink 4s infinite alternate ease-in-out; }\n    .ms-node-n { fill: var(--p31-text, #F5F5F7); animation: msBlink 4s infinite alternate ease-in-out; }\n    .ms-center-p { fill: var(--p31-accent-red, #FB7185); transform-origin: 100px 100px; animation: msAura 2s infinite alternate ease-in-out; }\n    .nd-1 { animation-delay: 0s; }\n    .nd-2 { animation-delay: 0.5s; }\n    .nd-3 { animation-delay: 1s; }\n    .nd-4 { animation-delay: 1.5s; }\n    .nd-5 { animation-delay: 2s; }\n    @keyframes msStream { to { stroke-dashoffset: 200; } }\n    @keyframes msBlink { 0% { r: 3; opacity: 0.4; } 100% { r: 5; opacity: 1; filter: drop-shadow(0 0 5px var(--p31-text, #F5F5F7)); } }\n    @keyframes msAura { 0% { r: 9; filter: drop-shadow(0 0 4px var(--p31-accent-red, #FB7185)); } 100% { r: 12; filter: drop-shadow(0 0 20px var(--p31-accent-red, #FB7185)); } }\n    @media (prefers-reduced-motion: reduce) { .ms-line-s, .ms-node-n, .ms-center-p { animation: none; } .ms-center-p { r: 10; opacity: 0.8; } .ms-node-n { r: 4; opacity: 0.7; } }\n  </style>\n  <line x1=\"100\" y1=\"100\" x2=\"30\" y2=\"50\" class=\"ms-line-s\"/>\n  <line x1=\"100\" y1=\"100\" x2=\"160\" y2=\"40\" class=\"ms-line-s\"/>\n  <line x1=\"100\" y1=\"100\" x2=\"170\" y2=\"150\" class=\"ms-line-s\"/>\n  <line x1=\"100\" y1=\"100\" x2=\"50\" y2=\"160\" class=\"ms-line-s\"/>\n  <line x1=\"100\" y1=\"100\" x2=\"100\" y2=\"20\" class=\"ms-line-s\"/>\n  <line x1=\"30\" y1=\"50\" x2=\"100\" y2=\"20\" class=\"ms-line-d\"/>\n  <line x1=\"160\" y1=\"40\" x2=\"100\" y2=\"20\" class=\"ms-line-d\"/>\n  <line x1=\"50\" y1=\"160\" x2=\"170\" y2=\"150\" class=\"ms-line-d\"/>\n  <circle cx=\"30\" cy=\"50\" class=\"ms-node-n nd-1\"/>\n  <circle cx=\"160\" cy=\"40\" class=\"ms-node-n nd-2\"/>\n  <circle cx=\"170\" cy=\"150\" class=\"ms-node-n nd-3\"/>\n    <circle cx=\"50\" cy=\"160\" class=\"ms-node-n nd-4\"/>\n  <circle cx=\"100\" cy=\"20\" class=\"ms-node-n nd-5\"/>\n  <circle cx=\"100\" cy=\"100\" class=\"ms-center-p\"/>\n</svg>"
+      "svg": ""
     },
     {
       "id": "spoon",
@@ -1316,7 +4251,7 @@
         "--p31-text"
       ],
       "animated": true,
-      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\" width=\"100%\" height=\"100%\" role=\"img\" aria-label=\"Spoon animated icon\">\n  <title>Spoon</title>\n  <desc>An elegant spoon swaying slightly with a glowing bowl, representing cognitive capacity and spoon-aware design.</desc>\n  <style>\n    .sp-group { transform-origin: 100px 30px; animation: spSway 8s infinite ease-in-out; }\n    .sp-bowl-p { fill: var(--p31-accent-iris, #818CF8); animation: spGlow 3s infinite alternate ease-in-out; }\n    .sp-handle-s { stroke: var(--p31-accent-violet, #A78BFA); stroke-width: 5; stroke-linecap: round; fill: none; }\n    .sp-rip { fill: none; stroke: var(--p31-accent-violet, #A78BFA); opacity: 0; transform-origin: 100px 145px; }\n    .sp-rip-1 { animation: spExpand 5s infinite ease-out; }\n    .sp-rip-2 { animation: spExpand 5s infinite ease-out; animation-delay: 2.5s; }\n    .sp-finial-n { fill: var(--p31-text, #F5F5F7); opacity: 0.8; }\n    @keyframes spSway { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }\n    @keyframes spGlow { 0% { filter: drop-shadow(0 0 4px var(--p31-accent-iris, #818CF8)); opacity: 0.7; } 100% { filter: drop-shadow(0 0 16px var(--p31-accent-iris, #818CF8)); opacity: 1; } }\n    @keyframes spExpand { 0% { transform: scale(0.5); opacity: 0.8; stroke-width: 4; } 70% { transform: scale(2); opacity: 0; stroke-width: 1; } 100% { opacity: 0; } }\n    @media (prefers-reduced-motion: reduce) { .sp-group, .sp-bowl-p, .sp-rip { animation: none; } .sp-group { transform: rotate(0deg); } .sp-bowl-p { opacity: 0.8; } }\n  </style>\n  <g class=\"sp-group\">\n    <ellipse cx=\"100\" cy=\"145\" rx=\"22\" ry=\"32\" class=\"sp-rip sp-rip-1\"/>\n    <ellipse cx=\"100\" cy=\"145\" rx=\"22\" ry=\"32\" class=\"sp-rip sp-rip-2\"/>\n    <path d=\"M 100 30 Q 96 80 100 110\" class=\"sp-handle-s\"/>\n    <path d=\"M 100 110 Q 100 120 100 145\" class=\"sp-handle-s\" style=\"stroke-width:3\"/>\n    <ellipse cx=\"100\" cy=\"145\" rx=\"16\" ry=\"26\" class=\"sp-bowl-p\"/>\n    <circle cx=\"100\" cy=\"30\" r=\"6\" class=\"sp-finial-n\"/>\n  </g>\n</svg>"
+      "svg": ""
     },
     {
       "id": "p31-wordmark",
@@ -1330,7 +4265,7 @@
         "--p31-text"
       ],
       "animated": true,
-      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\" width=\"100%\" height=\"100%\" role=\"img\" aria-label=\"P31 Wordmark animated icon\">\n  <title>P31 Wordmark</title>\n  <desc>Stylized P31 text surrounded by counter-rotating geometric rings representing sovereign brand identity.</desc>\n  <style>\n    .wm-text-p { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; font-weight: 800; font-size: 64px; fill: var(--p31-accent-red, #FB7185); letter-spacing: -2px; }\n    .wm-glow { animation: wmGlow 3s infinite alternate ease-in-out; }\n    .wm-ring-o { fill: none; stroke: var(--p31-accent-red, #FB7185); stroke-width: 2; stroke-dasharray: 40 20; transform-origin: 100px 100px; animation: wmFwd 20s infinite linear; }\n    .wm-ring-i { fill: none; stroke: var(--p31-accent-violet, #A78BFA); stroke-width: 1.5; stroke-dasharray: 10 10; opacity: 0.5; transform-origin: 100px 100px; animation: wmRev 15s infinite linear; }\n    .wm-dot-n { fill: var(--p31-text, #F5F5F7); opacity: 0.7; }\n    @keyframes wmFwd { to { transform: rotate(360deg); } }\n    @keyframes wmRev { to { transform: rotate(-360deg); } }\n    @keyframes wmGlow { 0% { filter: drop-shadow(0 0 3px var(--p31-accent-red, #FB7185)); opacity: 0.85; } 100% { filter: drop-shadow(0 0 18px var(--p31-accent-red, #FB7185)); opacity: 1; } }\n    @media (prefers-reduced-motion: reduce) { .wm-ring-o, .wm-ring-i, .wm-glow { animation: none; } .wm-ring-o, .wm-ring-i { stroke-dashoffset: 0; } .wm-glow { opacity: 0.9; } }\n  </style>\n  <circle cx=\"100\" cy=\"100\" r=\"85\" class=\"wm-ring-o\"/>\n  <circle cx=\"100\" cy=\"100\" r=\"72\" class=\"wm-ring-i\"/>\n  <text x=\"100\" y=\"122\" text-anchor=\"middle\" class=\"wm-text-p wm-glow\">P31</text>\n  <circle cx=\"100\" cy=\"45\" r=\"3\" class=\"wm-dot-n\"/>\n  <circle cx=\"100\" cy=\"155\" r=\"3\" class=\"wm-dot-n\"/>\n</svg>"
+      "svg": ""
     },
     {
       "id": "love-heart",
@@ -1344,7 +4279,7 @@
         "--p31-text"
       ],
       "animated": true,
-      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\" width=\"100%\" height=\"100%\" role=\"img\" aria-label=\"LOVE Heart animated icon\">\n  <title>LOVE Heart</title>\n  <desc>A geometric pulsing heart with an infinity-loop outline representing the care economy.</desc>\n  <style>\n    .lv-path-s { fill: none; stroke: var(--p31-accent, #00F0FF); stroke-width: 2; stroke-linecap: round; }\n    .lv-dash { stroke-dasharray: 12 16; animation: lvFlow 20s infinite linear; }\n    .lv-glow-p { fill: var(--p31-accent-violet, #A78BFA); transform-origin: 100px 100px; animation: lvBreath 4s infinite alternate ease-in-out; }\n    .lv-dot-n { fill: var(--p31-text, #F5F5F7); opacity: 0.8; }\n    @keyframes lvBreath { 0% { transform: scale(0.92); opacity: 0.6; filter: drop-shadow(0 0 4px var(--p31-accent-violet, #A78BFA)); } 100% { transform: scale(1.04); opacity: 0.95; filter: drop-shadow(0 0 20px var(--p31-accent-violet, #A78BFA)); } }\n    @keyframes lvFlow { to { stroke-dashoffset: 400; } }\n    @media (prefers-reduced-motion: reduce) { .lv-glow-p, .lv-dash { animation: none; } .lv-glow-p { transform: scale(1); opacity: 0.8; } .lv-dash { stroke-dashoffset: 0; } }\n  </style>\n  <path d=\"M100 165 C 100 165, 20 100, 20 50 C 20 15, 70 10, 100 45 C 130 10, 180 15, 180 50 C 180 100, 100 165, 100 165 Z\" class=\"lv-path-s lv-dash\" opacity=\"0.6\"/>\n  <path d=\"M100 150 C 100 150, 40 95, 40 55 C 40 30, 65 20, 100 50 C 135 20, 160 30, 160 55 C 160 95, 100 150, 100 150 Z\" class=\"lv-glow-p\"/>\n  <circle cx=\"100\" cy=\"45\" r=\"4\" class=\"lv-dot-n\"/>\n  <circle cx=\"100\" cy=\"155\" r=\"3\" fill=\"var(--p31-accent, #00F0FF)\" opacity=\"0.6\"/>\n</svg>"
+      "svg": ""
     },
     {
       "id": "863hz-resonance",
@@ -1358,7 +4293,7 @@
         "--p31-text"
       ],
       "animated": true,
-      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\" width=\"100%\" height=\"100%\" role=\"img\" aria-label=\"863 Hz Resonance animated icon\">\n  <title>863 Hz Resonance</title>\n  <desc>Concentric expanding rings with crossing sine waves representing the Larmor frequency of phosphorus-31.</desc>\n  <style>\n    .res-ring-p { fill: none; stroke: var(--p31-accent-gold, #FBBF24); stroke-width: 1.5; opacity: 0; transform-origin: 100px 100px; animation: ringPulse 6s infinite ease-out; }\n    .res-ring-1 { animation-delay: 0s; }\n    .res-ring-2 { animation-delay: 2s; }\n    .res-ring-3 { animation-delay: 4s; }\n    .res-wave-s { fill: none; stroke: var(--p31-accent-violet, #A78BFA); stroke-width: 2; stroke-linecap: round; opacity: 0.5; }\n    .res-wave-1 { transform-origin: 100px 100px; animation: waveOscillate 8s infinite ease-in-out; }\n    .res-wave-2 { transform-origin: 100px 100px; animation: waveOscillate 8s infinite ease-in-out reverse; }\n    .res-core-p { fill: var(--p31-accent-gold, #FBBF24); transform-origin: 100px 100px; animation: coreOscillate 3s infinite alternate ease-in-out; }\n    .res-dot-n { fill: var(--p31-text, #F5F5F7); opacity: 0.8; }\n    @keyframes ringPulse { 0% { transform: scale(0.1); opacity: 1; stroke-width: 4; } 100% { transform: scale(1.05); opacity: 0; stroke-width: 1; } }\n    @keyframes waveOscillate { 0%, 100% { opacity: 0.3; transform: rotate(-3deg); } 50% { opacity: 0.7; transform: rotate(3deg); } }\n    @keyframes coreOscillate { 0% { filter: drop-shadow(0 0 2px var(--p31-accent-gold, #FBBF24)); opacity: 0.7; r: 8; } 100% { filter: drop-shadow(0 0 16px var(--p31-accent-gold, #FBBF24)); opacity: 1; r: 11; } }\n    @media (prefers-reduced-motion: reduce) { .res-ring-p { animation: none; opacity: 0.15; transform: scale(0.5); } .res-wave-1, .res-wave-2 { animation: none; opacity: 0.4; } .res-core-p { animation: none; opacity: 0.8; r: 9; } }\n  </style>\n  <circle cx=\"100\" cy=\"100\" r=\"90\" class=\"res-ring-p res-ring-1\"/>\n  <circle cx=\"100\" cy=\"100\" r=\"90\" class=\"res-ring-p res-ring-2\"/>\n  <circle cx=\"100\" cy=\"100\" r=\"90\" class=\"res-ring-p res-ring-3\"/>\n  <g class=\"res-wave-1\"><path d=\"M10 100 Q 55 40 100 100 T 190 100\" class=\"res-wave-s\"/></g>\n  <g class=\"res-wave-2\"><path d=\"M10 100 Q 55 160 100 100 T 190 100\" class=\"res-wave-s\"/></g>\n  <circle cx=\"100\" cy=\"100\" r=\"9\" class=\"res-core-p\"/>\n  <circle cx=\"100\" cy=\"50\" r=\"3\" class=\"res-dot-n\"/>\n</svg>"
+      "svg": ""
     },
     {
       "id": "sovereign-crown",
@@ -1375,7 +4310,7 @@
         "--p31-accent-red"
       ],
       "animated": true,
-      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\" width=\"100%\" height=\"100%\" role=\"img\" aria-label=\"Sovereign Crown animated icon\">\n  <title>Sovereign Crown</title>\n  <desc>A six-pointed sovereign crown with rotating accents, lighting nodes, and a radiant central jewel. 6-color palette.</desc>\n  <style>\n    .cr-crown { stroke: rgba(255,255,255,0.1); stroke-width: 0.75; stroke-linejoin: round; }\n    .cr-c1 { fill: var(--p31-accent, #00F0FF); }\n    .cr-c2 { fill: var(--p31-accent-violet, #A78BFA); }\n    .cr-c3 { fill: var(--p31-accent-gold, #FBBF24); }\n    .cr-c4 { fill: var(--p31-accent-green, #34D399); }\n    .cr-c5 { fill: var(--p31-accent-iris, #818CF8); }\n    .cr-c6 { fill: var(--p31-accent-red, #FB7185); }\n    .cr-master { transition: filter 0.6s ease-in-out, opacity 0.6s ease-in-out; }\n    .cr-jewel { filter: drop-shadow(0 0 4px currentColor); transform-origin: 100px 100px; }\n    .cr-j1 { animation: crOrbit 16s infinite linear; }\n    .cr-j3 { animation: crOrbit 16s infinite linear; animation-delay: -5.33s; }\n    .cr-j5 { animation: crOrbit 16s infinite linear; animation-delay: -10.67s; }\n    .cr-core { fill: var(--p31-accent, #00F0FF); transform-origin: 100px 100px; animation: crCore 3s infinite alternate ease-in-out; }\n    .cr-band { fill: none; stroke-width: 1.5; stroke-linecap: round; }\n    .cr-ring { fill: none; stroke-width: 1; opacity: 0.2; transform-origin: 100px 100px; }\n    .cr-b1 { stroke: var(--p31-accent, #00F0FF); animation: crBand 8s infinite linear; }\n    .cr-b2 { stroke: var(--p31-accent-violet, #A78BFA); animation: crBand 8s infinite linear reverse; }\n    .cr-b3 { stroke: var(--p31-accent-gold, #FBBF24); animation: crBand 8s infinite linear; }\n    @keyframes crOrbit { to { transform: rotate(360deg); } }\n    @keyframes crCore { 0% { transform: scale(0.85); filter: drop-shadow(0 0 4px var(--p31-accent, #00F0FF)); } 100% { transform: scale(1.1); filter: drop-shadow(0 0 20px var(--p31-accent, #00F0FF)); } }\n    @keyframes crBand { to { stroke-dashoffset: 400; } }\n    .cr-rotate { transform-origin: 100px 100px; animation: crRotate 30s infinite linear; }\n    @keyframes crRotate { to { transform: rotate(360deg); } }\n    .master-pulse .cr-master { filter: drop-shadow(0 0 22px var(--p31-accent, #00F0FF)) !important; opacity: 1 !important; }\n    @media (prefers-reduced-motion: reduce) { .cr-rotate, .cr-jewel, .cr-core, .cr-ring, .cr-band { animation: none; } .cr-core { r: 14; opacity: 0.9; } }\n  </style>\n  <!-- Static crown shape (stationary at top) -->\n  <g>\n    <path d=\"M 40 155 Q 60 80 70 38 Q 85 18 100 19 Q 115 18 130 38 Q 140 80 160 155\" class=\"cr-crown\" fill=\"none\" stroke=\"url(#crown-grad)\" stroke-width=\"2.5\"/>\n    <path d=\"M 40 155 Q 60 80 70 38 Q 85 18 100 19 Q 115 18 130 38 Q 140 80 160 155 Q 145 145 130 142 Q 115 139 100 139 Q 85 139 70 142 Q 55 145 40 155 Z\" fill=\"rgba(255,255,255,0.04)\"/>\n    <polygon points=\"100,19 108,38 128,38\" class=\"cr-c1\"/>\n    <polygon points=\"100,19 92,38 72,38\" class=\"cr-c2\"/>\n    <polygon points=\"70,38 78,55 92,38\" class=\"cr-c3\"/>\n    <polygon points=\"130,38 122,55 108,38\" class=\"cr-c4\"/>\n    <polygon points=\"72,38 85,60 100,58 92,38\" class=\"cr-c5\"/>\n    <polygon points=\"128,38 115,60 100,58 108,38\" class=\"cr-c6\"/>\n    <polygon points=\"100,52 108,70 100,82\" class=\"cr-c1\" opacity=\"0.7\"/>\n    <polygon points=\"100,52 92,70 100,82\" class=\"cr-c2\" opacity=\"0.7\"/>\n  </g>\n  <!-- Animated decorations (everything else moves) -->\n  <g class=\"cr-rotate\">\n    <circle cx=\"100\" cy=\"100\" r=\"88\" fill=\"none\" stroke=\"rgba(255,255,255,0.04)\" stroke-width=\"1\"/>\n    <!-- Removed outer dashed ring -->\n    <circle cx=\"100\" cy=\"100\" r=\"75\" class=\"cr-band cr-b1\" stroke-dasharray=\"60 30\"/>\n    <circle cx=\"100\" cy=\"100\" r=\"72\" class=\"cr-band cr-b2\" stroke-dasharray=\"30 60\"/>\n    <circle cx=\"100\" cy=\"100\" r=\"68\" class=\"cr-band cr-b3\" stroke-dasharray=\"50 50\"/>\n    <circle cx=\"100\" cy=\"38\" r=\"4.5\" class=\"cr-jewel cr-j1 cr-c3\"/>\n    <circle cx=\"130\" cy=\"38\" r=\"3.5\" class=\"cr-jewel cr-j3 cr-c6\"/>\n    <circle cx=\"144\" cy=\"75\" r=\"3\" class=\"cr-jewel cr-j5 cr-c4\"/>\n    <circle cx=\"100\" cy=\"100\" r=\"16\" class=\"cr-core cr-master\"/>\n    <circle cx=\"100\" cy=\"100\" r=\"11\" fill=\"none\" stroke=\"var(--p31-accent-violet, #A78BFA)\" stroke-width=\"1\" opacity=\"0.5\">\n      <animate attributeName=\"r\" from=\"11\" to=\"14\" dur=\"1.5s\" repeatCount=\"indefinite\"/>\n      <animate attributeName=\"opacity\" from=\"0.5\" to=\"0.2\" dur=\"1.5s\" repeatCount=\"indefinite\"/>\n    </circle>\n    <circle cx=\"100\" cy=\"100\" r=\"5\" fill=\"var(--p31-bg, #0A0A0F)\" opacity=\"0.9\"/>\n  </g>\n  <defs>\n    <linearGradient id=\"crown-grad\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"100%\">\n      <stop offset=\"0%\" stop-color=\"#00F0FF\" stop-opacity=\"0.9\"/>\n      <stop offset=\"25%\" stop-color=\"#A78BFA\" stop-opacity=\"0.9\"/>\n      <stop offset=\"50%\" stop-color=\"#FBBF24\" stop-opacity=\"0.8\"/>\n      <stop offset=\"75%\" stop-color=\"#818CF8\" stop-opacity=\"0.9\"/>\n      <stop offset=\"100%\" stop-color=\"#00F0FF\" stop-opacity=\"0.9\"/>\n    </linearGradient>\n  </defs>\n</svg>"
+      "svg": ""
     },
     {
       "id": "prism-fold",
@@ -1392,7 +4327,7 @@
         "--p31-accent-red"
       ],
       "animated": true,
-      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\" width=\"100%\" height=\"100%\" role=\"img\" aria-label=\"Prism Fold animated icon\">\n  <title>Prism Fold</title>\n  <desc>A 3D geometric hexagon with six triangular facets that unfold and refold. 6-color palette, center pivot.</desc>\n  <style>\n    .pf-facet { stroke: rgba(255,255,255,0.1); stroke-width: 0.75; stroke-linejoin: round; }\n    .pf-c1 { fill: var(--p31-accent, #00F0FF); }\n    .pf-c2 { fill: var(--p31-accent-violet, #A78BFA); }\n    .pf-c3 { fill: var(--p31-accent-gold, #FBBF24); }\n    .pf-c4 { fill: var(--p31-accent-green, #34D399); }\n    .pf-c5 { fill: var(--p31-accent-iris, #818CF8); }\n    .pf-c6 { fill: var(--p31-accent-red, #FB7185); }\n    .pf-group { transform-origin: 100px 100px; animation: pfRotate 30s infinite linear; }\n    .pf-fold { transform-origin: var(--fx, 100px) var(--fy, 100px); animation: pfFold 4s infinite alternate ease-in-out; }\n    .pf-1 { --fx: 116px; --fy: 78px; animation-delay: 0s; }\n    .pf-2 { --fx: 100px; --fy: 72px; animation-delay: 0.5s; }\n    .pf-3 { --fx: 84px; --fy: 78px; animation-delay: 1s; }\n    .pf-4 { --fx: 87px; --fy: 110px; animation-delay: 1.5s; }\n    .pf-5 { --fx: 100px; --fy: 115px; animation-delay: 2s; }\n    .pf-6 { --fx: 113px; --fy: 110px; animation-delay: 2.5s; }\n    .pf-master { transition: opacity 0.4s ease, filter 0.4s ease; }\n    .pf-inner { fill: var(--p31-accent, #00F0FF); opacity: 0.1; transform-origin: 100px 100px; animation: pfInner 4s infinite alternate ease-in-out; }\n    @keyframes pfFold {\n      0% { transform: rotateX(0deg) rotateY(0deg); opacity: 0.55; stroke-width: 0.75; }\n      60% { transform: rotateX(35deg) rotateY(25deg); opacity: 1; stroke-width: 0.75; }\n      100% { transform: rotateX(25deg) rotateY(40deg); opacity: 0.55; stroke-width: 0.75; }\n    }\n    @keyframes pfInner { 0% { transform: scale(0.85); opacity: 0.05; } 100% { transform: scale(1.15); opacity: 0.16; } }\n    @keyframes pfRotate { to { transform: rotate(360deg); } }\n    @keyframes pfPulse { 0%, 100% { r: 46; opacity: 0.1; } 50% { r: 50; opacity: 0.2; } }\n    .pf-outer { fill: none; stroke: var(--p31-accent, #00F0FF); stroke-width: 1; opacity: 0.15; animation: pfPulse 3s infinite ease-in-out; transform-origin: 100px 100px; }\n    .master-pulse .pf-master { opacity: 0.35 !important; filter: drop-shadow(0 0 18px var(--p31-accent, #00F0FF)) !important; }\n    @media (prefers-reduced-motion: reduce) { .pf-group, .pf-fold, .pf-inner, .pf-master, .pf-outer { animation: none; } .pf-fold { transform: none; } .pf-inner { opacity: 0.1; } .pf-outer { opacity: 0.15; } }\n  </style>\n  <g class=\"pf-group\">\n    <circle cx=\"100\" cy=\"100\" r=\"46\" class=\"pf-outer\" stroke-dasharray=\"8 6\"/>\n    <circle cx=\"100\" cy=\"100\" r=\"60\" class=\"pf-inner pf-master\"/>\n    <polygon points=\"100,60 120,80 100,100\" class=\"pf-facet pf-c1 pf-fold pf-1\"/>\n    <polygon points=\"100,60 100,80 80,80\" class=\"pf-facet pf-c2 pf-fold pf-2\"/>\n    <polygon points=\"80,80 100,100 80,110\" class=\"pf-facet pf-c3 pf-fold pf-3\"/>\n    <polygon points=\"100,100 80,110 100,120\" class=\"pf-facet pf-c4 pf-fold pf-4\"/>\n    <polygon points=\"100,100 100,120 120,110\" class=\"pf-facet pf-c5 pf-fold pf-5\"/>\n    <polygon points=\"100,100 120,110 120,80\" class=\"pf-facet pf-c6 pf-fold pf-6\"/>\n  </g>\n</svg>"
+      "svg": ""
     },
     {
       "id": "nebula-burst",
@@ -1409,7 +4344,7 @@
         "--p31-accent-red"
       ],
       "animated": true,
-      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\" width=\"100%\" height=\"100%\" role=\"img\" aria-label=\"Nebula Burst animated icon\">\n  <title>Nebula Burst</title>\n  <desc>A generative particle cloud with expanding wave rings, representing emergence and structure from chaos. 6-color palette.</desc>\n  <style>\n    .nb-ripple { fill: none; stroke-width: 1.5; stroke-linecap: round; opacity: 0; transform-origin: 100px 100px; }\n    .nb-r1 { stroke: var(--p31-accent, #00F0FF); animation: nbRipple 6s infinite ease-out; }\n    .nb-r2 { stroke: var(--p31-accent-violet, #A78BFA); animation: nbRipple 6s infinite ease-out 2s; }\n    .nb-r3 { stroke: var(--p31-accent-gold, #FBBF24); animation: nbRipple 6s infinite ease-out 4s; }\n    .nb-r4 { stroke: var(--p31-accent-green, #34D399); animation: nbRipple 6s infinite ease-out 6s; }\n    @keyframes nbRipple { 0% { transform: scale(0.05); opacity: 0.7; stroke-width: 4; } 100% { transform: scale(1); opacity: 0; stroke-width: 1; } }\n    .nb-dot { r: 2.5; animation: nbDrift var(--d, 8s) infinite alternate ease-in-out; }\n    .nb-dot:nth-child(6n+1) { fill: var(--p31-accent, #00F0FF); }\n    .nb-dot:nth-child(6n+2) { fill: var(--p31-accent-violet, #A78BFA); }\n    .nb-dot:nth-child(6n+3) { fill: var(--p31-accent-gold, #FBBF24); }\n    .nb-dot:nth-child(6n+4) { fill: var(--p31-accent-green, #34D399); }\n    .nb-dot:nth-child(6n+5) { fill: var(--p31-accent-red, #FB7185); }\n    .nb-dot:nth-child(6n+6) { fill: var(--p31-accent-iris, #818CF8); }\n    @keyframes nbDrift { 0% { transform: translate(0, 0); opacity: 0.3; } 100% { transform: translate(var(--tx, 20px), var(--ty, -20px)); opacity: 0.9; } }\n    .nb-master { transition: opacity 0.4s ease, filter 0.4s ease; }\n    .nb-cluster { transform-origin: 100px 100px; animation: nbCluster 28s infinite ease-in-out; }\n    @keyframes nbCluster { 0%, 100% { transform: rotate(0deg) scale(1); } 25% { transform: rotate(3deg) scale(1.02); } 75% { transform: rotate(-3deg) scale(0.98); } }\n    .master-pulse .nb-master { opacity: 0.9 !important; filter: drop-shadow(0 0 12px var(--p31-accent, #00F0FF)) !important; }\n    @media (prefers-reduced-motion: reduce) { .nb-ripple, .nb-dot, .nb-cluster { animation: none; } .nb-dot { opacity: 0.5; transform: none; } .nb-ripple { opacity: 0; } }\n  </style>\n    <circle cx=\"100\" cy=\"100\" r=\"90\" class=\"nb-ripple nb-r1 nb-master\"/>\n  <circle cx=\"100\" cy=\"100\" r=\"90\" class=\"nb-ripple nb-r2\"/>\n  <circle cx=\"100\" cy=\"100\" r=\"90\" class=\"nb-ripple nb-r3\"/>\n  <circle cx=\"100\" cy=\"100\" r=\"90\" class=\"nb-ripple nb-r4\"/>\n  <g class=\"nb-cluster\">\n    <circle cx=\"100\" cy=\"40\" class=\"nb-dot\" style=\"--d:12s;--tx:15px;--ty:-10px\"/>\n    <circle cx=\"80\" cy=\"50\" class=\"nb-dot\" style=\"--d:9s;--tx:-10px;--ty:15px\"/>\n    <circle cx=\"120\" cy=\"45\" class=\"nb-dot\" style=\"--d:11s;--tx:12px;--ty:-8px\"/>\n    <circle cx=\"60\" cy=\"65\" class=\"nb-dot\" style=\"--d:7s;--tx:-8px;--ty:12px\"/>\n    <circle cx=\"140\" cy=\"60\" class=\"nb-dot\" style=\"--d:10s;--tx:14px;--ty:-12px\"/>\n    <circle cx=\"45\" cy=\"85\" class=\"nb-dot\" style=\"--d:8s;--tx:-12px;--ty:8px\"/>\n    <circle cx=\"155\" cy=\"80\" class=\"nb-dot\" style=\"--d:13s;--tx:10px;--ty:-14px\"/>\n    <circle cx=\"35\" cy=\"105\" class=\"nb-dot\" style=\"--d:6s;--tx:-14px;--ty:6px\"/>\n    <circle cx=\"165\" cy=\"100\" class=\"nb-dot\" style=\"--d:14s;--tx:16px;--ty:-10px\"/>\n    <circle cx=\"40\" cy=\"125\" class=\"nb-dot\" style=\"--d:9s;--tx:-10px;--ty:14px\"/>\n    <circle cx=\"160\" cy=\"120\" class=\"nb-dot\" style=\"--d:11s;--tx:12px;--ty:-6px\"/>\n    <circle cx=\"55\" cy=\"140\" class=\"nb-dot\" style=\"--d:7s;--tx:-8px;--ty:10px\"/>\n    <circle cx=\"145\" cy=\"135\" class=\"nb-dot\" style=\"--d:10s;--tx:14px;--ty:-12px\"/>\n    <circle cx=\"75\" cy=\"150\" class=\"nb-dot\" style=\"--d:8s;--tx:-12px;--ty:8px\"/>\n    <circle cx=\"125\" cy=\"148\" class=\"nb-dot\" style=\"--d:12s;--tx:10px;--ty:-10px\"/>\n    <circle cx=\"100\" cy=\"155\" class=\"nb-dot\" style=\"--d:6s;--tx:-14px;--ty:12px\"/>\n    <circle cx=\"90\" cy=\"35\" class=\"nb-dot\" style=\"--d:11s;--tx:8px;--ty:-15px\"/>\n    <circle cx=\"110\" cy=\"35\" class=\"nb-dot\" style=\"--d:9s;--tx:-8px;--ty:10px\"/>\n    <circle cx=\"50\" cy=\"100\" class=\"nb-dot\" style=\"--d:13s;--tx:16px;--ty:-8px\"/>\n    <circle cx=\"150\" cy=\"95\" class=\"nb-dot\" style=\"--d:7s;--tx:-10px;--ty:14px\"/>\n    <circle cx=\"95\" cy=\"60\" class=\"nb-dot\" style=\"--d:10s;--tx:12px;--ty:-12px\"/>\n    <circle cx=\"105\" cy=\"65\" class=\"nb-dot\" style=\"--d:8s;--tx:-14px;--ty:8px\"/>\n    <circle cx=\"70\" cy=\"90\" class=\"nb-dot\" style=\"--d:12s;--tx:10px;--ty:-10px\"/>\n    <circle cx=\"130\" cy=\"85\" class=\"nb-dot\" style=\"--d:6s;--tx:-8px;--ty:15px\"/>\n    <circle cx=\"85\" cy=\"115\" class=\"nb-dot\" style=\"--d:14s;--tx:14px;--ty:-6px\"/>\n    <circle cx=\"115\" cy=\"110\" class=\"nb-dot\" style=\"--d:9s;--tx:-12px;--ty:10px\"/>\n    <circle cx=\"75\" cy=\"130\" class=\"nb-dot\" style=\"--d:11s;--tx:8px;--ty:-14px\"/>\n    <circle cx=\"125\" cy=\"125\" class=\"nb-dot\" style=\"--d:7s;--tx:-10px;--ty:8px\"/>\n    <circle cx=\"100\" cy=\"75\" class=\"nb-dot\" style=\"--d:10s;--tx:15px;--ty:-10px\"/>\n    <circle cx=\"100\" cy=\"130\" class=\"nb-dot\" style=\"--d:8s;--tx:-12px;--ty:12px\"/>\n    <circle cx=\"65\" cy=\"105\" class=\"nb-dot\" style=\"--d:13s;--tx:10px;--ty:-8px\"/>\n    <circle cx=\"135\" cy=\"105\" class=\"nb-dot\" style=\"--d:6s;--tx:-14px;--ty:10px\"/>\n    <circle cx=\"90\" cy=\"90\" class=\"nb-dot\" style=\"--d:12s;--tx:8px;--ty:-12px\"/>\n    <circle cx=\"110\" cy=\"95\" class=\"nb-dot\" style=\"--d:9s;--tx:-10px;--ty:14px\"/>\n    <circle cx=\"80\" cy=\"75\" class=\"nb-dot\" style=\"--d:11s;--tx:12px;--ty:-8px\"/>\n    <circle cx=\"120\" cy=\"135\" class=\"nb-dot\" style=\"--d:7s;--tx:-8px;--ty:10px\"/>\n    <circle cx=\"100\" cy=\"50\" class=\"nb-dot\" style=\"--d:10s;--tx:14px;--ty:-14px\"/>\n    <circle cx=\"100\" cy=\"150\" class=\"nb-dot\" style=\"--d:8s;--tx:-12px;--ty:8px\"/>\n    <circle cx=\"55\" cy=\"95\" class=\"nb-dot\" style=\"--d:14s;--tx:10px;--ty:-12px\"/>\n    <circle cx=\"145\" cy=\"100\" class=\"nb-dot\" style=\"--d:6s;--tx:-14px;--ty:10px\"/>\n    <circle cx=\"70\" cy=\"110\" class=\"nb-dot\" style=\"--d:13s;--tx:8px;--ty:-15px\"/>\n    <circle cx=\"130\" cy=\"115\" class=\"nb-dot\" style=\"--d:9s;--tx:-10px;--ty:8px\"/>\n  </g>\n</svg>"
+      "svg": ""
     },
     {
       "id": "comet-orb",
@@ -1426,9 +4361,409 @@
         "--p31-accent-red"
       ],
       "animated": true,
-      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\" width=\"100%\" height=\"100%\" role=\"img\" aria-label=\"Comet Orb animated icon\">\n  <title>Comet Orb</title>\n  <desc>Swirling energy orb with harmonized elliptical rings and orbiting particles. 6-color palette, 48s sync cycle.</desc>\n  <style>\n    .co-ring { fill: none; stroke-width: 1.5; stroke-linecap: round; }\n    .co-orbit-1 { transform-origin: 100px 100px; animation: coCw 16s infinite linear; }\n    .co-orbit-2 { transform-origin: 100px 100px; animation: coCcw 12s infinite linear; }\n    .co-orbit-3 { transform-origin: 100px 100px; animation: coCw 16s infinite linear; }\n    .co-orbit-4 { transform-origin: 100px 100px; animation: coCcw 12s infinite linear; }\n    .co-r1 { stroke: var(--p31-accent, #00F0FF); stroke-dasharray: 44 156; animation: coDash 4s infinite linear; }\n    .co-r2 { stroke: var(--p31-accent-violet, #A78BFA); stroke-dasharray: 39 141; animation: coDash 4s infinite linear; }\n    .co-r3 { stroke: var(--p31-accent-gold, #FBBF24); stroke-dasharray: 50 150; animation: coDash 4s infinite linear reverse; }\n    .co-r4 { stroke: var(--p31-accent-green, #34D399); stroke-dasharray: 27 153; animation: coDash 4s infinite linear reverse; }\n    .co-c1 { fill: var(--p31-accent, #00F0FF); }\n    .co-c2 { fill: var(--p31-accent-violet, #A78BFA); }\n    .co-c3 { fill: var(--p31-accent-gold, #FBBF24); }\n    .co-c4 { fill: var(--p31-accent-green, #34D399); }\n    .co-c5 { fill: var(--p31-accent-red, #FB7185); }\n    .co-c6 { fill: var(--p31-accent-iris, #818CF8); }\n    .co-particle { filter: drop-shadow(0 0 3px currentColor); }\n    .co-p1 { animation: coCw 16s infinite linear; }\n    .co-p2 { animation: coCcw 12s infinite linear; }\n    .co-p3 { animation: coCw 16s infinite linear; }\n    .co-p4 { animation: coCcw 12s infinite linear; }\n    .co-p5 { animation: coCw 16s infinite linear; animation-delay: 8s; }\n    .co-p6 { animation: coCcw 12s infinite linear; animation-delay: 6s; }\n    .co-master { transition: filter 0.6s ease-in-out; }\n    .co-core { fill: var(--p31-accent, #00F0FF); transform-origin: 100px 100px; animation: coCore 2s infinite alternate ease-in-out; }\n    .co-trail { fill: none; stroke-width: 1; opacity: 0; }\n    .co-t1 { stroke: var(--p31-accent, #00F0FF); animation: coTrail 3s infinite ease-out; }\n    .co-t2 { stroke: var(--p31-accent-violet, #A78BFA); animation: coTrail 3s infinite ease-out; animation-delay: 1.5s; }\n    @keyframes coCw { to { transform: rotate(360deg); } }\n    @keyframes coCcw { to { transform: rotate(-360deg); } }\n    @keyframes coDash { to { stroke-dashoffset: 200; } }\n    @keyframes coCore { 0% { transform: scale(0.85); opacity: 0.8; filter: drop-shadow(0 0 4px var(--p31-accent, #00F0FF)); } 100% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 22px var(--p31-accent, #00F0FF)); } }\n    @keyframes coTrail { 0% { opacity: 0.5; stroke-width: 2.5; } 100% { opacity: 0; stroke-width: 0; } }\n    .master-pulse .co-master { filter: drop-shadow(0 0 22px var(--p31-accent, #00F0FF)) !important; }\n    @media (prefers-reduced-motion: reduce) { .co-orbit-1, .co-orbit-2, .co-orbit-3, .co-orbit-4, .co-particle, .co-core, .co-trail, .co-ring { animation: none; } .co-ring { stroke-dashoffset: 0; opacity: 0.3; } .co-core { r: 10; } }\n  </style>\n  <g class=\"co-orbit-1\">\n    <ellipse cx=\"100\" cy=\"100\" rx=\"88\" ry=\"30\" class=\"co-ring co-r1\"/>\n    <path d=\"M 100 70 Q 140 70 185 100 Q 140 130 100 130\" class=\"co-trail co-t1\"/>\n    <circle cx=\"185\" cy=\"100\" r=\"3.5\" class=\"co-particle co-c1 co-p1\"/>\n  </g>\n  <g class=\"co-orbit-2\">\n    <ellipse cx=\"100\" cy=\"100\" rx=\"78\" ry=\"26\" class=\"co-ring co-r2\" transform=\"rotate(60 100 100)\"/>\n    <circle cx=\"51\" cy=\"27\" r=\"3\" class=\"co-particle co-c5 co-p2\"/>\n  </g>\n  <g class=\"co-orbit-3\">\n    <ellipse cx=\"100\" cy=\"100\" rx=\"66\" ry=\"22\" class=\"co-ring co-r3\" transform=\"rotate(120 100 100)\"/>\n    <path d=\"M 100 80 Q 50 80 15 100 Q 50 120 100 120\" class=\"co-trail co-t2\"/>\n    <circle cx=\"15\" cy=\"100\" r=\"4\" class=\"co-particle co-c3 co-p3\"/>\n  </g>\n  <g class=\"co-orbit-4\">\n    <ellipse cx=\"100\" cy=\"100\" rx=\"54\" ry=\"18\" class=\"co-ring co-r4\" transform=\"rotate(30 100 100)\"/>\n    <circle cx=\"158\" cy=\"64\" r=\"2.5\" class=\"co-particle co-c4 co-p4\"/>\n  </g>\n  <circle cx=\"100\" cy=\"100\" r=\"10\" class=\"co-core co-master\"/>\n  <circle cx=\"42\" cy=\"66\" r=\"3\" class=\"co-particle co-c6 co-p5\"/>\n  <circle cx=\"158\" cy=\"134\" r=\"3\" class=\"co-particle co-c2 co-p6\"/>\n</svg>"
+      "svg": ""
     }
   ],
+  "tools": {
+    "renderBadge": {
+      "description": "Renders or controls the Badge component",
+      "components": [
+        "Badge"
+      ],
+      "tokens": [
+        "p31.color.accent.default",
+        "p31.color.accent.green.default",
+        "p31.color.accent.gold.default",
+        "p31.color.accent.red.default",
+        "p31.radius.full",
+        "p31.font.family.sans"
+      ]
+    },
+    "renderBottomNav": {
+      "description": "Renders or controls the BottomNav component",
+      "components": [
+        "BottomNav"
+      ],
+      "tokens": [
+        "p31.topbar.height",
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.layout.spacing.sm"
+      ]
+    },
+    "renderButton": {
+      "description": "Renders or controls the Button component",
+      "components": [
+        "Button"
+      ],
+      "tokens": [
+        "p31.color.accent.default",
+        "p31.radius.md",
+        "p31.layout.spacing.sm",
+        "p31.layout.spacing.lg"
+      ]
+    },
+    "renderCalmIndicator": {
+      "description": "Renders or controls the CalmIndicator component",
+      "components": [
+        "CalmIndicator"
+      ],
+      "tokens": [
+        "p31.color.accent.green.default",
+        "p31.color.accent.red.default",
+        "p31.glass.background",
+        "p31.radius.full"
+      ]
+    },
+    "renderCalmOverlay": {
+      "description": "Renders or controls the CalmOverlay component",
+      "components": [
+        "CalmOverlay"
+      ],
+      "tokens": [
+        "p31.color.accent.default",
+        "p31.color.text.primary",
+        "p31.z.floating"
+      ]
+    },
+    "renderCandyHeader": {
+      "description": "Renders or controls the CandyHeader component",
+      "components": [
+        "CandyHeader"
+      ],
+      "tokens": [
+        "p31.glass.surface",
+        "p31.glass.border",
+        "p31.radius.candy",
+        "p31.color.text.primary",
+        "p31.color.accent.default"
+      ]
+    },
+    "renderCard": {
+      "description": "Renders or controls the Card component",
+      "components": [
+        "Card"
+      ],
+      "tokens": [
+        "p31.surface.background",
+        "p31.glass.border",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.radius.md"
+      ]
+    },
+    "renderChameleon": {
+      "description": "Renders or controls the Chameleon component",
+      "components": [
+        "Chameleon"
+      ],
+      "tokens": [
+        "p31.color.accent.default"
+      ]
+    },
+    "renderChatShell": {
+      "description": "Renders or controls the ChatShell component",
+      "components": [
+        "ChatShell"
+      ],
+      "tokens": [
+        "p31.surface.background",
+        "p31.glass.border",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.radius.lg"
+      ]
+    },
+    "renderCheckbox": {
+      "description": "Renders or controls the Checkbox component",
+      "components": [
+        "Checkbox"
+      ],
+      "tokens": [
+        "p31.color.accent.default",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.radius.sm",
+        "p31.glass.border"
+      ]
+    },
+    "renderCommandPalette": {
+      "description": "Renders or controls the CommandPalette component",
+      "components": [
+        "CommandPalette"
+      ],
+      "tokens": [
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.color.accent.default",
+        "p31.radius.md",
+        "p31.z.modal"
+      ]
+    },
+    "renderCommandTrigger": {
+      "description": "Renders or controls the CommandTrigger component",
+      "components": [
+        "CommandTrigger"
+      ],
+      "tokens": [
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.radius.full",
+        "p31.color.text.secondary",
+        "p31.font.family.mono"
+      ]
+    },
+    "renderCrisisOverlay": {
+      "description": "Renders or controls the CrisisOverlay component",
+      "components": [
+        "CrisisOverlay"
+      ],
+      "tokens": [
+        "p31.surface.background",
+        "p31.color.text.primary",
+        "p31.color.accent.default",
+        "p31.z.crisis"
+      ]
+    },
+    "renderCrown": {
+      "description": "Renders or controls the Crown component",
+      "components": [
+        "Crown"
+      ],
+      "tokens": [
+        "p31.color.accent.default",
+        "p31.color.text.primary",
+        "p31.font.family.sans"
+      ]
+    },
+    "renderDropdown": {
+      "description": "Renders or controls the Dropdown component",
+      "components": [
+        "Dropdown"
+      ],
+      "tokens": [
+        "p31.surface.background",
+        "p31.glass.border",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.color.accent.default",
+        "p31.radius.md"
+      ]
+    },
+    "renderFooter": {
+      "description": "Renders or controls the Footer component",
+      "components": [
+        "Footer"
+      ],
+      "tokens": [
+        "p31.surface.background",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.layout.spacing.lg"
+      ]
+    },
+    "renderGlassCard": {
+      "description": "Renders or controls the GlassCard component",
+      "components": [
+        "GlassCard"
+      ],
+      "tokens": [
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.glass.radius",
+        "p31.layout.spacing.lg"
+      ]
+    },
+    "renderGlassPanel": {
+      "description": "Renders or controls the GlassPanel component",
+      "components": [
+        "GlassPanel"
+      ],
+      "tokens": [
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.glass.radius"
+      ]
+    },
+    "renderMetricBadge": {
+      "description": "Renders or controls the MetricBadge component",
+      "components": [
+        "MetricBadge"
+      ],
+      "tokens": [
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.radius.sm",
+        "p31.scale.xs",
+        "p31.color.text.secondary"
+      ]
+    },
+    "renderMobileBottomNav": {
+      "description": "Renders or controls the MobileBottomNav component",
+      "components": [
+        "MobileBottomNav"
+      ],
+      "tokens": [
+        "p31.glass.surface",
+        "p31.glass.border",
+        "p31.color.accent.default",
+        "p31.color.text.secondary",
+        "p31.radius.full"
+      ]
+    },
+    "renderModePill": {
+      "description": "Renders or controls the ModePill component",
+      "components": [
+        "ModePill"
+      ],
+      "tokens": [
+        "p31.color.accent.default",
+        "p31.color.accent.gold.default",
+        "p31.color.accent.green.default",
+        "p31.glass.background",
+        "p31.radius.full"
+      ]
+    },
+    "renderNotificationStack": {
+      "description": "Renders or controls the NotificationStack component",
+      "components": [
+        "NotificationStack"
+      ],
+      "tokens": [
+        "p31.glass.surface",
+        "p31.glass.border",
+        "p31.color.accent.default",
+        "p31.color.accent.green.default",
+        "p31.color.accent.gold.default",
+        "p31.color.accent.red.default",
+        "p31.color.text.primary",
+        "p31.color.text.secondary",
+        "p31.z.floating"
+      ]
+    },
+    "renderPageHeader": {
+      "description": "Renders or controls the PageHeader component",
+      "components": [
+        "PageHeader"
+      ],
+      "tokens": [
+        "p31.color.text.secondary",
+        "p31.layout.spacing.lg"
+      ]
+    },
+    "renderSectionStrip": {
+      "description": "Renders or controls the SectionStrip component",
+      "components": [
+        "SectionStrip"
+      ],
+      "tokens": [
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.radius.candy",
+        "p31.color.accent.default",
+        "p31.color.text.secondary"
+      ]
+    },
+    "renderSidebarNav": {
+      "description": "Renders or controls the SidebarNav component",
+      "components": [
+        "SidebarNav"
+      ],
+      "tokens": [
+        "p31.glass.surface",
+        "p31.glass.border",
+        "p31.color.accent.default",
+        "p31.color.text.secondary",
+        "p31.radius.full",
+        "p31.font.family.sans"
+      ]
+    },
+    "renderSpoonCluster": {
+      "description": "Renders or controls the SpoonCluster component",
+      "components": [
+        "SpoonCluster"
+      ],
+      "tokens": [
+        "p31.color.accent.default",
+        "p31.glass.border",
+        "p31.radius.full"
+      ]
+    },
+    "renderSpoonDial": {
+      "description": "Renders or controls the SpoonDial component",
+      "components": [
+        "SpoonDial"
+      ],
+      "tokens": [
+        "p31.radius.full",
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.color.accent.default",
+        "p31.color.text.muted"
+      ]
+    },
+    "renderStarfield": {
+      "description": "Renders or controls the Starfield component",
+      "components": [
+        "Starfield"
+      ],
+      "tokens": [
+        "p31.z.starfield",
+        "p31.starfield.hearth",
+        "p31.starfield.teal",
+        "p31.starfield.remembrance"
+      ]
+    },
+    "renderStatusBadge": {
+      "description": "Renders or controls the StatusBadge component",
+      "components": [
+        "StatusBadge"
+      ],
+      "tokens": [
+        "p31.radius.full",
+        "p31.scale.xs",
+        "p31.color.accent.green.default",
+        "p31.color.accent.red.default",
+        "p31.color.accent.gold.default"
+      ]
+    },
+    "renderStatusCluster": {
+      "description": "Renders or controls the StatusCluster component",
+      "components": [
+        "StatusCluster"
+      ],
+      "tokens": [
+        "p31.glass.background",
+        "p31.layout.spacing.xs"
+      ]
+    },
+    "renderTopbar": {
+      "description": "Renders or controls the Topbar component",
+      "components": [
+        "Topbar"
+      ],
+      "tokens": [
+        "p31.topbar.height",
+        "p31.glass.background",
+        "p31.glass.border",
+        "p31.layout.spacing.sm",
+        "p31.radius.candy",
+        "p31.color.accent.default",
+        "p31.color.accent.gold.default",
+        "p31.color.accent.green.default"
+      ]
+    },
+    "renderTopbarSection": {
+      "description": "Renders or controls the TopbarSection component",
+      "components": [
+        "TopbarSection"
+      ],
+      "tokens": [
+        "p31.layout.spacing.xs",
+        "p31.glass.background"
+      ]
+    }
+  },
   "webmcp": {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "MCPAnnotation",
@@ -1557,70 +4892,6 @@
         "container_height": "100%",
         "description": "Favicon / app icon (browser tabs, mobile home screen)",
         "usage": "favicon, app-icon, pwa-icon"
-      }
-    },
-    "layout_containers": {
-      "header": {
-        "height": "calc(var(--p31-base) * 3)",
-        "padding_y": "calc(var(--p31-base) * 0.25)",
-        "gap": "calc(var(--p31-base) * 1.3333)",
-        "align_items": "center",
-        "justify_content": "space-between",
-        "max_width": "1440px",
-        "margin": "0 auto",
-        "display": "flex",
-        "description": "Primary navigation header. Fixed height. Flex container. No child component may exceed height.",
-        "forbidden_child_properties": [
-          "marginTop",
-          "marginBottom",
-          "marginLeft",
-          "marginRight",
-          "margin",
-          "transform: translateY",
-          "position: relative",
-          "top",
-          "bottom"
-        ],
-        "allowed_child_properties": [
-          "display: block",
-          "width: 100%",
-          "height: 100%"
-        ]
-      },
-      "page_body": {
-        "max_width": "1200px",
-        "margin": "0 auto",
-        "padding_x": "calc(var(--p31-base) * 1.3333)",
-        "gap": "calc(var(--p31-base) * 1.7777)",
-        "description": "Main content area. Predictable padding and gaps derived from scale."
-      },
-      "section_hero": {
-        "padding_x": "calc(var(--p31-base) * 1.3333)",
-        "padding_top": "calc(var(--p31-scale-xl) * 0.5)",
-        "padding_bottom": "calc(var(--p31-base) * 2.3703)",
-        "gap": "calc(var(--p31-base) * 1.7777)",
-        "max_width": "1200px",
-        "margin": "0 auto",
-        "description": "Hero section. Consistent spacing from tokens."
-      },
-      "section_features": {
-        "padding_x": "calc(var(--p31-base) * 1.3333)",
-        "padding_top": "calc(var(--p31-base) * 2.3703)",
-        "padding_bottom": "calc(var(--p31-base) * 2.3703)",
-        "display": "grid",
-        "grid_template_columns": "repeat(auto-fill, minmax(280px, 1fr))",
-        "gap": "calc(var(--p31-base) * 1.3333)",
-        "max_width": "1200px",
-        "margin": "0 auto",
-        "description": "Feature grid. Uses grid layout with consistent gap."
-      },
-      "footer": {
-        "padding_x": "calc(var(--p31-base) * 1.3333)",
-        "padding_y": "calc(var(--p31-base) * 1.3333)",
-        "border_top": "1px solid rgba(255,255,255,0.08)",
-        "max_width": "1440px",
-        "margin": "0 auto",
-        "description": "Site footer. Bordered top, consistent padding, full-width cap."
       }
     },
     "spacing_rules": {
@@ -1780,53 +5051,20 @@
         "notes": "- Header container enforces height: calc(var(--p31-base) * 3) = 48px\n- All children are centered via align-items: center\n- Components have no margin, so alignment is perfect\n- No hacks needed\n"
       }
     },
-    "property-overrides": {
-      "p31ca": {
-        "semantic-color": {
-          "primary": {
-            "$value": "oklch(65% 0.18 195)"
-          },
-          "secondary": {
-            "$value": "oklch(65% 0.18 285)"
-          }
-        },
-        "typography": {
-          "font-family": "'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
-        }
-      },
-      "phosphorus31": {
-        "semantic-color": {
-          "primary": {
-            "$value": "oklch(65% 0.18 105)"
-          },
-          "secondary": {
-            "$value": "oklch(65% 0.18 15)"
-          }
-        },
-        "typography": {
-          "font-family": "'Atkinson Hyperlegible', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
-        },
-        "nonprofit": {
-          "trust_indicators": {
-            "ein_badge": "501(c)(3) · EIN 42-1888158",
-            "transparency_link": "/financials",
-            "pilot_count_display": true
-          },
-          "conversion": {
-            "cta_min_height": "48px",
-            "cta_padding": "var(--p31-space-md) var(--p31-space-lg)",
-            "donate_button_color": "var(--p31-color-emerald)",
-            "volunteer_button_color": "var(--p31-color-amber)"
-          },
-          "accessibility": {
-            "min_contrast_ratio": 4.5,
-            "font_primary": "Atkinson Hyperlegible",
-            "touch_target_min": "48px"
-          }
-        }
-      }
-    },
     "version_history": [
+      {
+        "version": "3.1-willow",
+        "date": "2026-07-29",
+        "changes": [
+          "Added willow brand to property-overrides (warm palette, child-friendly tokens)",
+          "Added touch section (min, recommended, large touch targets)",
+          "Added z_index section (starfield, topbar, toast, crisis, skip_link)",
+          {
+            "Willow portal": "Comic Sans, rounded radii, warm amber/terracotta palette"
+          }
+        ],
+        "author": "P31 Labs Engineering"
+      },
       {
         "version": 2,
         "date": "2026-07-23",

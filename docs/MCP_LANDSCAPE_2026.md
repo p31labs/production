@@ -12,7 +12,17 @@ The Model Context Protocol ecosystem has undergone its most significant transfor
 - **WebMCP Origin Trial** — Chrome's browser-native standard for websites to register structured tools for built-in agents, active through November 2026.
 - **Cloudflare MCP V2** — Full SDK support for the stateless spec, with Workers-native deployment and OAuth 2.1 authorization.
 
-**P31's position:** The existing stack — 10 CLI MCP servers speaking `2026-07-28`, the x402 payment gateway, and LOVE dual-rail settlement — is already aligned with the industry's future direction.
+**P31's position:** The x402 payment gateway and LOVE dual-rail settlement are already aligned with the industry's future direction. The MCP servers themselves are **mid-migration**: as of 2026-10-11, only 3 of 26 servers advertise `2026-07-28` (design-mcp, the x402 bridge, p31-mcp-server); the 12 CLI bridge backends and the remaining edge workers still run `2024-11-05`/`2025-11-25` handshakes. **Migration in progress — 2026-10-11 (enterprise MCP update wave)**; tracker: `docs/MCP_MIGRATION_2026-07-28.md`.
+
+| Server group | Advertised today (code) | Stateless / server-discover | SDK v2 | OAuth 2.1 | Status |
+|---|---|---|---|---|---|
+| design-mcp (edge) | `2026-07-28` | Yes / Yes | No | No | ✅ migrated |
+| x402 bridge (edge) | `2026-07-28` | Yes / — | No | No | ✅ migrated |
+| p31-mcp-server (edge) | SDK-managed (`createMcpHandler`) | SDK-managed | Yes | No | ✅ migrated |
+| 8 other edge MCP workers | `2024-11-05` / `2025-11-25` / `2025-06-18` / none | No | No | Partial (1) | 🟡 migrating |
+| 12 CLI bridge backends | `2024-11-05` ×8, `2025-11-25` ×4 | No | No | No | 🟡 migrating |
+
+> Per-server rows with file:line evidence: `docs/enterprise/api/mcp-server-protocol-status.md`.
 
 ---
 
@@ -156,7 +166,7 @@ Cloudflare's `createMcpHandler` (started as an experimental Agents SDK API in No
 
 ## 6. Key Takeaways
 
-1. **P31 is ahead of the curve** — 10 CLI servers already speak `2026-07-28`; stateless by design.
+1. **P31 is on the curve, not ahead of it** — 3 servers already speak `2026-07-28`; the 12 CLI bridge backends and 8 edge workers are mid-migration (2026-10-11, enterprise MCP update wave — see the status table in the Executive Summary).
 2. **WebMCP is a new channel, not a replacement** — It complements existing MCP infrastructure.
 3. **The x402 gateway addresses a critical gap** — Authorization and monetization layers that most MCP deployments lack.
 4. **Security scrutiny is intensifying** — The LOVE dual-rail and x402 gating add defense-in-depth.

@@ -31,26 +31,41 @@ export const SCENE_DEFAULTS: ScenePresetValue = {
   starfield: { density: 140, twinkle: 1, flare: 6 },
 }
 
-/** Read a CSS scene token (falling back to a default). */
-function readToken(name: string, fallback: number): number {
-  if (typeof window === 'undefined') return fallback
-  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-  const n = Number.parseFloat(v)
-  return Number.isFinite(n) ? n : fallback
-}
+/** The six scene tokens the knobs map onto, in value-object order. */
+const SCENE_TOKEN_NAMES = [
+  '--p31-scene-rotation',
+  '--p31-scene-tilt',
+  '--p31-scene-scale',
+  '--p31-scene-star-density',
+  '--p31-scene-star-twinkle',
+  '--p31-scene-star-flare',
+] as const;
 
-/** Read the full scene config from the CSS tokens (theme-aware opening state). */
+/** Read the full scene config from the CSS tokens (theme-aware opening state).
+ *  Batched: ONE computed-style read (each `getComputedStyle` call forces a
+ *  style recalc), all six values into a local array, then a single write of
+ *  the assembled object. The old shape read the style object once PER knob,
+ *  interleaving six recalcs with the callers' store writes. */
 export function readSceneFromCss(): ScenePresetValue {
+  if (typeof window === 'undefined') {
+    return {
+      dome: { ...SCENE_DEFAULTS.dome },
+      starfield: { ...SCENE_DEFAULTS.starfield },
+    }
+  }
+  const style = getComputedStyle(document.documentElement)
+  const values = SCENE_TOKEN_NAMES.map((name) => Number.parseFloat(style.getPropertyValue(name).trim()))
+  const num = (i: number, fallback: number) => (Number.isFinite(values[i]) ? values[i] : fallback)
   return {
     dome: {
-      rotation: readToken('--p31-scene-rotation', SCENE_DEFAULTS.dome.rotation),
-      tilt: readToken('--p31-scene-tilt', SCENE_DEFAULTS.dome.tilt),
-      scale: readToken('--p31-scene-scale', SCENE_DEFAULTS.dome.scale),
+      rotation: num(0, SCENE_DEFAULTS.dome.rotation),
+      tilt: num(1, SCENE_DEFAULTS.dome.tilt),
+      scale: num(2, SCENE_DEFAULTS.dome.scale),
     },
     starfield: {
-      density: readToken('--p31-scene-star-density', SCENE_DEFAULTS.starfield.density),
-      twinkle: readToken('--p31-scene-star-twinkle', SCENE_DEFAULTS.starfield.twinkle),
-      flare: readToken('--p31-scene-star-flare', SCENE_DEFAULTS.starfield.flare),
+      density: num(3, SCENE_DEFAULTS.starfield.density),
+      twinkle: num(4, SCENE_DEFAULTS.starfield.twinkle),
+      flare: num(5, SCENE_DEFAULTS.starfield.flare),
     },
   }
 }
@@ -90,6 +105,7 @@ export const useSceneStore = create<SceneState>()(
     }),
     {
       name: 'p31:scene:v2',
+      skipHydration: true,
       onRehydrateStorage: () => (state) => {
         // First run (nothing persisted): hydrate from the CSS tokens so a
         // theme's opening scene applies before any user adjustment.

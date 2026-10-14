@@ -9,6 +9,7 @@
     "./services/sovereignRelay": "./src/services/sovereignRelay.ts",
     "./src/components/mesh/*": "./src/components/mesh/*",
     "./src/components/hud/*": "./src/components/hud/*",
+    "./src/cockpit/StarfieldField": "./src/cockpit/StarfieldField.tsx",
     "./src/lib/engine/*": "./src/lib/engine/*"
   },
   "scripts": {

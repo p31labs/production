@@ -1,0 +1,54 @@
+{
+  "name": "d2-pos-policy-shaped-all-rules",
+  "note": "POSITIVE CONTROL: one policy-shaped token per rule — all must pass CLEAN",
+  "tokens": {
+    "glass-bg": {
+      "$value": { "colorSpace": "oklch", "components": [1, 0.01, 240], "alpha": 0.06 },
+      "$type": "color",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": { "min": 0.03, "max": 0.09 },
+          "unit": "alpha"
+        }
+      }
+    },
+    "h1": {
+      "$value": { "value": 51, "unit": "px" },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "clamp",
+          "resolvedBy": "window-size class + user text-size adjustment",
+          "bounds": { "preferred": "3.19rem", "min": "2.4rem", "max": "3.99rem" },
+          "unit": "rem"
+        }
+      }
+    },
+    "spacing-md": {
+      "$value": { "value": 16, "unit": "px" },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": { "min": 12, "max": 24 },
+          "unit": "px"
+        }
+      }
+    },
+    "duration-base": {
+      "$value": { "value": 431, "unit": "ms" },
+      "$type": "duration",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": { "min": 0, "max": 431 },
+          "unit": "ms"
+        }
+      }
+    }
+  }
+}

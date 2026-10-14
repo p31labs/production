@@ -10,4 +10,4 @@ allowBuilds:
   '@parcel/watcher': true
   node-datachannel: set this to true or false
   protobufjs: set this to true or false
-  sharp: set this to true or false
+  sharp: true

@@ -1,0 +1,10 @@
+{
+  "name": "neg-control-loose-floor",
+  "extends": ["Base"],
+  "tokens": {
+    "radius-sm": {
+      "$value": { "value": 6, "unit": "px" },
+      "$type": "dimension"
+    }
+  }
+}

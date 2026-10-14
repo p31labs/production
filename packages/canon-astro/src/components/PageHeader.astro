@@ -1,0 +1,22 @@
+---
+import { pageHeaderTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { title, subtitle, class: cls = '', style } = Astro.props;
+const actions = await Astro.slots.render('actions');
+
+const html = renderHtml(pageHeaderTree({
+  title,
+  subtitle,
+  actions: actions ? { raw: actions } : null,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

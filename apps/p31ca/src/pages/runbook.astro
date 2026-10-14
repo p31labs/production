@@ -1,0 +1,186 @@
+---
+/**
+ * /runbook — the "$5 stack" deployment runbook.
+ *
+ * Step-by-step instructions for a family or small team to deploy the whole
+ * P31 stack on ONE Cloudflare Workers Paid account ($5/month): the Pages
+ * sites (hub + portals), the MCP servers (16 in the operator's current
+ * local set), D1 databases, KV, Queues, Durable Objects, and Workers AI.
+ *
+ * Every allowance and overage rate below is from Cloudflare's published
+ * pricing docs, retrieved 2026-10-13, and each row links to the page it
+ * came from. Our own cost claims are architecture math only: what fits
+ * inside the published included allowances at family scale. This page does
+ * not state P31's actual bill, because a runbook cannot see it.
+ *
+ * Written as instructions, not marketing. Gates: no HTML comments, H1→H2→H3
+ * only, one filled-accent CTA per section, URLs registered in mesh constants.
+ */
+import MarketingShell from '../layouts/MarketingShell.astro';
+import SectionHeader from '../components/marketing/SectionHeader.astro';
+import Footer from '../components/marketing/Footer.astro';
+
+const RETRIEVED = '2026-10-13';
+const CF_WORKERS = 'https://developers.cloudflare.com/workers/platform/pricing/';
+const CF_D1 = 'https://developers.cloudflare.com/d1/platform/pricing/';
+const CF_KV = 'https://developers.cloudflare.com/kv/platform/pricing/';
+const CF_QUEUES = 'https://developers.cloudflare.com/queues/platform/pricing/';
+const CF_DO = 'https://developers.cloudflare.com/durable-objects/platform/pricing/';
+const CF_AI = 'https://developers.cloudflare.com/workers-ai/platform/pricing/';
+const CF_R2 = 'https://developers.cloudflare.com/r2/pricing/';
+const CF_PAGES = 'https://developers.cloudflare.com/pages/functions/pricing/';
+
+const allowanceRows = [
+  { service: 'Workers (includes Pages Functions)', included: '10M requests/mo · 30M CPU-milliseconds/mo · no duration charge', overage: '+$0.30 per 1M requests · +$0.02 per 1M CPU-ms', href: CF_WORKERS },
+  { service: 'Pages static assets', included: 'Unlimited requests · unlimited bandwidth', overage: 'None — free and unlimited', href: CF_PAGES },
+  { service: 'Workers KV', included: '10M reads/mo · 1M writes/mo · 1M deletes/mo · 1M list ops/mo · 1 GB stored', overage: '+$0.50 per 1M reads · +$5.00 per 1M writes/deletes/lists · +$0.50 per GB-month', href: CF_KV },
+  { service: 'D1 (SQLite)', included: '25B rows read/mo · 50M rows written/mo · 5 GB storage', overage: '+$0.001 per 1M rows read · +$1.00 per 1M rows written · +$0.75 per GB-month', href: CF_D1 },
+  { service: 'Queues', included: '1M operations/mo · 4-day default retention (up to 14)', overage: '+$0.40 per 1M operations', href: CF_QUEUES },
+  { service: 'Durable Objects', included: '1M requests/mo · 400,000 GB-seconds/mo · SQLite storage shares the D1 row allowances', overage: '+$0.15 per 1M requests · +$12.50 per 1M GB-seconds', href: CF_DO },
+  { service: 'Workers AI', included: '10,000 neurons/day free on every plan', overage: '$0.011 per 1,000 neurons beyond the daily free allocation', href: CF_AI },
+  { service: 'R2 (object storage)', included: '10 GB stored · zero egress at any volume', overage: '$0.015 per GB-month stored · no egress charge, ever', href: CF_R2 },
+  { service: 'Workers Logs', included: '20M log events written/mo', overage: '+$0.60 per 1M events', href: CF_WORKERS },
+];
+---
+
+<MarketingShell
+  title="$5 stack runbook — P31 Labs"
+  description="Deploy the whole P31 stack — pages, MCP servers, D1, KV, Queues, Durable Objects, Workers AI — on one Cloudflare Workers Paid account. Instructions, not marketing."
+>
+  <main id="main-content" class="section">
+    <div class="ru1b-max-w-4xl ru1b-mx-auto ru1b-px-6 ru1b-md-px-12 ru1b-lg-px-16">
+      <SectionHeader
+        level="1"
+        title="$5 stack runbook"
+        description={`Step-by-step: deploy the whole P31 stack on one Cloudflare Workers Paid account. Allowances and overage rates are Cloudflare's published numbers, retrieved ${RETRIEVED}.`}
+      />
+
+      <div class="ru1b-mt-12 ru1b-space-y-8">
+        <div class="glass-card ru1b-p-8">
+          <h2 class="ru1b-text-lg ru1b-font-bold ru1b-mb-3" style="color: var(--p31-text);">What you need</h2>
+          <ul class="ru1b-space-y-2 ru1b-text-sm ru1b-leading-relaxed" style="color: var(--p31-text-secondary);">
+            <li>One Cloudflare account (free to create).</li>
+            <li>Node.js and npm installed, and <code class="ru1b-font-mono" style="color: var(--p31-accent);">npx wrangler</code> — no global install needed, every command below works through npx.</li>
+            <li>The P31 source. The hub lives in <a href="https://github.com/p31labs/production" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">github.com/p31labs/production</a> under <code class="ru1b-font-mono" style="color: var(--p31-accent);">apps/p31ca</code>, the MCP servers under <code class="ru1b-font-mono" style="color: var(--p31-accent);">workers/</code>.</li>
+            <li>One credit card for the $5/month plan. That is the whole infrastructure budget at family scale.</li>
+          </ul>
+        </div>
+
+        <div class="glass-card ru1b-p-8">
+          <h2 class="ru1b-text-lg ru1b-font-bold ru1b-mb-3" style="color: var(--p31-text);">Step 1 — turn on the Workers Paid plan</h2>
+          <p class="ru1b-text-sm ru1b-leading-relaxed ru1b-mb-4" style="color: var(--p31-text-secondary);">
+            In the dashboard (<a href="https://dash.cloudflare.com" target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">dash.cloudflare.com</a>), open Workers &amp; Pages and switch the account to the Workers Paid plan. It is a flat $5/month per account — there are no per-seat charges, and data transfer (egress) and bandwidth are not billed. Everything in this runbook runs on that one plan.
+          </p>
+          <p class="ru1b-text-sm ru1b-leading-relaxed" style="color: var(--p31-text-secondary);">
+            Read the plan's own page before you pay: <a href={CF_WORKERS} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">Cloudflare Workers pricing</a> (retrieved {RETRIEVED}).
+          </p>
+        </div>
+
+        <div class="glass-card ru1b-p-8">
+          <h2 class="ru1b-text-lg ru1b-font-bold ru1b-mb-5" style="color: var(--p31-text);">Step 2 — what the $5 includes</h2>
+          <p class="ru1b-text-sm ru1b-leading-relaxed ru1b-mb-4" style="color: var(--p31-text-secondary);">
+            The table below is the plan's published included usage and overage rates, one row per service this stack uses. All figures retrieved {RETRIEVED} from Cloudflare's pricing docs — each row links to its page.
+          </p>
+          <div class="ru1b-overflow-x-auto">
+            <table class="ru1b-w-full ru1b-text-sm" style="border-collapse: collapse; min-width: 760px;">
+              <thead>
+                <tr style="border-bottom: 1px solid var(--p31-glass-border);">
+                  <th class="ru1b-text-left ru1b-font-semibold ru1b-p-3" style="color: var(--p31-text);">Service</th>
+                  <th class="ru1b-text-left ru1b-font-semibold ru1b-p-3" style="color: var(--p31-text);">Included per month</th>
+                  <th class="ru1b-text-left ru1b-font-semibold ru1b-p-3" style="color: var(--p31-text);">Overage</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allowanceRows.map((row) => (
+                  <tr style="border-bottom: 1px solid var(--p31-glass-border); vertical-align: top;">
+                    <td class="ru1b-p-3 ru1b-font-semibold" style="color: var(--p31-text);">
+                      <a href={row.href} target="_blank" rel="noopener" style="color: var(--p31-text); text-decoration: underline;">{row.service} ↗</a>
+                    </td>
+                    <td class="ru1b-p-3 ru1b-text-xs ru1b-leading-relaxed" style="color: var(--p31-text-secondary);">{row.included}</td>
+                    <td class="ru1b-p-3 ru1b-text-xs ru1b-leading-relaxed" style="color: var(--p31-text-secondary);">{row.overage}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="glass-card ru1b-p-8">
+          <h2 class="ru1b-text-lg ru1b-font-bold ru1b-mb-3" style="color: var(--p31-text);">Step 3 — the pages first</h2>
+          <p class="ru1b-text-sm ru1b-leading-relaxed ru1b-mb-4" style="color: var(--p31-text-secondary);">
+            The hub and the portals are Cloudflare Pages projects — static output plus Pages Functions. Static asset requests are free and unlimited; Functions bill as Workers against the allowance table above.
+          </p>
+          <pre class="ru1b-font-mono ru1b-text-xs ru1b-leading-relaxed ru1b-p-4 ru1b-rounded-xl ru1b-overflow-x-auto ru1b-mb-4" style="background: var(--p31-surface); color: var(--p31-text-secondary);"><code>npx wrangler login
+npx wrangler pages project create p31ca --production-branch main
+cd apps/p31ca
+npm run build
+npx wrangler pages deploy dist --project-name p31ca --branch=main</code></pre>
+          <p class="ru1b-text-sm ru1b-leading-relaxed" style="color: var(--p31-text-secondary);">
+            Repeat for each portal you run. The hub's own deploy script is exactly this — see <code class="ru1b-font-mono" style="color: var(--p31-accent);">npm run deploy</code> in <code class="ru1b-font-mono" style="color: var(--p31-accent);">apps/p31ca/package.json</code>.
+          </p>
+        </div>
+
+        <div class="glass-card ru1b-p-8">
+          <h2 class="ru1b-text-lg ru1b-font-bold ru1b-mb-3" style="color: var(--p31-text);">Step 4 — the MCP servers</h2>
+          <p class="ru1b-text-sm ru1b-leading-relaxed ru1b-mb-4" style="color: var(--p31-text-secondary);">
+            Each MCP server is one Worker. The operator's current local set is 16 servers (the registry, crypto, wallet, marketplace, and the room workers) — deploy the ones your household uses; the same account hosts all of them, and Worker-to-Worker calls through service bindings add no extra request charges.
+          </p>
+          <pre class="ru1b-font-mono ru1b-text-xs ru1b-leading-relaxed ru1b-p-4 ru1b-rounded-xl ru1b-overflow-x-auto ru1b-mb-4" style="background: var(--p31-surface); color: var(--p31-text-secondary);"><code>cd workers/mcp-registry
+npx wrangler deploy</code></pre>
+          <p class="ru1b-text-sm ru1b-leading-relaxed" style="color: var(--p31-text-secondary);">
+            Then register the servers in the registry so clients can discover them. The registry publishes the fleet at <code class="ru1b-font-mono" style="color: var(--p31-accent);">/servers</code> and the audit chain at <code class="ru1b-font-mono" style="color: var(--p31-accent);">/audit</code>.
+          </p>
+        </div>
+
+        <div class="glass-card ru1b-p-8">
+          <h2 class="ru1b-text-lg ru1b-font-bold ru1b-mb-3" style="color: var(--p31-text);">Step 5 — databases, KV, Queues, Durable Objects</h2>
+          <ul class="ru1b-space-y-3 ru1b-text-sm ru1b-leading-relaxed" style="color: var(--p31-text-secondary);">
+            <li><strong style="color: var(--p31-text);">D1.</strong> Create one database per ledger: <code class="ru1b-font-mono" style="color: var(--p31-accent);">npx wrangler d1 create loom</code>, then bind it in <code class="ru1b-font-mono" style="color: var(--p31-accent);">wrangler.toml</code>. The Loom's hash-chained log lives here; a family-scale log (thousands of rows a month) is orders of magnitude inside the 25 billion rows read allowance.</li>
+            <li><strong style="color: var(--p31-text);">KV.</strong> One namespace for the registry catalog. Included: 10M reads and 1M writes per month.</li>
+            <li><strong style="color: var(--p31-text);">Queues.</strong> One queue for async work (registry ingest, notifications). Included: 1M operations per month.</li>
+            <li><strong style="color: var(--p31-text);">Durable Objects.</strong> The registry's audit and transparency ledgers are Durable Object classes — one instance per log name. Included: 1M requests and 400,000 GB-seconds per month.</li>
+          </ul>
+        </div>
+
+        <div class="glass-card ru1b-p-8">
+          <h2 class="ru1b-text-lg ru1b-font-bold ru1b-mb-3" style="color: var(--p31-text);">Step 6 — Workers AI</h2>
+          <p class="ru1b-text-sm ru1b-leading-relaxed" style="color: var(--p31-text-secondary);">
+            Add an AI binding to any Worker that needs inference. Every account gets 10,000 free neurons per day — enough for a household's daily assistive use at zero cost; anything beyond the daily free allocation bills at $0.011 per 1,000 neurons. A few frontier models require the Paid plan (or prepaid AI Gateway credits) to call at all — the pricing page lists them. Source: <a href={CF_AI} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">Workers AI pricing</a> (retrieved {RETRIEVED}).
+          </p>
+        </div>
+
+        <div class="glass-card ru1b-p-8">
+          <h2 class="ru1b-text-lg ru1b-font-bold ru1b-mb-3" style="color: var(--p31-text);">Step 7 — what stays inside the $5</h2>
+          <p class="ru1b-text-sm ru1b-leading-relaxed ru1b-mb-4" style="color: var(--p31-text-secondary);">
+            Honest arithmetic, not a bill: a family-scale deployment — the hub and portals on Pages (static requests free), 16 MCP Workers serving household traffic, D1 ledgers in the thousands of rows, a registry in KV, one queue, two Durable Objects, and daily Workers AI use under the free neurons — sits comfortably inside every allowance in the Step 2 table. The only recurring charge is the $5 plan itself.
+          </p>
+          <p class="ru1b-text-sm ru1b-leading-relaxed ru1b-mb-4" style="color: var(--p31-text-secondary);">
+            Overage would only start if the deployment outgrew the included allowances — for example past 10 million requests a month (which is over 13 requests per second, all month). Those rates are in the table too, so the worst case is knowable in advance. Set a usage alert in the dashboard if you want a ceiling you can feel.
+          </p>
+          <p class="ru1b-text-sm ru1b-leading-relaxed" style="color: var(--p31-text-secondary);">
+            This is architecture math for the pattern above. It is an estimate, and it is not a statement of P31 Labs' actual bill.
+          </p>
+        </div>
+
+        <div class="glass-card ru1b-p-8">
+          <h2 class="ru1b-text-lg ru1b-font-bold ru1b-mb-3" style="color: var(--p31-text);">Where the numbers come from</h2>
+          <ul class="ru1b-space-y-2 ru1b-text-sm" style="color: var(--p31-text-secondary);">
+            <li><a href={CF_WORKERS} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">Workers platform pricing</a></li>
+            <li><a href={CF_D1} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">D1 pricing</a></li>
+            <li><a href={CF_KV} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">KV pricing</a></li>
+            <li><a href={CF_QUEUES} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">Queues pricing</a></li>
+            <li><a href={CF_DO} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">Durable Objects pricing</a></li>
+            <li><a href={CF_AI} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">Workers AI pricing</a></li>
+            <li><a href={CF_R2} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">R2 pricing</a></li>
+            <li><a href={CF_PAGES} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">Pages Functions pricing</a></li>
+          </ul>
+          <p class="ru1b-text-xs ru1b-mt-4" style="color: var(--p31-text-tertiary, #a1a1a1);">
+            All rates retrieved {RETRIEVED}. Cloudflare updates its pricing pages; the links are the living source.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</MarketingShell>

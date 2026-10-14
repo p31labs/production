@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Shell, Page } from '@p31ca/design-core/canon-v2'
 import { useWorkspaceStore } from '@/store/workspaceStore'
 import { useMarketplaceStore } from '@/store/marketplaceStore'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
@@ -8,7 +9,6 @@ import { useThemeEffects } from '@/hooks/useThemeEffects'
 import { Starfield } from '@/components/Starfield'
 import { NotificationStack } from '@/components/NotificationStack'
 import { Topbar } from '@/components/Topbar'
-import { SidebarNav } from '@/components/SidebarNav'
 import { MobileBottomNav } from '@/components/MobileBottomNav'
 import { ModeGateModal } from '@/components/ModeGateModal'
 import { CommandPalette } from '@/components/CommandPalette'
@@ -51,6 +51,13 @@ function parseHash(): { surface: SurfaceId; serverId?: string } {
  *   #/playground  → interactive playground session
  *   #/publish     → register a server
  *   #/docs        → integration guide
+ *
+ * Canon v2 shell: the Topbar (header[role=banner]) renders BEFORE the
+ * Shell so the render-gate's topbar anchor resolves to the real topbar
+ * bottom (a [data-p31] element earlier in the document would measure the
+ * whole page). The Shell then owns the grid (data-p31="shell" +
+ * shell-main), and every route renders ONE Page mode="flow" — a document
+ * site, never a fill surface nested in a flow column.
  */
 export function App() {
   const surface = useWorkspaceStore((s) => s.surface)
@@ -88,16 +95,13 @@ export function App() {
 
   return (
     <>
-      <a href="#main-content" className="skip-link">Skip to main content</a>
       <Starfield />
       <NotificationStack />
-      <Topbar />
-      <div className="app-body">
-        <SidebarNav />
-        <main className="main-workspace" id="main-content">
+      <Shell topbar={<Topbar />} mainId="main-content">
+        <Page mode="flow">
           <Surface />
-        </main>
-      </div>
+        </Page>
+      </Shell>
       <MobileBottomNav />
       <ModeGateModal />
       <CommandPalette />

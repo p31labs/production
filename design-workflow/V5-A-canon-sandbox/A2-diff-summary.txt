@@ -1,0 +1,7 @@
+A-2 diff summary:
+  total differing paths: 26
+  of which unexpected (not F1/F2): 0
+  $extensions.p31.themes entries: 239 -> 264 (expect 239 -> 264)
+  sunlight.p31 keys: 23 -> 22 (expect 23 -> 22)
+  sunlight has 'text' after F1: false
+A-2 RESULT: PASS

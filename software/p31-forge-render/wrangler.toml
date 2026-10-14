@@ -1,0 +1,24 @@
+name = "p31-forge-render"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+# ─── Browser Run binding (headless Chromium at the edge) ─────────────────
+# Production requires the Workers Paid plan ($5/mo, 10 browser-hours
+# included; overage $0.09/hr).
+browser = { binding = "BROWSER" }
+#
+# ─── R2 artifact storage (optional phase: signed-URL download) ───────────
+[[r2_buckets]]
+binding = "ARTIFACTS"
+bucket_name = "p31-forge-artifacts"
+#
+# ─── Secrets (wrangler secret put) ────────────────────────────────────────
+# (none required for the direct-stream path; Access auth sits in FRONT via
+#  a Cloudflare Access Application on this Worker's route)
+
+[vars]
+# Allowed origins for CORS-free same-origin proxying from the workspace.
+ALLOWED_ORIGINS = "https://workspace.p31ca.org,http://localhost:5173"
+
+[observability]
+enabled = true

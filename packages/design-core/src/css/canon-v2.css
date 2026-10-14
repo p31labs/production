@@ -1,0 +1,718 @@
+/*
+ * @p31ca/design-core — canon-v2.css
+ *
+ * The canon v2 vessel contract (docs/plans/canon-v2-contract.md).
+ *
+ * Contract rules this file obeys:
+ *   • Attribute-scoped: every selector is [data-p31=…] or [data-p31-control].
+ *     Attribute-only form (fast); never element-prefixed (button[data-p31=…]).
+ *     No bare class names — bare classes collide across faces (the
+ *     `.surface-panel` bug).
+ *     ONE sanctioned exception: the H1 header contract writes
+ *     `html { scroll-padding-top: var(--p31-header-height) }` — a document
+ *     root rule, not a component/class selector, so no collision surface.
+ *   • Every value is a var(--p31-*) token. No hex, no raw rgba.
+ *   • Layered: layout primitives in @layer canon.layout, component styles in
+ *     @layer canon.components. The layer ORDER is declared by
+ *     @p31ca/canon/css/layers.css (import that first); this file re-declares
+ *     the same order so a standalone import cannot mis-order the layers.
+ *   • Unlayered rules here would be a contract violation (canon-lint).
+ *
+ * The layer order is re-declared for standalone consumers; the first
+ * declaration in a document wins, so importing layers.css first and then
+ * this file changes nothing.
+ */
+
+@layer legacy, canon.tokens, canon.components, canon.layout, shell, face;
+
+/* ══════════════════════════════════════════════════════════════════════════
+   canon.layout — Shell, Page, PageHeader, Stack, Grid, Split
+   ══════════════════════════════════════════════════════════════════════════ */
+@layer canon.layout {
+
+  /* ── Shell: top/main grid, optional sidebar, fill-mode containment ────── */
+  [data-p31="shell"] {
+    display: grid;
+    grid-template-areas: "top" "main";
+    grid-template-rows: auto minmax(0, 1fr);
+    min-height: 100dvh;
+    min-width: 0;
+  }
+  [data-p31="shell"][data-has-sidebar] {
+    grid-template-areas: "top top" "sidebar main";
+    grid-template-columns: var(--p31-shell-sidebar-w) minmax(0, 1fr);
+  }
+  [data-p31="shell-topbar"] {
+    grid-area: top;
+    position: sticky;
+    top: 0;
+    z-index: var(--p31-z-topbar);
+  }
+  /* ── H1 header-height contract (ADR-0001 §10).
+     sticky-not-fixed: the topbar is position: sticky; top: 0 — it OCCUPIES
+     flow (never fixed, never an overlay-for-atmosphere on app pages). The
+     document's scroll-padding-top matches --p31-header-height so anchor
+     jumps and focus targets land clear of the bar. Rendered topbar height
+     may differ (content), but the scroll-padding contract is the token. */
+  html {
+    scroll-padding-top: var(--p31-header-height);
+  }
+  [data-p31="shell-sidebar"] {
+    grid-area: sidebar;
+    overflow-y: auto;
+    min-height: 0;
+  }
+  [data-p31="shell-main"] {
+    grid-area: main;
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+  }
+  /* A fill/fit page inside the shell means the shell IS the viewport:
+     no document scroll, no double scrollbar, the page owns 100dvh. */
+  [data-p31="shell"]:has([data-p31="page"][data-mode="fill"]),
+  [data-p31="shell"]:has([data-p31="page"][data-mode="fit"]) {
+    height: 100dvh;
+    overflow: hidden;
+  }
+  @media (max-width: 47.99rem) {
+    [data-p31="shell"][data-has-sidebar] {
+      grid-template-areas: "top" "main";
+      grid-template-columns: minmax(0, 1fr);
+    }
+    [data-p31="shell-sidebar"] { display: none; }
+  }
+
+  /* ── Skip link — the keyboard-entry affordance ────────────────────────── */
+  [data-p31="skip-link"] {
+    position: absolute;
+    top: -100px;
+    left: var(--p31-space-3);
+    background: var(--p31-accent);
+    color: var(--p31-void);
+    padding: var(--p31-space-2) var(--p31-space-4);
+    border-radius: var(--p31-radius-sm);
+    font-weight: 600;
+    text-decoration: none;
+    z-index: var(--p31-z-skip-link);
+    transition: top var(--p31-duration-fast) var(--p31-easing-standard);
+  }
+  [data-p31="skip-link"]:focus { top: var(--p31-space-3); }
+
+  /* ── Page — the four modes. NO global html/body height shell on flow. ── */
+  [data-p31="page"] { min-width: 0; }
+
+  /* flow: document scroll — width-capped column, page owns its rhythm. */
+  [data-p31="page"][data-mode="flow"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--p31-gap-md);
+    width: 100%;
+    max-width: var(--p31-page-max);
+    margin-inline: auto;
+    padding-block: var(--p31-space-md);
+    padding-inline: var(--p31-page-pad-x);
+    min-height: 0;
+  }
+  /* Children guard: flow children never shrink the page into scroll traps
+     (the conflation that produced the 560px select bug). */
+  [data-p31="page"][data-mode="flow"] > * {
+    flex: 0 0 auto;
+    min-height: 0;
+  }
+
+  /* fill / fit: viewport app — the page fills its container, no page scroll;
+     the [data-p31-grow] child is the one region that scrolls. */
+  [data-p31="page"][data-mode="fill"],
+  [data-p31="page"][data-mode="fit"] {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+  [data-p31="page"][data-mode="fill"] > [data-p31-grow],
+  [data-p31="page"][data-mode="fit"] > [data-p31-grow] {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: auto;
+  }
+
+  /* panel-scroll: a document page with ONE internal scrolling panel
+     (the Sandbox split pattern). */
+  [data-p31="page"][data-mode="panel-scroll"] {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: var(--p31-gap-md);
+    width: 100%;
+    max-width: var(--p31-page-max);
+    margin-inline: auto;
+    padding-block: var(--p31-space-md);
+    padding-inline: var(--p31-page-pad-x);
+    height: 100%;
+    overflow: hidden;
+  }
+  [data-p31="page"][data-mode="panel-scroll"] > [data-p31="page-panel"] {
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  /* ── Page header: text block + pinned actions ─────────────────────────── */
+  [data-p31="page-header"] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--p31-gap-md);
+  }
+  [data-p31="page-header-text"] {
+    display: grid;
+    gap: var(--p31-gap-xs);
+    min-width: 0;
+  }
+  [data-p31="page-header-title"] {
+    margin: 0;
+    font-size: var(--p31-page-title-size);
+    line-height: 1.1;
+    color: var(--p31-text);
+  }
+  [data-p31="page-header-subtitle"] {
+    margin: 0;
+    color: var(--p31-text-secondary);
+    max-width: var(--p31-prose-max);
+  }
+  [data-p31="page-header-actions"] {
+    display: flex;
+    align-items: center;
+    gap: var(--p31-gap-sm);
+  }
+  /* ── Page-header alignment (STRATEGIC-POSITIONING item 3) ─────────────── */
+  /* data-align="center": ONLY the header block centers — flex column,
+     centered items, centered text; the subtitle caps at the prose measure
+     and centers within the header. Body prose never centers (the design
+     frame); this attribute is scoped to [data-p31="page-header"]. */
+  [data-p31="page-header"][data-align="center"] {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  [data-p31="page-header"][data-align="center"] [data-p31="page-header-subtitle"] {
+    max-width: var(--p31-prose-max);
+    margin-inline: auto;
+  }
+  /* data-align="start": the documented default — text begins at the inline
+     start edge. */
+  [data-p31="page-header"][data-align="start"] {
+    text-align: left;
+  }
+
+  /* ── Stack — one-axis flex with data-driven dir/gap/align/justify ─────── */
+  [data-p31="stack"] {
+    display: flex;
+    min-width: 0;
+  }
+  [data-p31="stack"][data-dir="row"] { flex-direction: row; }
+  [data-p31="stack"][data-dir="column"] { flex-direction: column; }
+  [data-p31="stack"][data-gap="xs"] { gap: var(--p31-gap-xs); }
+  [data-p31="stack"][data-gap="sm"] { gap: var(--p31-gap-sm); }
+  [data-p31="stack"][data-gap="md"] { gap: var(--p31-gap-md); }
+  [data-p31="stack"][data-gap="lg"] { gap: var(--p31-gap-lg); }
+  [data-p31="stack"][data-gap="xl"] { gap: var(--p31-gap-xl); }
+  [data-p31="stack"][data-align="start"] { align-items: flex-start; }
+  [data-p31="stack"][data-align="center"] { align-items: center; }
+  [data-p31="stack"][data-align="end"] { align-items: flex-end; }
+  [data-p31="stack"][data-align="stretch"] { align-items: stretch; }
+  [data-p31="stack"][data-justify="start"] { justify-content: flex-start; }
+  [data-p31="stack"][data-justify="center"] { justify-content: center; }
+  [data-p31="stack"][data-justify="end"] { justify-content: flex-end; }
+  [data-p31="stack"][data-justify="between"] { justify-content: space-between; }
+
+  /* ── Grid — auto-fill minmax; data-min picks the floor token ──────────── */
+  [data-p31="grid"] {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--_min, var(--p31-grid-min-md)), 1fr));
+    gap: var(--p31-gap-md);
+    align-items: start;
+    min-width: 0;
+  }
+  [data-p31="grid"][data-min="sm"] { --_min: var(--p31-grid-min-sm); }
+  [data-p31="grid"][data-min="md"] { --_min: var(--p31-grid-min-md); }
+  [data-p31="grid"][data-min="lg"] { --_min: var(--p31-grid-min-lg); }
+  /* ── Explicit grid recipes (STRATEGIC-POSITIONING item 4) ─────────────── */
+  /* data-cols: an explicit column count overrides the auto-fill data-min
+     recipe (2-attribute specificity). Tracks are minmax(0, 1fr) — no
+     implicit floors, the caller chose the count. */
+  [data-p31="grid"][data-cols="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  [data-p31="grid"][data-cols="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  [data-p31="grid"][data-cols="1"] { grid-template-columns: minmax(0, 1fr); }
+  /* data-even: equal-height rows. Each child becomes a flex column at full
+     height so its last (footer-like) element pins to the bottom — even card
+     grids with aligned footers. */
+  [data-p31="grid"][data-even] {
+    grid-auto-rows: 1fr;
+    align-items: stretch;
+  }
+  [data-p31="grid"][data-even] > * {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  [data-p31="grid"][data-even] > * > :last-child {
+    margin-top: auto;
+  }
+  /* Responsive collapse: data-cols=4 → 2 at ≤900px; any explicit count → 1
+     at ≤560px. */
+  @media (max-width: 56.24rem) {
+    [data-p31="grid"][data-cols="4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 34.99rem) {
+    [data-p31="grid"][data-cols="4"],
+    [data-p31="grid"][data-cols="2"],
+    [data-p31="grid"][data-cols="1"] {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* ── Split — two panes with a draggable handle ────────────────────────── */
+  [data-p31="split"] {
+    display: grid;
+    grid-template-columns:
+      minmax(var(--p31-split-min-a), var(--_split-a, 1fr))
+      var(--p31-split-handle)
+      minmax(var(--p31-split-min-b), var(--_split-b, 1fr));
+    align-items: stretch;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
+  [data-p31="split-pane"] {
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+  }
+  [data-p31="split-handle"] {
+    width: var(--p31-split-handle);
+    min-height: 100%;
+    border: none;
+    background: var(--p31-glass-border);
+    cursor: col-resize;
+    touch-action: none;
+    transition: background var(--p31-duration-fast) var(--p31-easing-standard);
+  }
+  [data-p31="split-handle"]:hover,
+  [data-p31="split-handle"][data-dragging] {
+    background: var(--p31-accent);
+  }
+  [data-p31="split-handle"]:focus-visible {
+    outline: var(--p31-focus-ring);
+    outline-offset: var(--p31-focus-offset);
+  }
+  /* collapsed: pane B + handle leave the grid; pane A owns the row. */
+  [data-p31="split"][data-collapsed] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  [data-p31="split"][data-collapsed] > [data-p31="split-pane"][data-side="b"],
+  [data-p31="split"][data-collapsed] > [data-p31="split-handle"] {
+    display: none;
+  }
+  /* collapsible (WCAG 2.5.7): the handle stays as the restore affordance
+     while collapsed — Enter/Space + double-click bring pane B back. Scoped
+     above the mobile stack threshold, where the handle already hides. */
+  @media (min-width: 48rem) {
+    [data-p31="split"][data-collapsed]:has(> [data-p31="split-handle"][data-collapsible]) {
+      grid-template-columns: minmax(0, 1fr) var(--p31-split-handle);
+    }
+    [data-p31="split"][data-collapsed] > [data-p31="split-handle"][data-collapsible] {
+      display: block;
+    }
+  }
+  @media (max-width: 47.99rem) {
+    [data-p31="split"] {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto;
+    }
+    [data-p31="split-handle"] { display: none; }
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   canon.components — controls, states, feedback, patterns
+   ══════════════════════════════════════════════════════════════════════════ */
+@layer canon.components {
+
+  /* ── The control contract — every input/select/textarea ───────────────── */
+  [data-p31-control] {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 auto;
+    align-self: start;
+    font: inherit;
+    color: var(--p31-text);
+    background: var(--p31-surface2);
+    border: 1px solid var(--p31-glass-border);
+    border-radius: var(--p31-control-radius);
+    padding-inline: var(--p31-control-pad-x);
+    padding-block: var(--p31-space-2);
+    transition: border-color var(--p31-duration-fast) var(--p31-easing-standard);
+  }
+  [data-p31-control="input"],
+  [data-p31-control="select"] {
+    height: var(--p31-control-h);
+    max-height: var(--p31-control-h-max);
+  }
+  [data-p31-control="textarea"] {
+    min-height: calc(var(--p31-control-h) * 2);
+    resize: vertical;
+  }
+  [data-p31-control]::placeholder { color: var(--p31-text-tertiary); }
+  [data-p31-control]:hover:not(:disabled):not(:focus-visible) {
+    border-color: var(--p31-glass-border-hover);
+  }
+  [data-p31-control]:focus-visible {
+    outline: var(--p31-focus-ring);
+    outline-offset: var(--p31-focus-offset);
+  }
+  [data-p31-control][aria-invalid="true"] {
+    border-color: var(--p31-status-error);
+  }
+  [data-p31-control]:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  /* ── Field — label / control / hint / error as one grid ───────────────── */
+  [data-p31="field"] {
+    display: grid;
+    gap: var(--p31-gap-xs);
+    min-width: 0;
+  }
+  [data-p31="field"][data-width="form"] { max-width: var(--p31-form-max); }
+  [data-p31="field-label"] {
+    font-size: var(--p31-text-sm);
+    color: var(--p31-text-secondary);
+  }
+  [data-p31="field-hint"] {
+    margin: 0;
+    font-size: var(--p31-text-xs);
+    color: var(--p31-text-tertiary);
+  }
+  [data-p31="field-error"] {
+    margin: 0;
+    font-size: var(--p31-text-xs);
+    color: var(--p31-status-error);
+  }
+
+  /* ── Empty / error states ─────────────────────────────────────────────── */
+  [data-p31="empty-state"],
+  [data-p31="error-state"] {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    gap: var(--p31-gap-sm);
+    padding: var(--p31-space-xl) var(--p31-space-lg);
+    max-width: var(--p31-prose-max);
+    margin-inline: auto;
+    border: 1px dashed var(--p31-glass-border-strong);
+    border-radius: var(--p31-radius-lg);
+  }
+  [data-p31="error-state"] {
+    border-style: solid;
+    border-color: var(--p31-status-error);
+  }
+  [data-p31="state-title"] { margin: 0; color: var(--p31-text); }
+  [data-p31="state-description"] {
+    margin: 0;
+    color: var(--p31-text-secondary);
+    max-width: var(--p31-prose-max);
+  }
+
+  /* ── Skeleton — shimmer bars; motion off under reduced-motion ─────────── */
+  @keyframes p31-shimmer {
+    from { background-position: 200% 0; }
+    to { background-position: -200% 0; }
+  }
+  [data-p31="skeleton"] {
+    display: grid;
+    gap: var(--p31-gap-sm);
+    min-width: 0;
+  }
+  [data-p31="skeleton-bar"] {
+    height: var(--p31-scale-sm);
+    border-radius: var(--p31-radius-sm);
+    background: linear-gradient(
+      90deg,
+      var(--p31-surface2) 25%,
+      color-mix(in oklch, var(--p31-surface2) 60%, var(--p31-accent-faint)) 50%,
+      var(--p31-surface2) 75%
+    );
+    background-size: 200% 100%;
+    animation: p31-shimmer var(--p31-duration-slow) var(--p31-easing-standard) infinite;
+  }
+  [data-p31="skeleton-bar"][data-shape="block"] {
+    height: calc(var(--p31-control-h) * 2);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-p31="skeleton-bar"] { animation: none; }
+  }
+
+  /* ── sr-only — the shared off-screen text utility ─────────────────────── */
+  [data-p31="sr-only"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ── Tabs — keyboard-friendly tablist on the control floor ────────────── */
+  [data-p31="tabs"] {
+    display: flex;
+    gap: var(--p31-gap-xs);
+    border-bottom: 1px solid var(--p31-glass-border);
+    overflow-x: auto;
+  }
+  [data-p31="tab"] {
+    appearance: none;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: var(--p31-space-2) var(--p31-space-3);
+    font: inherit;
+    color: var(--p31-text-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  [data-p31="tab"]:hover { color: var(--p31-text); }
+  [data-p31="tab"][aria-selected="true"] {
+    color: var(--p31-accent);
+    border-bottom-color: var(--p31-accent);
+  }
+  [data-p31="tab"]:focus-visible {
+    outline: var(--p31-focus-ring);
+    outline-offset: var(--p31-focus-offset);
+  }
+
+  /* ── Menu — vertical action list ──────────────────────────────────────── */
+  [data-p31="menu"] {
+    display: grid;
+    gap: var(--p31-gap-xs);
+    min-width: 12rem;
+    padding: var(--p31-space-2xs);
+    background: var(--p31-surface2);
+    border: 1px solid var(--p31-glass-border);
+    border-radius: var(--p31-radius-md);
+  }
+  [data-p31="menu-item"] {
+    appearance: none;
+    display: flex;
+    align-items: center;
+    gap: var(--p31-gap-sm);
+    width: 100%;
+    padding: var(--p31-space-2) var(--p31-space-3);
+    font: inherit;
+    color: var(--p31-text-secondary);
+    background: none;
+    border: none;
+    border-radius: var(--p31-radius-sm);
+    cursor: pointer;
+    text-align: left;
+  }
+  [data-p31="menu-item"]:hover {
+    background: var(--p31-accent-faint);
+    color: var(--p31-text);
+  }
+  [data-p31="menu-item"]:focus-visible {
+    outline: var(--p31-focus-ring);
+    outline-offset: var(--p31-focus-offset);
+  }
+
+  /* ── Dialog / Sheet — modal + side sheet surfaces ─────────────────────── */
+  [data-p31="dialog"] {
+    position: fixed;
+    inset: 0;
+    z-index: var(--p31-z-floating);
+    display: grid;
+    place-items: center;
+    padding: var(--p31-space-md);
+    background: color-mix(in oklch, var(--p31-void) 62%, transparent);
+  }
+  [data-p31="dialog-panel"] {
+    display: grid;
+    gap: var(--p31-gap-md);
+    width: min(100%, var(--p31-form-max));
+    max-height: 90dvh;
+    overflow-y: auto;
+    padding: var(--p31-space-md);
+    background: var(--p31-surface);
+    border: 1px solid var(--p31-glass-border);
+    border-radius: var(--p31-radius-lg);
+  }
+  [data-p31="dialog-title"] { margin: 0; color: var(--p31-text); }
+
+  [data-p31="sheet"] {
+    position: fixed;
+    inset-block: 0;
+    z-index: var(--p31-z-floating);
+    display: grid;
+    gap: var(--p31-gap-md);
+    width: min(90vw, 24rem);
+    overflow-y: auto;
+    padding: var(--p31-space-md);
+    background: var(--p31-surface);
+    border: 1px solid var(--p31-glass-border);
+  }
+  [data-p31="sheet"][data-side="start"] {
+    left: 0;
+    border-radius: 0 var(--p31-radius-lg) var(--p31-radius-lg) 0;
+  }
+  [data-p31="sheet"][data-side="end"] {
+    right: 0;
+    border-radius: var(--p31-radius-lg) 0 0 var(--p31-radius-lg);
+  }
+
+  /* ── Patterns: a pattern is more than the sum of its parts ────────────── */
+
+  /* ListingShell — search/filter row + card grid + empty state (Discover). */
+  [data-p31="listing-shell"] {
+    display: grid;
+    gap: var(--p31-gap-md);
+    min-width: 0;
+  }
+  [data-p31="listing-controls"] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: var(--p31-gap-sm);
+  }
+  [data-p31="listing-controls"] > [data-p31="field"] {
+    flex: 1 1 var(--p31-grid-min-sm);
+  }
+  [data-p31="listing-grid"] {
+    display: grid;
+    gap: var(--p31-gap-md);
+    align-items: start;
+    grid-template-columns: repeat(auto-fill, minmax(var(--p31-grid-min-sm), 1fr));
+    min-width: 0;
+  }
+
+  /* DetailShell — summary column + focus region + action row (Server). */
+  [data-p31="detail-shell"] {
+    display: grid;
+    gap: var(--p31-gap-md);
+    align-items: start;
+    min-width: 0;
+    grid-template-columns:
+      minmax(var(--p31-split-min-a), 1fr)
+      minmax(var(--p31-split-min-b), 1.4fr);
+    grid-template-areas:
+      "summary focus"
+      "actions focus";
+  }
+  [data-p31="detail-summary"] { grid-area: summary; min-width: 0; }
+  [data-p31="detail-focus"] { grid-area: focus; min-width: 0; }
+  [data-p31="detail-actions"] {
+    grid-area: actions;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--p31-gap-sm);
+  }
+  @media (max-width: 47.99rem) {
+    [data-p31="detail-shell"] {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "summary" "actions" "focus";
+    }
+  }
+
+  /* Wizard — "Step N of M" + one question group per step (Publish). */
+  [data-p31="wizard"] {
+    display: grid;
+    gap: var(--p31-gap-md);
+    max-width: var(--p31-form-max);
+    min-width: 0;
+  }
+  [data-p31="wizard-indicator"] {
+    font-family: var(--p31-font-mono);
+    font-size: var(--p31-text-sm);
+    color: var(--p31-text-secondary);
+  }
+  [data-p31="wizard-step"] {
+    display: grid;
+    gap: var(--p31-gap-md);
+    min-width: 0;
+  }
+  [data-p31="wizard-actions"] {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--p31-gap-sm);
+  }
+
+  /* ── Card + link hover contract (STRATEGIC-POSITIONING item 5) ────────── */
+  /* Card links/CTAs NEVER underline. The lift is on the card, the shift is
+     the CTA arrow, the slide is the standalone-link underline draw. Text
+     itself never bolds/scales/rotates/gains a background. Inline PROSE
+     links are NOT this contract — they keep text-decoration: underline
+     (WCAG 1.4.1), owned by the surface's prose styles. */
+  [data-p31="card"] {
+    transition:
+      transform var(--p31-duration-fast) var(--p31-easing-standard),
+      border-color var(--p31-duration-fast) var(--p31-easing-standard);
+  }
+  [data-p31="card"]:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in oklch, var(--p31-accent) 45%, var(--p31-glass-border));
+  }
+  [data-p31="card"] a,
+  [data-p31="card"] [data-p31="card-cta"] {
+    text-decoration: none;
+  }
+  [data-p31="card-cta"] {
+    transition: color var(--p31-duration-fast) var(--p31-easing-standard);
+  }
+  [data-p31="card-cta-arrow"] {
+    transition: transform var(--p31-duration-fast) var(--p31-easing-standard);
+  }
+  /* Hovered card: CTA recolors + arrow shifts. focus-visible on the CTA gets
+     the same treatment — keyboard parity with pointer hover. */
+  [data-p31="card"]:hover [data-p31="card-cta"],
+  [data-p31="card-cta"]:focus-visible {
+    color: var(--p31-accent-hover);
+  }
+  [data-p31="card"]:hover [data-p31="card-cta-arrow"],
+  [data-p31="card-cta"]:focus-visible [data-p31="card-cta-arrow"] {
+    transform: translateX(2px);
+  }
+
+  /* ── Standalone links — the underline draw ─────────────────────────────── */
+  [data-p31="link-standalone"] {
+    display: inline-block;
+    text-decoration: none;
+  }
+  [data-p31="link-standalone"]::after {
+    content: "";
+    display: block;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--p31-duration-fast) var(--p31-easing-standard);
+  }
+  [data-p31="link-standalone"]:hover::after,
+  [data-p31="link-standalone"]:focus-visible::after {
+    transform: scaleX(1);
+  }
+  /* Reduced motion: hover feedback is instantaneous, never animated. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-p31="card"],
+    [data-p31="card-cta"],
+    [data-p31="card-cta-arrow"],
+    [data-p31="link-standalone"],
+    [data-p31="link-standalone"]::after {
+      transition: none;
+    }
+  }
+}

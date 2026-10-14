@@ -1,0 +1,10 @@
+{
+  "name": "d2-neg-fixed-duration-no-descriptor",
+  "note": "NEGATIVE CONTROL: fixed-ms duration WITHOUT a policy descriptor must be FLAGGED (rule D)",
+  "tokens": {
+    "duration-base": {
+      "$value": { "value": 431, "unit": "ms" },
+      "$type": "duration"
+    }
+  }
+}

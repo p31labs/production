@@ -1,0 +1,13 @@
+{
+  "type": "letter",
+  "meta": { "title": "Follow-up — Bridge Funding", "kicker": "P31 LABS, INC.", "date": "2026-10-12", "author": "Will Johnson", "source": "mail" },
+  "blocks": [
+    { "kind": "email", "data": {
+      "subject": "Thank you — P31 Labs / next steps",
+      "greeting": "Hi Dylan —",
+      "paragraphs": [ "Thanks for the time today and the straight answer on nonprofits. We are seeking a $27,000 bridge over three months, repaid by the first award.", "If a CDFI or mission lender comes to mind — NFF or a Georgia fund — I would be grateful for a name." ],
+      "signoff": "Best, Will Johnson, P31 Labs."
+    } },
+    { "kind": "signature", "data": { "name": "Will Johnson", "line": "P31 Labs, Inc. · willyj1587@gmail.com" } }
+  ]
+}

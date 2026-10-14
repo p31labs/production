@@ -1,6 +1,13 @@
-.starfield {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
+/* P31 Marketplace — starfield positioning (geometry only, law 1).
+   Quarantined in the legacy layer: this sheet can be emitted before the
+   layer-order declaration, so it must only ever name `legacy` — the FIRST
+   layer of the declared order — or it would invert the cascade contract
+   (the first @layer name declaration in a document pins its position). */
+@layer legacy {
+  .starfield {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
 }

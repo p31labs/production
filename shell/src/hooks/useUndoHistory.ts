@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
-import { useThemeStore } from '@p31ca/shell-chrome';
+import { useThemeStore } from '../store/useThemeStore';
 import { usePanelStore } from '../store/usePanelStore';
 import { useHistoryStore } from '../store/useHistoryStore';
 

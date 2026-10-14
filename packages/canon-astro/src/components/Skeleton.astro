@@ -1,0 +1,20 @@
+---
+import { skeletonTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  lines?: number;
+  block?: boolean;
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { lines = 3, block = false, class: cls = '', style } = Astro.props;
+
+const html = renderHtml(skeletonTree({
+  lines,
+  block,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

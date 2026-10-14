@@ -1,0 +1,14 @@
+{
+  "type": "packet",
+  "meta": { "title": "P31 Funding Packet", "kicker": "P31 LABS", "date": "2026-10-12", "source": "drive" },
+  "blocks": [
+    { "kind": "section", "id": "contents", "title": "Contents", "children": [
+      { "kind": "list", "data": { "items": ["1. Bridge Funding Call Kit", "2. Follow-Up Letter", "3. One-Page Brief"] } }
+    ] },
+    { "kind": "pagebreak", "data": {} }
+  ],
+  "children": [
+    { "type": "letter", "meta": { "title": "Follow-Up Letter" }, "blocks": [ { "kind": "email", "data": { "subject": "Thank you — P31 Labs", "greeting": "Hi Dylan —", "paragraphs": ["Grateful for a name if one comes to mind."], "signoff": "Best, Will Johnson" } } ] },
+    { "type": "brief", "meta": { "title": "One-Page Brief" }, "blocks": [ { "kind": "prose", "data": { "text": "The ask: $27,000 for three months, repaid by the first award." } } ] }
+  ]
+}

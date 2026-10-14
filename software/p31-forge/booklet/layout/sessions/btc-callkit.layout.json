@@ -1,0 +1,19 @@
+{
+  "_doc": "Per-session overrides on top of templates/report.json. Section matching by lowercase H2 title. NOTE: the exec summary block is hardcoded in the renderer — it is a VIRTUAL unit, not a markdown section. The Ask callout is a component INSIDE Bridge Funding Memo, glued by rule, not a section.",
+  "extends": "report",
+  "virtualUnits": {
+    "executive-summary": { "role": "summary", "includes": ["takeaway", "key-findings", "kpi-strip"], "kpiSource": "bridge metrics" }
+  },
+  "sections": {
+    "summary":             { "action": "drop-if-duplicate", "against": "exec.takeaway" },
+    "consensus":           { "action": "drop-if-duplicate", "against": "exec.key-findings" },
+    "bridge metrics":      { "action": "move-into", "target": "executive-summary", "render": "kpi-strip", "note": "renderer move, not a packer decision" },
+    "synthesis":           { "role": "body", "columns": 2, "splitPolicy": "between-paragraphs" },
+    "call script":         { "role": "body", "columns": 1, "atoms": ".script-card", "note": "cards render as a 2-col grid already; nesting cols-2 doubles the height" },
+    "referral targets":    { "role": "body", "keepWith": "bridge funding memo" },
+    "bridge funding memo": { "role": "body", "callouts": "glue-to-section" },
+    "follow-up email":     { "role": "support", "render": "email" },
+    "next actions":        { "role": "support", "keepWith": "follow-up email", "atoms": ".rec-card" },
+    "evidence appendix":   { "role": "appendix" }
+  }
+}

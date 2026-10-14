@@ -1,0 +1,67 @@
+---
+/**
+ * StaticDome — the zero-JavaScript ambient fallback for non-home 'dome'
+ * surfaces (fix-plan: p31ca-molecularheart-tbt.md).
+ *
+ * The live WebGL dome (Starfield + MolecularHeart) mounts only on the home
+ * hero. Every other dome-theme page renders this: the same static SVG heart
+ * the WebGL layer draws behind, plus the calm gradient. Pure CSS/SVG — no
+ * Three.js, no rAF, no island. Reduced-motion floors come from
+ * molecular-dome.css (.molecular-heart-svg animation is already gated).
+ */
+---
+<div class="molecular-heart-layer" aria-hidden="true">
+  <div class="dd-fixed dd-inset-0 dd-pointer-events-none p31-cal-gradient" aria-hidden="true"></div>
+  <svg class="molecular-heart-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <radialGradient id="sd-dome" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="var(--p31-accent, #22d3ee)" stopOpacity="0.32" />
+        <stop offset="45%" stopColor="var(--p31-accent-violet, #a78bfa)" stopOpacity="0.10" />
+        <stop offset="100%" stopColor="transparent" stopOpacity="0" />
+      </radialGradient>
+      <radialGradient id="sd-heart-inner" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="var(--p31-accent, #22d3ee)" stopOpacity="0.55" />
+        <stop offset="100%" stopColor="transparent" stopOpacity="0" />
+      </radialGradient>
+    </defs>
+
+    <circle cx="200" cy="200" r="185" fill="url(#sd-dome)" />
+    <circle cx="200" cy="200" r="185" fill="none" stroke="var(--p31-accent, #22d3ee)" strokeOpacity="0.18" strokeWidth="0.6" />
+    <circle cx="200" cy="200" r="165" fill="none" stroke="var(--p31-accent, #22d3ee)" strokeOpacity="0.10" strokeWidth="0.5" />
+
+    <ellipse cx="200" cy="205" rx="80" ry="72" fill="url(#sd-heart-inner)" />
+
+    <g fill="var(--p31-accent, #22d3ee)" fillOpacity="0.95">
+      <circle cx="200" cy="168" r="3.2" />
+      <circle cx="176" cy="172" r="2.6" />
+      <circle cx="156" cy="188" r="2.8" />
+      <circle cx="152" cy="212" r="2.6" />
+      <circle cx="168" cy="234" r="3.0" />
+      <circle cx="200" cy="252" r="3.2" />
+      <circle cx="232" cy="234" r="3.0" />
+      <circle cx="248" cy="212" r="2.6" />
+      <circle cx="244" cy="188" r="2.8" />
+      <circle cx="224" cy="172" r="2.6" />
+      <circle cx="200" cy="196" r="2.4" fill="var(--p31-accent-violet, #a78bfa)" />
+    </g>
+
+    <g stroke="var(--p31-accent, #22d3ee)" strokeOpacity="0.35" strokeWidth="0.7" fill="none">
+      <line x1="200" y1="168" x2="176" y2="172" />
+      <line x1="176" y1="172" x2="156" y2="188" />
+      <line x1="156" y1="188" x2="152" y2="212" />
+      <line x1="152" y1="212" x2="168" y2="234" />
+      <line x1="168" y1="234" x2="200" y2="252" />
+      <line x1="200" y1="252" x2="232" y2="234" />
+      <line x1="232" y1="234" x2="248" y2="212" />
+      <line x1="248" y1="212" x2="244" y2="188" />
+      <line x1="244" y1="188" x2="224" y2="172" />
+      <line x1="224" y1="172" x2="200" y2="168" />
+      <line x1="200" y1="168" x2="200" y2="252" strokeOpacity="0.20" />
+      <line x1="152" y1="212" x2="248" y2="212" strokeOpacity="0.20" />
+      <line x1="176" y1="172" x2="200" y2="196" strokeOpacity="0.30" />
+      <line x1="224" y1="172" x2="200" y2="196" strokeOpacity="0.30" />
+      <line x1="168" y1="234" x2="200" y2="196" strokeOpacity="0.30" />
+      <line x1="232" y1="234" x2="200" y2="196" strokeOpacity="0.30" />
+    </g>
+  </svg>
+</div>

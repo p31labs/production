@@ -1,0 +1,27 @@
+---
+/**
+ * QuoteBlock — an attributed quote with proper blockquote/cite semantics.
+ *
+ * Honesty rails: `text` must be a verbatim, verifiable quote. `citeName`
+ * + `citeHref` give the attribution (paper author with Zenodo DOI, or a
+ * public figure with a source link). Never used for paraphrases — those
+ * stay in plain prose without quotation marks.
+ */
+interface Props {
+  text: string;
+  citeName: string;
+  citeHref: string;
+  citeNote?: string;
+}
+
+const { text, citeName, citeHref, citeNote } = Astro.props;
+---
+
+<figure class="qb-my-6 qb-py-1 qb-pl-5 qb-border-l-2" style="border-color: var(--p31-accent, #22d3ee);">
+  <blockquote class="qb-text-base qb-leading-relaxed qb-italic" style="color: var(--p31-text);">
+    {text}
+  </blockquote>
+  <figcaption class="qb-mt-2 qb-text-sm" style="color: var(--p31-text-tertiary, #a1a1a1);">
+    — <cite><a href={citeHref} target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent, #22d3ee);">{citeName}</a></cite>{citeNote && <span> · {citeNote}</span>}
+  </figcaption>
+</figure>

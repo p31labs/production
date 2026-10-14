@@ -1,0 +1,70 @@
+/* ── P31 Device-Tier Utility Layer (W4 human-simplification) ──
+ * Opt-in adaptation utilities for the p31.device.* token group emitted by
+ * @p31ca/canon (see docs/enterprise/design-system/device-tiers.md).
+ *
+ * Three adaptation axes, three layers (pick by question):
+ *   device tiers   — "which machine?"  window-size class + pointer type
+ *                    (this file, via media queries + [data-device] opt-in)
+ *   fluid tokens   — "how smooth?"     --p31-fluid-* clamp() pairs (canon)
+ *   container q's  — "which parent?"   @container + cqi (container.css)
+ *
+ * The media-query numbers below MIRROR the p31.device.* threshold tokens
+ * (phone.max 600 / chromebook 601–1280 / desktop.min 1281). CSS cannot read
+ * custom properties inside @media conditions, so the numbers are written
+ * twice on purpose — once as tokens (JS-readable, matchMedia), once here.
+ * Keep them in sync when either side changes; the parity note lives in
+ * device-tiers.md §Threshold sync.
+ */
+
+/* Defaults: canon semantic slots. The tier vars only remap under a tier. */
+[data-device-adaptive] {
+  --p31-tier-spacing: var(--p31-space-4, 16px);
+  --p31-tier-type: var(--p31-body, 16px);
+  --p31-tier-radius: var(--p31-radius-md, 16px);
+}
+
+/* Phone — small window AND coarse pointer (touch-first). */
+@media (max-width: 600px) and (pointer: coarse) {
+  [data-device-adaptive] {
+    --p31-tier-spacing: var(--p31-device-phone-spacing-md);
+    --p31-tier-type: var(--p31-device-phone-type-base);
+    --p31-tier-radius: var(--p31-device-phone-radius-md);
+  }
+}
+
+/* Chromebook — mid window, any pointer (convertibles carry both). */
+@media (min-width: 601px) and (max-width: 1280px) {
+  [data-device-adaptive] {
+    --p31-tier-spacing: var(--p31-device-chromebook-spacing-md);
+    --p31-tier-type: var(--p31-device-chromebook-type-base);
+    --p31-tier-radius: var(--p31-device-chromebook-radius-md);
+  }
+}
+
+/* Desktop — wide window AND fine pointer (mouse/trackpad). */
+@media (min-width: 1281px) and (pointer: fine) {
+  [data-device-adaptive] {
+    --p31-tier-spacing: var(--p31-device-desktop-spacing-md);
+    --p31-tier-type: var(--p31-device-desktop-type-base);
+    --p31-tier-radius: var(--p31-device-desktop-radius-md);
+  }
+}
+
+/* Embedded — explicit opt-in only. Viewport queries cannot detect an
+ * ESP-32 Node Zero (320×480 can also be a phone browser), so the tier is
+ * set by the serving device: <html data-device="embedded">. */
+[data-device="embedded"],
+[data-device-embedded] {
+  --p31-tier-spacing: var(--p31-device-embedded-spacing-md);
+  --p31-tier-type: var(--p31-device-embedded-type-base);
+  --p31-tier-radius: var(--p31-device-embedded-radius-md);
+}
+
+/* Fluid-token convenience slots: components consume --p31-tier-* above or
+ * --p31-fluid-* directly; these aliases show the two can coexist in one
+ * component (fluid inside the container, tier for the page chrome). */
+[data-device-adaptive] [data-container-adaptive] {
+  --p31-tier-spacing: var(--p31-fluid-space-md);
+  --p31-tier-type: var(--p31-fluid-text-base);
+  --p31-tier-radius: var(--p31-fluid-radius-md);
+}

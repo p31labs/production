@@ -32,6 +32,7 @@
     "./css/theme-p31ca.css": "./src/css/theme-p31ca.css",
     "./css/theme-phosphorus31.css": "./src/css/theme-phosphorus31.css",
     "./css/size-class.css": "./src/css/size-class.css",
+    "./css/device.css": "./src/css/device.css",
     "./css/typography.css": "./src/css/typography.css",
     "./generated/*": "./src/generated/*.tsx",
     "./starfield": "./src/starfield.ts",
@@ -43,6 +44,8 @@
     "./mcp/browser-dispatcher": "./src/mcp/browser-dispatcher.js",
     "./mcp/data": "./src/mcp/data.ts",
     "./componentDefs": "./src/componentDefs.ts",
+    "./canon-v2": "./src/compositions/canon-v2/index.ts",
+    "./css/canon-v2.css": "./src/css/canon-v2.css",
     "./converter": "./src/converter/index.ts",
     "./generator": "./src/generator/componentGenerator.ts",
     "./generator/astro": "./src/generator/componentGenerator.astro.ts",
@@ -109,6 +112,8 @@
     "tokens:validate": "node ../../tools/token-validation/src/validate.mjs",
     "registry:gen": "node scripts/gen-registry.mjs",
     "registry:check": "node scripts/gen-registry.mjs --check",
+    "components-yml:gen": "node scripts/generate-components-yml.mjs",
+    "components-yml:check": "node scripts/generate-components-yml.mjs --check",
     "p31ca": "node cli/p31ca.mjs"
   }
 }

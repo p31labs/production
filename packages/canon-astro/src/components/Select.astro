@@ -1,0 +1,44 @@
+---
+import { selectTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  label?: string;
+  hideLabel?: boolean;
+  hint?: string;
+  error?: string;
+  width?: 'form' | 'full';
+  id?: string;
+  class?: string;
+  options?: Option[];
+  name?: string;
+  required?: boolean;
+  disabled?: boolean;
+  style?: Record<string, string | number>;
+}
+
+const { label, hideLabel = false, hint, error, width, id, class: cls = '', options = [], name, required, disabled, style } = Astro.props;
+
+const rest: Record<string, unknown> = {};
+if (name !== undefined) rest.name = name;
+if (required !== undefined) rest.required = required;
+if (disabled !== undefined) rest.disabled = disabled;
+
+const html = renderHtml(selectTree({
+  label,
+  hideLabel,
+  hint,
+  error,
+  width,
+  id,
+  className: cls,
+  options,
+  style,
+  rest,
+}));
+---
+<Fragment set:html={html} />

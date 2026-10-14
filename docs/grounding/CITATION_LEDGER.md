@@ -219,3 +219,25 @@ normative.
 statement in the crosswalk, the evidence doc, and the grant angle; RFC 9942 and
 AgentROA are added to the crosswalk standards table; the OTel extension is
 named as a gap (P31 does not yet emit trace/span correlation).
+
+---
+
+## Funding bridge research — Big Think Capital call kit (2026-10-12)
+
+**Audit method:** live primary-source fetch/search against funder pages, .gov
+regulations, and lender sites on 2026-10-12, for the bridge-funding call kit
+document set. All Tier A; re-verify before any external filing.
+
+| Source token | Primary reference | Verified |
+|---|---|---|
+| SBA | 13 CFR § 120.100(b), § 120.110 — nonprofits ineligible for SBA business loan assistance (ecfr.gov) | ✅ 2026-10-12 |
+| BIG THINK | bigthinkcapital.com — SBA/term/LOC/working-capital marketplace, for-profit products | ✅ 2026-10-12 |
+| CRAFT3 | craft3.org/business-loans/bridge-loans — nonprofit bridge loans, Oregon & Washington only, 1% nonprofit fee, up to $4M / 24 months | ✅ 2026-10-12 |
+| AOF | aofund.org — minimum $100K annual sales + 20% ownership required | ✅ 2026-10-12 |
+| NFF | nff.org + cfgreateratlanta.org — nonprofit lending across Georgia via CFGA partnership (2026-09-08) | ✅ 2026-10-12 |
+| CFGA | cfgreateratlanta.org — Nonprofit Sector Sustainability Fund: $50K/yr × 2 + NFF consulting, budgets under $2M | ✅ 2026-10-12 |
+| RIIF | redf.org — employment social enterprises only (hiring people overcoming barriers to employment) | ✅ 2026-10-12 |
+| HUMANITY AI | humanityai.ai — $75K–$1M, deadline 2026-10-21, US 501(c)(3) lead required | ✅ 2026-10-12 |
+| NLNET | nlnet.nl — Restack open call €5K–50K, deadline 2026-11-03 12:00 CET | ✅ 2026-10-12 |
+| DREAMSPRING | dreamspring.org — business loans, revenue-based products | ✅ 2026-10-12 |
+| OTF | opentech.fund — Internet Freedom Fund rolling, $10K–$900K | ✅ 2026-10-12 |

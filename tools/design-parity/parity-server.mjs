@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 // ═══════════════════════════════════════════════════════════════════════════
 // DESIGN PARITY — visual parity QA between a canon reference and a candidate.
-// Stdio JSON-RPC MCP server (mirrors marge-server.js / ground-truth-server.js).
+// Stdio JSON-RPC MCP server — MCP 2026-07-28 stateless core (SEP-2575/2322/
+// 2549): server/discover on the main path, namespaced _meta envelope, legacy
+// initialize kept only as a deprecated pre-SEP-2575 compat branch.
 //
 // Tools:
 //   parity_compare   screenshot reference vs candidate route, diff pixels AND
@@ -289,53 +291,108 @@ const TOOLS = [
   },
 ];
 
-// ─── JSON-RPC over stdio ────────────────────────────────────────────────────
+// ─── JSON-RPC over stdio (MCP 2026-07-28 stateless core) ───────────────────
+// No initialize handshake on the main path; protocol version + server info ride
+// in the namespaced _meta envelope on every request/response. New clients
+// negotiate via server/discover. The legacy initialize/initialized branch below
+// is DEPRECATED and kept only so pre-SEP-2575 stdio clients keep working.
+
+const PROTOCOL_VERSION = '2026-07-28';
+const LEGACY_PROTOCOL_VERSION = '2024-11-05';
+const SUPPORTED_VERSIONS = [PROTOCOL_VERSION, LEGACY_PROTOCOL_VERSION];
+const SERVER_INFO = { name: 'p31-design-parity', version: '1.0.0' };
+const TOOLS_LIST_TTL_MS = 300000;
+const META_PROTOCOL = 'io.modelcontextprotocol/protocolVersion';
+const META_SERVER_INFO = 'io.modelcontextprotocol/serverInfo';
+
+// MCP 2026-07-28 RC error-code renumbering (reserved range -32020..-32099):
+//   -32001 HeaderMismatch                  -> -32020
+//   -32003 MissingRequiredClientCapability -> -32021
+//   -32004 UnsupportedProtocolVersion      -> -32022
+const ERROR_CODE_REMAP = { '-32001': -32020, '-32003': -32021, '-32004': -32022 };
+
+function mappedCode(code) {
+  return ERROR_CODE_REMAP[String(code)] ?? code;
+}
+
+function metaEnvelope() {
+  return {
+    [META_PROTOCOL]: PROTOCOL_VERSION,
+    [META_SERVER_INFO]: SERVER_INFO,
+  };
+}
+
 let buffer = '';
 process.stdin.setEncoding('utf8');
-process.stdin.on('data', (chunk) => {
+process.stdin.on('data', async (chunk) => {
   buffer += chunk;
   const lines = buffer.split('\n');
   buffer = lines.pop();
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
-    try { handleRequest(JSON.parse(trimmed)); } catch (_) {}
+    try {
+      const res = await handleRequest(JSON.parse(trimmed));
+      if (res) process.stdout.write(JSON.stringify(res) + '\n');
+    } catch (_) {}
   }
 });
 
 async function handleRequest(req) {
   const { id, method, params } = req;
+  const respond = (result) => ({ jsonrpc: '2.0', id, _meta: metaEnvelope(), result });
+  const respondError = (code, message) => ({ jsonrpc: '2.0', id, _meta: metaEnvelope(), error: { code: mappedCode(code), message } });
+
   switch (method) {
-    case 'initialize':
-      respond(id, {
-        protocolVersion: '2024-11-05',
+    case 'server/discover': {
+      const clientVersion = req?._meta?.[META_PROTOCOL] ?? req?._meta?.protocolVersion;
+      if (clientVersion && !SUPPORTED_VERSIONS.includes(clientVersion)) {
+        return respondError(-32022, `Unsupported protocol version: ${clientVersion}. Supported: ${SUPPORTED_VERSIONS.join(', ')}`);
+      }
+      return respond({
+        resultType: 'complete',
+        protocolVersion: PROTOCOL_VERSION,
         capabilities: { tools: {} },
-        serverInfo: { name: 'p31-design-parity', version: '1.0.0' },
+        serverInfo: SERVER_INFO,
       });
-      break;
+    }
+
+    // ── Deprecated legacy-compat branch (pre-SEP-2575) ────────────────────
+    // Do NOT extend. The stateless protocol has no handshake; these cases
+    // exist only so existing 2024-11-05 stdio clients keep working.
+    case 'initialize':
+      return respond({
+        protocolVersion: LEGACY_PROTOCOL_VERSION,
+        capabilities: { tools: {} },
+        serverInfo: SERVER_INFO,
+      });
     case 'notifications/initialized':
-      break;
+      return null; // notification — no response (stdio equivalent of HTTP 204)
+    // ── End deprecated legacy-compat branch ───────────────────────────────
+
     case 'tools/list':
-      respond(id, { tools: TOOLS });
-      break;
+      return respond({ resultType: 'complete', ttlMs: TOOLS_LIST_TTL_MS, cacheScope: 'public', tools: TOOLS });
+
     case 'tools/call': {
       const toolName = params?.name;
       const args = params?.arguments || {};
       const tool = TOOLS.find((t) => t.name === toolName);
-      if (!tool) { respondError(id, -32602, `Unknown tool: ${toolName}`); break; }
+      if (!tool) return respondError(-32602, `Unknown tool: ${toolName}`);
       try {
         const out = await executeTool(toolName, args);
-        respond(id, { content: [{ type: 'text', text: JSON.stringify(out, null, 2) }] });
+        return respond({ resultType: 'complete', content: [{ type: 'text', text: JSON.stringify(out, null, 2) }] });
       } catch (e) {
-        respond(id, { content: [{ type: 'text', text: JSON.stringify({ error: e.message, status: 'error' }) }], isError: true });
+        return respond({
+          resultType: 'complete',
+          content: [{ type: 'text', text: JSON.stringify({ error: e.message, status: 'error' }) }],
+          isError: true,
+        });
       }
-      break;
     }
-    case 'ping':
-      respond(id, {});
-      break;
+
     default:
-      if (id !== undefined) respondError(id, -32601, `Method not found: ${method}`);
+      if (id !== undefined) return respondError(-32601, `Method not found: ${method}`);
+      return null;
   }
 }
 
@@ -347,11 +404,4 @@ async function executeTool(name, args) {
     case 'parity_chrome': return await chromeCompare(args);
     default: throw new Error(`Unknown tool ${name}`);
   }
-}
-
-function respond(id, result) {
-  process.stdout.write(JSON.stringify({ jsonrpc: '2.0', id, result }) + '\n');
-}
-function respondError(id, code, message) {
-  process.stdout.write(JSON.stringify({ jsonrpc: '2.0', id, error: { code, message } }) + '\n');
 }

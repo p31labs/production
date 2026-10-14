@@ -52,17 +52,8 @@
   }
 }
 
-/* Mobile: the workspace topbar chrome doesn't fit at 390px — keep brand +
-   search + identity chip, hide the spoon dial + journey links. */
+/* Mobile: keep the identity chip's did readout hidden at 390px. */
 @media (max-width: 560px) {
-  .spoon-dial,
-  .topbar-journey,
-  .topbar-right .badge {
-    display: none;
-  }
-  .topbar-right {
-    gap: var(--p31-space-1);
-  }
   .identity-chip__did {
     display: none;
   }

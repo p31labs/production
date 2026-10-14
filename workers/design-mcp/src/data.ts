@@ -4418,7 +4418,7 @@ export { COMPONENT_DEFS, getComponentDef, listComponents, listComponentsByCatego
 
 export const CATALOG = {
   v: 2,
-  generatedAt: '2026-10-10',
+  generatedAt: '2026-10-13',
   components: Object.entries(COMPONENT_DEFS).map(([name, def]) => ({
     name,
     description: def.description,

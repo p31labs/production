@@ -1,0 +1,38 @@
+{
+  "type": "runbook",
+  "meta": { "title": "Runbook: p31-forge render timeout", "kicker": "P31 LABS // RUNBOOK", "date": "2026-10-12", "source": "docs" },
+  "blocks": [
+    { "kind": "section", "id": "overview", "title": "Overview", "children": [
+      { "kind": "list", "data": { "items": ["Alert: forge render hangs > 120s", "Severity: P2", "Owner: will", "Last updated: 2026-10-12"] } }
+    ] },
+    { "kind": "section", "id": "symptoms", "title": "Symptoms", "children": [
+      { "kind": "prose", "data": { "text": "Render pipeline stalls at chromium launch; pack JSON never written." } }
+    ] },
+    { "kind": "section", "id": "impact-assessment", "title": "Impact Assessment", "children": [
+      { "kind": "prose", "data": { "text": "Document generation blocked; PDFs not produced. No data loss." } }
+    ] },
+    { "kind": "section", "id": "diagnostic-steps", "title": "Diagnostic Steps", "children": [
+      { "kind": "steps", "data": { "items": [
+        { "title": "Check load", "body": "uptime — load above 20 means leftover chromium processes are spinning" },
+        { "title": "List chromium", "body": "ps aux | grep chrome-headless — count stuck launches" }
+      ] } }
+    ] },
+    { "kind": "section", "id": "fix-steps", "title": "Fix Steps", "children": [
+      { "kind": "steps", "data": { "items": [
+        { "title": "Kill the two worst PIDs", "body": "kill <pid> — targeted, never pkill -f chromium" },
+        { "title": "Retry the render", "body": "node scripts/render-doc.mjs --ir session:btc-callkit" }
+      ] } },
+      { "kind": "callout", "data": { "variant": "primary", "label": "Rollback", "body": "If the fix worsens the box, wait 60s for load to fall before retrying." } }
+    ] },
+    { "kind": "section", "id": "escalation", "title": "Escalation", "children": [
+      { "kind": "prose", "data": { "text": "Escalate to will if load stays above 25 for ten minutes." } }
+    ] },
+    { "kind": "section", "id": "post-actions", "title": "Post Actions", "children": [
+      { "kind": "checklist", "data": { "items": [
+        { "text": "Update runbook if new failure mode found", "state": "unchecked" },
+        { "text": "File fix-plan if a forge bug caused the hang", "state": "unchecked" },
+        { "text": "Verify all gates green after recovery", "state": "checked" }
+      ] } }
+    ] }
+  ]
+}

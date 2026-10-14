@@ -1,0 +1,31 @@
+---
+import { fieldTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  label?: string;
+  hideLabel?: boolean;
+  hint?: string;
+  error?: string;
+  width?: 'form' | 'full';
+  id?: string;
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { label, hideLabel = false, hint, error, width = 'full', id, class: cls = '', style } = Astro.props;
+const controlId = id ?? 'p31-field';
+const control = await Astro.slots.render('default');
+
+const html = renderHtml(fieldTree({
+  label,
+  hideLabel,
+  hint,
+  error,
+  width,
+  controlId,
+  control: control ? { raw: control } : null,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

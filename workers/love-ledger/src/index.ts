@@ -1,4 +1,6 @@
 import type { D1Database, DurableObjectNamespace, DurableObject, DurableObjectState, PubSub } from './types';
+import { ensureCbs, base as cbsBase, signBlinded as cbsSign, verify as cbsVerify } from '../taler-cbs/loader';
+import { deriveNonce0, deriveNonce1 } from '../taler-cbs/kdf';
 
 /**
  * ⚠️ HONEST LABEL
@@ -34,6 +36,11 @@ export interface Env {
   // userId (no real auth, matching legacy behavior).
   LOVE_AUTH_SECRET?: string;
   LOVE_REQUIRE_AUTH?: string;
+  // Clause Blind Schnorr issuer key (set via `wrangler secret put
+  // BLIND_ISSUER_PRIVATE_KEY`, base64 of a 32-byte scalar). Plain-string or
+  // Cloudflare Secrets Store binding ({ get(): Promise<string> }) shapes are
+  // both resolved at runtime.
+  BLIND_ISSUER_PRIVATE_KEY?: string | { get(): Promise<string> };
 }
 
 export interface User {
@@ -110,16 +117,29 @@ async function sha256Hex(msg: string): Promise<string> {
 }
 
 async function chainAppend(env: Env, entryType: string, payload: Record<string, unknown>): Promise<string> {
+  // Writes the LIVE phos-era love_chain schema (see
+  // docs/fix-plans/p31-fix-plan-love-chain-schema-drift.md):
+  //   id/from_did/to_did/amount/type/signature/prev_hash/entry_hash/created_at
+  // Earns flow issuer → user; spends flow user → issuer. Prev-hash chaining is
+  // per-DID on from_did, mirroring the CBS spendCoin batch (the x402 gateway's
+  // live-schema writer).
+  const userId = typeof payload.userId === 'string' ? payload.userId : null;
+  const amount = typeof payload.amount === 'number' ? payload.amount : 0;
+  const isSpend = entryType === 'SPEND';
+  const fromDid = isSpend ? (userId ?? 'system:love-issuer') : 'system:love-issuer';
+  const toDid = isSpend ? 'system:love-issuer' : (userId ?? 'system:love-issuer');
+  const id = typeof payload.transactionId === 'string' ? payload.transactionId : crypto.randomUUID();
+
   const lastRow = await env.LOVE_D1.prepare(
-    'SELECT entry_hash FROM love_chain ORDER BY id DESC LIMIT 1'
-  ).first<{ entry_hash: string }>();
+    'SELECT entry_hash FROM love_chain WHERE from_did = ? ORDER BY created_at DESC, rowid DESC LIMIT 1'
+  ).bind(fromDid).first<{ entry_hash: string }>();
   const prevHash = lastRow?.entry_hash ?? GENESIS_HASH;
-  const payloadJson = JSON.stringify(payload);
-  const msg = `${entryType}|${payloadJson}|${prevHash}`;
-  const entryHash = await sha256Hex(msg);
+  const ts = Date.now();
+  const entryHash = await sha256Hex(`${fromDid}|${toDid}|${entryType}|${amount}|${ts}|${prevHash}`);
   await env.LOVE_D1.prepare(
-    `INSERT INTO love_chain (entry_type, entry_hash, prev_hash, payload_json, created_at) VALUES (?, ?, ?, ?, ?)`
-  ).bind(entryType, entryHash, prevHash, payloadJson, Date.now()).run();
+    `INSERT INTO love_chain (id, from_did, to_did, amount, type, signature, prev_hash, entry_hash, created_at)
+     VALUES (?, ?, ?, ?, ?, NULL, ?, ?, ?)`
+  ).bind(id, fromDid, toDid, amount, entryType, prevHash, entryHash, ts).run();
   return entryHash;
 }
 
@@ -181,10 +201,10 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 } as const;
 
-function json(body: unknown, status = 200): Response {
+function json(body: unknown, status = 200, extraHeaders: Record<string, string> = {}): Response {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
+    headers: { 'Content-Type': 'application/json', ...CORS_HEADERS, ...extraHeaders },
   });
 }
 
@@ -208,6 +228,44 @@ function b64urlDecode(s: string): Uint8Array {
   const out = new Uint8Array(bin.length);
   for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
   return out;
+}
+
+// ── Clause Blind Schnorr (two-challenge) helpers ─────────────────────
+
+// Standard base64 (the CBS wire format — matches the gateway client and
+// bridge verifier; distinct from the b64url JWT helpers above).
+function b64e(bytes: Uint8Array): string {
+  let bin = '';
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return btoa(bin);
+}
+function b64d(s: string): Uint8Array {
+  const bin = atob(s);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+
+// BLIND_ISSUER_PRIVATE_KEY may be a plain string (wrangler secret put) or a
+// Cloudflare Secrets Store binding ({ get(): Promise<string> }). Resolve
+// either shape to the bare base64 scalar.
+async function resolveBlindKey(k: Env['BLIND_ISSUER_PRIVATE_KEY']): Promise<string | null> {
+  if (!k) return null;
+  if (typeof k === 'string') return k;
+  try {
+    return (await k.get()) || null;
+  } catch {
+    return null;
+  }
+}
+
+// The canonical settlement message shape (see docs/specs/love-settlement-cbs.md).
+interface SettlementMessage {
+  version?: string;
+  did?: string;
+  tool?: string;
+  amount?: string;
+  t?: string;
 }
 
 // HS256 verification using Web Crypto — no external dependency or network call.
@@ -340,6 +398,31 @@ export default {
       if (request.method === 'GET') {
         return this.exportChain(env);
       }
+    }
+
+    // Route: GET /blind-pubkey — two-challenge CBS issuer parameters
+    // (X, R_0, R_1, t). t is a fresh single-use nonce per withdrawal.
+    if (url.pathname === '/blind-pubkey' && request.method === 'GET') {
+      return this.blindPubkey(env);
+    }
+
+    // Route: POST /blind-sign — sign TWO blinded challenges {c0,c1,t}.
+    // Single-use t (D1 cbs_nonce INSERT as the atomic gate, BEFORE signing).
+    if (url.pathname === '/blind-sign' && request.method === 'POST') {
+      return this.blindSign(request, env);
+    }
+
+    // Route: POST /withdraw — spend a two-challenge blind signature
+    // (balance check, love_chain entry, nonce consume, coin claim).
+    if (url.pathname === '/withdraw' && request.method === 'POST') {
+      return this.withdrawCbs(request, env);
+    }
+
+    // Route: POST /verify-settlement — bridge-side settlement verification:
+    // verifies BOTH challenges against X and consumes the nonce + coin
+    // (idempotent rejection on replay).
+    if (url.pathname === '/verify-settlement' && request.method === 'POST') {
+      return this.verifySettlement(request, env);
     }
 
     // Route: GET /health — liveness probe
@@ -675,20 +758,300 @@ export default {
 
   async getChain(env: Env): Promise<Response> {
     const result = await env.LOVE_D1.prepare(
-      'SELECT id, entry_type, entry_hash, prev_hash, created_at FROM love_chain ORDER BY id DESC LIMIT 100'
+      'SELECT id, from_did, to_did, amount, type, signature, prev_hash, entry_hash, created_at FROM love_chain ORDER BY created_at DESC, rowid DESC LIMIT 100'
     ).all();
     return json({ chain: result.results || [], count: result.results?.length || 0 });
   },
 
   async exportChain(env: Env): Promise<Response> {
     const result = await env.LOVE_D1.prepare(
-      'SELECT id, entry_type, entry_hash, prev_hash, payload_json, created_at FROM love_chain ORDER BY id ASC'
+      'SELECT id, from_did, to_did, amount, type, signature, prev_hash, entry_hash, created_at FROM love_chain ORDER BY created_at ASC, rowid ASC'
     ).all();
     return json({
       chain: result.results || [],
       count: result.results?.length || 0,
       exportedAt: Date.now(),
     });
+  },
+
+  // ── Clause Blind Schnorr (two-challenge) issuer routes ──────────────
+  // Scheme per the GNU Taler CS thesis, two-challenge extension — see
+  // docs/specs/love-settlement-cbs.md and taler-cbs/loader.ts.
+
+  async blindPubkey(env: Env): Promise<Response> {
+    const keyB64 = await resolveBlindKey(env.BLIND_ISSUER_PRIVATE_KEY);
+    if (!keyB64) return json({ error: 'CBS issuer not configured' }, 503);
+    try {
+      await ensureCbs();
+      const xBytes = b64d(keyB64);
+      // Fresh one-time nonce `t` per request. n_i = clamp(SHA-512("cbs-ni" ‖ x ‖ t))
+      // is recomputed (stateless) from `t` at /blind-sign. R_i = n_i·G is
+      // published so the client can blind against it. Reusing `t` (same
+      // nonce pair) across two signings leaks x, so `t` is single-use.
+      const t = crypto.getRandomValues(new Uint8Array(32));
+      const [n0, n1] = await Promise.all([deriveNonce0(xBytes, t), deriveNonce1(xBytes, t)]);
+      const X = cbsBase(xBytes);
+      const R0 = cbsBase(n0);
+      const R1 = cbsBase(n1);
+      // Cache-Control: no-store — `t` is a single-use nonce; an edge-cached
+      // response would replay the same t (and the same R_0/R_1) across
+      // clients, breaking nonce freshness and risking the nonce-reuse
+      // x-leak. Observed live: cf-cache-status HIT without this header.
+      return json(
+        { X: b64e(X), R0: b64e(R0), R1: b64e(R1), t: b64e(t) },
+        200,
+        { 'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0' },
+      );
+    } catch {
+      return json({ error: 'Internal server error' }, 500);
+    }
+  },
+
+  async blindSign(request: Request, env: Env): Promise<Response> {
+    const keyB64 = await resolveBlindKey(env.BLIND_ISSUER_PRIVATE_KEY);
+    if (!keyB64) return json({ error: 'CBS issuer not configured' }, 503);
+    let body: { c0?: unknown; c1?: unknown; t?: unknown };
+    try {
+      body = await request.json();
+    } catch {
+      return err('Invalid JSON', 400);
+    }
+    if (typeof body.c0 !== 'string' || typeof body.c1 !== 'string' || typeof body.t !== 'string') {
+      return err('Missing blinded challenges c0/c1 or nonce t', 400);
+    }
+    try {
+      await ensureCbs();
+      // SECURITY: claim `t` (PRIMARY KEY INSERT) BEFORE signing. Under a
+      // concurrent race, exactly one insert succeeds; the loser is rejected
+      // without ever receiving a second signature under the same nonces —
+      // closing the s1−s2 = (c1−c2)·x nonce-reuse key-leak race.
+      const expires = Date.now() + 86_400_000;
+      try {
+        await env.LOVE_D1.prepare(
+          'INSERT INTO cbs_nonce (t, expires) VALUES (?, ?)'
+        ).bind(body.t, expires).run();
+      } catch {
+        return json({ error: 'Nonce already used' }, 409);
+      }
+      const xBytes = b64d(keyB64);
+      const tBytes = b64d(body.t);
+      const [n0, n1] = await Promise.all([deriveNonce0(xBytes, tBytes), deriveNonce1(xBytes, tBytes)]);
+      const { s0, s1 } = cbsSign(b64d(body.c0), b64d(body.c1), n0, n1, xBytes);
+      // Best-effort TTL sweep of expired nonces (cheap, keeps table small).
+      await env.LOVE_D1.prepare(
+        'DELETE FROM cbs_nonce WHERE expires < ?'
+      ).bind(Date.now()).run().catch(() => {});
+      return json({ s0: b64e(s0), s1: b64e(s1) });
+    } catch {
+      return json({ error: 'Internal server error' }, 500);
+    }
+  },
+
+  // Shared two-challenge spend core for /withdraw and /verify-settlement:
+  // verify → nonce present → coin claim (atomicity gate) → balance debit →
+  // nonce consume. The coin-claim INSERT is FIRST in the batch so a
+  // concurrent replay hits the PRIMARY KEY before any debit runs.
+  async spendCoin(
+    env: Env,
+    keyB64: string,
+    body: { did: string; amount: number; msg: string; r0: string; r1: string; s0: string; s1: string; c0: string; c1: string; t: string },
+    entryType: string,
+  ): Promise<{ ok: true; txId: string } | { ok: false; status: number; error: string }> {
+    await ensureCbs();
+    const xBytes = b64d(keyB64);
+    const X = cbsBase(xBytes);
+    const msgBytes = b64d(body.msg);
+    const valid = cbsVerify(
+      msgBytes,
+      b64d(body.c0), b64d(body.s0),
+      b64d(body.c1), b64d(body.s1),
+      X,
+      b64d(body.r0), b64d(body.r1),
+    );
+    if (!valid) return { ok: false, status: 401, error: 'Invalid blind signature' };
+
+    const nonceRow = await env.LOVE_D1.prepare(
+      'SELECT t FROM cbs_nonce WHERE t = ?'
+    ).bind(body.t).first<{ t: string }>();
+    if (!nonceRow) return { ok: false, status: 400, error: 'Unknown or expired nonce' };
+
+    // Axis-1 replay protection: each two-challenge coin (R'_0, s'_0) is
+    // spent exactly once. Claim c'_0 (PRIMARY KEY) before debiting; a
+    // replay is rejected with 409.
+    const coinId = body.c0;
+    const prior = await env.LOVE_D1.prepare(
+      'SELECT coin FROM cbs_coin WHERE coin = ?'
+    ).bind(coinId).first<{ coin: string }>();
+    if (prior) return { ok: false, status: 409, error: 'Token already spent (replay blocked)' };
+
+    // Balance check against love_accounts — the same table the x402 gateway
+    // reads for the LOVE dual-settlement balance gate.
+    const account = await env.LOVE_D1.prepare(
+      'SELECT balance FROM love_accounts WHERE did = ?'
+    ).bind(body.did).first<{ balance: number }>();
+    if (!account || account.balance < body.amount) {
+      return { ok: false, status: 402, error: 'Insufficient LOVE balance' };
+    }
+
+    const txId = crypto.randomUUID();
+    const coinExpires = Date.now() + 365 * 86_400_000;
+    const token = `${body.c0}.${body.s0}`;
+
+    // Court-admissible chain entry (phos semantics: batch with the debit so
+    // the entry and the balance move commit together or not at all).
+    const lastRow = await env.LOVE_D1.prepare(
+      'SELECT entry_hash, created_at FROM love_chain WHERE from_did = ? ORDER BY created_at DESC, rowid DESC LIMIT 1'
+    ).bind(body.did).first<{ entry_hash: string; created_at: number }>();
+    const prevHash = lastRow?.entry_hash ?? GENESIS_HASH;
+    const ts = Date.now();
+    const entryHash = await sha256Hex(`${body.did}|system:love-issuer|${body.amount}|${ts}|${prevHash}|${token}`);
+
+    try {
+      await env.LOVE_D1.batch([
+        env.LOVE_D1.prepare(
+          'INSERT INTO cbs_coin (coin, did, expires) VALUES (?, ?, ?)'
+        ).bind(coinId, body.did, coinExpires),
+        env.LOVE_D1.prepare(
+          "UPDATE love_accounts SET balance = balance - ?, updated_at = datetime('now') WHERE did = ?"
+        ).bind(body.amount, body.did),
+        env.LOVE_D1.prepare(
+          'DELETE FROM cbs_nonce WHERE t = ?'
+        ).bind(body.t),
+        env.LOVE_D1.prepare(
+          `INSERT INTO love_chain (id, from_did, to_did, amount, type, signature, prev_hash, entry_hash, created_at)
+           VALUES (?, ?, 'system:love-issuer', ?, ?, ?, ?, ?, ?)`
+        ).bind(txId, body.did, body.amount, entryType, token, prevHash, entryHash, ts),
+      ]);
+    } catch {
+      // PRIMARY KEY violation => a concurrent request already spent it.
+      return { ok: false, status: 409, error: 'Token already spent (replay blocked)' };
+    }
+
+    // Best-effort history: register the DID if unknown (satisfies the
+    // transactions→users FK), then local transactions row.
+    await env.LOVE_D1.prepare(
+      'INSERT OR IGNORE INTO users (id, created_at, updated_at) VALUES (?, ?, ?)'
+    ).bind(body.did, Date.now(), Date.now()).run().catch(() => {});
+    await env.LOVE_D1.prepare(
+      "INSERT INTO transactions (id, user_id, type, amount, description, metadata, created_at) VALUES (?, ?, 'spend', ?, ?, ?, ?)"
+    ).bind(
+      txId,
+      body.did,
+      body.amount,
+      entryType === 'love_withdraw' ? 'LOVE_WITHDRAW_CBS' : 'LOVE_SETTLE_CBS',
+      JSON.stringify({ token, msg: body.msg }),
+      Date.now()
+    ).run().catch(() => {});
+
+    // Best-effort TTL sweep of expired coins.
+    await env.LOVE_D1.prepare(
+      'DELETE FROM cbs_coin WHERE expires < ?'
+    ).bind(Date.now()).run().catch(() => {});
+
+    return { ok: true, txId };
+  },
+
+  async withdrawCbs(request: Request, env: Env): Promise<Response> {
+    const keyB64 = await resolveBlindKey(env.BLIND_ISSUER_PRIVATE_KEY);
+    if (!keyB64) return json({ error: 'CBS issuer not configured' }, 503);
+    let body: { did?: unknown; amount?: unknown; msg?: unknown; r0?: unknown; r1?: unknown; s0?: unknown; s1?: unknown; c0?: unknown; c1?: unknown; t?: unknown };
+    try {
+      body = await request.json();
+    } catch {
+      return err('Invalid JSON', 400);
+    }
+    if (
+      typeof body.did !== 'string' ||
+      typeof body.amount !== 'number' || body.amount <= 0 ||
+      typeof body.msg !== 'string' || typeof body.r0 !== 'string' || typeof body.r1 !== 'string' ||
+      typeof body.s0 !== 'string' || typeof body.s1 !== 'string' ||
+      typeof body.c0 !== 'string' || typeof body.c1 !== 'string' || typeof body.t !== 'string'
+    ) {
+      return err('Missing or invalid withdraw fields (did, amount, msg, r0, r1, s0, s1, c0, c1, t)', 400);
+    }
+    try {
+      const res = await this.spendCoin(env, keyB64, {
+        did: body.did,
+        amount: body.amount,
+        msg: body.msg,
+        r0: body.r0, r1: body.r1,
+        s0: body.s0, s1: body.s1,
+        c0: body.c0, c1: body.c1,
+        t: body.t,
+      }, 'love_withdraw');
+      if (!res.ok) return json({ error: res.error }, res.status);
+      return json({
+        success: true,
+        blind_signature: `${body.c0}.${body.s0}`,
+        transactionId: res.txId,
+      });
+    } catch {
+      return json({ error: 'Internal server error' }, 500);
+    }
+  },
+
+  async verifySettlement(request: Request, env: Env): Promise<Response> {
+    const keyB64 = await resolveBlindKey(env.BLIND_ISSUER_PRIVATE_KEY);
+    if (!keyB64) return json({ valid: false, reason: 'CBS issuer not configured' }, 503);
+    let body: { did?: unknown; msg?: unknown; sig?: { r0?: unknown; r1?: unknown; s0?: unknown; s1?: unknown; c0?: unknown; c1?: unknown; t?: unknown } };
+    try {
+      body = await request.json();
+    } catch {
+      return json({ valid: false, reason: 'bad-request' }, 400);
+    }
+    const sig = (body.sig ?? {}) as Record<string, unknown>;
+    if (
+      typeof body.did !== 'string' || typeof body.msg !== 'string' ||
+      typeof sig.r0 !== 'string' || typeof sig.r1 !== 'string' ||
+      typeof sig.s0 !== 'string' || typeof sig.s1 !== 'string' ||
+      typeof sig.c0 !== 'string' || typeof sig.c1 !== 'string' || typeof sig.t !== 'string'
+    ) {
+      return json({ valid: false, reason: 'bad-request' }, 400);
+    }
+
+    // (i) Parse the settlement message + bind DID (canonical JSON).
+    let m: SettlementMessage;
+    try {
+      m = JSON.parse(new TextDecoder().decode(b64d(body.msg))) as SettlementMessage;
+    } catch {
+      return json({ valid: false, reason: 'malformed-message' }, 400);
+    }
+    if (typeof m.did !== 'string' || m.did !== body.did) {
+      return json({ valid: false, reason: 'did-mismatch' }, 403);
+    }
+    // The message carries the session nonce t (spec §3); it must match the
+    // nonce the signature claims to consume.
+    if (typeof m.t !== 'string' || m.t !== sig.t) {
+      return json({ valid: false, reason: 't-mismatch' }, 403);
+    }
+    const amount = Number(m.amount ?? '');
+    if (!Number.isFinite(amount) || amount <= 0) {
+      return json({ valid: false, reason: 'bad-amount' }, 400);
+    }
+
+    try {
+      const res = await this.spendCoin(env, keyB64, {
+        did: body.did,
+        amount,
+        msg: body.msg,
+        r0: sig.r0, r1: sig.r1,
+        s0: sig.s0, s1: sig.s1,
+        c0: sig.c0, c1: sig.c1,
+        t: sig.t,
+      }, 'love_settle');
+      if (!res.ok) {
+        const reason =
+          res.error === 'Token already spent (replay blocked)' ? 'coin-consumed' :
+          res.error === 'Unknown or expired nonce' ? 'nonce-consumed' :
+          res.error === 'Invalid blind signature' ? 'signature' :
+          res.error === 'Insufficient LOVE balance' ? 'insufficient-balance' :
+          'spend-failed';
+        return json({ valid: false, reason }, res.status);
+      }
+      return json({ valid: true, transactionId: res.txId });
+    } catch {
+      return json({ valid: false, reason: 'internal-error' }, 500);
+    }
   },
 };
 

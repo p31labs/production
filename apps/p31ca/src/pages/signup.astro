@@ -2,53 +2,120 @@
 import MarketingShell from '../layouts/MarketingShell.astro';
 
 import Footer from '../components/marketing/Footer.astro';
-import '@p31ca/canon/tokens.css';
-import '@p31ca/canon-react/styles.css';
-import { Button } from '@p31ca/canon-react';
+// NOTE: canon tokens.css is already loaded shell-wide via MarketingShell →
+// p31-style.css → @p31ca/canon/css/all.css. Button uses the canon .btn
+// recipe (fix-plan: p31ca-build-blocker-canon-and-canon-react.md).
 ---
 
 <MarketingShell theme="sunlight" title="Sign Up — P31 Labs" description="Create your P31 Labs account. Email/password or DID:key.">
-  <main id="main-content" class="section flex items-center justify-center">
-    <div class="w-full max-w-md px-6 md:px-12 lg:px-16">
-      <div class="glass-card animate-scale-in p-8 space-y-6">
-        <div class="text-center space-y-2">
-          <h1 class="text-2xl font-bold" style="color: var(--p31-text);">Sign Up</h1>
-          <p class="text-sm" style="color: var(--p31-text-secondary);">Create your sovereign P31 account</p>
+  <main id="main-content" class="section si88-flex si88-items-center si88-justify-center">
+    <div class="si88-w-full si88-max-w-md si88-px-6 si88-md-px-12 si88-lg-px-16">
+      <div class="glass-card animate-scale-in si88-p-8 si88-space-y-6">
+        <div class="si88-text-center si88-space-y-2">
+          <h1 class="si88-text-2xl si88-font-bold" style="color: var(--p31-text);">Sign Up</h1>
+          <p class="si88-text-sm" style="color: var(--p31-text-secondary);">Create your sovereign P31 account</p>
         </div>
-        
-        <form class="space-y-4" onsubmit="alert('Auth backend not wired yet. Deploy apps/auth/ first.'); return false;">
-          <div class="space-y-2">
-            <label for="email" class="text-sm font-medium" style="color: var(--p31-text);">Email</label>
-            <input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-lg text-sm transition-all" style="background: rgba(255,255,255,0.03); border: 1px solid var(--p31-glass-border); color: var(--p31-text); outline: none;" onfocus="this.style.borderColor='var(--p31-accent)'" onblur="this.style.borderColor='var(--p31-glass-border)'" />
+
+        <form id="signup-form" class="si88-space-y-4">
+          <div class="si88-space-y-2">
+            <label for="email" class="si88-text-sm si88-font-medium" style="color: var(--p31-text);">Email</label>
+            <input type="email" id="email" name="email" autocomplete="username" required class="si88-w-full si88-px-4 si88-py-3 si88-rounded-lg si88-text-sm si88-transition-all" style="background: rgba(255,255,255,0.03); border: 1px solid var(--p31-glass-border); color: var(--p31-text); outline: none;" onfocus="this.style.borderColor='var(--p31-accent)'" onblur="this.style.borderColor='var(--p31-glass-border)'" />
           </div>
-          <div class="space-y-2">
-            <label for="password" class="text-sm font-medium" style="color: var(--p31-text);">Password</label>
-            <input type="password" id="password" name="password" required class="w-full px-4 py-3 rounded-lg text-sm transition-all" style="background: rgba(255,255,255,0.03); border: 1px solid var(--p31-glass-border); color: var(--p31-text); outline: none;" onfocus="this.style.borderColor='var(--p31-accent)'" onblur="this.style.borderColor='var(--p31-glass-border)'" />
+          <div class="si88-space-y-2">
+            <label for="password" class="si88-text-sm si88-font-medium" style="color: var(--p31-text);">Password</label>
+            <input type="password" id="password" name="password" autocomplete="new-password" required class="si88-w-full si88-px-4 si88-py-3 si88-rounded-lg si88-text-sm si88-transition-all" style="background: rgba(255,255,255,0.03); border: 1px solid var(--p31-glass-border); color: var(--p31-text); outline: none;" onfocus="this.style.borderColor='var(--p31-accent)'" onblur="this.style.borderColor='var(--p31-glass-border)'" />
           </div>
-          <div class="space-y-2">
-            <label for="confirm-password" class="text-sm font-medium" style="color: var(--p31-text);">Confirm Password</label>
-            <input type="password" id="confirm-password" name="confirm-password" required class="w-full px-4 py-3 rounded-lg text-sm transition-all" style="background: rgba(255,255,255,0.03); border: 1px solid var(--p31-glass-border); color: var(--p31-text); outline: none;" onfocus="this.style.borderColor='var(--p31-accent)'" onblur="this.style.borderColor='var(--p31-glass-border)'" />
+          <div class="si88-space-y-2">
+            <label for="confirm-password" class="si88-text-sm si88-font-medium" style="color: var(--p31-text);">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm-password" autocomplete="new-password" required class="si88-w-full si88-px-4 si88-py-3 si88-rounded-lg si88-text-sm si88-transition-all" style="background: rgba(255,255,255,0.03); border: 1px solid var(--p31-glass-border); color: var(--p31-text); outline: none;" onfocus="this.style.borderColor='var(--p31-accent)'" onblur="this.style.borderColor='var(--p31-glass-border)'" />
+            <p class="si88-text-xs" style="color: var(--p31-text-tertiary);">
+              Passwordless stack: no password is stored or checked anywhere. The fields exist for browser password-manager compatibility.
+            </p>
           </div>
-          <Button client:load variant="primary" type="submit" className="w-full">Create Account</Button>
+          <button type="submit" class="btn btn-primary si88-w-full" id="signup-submit">Create Account</button>
+          <p id="signup-status" role="status" aria-live="polite" class="si88-text-xs" style="display: none; color: var(--p31-text-secondary);"></p>
         </form>
-        
-        <div class="relative py-4" style="border-top: 1px solid var(--p31-glass-border);">
-          <span class="absolute top-1/2 left-1/2 text-xs px-2" style="background: var(--p31-bg); color: var(--p31-text-tertiary); translate: -50% -50%;">or</span>
+
+        <div class="si88-relative si88-py-4" style="border-top: 1px solid var(--p31-glass-border);">
+          <span class="si88-absolute si88-top-1-2 si88-left-1-2 si88-text-xs si88-px-2" style="background: var(--p31-bg); color: var(--p31-text-tertiary); translate: -50% -50%;">or</span>
         </div>
-        
-        <div class="space-y-3">
-          <button onclick="alert('DID:key auth requires production shell deployment.')" class="btn btn-secondary w-full justify-center">
+
+        <div class="si88-space-y-3">
+          <a href="https://phos.p31ca.org" class="btn btn-secondary si88-w-full si88-justify-center" style="text-decoration: none;">
             <span style="font-family: var(--p31-font-mono);">🔑</span>
-            <span>Sign Up with DID:key</span>
-          </button>
+            <span>Sign Up with DID:key in PHOS</span>
+          </a>
+          <p class="si88-text-xs si88-text-center" style="color: var(--p31-text-tertiary);">
+            DID:key signing needs your key material, and this hub never asks for keys. PHOS signs DID challenges client-side — create your identity there.
+          </p>
         </div>
-        
-        <p class="text-xs text-center" style="color: var(--p31-text-tertiary);">
-          Already have an account? <a href="/signin" style="color: var(--p31-accent);" class="hover:underline">Sign in</a>
+
+        <p class="si88-text-xs si88-text-center" style="color: var(--p31-text-tertiary);">
+          Already have an account? <a href="/signin" style="color: var(--p31-accent);" class="si88-hover-underline">Sign in</a>
         </p>
       </div>
     </div>
   </main>
 
   <Footer />
+
+  <script>
+    (() => {
+      // Real submit against the live p31-auth worker (apps/auth, deployed).
+      // Contract: POST { pseudonym } → { token, userId, pseudonym }. First
+      // login upserts the user record, so signing up = first sign-in.
+      // The hub is passwordless — passwords are validated locally (match
+      // check) and never transmitted.
+      const AUTH_LOGIN = 'https://p31-auth.trimtab-signal.workers.dev/auth/login';
+      const form = document.getElementById('signup-form') as HTMLFormElement | null;
+      const status = document.getElementById('signup-status') as HTMLElement | null;
+      const submit = document.getElementById('signup-submit') as HTMLButtonElement | null;
+      if (!form || !status || !submit) return;
+
+      const show = (text: string, ok: boolean) => {
+        status.textContent = text;
+        status.style.color = ok ? 'var(--p31-accent-green, #34d399)' : 'var(--p31-accent-red, #fb7185)';
+        status.style.display = 'block';
+      };
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = (document.getElementById('email') as HTMLInputElement).value.trim();
+        const password = (document.getElementById('password') as HTMLInputElement).value;
+        const confirm = (document.getElementById('confirm-password') as HTMLInputElement).value;
+        if (!email || !password || !confirm) {
+          show('Fill in every field first.', false);
+          return;
+        }
+        if (password !== confirm) {
+          show('The two passwords do not match.', false);
+          return;
+        }
+        submit.disabled = true;
+        show('Contacting p31-auth…', true);
+        try {
+          const res = await fetch(AUTH_LOGIN, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ pseudonym: email }),
+          });
+          if (!res.ok) {
+            const body = await res.json().catch(() => null);
+            show(`p31-auth answered ${res.status}: ${body?.error ?? 'try again'}.`, false);
+            return;
+          }
+          const data = await res.json();
+          sessionStorage.setItem('p31-auth-token', data.token);
+          show(
+            `Account created: ${data.userId} (first sign-in registers it on p31-auth). A real session token is stored in this tab. Your passwords were not sent or stored.`,
+            true
+          );
+        } catch {
+          show('Could not reach p31-auth (offline or blocked). Nothing was stored.', false);
+        } finally {
+          submit.disabled = false;
+        }
+      });
+    })();
+  </script>
 </MarketingShell>

@@ -1,0 +1,30 @@
+---
+import { menuTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface MenuItem {
+  id: string;
+  label: string;
+  icon?: string;
+}
+
+interface Props {
+  items?: MenuItem[];
+  ariaLabel?: string;
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { items = [], ariaLabel, class: cls = '', style } = Astro.props;
+
+const html = renderHtml(menuTree({
+  items: items.map((item) => ({
+    id: item.id,
+    label: item.label,
+    icon: item.icon ? { raw: item.icon } : null,
+  })),
+  ariaLabel,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

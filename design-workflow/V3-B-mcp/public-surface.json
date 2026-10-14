@@ -1,0 +1,120 @@
+{
+  "surface": "p31-design-mcp-canonical",
+  "version": "1.0.0",
+  "principle": "The MCP front door stays small and workflow-oriented; depth lives in the implementation layer (runbook v3.0 §9.17 SMALL SURFACE, §2.2 Salt DS precedent). Exactly 5 visible tools.",
+  "gate": "mcp-surface",
+  "tools": [
+    {
+      "name": "get_project_context",
+      "description": "Return the canonical project context: the design-core package identity, the canonical token source (tokens.dtc.json), the component registry source (componentDefs.ts), the MCP surface spec, and the fail-closed rules (unknown inputs never guess). Single call to orient any agent before composing against canon.",
+      "params": {
+        "type": "object",
+        "properties": {}
+      },
+      "returns": {
+        "shape": "object",
+        "fields": ["name", "version", "tokenSource", "componentSource", "surfaceSpec", "failClosedRules"]
+      },
+      "error": {
+        "code": -32000,
+        "message": "get_project_context: could not read project context (internal error)"
+      }
+    },
+    {
+      "name": "resolve_token",
+      "description": "Resolve a single design token path to its CSS custom property and resolved value, following {ref} indirections. Example: resolve_token(\"color.accent.default\") → \"--p31-color-accent-default: oklch(65% 0.18 195)\".",
+      "params": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Dot-separated token path, e.g. \"color.accent.default\" or \"glass.blur\""
+          }
+        },
+        "required": ["path"]
+      },
+      "returns": {
+        "shape": "object",
+        "fields": ["path", "cssVar", "value"]
+      },
+      "error": {
+        "code": -32000,
+        "message": "resolve_token: unknown token path \"...\" — refusing to guess; consult list_tokens (implementation layer)"
+      }
+    },
+    {
+      "name": "get_component_schema",
+      "description": "Return the full contract for a P31 component: CSS class, category, tokens used, props, slots, variants, accessibility requirements, status, and tier. An uncontracted component does not exist for the agent.",
+      "params": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Component name, e.g. \"GlassPanel\", \"Topbar\", \"SpoonDial\""
+          }
+        },
+        "required": ["name"]
+      },
+      "returns": {
+        "shape": "object",
+        "fields": ["name", "description", "css_class", "category", "tokens", "props", "slots", "variants", "accessibility", "status", "tier", "importPath"]
+      },
+      "error": {
+        "code": -32000,
+        "message": "get_component_schema: unknown component \"...\" — an uncontracted component does not exist for the agent"
+      }
+    },
+    {
+      "name": "resolve_device_tier",
+      "description": "Resolve the P31 delivery tier for a web-capable surface from capability input (never device brand). Width class per Material 3 (<600 compact, 600-839 medium, >=840 expanded); pointer/hover are independent capability flags, surfaced never collapsed. Unknown capability values fail closed.",
+      "params": {
+        "type": "object",
+        "properties": {
+          "width_dp": {
+            "type": "number",
+            "description": "CSS viewport width in dp (e.g. window.innerWidth)"
+          },
+          "pointer": {
+            "type": "string",
+            "enum": ["none", "coarse", "fine", "mixed"]
+          },
+          "hover": {
+            "type": "string",
+            "enum": ["none", "hover", "mixed"]
+          }
+        },
+        "required": ["width_dp", "pointer", "hover"]
+      },
+      "returns": {
+        "shape": "object",
+        "fields": ["tier", "windowSizeClass", "touchTargetMin", "navigation", "delivery", "flags"]
+      },
+      "error": {
+        "code": -32000,
+        "message": "resolveDeviceTier: pointer must be one of \"none\" | \"coarse\" | \"fine\" | \"mixed\", got \"...\" (unknown capability — refusing to guess)"
+      }
+    },
+    {
+      "name": "get_tier_tokens",
+      "description": "Return the frozen device-tier manifest object for one tier (the contract values: windowSizeClass, pointer, hover, touchTargetMin, navigation, delivery, safeAreaInsets, embedded budgets). Unknown tier names fail closed.",
+      "params": {
+        "type": "object",
+        "properties": {
+          "tier": {
+            "type": "string",
+            "enum": ["embedded", "mobile", "tablet", "desktop"]
+          }
+        },
+        "required": ["tier"]
+      },
+      "returns": {
+        "shape": "object",
+        "fields": ["tier", "windowSizeClass", "pointer", "hover", "touchTargetMin", "navigation", "delivery", "safeAreaInsets"]
+      },
+      "error": {
+        "code": -32000,
+        "message": "getTierTokens: unknown tier \"...\" — valid: embedded, mobile, tablet, desktop (refusing to guess)"
+      }
+    }
+  ]
+}

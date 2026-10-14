@@ -11,7 +11,7 @@
 */
 "use strict";
 
-const CACHE_VERSION = "v3";
+const CACHE_VERSION = "v4";
 const CACHE_SHELL = `p31-hub-shell-${CACHE_VERSION}`;
 const CACHE_ASSETS = `p31-hub-assets-${CACHE_VERSION}`;
 const CACHE_IMAGES = `p31-hub-images-${CACHE_VERSION}`;

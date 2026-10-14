@@ -1,9 +1,6 @@
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import {
-  CallToolRequestSchema,
-  ListToolsRequestSchema,
-} from '@modelcontextprotocol/sdk/types.js';
+import { z } from 'zod';
+import { McpServer } from '@modelcontextprotocol/server';
+import { serveStdio } from '@modelcontextprotocol/server/stdio';
 
 const tokens = {
   colors: {
@@ -38,62 +35,18 @@ const tokens = {
   },
 };
 
-const server = new Server(
+const server = new McpServer({ name: 'p31-ui-tokens', version: '0.1.0' });
+
+server.registerTool(
+  'get_token',
   {
-    name: 'p31-ui-tokens',
-    version: '0.1.0',
+    description: 'Get a design token value by category and key',
+    inputSchema: {
+      category: z.enum(['colors', 'spacing', 'typography']).describe('Token category'),
+      key: z.string().describe('Token key (e.g., "cyan", "md", "h1")'),
+    },
   },
-  {
-    capabilities: {
-      tools: {},
-    },
-  }
-);
-
-server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools: [
-    {
-      name: 'get_token',
-      description: 'Get a design token value by category and key',
-      inputSchema: {
-        type: 'object',
-        properties: {
-          category: {
-            type: 'string',
-            enum: ['colors', 'spacing', 'typography'],
-            description: 'Token category',
-          },
-          key: {
-            type: 'string',
-            description: 'Token key (e.g., "cyan", "md", "h1")',
-          },
-        },
-        required: ['category', 'key'],
-      },
-    },
-    {
-      name: 'list_tokens',
-      description: 'List all design tokens in a category',
-      inputSchema: {
-        type: 'object',
-        properties: {
-          category: {
-            type: 'string',
-            enum: ['colors', 'spacing', 'typography'],
-            description: 'Token category',
-          },
-        },
-        required: ['category'],
-      },
-    },
-  ],
-}));
-
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  const { name, arguments: args } = request.params;
-
-  if (name === 'get_token') {
-    const { category, key } = args as { category: string; key: string };
+  async ({ category, key }) => {
     const categoryData = tokens[category as keyof typeof tokens];
     if (!categoryData) {
       return {
@@ -111,10 +64,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     return {
       content: [{ type: 'text', text: JSON.stringify({ [key]: value }, null, 2) }],
     };
-  }
+  },
+);
 
-  if (name === 'list_tokens') {
-    const { category } = args as { category: string };
+server.registerTool(
+  'list_tokens',
+  {
+    description: 'List all design tokens in a category',
+    inputSchema: {
+      category: z.enum(['colors', 'spacing', 'typography']).describe('Token category'),
+    },
+  },
+  async ({ category }) => {
     const categoryData = tokens[category as keyof typeof tokens];
     if (!categoryData) {
       return {
@@ -125,21 +86,15 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     return {
       content: [{ type: 'text', text: JSON.stringify(categoryData, null, 2) }],
     };
-  }
+  },
+);
 
-  return {
-    content: [{ type: 'text', text: `Unknown tool: ${name}` }],
-    isError: true,
-  };
-});
-
-async function main() {
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
+function main() {
+  // serveStdio owns the transport: it starts it, serves modern (2026-07-28)
+  // stateless traffic, and pins legacy 2025-era openings (initialize
+  // handshake) to a 2025-era instance so old clients keep working.
+  serveStdio(() => server);
   console.error('MCP token server running on stdio');
 }
 
-main().catch((error) => {
-  console.error('Server error:', error);
-  process.exit(1);
-});
+main();

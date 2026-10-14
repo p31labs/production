@@ -1,26 +1,81 @@
 /**
  * P31 Component Registry — Cloudflare Worker
  * Exposes the component registry over MCP over HTTP
- * 
+ *
  * Endpoints:
- *   POST /mcp — MCP JSON-RPC endpoint
+ *   POST /mcp — MCP JSON-RPC endpoint (stateless 2026-07-28, SDK v2)
+ *   GET /mcp — Endpoint metadata (stateless — no SSE)
  *   GET /health — Health check
  *   GET /components — List all components (simplified)
  *   GET /components/:name — Get component by name
  *   GET /tokens — Get all design tokens
- * 
+ *
  * Deploy: npx wrangler deploy
  * Custom domain: registry.p31ca.org
+ *
+ * MCP transport: the hand-rolled stateless dispatch was replaced by the split
+ * SDK v2 (`@modelcontextprotocol/server` → `McpServer` + `createMcpHandler`).
+ * The SDK handler serves the modern 2026-07-28 surface (server/discover,
+ * `_meta` envelope, resultType, ttlMs/cacheScope on cacheable results,
+ * -32022 version mismatches) and keeps 2025-era clients working through its
+ * default `legacy: 'stateless'` fallback (the initialize handshake) —
+ * equivalent to the previous hand-rolled legacy-compat branch. See
+ * docs/fix-plans/component-registry-sdk-v2-remainder.md.
  */
 
 import { COMPONENTS, TOKEN_REFERENCE, TOOLS, executeTool } from './registry';
+import { McpServer, createMcpHandler, fromJsonSchema } from '@modelcontextprotocol/server';
 
 interface Env {
   // No bindings needed for basic registry
 }
 
+// ─── MCP 2026-07-28 (SDK v2) ───────────────────────────────────────────────
+
+const PROTOCOL_VERSION = '2026-07-28';
+const TOOLS_LIST_TTL_MS = 300000;
+
+function buildServer(): McpServer {
+  const server = new McpServer(
+    { name: 'p31-component-registry', version: '1.0.0' },
+    {
+      capabilities: { tools: {} },
+      cacheHints: { 'tools/list': { ttlMs: TOOLS_LIST_TTL_MS, cacheScope: 'public' } },
+    },
+  );
+  for (const tool of TOOLS) {
+    server.registerTool(
+      tool.name,
+      { description: tool.description, inputSchema: fromJsonSchema(tool.inputSchema) },
+      async (args) => {
+        try {
+          const result = executeTool(tool.name, (args ?? {}) as Record<string, unknown>);
+          return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+        } catch (e: any) {
+          return {
+            content: [{ type: 'text', text: JSON.stringify({ error: e?.message ?? String(e), status: 'error' }) }],
+            isError: true,
+          };
+        }
+      },
+    );
+  }
+  return server;
+}
+
+/** The SDK handler does not add CORS headers — re-apply the worker's own. */
+function withCors(res: Response): Response {
+  const headers = new Headers(res.headers);
+  headers.set('Access-Control-Allow-Origin', '*');
+  headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  headers.set('Access-Control-Allow-Headers', 'Content-Type, Mcp-Method, Mcp-Name, MCP-Protocol-Version');
+  return new Response(res.body, { status: res.status, headers });
+}
+
+const mcpHandler = createMcpHandler(() => buildServer());
+
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, _env: Env): Promise<Response> {
     const url = new URL(request.url);
     const method = request.method;
 
@@ -28,7 +83,7 @@ export default {
     const corsHeaders = {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Headers': 'Content-Type, Mcp-Method, Mcp-Name, MCP-Protocol-Version',
       'Content-Type': 'application/json',
     };
 
@@ -84,78 +139,23 @@ export default {
       return new Response(JSON.stringify({ tokens: TOKEN_REFERENCE, status: 'ok' }), { headers: corsHeaders });
     }
 
-    // MCP endpoint
+    // Streamable HTTP: GET /mcp returns endpoint metadata (stateless — no SSE)
+    if (url.pathname === '/mcp' && method === 'GET') {
+      return new Response(
+        JSON.stringify({
+          service: 'p31-component-registry',
+          transport: 'streamable-http',
+          protocol: PROTOCOL_VERSION,
+          mcp: 'POST /mcp',
+          tools: TOOLS.map(t => t.name),
+        }),
+        { headers: corsHeaders }
+      );
+    }
+
+    // Streamable HTTP: POST /mcp — served by the SDK v2 handler.
     if (url.pathname === '/mcp' && method === 'POST') {
-      try {
-        const body = await request.json() as any;
-        const rpcMethod = body.method;
-        const id = body.id;
-        const params = body.params || {};
-
-        let result: any;
-
-        switch (rpcMethod) {
-          case 'tools/list':
-            result = { tools: TOOLS };
-            break;
-
-          case 'tools/call': {
-            const toolName = params?.name;
-            const toolArgs = params?.arguments || {};
-            const tool = TOOLS.find(t => t.name === toolName);
-            if (!tool) {
-              return new Response(
-                JSON.stringify({
-                  jsonrpc: '2.0',
-                  id,
-                  error: { code: -32602, message: `Unknown tool: ${toolName}` },
-                }),
-                { headers: corsHeaders }
-              );
-            }
-            try {
-              const toolResult = executeTool(toolName, toolArgs);
-              result = {
-                content: [{ type: 'text', text: JSON.stringify(toolResult, null, 2) }],
-              };
-            } catch (e: any) {
-              result = {
-                content: [{ type: 'text', text: JSON.stringify({ error: e.message, status: 'error' }) }],
-                isError: true,
-              };
-            }
-            break;
-          }
-
-          case 'ping':
-            result = {};
-            break;
-
-          default:
-            return new Response(
-              JSON.stringify({
-                jsonrpc: '2.0',
-                id,
-                error: { code: -32601, message: `Method not found: ${rpcMethod}` },
-              }),
-              { headers: corsHeaders }
-            );
-        }
-
-        return new Response(
-          JSON.stringify({ jsonrpc: '2.0', id, result }),
-          { headers: corsHeaders }
-        );
-      } catch (e: any) {
-        return new Response(
-          JSON.stringify({
-            jsonrpc: '2.0',
-            id: null,
-            error: { code: -32700, message: `Parse error: ${e.message}` },
-          }),
-          { status: 400, headers: corsHeaders }
-        );
-      }
+      return withCors(await mcpHandler.fetch(request));
     }
 
     // 404 for unknown routes

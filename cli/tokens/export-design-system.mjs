@@ -23,6 +23,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const TOKENS_FILE = path.join(__dirname, 'tokens.yml');
 const COMPS_FILE  = path.join(__dirname, '..', '..', 'packages', 'design-core', 'registry.json');
+// aiGuidance lives in the genui catalog (registry.json is a shadcn projection
+// that drops it). Enrichment source, not a second contract: names match 1:1.
+const AI_GUIDANCE_FILE = path.join(__dirname, '..', '..', 'packages', 'design-core', 'src', 'genui', 'catalog.json');
 const ICONS_DIR   = '/home/p31/p31-icon-pack/icons';
 
 // ─── Token resolution helpers ──────────────────────────────────────────
@@ -166,6 +169,13 @@ function main() {
   console.error('Loading sources...');
   const tokens      = yaml.parse(fs.readFileSync(TOKENS_FILE, 'utf8'));
   const reg = JSON.parse(fs.readFileSync(COMPS_FILE, 'utf8'));
+  const aiByComponent = {};
+  try {
+    const cat = JSON.parse(fs.readFileSync(AI_GUIDANCE_FILE, 'utf8'));
+    for (const c of cat.components || []) aiByComponent[c.name] = c.aiGuidance;
+  } catch {
+    // enrichment is optional — guidance falls back to empty
+  }
   const components = { components: {} };
   for (const item of reg.items || []) {
     components.components[item.name] = {
@@ -175,7 +185,12 @@ function main() {
       slots: item.slots || [],
       variants: item.variants || [],
       props: item.props || {},
-      tool: null,
+      // aiGuidance is the ARRAY form (canonical shape since the components.yml
+      // regen); enriched from genui/catalog.json when registry.json omits it.
+      aiGuidance: item.aiGuidance || aiByComponent[item.name] || {},
+      // Derived deterministically when the source carries no `tool` field
+      // (registry.json doesn't; components.yml carries render<Name>).
+      tool: item.tool || 'render' + item.name,
     };
   }
 

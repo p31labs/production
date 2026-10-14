@@ -23,22 +23,26 @@ export const ACT_NAMES: Record<ActId, { name: string; label: string }> = {
 
 // Every href here resolves to a real route. No phantom paths — the SPA
 // catch-all used to serve the landing page for missing routes, so each atom
-// now targets a page that exists.
+// now targets a page that exists. Hrefs carry the trailing slash
+// (trailingSlash: 'always'): the canonical URL — no 301 hop on the router
+// fetch, and Astro preview serves them directly.
 export const NAV_ATOMS: NavAtom[] = [
   { id: 'home', label: 'Home', href: '/', act: 'to', index: 1 },
-  { id: 'about', label: 'About', href: '/about', act: 'to', index: 2 },
-  { id: 'team', label: 'Team', href: '/team', act: 'to', index: 3 },
-  { id: 'stack', label: 'Stack', href: '/enterprise', act: 'to', index: 4 },
-  { id: 'faq', label: 'FAQ', href: '/faq', act: 'to', index: 5 },
-  { id: 'cli', label: 'CLI', href: '/apps/cli', act: 'to', index: 4 },
-  { id: 'love', label: 'LOVE', href: '/journey', act: 'in', index: 1 },
-  { id: 'research', label: 'Research', href: '/research', act: 'in', index: 2 },
-  { id: 'docs', label: 'Docs', href: '/research', act: 'in', index: 3 },
-  { id: 'tools', label: 'Tools', href: '/apps/loom', act: 'through', index: 1 },
-  { id: 'ask', label: 'Ask', href: '/apps/lumi', act: 'through', index: 2 },
-  { id: 'scene', label: 'Scene', href: '/apps/spaceship-earth', act: 'through', index: 3 },
-  { id: 'monetization', label: 'Donate', href: '/donate', act: 'through', index: 4 },
-  { id: 'ways-to-give', label: 'Ways to Give', href: '/ways-to-give', act: 'through', index: 5 },
+  { id: 'about', label: 'About', href: '/about/', act: 'to', index: 2 },
+  { id: 'team', label: 'Team', href: '/team/', act: 'to', index: 3 },
+  { id: 'stack', label: 'Stack', href: '/enterprise/', act: 'to', index: 4 },
+  { id: 'faq', label: 'FAQ', href: '/faq/', act: 'to', index: 5 },
+  { id: 'cli', label: 'CLI', href: '/apps/cli/', act: 'to', index: 4 },
+  { id: 'love', label: 'LOVE', href: '/journey/', act: 'in', index: 1 },
+  { id: 'research', label: 'Research', href: '/research/', act: 'in', index: 2 },
+  { id: 'docs', label: 'Docs', href: '/docs/', act: 'in', index: 3 },
+  { id: 'compare', label: 'Compare', href: '/sovereign-vs-saas/', act: 'in', index: 4 },
+  { id: 'tools', label: 'Tools', href: '/apps/loom/', act: 'through', index: 1 },
+  { id: 'ask', label: 'Ask', href: '/apps/lumi/', act: 'through', index: 2 },
+  { id: 'scene', label: 'Scene', href: '/apps/spaceship-earth/', act: 'through', index: 3 },
+  { id: 'monetization', label: 'Donate', href: '/donate/', act: 'through', index: 4 },
+  { id: 'ways-to-give', label: 'Ways to Give', href: '/ways-to-give/', act: 'through', index: 5 },
+  { id: 'verify', label: 'Verify', href: '/verify/', act: 'through', index: 6 },
 ];
 
 export const LAB_ITEMS: LabItem[] = [
@@ -50,4 +54,5 @@ export const LAB_ITEMS: LabItem[] = [
   { id: 'security', label: 'Security', href: '/security', description: 'Security posture + disclosure' },
   { id: 'compliance', label: 'Compliance', href: '/compliance', description: 'Audit logging → requirements' },
   { id: 'arcade', label: 'Arcade', href: '/arcade', description: 'Game hub' },
+  { id: 'runbook', label: '$5 Stack Runbook', href: '/runbook', description: 'Deploy the whole P31 stack on one Workers Paid account' },
 ];

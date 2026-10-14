@@ -123,9 +123,12 @@ function componentPreview(name: string, def: ComponentDef): string {
 function buildPreviewHtml(name: string, def: ComponentDef): string {
   const escapedName = escapeHtml(name);
   const escapedDesc = escapeHtml(def.description || '');
-  const escapedUse = escapeHtml(def.aiGuidance?.useWhen || '');
-  const escapedAvoid = escapeHtml(def.aiGuidance?.avoidWhen || '');
-  const escapedExamples = escapeHtml((def.aiGuidance?.examples || []).join(', '));
+  // aiGuidance is the array form (canonical since the components.yml regen);
+  // coerce legacy string form defensively for hand-edited inputs.
+  const toStr = (v: unknown) => (Array.isArray(v) ? v.join(' · ') : (typeof v === 'string' ? v : ''));
+  const escapedUse = escapeHtml(toStr(def.aiGuidance?.useWhen));
+  const escapedAvoid = escapeHtml(toStr(def.aiGuidance?.avoidWhen));
+  const escapedExamples = escapeHtml(toStr(def.aiGuidance?.examples));
   const cssClass = def.css_class || name.toLowerCase();
   const escapedClass = escapeHtml(cssClass);
   const preview = componentPreview(name, def);

@@ -1,0 +1,13 @@
+{
+  "name": "guide",
+  "type": "guide",
+  "page": { "widthIn": 8.5, "heightIn": 11, "margin": "22mm 22mm 24mm 22mm", "background": "#ffffff" },
+  "defaultTheme": "professional",
+  "themes": ["professional", "ink", "family"],
+  "cover": true,
+  "packing": { "mode": "flow" },
+  "gates": { "readability": false, "pageCountRange": [1, 30] },
+  "footer": "P31 LABS",
+  "footerColor": "#8a8a8a",
+  "accent": "#c05621"
+}

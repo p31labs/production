@@ -4,6 +4,7 @@ import type { ActId } from '../../lib/nav';
 import { useThemeStore, type ThemeId } from '@p31ca/shell-chrome/stores';
 import { loadIdentity } from '@p31ca/shared-identity';
 import { useMenuStore } from '../../stores/menuStore';
+import { yieldToMain } from '../../lib/yieldToMain';
 import JourneyNav from './JourneyNav';
 import ThemePicker from '../ThemePicker';
 
@@ -45,196 +46,14 @@ const ACT_SHORT: Record<ActId, string> = {
   through: 'Action',
 };
 
-const CSS = `
-  :root {
-    --p31-radius-candy: 999px;
-    --p31-accent-soft: color-mix(in oklch, var(--p31-accent, #22d3ee) 12%, transparent);
-  }
 
-  .posner-topbar {
-    position: sticky;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: clamp(10px, 2vw, 24px);
-    height: 60px;
-    padding: 0 clamp(14px, 3vw, 28px);
-    border-bottom: 1px solid var(--p31-glass-border, rgba(255,255,255,0.08));
-    background: color-mix(in oklch, var(--p31-bg, #030712) 86%, transparent);
-    backdrop-filter: blur(20px) saturate(150%);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-  }
-
-  .posner-brand {
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 6px 10px; border: 0; border-radius: var(--p31-radius-candy);
-    background: none; cursor: pointer; color: var(--p31-text, #e2e8f0);
-    flex-shrink: 0;
-  }
-  .posner-brand:hover { background: var(--p31-accent-soft); }
-  .posner-brand__mark {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 30px; height: 30px; border-radius: 9px;
-    background: var(--p31-accent, #22d3ee); color: #05050a;
-    font-weight: 800; font-size: 13px;
-  }
-  .posner-brand__name {
-    font-weight: 700; font-size: clamp(0.88rem, 1.2vw + 0.4rem, 1rem);
-    letter-spacing: 0.02em; white-space: nowrap;
-  }
-  @media (max-width: 640px) { .posner-brand__name { display: none; } }
-  .posner-theme-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-
-  .posner-acts {
-    display: flex; align-items: center; gap: 4px;
-    flex: 1; justify-content: center; min-width: 0;
-  }
-  .posner-act { position: relative; flex-shrink: 0; }
-  .posner-act__trigger {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 8px 14px; border: 0; border-radius: var(--p31-radius-candy);
-    background: transparent; color: var(--p31-text-secondary, #a1a1aa);
-    font-size: 13px; font-weight: 500; font-family: inherit;
-    cursor: pointer; white-space: nowrap;
-    transition: background 0.15s ease, color 0.15s ease;
-  }
-  .posner-act__trigger:hover,
-  .posner-act__trigger[aria-expanded='true'] {
-    background: var(--p31-surface2, #1a1a22);
-    color: var(--p31-text, #e2e8f0);
-  }
-  .posner-act__trigger--active { color: var(--p31-accent, #22d3ee); font-weight: 700; }
-  .posner-act__caret { font-size: 9px; opacity: 0.6; transition: transform 0.15s ease; }
-  .posner-act__trigger[aria-expanded='true'] .posner-act__caret { transform: rotate(180deg); }
-  @media (max-width: 720px) { .posner-act__trigger { padding: 8px 10px; font-size: 12px; } }
-
-  .posner-act__panel {
-    position: absolute; top: calc(100% + 10px); left: 50%;
-    transform: translateX(-50%);
-    min-width: 220px; padding: 8px;
-    background: rgba(12, 12, 18, 0.98);
-    border: 1px solid var(--p31-glass-border, rgba(255,255,255,0.10));
-    border-radius: 16px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-    z-index: 2100;
-  }
-  /* Invisible bridge across the 10px gap between trigger and panel — the
-     pointer stays "inside" the hover region while crossing, so the menu
-     no longer closes mid-movement. */
-  .posner-act__panel::before {
-    content: ''; position: absolute;
-    top: -10px; left: 0; right: 0; height: 10px;
-  }
-  .posner-act__panel-label {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--p31-text-tertiary, #71717a);
-    padding: 6px 10px 4px;
-  }
-  .posner-act__panel-item {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 12px; padding: 9px 12px; border-radius: 10px;
-    color: var(--p31-text, #e2e8f0); font-size: 13px; text-decoration: none;
-    transition: background 0.12s ease;
-  }
-  .posner-act__panel-item:hover { background: var(--p31-surface2, #1a1a22); }
-  .posner-act__panel-item[aria-current='page'] {
-    background: var(--p31-accent-soft);
-    color: var(--p31-accent, #22d3ee);
-  }
-  .posner-act__panel-item-idx {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 10px; opacity: 0.4;
-  }
-
-  .posner-utils { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; }
-  .posner-chip {
-    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-    min-height: 34px; padding: 6px 12px;
-    border-radius: var(--p31-radius-candy);
-    border: 1px solid var(--p31-glass-border, rgba(255,255,255,0.10));
-    background: var(--p31-surface, #14141c);
-    color: var(--p31-text-secondary, #a1a1aa);
-    font-size: 12px; cursor: pointer; text-decoration: none;
-    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
-  }
-  .posner-chip:hover { border-color: rgba(255,255,255,0.2); color: var(--p31-text, #e2e8f0); }
-  .posner-chip--icon { padding: 6px 10px; }
-  .posner-chip--accent {
-    background: var(--p31-accent, #22d3ee); color: #05050a;
-    font-weight: 700; border-color: transparent;
-  }
-  .posner-identity {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 11px; color: var(--p31-accent, #22d3ee);
-  }
-  @media (max-width: 560px) {
-    .posner-identity span:not([aria-hidden]) { display: none; }
-  }
-
-  .posner-overflow { position: relative; }
-  .posner-overflow__menu {
-    position: absolute; top: calc(100% + 10px); right: 0;
-    min-width: 220px; padding: 8px;
-    background: rgba(12, 12, 18, 0.98);
-    border: 1px solid var(--p31-glass-border, rgba(255,255,255,0.10));
-    border-radius: 16px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-    z-index: 2100;
-  }
-  .posner-overflow__item {
-    display: flex; align-items: center; gap: 10px;
-    width: 100%; padding: 9px 12px; border: 0; border-radius: 10px;
-    background: none; color: var(--p31-text, #e2e8f0);
-    font-size: 13px; font-family: inherit; text-decoration: none;
-    cursor: pointer; text-align: left;
-  }
-  .posner-overflow__item:hover { background: var(--p31-surface2, #1a1a22); }
-  .posner-overflow__sep {
-    height: 1px; background: var(--p31-glass-border, rgba(255,255,255,0.08));
-    margin: 6px 4px;
-  }
-  .posner-overflow__label {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--p31-text-tertiary, #71717a); padding: 6px 12px 2px;
-  }
-  .posner-spoons { display: flex; align-items: center; gap: 4px; padding: 8px 12px; }
-  .posner-spoon {
-    width: 20px; height: 20px; border: 0; border-radius: 50%;
-    background: var(--p31-surface2, #1a1a22);
-    color: var(--p31-text-tertiary, #71717a);
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    font-size: 11px;
-  }
-  .posner-spoon--active { background: var(--p31-accent, #22d3ee); color: #000; }
-
-  [data-spoons='0'] .posner-topbar,
-  [data-spoons='0'] .posner-topbar *,
-  [data-spoons='1'] .posner-topbar,
-  [data-spoons='1'] .posner-topbar * { display: none !important; }
-  @media (prefers-reduced-motion: reduce) {
-    .posner-topbar * {
-      transition-duration: 0ms !important;
-      animation-duration: 0ms !important;
-    }
-    .posner-topbar { backdrop-filter: none; }
-  }
-`;
-
-export const CanonTopbar: React.FC<CanonTopbarProps> = ({
-  currentPath: propPath = '/',
-  pageTitle,
-}) => {
+export const CanonTopbar: React.FC<CanonTopbarProps> = () => {
   const [theme, setTheme] = useState<ThemeId>('ocean');
   const [spoons, setSpoonsState] = useState(3);
-  const [resolvedPath, setResolvedPath] = useState(propPath);
+  // null-init: SSR and the first client render both render NO active states,
+  // so hydration never mismatches (React #425 on ClientRouter swaps). The
+  // mount effect fills the real path afterward.
+  const [resolvedPath, setResolvedPath] = useState<string | null>(null);
   const [deviceDid, setDeviceDid] = useState<string | null>(null);
 
   const openMenuId = useMenuStore((s) => s.openMenuId);
@@ -260,11 +79,26 @@ export const CanonTopbar: React.FC<CanonTopbarProps> = ({
     document.documentElement.setAttribute('data-spoons', String(level));
 
     useThemeStore.getState().syncFromDom();
-    useThemeStore.getState().applyTheme();
+    // Phase 3 Batch 1 (D1): applyTheme() writes the store's hardcoded
+    // 'ocean' default over the page's SSR data-theme on every fresh load
+    // (no stored preference) — which clobbers the ratified
+    // [data-theme="rose"] the hub now ships. Re-apply only a STORED
+    // preference; a fresh load keeps the SSR theme. The switcher's own
+    // store/cycle semantics are unchanged.
+    if (localStorage.getItem('p31:theme')) {
+      useThemeStore.getState().applyTheme();
+    }
+    const applyDot = (t: ThemeId) => {
+      document.documentElement.style.setProperty('--p31-theme-dot', THEME_SWATCH[t] || THEME_SWATCH.ocean);
+    };
+    applyDot(useThemeStore.getState().theme);
     setTheme(useThemeStore.getState().theme);
 
     const themeUnsubscribe = useThemeStore.subscribe((s) => {
-      if (s.theme !== theme) setTheme(s.theme);
+      if (s.theme !== theme) {
+        setTheme(s.theme);
+        applyDot(s.theme);
+      }
     });
 
     if (typeof window !== 'undefined') setResolvedPath(window.location.pathname);
@@ -272,39 +106,70 @@ export const CanonTopbar: React.FC<CanonTopbarProps> = ({
   }, []);
 
   useEffect(() => {
+    // AbortController + astro:after-swap pattern: ClientRouter swaps discard
+    // non-persisted islands WITHOUT unmounting React, so a removed topbar's
+    // listeners would otherwise leak (and its stale mousedown handler could
+    // close the next island's freshly-opened panel). When this instance's
+    // header is no longer connected, abort its controller — the signal
+    // tears down the document listeners in one move.
+    const ac = new AbortController();
     const onDoc = (e: MouseEvent) => {
       if (topbarRef.current && !topbarRef.current.contains(e.target as Node)) closeMenu();
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeMenu();
     };
-    document.addEventListener('mousedown', onDoc);
-    document.addEventListener('keydown', onKey);
+    document.addEventListener('mousedown', onDoc, { signal: ac.signal });
+    document.addEventListener('keydown', onKey, { signal: ac.signal });
+    const onSwap = () => {
+      if (topbarRef.current && !topbarRef.current.isConnected) ac.abort();
+    };
+    document.addEventListener('astro:after-swap', onSwap);
     return () => {
-      document.removeEventListener('mousedown', onDoc);
-      document.removeEventListener('keydown', onKey);
+      ac.abort();
+      document.removeEventListener('astro:after-swap', onSwap);
     };
   }, [closeMenu]);
 
-  const currentPath = typeof window !== 'undefined' ? resolvedPath : propPath;
+  const currentPath = resolvedPath;
 
   const setSpoons = (level: number) => {
-    setSpoonsState(level);
-    localStorage.setItem('p31:spoons', String(level));
-    document.documentElement.setAttribute('data-spoons', String(level));
+    // INP: the spoon change re-renders the whole shell (every surface reads
+    // data-spoons). Yield one frame first so the click itself paints.
+    void yieldToMain().then(() => {
+      setSpoonsState(level);
+      localStorage.setItem('p31:spoons', String(level));
+      document.documentElement.setAttribute('data-spoons', String(level));
+    });
   };
 
   const handleThemeCycle = () => {
-    const nextTheme = useThemeStore.getState().cycleTheme();
-    window.dispatchEvent(new CustomEvent('p31:toast', {
-      detail: { message: `🌎 World shifted to ${WORLD_NAMES[nextTheme]}`, duration: 2000 },
-    }));
+    // INP: a theme cycle swaps every surface's tokens (the largest paint
+    // burst on the page). Yield first, then cycle — and apply the theme to
+    // the DOM immediately. cycleTheme() only updates the store +
+    // localStorage; applyTheme() is what writes data-theme, and without it
+    // the toggle looks dead until the next navigation re-mounts the island
+    // (owner-reported theme-switcher bug).
+    void yieldToMain().then(() => {
+      const nextTheme = useThemeStore.getState().cycleTheme();
+      useThemeStore.getState().applyTheme();
+      document.documentElement.style.setProperty('--p31-theme-dot', THEME_SWATCH[nextTheme] || THEME_SWATCH.ocean);
+      window.dispatchEvent(new CustomEvent('p31:toast', {
+        detail: { message: `🌎 World shifted to ${WORLD_NAMES[nextTheme]}`, duration: 2000 },
+      }));
+    });
+  };
+
+  const openMenu = (id: 'invitation' | 'immersion' | 'action' | 'journey' | 'overflow') => {
+    // INP: the panel render (atom lists, ThemePicker) is the long chunk —
+    // yield a frame so the trigger's pressed state paints before it.
+    void yieldToMain().then(() => toggleMenu(id));
   };
 
   const handleHoverOpen = (id: 'invitation' | 'immersion' | 'action') => {
     if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
     hoverTimer.current = window.setTimeout(() => {
-      if (openMenuId !== 'journey' && openMenuId !== 'overflow') toggleMenu(id);
+      if (openMenuId !== 'journey' && openMenuId !== 'overflow') openMenu(id);
     }, 100);
   };
 
@@ -331,7 +196,7 @@ export const CanonTopbar: React.FC<CanonTopbarProps> = ({
 
   const actHasActiveAtom = (act: ActId) =>
     NAV_ATOMS.some((a) => {
-      if (a.act !== act) return false;
+      if (a.act !== act || !currentPath) return false;
       return currentPath === a.href || (a.href !== '/' && currentPath.startsWith(a.href));
     });
 
@@ -353,7 +218,7 @@ export const CanonTopbar: React.FC<CanonTopbarProps> = ({
           {ACT_NAMES[act].name} · {ACT_NAMES[act].label}
         </div>
         {atoms.map((atom) => {
-          const isActive = currentPath === atom.href || (atom.href !== '/' && currentPath.startsWith(atom.href));
+          const isActive = !!currentPath && (currentPath === atom.href || (atom.href !== '/' && currentPath.startsWith(atom.href)));
           return (
             <a
               key={atom.id}
@@ -373,7 +238,6 @@ export const CanonTopbar: React.FC<CanonTopbarProps> = ({
 
   return (
     <>
-      <style>{CSS}</style>
       <header ref={topbarRef} className="posner-topbar" role="banner">
         <button
           type="button"
@@ -384,7 +248,11 @@ export const CanonTopbar: React.FC<CanonTopbarProps> = ({
         >
           <span className="posner-brand__mark">31</span>
           <span className="posner-brand__name">P31 LABS</span>
-          <span className="posner-theme-dot" style={{ background: THEME_SWATCH[theme] }} aria-hidden="true" />
+          {/* The dot color reads from --p31-theme-dot (set by the shell's
+              prefs script + this island), never from a client-only state —
+              SSR and client render identical markup, so ClientRouter swaps
+              never trigger React hydration mismatches (#425). */}
+          <span className="posner-theme-dot" style={{ background: 'var(--p31-theme-dot, #06b6d4)' }} aria-hidden="true" />
         </button>
 
         <nav className="posner-acts" aria-label="Primary navigation">
@@ -404,9 +272,9 @@ export const CanonTopbar: React.FC<CanonTopbarProps> = ({
                   aria-expanded={isOpen}
                   aria-controls={`act-panel-${menuId}`}
                   aria-haspopup="true"
-                  onClick={() => toggleMenu(menuId)}
+                  onClick={() => openMenu(menuId)}
                   onFocus={() => {
-                    if (openMenuId !== menuId) toggleMenu(menuId);
+                    if (openMenuId !== menuId) openMenu(menuId);
                   }}
                 >
                   {ACT_SHORT[act]}
@@ -419,6 +287,21 @@ export const CanonTopbar: React.FC<CanonTopbarProps> = ({
         </nav>
 
         <div className="posner-utils">
+          {/* Global nav contract: GitHub is a first-class destination, not
+              buried in the overflow menu (docs/SITE_MAP_AND_OWNERSHIP.md). */}
+          <a
+            href="https://github.com/p31labs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="posner-chip posner-chip--github"
+            title="GitHub — the monorepo"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11.1 11.1 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.7 5.39-5.26 5.68.41.35.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .31.21.67.8.56A11.52 11.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" />
+            </svg>
+            <span className="posner-github-label">GitHub</span>
+          </a>
+
           {deviceDid ? (
             <a href="/love" className="posner-chip posner-identity" title={`Connected as ${deviceDid}`}>
               <span aria-hidden="true">🔑</span> <span>{deviceDid.slice(0, 6)}…{deviceDid.slice(-4)}</span>
@@ -438,7 +321,7 @@ export const CanonTopbar: React.FC<CanonTopbarProps> = ({
               aria-controls="overflow-menu"
               aria-label="More"
               title="More"
-              onClick={() => toggleMenu('overflow')}
+              onClick={() => openMenu('overflow')}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <circle cx="12" cy="5" r="1.8" /><circle cx="12" cy="12" r="1.8" /><circle cx="12" cy="19" r="1.8" />
@@ -485,6 +368,9 @@ export const CanonTopbar: React.FC<CanonTopbarProps> = ({
                   <span aria-hidden="true">🎮</span> Arcade
                 </a>
                 <div className="posner-overflow__sep" />
+                <a className="posner-overflow__item" href="https://phosphorus31.org" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
+                  <span aria-hidden="true">🫀</span> Nonprofit portal
+                </a>
                 <a className="posner-overflow__item" href="https://github.com/p31labs" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
                   <span aria-hidden="true">🐙</span> GitHub
                 </a>

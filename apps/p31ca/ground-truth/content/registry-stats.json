@@ -1,0 +1,11 @@
+{
+  "schema": "p31.content.registry/1.0.0",
+  "version": "1.0.0",
+  "lastVerified": "2026-10-13T16:16:45.999Z",
+  "stalenessThreshold": 30,
+  "source": "https://mcp-registry.trimtab-signal.workers.dev/servers",
+  "servers": 44,
+  "live": 22,
+  "tools": 124,
+  "note": "Aggregated from the live MCP registry. Refreshed by node scripts/fetch-registry-stats.mjs (npm run fetch:registry). The hub home fetches live at build AND client-side; this file is the graceful offline fallback."
+}

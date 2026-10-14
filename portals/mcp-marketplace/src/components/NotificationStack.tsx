@@ -1,69 +1,28 @@
 import { useEffect } from 'react'
-import { useNotifStore, type NotifKind } from '@/store/useNotifStore'
-
-/** Severity-based display times (Sonner/Cognite convention). */
-const KIND_DURATION: Record<NotifKind, number> = {
-  info: 4500,
-  success: 4000,
-  milestone: 5000,
-  error: 8000,
-}
-
-const KIND_COLOR: Record<NotifKind, string> = {
-  info: 'var(--p31-accent)',
-  success: 'var(--p31-accent-green)',
-  milestone: 'var(--p31-accent-gold)',
-  error: 'var(--p31-accent-red)',
-}
+import { NotificationStack as CanonNotificationStack, NOTIFICATION_DURATION } from '@p31ca/design-core/compositions'
+import { useNotifStore } from '@/store/useNotifStore'
 
 /**
- * NotificationStack — stacked, severity-timed toasts (bottom-right).
+ * NotificationStack — canon wrapper (consume-don't-fork).
  *
- * Renders at most the visible window of the store (MAX_KEPT keeps history;
- * the stack shows them stacked, not simultaneously as separate toasts).
- * Each toast auto-dismisses per its kind duration and can be closed early.
+ * The canon owns the stacked rendering (severity tint via `data-kind`, close
+ * + clear-all controls) and intentionally keeps no timers; this wrapper owns
+ * the portal's per-kind auto-dismiss schedule using the canon's exported
+ * NOTIFICATION_DURATION table.
  */
 export function NotificationStack() {
   const items = useNotifStore((s) => s.items)
   const dismiss = useNotifStore((s) => s.dismiss)
   const clearAll = useNotifStore((s) => s.clearAll)
 
-  // Auto-dismiss per kind.
+  // Auto-dismiss per kind (canon leaves timers to the consumer).
   useEffect(() => {
     if (items.length === 0) return
-    const timers = items.map((n) => {
-      const duration = KIND_DURATION[n.kind]
-      return window.setTimeout(() => dismiss(n.id), duration)
-    })
+    const timers = items.map((n) => window.setTimeout(() => dismiss(n.id), NOTIFICATION_DURATION[n.kind]))
     return () => timers.forEach((t) => window.clearTimeout(t))
   }, [items, dismiss])
 
-  if (items.length === 0) return null
-
-  return (
-    <div className="notif-stack" role="region" aria-label="Notifications">
-      {items.map((n) => (
-        <div
-          key={n.id}
-          className="notif-toast"
-          role="status"
-          data-kind={n.kind}
-          style={{ borderColor: KIND_COLOR[n.kind] }}
-        >
-          <div className="notif-toast__title" style={{ color: KIND_COLOR[n.kind] }}>
-            {n.title}
-          </div>
-          {n.body && <div className="notif-toast__body">{n.body}</div>}
-          <button type="button" className="notif-toast__close" aria-label="Dismiss" onClick={() => dismiss(n.id)}>
-            ×
-          </button>
-        </div>
-      ))}
-      <button type="button" className="notif-stack__clear" onClick={clearAll}>
-        Clear all
-      </button>
-    </div>
-  )
+  return <CanonNotificationStack items={items} onDismiss={dismiss} onClearAll={clearAll} />
 }
 
 export default NotificationStack

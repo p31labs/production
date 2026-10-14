@@ -2,5 +2,16 @@ name = "phenix-wallet-mcp"
 main = "src/index.ts"
 compatibility_date = "2026-07-26"
 
+# OAuth 2.1 resource-server (RFC 8707) — the resource URI that bearer-token
+# `aud` claims MUST match, and the fleet AS JWKS endpoint (oauth-relay).
+# Plain vars per the capital-machine reference pattern. When OAUTH_JWKS_URL
+# is unset, bearer validation is disabled and the server stays open.
+[vars]
+RESOURCE_ID = "https://phenix-wallet-mcp.trimtab-signal.workers.dev/mcp"
+OAUTH_JWKS_URL = "https://oauth-relay.trimtab-signal.workers.dev/.well-known/jwks.json"
+# RFC 9207 — expected bearer-token issuer. Optional: when unset the verifier
+# derives the issuer from the OAUTH_JWKS_URL origin. Set explicitly to pin a
+# different issuer identifier: OAUTH_ISSUER = "https://oauth-relay.trimtab-signal.workers.dev"
+
 [observability]
 enabled = true

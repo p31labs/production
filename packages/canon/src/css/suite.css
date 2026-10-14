@@ -35,7 +35,7 @@
   border-radius: var(--p31-radius-sm);
   font-weight: 600;
   z-index: 9999;
-  transition: top var(--p31-transition-fast) var(--p31-ease-quantum);
+  transition: top var(--p31-duration-fast) var(--p31-easing-standard);
   text-decoration: none;
 }
 
@@ -57,7 +57,7 @@
   font-weight: 500;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all var(--p31-transition-fast) var(--p31-ease-quantum);
+  transition: all var(--p31-duration-fast) var(--p31-easing-standard);
   background: transparent;
   color: var(--p31-text-primary);
   text-decoration: none;
@@ -146,7 +146,7 @@
   font-size: var(--p31-text-sm);
   cursor: pointer;
   color: var(--p31-cloud);
-  transition: all var(--p31-transition-fast) var(--p31-ease-quantum);
+  transition: all var(--p31-duration-fast) var(--p31-easing-standard);
 }
 
 .chip.active {
@@ -168,7 +168,7 @@
   color: var(--p31-cloud);
   text-decoration: none;
   font-size: var(--p31-text-base);
-  transition: all var(--p31-transition-fast) var(--p31-ease-quantum);
+  transition: all var(--p31-duration-fast) var(--p31-easing-standard);
 }
 
 .nav-item:hover {
@@ -190,7 +190,7 @@
   border: 1px solid var(--p31-glass-border);
   border-radius: var(--p31-radius-lg);
   padding: var(--p31-space-5);
-  transition: all var(--p31-transition-normal) var(--p31-ease-quantum);
+  transition: all var(--p31-duration-base) var(--p31-easing-standard);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -245,7 +245,7 @@
   background: var(--p31-surface3);
   cursor: pointer;
   border: none;
-  transition: transform var(--p31-transition-fast), background var(--p31-transition-fast);
+  transition: transform var(--p31-duration-fast), background var(--p31-duration-fast);
 }
 
 .spoon-dot.active {

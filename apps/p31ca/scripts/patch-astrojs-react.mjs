@@ -1,7 +1,12 @@
 /**
  * Patch @astrojs/react to export jsx-dev-runtime for Vite dev HMR.
- * @astrojs/react@5.0.4 does not include this export in its package.json.
- * This patches the pnpm store copy.
+ * @astrojs/react (5.x and 6.x) does not include this export in its
+ * package.json; Vite dev needs it for React fast-refresh. This patches the
+ * pnpm store copy. Idempotent: exits 0 without touching anything when the
+ * export already exists (or the package cannot be resolved).
+ *
+ * Astro v6 pairing (2026-10-12): @astrojs/react@6.0.6 + react@19.3.0 — the
+ * dist layout is unchanged (dist/*.js), so the same patch applies.
  */
 import { createRequire } from 'node:module';
 import fs from 'node:fs';

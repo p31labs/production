@@ -1,0 +1,16 @@
+# p31-key-rotator — in-house key creator / rotation assistant.
+# Zero-dependency worker: no package.json, no node_modules, no lockfile
+# mutation. wrangler bundles src/index.ts with esbuild directly.
+#
+# Honest boundary (non-negotiable): this Worker CANNOT rotate Cloudflare
+# secrets. `wrangler secret put` requires the owner OAuth session on a
+# real machine — a Worker has no access to it. The Worker generates keys
+# and emits operator instructions; the real rotation runs via
+# scripts/key-rotate.mjs on the owner's machine.
+#
+# [observability] is deliberately OFF — /genkey and /rotate responses
+# contain freshly generated key material; Workers Logs would capture
+# request/response metadata. The secret itself is never logged.
+name = "p31-key-rotator"
+main = "src/index.ts"
+compatibility_date = "2026-10-13"

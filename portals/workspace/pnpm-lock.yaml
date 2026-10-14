@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@p31ca/design-core':
-        specifier: file:vendor/p31-design-core-3.0.0.tgz
-        version: file:vendor/p31-design-core-3.0.0.tgz(@types/node@26.6.2)(react@19.3.0)(rollup@4.63.4)(typescript@5.9.3)
+        specifier: file:vendor/p31-design-core-3.0.1.tgz
+        version: file:vendor/p31-design-core-3.0.1.tgz(@p31ca/canon@0.2.0)(@types/node@26.6.2)(react@19.3.0)(rollup@4.63.4)(typescript@5.9.3)
       '@p31ca/sovereign-core':
         specifier: file:vendor/p31ca-sovereign-core-0.1.0.tgz
         version: file:vendor/p31ca-sovereign-core-0.1.0.tgz(@types/react@19.3.0)(react@19.3.0)
@@ -179,6 +179,10 @@ packages:
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
+
+  '@babel/runtime@7.29.10':
+    resolution: {integrity: sha512-NpugTzbKgGrNe45Ui32cN8vCFFMxVtP/9rtfwv0nP5FRDAjvYBxJcLVpYA9mr1jxP6cnIT7x9LUzuDTbWYYNRA==}
+    engines: {node: '>=6.9.0'}
 
   '@babel/runtime@7.29.7':
     resolution: {integrity: sha512-Nq8OhGWiZIZGV6hLHoyAKLLcJihP/xFeBMGJoUrxTX2psI8dCifzLhZISFb+VWS3wFMRDmCGw5R+dOySCqPLhw==}
@@ -898,13 +902,17 @@ packages:
   '@p31ca/canon@0.1.0':
     resolution: {integrity: sha512-mYCezf9SH1V+fkc/8ecjEYK9dBQMH79JdGPhb0NeC6XXmycR4SuR4e1kJryyFu/mauUAq0KogUJf6MDOs+aHPA==}
 
+  '@p31ca/canon@0.2.0':
+    resolution: {integrity: sha512-QpsTkGo9GXngdwlQ8vfy2nsyw6gvPivlRP4UJ3oM6Y2DEdjwi5I7q5ucK650NrboFu9FwB2jtljJvpfO7Rxqww==}
+
   '@p31ca/design-core@2.1.0':
     resolution: {integrity: sha512-8wXhWL/AAOMst7D7ftDr9rslu77Cg193hXivsmE5VJdj6Ihpu/zko5g4sdnZsnKh//vaAXupGLNYBNa/JkTexQ==}
 
-  '@p31ca/design-core@file:vendor/p31-design-core-3.0.0.tgz':
-    resolution: {integrity: sha512-sO8fkWzgTp/G08pFEg/YiTVwvTTo1B4E937jNdJ6Pq1Rc8G2gpQdCteXIJOWyYsZMW1ThGI48fWM01Rq8dZFNQ==, tarball: file:vendor/p31-design-core-3.0.0.tgz}
-    version: 3.0.0
+  '@p31ca/design-core@file:vendor/p31-design-core-3.0.1.tgz':
+    resolution: {integrity: sha512-4g6fezCSVSrbWIZBeo6SGft9kcqmUEzQcNz3xP5TGwX/Any9Bjzx+1x0imwLClg/VxzaCC5ozcBgaAqW7lpV3A==, tarball: file:vendor/p31-design-core-3.0.1.tgz}
+    version: 3.0.1
     peerDependencies:
+      '@p31ca/canon': 0.2.0
       react: '>=18.0.0'
 
   '@p31ca/quantum-core@0.1.0':
@@ -919,12 +927,15 @@ packages:
   '@p31ca/sovereign-primitives@0.0.1':
     resolution: {integrity: sha512-WVjFowTr9BZ2ZjbbbjQgaPtpFhwugrw/FdXK9wL1qLtX8tiJ5B2cr22DjkKZ2LgHTsJofl/maqUCHw+3cvmm5g==}
 
+  '@p31ca/sovereign-primitives@0.0.2':
+    resolution: {integrity: sha512-0ZQkhz0jnnkVbmwrk+fXQDEC6Pym69QCITu8g79cXwj2lkQ2WAFOnG+tA5QXf82MF/ooer4y4G25+XUhP0TpcA==}
+
   '@p31ca/sovereign-primitives@file:vendor/p31ca-sovereign-primitives-0.0.1.tgz':
     resolution: {integrity: sha512-/FSNNIWUDxlDuEWbaOQQHB4fuPQkk+QYh5jcVNja7OIDfA11oxqWyGcZ48sPEynuA3XSQb3sAcb49DfopOGJhw==, tarball: file:vendor/p31ca-sovereign-primitives-0.0.1.tgz}
     version: 0.0.1
 
   '@p31ca/ui@file:vendor/p31ca-ui-1.3.1.tgz':
-    resolution: {integrity: sha512-xNrItyXYNHln2juWPljRl7Dq92dyJes+976lZPACTvXuVFsacLSNkPcHdTAjM35qmDjWtE3kRAwodajO8tRzWw==, tarball: file:vendor/p31ca-ui-1.3.1.tgz}
+    resolution: {integrity: sha512-OqU4eP2FVvMmmu2x4c6Kp6iHTtaH15vQ+Kt6nTJ1D4CqP68GRksPAqQZ/T7efQBrjxIj0JuZsT4u7HQ4u05iKQ==, tarball: file:vendor/p31ca-ui-1.3.1.tgz}
     version: 1.3.1
 
   '@rolldown/pluginutils@1.0.0-beta.27':
@@ -4006,6 +4017,8 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/helper-plugin-utils': 7.29.7
 
+  '@babel/runtime@7.29.10': {}
+
   '@babel/runtime@7.29.7': {}
 
   '@babel/template@7.29.7':
@@ -4498,6 +4511,11 @@ snapshots:
       '@p31ca/sovereign-primitives': 0.0.1
       zod: 4.6.5
 
+  '@p31ca/canon@0.2.0':
+    dependencies:
+      '@p31ca/sovereign-primitives': 0.0.2
+      zod: 4.6.5
+
   '@p31ca/design-core@2.1.0(@types/node@26.6.2)(rollup@4.63.4)(typescript@5.9.3)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.30.0(zod@3.25.76)
@@ -4549,9 +4567,10 @@ snapshots:
       - uploadthing
       - utf-8-validate
 
-  '@p31ca/design-core@file:vendor/p31-design-core-3.0.0.tgz(@types/node@26.6.2)(react@19.3.0)(rollup@4.63.4)(typescript@5.9.3)':
+  '@p31ca/design-core@file:vendor/p31-design-core-3.0.1.tgz(@p31ca/canon@0.2.0)(@types/node@26.6.2)(react@19.3.0)(rollup@4.63.4)(typescript@5.9.3)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.30.0(zod@3.25.76)
+      '@p31ca/canon': 0.2.0
       '@types/culori': 4.0.1
       '@types/react': 19.3.0
       astro: 5.18.2(@types/node@26.6.2)(rollup@4.63.4)(typescript@5.9.3)(yaml@2.9.1)
@@ -4621,6 +4640,10 @@ snapshots:
       - utf-8-validate
 
   '@p31ca/sovereign-primitives@0.0.1':
+    dependencies:
+      '@noble/post-quantum': 0.6.1
+
+  '@p31ca/sovereign-primitives@0.0.2':
     dependencies:
       '@noble/post-quantum': 0.6.1
 
@@ -4801,7 +4824,7 @@ snapshots:
   '@testing-library/dom@10.4.2':
     dependencies:
       '@babel/code-frame': 7.29.7
-      '@babel/runtime': 7.29.7
+      '@babel/runtime': 7.29.10
       '@types/aria-query': 5.0.4
       aria-query: 5.3.0
       dom-accessibility-api: 0.5.16

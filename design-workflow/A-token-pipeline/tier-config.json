@@ -1,0 +1,64 @@
+{
+  "$schema": "https://p31ca.org/schemas/tier-config.json",
+  "version": "1.0.0",
+  "description": "Lane A tier subsets — token NAME lists consumed by tier-emitter.mjs. Names are dotted source names from the merged canon+supplement map. mobileCritical = minimal critical-path set for the PWA tier (99% of users). embedded = Node Zero subset (~4 colors / ~2 type sizes / ~3 spacings / ~2 radii — runbook A-4). Tiers are SUBSETS of the one source, never forks (Seven Laws #3).",
+  "tiers": {
+    "mobileCritical": {
+      "description": "Minimal critical path: semantic colors, fluid type + spacing, radii, breakpoints, motion. Everything a 320px PWA needs to render and adapt.",
+      "tokens": [
+        "p31.text",
+        "p31.neon",
+        "p31.accent-glow",
+        "p31.glass.surface",
+        "p31.glass.border",
+        "p31.status.success",
+        "p31.status.error",
+        "p31.status-warning",
+        "p31.status-info",
+        "fluid.type.caption",
+        "fluid.type.label",
+        "fluid.type.body",
+        "fluid.type.h3",
+        "fluid.type.h2",
+        "fluid.type.h1",
+        "p31.base",
+        "p31.spacing-sm",
+        "p31.spacing-md",
+        "p31.spacing-lg",
+        "p31.spacing-xl",
+        "fluid.space.xs",
+        "fluid.space.sm",
+        "fluid.space.md",
+        "fluid.space.lg",
+        "fluid.space.xl",
+        "space.page",
+        "p31.radius.sm",
+        "p31.radius.md",
+        "p31.radius.lg",
+        "p31.radius.full",
+        "breakpoint.compact",
+        "breakpoint.medium",
+        "breakpoint.expanded",
+        "motion.duration.fast",
+        "motion.duration.normal",
+        "motion.easing.smooth"
+      ]
+    },
+    "embedded": {
+      "description": "Node Zero subset — runbook A-4 budget shape: ~4 colors, ~2 type sizes, ~3 spacings, ~2 radii. Gz budget < 2048 bytes (gate d).",
+      "tokens": [
+        "p31.text",
+        "p31.neon",
+        "p31.status.success",
+        "p31.status.error",
+        "fluid.type.body",
+        "fluid.type.label",
+        "p31.spacing-sm",
+        "p31.spacing-md",
+        "p31.spacing-lg",
+        "p31.radius.sm",
+        "p31.radius.md"
+      ]
+    }
+  }
+}

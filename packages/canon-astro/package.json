@@ -1,0 +1,28 @@
+{
+  "name": "@p31ca/canon-astro",
+  "version": "0.1.0",
+  "description": "P31 canon v2 — Astro wrapper world (server-only .astro components over @p31ca/canon-parts).",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./components/*": "./src/components/*.astro",
+    "./components/*.astro": "./src/components/*.astro"
+  },
+  "scripts": {
+    "sync": "astro sync",
+    "typecheck": "astro sync && tsc --noEmit -p tsconfig.json",
+    "build": "astro sync"
+  },
+  "dependencies": {
+    "@p31ca/canon-parts": "workspace:*"
+  },
+  "peerDependencies": {
+    "astro": ">=5.0.0"
+  },
+  "devDependencies": {
+    "astro": "^6.4.8",
+    "typescript": "^5.9.3"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}

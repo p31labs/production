@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { NotificationStack as CanonNotificationStack } from '@p31ca/design-core/compositions'
 import { useNotifStore, type NotifKind } from '@/store/useNotifStore'
 
 /** Severity-based display times (Sonner/Cognite convention). */
@@ -9,19 +10,12 @@ const KIND_DURATION: Record<NotifKind, number> = {
   error: 8000,
 }
 
-const KIND_COLOR: Record<NotifKind, string> = {
-  info: 'var(--p31-accent)',
-  success: 'var(--p31-accent-green)',
-  milestone: 'var(--p31-accent-gold)',
-  error: 'var(--p31-accent-red)',
-}
-
 /**
- * NotificationStack — stacked, severity-timed toasts (bottom-right).
- *
- * Renders at most the visible window of the store (MAX_KEPT keeps history;
- * the stack shows them stacked, not simultaneously as separate toasts).
- * Each toast auto-dismisses per its kind duration and can be closed early.
+ * NotificationStack — consumer wrapper over the canon NotificationStack
+ * composition. The canon owns the stack chrome and renders the identical
+ * `notif-*` class contract; the portal supplies its store items, dismissal
+ * handlers, and owns the per-kind auto-dismiss timers (the canon component
+ * deliberately does not own timers).
  */
 export function NotificationStack() {
   const items = useNotifStore((s) => s.items)
@@ -40,30 +34,7 @@ export function NotificationStack() {
 
   if (items.length === 0) return null
 
-  return (
-    <div className="notif-stack" role="region" aria-label="Notifications">
-      {items.map((n) => (
-        <div
-          key={n.id}
-          className="notif-toast"
-          role="status"
-          data-kind={n.kind}
-          style={{ borderColor: KIND_COLOR[n.kind] }}
-        >
-          <div className="notif-toast__title" style={{ color: KIND_COLOR[n.kind] }}>
-            {n.title}
-          </div>
-          {n.body && <div className="notif-toast__body">{n.body}</div>}
-          <button type="button" className="notif-toast__close" aria-label="Dismiss" onClick={() => dismiss(n.id)}>
-            ×
-          </button>
-        </div>
-      ))}
-      <button type="button" className="notif-stack__clear" onClick={clearAll}>
-        Clear all
-      </button>
-    </div>
-  )
+  return <CanonNotificationStack items={items} onDismiss={dismiss} onClearAll={clearAll} />
 }
 
 export default NotificationStack

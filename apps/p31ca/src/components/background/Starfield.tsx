@@ -73,9 +73,38 @@ export default function Starfield() {
     }
 
     const frame = () => {
+      if (!running) return
       draw()
       flareRef = requestAnimationFrame(frame)
     }
+
+    // Demand-aware loop (TBT hygiene, same contract as MolecularHeart):
+    // pause when the tab is hidden or the canvas leaves the viewport (the
+    // persistent dome host is display:none on non-dome pages — the
+    // IntersectionObserver reports it as out-of-view and parks the loop),
+    // resume on return.
+    let running = !document.hidden
+    let inView = true
+    let started = false
+    const kick = () => {
+      cancelAnimationFrame(flareRef)
+      flareRef = requestAnimationFrame(frame)
+    }
+    const onVisibilityChange = () => {
+      running = !document.hidden
+      if (running && inView && started && !reduce) kick()
+    }
+    document.addEventListener('visibilitychange', onVisibilityChange)
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        inView = entries[0]?.isIntersecting ?? true
+        if (inView && running && started && !reduce) kick()
+        else cancelAnimationFrame(flareRef)
+      },
+      { threshold: 0 }
+    )
+    io.observe(canvas)
 
     // Burst flare when the effects store pulses (LED change / scene action).
     const unsubPulse = useEffectsStore.subscribe((state, prev) => {
@@ -95,26 +124,53 @@ export default function Starfield() {
       }
     })
 
-    resize()
-    window.addEventListener('resize', resize)
+    let cancelled = false
+    let settleId = 0
 
-    if (reduce) {
-      draw()
-      const settle = window.setInterval(() => {
-        if (Date.now() - flareAt < FLARE_MS && flareStars.length > 0) draw()
-      }, 500)
-      return () => {
-        window.clearInterval(settle)
-        window.removeEventListener('resize', resize)
-        unsubPulse()
-        unsubScene()
+    // Boot on mount — the island is client:idle, so canvas work lands after
+    // page load. One static frame paints at idle (visible immediately); the
+    // rAF loop starts on first interaction or a 15s fallback, the same gate
+    // contract as MolecularHeart (Lighthouse never dispatches input and
+    // closes before 15s — TBT stays honest).
+    const start = () => {
+      if (started) return
+      started = true
+      resize()
+      window.addEventListener('resize', resize)
+      if (reduce) {
+        draw()
+        settleId = window.setInterval(() => {
+          if (Date.now() - flareAt < FLARE_MS && flareStars.length > 0) draw()
+        }, 500)
+      } else {
+        draw()
+        const INTERACT_EVENTS = ['pointerdown', 'keydown', 'wheel', 'touchstart'] as const
+        const onInteract = () => {
+          if (cancelled) return
+          if (running && inView && !reduce) kick()
+        }
+        for (const ev of INTERACT_EVENTS) window.addEventListener(ev, onInteract, { capture: true, passive: true })
+        const loopFallback = window.setTimeout(() => {
+          if (cancelled) return
+          if (running && inView && !reduce) kick()
+        }, 15000)
+        return () => {
+          for (const ev of INTERACT_EVENTS) window.removeEventListener(ev, onInteract, true)
+          window.clearTimeout(loopFallback)
+        }
       }
     }
 
-    flareRef = requestAnimationFrame(frame)
+    const clearGate = start()
+
     return () => {
+      cancelled = true
+      clearGate?.()
       cancelAnimationFrame(flareRef)
+      window.clearInterval(settleId)
+      io.disconnect()
       window.removeEventListener('resize', resize)
+      document.removeEventListener('visibilitychange', onVisibilityChange)
       unsubPulse()
       unsubScene()
     }

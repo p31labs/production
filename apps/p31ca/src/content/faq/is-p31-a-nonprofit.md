@@ -4,4 +4,4 @@ a: Yes. P31 Labs is organized as a 501(c)(3) nonprofit (EIN 42-1888158). Donatio
 category: nonprofit
 ---
 
-The 501(c)(3) determination is documented in the <a href="/about">About</a> page and the treasury records. Research is published on Zenodo under open licenses; code is on GitHub under AGPL.
+The 501(c)(3) determination is documented in the <a href="/about">About</a> page and the treasury records. The 22 DOI-verified papers are published on Zenodo under open licenses; code is on GitHub under AGPL.

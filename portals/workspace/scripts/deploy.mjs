@@ -21,9 +21,17 @@ const PROJECT = 'p31-portal-workspace';
 const SKIP_FUNCTIONS = process.argv.includes('--skip-functions');
 
 // Canon fork gate — refuse to deploy a forked portal (consume-don't-fork).
+// Scoped to THIS portal's src, mirroring portals/design and portals/forge.
+// tokens.css is allowlisted per the design-portal precedent: it is the legacy
+// surface-token adapter layer, filed for migration (see
+// docs/fix-plans/canon-fork-migration-backlog.md).
 const CANON_AUDIT = '/home/p31/production/tools/canon-audit/canon-source-audit.mjs';
 try {
-  execSync('node ' + CANON_AUDIT, { cwd: root, stdio: 'inherit', timeout: 60_000 });
+  execSync(
+    'node ' + CANON_AUDIT + ' --target ' + resolve(root, 'src') +
+      ' --allow production/portals/workspace/src/tokens.css',
+    { cwd: root, stdio: 'inherit', timeout: 60_000 },
+  );
 } catch (e) {
   console.error('✗ deploy refused: canon-source-audit found forks in ' + 'workspace' + '. Import from @p31ca/design-core, do not re-define tokens/components.');
   process.exit(1);

@@ -1,0 +1,18 @@
+---
+import { pagePanelTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { class: cls = '', style } = Astro.props;
+const children = await Astro.slots.render('default');
+
+const html = renderHtml(pagePanelTree({
+  children: children ? { raw: children } : null,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

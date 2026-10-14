@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#020405">
+<title>P31 · Node Zero</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <h1>P31 <span class="node">NODE&nbsp;ZERO</span></h1>
+  <p class="did" id="did">did:key&nbsp;—</p>
+  <span class="lora lora--idle" id="lora-dot" role="status" aria-label="LoRa link: unknown"></span>
+</header>
+
+<main>
+  <section class="spoons" aria-labelledby="spoons-h">
+    <h2 id="spoons-h">Spoons</h2>
+    <output id="spoon-value" class="big">—</output>
+    <progress id="spoon-gauge" max="100" value="0">spoon level</progress>
+  </section>
+
+  <section class="status-list" aria-labelledby="status-h">
+    <h2 id="status-h">Status</h2>
+    <ul>
+      <li>LoRa <span class="v" id="lora-state">unknown</span></li>
+      <li>RSSI <span class="v" id="rssi-value">—&nbsp;dBm</span></li>
+      <li>Mesh <span class="v" id="mesh-state">—</span></li>
+    </ul>
+  </section>
+
+  <p class="status-line" id="status-msg">initializing…</p>
+</main>
+
+<footer><p>Node Zero · 3.5″ touch panel companion · served UI</p></footer>
+
+<script>
+/* Optional enhancement: guarded /api/status poll. Page renders fully without JS. */
+(function () {
+  var POLL_MS = 5000;
+  var dot = document.getElementById('lora-dot');
+  function set(id, text) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = text;
+  }
+  function apply(d) {
+    if (!d) return;
+    if (typeof d.spoons === 'number') {
+      set('spoon-value', d.spoons + '%');
+      var g = document.getElementById('spoon-gauge');
+      if (g) g.value = d.spoons;
+    }
+    if (d.lora) {
+      set('lora-state', d.lora);
+      var cls = (d.lora === 'RX') ? 'lora--rx' : (d.lora === 'TX') ? 'lora--tx' : (d.lora === 'error') ? 'lora--error' : 'lora--idle';
+      if (dot) {
+        dot.className = 'lora ' + cls;
+        dot.setAttribute('aria-label', 'LoRa link: ' + d.lora);
+      }
+    }
+    if (typeof d.rssi === 'number') set('rssi-value', d.rssi + ' dBm');
+    if (d.mesh) set('mesh-state', d.mesh);
+    if (d.status) set('status-msg', d.status);
+    if (d.did) set('did', d.did);
+  }
+  function poll() {
+    try {
+      fetch('/api/status', { method: 'GET' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(apply)
+        .catch(function () { /* endpoint absent — static page stays */ });
+    } catch (e) { /* fetch unavailable — static page stays */ }
+  }
+  poll();
+  setInterval(poll, POLL_MS);
+})();
+</script>
+</body>
+</html>

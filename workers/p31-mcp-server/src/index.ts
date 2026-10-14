@@ -1,8 +1,13 @@
 /**
  * p31-mcp-server — P31 native MCP server (CWP-2026-017, Workstream B).
  *
- * Exposes P31's 9 tools via the Model Context Protocol using the Cloudflare
- * Agents SDK (`agents/mcp` → `createMcpHandler`) + the MCP SDK `McpServer`.
+ * Exposes P31's 9 tools via the Model Context Protocol using the split MCP
+ * SDK v2 (`@modelcontextprotocol/server` → `McpServer` + `createMcpHandler`).
+ * The handler speaks the 2026-07-28 STATELESS protocol (SEP-2575 _meta
+ * envelope, server/discover, resultType, no Mcp-Session-Id) and keeps serving
+ * 2025-era clients through the handler's built-in legacy stateless fallback —
+ * old initialize/notifications clients are not broken.
+ *
  * Any MCP client (Claude, Cursor, etc.) can connect and call the ecosystem's
  * tools. This also serves as the native fallback for the Spike Land MCP
  * integration (CWP-2026-016 C), which remains feature-flagged.
@@ -12,9 +17,11 @@
  * routes non-builtin tools to. No new tool execution surface is introduced.
  */
 
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { createMcpHandler } from "agents/mcp";
+import { McpServer, createMcpHandler } from "@modelcontextprotocol/server";
 import { z } from "zod";
+
+/** Modern-era revision this server advertises via `server/discover`. */
+const PROTOCOL_VERSION = "2026-07-28";
 
 interface Env {
   // mcp-x402-gateway — L3.4 bridge front door for the 9 P31 tools.
@@ -24,7 +31,7 @@ interface Env {
 interface P31Tool {
   name: string;
   description: string;
-  schema: z.ZodRawShape;
+  schema: { [field: string]: z.ZodType };
 }
 
 const P31_TOOLS: P31Tool[] = [
@@ -101,7 +108,9 @@ async function forwardTool(
   try {
     const res = await env.GATEWAY.fetch("https://mcp-x402-gateway/mcp", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      // SEP-2243: Streamable HTTP POSTs from this client carry the
+      // Mcp-Method + Mcp-Name headers.
+      headers: { "Content-Type": "application/json", "Mcp-Method": "tools/call", "Mcp-Name": "p31-mcp-server" },
       body: JSON.stringify(rpc),
     });
     const data = (await res.json().catch(() => null)) as any;
@@ -113,7 +122,7 @@ async function forwardTool(
 }
 
 export default {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  async fetch(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
     if (url.pathname === "/.well-known/mcp/server-card.json") {
@@ -140,18 +149,41 @@ export default {
       });
     }
 
-    // Build a fresh server per request so each tool handler closes over its
-    // own `env` (avoids shared mutable state across concurrent requests).
-    const server = new McpServer({ name: "p31-mcp-server", version: "1.0.0" });
-    for (const t of P31_TOOLS) {
-      server.registerTool(
-        t.name,
-        { description: t.description, inputSchema: t.schema },
-        async (args) => forwardTool(env, t.name, args as Record<string, unknown>),
-      );
+    if (url.pathname !== "/mcp") {
+      return new Response("not found", { status: 404 });
     }
 
-    const handler = createMcpHandler(server, { route: "/mcp" });
-    return handler(request, env, ctx);
+    // Build a fresh handler per request so each tool handler closes over its
+    // own `env` (avoids shared mutable state across concurrent requests).
+    const handler = createMcpHandler(() => {
+      const server = new McpServer({ name: "p31-mcp-server", version: "1.0.0" });
+      for (const t of P31_TOOLS) {
+        server.registerTool(
+          t.name,
+          { description: t.description, inputSchema: t.schema },
+          async (args) => forwardTool(env, t.name, args as Record<string, unknown>),
+        );
+      }
+
+      // Conformance (2026-07-28): `server/discover` must return top-level
+      // `protocolVersion` + capabilities + serverInfo. The SDK emits
+      // `supportedVersions` + `capabilities` and stamps serverInfo into
+      // `_meta`; add the missing top-level keys (additive only).
+      const sdkServer = server.server as unknown as { _ondiscover: () => Record<string, unknown> };
+      const sdkDiscover = sdkServer._ondiscover.bind(sdkServer);
+      sdkServer._ondiscover = () => {
+        const base = sdkDiscover();
+        return {
+          protocolVersion: PROTOCOL_VERSION,
+          supportedProtocolVersions: Array.isArray(base.supportedVersions)
+            ? [...(base.supportedVersions as string[])]
+            : [PROTOCOL_VERSION],
+          ...base,
+        };
+      };
+
+      return server;
+    });
+    return handler.fetch(request);
   },
 };

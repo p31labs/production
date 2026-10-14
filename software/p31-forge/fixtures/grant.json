@@ -1,0 +1,11 @@
+{
+  "type": "grant",
+  "meta": { "title": "Grant Application — NLnet Restack", "kicker": "P31 LABS, INC.", "date": "2026-10-12", "source": "docs" },
+  "blocks": [
+    { "kind": "section", "id": "summary", "title": "Project Summary", "wordBudget": 150, "children": [ { "kind": "prose", "data": { "text": "A single-file, zero-dependency sovereign web portal for neurodivergent families, with agent-native WebMCP and A2UI interfaces." } } ] },
+    { "kind": "section", "id": "budget", "title": "Budget", "children": [ { "kind": "table", "data": {
+      "columns": ["Task", "Effort", "Cost (EUR)"],
+      "rows": [ ["A2UI migration", "2 weeks", "8000"], ["PQC integration", "1 week", "4000"], ["Total", "6.5 weeks", "25000"] ]
+    } } ] }
+  ]
+}

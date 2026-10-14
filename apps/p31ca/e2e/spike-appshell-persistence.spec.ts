@@ -40,7 +40,14 @@ import {
 /* ============================================================ */
 /*  Test 1 — baseline                                            */
 /* ============================================================ */
-test.describe('spike — AppShell persistence (Track 2.5)', () => {
+test.describe.skip('spike — AppShell persistence (Track 2.5) — SUPERSEDED 2026-10-13', () => {
+  // Superseded by the MolecularHeart TBT fix (docs/fix-plans/p31ca-molecularheart-tbt.md):
+  // the live WebGL dome no longer persists across navigations — it is
+  // home-only and transition:persist was removed from it (React 19 hydration
+  // hazard #423/#425 + main-thread cost). The spike's pass criterion
+  // "canvasAttachCount stays 1" is therefore obsolete by design. The spike
+  // result doc lives in CLAUDE/SPIKE-APPSHELL-RESULT.md. Kept as a skipped
+  // record per the no-delete rule.
   test('baseline: canvas survives 20× ClientRouter navigations', async ({ page }) => {
     const samples: NavSample[] = [];
     const { canvasId: baseCanvasId, baseHeap, startedAt } = await landOnHome(page);

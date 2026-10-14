@@ -1,0 +1,53 @@
+{
+  "$schema": "https://p31ca.org/schemas/device-tiers.json",
+  "version": "1.0.0",
+  "$description": "P31 device-tier contract. Maps CAPABILITY (pointer/hover/window size class) to delivery tier — never device brand. Window size classes follow Material 3: Compact <600dp, Medium 600-840dp, Expanded >=840dp. Pointer and hover are independent capability axes: they are reported as flags at runtime and never override the window size class (runbook §2.5, §6 B-2).",
+  "tiers": {
+    "embedded": {
+      "windowSizeClass": null,
+      "pointer": null,
+      "hover": null,
+      "touchTargetMin": 44,
+      "navigation": "minimal-html",
+      "delivery": ["embedded-css", "lvgl-c"],
+      "assetsPartition": "spiffs",
+      "maxGzipBytes": 102400,
+      "safeAreaInsets": false,
+      "rationale": "Node Zero (ESP32-S3) is an explicit hardware context, not a browser viewport: no window size class, no pointer/hover media queries. Served UI is HTML-first minimal-html into the ~4MB SPIFFS assets partition; LVGL 8.4 panel consumes lvgl-c constants. touchTargetMin 44 applies to the AXS15231B touch panel (iOS HIG / WCAG 2.5.5 floor). maxGzipBytes 102400 is the discipline budget keeping room for fonts/emojis per the partitions.csv comment (runbook §2.8, §6 B-1). Embedded tier is a subset of the same tokens, never a fork (Law 5, runbook §2.6)."
+    },
+    "mobile": {
+      "windowSizeClass": "compact",
+      "breakpointMaxDp": 600,
+      "pointer": "coarse",
+      "hover": "none",
+      "touchTargetMin": 44,
+      "navigation": "bottom-nav",
+      "delivery": ["css-mobile"],
+      "safeAreaInsets": true,
+      "rationale": "M3 Compact window size class (<600dp). Mobile web/PWA is the default tier — 99% of users (runbook §0, Law 6). Coarse pointer + hover:none are the NOMINAL capabilities of this tier, not a definition of it: a 1200px coarse touch device is desktop tier with flags.coarse true, because pointer/hover are independent of width (runbook §2.5 — touch is capability, not screen size). 44px touch floor per iOS HIG / WCAG 2.5.5. safeAreaInsets true: bottom-nav chrome must consume env(safe-area-inset-*)."
+    },
+    "tablet": {
+      "windowSizeClass": "medium",
+      "breakpointMinDp": 600,
+      "breakpointMaxDp": 840,
+      "pointer": "mixed",
+      "hover": "mixed",
+      "touchTargetMin": 44,
+      "navigation": "nav-rail",
+      "delivery": ["css-full"],
+      "safeAreaInsets": true,
+      "rationale": "M3 Medium window size class (600-840dp). pointer/hover 'mixed' reflects the real devices in this band — foldables, detachables, and the operator's Acer Spin 713 2-in-1 in tablet posture. The window size class is DYNAMIC, not device-locked: ChromeOS resizable windows make the same hardware cross classes on resize (runbook §2.5, Law 8). 44px floor retained because coarse capability may be present."
+    },
+    "desktop": {
+      "windowSizeClass": "expanded",
+      "breakpointMinDp": 840,
+      "pointer": "fine",
+      "hover": "hover",
+      "touchTargetMin": 34,
+      "navigation": "sidebar",
+      "delivery": ["css-full"],
+      "safeAreaInsets": false,
+      "rationale": "M3 Expanded window size class (>=840dp). Fine pointer + hover are nominal; the 34px compact floor is permitted ONLY under (pointer: fine) (runbook §2.5, §6 C-2). When a desktop-width device reports pointer:coarse (touchscreen Chromebook, the dev box itself), the tier stays desktop — the resolver surfaces flags.coarse true and consumers must apply the 44px floor per capability, never silently collapse it (runbook §6 B-2 negative control)."
+    }
+  }
+}

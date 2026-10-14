@@ -1,0 +1,148 @@
+{
+  "$schema": "https://design-tokens.org/schemas/format/2025.10",
+  "$description": "Lane A supplement — carries the runbook-required token categories the canon interchange file lacks (CSS-function exclusion verified in delta-table.md §3): fluid clamp() spacing + type scale, breakpoint dimensions, clean motion. Values are strings; CSS passthrough keeps clamp/oklch strings verbatim. Every token has $type. Aliases use {group.name} syntax. Merged by tier-emitter.mjs — supplement wins only for names canon lacks.",
+  "fluid": {
+    "base": {
+      "$type": "dimension",
+      "$value": "{p31.base}",
+      "$description": "Alias to canon root size p31.base (16px). Cross-source {group.name} reference → emitted as var(--p31-base)."
+    },
+    "space": {
+      "xs": {
+        "$type": "dimension",
+        "$value": "clamp(0.75rem, 0.625rem + 0.75vw, 1rem)",
+        "$description": "Fluid spacing xs — 12→16px @16px root. rem in preferred term (WCAG F94), ratio 1.33 ≤ 2.5×."
+      },
+      "sm": {
+        "$type": "dimension",
+        "$value": "clamp(1rem, 0.875rem + 0.75vw, 1.25rem)",
+        "$description": "Fluid spacing sm — 16→20px. rem in preferred term, ratio 1.25."
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": "{nonexistent.token}",
+        "$description": "Fluid spacing md — 20→28px. rem in preferred term, ratio 1.40."
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": "clamp(1.75rem, 1.375rem + 2vw, 2.25rem)",
+        "$description": "Fluid spacing lg — 28→36px. rem in preferred term, ratio 1.29."
+      },
+      "xl": {
+        "$type": "dimension",
+        "$value": "clamp(2.25rem, 1.75rem + 2.75vw, 3rem)",
+        "$description": "Fluid spacing xl — 36→48px. rem in preferred term, ratio 1.33."
+      },
+      "2xl": {
+        "$type": "dimension",
+        "$value": "clamp(3rem, 2.25rem + 3.75vw, 4.5rem)",
+        "$description": "Fluid spacing 2xl — 48→72px. rem in preferred term, ratio 1.50."
+      },
+      "3xl": {
+        "$type": "dimension",
+        "$value": "clamp(4.5rem, 3.375rem + 5.5vw, 6.75rem)",
+        "$description": "Fluid spacing 3xl — 72→108px. rem in preferred term, ratio 1.50."
+      }
+    },
+    "type": {
+      "caption": {
+        "$type": "dimension",
+        "$value": "clamp(0.6875rem, 0.625rem + 0.25vw, 0.8125rem)",
+        "$description": "Fluid type caption — 11→13px. rem in preferred term, ratio 1.18."
+      },
+      "label": {
+        "$type": "dimension",
+        "$value": "clamp(0.75rem, 0.6875rem + 0.3vw, 0.875rem)",
+        "$description": "Fluid type label — 12→14px. rem in preferred term, ratio 1.17."
+      },
+      "body": {
+        "$type": "dimension",
+        "$value": "clamp(0.875rem, 0.8125rem + 0.4vw, 1rem)",
+        "$description": "Fluid type body — 14→16px. rem in preferred term, ratio 1.14."
+      },
+      "h3": {
+        "$type": "dimension",
+        "$value": "clamp(1rem, 0.9375rem + 0.5vw, 1.25rem)",
+        "$description": "Fluid type h3 — 16→20px. rem in preferred term, ratio 1.25."
+      },
+      "h2": {
+        "$type": "dimension",
+        "$value": "clamp(1.25rem, 1.125rem + 0.9vw, 1.625rem)",
+        "$description": "Fluid type h2 — 20→26px. rem in preferred term, ratio 1.30."
+      },
+      "h1": {
+        "$type": "dimension",
+        "$value": "clamp(1.625rem, 1.5rem + 1.4vw, 2.125rem)",
+        "$description": "Fluid type h1 — 26→34px. rem in preferred term, ratio 1.31."
+      },
+      "display": {
+        "$type": "dimension",
+        "$value": "clamp(2.125rem, 1.875rem + 2.2vw, 3rem)",
+        "$description": "Fluid type display — 34→48px. rem in preferred term, ratio 1.41."
+      }
+    }
+  },
+  "motion": {
+    "duration": {
+      "instant": {
+        "$type": "duration",
+        "$value": "62.5ms",
+        "$description": "Duration instant — matches canon p31.duration-instant value."
+      },
+      "fast": {
+        "$type": "duration",
+        "$value": "150ms",
+        "$description": "Duration fast — design-core src/tokens/motion.ts canonical fast."
+      },
+      "normal": {
+        "$type": "duration",
+        "$value": "300ms",
+        "$description": "Duration normal — design-core src/tokens/motion.ts canonical normal."
+      },
+      "slow": {
+        "$type": "duration",
+        "$value": "500ms",
+        "$description": "Duration slow — matches canon p31.duration-slow value."
+      }
+    },
+    "easing": {
+      "smooth": {
+        "$type": "cubicBezier",
+        "$value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "$description": "Easing smooth — M3 standard; identical to canon p31.easing-standard [0.4,0,0.2,1]."
+      },
+      "snappy": {
+        "$type": "cubicBezier",
+        "$value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "$description": "Easing snappy — overshoot ease, design-core tokens.json snappy."
+      },
+      "linear": {
+        "$type": "cubicBezier",
+        "$value": "cubic-bezier(0, 0, 1, 1)",
+        "$description": "Easing linear."
+      }
+    },
+    "speedFactor": {
+      "$type": "number",
+      "$value": 1,
+      "$description": "Motion speed multiplier — spoon ladder derives from this. (Numeric $value for a numeric $type — valid DTCG; CSS-function strings stay strings.)"
+    }
+  },
+  "space": {
+    "page": {
+      "$type": "dimension",
+      "$value": "{fluid.space.xl}",
+      "$description": "Page gutter — semantic alias to fluid.space.xl. Emits var(--p31-fluid-space-xl)."
+    },
+    "card-gap": {
+      "$type": "dimension",
+      "$value": "{fluid.space.md}",
+      "$description": "Card grid gap — semantic alias to fluid.space.md."
+    },
+    "card-pad": {
+      "$type": "dimension",
+      "$value": "{fluid.space.lg}",
+      "$description": "Card inner padding — semantic alias to fluid.space.lg."
+    }
+  }
+}

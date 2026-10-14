@@ -2,12 +2,21 @@
 /**
  * /enterprise — the governance-platform story (separate buying center from the
  * family story). Every claim verified 2026-09-23: live URLs, published
- * standards, named research. No invented metrics.
+ * standards, named research (registry figure re-verified 2026-10-13). No
+ * invented metrics.
  */
 import MarketingShell from '../layouts/MarketingShell.astro';
 
 import SectionHeader from '../components/marketing/SectionHeader.astro';
 import Footer from '../components/marketing/Footer.astro';
+import QuoteBlock from '../components/marketing/QuoteBlock.astro';
+import { PageHeader } from '@p31ca/canon-astro';
+import constants from '../data/p31-mesh-constants.json';
+// Phase 3 Batch 1 — canon adoption chain (tokens → layers → recipes → canon-v2).
+import '@p31ca/canon/tokens.css';
+import '@p31ca/canon/css/layers.css';
+import '@p31ca/canon-parts/recipes.css';
+import '@p31ca/design-core/css/canon-v2.css';
 
 const proofs = [
   { title: 'Pre-execution enforcement', desc: 'guardAgentEvent runs before commit — refusals are recorded, not reconstructed. A denied action never reaches the log as if it happened.' },
@@ -30,9 +39,9 @@ const integrations = [
 
 const loomDiagram = `
 flowchart TB
-    classDef core fill:#2563eb,stroke:#1e40af,color:#ffffff
-    classDef gate fill:#f59e0b,stroke:#b45309,color:#000000
-    classDef store fill:#64748b,stroke:#334155,color:#ffffff
+    classDef core fill:royalblue,stroke:navy,color:white
+    classDef gate fill:goldenrod,stroke:darkgoldenrod,color:black
+    classDef store fill:slategray,stroke:darkslategray,color:white
     subgraph Gate["Pre-execution gate"]
         G1{"In scope?"}:::gate
         G2["Refusal sidecar"]:::gate
@@ -58,9 +67,9 @@ flowchart TB
 
 const identityDiagram = `
 flowchart LR
-    classDef core fill:#2563eb,stroke:#1e40af,color:#ffffff
-    classDef store fill:#64748b,stroke:#334155,color:#ffffff
-    classDef external fill:#f59e0b,stroke:#b45309,color:#000000
+    classDef core fill:royalblue,stroke:navy,color:white
+    classDef store fill:slategray,stroke:darkslategray,color:white
+    classDef external fill:goldenrod,stroke:darkgoldenrod,color:black
     A["Agent proposes"]:::external --> G["Pre-execution gate"]:::core
     G --> B["did:key capability<br/>scope-bound"]:::core
     B --> C["Device-key wrap<br/>AES-GCM"]:::store
@@ -83,8 +92,8 @@ timeline
 
 const securityPosture = `
 flowchart TB
-    classDef core fill:#2563eb,stroke:#1e40af,color:#ffffff
-    classDef gap fill:#f59e0b,stroke:#b45309,color:#000000
+    classDef core fill:royalblue,stroke:navy,color:white
+    classDef gap fill:goldenrod,stroke:darkgoldenrod,color:black
     subgraph Real["Verified working"]
         A["Tamper-evident hash chain"]:::core
         B["Refusal sidecar"]:::core
@@ -107,34 +116,34 @@ flowchart TB
 <MarketingShell
   title="Enterprise — P31 Labs"
   description="The audit trail your agents don't have — and can't fake. Hash-chained, PQC-signed, independently verifiable agent governance on Cloudflare Workers."
-  theme="sunlight"
+  theme="rose"
 >
   <main id="main-content" class="section">
-    <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+    <div class="en7f-max-w-4xl en7f-mx-auto en7f-px-6 en7f-md-px-12 en7f-lg-px-16">
 
-      {/* ── HERO ── */}
-      <section class="relative pt-24 pb-16 md:pt-32 md:pb-20">
-        <div class="max-w-3xl space-y-6">
-          <p class="font-mono text-xs tracking-[0.2em] uppercase" style="color: var(--p31-accent);">
+      {/* ── HERO ── (reference alignment: start; header chain = canon PageHeader) */}
+      <section class="enterprise-hero en7f-relative en7f-pt-24 en7f-pb-16 en7f-md-pt-32 en7f-md-pb-20" data-align="start">
+        <div class="en7f-max-w-3xl en7f-space-y-6">
+          <p class="en7f-font-mono en7f-text-xs en7f-tracking--0-2em- en7f-uppercase" style="color: var(--p31-accent);">
             Agent Governance · Post-Quantum Identity · Independent Evidence
           </p>
-          <h1 class="text-4xl md:text-6xl font-bold leading-tight" style="color: var(--p31-text); letter-spacing: -0.02em;">
-            The audit trail your agents don't have — and can't fake.
-          </h1>
-          <p class="text-lg md:text-xl leading-relaxed" style="color: var(--p31-text-secondary);">
-            IDC reports that most enterprises cannot verify what their AI agents actually do —
-            60% of security leaders lack basic agent containment, and 35% cannot shut down a
-            rogue agent. The record of what happened often does not exist at all.
+          <PageHeader
+            title="The audit trail your agents don't have — and can't fake."
+            subtitle="P31's Loom gives your AI agents an audit trail you can verify yourself — before anything ships. Every agent action is checked at the gate, recorded in a tamper-proof hash chain, and signed with post-quantum keys. Anyone can confirm the record in three commands, with no account. That is the part the market cannot fake."
+          />
+          <p class="enterprise-hero__subtitle en7f-text-lg en7f-md-text-xl en7f-leading-relaxed" style="color: var(--p31-text-secondary);">
+            <a href={constants.idcAuditTrailBlogUrl} target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">IDC's 2026 piece “The Audit Trail That Doesn't Exist”</a>
+            reports that most enterprises cannot verify what their AI agents actually do. A 2026 industry
+            survey adds the sharper numbers: <strong style="color: var(--p31-text);">60%</strong> of enterprises
+            with deployed agents cannot stop a misbehaving agent once it is running, and
+            <strong style="color: var(--p31-text);">35%</strong> say they could not shut down a rogue agent
+            (<a href={constants.agenticAiInstituteSurveyUrl} target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">Agentic AI Institute 2026 survey</a>).
           </p>
-          <p class="text-lg leading-relaxed" style="color: var(--p31-text);">
-            P31's Loom <strong>is</strong> that record — live, hash-chained, PQC-signed, and
-            independently verifiable on Cloudflare Workers.
-          </p>
-          <div class="flex flex-col sm:flex-row items-start gap-4 pt-2">
-            <a href="/apps/loom" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all no-underline" style="background: var(--p31-accent); color: #000;">
+          <div class="enterprise-hero__ctas en7f-flex en7f-flex-col en7f-sm-flex-row en7f-items-start en7f-gap-4 en7f-pt-2">
+            <a href="/apps/loom" class="en7f-inline-flex en7f-items-center en7f-gap-2 en7f-px-6 en7f-py-3 en7f-rounded-lg en7f-font-semibold en7f-transition-all en7f-no-underline" style="background: var(--p31-accent); color: var(--p31-void);">
               See the live chain →
             </a>
-            <a href="https://loom.p31ca.org/api/loom/verify" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold border no-underline" style="border-color: var(--p31-glass-border); color: var(--p31-text);">
+            <a href="https://loom.p31ca.org/api/loom/verify" target="_blank" rel="noopener noreferrer" class="en7f-inline-flex en7f-items-center en7f-gap-2 en7f-px-6 en7f-py-3 en7f-rounded-lg en7f-font-semibold en7f-border en7f-no-underline" style="border-color: var(--p31-glass-border); color: var(--p31-text);">
               Verify the chain ↗
             </a>
           </div>
@@ -142,91 +151,164 @@ flowchart TB
       </section>
 
       {/* ── THE GAP ── */}
-      <section class="mb-16">
+      <section class="en7f-mb-16">
         <SectionHeader
           title="The gap is the market"
-          description="IDC, September 2026: 'The Audit Trail That Doesn't Exist.' Governance spend is the answer — agent observability & governance is a $1.68B (2026) → $8.62B (2031) market at 38.69% CAGR."
+          description="Governance spend is the answer — the market exists precisely because today's agent stacks cannot prove what happened."
         />
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-          <div class="glass-card p-6 rounded-xl">
-            <div class="text-3xl font-extrabold mb-2" style="color: var(--p31-text);">60%</div>
-            <p class="text-sm" style="color: var(--p31-text-secondary);">of security leaders lack basic agent containment controls.</p>
+        <div data-p31="grid" data-cols="3" data-even class="en7f-gap-4 en7f-mt-8">
+          <div class="glass-card en7f-p-6 en7f-rounded-xl">
+            <div class="en7f-text-3xl en7f-font-extrabold en7f-mb-2" style="color: var(--p31-text);">60%</div>
+            <p class="en7f-text-sm" style="color: var(--p31-text-secondary);">of enterprises with deployed agents cannot stop a misbehaving agent once it is running.</p>
           </div>
-          <div class="glass-card p-6 rounded-xl">
-            <div class="text-3xl font-extrabold mb-2" style="color: var(--p31-text);">35%</div>
-            <p class="text-sm" style="color: var(--p31-text-secondary);">cannot shut down a rogue agent once deployed.</p>
+          <div class="glass-card en7f-p-6 en7f-rounded-xl">
+            <div class="en7f-text-3xl en7f-font-extrabold en7f-mb-2" style="color: var(--p31-text);">35%</div>
+            <p class="en7f-text-sm" style="color: var(--p31-text-secondary);">say they could not shut down a rogue agent once deployed.</p>
           </div>
-          <div class="glass-card p-6 rounded-xl">
-            <div class="text-3xl font-extrabold mb-2" style="color: var(--p31-text);">$1.68B → $8.62B</div>
-            <p class="text-sm" style="color: var(--p31-text-secondary);">agent observability & governance, 2026 → 2031 (38.69% CAGR).</p>
+          <div class="glass-card en7f-p-6 en7f-rounded-xl">
+            <div class="en7f-text-3xl en7f-font-extrabold en7f-mb-2" style="color: var(--p31-text);">$1.68B → $8.62B</div>
+            <p class="en7f-text-sm" style="color: var(--p31-text-secondary);">agent observability & governance, 2026 → 2031 (38.69% CAGR).</p>
           </div>
+        </div>
+        <div class="glass-card en7f-p-6 en7f-rounded-xl en7f-mt-4 en7f-space-y-4">
+          <QuoteBlock
+            text="Agent governance is a different failure mode, because the record of what happened often doesn't exist at all."
+            citeName="IDC, “The Audit Trail That Doesn't Exist” (2026)"
+            citeHref={constants.idcAuditTrailBlogUrl}
+            citeNote="IDC Resource Center blog"
+          />
+          <p class="en7f-text-sm en7f-leading-relaxed" style="color: var(--p31-text-secondary);">
+            Sources: the 60% / 35% figures come from a 2026 industry survey reported by
+            <a href={constants.agenticAiInstituteSurveyUrl} target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">ViviScape (Agentic AI Institute, July 2026)</a>.
+            The $1.68B → $8.62B market forecast at 38.69% CAGR is
+            <a href={constants.mordorAgentObservabilityUrl} target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">Mordor Intelligence's agent observability & governance report</a>.
+            The same dynamic is playing out in sovereign cloud: worldwide sovereign cloud IaaS spending is forecast at
+            <a href={constants.gartnerSovereignCloudIaaS2026Url} target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">$80 billion in 2026, up 35.6% (Gartner, Feb 2026)</a>.
+          </p>
+        </div>
+      </section>
+
+      {/* ── THE GOVERNANCE LAYER IS THE PRODUCT ── */}
+      <section class="en7f-mb-16">
+        <SectionHeader
+          title="The governance layer is the product"
+          description="Adoption is real. Governed adoption is rare. P31 Labs' position in one line — and the receipts."
+        />
+        <div class="glass-card en7f-p-6 en7f-rounded-xl en7f-mt-8 en7f-space-y-4">
+          <p class="en7f-text-lg en7f-leading-relaxed" style="color: var(--p31-text);">
+            Almost half of software companies run MCP in production, but only 5% run it governed. Most MCP traffic is still experiments — 86% — and security is the top blocker (49%). P31 Labs' answer: the governance layer is the product, and it runs on the $5 plan.
+          </p>
+          <div class="en7f-overflow-x-auto">
+            <table class="en7f-w-full en7f-text-left en7f-border-collapse">
+              <thead>
+                <tr class="en7f-border-b" style="border-color: var(--p31-glass-border);">
+                  <th class="en7f-py-3 en7f-pr-4 en7f-text-xs en7f-font-semibold en7f-uppercase en7f-tracking-wider" style="color: var(--p31-text);">Measure</th>
+                  <th class="en7f-py-3 en7f-text-xs en7f-font-semibold en7f-uppercase en7f-tracking-wider" style="color: var(--p31-accent);">Share</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="en7f-border-b" style="border-color: var(--p31-glass-border);">
+                  <td class="en7f-py-3 en7f-pr-4 en7f-text-sm" style="color: var(--p31-text-secondary);">Software orgs with MCP in production (any form)</td>
+                  <td class="en7f-py-3 en7f-text-sm en7f-font-bold" style="color: var(--p31-text);">41%</td>
+                </tr>
+                <tr class="en7f-border-b" style="border-color: var(--p31-glass-border);">
+                  <td class="en7f-py-3 en7f-pr-4 en7f-text-sm" style="color: var(--p31-text-secondary);">MCP usage still experimentation or local development</td>
+                  <td class="en7f-py-3 en7f-text-sm en7f-font-bold" style="color: var(--p31-text);">86%</td>
+                </tr>
+                <tr class="en7f-border-b" style="border-color: var(--p31-glass-border);">
+                  <td class="en7f-py-3 en7f-pr-4 en7f-text-sm" style="color: var(--p31-text-secondary);">In production, but ungoverned</td>
+                  <td class="en7f-py-3 en7f-text-sm en7f-font-bold" style="color: var(--p31-text);">9%</td>
+                </tr>
+                <tr class="en7f-border-b" style="border-color: var(--p31-glass-border);">
+                  <td class="en7f-py-3 en7f-pr-4 en7f-text-sm" style="color: var(--p31-text-secondary);">Governed, enterprise-wide production</td>
+                  <td class="en7f-py-3 en7f-text-sm en7f-font-bold" style="color: var(--p31-text);">5%</td>
+                </tr>
+                <tr>
+                  <td class="en7f-py-3 en7f-pr-4 en7f-text-sm" style="color: var(--p31-text-secondary);">Cite security and compliance as the top implementation challenge</td>
+                  <td class="en7f-py-3 en7f-text-sm en7f-font-bold" style="color: var(--p31-text);">49%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="en7f-text-sm en7f-leading-relaxed" style="color: var(--p31-text-secondary);">
+            Sources: <a href={constants.stacklokStateOfMcpUrl} target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">Stacklok, State of MCP in Software 2026</a> (survey with the Linux Foundation AAIF, 100 senior software engineers), as reported by <a href={constants.forkastMcpGovernanceUrl} target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">Forkast, 2026-07-28</a>. The 41% headline is the adoption story; the 86% vs 5% split is the governance story.
+          </p>
+          <p class="en7f-text-sm en7f-leading-relaxed" style="color: var(--p31-text-secondary);">
+            The registry keeps growing: the official MCP Registry hit <strong style="color: var(--p31-text);">42,753 servers</strong> on October 13, 2026 — in Forkast's framing, <a href={constants.forkastRegistryBifurcationUrl} target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">"connectivity is abundant, trust is unverified"</a>.
+          </p>
+          <p class="en7f-text-lg" style="color: var(--p31-text);">
+            <strong style="color: var(--p31-accent);">The governance layer is the product.</strong> P31 runs one on the <a href="/runbook" style="color: var(--p31-accent);">$5 plan</a>: the pre-execution gate, the hash-chained log, and the public <a href="/verify" style="color: var(--p31-accent);">verify endpoint</a> above — live, open source, EIN 42-1888158.
+          </p>
         </div>
       </section>
 
       {/* ── VERIFY IT YOURSELF ── */}
-      <section class="mb-16">
+      <section class="en7f-mb-16">
         <SectionHeader
           title="Verify it yourself — ninety seconds"
           description="Three commands. No account. The chain recomputes from genesis and returns the current head."
         />
-        <div class="glass-card p-6 rounded-xl mt-8">
-          <pre class="font-mono text-sm leading-relaxed overflow-x-auto" style="color: var(--p31-text);"><code># 1 · The Loom chain — recomputes and verifies
-curl -s https://b30e37b5.loom-8z0.pages.dev/api/loom-public/verify | python3 -m json.tool
+        <div class="glass-card en7f-p-6 en7f-rounded-xl en7f-mt-8">
+          <pre class="en7f-font-mono en7f-text-sm en7f-leading-relaxed en7f-overflow-x-auto" style="color: var(--p31-text);"><code># 1 · The Loom chain — recomputes and verifies
+curl -s https://loom-verify.pages.dev/api/loom/verify | python3 -m json.tool
 
 # 2 · The MCP tool registry
 curl -s https://mcp-registry.trimtab-signal.workers.dev/servers | python3 -m json.tool
 
 # 3 · A flagship live
 open https://p31ca.org/apps/loom</code></pre>
-          <p class="mt-4 text-sm" style="color: var(--p31-text-secondary);">
-            Expected from #1: <code class="font-mono">{'{"valid": true, "checked": 16, "brokenAt": null}'}</code> — a live request against a deployed endpoint, not a screenshot.
+          <p class="en7f-mt-4 en7f-text-sm" style="color: var(--p31-text-secondary);">
+            Expected from #1: <code class="en7f-font-mono">{'{"valid": true, "checked": 16, "brokenAt": null}'}</code> — a live request against a deployed endpoint, not a screenshot.
+          </p>
+          <p class="en7f-mt-2 en7f-text-sm" style="color: var(--p31-text-secondary);">
+            The registry behind command #2 is ours — <a href={constants.mcpRegistryUrl} target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">44 servers registered, 22 live, 124 tools</a> (live endpoint, as of 2026-10-13).
           </p>
         </div>
       </section>
 
       {/* ── THE PROOF ── */}
-      <section class="mb-16">
+      <section class="en7f-mb-16">
         <SectionHeader title="Three proofs, all live" description="Every capability resolves to a running service or a published standard." />
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+        <div data-p31="grid" data-cols="3" data-even class="en7f-gap-6 en7f-mt-8">
           {proofs.map((p) => (
-            <div class="glass-card p-6 rounded-xl border-t-4" style="border-top-color: var(--p31-accent);">
-              <h3 class="text-lg font-bold mb-3" style="color: var(--p31-text);">{p.title}</h3>
-              <p class="text-sm leading-relaxed" style="color: var(--p31-text-secondary);">{p.desc}</p>
+            <div class="glass-card en7f-p-6 en7f-rounded-xl en7f-border-t-4" style="border-top-color: var(--p31-accent);">
+              <h3 class="en7f-text-lg en7f-font-bold en7f-mb-3" style="color: var(--p31-text);">{p.title}</h3>
+              <p class="en7f-text-sm en7f-leading-relaxed" style="color: var(--p31-text-secondary);">{p.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ── ARCHITECTURE DIAGRAMS ── */}
-      <section class="mb-16">
+      <section class="en7f-mb-16">
         <SectionHeader
           title="How it works, in one diagram"
           description="The Loom pipeline — the same architecture documented in the enterprise package, rendered live."
         />
-        <div class="mt-8 space-y-8">
-          <pre class="mermaid" set:html={loomDiagram} />
+        <div class="en7f-mt-8 en7f-space-y-8">
+          <pre id="ent-loom-diagram" class="mermaid" set:html={loomDiagram} />
 
-          <pre class="mermaid" set:html={identityDiagram} />
+          <pre id="ent-identity-diagram" class="mermaid" set:html={identityDiagram} />
 
-          <pre class="mermaid" set:html={standardsTimeline} />
+          <pre id="ent-standards-timeline" class="mermaid" set:html={standardsTimeline} />
 
-          <pre class="mermaid" set:html={securityPosture} />
+          <pre id="ent-security-posture" class="mermaid" set:html={securityPosture} />
         </div>
       </section>
 
       {/* ── COMPETITIVE POSITION ── */}
-      <section class="mb-16">
+      <section class="en7f-mb-16">
         <SectionHeader
           title="How it differs"
           description="The governance market shows policy and traces. P31's differentiator is an independently verifiable audit record — not a policy dashboard."
         />
-        <div class="mt-8 overflow-x-auto">
-          <table class="w-full text-left border-collapse">
+        <div class="en7f-mt-8 en7f-overflow-x-auto">
+          <table class="en7f-w-full en7f-text-left en7f-border-collapse">
             <thead>
-              <tr class="border-b" style="border-color: var(--p31-glass-border);">
-                <th class="py-3 pr-4 text-xs font-semibold uppercase tracking-wider" style="color: var(--p31-text);">Platform</th>
-                <th class="py-3 pr-4 text-xs font-semibold uppercase tracking-wider" style="color: var(--p31-text);">What it does</th>
-                <th class="py-3 text-xs font-semibold uppercase tracking-wider" style="color: var(--p31-accent);">P31 difference</th>
+              <tr class="en7f-border-b" style="border-color: var(--p31-glass-border);">
+                <th class="en7f-py-3 en7f-pr-4 en7f-text-xs en7f-font-semibold en7f-uppercase en7f-tracking-wider" style="color: var(--p31-text);">Platform</th>
+                <th class="en7f-py-3 en7f-pr-4 en7f-text-xs en7f-font-semibold en7f-uppercase en7f-tracking-wider" style="color: var(--p31-text);">What it does</th>
+                <th class="en7f-py-3 en7f-text-xs en7f-font-semibold en7f-uppercase en7f-tracking-wider" style="color: var(--p31-accent);">P31 difference</th>
               </tr>
             </thead>
             <tbody>
@@ -236,82 +318,82 @@ open https://p31ca.org/apps/loom</code></pre>
                 { name: 'Langfuse / LangSmith', does: 'Traces + evals, LLM observability.', diff: 'Trace. P31 hash-chains — tamper-evident, not just replayable.' },
                 { name: 'KiloClaw for Organizations', does: 'Shadow-AI dashboard, SSO/SCIM, scoped access.', diff: 'Manages access. P31 proves the human approval gate and the record.' },
               ].map((row) => (
-                <tr class="border-b" style="border-color: var(--p31-glass-border);">
-                  <td class="py-3 pr-4 font-mono text-sm font-bold" style="color: var(--p31-text);">{row.name}</td>
-                  <td class="py-3 pr-4 text-sm" style="color: var(--p31-text-secondary);">{row.does}</td>
-                  <td class="py-3 text-sm" style="color: var(--p31-text);">{row.diff}</td>
+                <tr class="en7f-border-b" style="border-color: var(--p31-glass-border);">
+                  <td class="en7f-py-3 en7f-pr-4 en7f-font-mono en7f-text-sm en7f-font-bold" style="color: var(--p31-text);">{row.name}</td>
+                  <td class="en7f-py-3 en7f-pr-4 en7f-text-sm" style="color: var(--p31-text-secondary);">{row.does}</td>
+                  <td class="en7f-py-3 en7f-text-sm" style="color: var(--p31-text);">{row.diff}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p class="mt-4 text-sm" style="color: var(--p31-text-secondary);">
+        <p class="en7f-mt-4 en7f-text-sm" style="color: var(--p31-text-secondary);">
           The line: <strong style="color: var(--p31-text);">independently verifiable audit record vs. policy dashboard.</strong>
         </p>
       </section>
 
       {/* ── COMPLIANCE ── */}
-      <section class="mb-16">
+      <section class="en7f-mb-16">
         <SectionHeader title="Standards alignment" description="Verified drafts and staged regulatory deadlines. The architecture is compliant before the standards." />
-        <div class="mt-8 space-y-3">
+        <div class="en7f-mt-8 en7f-space-y-3">
           {compliance.map((c) => (
-            <div class="glass-card p-5 rounded-xl flex flex-col md:flex-row md:items-center gap-3">
-              <div class="font-mono text-sm font-bold min-w-[220px]" style="color: var(--p31-accent);">{c.label}</div>
-              <div class="font-mono text-sm" style="color: var(--p31-text);">{c.value}</div>
-              <div class="text-sm md:ml-auto" style="color: var(--p31-text-secondary);">{c.note}</div>
+            <div class="glass-card en7f-p-5 en7f-rounded-xl en7f-flex en7f-flex-col en7f-md-flex-row en7f-md-items-center en7f-gap-3">
+              <div class="en7f-font-mono en7f-text-sm en7f-font-bold en7f-min-w--220px-" style="color: var(--p31-accent);">{c.label}</div>
+              <div class="en7f-font-mono en7f-text-sm" style="color: var(--p31-text);">{c.value}</div>
+              <div class="en7f-text-sm en7f-md-ml-auto" style="color: var(--p31-text-secondary);">{c.note}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* ── HONEST GAPS ── */}
-      <section class="mb-16">
+      <section class="en7f-mb-16">
         <SectionHeader
           title="The honest gaps"
           description="We would rather you find these here than during procurement. Disclosed, quantified, and scoped."
         />
-        <p class="mt-2 text-sm" style="color: var(--p31-text-secondary);">
+        <p class="en7f-mt-2 en7f-text-sm" style="color: var(--p31-text-secondary);">
           For how the audit chain maps to EU AI Act Article 12 and IETF audit drafts — including the honest scope of each — see <a href="/compliance" style="color: var(--p31-accent);">Compliance</a>.
         </p>
-        <div class="mt-4 space-y-3">
-          <div class="glass-card p-5 rounded-xl flex flex-col md:flex-row md:items-center gap-3" style="border-left: 3px solid var(--p31-signal-amber, #f59e0b);">
-            <div class="font-mono text-sm font-bold min-w-[220px]" style="color: var(--p31-signal-amber, #f59e0b);">Cloudflare Access gate</div>
-            <div class="text-sm" style="color: var(--p31-text);">The Loom API verifies Access JWTs, but the audience value is a placeholder in the current deployment — the gate is OFF. Do not treat it as access-controlled today. Configuration step, not a design flaw.</div>
+        <div class="en7f-mt-4 en7f-space-y-3">
+          <div class="glass-card en7f-p-5 en7f-rounded-xl en7f-flex en7f-flex-col en7f-md-flex-row en7f-md-items-center en7f-gap-3" style="border-left: 3px solid var(--p31-signal-amber);">
+            <div class="en7f-font-mono en7f-text-sm en7f-font-bold en7f-min-w--220px-" style="color: var(--p31-signal-amber);">Cloudflare Access gate</div>
+            <div class="en7f-text-sm" style="color: var(--p31-text);">The Loom API verifies Access JWTs, but the audience value is a placeholder in the current deployment — the gate is OFF. Do not treat it as access-controlled today. Configuration step, not a design flaw.</div>
           </div>
-          <div class="glass-card p-5 rounded-xl flex flex-col md:flex-row md:items-center gap-3" style="border-left: 3px solid var(--p31-signal-amber, #f59e0b);">
-            <div class="font-mono text-sm font-bold min-w-[220px]" style="color: var(--p31-signal-amber, #f59e0b);">Forge POST endpoint</div>
-            <div class="text-sm" style="color: var(--p31-text);">The workspace Forge proxy forwards without an Access identity check. Lower severity — it renders documents from user input, it does not read family data. Same fix shape as the Loom's.</div>
+          <div class="glass-card en7f-p-5 en7f-rounded-xl en7f-flex en7f-flex-col en7f-md-flex-row en7f-md-items-center en7f-gap-3" style="border-left: 3px solid var(--p31-signal-amber);">
+            <div class="en7f-font-mono en7f-text-sm en7f-font-bold en7f-min-w--220px-" style="color: var(--p31-signal-amber);">Forge POST endpoint</div>
+            <div class="en7f-text-sm" style="color: var(--p31-text);">The workspace Forge proxy forwards without an Access identity check. Lower severity — it renders documents from user input, it does not read family data. Same fix shape as the Loom's.</div>
           </div>
-          <div class="glass-card p-5 rounded-xl flex flex-col md:flex-row md:items-center gap-3" style="border-left: 3px solid var(--p31-signal-amber, #f59e0b);">
-            <div class="font-mono text-sm font-bold min-w-[220px]" style="color: var(--p31-signal-amber, #f59e0b);">Custom-domain verify</div>
-            <div class="text-sm" style="color: var(--p31-text);">The public verify endpoint is live on the Pages URL. The custom domain returns a redirect behind domain-level Access — use the Pages URL today; an exemption is a routing change.</div>
+          <div class="glass-card en7f-p-5 en7f-rounded-xl en7f-flex en7f-flex-col en7f-md-flex-row en7f-md-items-center en7f-gap-3" style="border-left: 3px solid var(--p31-signal-amber);">
+            <div class="en7f-font-mono en7f-text-sm en7f-font-bold en7f-min-w--220px-" style="color: var(--p31-signal-amber);">Custom-domain verify</div>
+            <div class="en7f-text-sm" style="color: var(--p31-text);">The public verify endpoint is live on the Pages URL. The custom domain returns a redirect behind domain-level Access — use the Pages URL today; an exemption is a routing change.</div>
           </div>
         </div>
       </section>
 
       {/* ── INTEGRATIONS ── */}
-      <section class="mb-16">
+      <section class="en7f-mb-16">
         <SectionHeader title="Where it plugs in" description="The distribution paths are open — the governance slot is empty." />
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+        <div data-p31="grid" data-cols="3" data-even class="en7f-gap-6 en7f-mt-8">
           {integrations.map((i) => (
-            <div class="glass-card p-6 rounded-xl">
-              <div class="font-bold mb-2" style="color: var(--p31-text);">{i.name}</div>
-              <p class="text-sm leading-relaxed" style="color: var(--p31-text-secondary);">{i.note}</p>
+            <div class="glass-card en7f-p-6 en7f-rounded-xl">
+              <div class="en7f-font-bold en7f-mb-2" style="color: var(--p31-text);">{i.name}</div>
+              <p class="en7f-text-sm en7f-leading-relaxed" style="color: var(--p31-text-secondary);">{i.note}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ── CTA ── */}
-      <section class="pb-16">
-        <div class="glass-card p-10 rounded-2xl text-center">
-          <h2 class="text-2xl md:text-3xl font-bold mb-4" style="color: var(--p31-text);">
+      <section class="en7f-pb-16">
+        <div class="glass-card en7f-p-10 en7f-rounded-2xl en7f-text-center">
+          <h2 class="en7f-text-2xl en7f-md-text-3xl en7f-font-bold en7f-mb-4" style="color: var(--p31-text);">
             Available for a governance integration pilot.
           </h2>
-          <p class="text-lg mb-6" style="color: var(--p31-text-secondary);">
+          <p class="en7f-text-lg en7f-mb-6" style="color: var(--p31-text-secondary);">
             Walk the chain, the tokens, or the relay with our engineers. 10–20 hour pilot this month.
           </p>
-          <a href="mailto:willyj1587@gmail.com" class="inline-flex items-center gap-2 px-8 py-3 rounded-lg font-bold no-underline" style="background: var(--p31-accent); color: #000;">
+          <a href="mailto:willyj1587@gmail.com" class="en7f-inline-flex en7f-items-center en7f-gap-2 en7f-px-8 en7f-py-3 en7f-rounded-lg en7f-font-bold en7f-no-underline" style="background: var(--p31-accent); color: var(--p31-void);">
             willyj1587@gmail.com →
           </a>
         </div>

@@ -1,0 +1,17 @@
+# Lane D v6.0 local rehearsal config — COPY of V3-B-mcp/wrangler.toml with
+# the entry path adjusted so the .wrangler cache writes stay inside
+# V6-D-adoption/. Points READ-ONLY at the canonical worker entry
+# (production/packages/design-core/src/mcp/http-worker.ts).
+# No deploy commands are ever run from this file.
+
+name = "p31-design-mcp"
+main = "../../../packages/design-core/src/mcp/http-worker.ts"
+# Local rehearsal deviation (documented in D-REPORT.md): canonical toml asks
+# 2026-08-21; the global wrangler 4.112.0 workerd binary supports ≤ 2026-07-21
+# and hard-errors on newer dates. Lowered here ONLY for the local boot —
+# equivalent to the v5 rehearsal's wrangler-3 fallback-to-2025-07-18.
+compatibility_date = "2026-07-21"
+compatibility_flags = ["nodejs_compat"]
+
+[observability]
+enabled = true

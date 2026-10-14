@@ -1,27 +1,39 @@
 import { useEffect, useState } from 'react';
 import { loadIdentity, ensureIdentity } from '@p31ca/shared-identity';
 import { updateProfile } from '@p31ca/sovereign-core';
+import { Topbar as CanonTopbar, SpoonDial } from '@p31ca/design-core/compositions';
 import { useAppStore } from '../store/useAppStore';
 import { useShellStore } from '../store/useShellStore';
 import { useSensoryStore } from '../store/useSensoryStore';
 import { useHistoryStore } from '../store/useHistoryStore';
 import { logSpoonChange } from '../lib/spoonHistory';
 import { NAV_ITEMS } from '../lib/navItems';
-import { Topbar as CanonTopbar } from '@p31ca/ui/chrome';
-import type { TopbarNavItem } from '@p31ca/ui/chrome';
 
-export interface SpoonIconProps {
-  children?: never;
-}
-function SpoonIcon() {
-  return (
-    <svg viewBox="0 0 200 200" width="16" height="16" aria-hidden="true">
-      <path d="M100 30 Q96 80 100 110 Q100 120 100 145" stroke="currentColor" strokeWidth="5" fill="none" strokeLinecap="round" />
-      <ellipse cx="100" cy="145" rx="16" ry="26" fill="currentColor" />
-      <circle cx="100" cy="30" r="6" fill="currentColor" />
-    </svg>
-  );
-}
+/**
+ * Topbar — the ONE professional-clean topbar for the sovereign shell.
+ *
+ * Contract (runbook §8):
+ *  - 3–7 primary nav items (5 here: home · bonding · dashboard · sandbox ·
+ *    cockpit); every other destination collapses into the "more" menu.
+ *  - ≤5 action icons (3 here: notifications, ⌘K palette, more); secondary
+ *    actions (undo, install, outbox) live in the more menu.
+ *  - Sticky (`position: sticky` via `.topbar--sticky` in shell CSS) with
+ *    `html { scroll-padding-top: var(--p31-header-height) }`.
+ *  - Rendered ONCE in the persistent `.shell` wrapper div (App.tsx) — never
+ *    re-mounted per tab, so state and listeners survive navigation.
+ *  - Composed from canon: @p31ca/design-core slot Topbar + SpoonDial. The
+ *    shell supplies geometry only (shell owns geometry; canon owns look).
+ */
+
+/** Primary destinations (3–7 per the contract). The rest fold into "more". */
+const PRIMARY_NAV_KEYS = ['home', 'bonding', 'dashboard', 'sandbox', 'cockpit'] as const;
+
+const PRIMARY_NAV = NAV_ITEMS.filter((item) =>
+  (PRIMARY_NAV_KEYS as readonly string[]).includes(item.key),
+);
+const MORE_NAV = NAV_ITEMS.filter(
+  (item) => !(PRIMARY_NAV_KEYS as readonly string[]).includes(item.key),
+);
 
 export default function Topbar() {
   const spoons = useAppStore((s) => s.spoons);
@@ -42,6 +54,7 @@ export default function Topbar() {
   const [showInstall, setShowInstall] = useState(false);
   const [pendingOutbox, setPendingOutbox] = useState(0);
   const [deviceDid, setDeviceDid] = useState<string | null>(null);
+  const [moreOpen, setMoreOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -51,6 +64,26 @@ export default function Topbar() {
       // no identity on this device — keep showing "Sign In"
     }
   }, []);
+
+  // The more menu closes on outside press / Escape; listeners live for the
+  // component's lifetime (the topbar never unmounts — it persists on the
+  // wrapper div), so no cross-navigation teardown is needed.
+  useEffect(() => {
+    if (!moreOpen) return;
+    const onDoc = (e: MouseEvent) => {
+      const menu = document.getElementById('topbar-more-menu');
+      if (menu && !menu.contains(e.target as Node)) setMoreOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMoreOpen(false);
+    };
+    document.addEventListener('mousedown', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDoc);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [moreOpen]);
 
   const handleConnect = async () => {
     try {
@@ -121,65 +154,50 @@ export default function Topbar() {
     ? notifications.filter((n) => !n.read && n.priority === 'high').length
     : unreadCount;
 
-  const navItems: TopbarNavItem[] = NAV_ITEMS.map((item) => ({
-    key: item.key,
-    label: item.label,
-    icon: item.icon,
-    onSelect: (key) => setTab(key as typeof tab),
-  }));
-
   const setSpoonsWithLog = (level: number) => {
     setSpoons(level);
     logSpoonChange(level, level === 0 ? 'dial-rest' : 'dial').catch(() => {});
     window.dispatchEvent(new CustomEvent('p31:shell-spoons', { detail: level }));
   };
 
-  const slotLeft = (
-    <>
-      <button
-        type="button"
-        className="topbar-icon-btn"
-        onClick={() => setTab('sandbox')}
-        aria-label="MCP Explorer"
-        title="MCP Explorer — tools and agents"
-      >
-        <span aria-hidden="true">🔌</span>
-      </button>
-      <button
-        type="button"
-        className="topbar-icon-btn"
-        onClick={() => setTab('dashboard')}
-        aria-label="Mesh Status"
-        title="Mesh Status — fleet health"
-      >
-        <span aria-hidden="true">🌐</span>
-      </button>
-      <button
-        type="button"
-        className="topbar-icon-btn"
-        onClick={() => setTab('commandHub')}
-        aria-label="Command Hub"
-        title="Command Hub — unified service control plane"
-      >
-        <span aria-hidden="true">🧭</span>
-      </button>
-      <button
-        type="button"
-        className="topbar-icon-btn"
-        onClick={() => {
-          (window as unknown as { __p31Shell?: { openHub?: () => void } }).__p31Shell?.openHub?.();
-        }}
-        aria-label="Notifications"
-        aria-expanded={hubOpen}
-        title="Alerts"
-      >
-        <span aria-hidden="true">🔔</span>
-        {badgeCount > 0 && <span className="badge-mini">{badgeCount}</span>}
-      </button>
-    </>
+  const selectTab = (key: string) => {
+    setTab(key as typeof tab);
+    setMoreOpen(false);
+  };
+
+  const brand = (
+    <button
+      type="button"
+      className="topbar-brand"
+      onClick={() => setTab('home')}
+      aria-label="P31 Sovereign Shell — Home"
+    >
+      <span aria-hidden="true">Ⓟ31</span>
+      <span>P31 Sovereign Shell</span>
+    </button>
   );
 
-  const slotCenter = (
+  const center = (
+    <nav className="topbar-nav" aria-label="Primary">
+      {PRIMARY_NAV.map((item) => {
+        const active = tab === item.key;
+        return (
+          <button
+            key={item.key}
+            type="button"
+            className={`topbar-nav-item${active ? ' active' : ''}`}
+            aria-current={active ? 'page' : undefined}
+            onClick={() => selectTab(item.key)}
+          >
+            <span className="topbar-nav-icon" aria-hidden="true">{item.icon}</span>
+            <span>{item.label}</span>
+          </button>
+        );
+      })}
+    </nav>
+  );
+
+  const statusCluster = (
     <>
       <span className="metric-badge" title="LOVE balance">
         💎 <strong>{loveBalance?.availableBalance ?? '—'}</strong>
@@ -195,75 +213,119 @@ export default function Topbar() {
     </>
   );
 
-  const slotRight = (
+  const trailing = (
     <>
-      {deviceDid ? (
-        <button
-          type="button"
-          className="metric-badge clickable did"
-          onClick={() => setTab('profile')}
-          title={`Connected as device DID: ${deviceDid} — open Profile`}
-          style={{ color: 'var(--p31-accent)' }}
-        >
-          <span aria-hidden="true">🔑</span> {`${deviceDid.slice(0, 8)}…${deviceDid.slice(-6)}`}
-        </button>
-      ) : (
-        <button
-          type="button"
-          className="metric-badge clickable"
-          onClick={handleConnect}
-          title="Create your ownable DID:key identity"
-        >
-          Sign&nbsp;In
-        </button>
-      )}
-      {undoCount > 0 && (
-        <button
-          type="button"
-          className="metric-badge clickable"
-          onClick={undo}
-          title={`Undo last change (⌘Z) — ${useHistoryStore.getState().entries[useHistoryStore.getState().entries.length - 1]?.label ?? ''}`}
-        >
-          ↩ Undo
-        </button>
-      )}
-      {pendingOutbox > 0 && (
-        <span
-          className="metric-badge offline-badge"
-          title={`${pendingOutbox} pending write${pendingOutbox > 1 ? 's' : ''} (will sync when online)`}
-        >
-          ⏳ {pendingOutbox}
-        </span>
-      )}
-      {showInstall && (
-        <button type="button" className="metric-badge clickable" onClick={handleInstall} title="Install App">
-          ⬇️ Install App
-        </button>
-      )}
+      <SpoonDial level={spoons} onChange={setSpoonsWithLog} className="topbar-spoons" />
       <button
         type="button"
-        className="metric-badge clickable palette-trigger"
-        onClick={() => useShellStore.getState().setPaletteOpen(true)}
-        title="Command palette (⌘K)"
+        className="topbar-icon-btn"
+        aria-label="Notifications"
+        aria-expanded={hubOpen}
+        title="Alerts"
+        onClick={toggleHeaderDrawer}
       >
-        ⌘K
+        <span aria-hidden="true">🔔</span>
         {badgeCount > 0 && <span className="badge-mini">{badgeCount}</span>}
       </button>
+      <button
+        type="button"
+        className="topbar-icon-btn palette-trigger"
+        onClick={() => useShellStore.getState().setPaletteOpen(true)}
+        title="Command palette (⌘K)"
+        aria-label="Command palette (⌘K)"
+      >
+        <span aria-hidden="true">⌘K</span>
+        {badgeCount > 0 && <span className="badge-mini">{badgeCount}</span>}
+      </button>
+      <div className="topbar-more">
+        <button
+          type="button"
+          className="topbar-icon-btn"
+          aria-haspopup="true"
+          aria-expanded={moreOpen}
+          aria-controls="topbar-more-menu"
+          aria-label="More"
+          title="More"
+          onClick={() => setMoreOpen((v) => !v)}
+        >
+          <span aria-hidden="true">⋯</span>
+        </button>
+        {moreOpen && (
+          <div id="topbar-more-menu" className="topbar-more-menu" role="group" aria-label="More">
+            <div className="topbar-more-menu__label">Destinations</div>
+            {MORE_NAV.map((item) => (
+              <button
+                key={item.key}
+                type="button"
+                className={`topbar-more-menu__item${tab === item.key ? ' active' : ''}`}
+                aria-current={tab === item.key ? 'page' : undefined}
+                onClick={() => selectTab(item.key)}
+              >
+                <span aria-hidden="true">{item.icon}</span> {item.label}
+              </button>
+            ))}
+            {pendingOutbox > 0 && (
+              <div
+                className="topbar-more-menu__status"
+                title={`${pendingOutbox} pending write${pendingOutbox > 1 ? 's' : ''} (will sync when online)`}
+              >
+                ⏳ {pendingOutbox} pending
+              </div>
+            )}
+            {undoCount > 0 && (
+              <button
+                type="button"
+                className="topbar-more-menu__item"
+                onClick={() => {
+                  undo();
+                  setMoreOpen(false);
+                }}
+                title={`Undo last change (⌘Z) — ${useHistoryStore.getState().entries[useHistoryStore.getState().entries.length - 1]?.label ?? ''}`}
+              >
+                ↩ Undo
+              </button>
+            )}
+            {showInstall && (
+              <button type="button" className="topbar-more-menu__item" onClick={handleInstall} title="Install App">
+                ⬇️ Install App
+              </button>
+            )}
+          </div>
+        )}
+      </div>
     </>
+  );
+
+  const identity = deviceDid ? (
+    <button
+      type="button"
+      className="metric-badge clickable did"
+      onClick={() => setTab('profile')}
+      title={`Connected as device DID: ${deviceDid} — open Profile`}
+      style={{ color: 'var(--p31-accent)' }}
+    >
+      <span aria-hidden="true">🔑</span> {`${deviceDid.slice(0, 8)}…${deviceDid.slice(-6)}`}
+    </button>
+  ) : (
+    <button
+      type="button"
+      className="metric-badge clickable"
+      onClick={handleConnect}
+      title="Create your ownable DID:key identity"
+    >
+      Sign&nbsp;In
+    </button>
   );
 
   return (
     <CanonTopbar
-      navItems={navItems}
-      brand="Ⓟ31"
-      brandLabel="P31 Sovereign Shell"
-      spoons={spoons}
-      setSpoons={setSpoonsWithLog}
-      activeKey={tab}
-      slotLeft={slotLeft}
-      slotCenter={slotCenter}
-      slotRight={slotRight}
-      notificationsBadgeCount={badgeCount}
+      glass={false}
+      brand={brand}
+      center={center}
+      statusCluster={statusCluster}
+      trailing={trailing}
+      identity={identity}
+      aria-label="Sovereign shell top bar"
     />
   );
 }

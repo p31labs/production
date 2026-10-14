@@ -1,0 +1,53 @@
+{
+  "name": "report",
+  "type": "report",
+  "page": {
+    "widthIn": 11,
+    "heightIn": 8.5,
+    "margin": "16mm 16mm 18mm 16mm",
+    "background": "#090d17"
+  },
+  "defaultTheme": "ats",
+  "cover": true,
+  "packing": {
+    "mode": "greedy"
+  },
+  "gates": {
+    "readability": true,
+    "minFill": 0.5,
+    "minFillExempt": [
+      "cover",
+      "colophon",
+      "figure"
+    ],
+    "pageCountRange": [
+      8,
+      14
+    ],
+    "appendixOwnPage": true,
+    "noSplitAtoms": true
+  },
+  "dedupe": {
+    "threshold": 0.85,
+    "against": [
+      "exec.takeaway",
+      "exec.keyFindings"
+    ]
+  },
+  "drop": {
+    "placeholders": [
+      "Synthesis of the researched material across facets."
+    ]
+  },
+  "footer": "P31 LABS // BRIDGE FUNDING CALL KIT",
+  "footerColor": "#64748b",
+  "accent": "#5eead4",
+  "themes": [
+    "ats",
+    "ink",
+    "editorial",
+    "consulting",
+    "midnight",
+    "professional"
+  ]
+}

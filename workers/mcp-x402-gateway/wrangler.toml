@@ -19,7 +19,18 @@ REVENUE_INGEST_URL = "https://taler-bridge-billing.p31ca.org/api/revenue/ingest"
 # entitlement worker, D1 entitlement-db). After a paid call the gateway posts
 # POST {ENTITLEMENT_URL}/entitlement/consume to debit the DID balance.
 ENTITLEMENT_URL = "https://entitlement.trimtab-signal.workers.dev"
-ENTITLEMENT_API_TOKEN = ""  # set via wrangler secret put ENTITLEMENT_API_TOKEN
+ENTITLEMENT_API_TOKEN = ""  # set via wrangler secret p
+# OAuth 2.1 resource-server (RFC 8707) — the resource URI that bearer-token
+# `aud` claims MUST match, and the fleet AS JWKS endpoint (oauth-relay).
+# Plain vars per the capital-machine reference pattern. When OAUTH_JWKS_URL
+# is unset, bearer validation is disabled and the server stays open.
+# NOTE: takes effect on the next deploy, which is currently blocked on the
+# Secrets Store scope (docs/fix-plans/p31-fix-plan-gateway-deploy-secrets-store-scope.md).
+RESOURCE_ID = "https://mcp-x402-gateway.trimtab-signal.workers.dev/mcp"
+OAUTH_JWKS_URL = "https://oauth-relay.trimtab-signal.workers.dev/.well-known/jwks.json"
+# RFC 9207 — expected bearer-token issuer. Optional: when unset the verifier
+# derives the issuer from the OAUTH_JWKS_URL origin. Set explicitly to pin a
+# different issuer identifier: OAUTH_ISSUER = "https://oauth-relay.trimtab-signal.workers.dev"ut ENTITLEMENT_API_TOKEN
 
 # L5 — Dual Settlement Router shares the LOVE ledger D1 + the L3.4 bridge URL.
 BRIDGE_URL = "https://mcp-x402-bridge.p31ca.org/mcp"
@@ -83,6 +94,15 @@ service = "phos-ai-proxy"
 binding = "LOVE_LEDGER"
 database_name = "love-ledger"
 database_id = "592e3e2e-3203-4e0a-8342-9e85215ec8a6"
+
+# Two-challenge Clause Blind Schnorr (client side) — the gateway blinds the
+# LOVE settlement message with the same WASM the ledger signs with.
+# Pre-compiled at deploy time via [[rules]] type = "CompiledWasm" (runtime
+# WASM code-gen is blocked by workerd). See docs/specs/love-settlement-cbs.md.
+[[rules]]
+type = "CompiledWasm"
+globs = ["**/*.wasm"]
+fallthrough = false
 
 [observability]
 enabled = true

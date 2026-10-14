@@ -1,0 +1,22 @@
+---
+import { errorStateTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  title: string;
+  description?: string;
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { title, description, class: cls = '', style } = Astro.props;
+const action = await Astro.slots.render('action');
+
+const html = renderHtml(errorStateTree({
+  title,
+  description,
+  action: action ? { raw: action } : null,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

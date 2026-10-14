@@ -30,7 +30,7 @@ export function Footer() {
             <span className="text-cloud/20">·</span>
             <a href="https://ko-fi.com/trimtab69420" target="_blank" rel="noopener noreferrer" className="text-cloud/60 hover:text-cloud transition-colors">Ko-fi</a>
             <span className="text-cloud/20">·</span>
-            <a href="mailto:will@p31ca.org" className="text-cloud/60 hover:text-cloud transition-colors">will@p31ca.org</a>
+            <a href="mailto:willyj1587@gmail.com" className="text-cloud/60 hover:text-cloud transition-colors">willyj1587@gmail.com</a>
           </div>
         </div>
 

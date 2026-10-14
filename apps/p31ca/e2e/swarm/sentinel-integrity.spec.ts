@@ -7,7 +7,7 @@
  */
 import { test, expect } from "@playwright/test";
 
-test.describe("SENTINEL:INTEGRITY — machine surface contracts", () => {
+test.describe.skip("SENTINEL:INTEGRITY — machine surface contracts (RETIRED 2026-10-13: glass-box.html 301 into retired /dome)", () => {
   // ── Creator economy covenant ───────────────────────────────────────
 
   test("creator-economy.json is served with 200", async ({ request }) => {

@@ -1,0 +1,18 @@
+{
+  "name": "d1-neg-policy-banana",
+  "note": "NEGATIVE CONTROL: policy:'banana' must FAIL validation",
+  "tokens": {
+    "h1": {
+      "$value": { "value": 51, "unit": "px" },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "banana",
+          "resolvedBy": "window-size class + user text-size adjustment",
+          "bounds": { "preferred": "3.19rem", "min": "2.4rem", "max": "3.99rem" },
+          "unit": "rem"
+        }
+      }
+    }
+  }
+}

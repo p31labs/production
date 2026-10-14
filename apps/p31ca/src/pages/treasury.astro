@@ -1,9 +1,19 @@
 ---
+/**
+ * /treasury — the public treasury surface (AI-visibility scale-out, 2026-10-13).
+ *
+ * Answer-first, question-shaped headings, table for the allocation policy,
+ * named entities (P31 Labs, EIN 42-1888158, the named ledger), every stat
+ * inline-sourced. The live ledger is the source of truth; the headline stays
+ * withheld until the LOVE-token economics are confirmed — per-source raw
+ * figures only, no invented aggregate.
+ */
 import MarketingShell from '../layouts/MarketingShell.astro';
 import SectionHeader from '../components/marketing/SectionHeader.astro';
 import CanonFooter from '../components/islands/CanonFooter.tsx';
 
 const REVENUE_LEDGER_URL = 'https://revenue-ledger.trimtab-signal.workers.dev';
+// Allocation policy — P31 Labs' own numbers (our policy, not a market figure).
 const ALLOCATION = [
   { label: 'Operations', pct: '60%', note: 'Hosting, tools, and R&D' },
   { label: 'Mission treasury', pct: '30%', note: 'Long-term reserve' },
@@ -14,43 +24,66 @@ const ALLOCATION = [
 <MarketingShell title="Public treasury — P31 Labs" description="Revenue ledger for P31 Labs. Headline withheld pending ledger-chain integrity resolution; raw per-source data is live.">
 
   <main id="main-content" class="section">
-    <div class="max-w-4xl mx-auto px-6 md:px-12 lg:px-16">
-          <SectionHeader title="Public treasury" description="Every payment settles into a revenue ledger. This page reads it live; the hash chain is independently verifiable, though it is currently reporting an integrity gap (see status below)." align="left" />
+    <div class="trd0-max-w-4xl trd0-mx-auto trd0-px-6 trd0-md-px-12 trd0-lg-px-16">
+      <SectionHeader level="1" title="Public treasury" description="Every payment settles into a revenue ledger. This page reads it live; the hash chain is independently verifiable, though it is currently reporting an integrity gap (see status below)." align="left" />
 
-      <div class="mt-12 space-y-8">
-         <div class="glass-card p-8 text-center">
-           <div class="text-xs uppercase tracking-widest mb-2" style="color: var(--p31-text-tertiary);">Total revenue (USDC)</div>
-           <div id="treasury-total" class="text-5xl font-bold" style="color: var(--p31-accent);">—</div>
-           <div id="treasury-sub" class="text-sm mt-2" style="color: var(--p31-text-secondary);">Live ledger — see raw data below.</div>
-         </div>
+      {/* Answer-first opening: what this page shows, in one breath. */}
+      <p class="trd0-mt-5 trd0-text-lg trd0-leading-relaxed" style="color: var(--p31-text);">
+        Every payment P31 Labs receives settles into one public revenue ledger on Cloudflare. Anyone can read the raw per-source JSON and verify the SHA-256 hash chain. The headline total stays withheld until the LOVE-token economics are confirmed — this page publishes per-source figures only, and no invented aggregate.
+      </p>
 
-        <div class="glass-card p-8">
-          <h3 class="text-lg font-bold mb-5" style="color: var(--p31-text);">Allocation policy</h3>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {ALLOCATION.map((a) => (
-              <div class="text-center p-5 rounded-xl" style="background: var(--p31-surface);">
-                <div class="text-2xl font-bold" style="color: var(--p31-accent);">{a.pct}</div>
-                <div class="font-semibold text-sm mt-1" style="color: var(--p31-text);">{a.label}</div>
-                <div class="text-xs mt-1" style="color: var(--p31-text-tertiary);">{a.note}</div>
-              </div>
-            ))}
+      <div class="trd0-mt-12 trd0-space-y-8">
+        <section class="glass-card trd0-p-8">
+          <h2 class="trd0-text-lg trd0-font-bold trd0-mb-5" style="color: var(--p31-text);">How much has P31 Labs received?</h2>
+          <div class="trd0-text-center">
+            <div class="trd0-text-xs trd0-uppercase trd0-tracking-widest trd0-mb-2" style="color: var(--p31-text-tertiary);">Total revenue (USDC)</div>
+            <div id="treasury-total" class="trd0-text-5xl trd0-font-bold" style="color: var(--p31-accent);">—</div>
+            <div id="treasury-sub" class="trd0-text-sm trd0-mt-2" style="color: var(--p31-text-secondary);">Live ledger — see raw data below.</div>
           </div>
-        </div>
-
-        <div class="glass-card p-8">
-          <h3 class="text-lg font-bold mb-5" style="color: var(--p31-text);">Revenue by source</h3>
-          <div id="treasury-breakdown" class="space-y-3 text-sm" style="color: var(--p31-text-secondary);">—</div>
-        </div>
-
-        <div class="glass-card p-8">
-          <h3 class="text-lg font-bold mb-3" style="color: var(--p31-text);">Verify it yourself</h3>
-          <p class="text-sm leading-relaxed mb-4" style="color: var(--p31-text-secondary);">The ledger is append-only with a SHA-256 hash chain. The headline figure is withheld pending confirmation of the LOVE-token economics and resolution of a reported chain integrity gap; the raw per-source JSON and the chain verification endpoint are linked below.</p>
-          <div class="flex flex-wrap gap-3 text-sm">
-            <a href={REVENUE_LEDGER_URL + '/revenue/summary'} target="_blank" rel="noopener" class="px-4 py-2 rounded-lg border" style="border-color: var(--p31-glass-border); color: var(--p31-accent);">Raw summary JSON →</a>
-            <a href={REVENUE_LEDGER_URL + '/revenue/verify-chain'} target="_blank" rel="noopener" class="px-4 py-2 rounded-lg border" style="border-color: var(--p31-glass-border); color: var(--p31-accent);">Verify hash chain →</a>
-            <a href="https://af79c8f3.chump-dashboard.pages.dev" target="_blank" rel="noopener" class="px-4 py-2 rounded-lg border" style="border-color: var(--p31-glass-border); color: var(--p31-accent);">Operator dashboard →</a>
+          <div class="trd0-mt-5">
+            <h3 class="trd0-text-sm trd0-font-semibold trd0-mb-3" style="color: var(--p31-text);">Revenue by source</h3>
+            <div id="treasury-breakdown" class="trd0-space-y-3 trd0-text-sm" style="color: var(--p31-text-secondary);">—</div>
           </div>
-        </div>
+        </section>
+
+        <section class="glass-card trd0-p-8">
+          <h2 class="trd0-text-lg trd0-font-bold trd0-mb-5" style="color: var(--p31-text);">Where does the money go?</h2>
+          <div class="trd0-overflow-x-auto">
+            <table class="trd0-w-full trd0-text-left trd0-border-collapse">
+              <thead>
+                <tr class="trd0-border-b" style="border-color: var(--p31-glass-border);">
+                  <th class="trd0-py-3 trd0-pr-4 trd0-text-xs trd0-font-semibold trd0-uppercase trd0-tracking-wider" style="color: var(--p31-text);">Share</th>
+                  <th class="trd0-py-3 trd0-pr-4 trd0-text-xs trd0-font-semibold trd0-uppercase trd0-tracking-wider" style="color: var(--p31-text);">Bucket</th>
+                  <th class="trd0-py-3 trd0-text-xs trd0-font-semibold trd0-uppercase trd0-tracking-wider" style="color: var(--p31-text);">What it covers</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ALLOCATION.map((a) => (
+                  <tr class="trd0-border-b" style="border-color: var(--p31-glass-border);">
+                    <td class="trd0-py-3 trd0-pr-4 trd0-font-bold" style="color: var(--p31-accent);">{a.pct}</td>
+                    <td class="trd0-py-3 trd0-pr-4 trd0-font-semibold trd0-text-sm" style="color: var(--p31-text);">{a.label}</td>
+                    <td class="trd0-py-3 trd0-text-sm" style="color: var(--p31-text-secondary);">{a.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p class="trd0-mt-4 trd0-text-xs" style="color: var(--p31-text-tertiary);">Allocation policy: our numbers, set by P31 Labs — not a market figure. See the <a href="/faq" style="color: var(--p31-accent);">nonprofit FAQ</a>.</p>
+        </section>
+
+        <section class="glass-card trd0-p-8">
+          <h2 class="trd0-text-lg trd0-font-bold trd0-mb-3" style="color: var(--p31-text);">Can I check the numbers myself?</h2>
+          <p class="trd0-text-sm trd0-leading-relaxed trd0-mb-4" style="color: var(--p31-text-secondary);">The ledger is append-only with a SHA-256 hash chain. The headline figure is withheld pending confirmation of the LOVE-token economics and resolution of a reported chain integrity gap; the raw per-source JSON and the chain verification endpoint are linked below.</p>
+          <ul class="trd0-space-y-2 trd0-text-sm trd0-mb-4" style="color: var(--p31-text-secondary);">
+            <li><strong style="color: var(--p31-text);">Who runs this treasury?</strong> P31 Labs, the Georgia nonprofit behind p31ca.org — EIN 42-1888158.</li>
+            <li><strong style="color: var(--p31-text);">Where is the ledger?</strong> {REVENUE_LEDGER_URL} — read-only, public, recomputed from its own D1 store.</li>
+          </ul>
+          <div class="trd0-flex trd0-flex-wrap trd0-gap-3 trd0-text-sm">
+            <a href={REVENUE_LEDGER_URL + '/revenue/summary'} target="_blank" rel="noopener" class="trd0-px-4 trd0-py-2 trd0-rounded-lg trd0-border" style="border-color: var(--p31-glass-border); color: var(--p31-accent);">Raw summary JSON →</a>
+            <a href={REVENUE_LEDGER_URL + '/revenue/verify-chain'} target="_blank" rel="noopener" class="trd0-px-4 trd0-py-2 trd0-rounded-lg trd0-border" style="border-color: var(--p31-glass-border); color: var(--p31-accent);">Verify hash chain →</a>
+            <a href="https://af79c8f3.chump-dashboard.pages.dev" target="_blank" rel="noopener" class="trd0-px-4 trd0-py-2 trd0-rounded-lg trd0-border" style="border-color: var(--p31-glass-border); color: var(--p31-accent);">Operator dashboard →</a>
+          </div>
+        </section>
       </div>
     </div>
   </main>
@@ -79,7 +112,7 @@ const ALLOCATION = [
           if (keys.length) {
             rows = keys.map(function (k) {
               var v = sb[k];
-              return '<div class="flex justify-between"><span style="text-transform:capitalize">' + k + '</span><span>$' + (Number(v.total_usdc) || 0) + ' \u00b7 ' + (v.count || 0) + ' txns</span></div>';
+              return '<div class="trd0-flex trd0-justify-between"><span style="text-transform:capitalize">' + k + '</span><span>$' + (Number(v.total_usdc) || 0) + ' \u00b7 ' + (v.count || 0) + ' txns</span></div>';
             }).join('');
           } else {
             rows = 'No per-source breakdown yet.';

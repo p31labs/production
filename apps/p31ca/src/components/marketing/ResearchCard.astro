@@ -25,25 +25,25 @@ const formattedDate = new Date(date).toLocaleDateString('en-US', {
 });
 ---
 
-<article class="glass-card p-6 rounded-xl flex flex-col gap-3">
-  <span class="font-mono text-xs tracking-wider uppercase" style="color: var(--p31-accent);">
+<article class="glass-card rc-p-6 rc-rounded-xl rc-flex rc-flex-col rc-gap-3">
+  <span class="rc-font-mono rc-text-xs rc-tracking-wider rc-uppercase" style="color: var(--p31-accent);">
     {series}
   </span>
-  <h3 class="text-base font-bold leading-snug" style="color: var(--p31-text);">
+  <h3 class="rc-text-base rc-font-bold rc-leading-snug" style="color: var(--p31-text);">
     {title}
   </h3>
-  <div class="flex items-center justify-between gap-2 mt-auto pt-3" style="border-top: 1px solid var(--p31-glass-border, rgba(255,255,255,0.08));">
+  <div class="rc-flex rc-items-center rc-justify-between rc-gap-2 rc-mt-auto rc-pt-3" style="border-top: 1px solid var(--p31-glass-border, rgba(255,255,255,0.08));">
     <a
       href={resolverUrl}
       target="_blank"
       rel="noopener noreferrer"
-      class="font-mono text-xs truncate hover:underline"
+      class="underline-draw rc-font-mono rc-text-xs rc-truncate"
       style="color: var(--p31-text-secondary);"
       title={`DOI: ${doi}`}
     >
       {doi} ↗
     </a>
-    <span class="font-mono text-xs shrink-0" style="color: var(--p31-text-tertiary, #a1a1a1);">
+    <span class="rc-font-mono rc-text-xs rc-shrink-0" style="color: var(--p31-text-tertiary, #a1a1a1);">
       {formattedDate}
     </span>
   </div>

@@ -1,0 +1,204 @@
+{
+  "version": "2.0.0",
+  "purpose": "The P31 canon v2 component manifest — the machine-readable contract an agent reads to COMPOSE a face without porting JSX. Consume intent, never raw values. Appearance comes from var(--p31-*) tokens; the shell owns geometry only. This is the reconciled successor of the legacy portals/shell/docs/components.manifest.json (v1.0.0), which listed 11 components, had no Card entry, and no forbidden list.",
+  "layer_order": ["legacy", "canon.tokens", "canon.components", "canon.layout", "shell", "face"],
+  "layer_wiring": {
+    "declare": "import '@p31ca/canon/css/layers.css' FIRST — before tokens and any stylesheet that emits layered rules (the first @layer order declaration wins).",
+    "tokens": "@p31ca/canon/css/tokens.css — emits @layer canon.tokens.",
+    "components": "@p31ca/design-core/css/canon-v2.css — emits @layer canon.layout and @layer canon.components. Import via '@p31ca/design-core/css/index.css' (aggregate) or the standalone path.",
+    "shell": "Portal shell-only chrome goes in @layer shell. Canon owns appearance; the shell may set geometry only (Seven Laws, law 1).",
+    "face": "RESERVED. Faces ship NO CSS. Any stylesheet landing in @layer face is a visible violation.",
+    "unlayered": "Unlayered CSS beats every layer — the canon-lint gate fails unlayered imports. The only sanctioned unlayered overrides are the runtime-conditional blocks in tokens.css (data-spoons / data-dark-mode / data-theme / data-portal)."
+  },
+  "page_modes": {
+    "flow": "Document scroll. Width-capped column (--p31-page-max), page owns its rhythm. NO global html/body height-100% flex shell on flow routes.",
+    "fill": "Viewport app. Fills its container; the [data-p31-grow] child is the one scrolling region. A fill page inside [data-p31=\"shell\"] pins the shell to 100dvh.",
+    "panel-scroll": "Document page with ONE internal scrolling panel (the Sandbox split pattern).",
+    "fit": "Single-screen-fit — alias of fill for now.",
+    "rule": "The fill/flow conflation was the root cause of the 560px select bug. One mode per page; never nest a fill page inside a flow page."
+  },
+  "composition_rules": [
+    "Compose from these components. Never port styled JSX from another app.",
+    "The shell owns geometry (position/size/flow). Canon owns appearance (color/surface/radius/shadow/type).",
+    "Theming is a value swap at the semantic tier — never fork a component per theme.",
+    "New canon CSS is attribute-scoped: [data-p31=\"x\"] selectors only. No bare class names (that was the .surface-panel collision).",
+    "Every value routes through a var(--p31-*) token or a catalog component. Hex literals outside tokens are forbidden.",
+    "Raw <select>/<input>/<textarea> outside canon controls are forbidden — use Select/Input/Textarea/Field.",
+    "If a variant is missing, extend the canon (design-core), never fork in the shell.",
+    "Patterns (ListingShell, DetailShell, Wizard) ship WITH canon — a component library is not a design system."
+  ],
+  "components": {
+    "canon_v2": [
+      {
+        "name": "Shell",
+        "selector": "[data-p31=\"shell\"]",
+        "purpose": "App frame: top / (sidebar) / main grid; skip link; fill-page viewport pinning.",
+        "props": ["topbar", "sidebar", "children", "mainId", "skipLabel"],
+        "composes": ["Topbar", "SidebarNav", "Page"]
+      },
+      {
+        "name": "Page",
+        "selector": "[data-p31=\"page\"]",
+        "purpose": "The four page modes: flow / fill / panel-scroll / fit.",
+        "props": ["mode", "children"],
+        "composes": ["PageHeaderV2", "Stack", "Grid", "Split"]
+      },
+      {
+        "name": "PageHeaderV2",
+        "selector": "[data-p31=\"page-header\"]",
+        "purpose": "Page title / subtitle / actions (canon v2 successor of the legacy PageHeader).",
+        "props": ["title", "subtitle", "actions"]
+      },
+      {
+        "name": "Stack",
+        "selector": "[data-p31=\"stack\"]",
+        "purpose": "One-axis flex: dir / gap / align / justify.",
+        "props": ["dir", "gap", "align", "justify", "children"]
+      },
+      {
+        "name": "Grid",
+        "selector": "[data-p31=\"grid\"]",
+        "purpose": "Auto-fill card grid; data-min picks the floor (15/17.5/22.5rem).",
+        "props": ["min", "children"]
+      },
+      {
+        "name": "Split",
+        "selector": "[data-p31=\"split\"]",
+        "purpose": "Two panes + draggable handle; pointer resize + keyboard; collapses under 47.99rem.",
+        "props": ["a", "b", "collapsed", "defaultRatio", "onRatioChange"]
+      },
+      {
+        "name": "Field",
+        "selector": "[data-p31=\"field\"]",
+        "purpose": "Label / control / hint / error grid; data-width=\"form\" cap.",
+        "props": ["label", "hideLabel", "hint", "error", "width", "children"]
+      },
+      {
+        "name": "Input",
+        "selector": "[data-p31-control]",
+        "purpose": "Text input on the control contract (44px height, max 64px, focus ring).",
+        "props": ["label", "hideLabel", "hint", "error", "width"]
+      },
+      {
+        "name": "Textarea",
+        "selector": "[data-p31-control]",
+        "purpose": "Multiline control; min-height 2x control height; resize vertical only.",
+        "props": ["label", "hideLabel", "hint", "error", "width"]
+      },
+      {
+        "name": "Select",
+        "selector": "[data-p31-control]",
+        "purpose": "Native select on the control contract.",
+        "props": ["label", "hideLabel", "options", "hint", "error", "width"]
+      },
+      {
+        "name": "Tabs",
+        "selector": "[data-p31=\"tabs\"]",
+        "purpose": "Roving-tabindex tablist.",
+        "props": ["items", "activeId", "onSelect"]
+      },
+      {
+        "name": "Menu",
+        "selector": "[data-p31=\"menu\"]",
+        "purpose": "Vertical action list (role=menu).",
+        "props": ["items", "onSelect"]
+      },
+      {
+        "name": "Dialog",
+        "selector": "[data-p31=\"dialog\"]",
+        "purpose": "Modal: scrim, Escape closes, focus lands on the panel.",
+        "props": ["open", "onClose", "title", "children"]
+      },
+      {
+        "name": "Sheet",
+        "selector": "[data-p31=\"sheet\"]",
+        "purpose": "Side panel (start/end).",
+        "props": ["open", "onClose", "title", "side", "children"]
+      },
+      {
+        "name": "EmptyState",
+        "selector": "[data-p31=\"empty-state\"]",
+        "purpose": "Dashed-surface empty state with optional action.",
+        "props": ["title", "description", "action"]
+      },
+      {
+        "name": "ErrorState",
+        "selector": "[data-p31=\"error-state\"]",
+        "purpose": "Solid error-border state; role=alert.",
+        "props": ["title", "description", "action"]
+      },
+      {
+        "name": "Skeleton",
+        "selector": "[data-p31=\"skeleton\"]",
+        "purpose": "Shimmer loading placeholder (bars + block shape).",
+        "props": ["lines", "block"]
+      },
+      {
+        "name": "ListingShell",
+        "selector": "[data-p31=\"listing-shell\"]",
+        "purpose": "Pattern — search/filter row + card grid + empty state (Discover).",
+        "props": ["controls", "children", "empty", "emptyTitle", "emptyDescription"]
+      },
+      {
+        "name": "DetailShell",
+        "selector": "[data-p31=\"detail-shell\"]",
+        "purpose": "Pattern — summary column + focus region + action row (Server).",
+        "props": ["summary", "focus", "actions"]
+      },
+      {
+        "name": "Wizard",
+        "selector": "[data-p31=\"wizard\"]",
+        "purpose": "Pattern — Step N of M + one question group per step + back/next (Publish).",
+        "props": ["steps", "activeIndex", "onBack", "onNext", "onFinish", "children"]
+      }
+    ],
+    "reconciled": [
+      {
+        "name": "Card",
+        "purpose": "First-class surface card (title/description/padding/interactive). Referenced by the surface spec; missing from the legacy manifest. Ships in @p31ca/design-core/compositions at tier core since v2.2.0.",
+        "props": ["title", "description", "padding", "interactive", "children"]
+      },
+      {
+        "name": "PageHeader",
+        "purpose": "Legacy page header (`.page-header-route`, eyebrow/lede). Deprecated at the portal port; PageHeaderV2 is the canon v2 contract."
+      }
+    ]
+  },
+  "forbidden": [
+    {
+      "id": "raw-select",
+      "pattern": "<select(?! data-p31-control)",
+      "message": "Raw <select> outside canon. Use <Select> from canon."
+    },
+    {
+      "id": "raw-input",
+      "pattern": "<input(?! data-p31-control)",
+      "message": "Raw <input> outside canon. Use <Input> or <Field> from canon."
+    },
+    {
+      "id": "raw-textarea",
+      "pattern": "<textarea(?! data-p31-control)",
+      "message": "Raw <textarea> outside canon. Use <Textarea> or <Field> from canon."
+    },
+    {
+      "id": "legacy-class-names",
+      "pattern": "class=\"(surface|setup|step|page|chat)-",
+      "message": "Legacy class name. Use canon primitives (the attribute-scoped [data-p31=...] contract)."
+    },
+    {
+      "id": "unlayered-import",
+      "pattern": "@import(?! .*layer\\()",
+      "message": "Unlayered CSS defeats the cascade contract. Import via layers.css and stay inside the declared layers."
+    },
+    {
+      "id": "global-class-names",
+      "pattern": "new canon CSS must not declare bare class selectors",
+      "message": "Global/bare class names collide across faces (the .surface-panel bug). New canon styles are [data-p31=...] attribute-scoped only."
+    },
+    {
+      "id": "hex-outside-tokens",
+      "pattern": "#[0-9a-fA-F]{3,8}\\b",
+      "message": "Hex literal outside tokens. Every visual value routes through a var(--p31-*) token."
+    }
+  ]
+}

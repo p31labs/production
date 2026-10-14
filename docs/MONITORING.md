@@ -59,7 +59,7 @@ a target date.
 
 ## On-call
 
-On-call contact (placeholder): **oncall@p31ca.org**
+On-call contact (placeholder): **willyj1587@gmail.com**
 
 Rotation and escalation policy are set by the core team; the placeholder above
 should be replaced with the active on-call address or paging channel before

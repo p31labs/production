@@ -4,38 +4,46 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "node scripts/verify-ground-truth.mjs && node scripts/verify-content-sources.mjs && node scripts/verify-content-consistency.mjs && node scripts/verify-compliance-drift.mjs && (node scripts/fetch-substack.mjs || true)",
+    "prebuild": "node scripts/verify-no-html-comments.mjs && node scripts/verify-ground-truth.mjs && node scripts/verify-content-sources.mjs && node scripts/verify-content-consistency.mjs && node scripts/verify-compliance-drift.mjs && node scripts/check-neurodivergent.mjs && node scripts/verify-wcag22.mjs && (node scripts/fetch-substack.mjs || true)",
     "build": "astro build",
+    "postbuild": "node scripts/check-neurodivergent.mjs --dist && node scripts/verify-wcag22.mjs --runtime",
     "fetch:love": "node scripts/fetch-love-stats.mjs",
     "fetch:stats": "node scripts/fetch-content-stats.mjs",
+    "fetch:registry": "node scripts/fetch-registry-stats.mjs",
     "preview": "astro preview",
+    "verify:perf": "node scripts/lh-budget.mjs",
     "deploy": "npx wrangler pages deploy dist --project-name p31ca --branch=main --commit-dirty=true",
     "astro": "astro"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
-    "@astrojs/react": "^5.0.4",
-    "@astrojs/tailwind": "^6.0.2",
+    "@astrojs/react": "^6.0.6",
+    "@fontsource/lexend": "^5.3.0",
+    "@p31ca/canon": "workspace:*",
+    "@p31ca/canon-astro": "workspace:*",
+    "@p31ca/canon-parts": "workspace:*",
     "@p31ca/controls": "workspace:*",
     "@p31ca/design-core": "workspace:*",
     "@p31ca/shared": "workspace:*",
     "@p31ca/shared-identity": "workspace:*",
     "@p31ca/shell-chrome": "workspace:*",
     "@p31ca/ui": "workspace:*",
-    "astro": "^5.17.1",
+    "@tailwindcss/postcss": "^4.3.3",
+    "astro": "^6.4.8",
     "mermaid": "^12.0.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "rehype-mermaid-lite": "^1.1.0",
-    "tailwindcss": "^3.4.19",
-    "typescript": "^7.0.2"
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
-    "@astrojs/cloudflare": "^12.6.13",
+    "@astrojs/cloudflare": "^13.4.0",
     "@types/node": "^25.6.0",
-    "@types/react": "^18.3.28",
-    "@types/react-dom": "^18.3.7",
-    "wrangler": "^4.85.0"
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "wrangler": "^4.149.0"
   },
   "private": true
 }

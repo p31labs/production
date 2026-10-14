@@ -3,15 +3,19 @@ interface Props {
   title: string;
   description?: string;
   align?: 'left' | 'center';
+  /** Page-title headers render as h1 (plain H1→H2→H3 hierarchy — no h2-first pages). */
+  level?: 1 | 2;
 }
 
-const { title, description, align = 'center' } = Astro.props;
+const { title, description, align = 'center', level = 2 } = Astro.props;
+// Astro passes `level="1"` as the string "1" — coerce before comparing.
+const Tag = Number(level) === 1 ? 'h1' : 'h2';
 ---
 
-<div class={`space-y-4 ${align === 'center' ? 'text-center' : 'text-left'}`}>
-  <h2 class="text-3xl md:text-4xl font-bold tracking-tight" style="color: var(--p31-text);">{title}</h2>
+<div class={`hub-header sh-space-y-4 ${align === 'center' ? 'sh-text-center' : 'sh-text-left'}`} data-align={align === 'center' ? 'center' : 'start'}>
+  <Tag class="hub-header__title sh-text-3xl sh-md-text-4xl sh-font-bold sh-tracking-tight" style="color: var(--p31-text);">{title}</Tag>
   {description && (
-    <p class="text-lg max-w-2xl mx-auto" style="color: var(--p31-text-secondary);">{description}</p>
+    <p class="hub-header__subtitle sh-text-lg sh-max-w-2xl" style="color: var(--p31-text-secondary);">{description}</p>
   )}
-  <div class={`h-1 w-16 rounded-full ${align === 'center' ? 'mx-auto' : ''}`} style="background: var(--p31-accent);"></div>
+  <div class={`sh-h-1 sh-w-16 sh-rounded-full ${align === 'center' ? 'sh-mx-auto' : ''}`} style="background: var(--p31-accent);"></div>
 </div>

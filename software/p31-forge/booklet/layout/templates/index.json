@@ -1,0 +1,20 @@
+{
+  "_doc": "Doc-type registry. Each IR `type` resolves to a template file. `surface` maps the P31 Workspace app (workspace.p31ca.org) to the template its export uses.",
+  "types": {
+    "report":       { "template": "report.json",       "surface": ["Life", "Forum"],        "use": "Research reports, call kits, synthesis, briefings" },
+    "brief":        { "template": "brief.json",        "surface": ["Docs"],                 "use": "Hard one-page leave-behind / one-pager" },
+    "letter":       { "template": "letter.json",       "surface": ["Mail", "Docs"],         "use": "Letters, follow-up emails, formal correspondence" },
+    "memo":         { "template": "letter.json",       "surface": ["Docs"],                 "variant": "memo", "use": "Internal memos (letter template, memo header variant)" },
+    "deck":         { "template": "deck.json",         "surface": ["Slides"],               "use": "Page-per-unit decks, ATS-style" },
+    "grant":        { "template": "grant.json",        "surface": ["Docs"],                 "use": "Grant applications with word budgets and budget tables" },
+    "table-report": { "template": "table-report.json", "surface": ["Sheets"],               "use": "Dense tabular exports, ledgers, budgets" },
+    "agenda":       { "template": "agenda.json",       "surface": ["Calendar"],             "use": "Schedules, agendas, call sheets" },
+    "digest":       { "template": "report.json",       "surface": ["Forum", "Life"],        "variant": "digest", "use": "Q&A / log digests (report template, digest variant)" },
+    "credential":   { "template": "brief.json",        "surface": ["Passports"],            "variant": "credential", "use": "Passport / credential card sheets" },
+    "packet":       { "template": "packet.json",       "surface": ["Drive"],                "use": "Bundle several documents under one cover + contents" },
+    "runbook":      { "template": "runbook.json",      "surface": ["Docs"],                 "use": "Operational procedures: trigger, diagnosis, fix, verification, rollback" },
+    "guide":        { "template": "guide.json",        "surface": ["Docs"],                 "use": "How-to guides and long-form instructions" },
+    "family-letter":{ "template": "family-letter.json","surface": ["Mail"],                 "use": "Letters home, family history, keepsake correspondence" }
+  },
+  "themes": { "ats": "dark full-bleed (screen + PDF)", "ink": "light, paper-friendly (printers, court, lenders)" }
+}

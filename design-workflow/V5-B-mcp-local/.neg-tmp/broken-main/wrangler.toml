@@ -1,0 +1,34 @@
+# P31 Design System — canonical MCP worker deploy artifact (v3.0 §5 B-3)
+# LANE B handoff — DO NOT DEPLOY from this lane (runbook §9.16: the lane
+# prepares the ship; an external worker-deploy session deploys).
+#
+# Canonical surface = design-core http-worker (surface 4 of mcp-resolution.md).
+# Entry file: packages/design-core/src/mcp/http-worker.ts (module worker:
+# `export default { fetch }`, JSON-RPC 2.0 at POST /mcp, /health, /).
+#
+# Name is DISTINCT from the legacy worker (`p31-design-mcp`) and from the
+# design-core in-package toml — see deploy-checklist.md for the retirement
+# order: legacy stays live until its consumers are migrated, then the
+# canonical name is reclaimed.
+
+name = "p31-design-mcp-canonical"
+main = "../../packages/design-core/src/mcp/DOES-NOT-EXIST.ts"
+compatibility_date = "2026-08-21"
+compatibility_flags = ["nodejs_compat"]
+
+# Routes — custom domain mcp.design.p31ca.org is managed via Cloudflare
+# dashboard (custom domain attachment). Route declaration omitted here to
+# avoid deploy failures when the API token lacks zone permissions.
+
+# [routes]
+#   pattern = "mcp.design.p31ca.org/*"
+#   zone_name = "p31ca.org"
+#   script = "p31-design-mcp-canonical"
+#   custom_domain = true
+
+# Resource limits — default 128 MB memory, 30s CPU (Worker limit).
+# No D1/KV bindings: per-isolate token-bucket rate limiting (60 req/min/IP)
+# is handled in-request (http-worker.ts:39-53).
+
+[observability]
+enabled = true

@@ -1,0 +1,29 @@
+{
+  "patch-id": "p31_v3c_c3_f1_sunlight_text",
+  "target-commit": "packages/canon/tokens/tokens.dtc.json (2026-10-11, 152516 bytes)",
+  "applies-to": "tokens/tokens.dtc.json and mirror tokens/tokens.json",
+  "method": "RFC 6902 (test/add/remove)",
+  "generated-by": "V3-C-canon/canon-diff/gen-patches.mjs (canon READ-ONLY)",
+  "description": "F1: remove child-introduced structure sunlight.p31.text (tokens.dtc.json:6517). Value oklch(0.22 0.015 80) is duplicated by sunlight.p31.text-primary — zero information loss. test op asserts the exact pre-state.",
+  "operations": [
+    {
+      "op": "test",
+      "path": "/themes/sunlight/p31/text",
+      "value": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.22,
+            0.015,
+            80
+          ]
+        },
+        "$type": "color"
+      }
+    },
+    {
+      "op": "remove",
+      "path": "/themes/sunlight/p31/text"
+    }
+  ]
+}

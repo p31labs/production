@@ -1,0 +1,33 @@
+---
+import { wizardTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface WizardStep {
+  id: string;
+  title: string;
+}
+
+interface Props {
+  steps?: WizardStep[];
+  activeIndex?: number;
+  backLabel?: string;
+  nextLabel?: string;
+  finishLabel?: string;
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { steps = [], activeIndex = 0, backLabel = 'Back', nextLabel = 'Next', finishLabel = 'Finish', class: cls = '', style } = Astro.props;
+const children = await Astro.slots.render('default');
+
+const html = renderHtml(wizardTree({
+  steps,
+  activeIndex,
+  children: children ? { raw: children } : null,
+  backLabel,
+  nextLabel,
+  finishLabel,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

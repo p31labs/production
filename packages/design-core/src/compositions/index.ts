@@ -38,3 +38,21 @@ export { GovernanceOverviewBlock, type GovernanceOverviewBlockProps, type PackBo
 export { IdentityChip, type IdentityChipProps } from './IdentityChip';
 export { SignInLink, type SignInLinkProps } from './SignInLink';
 export { AccountMenu, type AccountMenuProps, type AccountMenuLink } from './AccountMenu';
+
+// Canon v2 — attribute-scoped primitives, controls, states, patterns.
+// PageHeader (legacy `.page-header-route`) keeps its name here; the canon v2
+// successor is PageHeaderV2 from this family.
+export {
+  Shell, Page, PagePanel, PageHeaderV2, Stack, Grid, Split, Field, Input,
+  Textarea, Select, Tabs, Menu, Dialog, Sheet, EmptyState, ErrorState,
+  Skeleton, SkeletonBar, ListingShell, DetailShell, Wizard,
+} from './canon-v2';
+export type {
+  ShellProps, PageProps, PagePanelProps, PageMode, PageHeaderV2Props,
+  StackProps, StackDir, StackGap, StackAlign, StackJustify, GridProps,
+  GridMin, SplitProps, FieldProps, InputProps, TextareaProps, SelectProps,
+  SelectOption, TabsProps, TabItem, MenuProps, MenuItem, DialogProps,
+  SheetProps, SheetSide, EmptyStateProps, ErrorStateProps, SkeletonProps,
+  SkeletonBarProps, ListingShellProps, DetailShellProps, WizardProps,
+  WizardStep,
+} from './canon-v2';

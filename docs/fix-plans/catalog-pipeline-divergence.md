@@ -96,6 +96,104 @@ handlers already used the current `COMPONENT_DEFS` (32). Repointed:
 `SpoonMeter` confirmed fully stale: no `compositions/SpoonMeter.tsx`, no
 `.spoon-meter` in CSS.
 
+## Progress (2026-10-11)
+
+**Locked decision executed: `componentDefs.ts` is the single source;**
+`components.yml` is now a DERIVED artifact.
+
+1. **Generator shipped** — `packages/design-core/scripts/generate-components-yml.mjs`
+   (plain `node`, native TS import of `componentDefs.ts`). Run:
+   `node packages/design-core/scripts/generate-components-yml.mjs`
+   (`--check` for CI; npm scripts `components-yml:gen` / `components-yml:check`
+   added to `packages/design-core/package.json`). Deterministic: defs insertion
+   order, fixed key order, block-style YAML, no timestamps, single-line scalars
+   (stays parseable by both the `yaml` package and the design-core generator's
+   minimal `parseYamlSimple`).
+
+2. **`cli/tokens/components.yml` regenerated** — 32 components. The
+   "Single source of truth" claim is gone; header marks it DERIVED with the
+   generator path. Field mapping per the audit:
+   - `tokens` carry the defs vocabulary verbatim (`p31.*` DTCG — matches canon
+     `tokens.dtc.json`; all 142 defs token refs verified `p31.*`).
+   - `aiGuidance` is the ARRAY form (new canonical shape).
+   - `tool` derived deterministically (`render` + name, the legacy convention).
+   - `props.options` omitted (defs define none — mapped only where they exist).
+   - Cross-reference verified: Button→`btn`, Starfield→`starfield-bg`,
+     StatusBadge→`badge`, Badge→`badge` (collision preserved, matches
+     registry.json).
+
+3. **Note on the 8 consumers:** since this plan's audit, commit `818f9c3`
+   ("complete p31.* token-vocabulary migration") deleted `components.yml` and
+   repointed all 8 consumers to `packages/design-core/registry.json`. So the
+   regenerated yml is not read by them today — it is the derived artifact for
+   the design-core generator pipeline (`src/generator/shared.ts` →
+   `COMPONENTS_YAML`, which had been reading a missing file since the deletion).
+   All 8 consumers verified against their current source (registry.json):
+   - `export-a2ui.mjs` → 32 components, exit 0.
+   - `export-design-system.mjs` → 32 components + 32 `tools` entries, exit 0.
+     Updated: `tool` now derives `render<Name>` from registry items (was hard
+     `null`, which emptied the tools section); `aiGuidance` enriched from
+     `src/genui/catalog.json` (registry.json is a shadcn projection that drops
+     it) and emitted in the array form.
+   - `cli/design-mcp-server.js` → `node --check` OK; reads registry.json
+     (cssClass/props loop) — untouched (parallel agent owns it).
+   - `health.ts` / `validate.ts` → defaults point at registry.json; exercised
+     via the same `spatialValidator.mjs` code path: `--health --machine-readable`
+     exit 0 (score 97) and audit mode exit 0.
+   - `spatialValidator.mjs` (line 363 default) → health + audit runs green.
+   - `release.mjs` → `node --check` OK (registry.json is in FILES_TO_RELEASE).
+   - `build-sovereign.mjs` → **pre-existing failure at the token stage**
+     (`Missing token: root.base_unit` — stale `primitive.*`/`semantic.*`/`root.*`
+     placeholders in the CSS templates vs the migrated `tokens.yml`), aborts
+     before writing anything (verified 0 file changes). This is NOT a catalog
+     regression; filed separately:
+     `docs/fix-plans/build-sovereign-token-template-migration.md` (open).
+   - Side fix: `packages/design-core/src/generator/adapters/html.ts` +
+     `src/generator/shared.ts` now tolerate the array-form `aiGuidance`
+     (joined for display) — the generator pipeline reads the regenerated yml.
+
+4. **design-mcp worker build** — `npx tsc --noEmit` is GREEN (exit 0, 17 src
+   files type-checked). The 8 pre-existing errors (incl. the missing
+   `./icons-data` lazy import at `index.ts:126`) were already fixed by commit
+   `e1a2cdd` (a parallel effort); verified rather than re-fixed. `build.mjs`
+   runs clean (regenerates `data.ts`; the only diff was the `generatedAt` date
+   stamp, which was reverted to avoid churn — noted for a future
+   deterministic-output pass).
+
+5. **Third catalog reconciled** — `cli/component-registry.js` +
+   `workers/component-registry/src/registry.js` no longer serve stale
+   `phos-*`/Tailwind-example data (PillButton, SpoonDots, TetraHeader, Willow*
+   etc. are gone). New generator `scripts/generate-component-registry-data.mjs`
+   patches the `COMPONENTS` array in both files (between `GENERATED COMPONENTS`
+   markers) from `componentDefs.ts`: 32 canonical entries with `p31.*` tokens,
+   `css_class`, props, variants, aiGuidance, and a derived `example`
+   (first defs guidance example, else a `css_class` skeleton). Both files carry
+   a DEPRECATED banner pointing at `registry.json`. The MCP surface is intact
+   and behavior-verified end-to-end: `tools/list` → same 5 tools;
+   `design_list_components` → 32; `design_get_component` → canonical entry;
+   `design_search 'spoon'` → 5 canonical results; `design_get_tokens` /
+   `design_spoon_guide` unchanged; unknown-name error path still works.
+   `workers/component-registry` `npm run build` (tsc --noEmit) green.
+   `scripts/sync-component-registry.mjs` updated to validate the canonical
+   `p31.*` dotted paths (direct CSS-var mapping) and to stop double-prefixing
+   the `p31` token group; `apps/phos/public/.well-known/design-system.json`
+   regenerated (15 → 32 components, 32 tools). Result: sync report
+   **32 components, 0 missing, 0 alias suggestions**.
+
+## Remaining (still open)
+
+- `build-sovereign.mjs` template migration (filed:
+  `docs/fix-plans/build-sovereign-token-template-migration.md`) — blocks the
+  canonical regeneration of the well-known `design-system.json` and A2UI
+  catalog; direct export used as stopgap today.
+- The `design-mcp` worker's `build.mjs` embeds `generatedAt` (today's date) in
+  `data.ts` — rebuilds are non-deterministic; consider deriving from git or
+  dropping the field.
+- Legacy `TOKEN_REFERENCE` (colors/typography/rounded/spacing + invariants)
+  served by `design_get_tokens` in the deprecated component-registry surface is
+  still the old vocabulary — left alive deliberately (tool behavior preserved);
+  migrate or remove when the surface is retired.
+
 ## Remaining (needs decision)
 
 `components.yml` (stale 27) is still read LIVE by 8 CLI consumers, none of

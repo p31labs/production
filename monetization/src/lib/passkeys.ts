@@ -1,11 +1,12 @@
 /**
  * Passkey (WebAuthn) registration and authentication for the Capital Machine portal.
  *
- * Credentials are held in a module-level Map, which is per-isolate and not
- * durable across deployments. This is a pragmatic, non-persistent store for
- * development and preview. Production must move credential persistence to D1
- * (a `passkeys` table) once a D1 binding is added to this worker — see
- * docs/ZERO-TRUST.md, section "Passkey persistence".
+ * Credential persistence routes through a `PasskeyStore` (src/lib/passkeyStore.ts):
+ * an in-memory store by default (per-isolate, development/preview) and the D1
+ * `passkeys` table once the `AUTH_DB` binding is present — see
+ * docs/ZERO-TRUST.md, section "Passkey persistence". The worker binds the D1
+ * store via `setPasskeyStore` when the binding exists; the WebAuthn
+ * verification logic itself is unchanged.
  */
 import {
   generateAuthenticationOptions,
@@ -15,6 +16,7 @@ import {
 } from '@simplewebauthn/server';
 import { isoBase64URL } from '@simplewebauthn/server/helpers';
 import type { AuthenticationResponseJSON, RegistrationResponseJSON, WebAuthnCredential } from '@simplewebauthn/server';
+import { createMemoryPasskeyStore, type PasskeyStore } from './passkeyStore';
 
 export class PasskeyError extends Error {
   readonly status: number;
@@ -40,8 +42,18 @@ interface PendingChallenge {
 
 const CHALLENGE_TTL_MS = 120_000;
 
-/** per-isolate credential store — see docs/ZERO-TRUST.md §Passkey persistence */
-const credentials = new Map<string, PasskeyCredential>();
+/**
+ * Active credential store. Defaults to the per-isolate in-memory store
+ * (docs/ZERO-TRUST.md §Passkey persistence); the worker swaps in the D1-backed
+ * store when the `AUTH_DB` binding is present.
+ */
+let store: PasskeyStore = createMemoryPasskeyStore();
+
+/** Bind a persistent credential store (D1) — called once per isolate by the worker. */
+export function setPasskeyStore(next: PasskeyStore): void {
+  store = next;
+}
+
 const pendingChallenges = new Map<string, PendingChallenge>();
 
 function rpId(request: Request): string {
@@ -85,7 +97,7 @@ export interface RegisterOptionsRequest {
 /** Step 1 of registration — challenge for the browser's navigator.credentials.create(). */
 export async function generateRegisterOptions(request: Request, body: RegisterOptionsRequest) {
   const rpID = rpId(request);
-  const existing = [...credentials.values()].filter((c) => c.did === body.did).map((c) => ({ id: c.id }));
+  const existing = (await store.listByDid(body.did)).map((c) => ({ id: c.id }));
   const options = await generateRegistrationOptions({
     rpName: 'P31 Capital Machine',
     rpID,
@@ -128,7 +140,7 @@ export async function verifyRegister(request: Request, body: RegisterVerifyReque
   }
   const info = verification.registrationInfo;
   const did = pending.did ?? body.did ?? '';
-  credentials.set(info.credential.id, {
+  await store.put({
     id: info.credential.id,
     publicKey: info.credential.publicKey,
     counter: info.credential.counter,
@@ -149,7 +161,7 @@ export interface LoginOptionsRequest {
 export async function generateLoginOptions(request: Request, body: LoginOptionsRequest) {
   prunePending();
   const allowCredentials = body.did
-    ? [...credentials.values()].filter((c) => c.did === body.did).map((c) => ({ id: c.id, transports: c.transports }))
+    ? (await store.listByDid(body.did)).map((c) => ({ id: c.id, transports: c.transports }))
     : undefined;
   const options = await generateAuthenticationOptions({
     rpID: rpId(request),
@@ -172,7 +184,7 @@ export interface LoginVerifyRequest {
 /** Step 2 of login — verify the assertion and return the DID bound to the passkey. */
 export async function verifyLogin(request: Request, body: LoginVerifyRequest) {
   const pending = pendingFor(body.response);
-  const credential = credentials.get(body.response.id);
+  const credential = await store.get(body.response.id);
   if (!credential) throw new PasskeyError('passkey not registered', 401);
   const verification = await verifyAuthenticationResponse({
     response: body.response,
@@ -184,7 +196,7 @@ export async function verifyLogin(request: Request, body: LoginVerifyRequest) {
   if (!verification.verified) {
     throw new PasskeyError('authentication could not be verified', 401);
   }
-  credential.counter = verification.authenticationInfo.newCounter;
+  await store.setCounter(credential.id, verification.authenticationInfo.newCounter);
   pendingChallenges.delete(extractChallenge(body.response));
   return { did: credential.did, credentialID: credential.id };
 }

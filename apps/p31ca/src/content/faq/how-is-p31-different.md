@@ -1,6 +1,6 @@
 ---
 q: How is P31 different from a typical SaaS assistive-tech company?
-a: "Most assistive tools are custodial: they hold your data, your identity, and your access behind a corporate account. P31 is non-custodial — identity lives on your device, the audit chain is independently verifiable, and there is no middleman who can take it away."
+a: Most assistive tools are custodial. They hold your data and identity behind a corporate account. P31 is non-custodial. Identity lives on your device. The audit chain is independently verifiable. No middleman can take it away. And it is post-quantum by default — every identity uses ML-DSA-65 signing from day one.
 category: commercial
 ---
 

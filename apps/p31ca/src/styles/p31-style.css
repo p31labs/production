@@ -52,3 +52,375 @@
   position: relative;
   z-index: 1;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Home — kilo.ai-pattern density: one hero thesis, one live-proof strip,
+   one job per section. Spacing on the 8–16px grid (--p31-space-2/3/6/7).
+   ═══════════════════════════════════════════════════════════════════ */
+.home {
+  padding-bottom: var(--p31-space-7, 48px);
+}
+
+/* ── Hero: headline + one-line value statement ── */
+.home-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--p31-space-3, 12px);
+  padding: clamp(4.5rem, 12vh, 8rem) 1.5rem var(--p31-space-7, 48px);
+}
+.home-hero__eyebrow {
+  font-family: var(--p31-font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--p31-accent, #22d3ee);
+}
+.home-hero__title {
+  font-size: clamp(2.25rem, 5.5vw, 4.25rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: var(--p31-text, #e2e8f0);
+  margin: 0;
+  max-width: 18ch;
+  text-wrap: balance;
+}
+.home-hero__lede {
+  font-size: clamp(0.9375rem, 1vw + 0.55rem, 1.0625rem);
+  line-height: 1.6;
+  color: var(--p31-text-secondary, #a1a1aa);
+  max-width: 52ch;
+  margin: 0;
+}
+.home-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--p31-space-2, 8px);
+  margin-top: var(--p31-space-3, 12px);
+}
+
+/* ── Live-proof stats strip ── */
+.home-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--p31-space-3, 12px) clamp(1.5rem, 4vw, 3rem);
+  padding: var(--p31-space-6, 24px) var(--p31-space-5, 32px);
+  border-top: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.08));
+  border-bottom: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.08));
+  background: var(--p31-glass-bg, rgba(255, 255, 255, 0.04));
+}
+.home-stats__cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--p31-space-micro, 4px);
+}
+.home-stats__value {
+  font-family: var(--p31-font-mono, ui-monospace, monospace);
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  font-weight: 700;
+  color: var(--p31-text, #e2e8f0);
+}
+.home-stats__label {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p31-text-tertiary, #71717a);
+}
+.home-stats__sublink {
+  color: var(--p31-accent, #22d3ee);
+  text-decoration: none;
+}
+/* One plain line of named specifics under the stats strip — centered, calm,
+   no decoration. It is the hero's substance, not another CTA. */
+.home-hero__specifics {
+  text-align: center;
+  max-width: 52ch;
+  margin-inline: auto;
+  padding: var(--p31-space-4, 16px) var(--p31-space-5, 32px) var(--p31-space-2, 8px);
+  font-size: 0.875rem;
+  color: var(--p31-text-secondary, #a1a1aa);
+}
+/* Client-side registry numbers: snapshot (offline fallback) dims subtly,
+   fresh (live read) glows at full strength. */
+.p31-stats-registry[data-fresh='snapshot'] .p31-stats-registry__value {
+  opacity: 0.75;
+}
+.p31-stats-registry__sep {
+  margin: 0 0.35em;
+  color: var(--p31-text-tertiary, #71717a);
+}
+
+/* ── Sections: one job each, tight consistent rhythm ── */
+.home-section {
+  padding-top: var(--p31-space-7, 48px);
+}
+.home-section--tight {
+  padding-top: var(--p31-space-6, 24px);
+}
+.home-section__head {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-3, 12px);
+  margin-bottom: var(--p31-space-6, 24px);
+}
+.home-section__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--p31-accent, #22d3ee);
+  box-shadow: 0 0 6px color-mix(in oklab, var(--p31-accent, #22d3ee) 60%, transparent);
+  flex-shrink: 0;
+}
+.home-section__dot--green {
+  background: var(--p31-accent-green, #34D399);
+  box-shadow: 0 0 6px color-mix(in oklab, var(--p31-accent-green, #34D399) 60%, transparent);
+}
+.home-section__dot--cyan {
+  background: var(--p31-accent-alt, #22d3ee);
+  box-shadow: 0 0 6px color-mix(in oklab, var(--p31-accent-alt, #22d3ee) 60%, transparent);
+}
+.home-section__title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--p31-text-secondary, #a1a1aa);
+  margin: 0;
+}
+.home-section__count {
+  font-size: 0.75rem;
+  color: var(--p31-text-tertiary, #71717a);
+  font-family: var(--p31-font-mono, ui-monospace, monospace);
+}
+.home-grid {
+  display: grid;
+  gap: var(--p31-space-3, 12px);
+}
+.home-grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
+.home-grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+.home-grid--4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); }
+
+/* ─── canon-v2 data-cols / data-even contract — LOCAL mirror ─────────────
+   The parallel canon-v2.css targets canon Grid ([data-p31="grid"]); the hub
+   mirrors the same recipes here (canon layer) so every surface can consume
+   them: data-cols picks the column count (an explicit count is a decision,
+   not a floor — it outranks the auto-fill base), data-even stretches cards
+   to equal rows (grid-auto-rows:1fr; cards flex-column; footer pinned via
+   margin-top:auto). Collapse: 4/3 → 2 at ≤900px; any explicit count → 1 at
+   ≤560px (ADR §15 + extension for data-cols="3"). */
+[data-p31='grid'] {
+  display: grid;
+}
+.home-grid[data-cols='4'], [data-p31='grid'][data-cols='4'] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.home-grid[data-cols='3'], [data-p31='grid'][data-cols='3'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.home-grid[data-cols='2'], [data-p31='grid'][data-cols='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.home-grid[data-cols='1'], [data-p31='grid'][data-cols='1'] { grid-template-columns: minmax(0, 1fr); }
+.home-grid[data-even], [data-p31='grid'][data-even] {
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+}
+.home-grid[data-even] > *, [data-p31='grid'][data-even] > * {
+  display: flex;
+  flex-direction: column;
+}
+.home-grid[data-even] > * > :last-child, [data-p31='grid'][data-even] > * > :last-child {
+  margin-top: auto;
+}
+@media (max-width: 56.24rem) {
+  .home-grid[data-cols='4'], [data-p31='grid'][data-cols='4'],
+  .home-grid[data-cols='3'], [data-p31='grid'][data-cols='3'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 34.99rem) {
+  .home-grid[data-cols='4'], [data-p31='grid'][data-cols='4'],
+  .home-grid[data-cols='3'], [data-p31='grid'][data-cols='3'],
+  .home-grid[data-cols='2'], [data-p31='grid'][data-cols='2'],
+  .home-grid[data-cols='1'], [data-p31='grid'][data-cols='1'] { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ─── Page-header data-align contract — LOCAL mirror ─────────────────────
+   The canon-v2 PageHeader contract targets
+   [data-p31="page-header"][data-align="center|start"]. The hub's headers are
+   hub-built (home-hero, flagship hero, enterprise hero, SectionHeader), so
+   data-align is applied to hub markup and mirrored here with the same shape:
+   center → title + subtitle centered, subtitle ≤65ch with inline-auto margins;
+   start → left-aligned reading surface. Body prose is never centered. */
+.home-hero[data-align="center"],
+.hub-header[data-align="center"],
+.flagship-hero[data-align="center"] .flagship-hero__text,
+.enterprise-hero[data-align="center"] {
+  text-align: center;
+}
+.home-hero[data-align="center"] .home-hero__lede,
+.hub-header[data-align="center"] .hub-header__subtitle,
+.flagship-hero[data-align="center"] .flagship-hero__lede,
+.enterprise-hero[data-align="center"] .enterprise-hero__subtitle {
+  max-width: 65ch;
+  margin-inline: auto;
+}
+.hub-header[data-align="start"] {
+  text-align: left;
+}
+.hub-header[data-align="start"] .hub-header__subtitle {
+  max-width: 65ch;
+  margin-inline: 0;
+}
+.enterprise-hero[data-align="center"] .enterprise-hero__ctas,
+.flagship-hero[data-align="center"] .flagship-hero__ctas,
+.flagship-hero[data-align="center"] .flagship-hero__meta {
+  justify-content: center;
+}
+
+/* ─── Adopted canon PageHeader — hub metrics mirror (Phase 3 Batch 1) ────
+   The five Batch 1 pages render the canon-astro PageHeader
+   ([data-p31="page-header"], styled by @p31ca/design-core/css/canon-v2.css).
+   The hub's header rhythm comes from the UNLAYERED bare-h1/h2 rules in
+   canon base.css (h1 = var(--p31-h1) 51px) — the same rules that styled
+   the pre-batch SectionHeader h1, so the title is NOT restyled here (the
+   bare h1 rule beats both the utilities layer and canon-v2's layered
+   page-title-size). This mirror pins only what the adopted markup lost:
+   the subtitle metrics (sh-text-lg / en7f text-lg→xl), the subtitle
+   measure (sh-max-w-2xl 42rem), and the hub accent bar (H2: bar optional).
+   No color literals — metrics only. */
+[data-p31="page-header"] {
+  display: block;
+}
+[data-p31="page-header-text"] {
+  display: grid;
+  gap: 1rem;
+}
+[data-p31="page-header-title"] {
+  margin: 0;
+  color: var(--p31-text);
+}
+[data-p31="page-header-subtitle"] {
+  margin: 0;
+  max-width: 42rem;
+  font-size: 1.125rem;
+  line-height: calc(1.75 / 1.125);
+  color: var(--p31-text-secondary);
+}
+/* Research is on the H3 center list: header centers, body prose stays left. */
+[data-p31="page-header"].page-header-center {
+  text-align: center;
+}
+[data-p31="page-header"].page-header-center [data-p31="page-header-text"] {
+  justify-items: center;
+}
+[data-p31="page-header"].page-header-center [data-p31="page-header-subtitle"] {
+  margin-inline: auto;
+}
+/* The hub accent bar rides under the adopted header (H2: bar optional);
+   centered on center-list pages without a second page-level mx-auto (C2). */
+.page-header-block--center .p31-header-bar {
+  margin-inline: auto;
+}
+/* Enterprise hero: the reference lede reads in --p31-text at text-lg (18px —
+   the md:text-xl bump loses in the cascade, verified empirically), and fills
+   the hero column (no 42rem cap — that cap belongs to hub page headers). */
+.enterprise-hero [data-p31="page-header-subtitle"] {
+  max-width: none;
+  font-size: 1.125rem;
+  line-height: calc(1.75 / 1.125);
+  color: var(--p31-text);
+}
+
+/* ─── Mermaid diagram palettes — token-driven at render time ─────────────
+   Batch 1 diagram classDef lines carry named-color placeholders; the
+   MarketingShell mermaid script substitutes the computed token values
+   before render (mermaid applies classDef as inline !important styles, so
+   page CSS cannot override them — see p31ca-phase3-batch1-2026-10-14.md). */
+
+/* ─── Card-hover contract — LOCAL mirror (void-fill item 5) ──────────────
+   lift (translateY -2px) + accent border glow on link-cards; CTA color shift
+   + arrow slide inside. No underline on hover — the underline belongs to
+   prose links (always on, WCAG 1.4.1) and Underline Draw (standalone links). */
+a.glass-panel:hover,
+a.glass-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--p31-accent, #22d3ee) 45%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--p31-accent, #22d3ee) 22%, transparent),
+    0 14px 40px -16px color-mix(in oklab, var(--p31-accent, #22d3ee) 40%, transparent);
+}
+a.glass-panel:hover .hub-card__cta,
+a.glass-card:hover .hub-card__cta {
+  color: var(--p31-accent, #22d3ee);
+}
+.hub-card__cta [aria-hidden="true"] {
+  display: inline-block;
+  transition: transform 0.25s var(--p31-spring-expressive-fast-spatial);
+}
+a.glass-panel:hover .hub-card__cta [aria-hidden="true"],
+a.glass-card:hover .hub-card__cta [aria-hidden="true"] {
+  transform: translateX(2px);
+}
+
+/* ─── Underline Draw — standalone text links ("View all →" style) ────────
+   The underline draws left→right on hover/focus. Inline prose links are NOT
+   this pattern — they stay underlined always (WCAG 1.4.1). */
+.underline-draw {
+  position: relative;
+  text-decoration: none;
+}
+.underline-draw::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s var(--p31-spring-expressive-default-effects);
+}
+.underline-draw:hover::after,
+.underline-draw:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* ─── Inline prose links — underlined ALWAYS (WCAG 1.4.1: not color alone). */
+p a:not(.btn):not(.underline-draw),
+.h-entry a:not(.btn):not(.underline-draw),
+.prose a:not(.btn):not(.underline-draw) {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.home-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--p31-space-2, 8px);
+}
+.home-chip {
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  border-radius: var(--p31-radius-full, 9999px);
+  border: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.08));
+  color: var(--p31-text-secondary, #a1a1aa);
+  text-decoration: none;
+  background: var(--p31-surface, #14141c);
+}
+.home-chip:hover {
+  border-color: color-mix(in oklab, var(--p31-accent, #22d3ee) 40%, transparent);
+  color: var(--p31-text, #e2e8f0);
+}
+.home-chip--muted {
+  color: var(--p31-text-tertiary, #71717a);
+  background: transparent;
+}
+.home-more {
+  text-align: center;
+  margin-top: var(--p31-space-6, 24px);
+}
+@media (max-width: 640px) {
+  .home-stats {
+    gap: var(--p31-space-6, 24px);
+  }
+  .home-stats__cell {
+    flex: 1 1 8rem;
+  }
+}

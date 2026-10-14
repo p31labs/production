@@ -1,0 +1,62 @@
+/* P31-HEADER
+ * id: p31_c_fixture_good_css_20261011_v1.0
+ * type: fixture
+ * component: design-workflow/C-mobile-audit
+ * status: live
+ * retention: keep-forever
+ * created: 2026-10-11T00:00:00Z
+ * owner: half-sour
+ */
+
+/* POSITIVE CONTROL for mobile-first-audit.mjs — passes every check.
+   - clamp() always carries a rem term (WCAG F94 safe)
+   - svh/dvh only, never 100vh
+   - fixed bottom chrome declares env(safe-area-inset-*)
+   - breakpoints in rem, never raw px
+   - 44px+ touch targets under (pointer: coarse)/(hover: none)
+   - width >320px allowed only inside a min-width media query */
+
+:root {
+  --p31-space-fluid: clamp(1rem, 0.75rem + 1.5vw, 1.5rem);
+}
+
+/* fluid type — rem component in every clamp() */
+h1 { font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem); }
+p  { font-size: clamp(1rem, 0.9rem + 0.5vw, 1.125rem); }
+
+/* dynamic viewport units — never 100vh */
+.shell { min-height: 100svh; }
+.shell.dynamic { min-height: 100dvh; }
+
+/* fixed bottom chrome — safe-area insets declared */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* rem-based breakpoints (runbook: ~30/48/64/90rem) */
+@media (min-width: 30rem) {
+  .hero { width: 480px; } /* >320px is fine INSIDE a min-width media query */
+}
+
+@media (max-width: 47.9375rem) {
+  .stack { display: block; }
+}
+
+/* 44px touch floor under coarse pointers / hoverless devices */
+@media (pointer: coarse) {
+  button,
+  a.btn,
+  input[type="button"] {
+    min-height: 44px;
+  }
+}
+
+@media (hover: none) {
+  .tap-target { min-height: 48px; }
+}

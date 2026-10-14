@@ -1,0 +1,116 @@
+---
+/**
+ * Docs — the documentation index (fix-plan p31ca-visual-nav-fix-2026-10-13.md).
+ *
+ * The nav "Docs" entry used to point at /research (both entries loaded the
+ * research page — owner-reported route collision). This page is the real
+ * docs destination: an index of the runbooks, verification, research, and
+ * reference surfaces that already exist. Every link resolves to a live
+ * surface — no phantom doc paths.
+ *
+ * The card grid consumes the canon contracts: data-p31="grid" data-cols="3"
+ * data-even (equal-height rows, footer-pinned CTAs) — the same recipe the
+ * home, research, and enterprise grids use.
+ */
+import MarketingShell from '../layouts/MarketingShell.astro';
+import SectionHeader from '../components/marketing/SectionHeader.astro';
+import Footer from '../components/marketing/Footer.astro';
+
+const docs = [
+  {
+    tag: 'Runbook',
+    title: '$5 Stack Runbook',
+    href: '/runbook',
+    desc: 'Deploy the whole P31 stack on one Cloudflare Workers Paid account — the exact arithmetic, step by step.',
+  },
+  {
+    tag: 'Verification',
+    title: 'Verify the Loom',
+    href: '/verify',
+    desc: 'Check the public hash-chained log yourself — no account. Replays the SHA-256 chain in your browser.',
+  },
+  {
+    tag: 'Comparison',
+    title: 'Sovereign vs SaaS',
+    href: '/sovereign-vs-saas',
+    desc: 'What the same stack costs at the SaaS vendors, cited from their published pricing, next to ours.',
+  },
+  {
+    tag: 'Research',
+    title: 'Research papers',
+    href: '/research',
+    desc: '22 open-access papers with permanent DOIs — from the Tetrahedron Protocol to the Sovereign Stack.',
+  },
+  {
+    tag: 'Reference',
+    title: 'Live registry',
+    href: 'https://mcp-registry.trimtab-signal.workers.dev/servers',
+    desc: 'The MCP server registry — fleet health, tool counts, and conformance, read live from the edge.',
+  },
+  {
+    tag: 'Repo',
+    title: 'The monorepo',
+    href: 'https://github.com/p31labs',
+    desc: 'Operating runbooks, ADRs, and the design canon ship next to the code they govern.',
+  },
+];
+---
+
+<MarketingShell
+  title="Docs — P31 Labs"
+  description="The P31 documentation index — runbooks, verification, research, and reference. Every link resolves to a live surface."
+>
+  <main id="main-content" class="section">
+    <div class="dc99-max-w-7xl dc99-mx-auto dc99-px-6 dc99-md-px-12 dc99-lg-px-16">
+      <SectionHeader
+        level="1"
+        title="Docs"
+        description="The documentation index. Runbooks, verification, research, and reference — one entry point, no dead links."
+      />
+
+      <p class="dc99-mt-6 dc99-text-lg dc99-leading-relaxed" style="color: var(--p31-text);">
+        P31 ships documentation where the work happens: the runbook next to the deploy, the canon next to the components, the papers on Zenodo with permanent DOIs. This page is the index.
+      </p>
+
+      <div data-p31="grid" data-cols="3" data-even class="dc99-mt-10 dc99-gap-6">
+        {docs.map((d) => (
+          <a
+            href={d.href}
+            target={d.href.startsWith('http') ? '_blank' : undefined}
+            rel={d.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+            class="glass-card dc99-p-6 dc99-rounded-xl dc99-block"
+          >
+            <span class="dc99-font-mono dc99-text-xs dc99-uppercase dc99-tracking-wider" style="color: var(--p31-accent);">
+              {d.tag}
+            </span>
+            <h2 class="dc99-text-base dc99-font-bold dc99-mt-2" style="color: var(--p31-text);">{d.title}</h2>
+            <p class="dc99-text-sm dc99-leading-relaxed dc99-mt-2" style="color: var(--p31-text-secondary);">{d.desc}</p>
+            <span class="hub-card__cta dc99-mt-4 dc99-text-xs dc99-font-semibold dc99-inline-flex dc99-items-center dc99-gap-1" style="color: var(--p31-text-secondary);">
+              Open <span aria-hidden="true">→</span>
+            </span>
+          </a>
+        ))}
+      </div>
+
+      <section class="glass-card dc99-p-8 dc99-mt-16">
+        <h2 class="dc99-text-2xl dc99-font-bold" style="color: var(--p31-text);">Where docs live</h2>
+        <ul class="dc99-mt-4 dc99-space-y-2 dc99-text-sm" style="color: var(--p31-text-secondary);">
+          <li>
+            Operating runbooks and architecture decisions ship in the monorepo next to the code they govern —
+            <a href="https://github.com/p31labs" target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent);">github.com/p31labs</a>.
+          </li>
+          <li>
+            The design-system canon (tokens, grid recipes, hover contracts) is consumed from
+            <span class="dc99-font-mono" style="color: var(--p31-text);">@p31ca/canon</span> — the same package this site runs on.
+          </li>
+          <li>
+            Research is citable on Zenodo — every DOI resolves through the canonical
+            <span class="dc99-font-mono" style="color: var(--p31-text);">https://doi.org/</span> resolver, no vendor lock-in.
+          </li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+</MarketingShell>

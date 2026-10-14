@@ -17,7 +17,7 @@
     "gate": "pnpm typecheck && pnpm lint && pnpm test && pnpm build && pnpm v:gate"
   },
   "dependencies": {
-    "@p31ca/design-core": "file:vendor/p31-design-core-3.0.0.tgz",
+    "@p31ca/design-core": "file:vendor/p31-design-core-3.0.1.tgz",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "zustand": "^5.0.14",

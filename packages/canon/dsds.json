@@ -294,7 +294,7 @@
     }
   ],
   "tokens": {
-    "count": 448,
+    "count": 666,
     "entries": [
       {
         "id": "p31.color.action.primary",
@@ -805,6 +805,276 @@
         "type": "token",
         "path": "p31.font.family.mono",
         "tokenType": "fontFamily"
+      },
+      {
+        "id": "p31.device.phone.max",
+        "type": "token",
+        "path": "p31.device.phone.max",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.chromebook.min",
+        "type": "token",
+        "path": "p31.device.chromebook.min",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.chromebook.max",
+        "type": "token",
+        "path": "p31.device.chromebook.max",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.desktop.min",
+        "type": "token",
+        "path": "p31.device.desktop.min",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.embedded.max",
+        "type": "token",
+        "path": "p31.device.embedded.max",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.phone.pointer.coarse",
+        "type": "token",
+        "path": "p31.device.phone.pointer.coarse",
+        "tokenType": "number"
+      },
+      {
+        "id": "p31.device.phone.pointer.fine",
+        "type": "token",
+        "path": "p31.device.phone.pointer.fine",
+        "tokenType": "number"
+      },
+      {
+        "id": "p31.device.chromebook.pointer.coarse",
+        "type": "token",
+        "path": "p31.device.chromebook.pointer.coarse",
+        "tokenType": "number"
+      },
+      {
+        "id": "p31.device.chromebook.pointer.fine",
+        "type": "token",
+        "path": "p31.device.chromebook.pointer.fine",
+        "tokenType": "number"
+      },
+      {
+        "id": "p31.device.desktop.pointer.coarse",
+        "type": "token",
+        "path": "p31.device.desktop.pointer.coarse",
+        "tokenType": "number"
+      },
+      {
+        "id": "p31.device.desktop.pointer.fine",
+        "type": "token",
+        "path": "p31.device.desktop.pointer.fine",
+        "tokenType": "number"
+      },
+      {
+        "id": "p31.device.embedded.pointer.coarse",
+        "type": "token",
+        "path": "p31.device.embedded.pointer.coarse",
+        "tokenType": "number"
+      },
+      {
+        "id": "p31.device.embedded.pointer.fine",
+        "type": "token",
+        "path": "p31.device.embedded.pointer.fine",
+        "tokenType": "number"
+      },
+      {
+        "id": "p31.device.phone.spacing.xs",
+        "type": "token",
+        "path": "p31.device.phone.spacing.xs",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.phone.spacing.sm",
+        "type": "token",
+        "path": "p31.device.phone.spacing.sm",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.phone.spacing.md",
+        "type": "token",
+        "path": "p31.device.phone.spacing.md",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.chromebook.spacing.xs",
+        "type": "token",
+        "path": "p31.device.chromebook.spacing.xs",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.chromebook.spacing.sm",
+        "type": "token",
+        "path": "p31.device.chromebook.spacing.sm",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.chromebook.spacing.md",
+        "type": "token",
+        "path": "p31.device.chromebook.spacing.md",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.desktop.spacing.xs",
+        "type": "token",
+        "path": "p31.device.desktop.spacing.xs",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.desktop.spacing.sm",
+        "type": "token",
+        "path": "p31.device.desktop.spacing.sm",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.desktop.spacing.md",
+        "type": "token",
+        "path": "p31.device.desktop.spacing.md",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.embedded.spacing.xs",
+        "type": "token",
+        "path": "p31.device.embedded.spacing.xs",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.embedded.spacing.sm",
+        "type": "token",
+        "path": "p31.device.embedded.spacing.sm",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.embedded.spacing.md",
+        "type": "token",
+        "path": "p31.device.embedded.spacing.md",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.phone.type.base",
+        "type": "token",
+        "path": "p31.device.phone.type.base",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.phone.type.sm",
+        "type": "token",
+        "path": "p31.device.phone.type.sm",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.phone.type.lg",
+        "type": "token",
+        "path": "p31.device.phone.type.lg",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.chromebook.type.base",
+        "type": "token",
+        "path": "p31.device.chromebook.type.base",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.chromebook.type.sm",
+        "type": "token",
+        "path": "p31.device.chromebook.type.sm",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.chromebook.type.lg",
+        "type": "token",
+        "path": "p31.device.chromebook.type.lg",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.desktop.type.base",
+        "type": "token",
+        "path": "p31.device.desktop.type.base",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.desktop.type.sm",
+        "type": "token",
+        "path": "p31.device.desktop.type.sm",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.desktop.type.lg",
+        "type": "token",
+        "path": "p31.device.desktop.type.lg",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.embedded.type.base",
+        "type": "token",
+        "path": "p31.device.embedded.type.base",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.embedded.type.sm",
+        "type": "token",
+        "path": "p31.device.embedded.type.sm",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.embedded.type.lg",
+        "type": "token",
+        "path": "p31.device.embedded.type.lg",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.phone.radius.sm",
+        "type": "token",
+        "path": "p31.device.phone.radius.sm",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.phone.radius.md",
+        "type": "token",
+        "path": "p31.device.phone.radius.md",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.chromebook.radius.sm",
+        "type": "token",
+        "path": "p31.device.chromebook.radius.sm",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.chromebook.radius.md",
+        "type": "token",
+        "path": "p31.device.chromebook.radius.md",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.desktop.radius.sm",
+        "type": "token",
+        "path": "p31.device.desktop.radius.sm",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.desktop.radius.md",
+        "type": "token",
+        "path": "p31.device.desktop.radius.md",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.embedded.radius.sm",
+        "type": "token",
+        "path": "p31.device.embedded.radius.sm",
+        "tokenType": "dimension"
+      },
+      {
+        "id": "p31.device.embedded.radius.md",
+        "type": "token",
+        "path": "p31.device.embedded.radius.md",
+        "tokenType": "dimension"
       }
     ],
     "note": "Semantic slots (p31.*) are contract-resolvable. The full 406-leaf tree (primitives + per-theme palettes) lives in tokens/tokens.dtc.json. Frame tokens (--p31-frame-*) are render metadata, not artifacts — omitted from the field zone graph (see registry.json frames)."

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/1.0.0",
+  "$description": "P31 breakpoint dimension tokens — canonical source (consumed by Lane A tier-emitter as a supplement; never hardcode breakpoints in component CSS). px source with rem conversion at 16px root.",
+  "breakpoint": {
+    "compact": {
+      "$type": "dimension",
+      "$value": "600px",
+      "$description": "Compact window size class upper bound (Material 3: <600dp). Mobile tier. 600px = 37.5rem at 16px root.",
+      "$extensions": { "remValue": "37.5rem" }
+    },
+    "medium": {
+      "$type": "dimension",
+      "$value": "840px",
+      "$description": "Medium window size class upper bound (Material 3: 600-840dp). Tablet tier. 840px = 52.5rem at 16px root.",
+      "$extensions": { "remValue": "52.5rem" }
+    },
+    "expanded": {
+      "$type": "dimension",
+      "$value": "1200px",
+      "$description": "Expanded window size class (Material 3: >=840dp). Desktop tier. 1200px = 75rem at 16px root.",
+      "$extensions": { "remValue": "75rem" }
+    }
+  }
+}

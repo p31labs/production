@@ -9,18 +9,43 @@
  */
 import { getCollection } from 'astro:content';
 import MarketingShell from '../layouts/MarketingShell.astro';
-import SectionHeader from '../components/marketing/SectionHeader.astro';
 import Footer from '../components/marketing/Footer.astro';
 import FaqBody from '../components/marketing/FaqBody.astro';
+import { PageHeader } from '@p31ca/canon-astro';
+// Phase 3 Batch 1 — canon adoption chain (tokens → layers → recipes → canon-v2).
+import '@p31ca/canon/tokens.css';
+import '@p31ca/canon/css/layers.css';
+import '@p31ca/canon-parts/recipes.css';
+import '@p31ca/design-core/css/canon-v2.css';
 
 const faqs = await getCollection('faq');
 
-const categories: { id: string; label: string }[] = [
-  { id: 'stack', label: 'The stack' },
-  { id: 'family', label: 'The family test' },
-  { id: 'nonprofit', label: 'The nonprofit' },
-  { id: 'commercial', label: 'The commercial offering' },
-  { id: 'community', label: 'Community' },
+const categories: { id: string; label: string; lede: string }[] = [
+  {
+    id: 'stack',
+    label: 'The stack',
+    lede: 'The stack is real and running: 44 registered MCP servers, 22 live, 124 tools (our live registry, as of 2026-10-13), 7 live flagship surfaces, and a Loom audit chain anyone can verify. It runs on Cloudflare for about $5 a month. These answers cover the Loom, the Tetrahedron Protocol, post-quantum identity, and how to prove the chain is real.',
+  },
+  {
+    id: 'family',
+    label: 'The family test',
+    lede: "Your family's data is not the product here. There is no server-side identity store, no analytics, and no training on family data. Identity keys live on your device, and the audit chain records actions — not personal content. These answers cover data storage, SBTs, and post-quantum identity.",
+  },
+  {
+    id: 'nonprofit',
+    label: 'The nonprofit',
+    lede: 'P31 Labs is a real Georgia nonprofit with IRS 501(c)(3) status and EIN 42-1888158. Donations are tax-deductible, money goes to operations, mission treasury, and care credits, and the treasury ledger is public. These answers cover the nonprofit proof and the published research behind it.',
+  },
+  {
+    id: 'commercial',
+    label: 'The commercial offering',
+    lede: 'The code is AGPL open source — free to read, fork, and run — and published packages (@p31ca/design-core, @p31ca/cli) are on npm. Organizations can deploy the stack today; the Enterprise page documents the architecture, gaps included. These answers cover licensing and the commercial path.',
+  },
+  {
+    id: 'community',
+    label: 'Community',
+    lede: 'Contributions are welcome in three lanes: code, research, and community. Everything is public — the GitHub repos, the Zenodo papers, the Discord — and every contribution is reviewed before it merges. These answers cover how to contribute and what “open” means here.',
+  },
 ];
 
 const jsonLd = {
@@ -37,41 +62,49 @@ const jsonLd = {
 <MarketingShell
   title="FAQ — P31 Labs"
   description="Honest answers about the stack, the family test, the nonprofit, and the commercial offering."
+  theme="rose"
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
   <main id="main-content" class="section">
-    <div class="max-w-3xl mx-auto px-6 md:px-12 lg:px-16">
-      <SectionHeader
-        title="FAQ"
-        description="Honest answers. What is shipped is stated as shipped; what is planned is stated as planned."
-        align="left"
-      />
+    <div class="fa8b-max-w-3xl fa8b-mx-auto fa8b-px-6 fa8b-md-px-12 fa8b-lg-px-16">
+      <div class="sh-space-y-4">
+        <PageHeader
+          title="FAQ"
+          subtitle="Honest answers. What is shipped is stated as shipped; what is planned is stated as planned."
+        />
+        <div class="sh-h-1 sh-w-16 sh-rounded-full p31-header-bar" style="background: var(--p31-accent);"></div>
+      </div>
 
-      <div class="mt-16 space-y-12">
+      <p class="fa8b-mt-6 fa8b-text-lg fa8b-leading-relaxed" style="color: var(--p31-text);">
+        Yes — P31 is real, open, and verifiable. The stack is open source under AGPL, the nonprofit is a 501(c)(3) with EIN 42-1888158, and the research is 22 citable papers with permanent DOIs. The answers below say what is shipped and what is planned, with no invented capabilities. Where something is not done yet, that is stated too.
+      </p>
+
+      <div class="fa8b-mt-16 fa8b-space-y-12">
         {categories.map((cat) => {
           const items = faqs.filter((f) => f.data.category === cat.id);
           if (items.length === 0) return null;
           return (
             <section key={cat.id}>
-              <h2 class="text-xl font-bold mb-4" style="color: var(--p31-text);">{cat.label}</h2>
-              <div class="space-y-3">
+              <h2 class="fa8b-text-xl fa8b-font-bold fa8b-mb-4" style="color: var(--p31-text);">{cat.label}</h2>
+              <p class="fa8b-text-base fa8b-leading-relaxed fa8b-mb-4" style="color: var(--p31-text-secondary);">{cat.lede}</p>
+              <div class="fa8b-space-y-3">
                 {items.map((item) => (
                   <details
                     key={item.id}
-                    class="glass-card rounded-xl overflow-hidden"
-                    style="border: 1px solid var(--p31-glass-border, rgba(255,255,255,0.1));"
+                    class="glass-card fa8b-rounded-xl fa8b-overflow-hidden"
+                    style="border: 1px solid var(--p31-glass-border);"
                   >
                     <summary
-                      class="cursor-pointer select-none px-6 py-4 flex items-center justify-between gap-4"
+                      class="fa8b-cursor-pointer fa8b-select-none fa8b-px-6 fa8b-py-4 fa8b-flex fa8b-items-center fa8b-justify-between fa8b-gap-4"
                       style="color: var(--p31-text); font-weight: 600;"
                     >
                       {item.data.q}
-                      <span class="shrink-0 text-xs" style="color: var(--p31-accent);" aria-hidden="true">+</span>
+                      <span class="fa8b-shrink-0 fa8b-text-xs" style="color: var(--p31-accent);" aria-hidden="true">+</span>
                     </summary>
-                    <div class="px-6 pb-5 pt-0 text-base leading-relaxed" style="color: var(--p31-text-secondary);">
+                    <div class="fa8b-px-6 fa8b-pb-5 fa8b-pt-0 fa8b-text-base fa8b-leading-relaxed" style="color: var(--p31-text-secondary);">
                       {item.data.a}
-                      <div class="mt-3 pt-3" style="border-top: 1px solid var(--p31-glass-border, rgba(255,255,255,0.08));">
+                      <div class="fa8b-mt-3 fa8b-pt-3" style="border-top: 1px solid var(--p31-glass-border);">
                         <FaqBody entry={item} />
                       </div>
                     </div>

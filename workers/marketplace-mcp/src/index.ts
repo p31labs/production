@@ -1,14 +1,33 @@
 /**
  * marketplace-mcp — MCP server for P31 Sovereign Marketplace
  *
- * Streamable HTTP MCP (JSON-RPC 2.0 + SSE) exposing 10 tools
+ * Streamable HTTP MCP (JSON-RPC 2.0) exposing 10 tools
  * for listings, offers, trades, escrow, and dispute resolution.
+ *
+ * MCP 2026-07-28 Stateless Core (SEP-2575): no initialize handshake,
+ * no Mcp-Session-Id, no ping/logging/setLevel. The hand-rolled stateless
+ * dispatch was replaced by the split SDK v2
+ * (`@modelcontextprotocol/server` → `McpServer` + `createMcpHandler`).
+ * The SDK handler serves the modern 2026-07-28 surface (server/discover,
+ * `_meta` envelope, resultType, ttlMs/cacheScope on cacheable results,
+ * -32022 version mismatches) and keeps 2025-era clients working through its
+ * default `legacy: 'stateless'` fallback (the initialize handshake) —
+ * equivalent to the previous hand-rolled legacy-compat branch. See
+ * docs/fix-plans/marketplace-mcp-sdk-v2.md.
+ *
+ * OAuth 2.1 resource server (see docs/fix-plans/marketplace-mcp-oauth21.md):
+ * RFC 8414 AS metadata discovery, RFC 9728 protected-resource metadata,
+ * RFC 8707 audience-bound bearer validation (opt-in — active only when
+ * OAUTH_JWKS_URL + RESOURCE_ID are configured; unauthenticated tools stay
+ * open, matching the fleet reference workers/p31-capital-machine-mcp), and
+ * RFC 9207 `iss` validation. See docs/enterprise/api/oauth-21-rollout-runbook.md.
  *
  * Proxies hot state operations to MarketplaceCatalogDO.
  * Trust tier lookups go to shared love-ledger D1.
  */
 
-import { MarketplaceCatalogDO, Listing, Offer, Trade } from './marketplace-catalog/index';
+import { MarketplaceCatalogDO } from '../../marketplace-catalog/src/index';
+import { McpServer, createMcpHandler, fromJsonSchema } from '@modelcontextprotocol/server';
 
 // ─── Types ────────────────────────────────────────────────────────────
 
@@ -54,6 +73,14 @@ export interface Trade {
   status: 'escrow' | 'shipped' | 'completed' | 'disputed';
   created_at: number;
   completed_at: number | null;
+}
+
+// ─── Protocol Constants (MCP 2026-07-28 Stateless Core) ───────────────
+
+const PROTOCOL_VERSION = '2026-07-28';
+
+function metaEnvelope(): { _meta: { protocolVersion: string } } {
+  return { _meta: { protocolVersion: PROTOCOL_VERSION } };
 }
 
 // ─── MCP Tool Definitions ─────────────────────────────────────────────
@@ -187,14 +214,12 @@ const TOOLS = [
   },
 ];
 
-// ─── Helpers ──────────────────────────────────────────────────────────
+// Offer-lifecycle tools gated by the OAuth 2.1 bearer gate when an
+// authorization server is configured (runbook §3 marketplace row:
+// "gate offer mutation tools"). See docs/fix-plans/marketplace-mcp-oauth21.md.
+const OFFER_MUTATION_TOOLS = new Set(['marketplace_offer', 'marketplace_accept', 'marketplace_reject']);
 
-function json(data: unknown, status = 200): Response {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
-  });
-}
+// ─── Helpers ──────────────────────────────────────────────────────────
 
 function corsResponse(body: string, status = 200): Response {
   return new Response(body, {
@@ -203,18 +228,44 @@ function corsResponse(body: string, status = 200): Response {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Headers': 'Content-Type, Mcp-Method, Mcp-Name, MCP-Protocol-Version, Authorization',
     },
   });
 }
 
-async function getCatalogDO(env: Env): Promise<DurableObjectStub> {
-  const stub = env.CATALOG_DO.get(env.CATALOG_DO.idFromName('main'));
-  // We need to call the DO's internal methods. Since we can't directly call DO methods,
-  // we'll use the fetch API to communicate with the DO.
-  // For now, we'll implement the logic inline using the DO's SQLite storage pattern.
-  // In production, this would be a proper service-to-service call.
-  throw new Error('DO access requires worker-to-DO binding');
+// Stateless JSON-RPC envelope — no Mcp-Session-Id (removed by SEP-2567).
+function mcpError(id: any, code: number, message: string): Response {
+  return new Response(JSON.stringify({ jsonrpc: '2.0', id, ...metaEnvelope(), error: { code, message } }), {
+    status: 400,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Mcp-Method, Mcp-Name, MCP-Protocol-Version, Authorization',
+    },
+  });
+}
+
+/** Envelope-shaped 401 for the OAuth gate (RFC 8707 / runbook §3 Step 3). */
+function mcpAuthReject(id: any, message: string): Response {
+  return new Response(JSON.stringify({
+    jsonrpc: '2.0',
+    id,
+    ...metaEnvelope(),
+    result: {
+      resultType: 'complete',
+      content: [{ type: 'text', text: JSON.stringify({ error: message }) }],
+      isError: true,
+    },
+  }), {
+    status: 401,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Mcp-Method, Mcp-Name, MCP-Protocol-Version, Authorization',
+    },
+  });
 }
 
 // ─── DO Helper Class (inline for MCP server) ──────────────────────────
@@ -287,6 +338,33 @@ class CatalogProxy {
     const res = await stub.fetch(`http://internal/trades/${did}`);
     return res.json();
   }
+
+  // Trade state (status + escrow lifecycle + SBT mint flag) by trade id.
+  async getTradeStatus(id: string): Promise<any> {
+    const stub = await this.getDO();
+    const res = await stub.fetch(`http://internal/trade/${id}/sbt`);
+    return res.json();
+  }
+
+  // Phase-1 confirm: write the trade-confirm record (completed_at) through
+  // the DO, which also mints the SBT and releases Justice Hub escrow.
+  async completeTrade(id: string): Promise<any> {
+    const stub = await this.getDO();
+    const res = await stub.fetch(`http://internal/trade/${id}/complete`, { method: 'POST' });
+    return res.json();
+  }
+
+  // Dispute: DO-local dispute record (trade status -> 'disputed'). The DO also
+  // attempts Justice Hub ODR forwarding from its own env bindings.
+  async disputeTrade(id: string, evidence: string): Promise<any> {
+    const stub = await this.getDO();
+    const res = await stub.fetch(`http://internal/trade/${id}/dispute`, {
+      method: 'POST',
+      body: JSON.stringify({ evidence }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return res.json();
+  }
 }
 
 // ─── Tool Execution ───────────────────────────────────────────────────
@@ -354,16 +432,42 @@ async function executeTool(name: string, args: any, env: Env): Promise<any> {
     }
 
     case 'marketplace_escrow_status': {
-      // Escrow status is managed by justice-hub
-      return { status: 'not_implemented', note: 'Use justice_escrow_release via p31-justice-hub' };
+      if (!args.tradeId) return { error: 'tradeId required' };
+      const state = await catalog.getTradeStatus(args.tradeId);
+      if (state?.error) {
+        return { tradeId: args.tradeId, status: 'not_found', error: state.error };
+      }
+      return {
+        tradeId: args.tradeId,
+        status: state.status ?? 'unknown',
+        escrowState: state.status ?? 'unknown',
+        sbtMinted: state.sbtMinted ?? false,
+        buyerDid: state.buyerDid,
+      };
     }
 
     case 'marketplace_confirm': {
-      return { status: 'not_implemented', note: 'Trade confirmation via marketplace_confirm coming in Phase 1' };
+      if (!args.tradeId) return { error: 'tradeId required' };
+      const result = await catalog.completeTrade(args.tradeId);
+      return {
+        tradeId: args.tradeId,
+        confirmed: !result?.error,
+        status: result?.status ?? 'completed',
+        error: result?.error,
+      };
     }
 
     case 'marketplace_dispute': {
-      return { status: 'not_implemented', note: 'Use justice_evidence_deposit via p31-justice-hub' };
+      if (!args.tradeId) return { error: 'tradeId required' };
+      if (!args.evidence) return { error: 'evidence required' };
+      const result = await catalog.disputeTrade(args.tradeId, args.evidence);
+      return {
+        tradeId: args.tradeId,
+        status: result?.status ?? 'disputed',
+        evidence: args.evidence,
+        disputeRecord: 'DO-local',
+        error: result?.error,
+      };
     }
 
     case 'marketplace_history': {
@@ -376,12 +480,224 @@ async function executeTool(name: string, args: any, env: Env): Promise<any> {
   }
 }
 
+// ─── MCP 2026-07-28 (SDK v2) ──────────────────────────────────────────
+
+const LIST_TTL_MS = 60_000;
+
+function buildServer(env: Env): McpServer {
+  const server = new McpServer(
+    { name: 'marketplace-mcp', version: '1.0.0' },
+    {
+      capabilities: { tools: {} },
+      cacheHints: { 'tools/list': { ttlMs: LIST_TTL_MS, cacheScope: 'public' } },
+    },
+  );
+  for (const t of TOOLS) {
+    server.registerTool(
+      t.name,
+      { description: t.description, inputSchema: fromJsonSchema(t.inputSchema as unknown as Parameters<typeof fromJsonSchema>[0]) },
+      async (args) => {
+        const result = await executeTool(t.name, (args ?? {}) as Record<string, unknown>, env);
+        return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+      },
+    );
+  }
+
+  // Conformance (2026-07-28): `server/discover` must return top-level
+  // `protocolVersion` + capabilities + serverInfo. The SDK emits
+  // `supportedVersions` + `capabilities` and stamps serverInfo into `_meta`;
+  // add the missing top-level keys (additive only, no other behavior change).
+  const sdkServer = server.server as unknown as { _ondiscover: () => Record<string, unknown> };
+  const sdkDiscover = sdkServer._ondiscover.bind(sdkServer);
+  sdkServer._ondiscover = () => {
+    const base = sdkDiscover();
+    return {
+      protocolVersion: PROTOCOL_VERSION,
+      supportedProtocolVersions: Array.isArray(base.supportedVersions)
+        ? [...(base.supportedVersions as string[])]
+        : [PROTOCOL_VERSION],
+      ...base,
+    };
+  };
+  return server;
+}
+
+/** The SDK handler does not add CORS headers — re-apply the worker's own. */
+function withCors(res: Response): Response {
+  const headers = new Headers(res.headers);
+  headers.set('Access-Control-Allow-Origin', '*');
+  headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  headers.set('Access-Control-Allow-Headers', 'Content-Type, Mcp-Method, Mcp-Name, MCP-Protocol-Version, Authorization');
+  return new Response(res.body, { status: res.status, headers });
+}
+
+// ---------------------------------------------------------------------------
+// OAuth 2.1 resource-server validation (RFC 8707 audience binding + RFC 9207
+// issuer identification). Validates externally-issued bearer tokens against a
+// fetched JWKS using WebCrypto (RS256 / ES256 / Ed25519). Zero new
+// dependencies. Ported from the fleet reference
+// workers/p31-capital-machine-mcp/src/index.ts (incl. its `iss` hardening).
+// Opt-in: the gate only activates when OAUTH_JWKS_URL + RESOURCE_ID are set.
+// ---------------------------------------------------------------------------
+
+const JWKS_CACHE_TTL_MS = 15 * 60 * 1000;
+let jwksCache: { source: string; fetchedAt: number; keys: Record<string, JsonWebKey> } | null = null;
+
+/** Base64url → base64, then decode to a string. */
+function b64urlDecode(s: string): string {
+  const base64 = s.replace(/-/g, "+").replace(/_/g, "/") + "=".repeat((4 - (s.length % 4)) % 4);
+  return atob(base64);
+}
+
+/** Base64url → bytes (ArrayBuffer-backed Uint8Array). */
+function b64urlToBytes(s: string): Uint8Array<ArrayBuffer> {
+  const binary = b64urlDecode(s);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+}
+
+/** Decode (without verifying) a JWT into header + payload. Returns null on malformed input. */
+function decodeJwt(token: string): { header: { kid?: string; alg?: string }; payload: Record<string, unknown> } | null {
+  const parts = token.split(".");
+  if (parts.length !== 3) return null;
+  try {
+    const header = JSON.parse(b64urlDecode(parts[0])) as { kid?: string; alg?: string };
+    const payload = JSON.parse(b64urlDecode(parts[1])) as Record<string, unknown>;
+    if (!header || typeof header !== "object" || !payload || typeof payload !== "object") return null;
+    return { header, payload };
+  } catch {
+    return null;
+  }
+}
+
+/** Fetch (with 15-min module-level cache) the JWKS for an IdP, keyed by kid. */
+async function fetchJwksKeys(source: string): Promise<Record<string, JsonWebKey>> {
+  const now = Date.now();
+  if (jwksCache && jwksCache.source === source && now - jwksCache.fetchedAt < JWKS_CACHE_TTL_MS) {
+    return jwksCache.keys;
+  }
+  const res = await fetch(source);
+  if (!res.ok) return {};
+  const body = (await res.json().catch(() => ({}))) as { keys?: unknown[] };
+  const keys: Record<string, JsonWebKey> = {};
+  for (const raw of body.keys ?? []) {
+    const jwk = raw as JsonWebKey & { kid?: string };
+    if (jwk && typeof jwk.kid === "string") keys[jwk.kid] = jwk;
+  }
+  jwksCache = { source, fetchedAt: now, keys };
+  return keys;
+}
+
+/** WebCrypto algorithm descriptor for a supported JWS alg. */
+function webAlg(jwk: JsonWebKey, alg: string): { name: string; hash?: string; namedCurve?: string } {
+  if (alg === "ES256") return { name: "ECDSA", namedCurve: (jwk.crv as string) || "P-256" };
+  if (alg === "Ed25519") return { name: "Ed25519" };
+  return { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" };
+}
+
+/** Verify a JWS signature over `signedData` with WebCrypto. Never throws. */
+async function verifySignature(jwk: JsonWebKey, alg: string, signedData: Uint8Array<ArrayBuffer>, signature: Uint8Array<ArrayBuffer>): Promise<boolean> {
+  const algSpec = webAlg(jwk, alg);
+  try {
+    const key = await crypto.subtle.importKey("jwk", jwk, algSpec as Algorithm, false, ["verify"]);
+    return await crypto.subtle.verify(algSpec as Algorithm, key, signature, signedData);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Validate an RFC 8707-bound OAuth 2.1 bearer token.
+ * Returns { sub, scope? } on success, or null when:
+ *  - no Bearer header present,
+ *  - OAUTH_JWKS_URL / RESOURCE_ID unset,
+ *  - token malformed, unknown alg/kid, bad signature, expired,
+ *  - `aud` ≠ RESOURCE_ID (RFC 8707), or
+ *  - `iss` ≠ OAUTH_ISSUER / issuer derived from the JWKS URL (RFC 9207 mix-up defense).
+ * All wrapped in try/catch — never throws.
+ */
+async function verifyOAuthBearer(request: Request, env: Env): Promise<{ sub: string; scope?: string } | null> {
+  try {
+    const auth = request.headers.get("Authorization");
+    if (!auth || !auth.startsWith("Bearer ")) return null;
+    const token = auth.slice(7).trim();
+    if (!token || !env.OAUTH_JWKS_URL || !env.RESOURCE_ID) return null;
+
+    const decoded = decodeJwt(token);
+    if (!decoded) return null;
+
+    const alg = decoded.header.alg ?? "";
+    if (alg !== "RS256" && alg !== "ES256" && alg !== "Ed25519") return null;
+    const kid = decoded.header.kid;
+    if (!kid) return null;
+
+    const keys = await fetchJwksKeys(env.OAUTH_JWKS_URL);
+    const jwk = keys[kid];
+    if (!jwk) return null;
+
+    const parts = token.split(".");
+    const signedData = new TextEncoder().encode(`${parts[0]}.${parts[1]}`) as Uint8Array<ArrayBuffer>;
+    const signature = b64urlToBytes(parts[2]) as Uint8Array<ArrayBuffer>;
+    if (!(await verifySignature(jwk, alg, signedData, signature))) return null;
+
+    const payload = decoded.payload;
+    const exp = payload.exp;
+    if (typeof exp !== "number" || exp <= Math.floor(Date.now() / 1000)) return null;
+
+    // RFC 8707: the token's audience MUST be bound to our resource.
+    const aud = payload.aud;
+    const audOk = Array.isArray(aud) ? aud.includes(env.RESOURCE_ID) : aud === env.RESOURCE_ID;
+    if (!audOk) return null;
+
+    // RFC 9207: the token's issuer MUST match our configured authorization
+    // server (explicit OAUTH_ISSUER wins; otherwise derive from the JWKS URL).
+    // This closes the issuer-substitution / mix-up gap — a token minted by a
+    // different AS that happens to share our JWKS/aud is rejected here.
+    const iss = payload.iss;
+    const expectedIssuer = env.OAUTH_ISSUER ?? issuerFromJwks(env.OAUTH_JWKS_URL) ?? null;
+    if (typeof iss !== "string" || !expectedIssuer || iss !== expectedIssuer) return null;
+
+    return { sub: String(payload.sub ?? ""), scope: typeof payload.scope === "string" ? payload.scope : undefined };
+  } catch {
+    return null;
+  }
+}
+
+/** Derive the IdP issuer (origin) from a JWKS URL, or null. */
+function issuerFromJwks(jwksUrl: string): string | null {
+  try {
+    return new URL(jwksUrl).origin;
+  } catch {
+    return null;
+  }
+}
+
 // ─── Streamable HTTP MCP Server ───────────────────────────────────────
 
 export interface Env {
   CATALOG_DO: DurableObjectNamespace;
   LOVE_DB: D1Database;
+  /**
+   * RFC 8707 resource URI that a valid bearer token's `aud` claim MUST match.
+   * When unset, the OAuth bearer gate is inactive (open access, today's
+   * behavior). Single source of truth for the RFC 9728 metadata `resource`.
+   */
+  RESOURCE_ID?: string;
+  /** External OAuth 2.1 IdP JWKS endpoint (fleet oauth-relay). Optional — when absent, bearer validation is disabled. */
+  OAUTH_JWKS_URL?: string;
+  /**
+   * RFC 9207 expected token issuer. When set, a valid bearer token's `iss`
+   * claim MUST equal this value exactly; when unset, falls back to the origin
+   * derived from OAUTH_JWKS_URL (issuerFromJwks).
+   */
+  OAUTH_ISSUER?: string;
 }
+
+/** This worker's resource URI (RFC 8707 `aud` / RFC 9728 `resource`). */
+const RESOURCE_URI = 'https://marketplace-mcp.trimtab-signal.workers.dev/mcp';
+/** Fleet authorization server (oauth-relay) for metadata discovery. */
+const FLEET_AS_ISSUER = 'https://oauth-relay.trimtab-signal.workers.dev';
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -390,7 +706,42 @@ export default {
 
     // CORS
     if (method === 'OPTIONS') {
-      return corsResponse('', 204);
+      return new Response(null, {
+        status: 204,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Mcp-Method, Mcp-Name, MCP-Protocol-Version, Authorization',
+        },
+      });
+    }
+
+    // RFC 8414 — authorization-server metadata discovery. This worker is a
+    // pure resource server: the metadata points at the fleet AS (oauth-relay)
+    // and advertises the resource URI whose `aud` claims it validates.
+    if (url.pathname === '/.well-known/oauth-authorization-server' && method === 'GET') {
+      const issuer = issuerFromJwks(env.OAUTH_JWKS_URL ?? '') ?? FLEET_AS_ISSUER;
+      return corsResponse(JSON.stringify({
+        issuer,
+        authorization_endpoint: `${issuer}/authorize`,
+        token_endpoint: `${issuer}/token`,
+        jwks_uri: env.OAUTH_JWKS_URL ?? `${FLEET_AS_ISSUER}/.well-known/jwks.json`,
+        response_types_supported: ['code'],
+        grant_types_supported: ['authorization_code'],
+        token_endpoint_auth_methods_supported: ['none'],
+        code_challenge_methods_supported: ['S256'],
+        resource: env.RESOURCE_ID ?? RESOURCE_URI,
+      }));
+    }
+
+    // RFC 9728 — protected-resource metadata (canonical route + alias).
+    if ((url.pathname === '/.well-known/resource-server' || url.pathname === '/.well-known/oauth-protected-resource') && method === 'GET') {
+      const issuer = issuerFromJwks(env.OAUTH_JWKS_URL ?? '') ?? FLEET_AS_ISSUER;
+      return corsResponse(JSON.stringify({
+        resource: env.RESOURCE_ID ?? RESOURCE_URI,
+        authorization_servers: [issuer],
+        scopes_supported: ['marketplace:read', 'marketplace:write'],
+      }));
     }
 
     // MCP Server Card (Smithery discovery)
@@ -410,76 +761,55 @@ export default {
       }));
     }
 
-    // Streamable HTTP: GET /mcp returns SSE notification stream
+    // Streamable HTTP: GET /mcp returns stateless JSON metadata (SEP-2575 —
+    // the legacy SSE notification stream is gone from the main path).
     if (url.pathname === '/mcp' && method === 'GET') {
-      const body = new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode(
-            `event: endpoint\ndata: ${JSON.stringify({ tools: TOOLS.length, service: 'marketplace-mcp' })}\n\n`
-          ));
-          controller.close();
-        },
-      });
-      return new Response(body, {
-        headers: {
-          'Content-Type': 'text/event-stream',
-          'Cache-Control': 'no-cache',
-          'Access-Control-Allow-Origin': '*',
-        },
-      });
+      return corsResponse(JSON.stringify({
+        service: 'p31-marketplace-mcp',
+        transport: 'streamable-http',
+        protocol: PROTOCOL_VERSION,
+        mcp: 'POST /mcp',
+        tools: TOOLS.map((t) => t.name),
+      }));
     }
 
-    // Streamable HTTP: POST /mcp for JSON-RPC 2.0
+    // Streamable HTTP: POST /mcp for JSON-RPC 2.0 — served by the SDK v2
+    // handler, behind the opt-in OAuth 2.1 bearer gate on tools/call.
     if (url.pathname === '/mcp' && method === 'POST') {
+      let body: any;
       try {
-        const body = await request.json<any>();
-        const { id: rpcId, method: rpcMethod, params } = body;
-
-        if (rpcMethod === 'initialize') {
-          const requested = params?.protocolVersion;
-          const protocolVersion = ['2025-11-25', '2025-06-18', '2025-03-26', '2024-11-05', '2024-10-07'].includes(requested) ? requested : '2025-11-25';
-          return corsResponse(JSON.stringify({ jsonrpc: '2.0', id: rpcId, result: { protocolVersion, capabilities: { tools: {} }, serverInfo: { name: 'marketplace-mcp', version: '1.0.0' } } }));
-        }
-
-        if (rpcMethod === 'notifications/initialized') {
-          return corsResponse(JSON.stringify({ jsonrpc: '2.0', id: rpcId, result: {} }));
-        }
-
-        if (rpcMethod === 'tools/list') {
-          return corsResponse(JSON.stringify({ jsonrpc: '2.0', id: rpcId, result: { tools: TOOLS } }));
-        }
-
-        if (rpcMethod === 'tools/call') {
-          const toolName = params?.name;
-          const toolArgs = params?.arguments || {};
-          const tool = TOOLS.find(t => t.name === toolName);
-          if (!tool) {
-            return corsResponse(JSON.stringify({
-              jsonrpc: '2.0', id: rpcId,
-              error: { code: -32602, message: `Unknown tool: ${toolName}` },
-            }), 400);
-          }
-          const result = await executeTool(toolName, toolArgs, env);
-          return corsResponse(JSON.stringify({
-            jsonrpc: '2.0', id: rpcId,
-            result: { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] },
-          }));
-        }
-
-        if (rpcMethod === 'ping') {
-          return corsResponse(JSON.stringify({ jsonrpc: '2.0', id: rpcId, result: {} }));
-        }
-
-        return corsResponse(JSON.stringify({
-          jsonrpc: '2.0', id: rpcId,
-          error: { code: -32601, message: `Method not found: ${rpcMethod}` },
-        }), 400);
+        body = await request.json<any>();
       } catch (e: any) {
-        return corsResponse(JSON.stringify({
-          jsonrpc: '2.0', id: null,
-          error: { code: -32700, message: `Parse error: ${e.message}` },
-        }), 400);
+        return mcpError(null, -32700, `Parse error: ${e.message}`);
       }
+
+      const rpcId = body?.id;
+
+      // OAuth 2.1 resource-server gate (opt-in via OAUTH_JWKS_URL +
+      // RESOURCE_ID). When configured: a supplied bearer token MUST validate
+      // (RFC 8707 audience binding, RFC 9207 iss); offer mutation tools
+      // require a valid token (runbook do-not: no fail-open on gated tools).
+      // Without a configured AS, current open access is preserved unchanged.
+      const oauthEnabled = Boolean(env.OAUTH_JWKS_URL && env.RESOURCE_ID);
+      if (oauthEnabled && body?.method === 'tools/call') {
+        const toolName = body?.params?.name ?? '';
+        const auth = request.headers.get('Authorization') ?? '';
+        if (auth.startsWith('Bearer ')) {
+          const bearer = await verifyOAuthBearer(request, env);
+          if (bearer === null) {
+            return mcpAuthReject(rpcId, 'invalid or unauthorized bearer token (RFC 8707 aud binding)');
+          }
+        } else if (OFFER_MUTATION_TOOLS.has(toolName)) {
+          return mcpAuthReject(rpcId, `bearer token required for ${toolName} (RFC 8707 audience-bound OAuth 2.1)`);
+        }
+      }
+
+      // Delegate to the SDK v2 stateless handler. The body was read above, so
+      // hand it over as parsedBody (the SDK never re-reads the consumed
+      // stream). The handler is built per request so tool callbacks close
+      // over this request's `env` (DO bindings).
+      const handler = createMcpHandler(() => buildServer(env));
+      return withCors(await handler.fetch(request, { parsedBody: body ?? undefined }));
     }
 
     // Health
@@ -488,6 +818,7 @@ export default {
         status: 'ok',
         service: 'marketplace-mcp',
         version: '1.0.0',
+        protocolVersion: PROTOCOL_VERSION,
         tools: TOOLS.length,
         timestamp: new Date().toISOString(),
       }));
@@ -497,8 +828,9 @@ export default {
     if (url.pathname === '/' && method === 'GET') {
       return corsResponse(JSON.stringify({
         service: 'p31-marketplace-mcp',
+        protocolVersion: PROTOCOL_VERSION,
         tools: TOOLS.map(t => t.name),
-        mcp: 'POST /mcp (JSON-RPC 2.0), GET /mcp (SSE)',
+        mcp: 'POST /mcp (JSON-RPC 2.0), GET /mcp (JSON metadata)',
       }));
     }
 

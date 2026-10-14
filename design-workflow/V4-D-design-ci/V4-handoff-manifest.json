@@ -1,0 +1,28 @@
+{
+  "generated": "2026-10-11T23:14:25.819Z",
+  "artifacts": {
+    "V3-B-mcp/wrangler.toml": "90cf8facbc6a8e3f",
+    "V3-B-mcp/public-surface.json": "21e0f26444955d8d",
+    "V3-B-mcp/handlers-proposal.diff": "320397f0fa437bdd",
+    "V3-B-mcp/deploy-checklist.md": "1b43da130dbc3a8b",
+    "V3-B-mcp/mcp-tiers.mjs": "d9c6c090909ab931",
+    "V3-C-canon/canon-diff/C3-F1-sunlight-text.patch.json": "5f18b70a3cb2b041",
+    "V3-C-canon/canon-diff/C3-F2-extensions-themes-equals-11.patch.json": "74b690fa6ed3a4b1",
+    "D-embedded/dist/p31_theme.h": "9fb5ffafa127681d",
+    "D-embedded/ui/index.html": "e0956f768c85cb1d",
+    "D-embedded/ui/styles.css": "1503f467b863203f",
+    "D-embedded/firmware-integration.md": "b7db62ff2093307d",
+    "/home/p31/production/docs/fix-plans/nodezero-embedded-ui-gap.md": "369325c1950fabc2",
+    "V3-C-canon/canon-proposals/C1-F1-sunlight-text-drift.md": "260d7c97c46138cb",
+    "V3-C-canon/canon-proposals/C1-F2-dual-source-themes-drift.md": "39aaacfa6ec4e535",
+    "V3-C-canon/canon-proposals/C1-P1-text-to-base.md": "d3d763ab5a9be9cd",
+    "V3-C-canon/canon-proposals/C1-P2-collapse-dual-source-themes.md": "5730b783370ac975",
+    "V3-C-canon/canon-proposals/C1-P3-versionpolicy.md": "60e9c0c50ce7b49d",
+    "V3-C-canon/canon-proposals/C1-P4-brands-shape.md": "f7c23491fe8f1746",
+    "V3-C-canon/canon-proposals/C1-P5-alpha-ranges.md": "24f5168004f54ec4",
+    "V3-C-canon/canon-proposals/C1-P6-clamp-type.md": "3eb0ff70e09edfe6",
+    "V3-C-canon/canon-proposals/C1-P7-density-ranges.md": "991e4349d0d8327e",
+    "V3-C-canon/canon-proposals/C1-P8-runtime-speed-factor.md": "5bf8bf87964141c3",
+    "V3-C-canon/canon-proposals/C1-P9-elevation-tints.md": "842161f0d7ffaa68"
+  }
+}

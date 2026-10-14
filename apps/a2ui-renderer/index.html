@@ -487,6 +487,19 @@ html[data-theme="light"] {
           el = document.createElement('div');
           el.style.cssText = 'display:grid;grid-template-columns:repeat(' + ((node.properties && node.properties.columns) || 3) + ',1fr);gap:16px;';
           break;
+        case 'Section':
+          el = document.createElement('section');
+          el.style.cssText = (node.properties && node.properties.variant === 'grid') ? 'padding:24px;max-width:1280px;margin:0 auto;' : STYLE.section;
+          break;
+        case 'CTABlock':
+          el = document.createElement('div');
+          el.className = 'glass-strong';
+          el.style.cssText = 'padding:48px 24px;text-align:center;max-width:720px;margin:0 auto;border-radius:var(--p31-radius-xl);';
+          var h = node.properties.heading || '';
+          var d = node.properties.description || '';
+          var btns = (node.properties.buttons || []).map(function(b) { return '<a href="' + (b.href || '#') + '" class="btn-' + (b.variant === 'secondary' ? 'secondary' : b.variant === 'ghost' ? 'ghost' : 'primary') + '" style="display:inline-flex;align-items:center;gap:8px;">' + (b.label || '') + '</a>'; }).join('');
+          el.innerHTML = '<h2 style="font-size:clamp(1.5rem,3vw,2rem);font-weight:700;color:var(--p31-text);margin-bottom:12px;">' + h + '</h2>' + (d ? '<p style="color:var(--p31-text-secondary);margin-bottom:24px;max-width:550px;margin-left:auto;margin-right:auto;">' + d + '</p>' : '') + (btns ? '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">' + btns + '</div>' : '');
+          return el;
         case 'GlassCard':
           el = document.createElement('div');
           el.className = 'glass-card';
@@ -504,19 +517,6 @@ html[data-theme="light"] {
           if (node.properties.title) inner += '<h3 style="color:var(--p31-text);font-size:14px;font-weight:700;margin-bottom:' + (node.properties.description ? '4px' : '0') + ';">' + node.properties.title + '</h3>';
           if (node.properties.description) inner += '<p style="color:var(--p31-text-secondary);font-size:12px;line-height:1.5;">' + node.properties.description + '</p>';
           el.innerHTML = inner;
-          return el;
-        case 'Section':
-          el = document.createElement('section');
-          el.style.cssText = (node.properties && node.properties.variant === 'grid') ? 'padding:24px;max-width:1280px;margin:0 auto;' : STYLE.section;
-          break;
-        case 'CTABlock':
-          el = document.createElement('div');
-          el.className = 'glass-strong';
-          el.style.cssText = 'padding:48px 24px;text-align:center;max-width:720px;margin:0 auto;border-radius:var(--p31-radius-xl);';
-          var h = node.properties.heading || '';
-          var d = node.properties.description || '';
-          var btns = (node.properties.buttons || []).map(function(b) { return '<a href="' + (b.href || '#') + '" class="btn-' + (b.variant === 'secondary' ? 'secondary' : b.variant === 'ghost' ? 'ghost' : 'primary') + '" style="display:inline-flex;align-items:center;gap:8px;">' + (b.label || '') + '</a>'; }).join('');
-          el.innerHTML = '<h2 style="font-size:clamp(1.5rem,3vw,2rem);font-weight:700;color:var(--p31-text);margin-bottom:12px;">' + h + '</h2>' + (d ? '<p style="color:var(--p31-text-secondary);margin-bottom:24px;max-width:550px;margin-left:auto;margin-right:auto;">' + d + '</p>' : '') + (btns ? '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">' + btns + '</div>' : '');
           return el;
         case 'HtmlBlock':
           el = document.createElement('div');

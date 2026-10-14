@@ -117,6 +117,76 @@ function getClientSecret(clientId: string, env: Env): string | null {
   return null;
 }
 
+// ─── CIMD + RFC 8707 helpers ────────────────────────────────────────────────
+
+const CIMD_CACHE_TTL_MS = 5 * 60 * 1000;
+const cimdCache = new Map<string, { fetchedAt: number; redirectUris: string[] }>();
+
+interface ClientResolution {
+  /** Redirect-URI allowlist from the client's metadata document (null when none). */
+  redirectUris: string[] | null;
+  /** True for the built-in shell / provider-bridge clients (hardcoded allowlist). */
+  builtin: boolean;
+}
+
+/**
+ * Client ID Metadata Documents (CIMD) — the registration model the MCP
+ * 2026-07-28 spec prefers over RFC 7591 DCR (which is deprecated there). When
+ * `CIMD_ENABLED` is 'true' and the client_id is an HTTPS URL, the metadata
+ * document is fetched from that URL and its `redirect_uris` become the
+ * validation allowlist. Built-in clients keep the hardcoded secret check.
+ */
+async function resolveClientMetadata(clientId: string, env: Env): Promise<ClientResolution> {
+  if (clientId === 'shell' || clientId === env.SHELL_ORIGIN) return { redirectUris: null, builtin: true };
+  if (clientId === env.GOOGLE_CLIENT_ID || clientId === env.GITHUB_CLIENT_ID) return { redirectUris: null, builtin: true };
+  if (env.CIMD_ENABLED !== 'true') return { redirectUris: null, builtin: false };
+
+  let parsed: URL;
+  try {
+    parsed = new URL(clientId);
+  } catch {
+    return { redirectUris: null, builtin: false };
+  }
+  if (parsed.protocol !== 'https:') return { redirectUris: null, builtin: false };
+
+  const cached = cimdCache.get(clientId);
+  if (cached && Date.now() - cached.fetchedAt < CIMD_CACHE_TTL_MS) {
+    return { redirectUris: cached.redirectUris, builtin: false };
+  }
+  try {
+    const res = await fetch(clientId, { headers: { Accept: 'application/json' } });
+    if (!res.ok) return { redirectUris: null, builtin: false };
+    const doc = await res.json<{ redirect_uris?: string[] }>();
+    const redirectUris = Array.isArray(doc.redirect_uris)
+      ? doc.redirect_uris.filter((u): u is string => typeof u === 'string')
+      : [];
+    cimdCache.set(clientId, { fetchedAt: Date.now(), redirectUris });
+    return { redirectUris, builtin: false };
+  } catch {
+    return { redirectUris: null, builtin: false };
+  }
+}
+
+/** The built-in shell client may only redirect back to its own origin. */
+function validRedirectForBuiltin(clientId: string, redirectUri: string, env: Env): boolean {
+  if (clientId !== 'shell' && clientId !== env.SHELL_ORIGIN) return true;
+  try {
+    return new URL(redirectUri).origin === new URL(env.SHELL_ORIGIN).origin;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * RFC 8707 — this AS serves a single resource: its own origin. Accepts the
+ * indicator when it is absent (defaults to the origin) or matches the origin;
+ * returns null for any other target (invalid_target).
+ */
+function validateResourceIndicator(resource: string | undefined | null, origin: string): string | null {
+  if (resource === undefined || resource === null || resource === '') return origin;
+  return resource === origin ? resource : null;
+}
+
 function securityHeaders(origin: string): Record<string, string> {
   return {
     'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
@@ -158,11 +228,30 @@ app.get('/.well-known/oauth-authorization-server', (c) => {
     token_endpoint: `${origin}/oauth/token`,
     jwks_uri: `${origin}/.well-known/jwks.json`,
     response_types_supported: ['code'],
-    grant_types_supported: ['authorization_code'],
+    grant_types_supported: ['authorization_code', 'refresh_token'],
     token_endpoint_auth_methods_supported: ['none', 'client_secret_basic'],
     code_challenge_methods_supported: ['S256'],
+    scopes_supported: ['openid', 'email', 'profile', 'read:user', 'user:email'],
+    // RFC 9207 — the authorization response carries `iss` for mix-up defense.
+    authorization_response_iss_parameter_supported: true,
+    // DPoP is accepted at the token and userinfo endpoints.
+    dpop_signing_alg_values_supported: ['Ed25519'],
+    // RFC 8707 — resource indicators are accepted (single-resource AS).
+    resource: origin,
   });
 });
+
+// RFC 9728 — protected-resource metadata for the resource this AS fronts
+// (the relay's own /oauth/userinfo). Served under the draft's well-known
+// URI and the MCP-aligned alias used across the P31 fleet.
+const protectedResourceMetadata = (origin: string) => ({
+  resource: origin,
+  authorization_servers: [origin],
+  scopes_supported: ['openid', 'email', 'profile', 'read:user', 'user:email'],
+  bearer_methods_supported: ['header'],
+});
+app.get('/.well-known/oauth-protected-resource', (c) => c.json(protectedResourceMetadata(new URL(c.req.url).origin)));
+app.get('/.well-known/resource-server', (c) => c.json(protectedResourceMetadata(new URL(c.req.url).origin)));
 
 // PAR endpoint (RFC 9126) — Pushed Authorization Requests
 app.post('/oauth/par', async (c) => {
@@ -211,9 +300,30 @@ app.post('/oauth/par', async (c) => {
     return c.json({ error: 'Unsupported code_challenge_method' }, 400);
   }
 
+  // Client ID Metadata Documents (CIMD) preferred over RFC 7591 DCR (deprecated
+  // in MCP 2026-07-28). URL-form client_ids resolve their own metadata document
+  // as the redirect-uri allowlist; built-in clients are same-origin restricted.
+  const origin = new URL(c.req.url).origin;
+  const clientMeta = await resolveClientMetadata(clientId, c.env);
+  if (clientMeta.builtin && !validRedirectForBuiltin(clientId, body.redirect_uri, c.env)) {
+    return c.json({ error: 'redirect_uri not allowed for this client' }, 400);
+  }
+  if (clientMeta.redirectUris && !clientMeta.redirectUris.includes(body.redirect_uri)) {
+    return c.json({ error: 'redirect_uri not listed in the client metadata document' }, 400);
+  }
+
+  // RFC 8707 — resource indicators must target this AS's resource (its origin).
+  const resource = validateResourceIndicator(body.resource, origin);
+  if (resource === null) {
+    return c.json({ error: 'invalid_target' }, 400);
+  }
+
   const requestUri = crypto.randomUUID();
   const now = Date.now();
   const expiresAt = now + PAR_TTL_MS;
+
+  // Persist the validated resource indicator with the pushed request.
+  body.resource = resource;
 
   await c.env.DB.prepare(
     `INSERT INTO par_requests (request_uri, client_id, request_payload, created_at, expires_at)
@@ -227,11 +337,13 @@ app.post('/oauth/par', async (c) => {
 
 // Initiate OAuth flow — direct params or request_uri (PAR)
 app.get('/oauth/authorize', async (c) => {
+  const origin = new URL(c.req.url).origin;
   let providerName: string;
   let redirect: string;
   let codeVerifier: string;
   let state: string;
   let codeChallenge: string;
+  let resource: string;
 
   const requestUri = c.req.query('request_uri');
 
@@ -258,6 +370,13 @@ app.get('/oauth/authorize', async (c) => {
     redirect = payload.redirect_uri;
     state = payload.state;
 
+    // RFC 8707 — restore the resource indicator recorded at PAR time.
+    const parResource = validateResourceIndicator(payload.resource, origin);
+    if (parResource === null) {
+      return c.json({ error: 'invalid_target' }, 400);
+    }
+    resource = parResource;
+
     const encoder = new TextEncoder();
     const verifierData = encoder.encode(state);
     const challengeBuffer = await crypto.subtle.digest('SHA-256', verifierData);
@@ -282,6 +401,13 @@ app.get('/oauth/authorize', async (c) => {
     if (!['google', 'github'].includes(providerName)) {
       return c.json({ error: 'Invalid provider' }, 400);
     }
+
+    // RFC 8707 — resource indicators must target this AS's resource (its origin).
+    const directResource = validateResourceIndicator(c.req.query('resource'), origin);
+    if (directResource === null) {
+      return c.json({ error: 'invalid_target' }, 400);
+    }
+    resource = directResource;
 
     // Generate PKCE verifier and state
     codeVerifier = base58Encode(crypto.getRandomValues(new Uint8Array(32)));
@@ -311,10 +437,10 @@ app.get('/oauth/authorize', async (c) => {
   const now = Date.now();
 
   await c.env.DB.prepare(
-    `INSERT INTO oauth_sessions (id, provider, code_verifier, state, redirect_uri, created_at, expires_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO oauth_sessions (id, provider, code_verifier, state, redirect_uri, resource, created_at, expires_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
   )
-    .bind(sessionId, providerName, codeVerifier, state, redirect, now, now + SESSION_TTL_MS)
+    .bind(sessionId, providerName, codeVerifier, state, redirect, resource, now, now + SESSION_TTL_MS)
     .run();
 
   const authUrl = new URL(provider.authUrl);
@@ -417,8 +543,8 @@ app.get('/oauth/callback', async (c) => {
   const tokenId = crypto.randomUUID();
   await c.env.DB.prepare(
     `INSERT OR REPLACE INTO oauth_tokens
-       (id, provider, provider_user_id, access_token, refresh_token, refresh_token_used, expires_at, did_key, per_user_salt, created_at)
-     VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?)`,
+       (id, provider, provider_user_id, access_token, refresh_token, refresh_token_used, expires_at, did_key, per_user_salt, resource, created_at)
+     VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?)`,
   )
     .bind(
       tokenId,
@@ -429,6 +555,7 @@ app.get('/oauth/callback', async (c) => {
       Date.now() + TOKEN_TTL_MS,
       didKey,
       base58Encode(salt),
+      session.resource,
       Date.now(),
     )
     .run();
@@ -441,13 +568,17 @@ app.get('/oauth/callback', async (c) => {
   // Issue DPoP nonce for subsequent token request
   const dpopNonce = generateNonce();
 
-  // Redirect back to shell
+  // Redirect back to shell — RFC 9207: the authorization response carries `iss`
+  // (this AS's issuer identifier) so clients can reject mix-up attacks, plus
+  // the RFC 8707 resource indicator when one was requested.
   const shellRedirect = new URL(session.redirect_uri);
   shellRedirect.searchParams.set('did', didKey);
   shellRedirect.searchParams.set('provider', session.provider);
   shellRedirect.searchParams.set('user_id', providerUserId);
   shellRedirect.searchParams.set('token_id', tokenId);
   shellRedirect.searchParams.set('dpop_nonce', dpopNonce);
+  shellRedirect.searchParams.set('iss', new URL(c.req.url).origin);
+  if (session.resource) shellRedirect.searchParams.set('resource', session.resource);
 
   return Response.redirect(shellRedirect.toString(), 302);
 });
@@ -509,6 +640,9 @@ app.post('/oauth/token', async (c) => {
     provider_user_id: token.provider_user_id,
     expires_at: token.expires_at,
     dpop_jkt: dpopJkt,
+    // RFC 9207 issuer identification + RFC 8707 resource passthrough.
+    iss: new URL(c.req.url).origin,
+    resource: token.resource,
   };
 
   return c.json(response, 200, { 'DPoP-Nonce': dpopNonce });

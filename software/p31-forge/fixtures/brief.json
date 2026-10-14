@@ -1,0 +1,14 @@
+{
+  "type": "brief",
+  "meta": { "title": "P31 One-Pager", "kicker": "P31 LABS", "thesis": "Free, sovereign software for neurodivergent people and caregivers.", "date": "2026-10-12", "source": "docs" },
+  "blocks": [
+    { "kind": "section", "id": "ask", "title": "The Ask", "role": "body", "children": [
+      { "kind": "kpi-set", "data": { "items": [
+        { "label": "Bridge ask", "value": "$27,000", "detail": "3 months" },
+        { "label": "Filed pipeline", "value": "$102,000", "detail": "5 applications" }
+      ] } },
+      { "kind": "prose", "data": { "text": "Repaid by the first grant award. NLnet Restack decision expected by year-end." } },
+      { "kind": "steps", "data": { "items": [ { "title": "File Humanity AI", "body": "by October 21" }, { "title": "File NLnet Restack", "body": "by November 3" } ] } }
+    ] }
+  ]
+}

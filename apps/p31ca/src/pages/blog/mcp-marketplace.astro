@@ -1,6 +1,5 @@
 ---
 import MarketingShell from '../../layouts/MarketingShell.astro';
-import CanonTopbar from '../../components/islands/CanonTopbar.tsx';
 import Footer from '../../components/marketing/Footer.astro';
 
 const post = {
@@ -10,19 +9,18 @@ const post = {
 };
 ---
 <MarketingShell theme="cipher" background="dome" title={`${post.title} — P31 Labs`} description="A former DoD civilian engineering technician on a Georgia island built a governed MCP marketplace — and found three bugs the industry doesn't know it has.">
-  <CanonTopbar client:load pageTitle="Blog" />
   <main id="main-content" class="section">
-    <div class="max-w-3xl mx-auto px-6 md:px-12 lg:px-16 py-16">
-      <div class="mb-10">
-        <div class="flex items-center gap-3 mb-4">
-          <time class="text-xs font-mono" style="color: var(--p31-text-tertiary);">{post.date}</time>
-          <span class="text-xs" style="color: var(--p31-text-tertiary);">·</span>
-          <span class="text-xs font-medium" style="color: var(--p31-accent);">{post.tag}</span>
+    <div class="mcd2-max-w-3xl mcd2-mx-auto mcd2-px-6 mcd2-md-px-12 mcd2-lg-px-16 mcd2-py-16">
+      <div class="mcd2-mb-10">
+        <div class="mcd2-flex mcd2-items-center mcd2-gap-3 mcd2-mb-4">
+          <time class="mcd2-text-xs mcd2-font-mono" style="color: var(--p31-text-tertiary);">{post.date}</time>
+          <span class="mcd2-text-xs" style="color: var(--p31-text-tertiary);">·</span>
+          <span class="mcd2-text-xs mcd2-font-medium" style="color: var(--p31-accent);">{post.tag}</span>
         </div>
-        <h1 class="text-3xl md:text-4xl leading-tight" style="font-family: var(--p31-font-serif, Georgia, serif); font-weight: 400; letter-spacing: -0.015em; color: var(--p31-text);">{post.title}</h1>
+        <h1 class="mcd2-text-3xl mcd2-md-text-4xl mcd2-leading-tight" style="font-family: var(--p31-font-serif, Georgia, serif); font-weight: 400; letter-spacing: -0.015em; color: var(--p31-text);">{post.title}</h1>
       </div>
 
-      <article class="glass-card p-8 md:p-10 text-sm leading-relaxed space-y-6" style="color: var(--p31-text-secondary);">
+      <article class="glass-card mcd2-p-8 mcd2-md-p-10 mcd2-text-sm mcd2-leading-relaxed mcd2-space-y-6" style="color: var(--p31-text-secondary);">
 
         <p>I spent sixteen years as a DoD civilian engineering technician — work with an uncompromising reliability standard, where a single point of failure is not acceptable. I moved to an island in southeast Georgia, and last year started reading about the Model Context Protocol. This is what I built and what I learned.</p>
 
@@ -58,8 +56,8 @@ const post = {
         <p>If you've built an MCP server and want it in a catalog with live governance, register it. The pipeline runs a real liveness probe and a tool-description scanner, and it either passes or it doesn't.</p>
 
         <p style="display:flex; gap:.75rem; flex-wrap:wrap;">
-          <a href="https://mcp.p31ca.org" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold no-underline" style="background: var(--p31-accent); color: var(--p31-void);">Marketplace →</a>
-          <a href="https://github.com/p31labs/production" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold border no-underline" style="border-color: var(--p31-glass-border); color: var(--p31-text);">Code →</a>
+          <a href="https://mcp.p31ca.org" class="mcd2-inline-flex mcd2-items-center mcd2-gap-2 mcd2-px-4 mcd2-py-2 mcd2-rounded-lg mcd2-font-semibold mcd2-no-underline" style="background: var(--p31-accent); color: var(--p31-void);">Marketplace →</a>
+          <a href="https://github.com/p31labs/production" class="mcd2-inline-flex mcd2-items-center mcd2-gap-2 mcd2-px-4 mcd2-py-2 mcd2-rounded-lg mcd2-font-semibold mcd2-border mcd2-no-underline" style="border-color: var(--p31-glass-border); color: var(--p31-text);">Code →</a>
         </p>
       </article>
     </div>

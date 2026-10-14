@@ -1,0 +1,42 @@
+{
+  "name": "@p31ca/canon-parts",
+  "version": "0.1.0",
+  "description": "P31 canon v2 — shared class-recipe core (recipes.css + recipes.mjs) and the single markup tree both wrapper worlds render from.",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.mjs"
+    },
+    "./recipes.css": "./src/recipes.css",
+    "./recipes": {
+      "types": "./src/recipes.d.ts",
+      "default": "./src/recipes.mjs"
+    },
+    "./markup": {
+      "types": "./src/markup.d.ts",
+      "default": "./src/markup.mjs"
+    }
+  },
+  "scripts": {
+    "build": "node scripts/copy-css.mjs",
+    "parity": "node scripts/parity.mjs",
+    "drift": "node ../../scripts/token-drift-check.mjs --no-fail ."
+  },
+  "dependencies": {
+    "@p31ca/canon": "workspace:*"
+  },
+  "devDependencies": {
+    "@p31ca/canon-astro": "workspace:*",
+    "@p31ca/canon-react": "workspace:*",
+    "astro": "^6.4.8",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "vite": "^6.4.4"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}

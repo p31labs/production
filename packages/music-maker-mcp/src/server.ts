@@ -14,13 +14,40 @@
  *
  * Run: npm run start   (tsx, stdio transport)
  */
-import { McpServer } from '@modelcontextprotocol/server';
-import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/server';
+import { McpServer, createMcpHandler } from '@modelcontextprotocol/server';
+import { SUPPORTED_PROTOCOL_VERSIONS } from '@modelcontextprotocol/server';
 import { z } from 'zod';
 import * as music from './music-tools';
 
+/** Modern-era revision this server advertises via `server/discover`. */
+const PROTOCOL_VERSION = '2026-07-28';
+
 export async function createServer(): Promise<McpServer> {
-  const server = new McpServer({ name: 'music-maker-mcp', version: '0.0.1' });
+  // Advertise BOTH eras: the 2026-07-28 stateless surface (server/discover,
+  // resultType) plus the legacy initialize handshake (2025-11-25 …) so
+  // 2025-era clients keep working. Without the modern revision the raw
+  // transport path rejects 2026-07-28 with -32000 (conformance gap).
+  const server = new McpServer(
+    { name: 'music-maker-mcp', version: '0.0.1' },
+    { supportedProtocolVersions: [...SUPPORTED_PROTOCOL_VERSIONS, PROTOCOL_VERSION] },
+  );
+
+  // Conformance (2026-07-28): `server/discover` must return top-level
+  // `protocolVersion` + capabilities + serverInfo. The SDK emits
+  // `supportedVersions` + `capabilities` and stamps serverInfo into `_meta`;
+  // add the missing top-level keys (additive only, no other behavior change).
+  const sdkServer = server.server as unknown as { _ondiscover: () => Record<string, unknown> };
+  const sdkDiscover = sdkServer._ondiscover.bind(sdkServer);
+  sdkServer._ondiscover = () => {
+    const base = sdkDiscover();
+    return {
+      protocolVersion: PROTOCOL_VERSION,
+      supportedProtocolVersions: Array.isArray(base.supportedVersions)
+        ? [...(base.supportedVersions as string[])]
+        : [PROTOCOL_VERSION],
+      ...base,
+    };
+  };
 
   server.registerTool(
     'music_observe',
@@ -96,18 +123,15 @@ export async function createServer(): Promise<McpServer> {
 
 /**
  * A stateless HTTP handler for edge deployment (the music-maker-mcp Worker).
- * Builds a fresh server per request (registering the tools) and connects the
- * MCP Streamable HTTP transport (JSON responses, no session persistence —
- * matching the 2026 sessionless MCP direction). Reused by http.ts (local
- * Node) and the Cloudflare Worker wrapper.
+ * Builds a fresh server per request (registering the tools) and serves it
+ * through the SDK v2 HTTP entry (`createMcpHandler`) — the same modern
+ * 2026-07-28 surface the other P31 workers use: SEP-2243 Mcp-* headers,
+ * `server/discover`, `resultType`, -32022 version mismatches, and the legacy
+ * `initialize` fallback for 2025-era clients. Reused by the Cloudflare Worker
+ * wrapper.
  */
 export async function createWorkerHandler(fetcher?: typeof fetch): Promise<(request: Request) => Promise<Response>> {
   if (fetcher) music.setFetcher(fetcher);
-  const server = await createServer();
-  const transport = new WebStandardStreamableHTTPServerTransport({
-    sessionIdGenerator: undefined,
-    enableJsonResponse: true,
-  });
-  await server.connect(transport);
-  return (request: Request) => transport.handleRequest(request);
+  const handler = createMcpHandler(() => createServer());
+  return (request: Request) => handler.fetch(request);
 }

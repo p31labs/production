@@ -11,7 +11,7 @@ Please do NOT open a public issue or pull request for a vulnerability.
 
 Report privately to:
 
-**security@p31ca.org**
+**trimtab.signal@proton.me**
 
 Include as much of the following as you can:
 

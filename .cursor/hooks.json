@@ -1,0 +1,20 @@
+{
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "python3 /home/p31/.agentdiff/scripts/capture-cursor.py"
+      }
+    ],
+    "afterTabFileEdit": [
+      {
+        "command": "python3 /home/p31/.agentdiff/scripts/capture-cursor.py"
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "python3 /home/p31/.agentdiff/scripts/capture-cursor.py"
+      }
+    ]
+  },
+  "version": 1
+}

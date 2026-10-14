@@ -1,0 +1,7417 @@
+{
+  "$schema": "https://design-tokens.org/schemas/format/2025.10",
+  "$extensions": {
+    "p31": {
+      "version": "2025.10",
+      "name": "P31 Labs Design System",
+      "description": "Design canon DTCG export — primitives, semantic slots, per-theme palettes."
+    }
+  },
+  "p31": {
+    "base": {
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      },
+      "$type": "dimension"
+    },
+    "radius-sm": {
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      },
+      "$type": "dimension"
+    },
+    "radius-md": {
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      },
+      "$type": "dimension"
+    },
+    "radius-lg": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$type": "dimension"
+    },
+    "radius-full": {
+      "$value": {
+        "value": 9999,
+        "unit": "px"
+      },
+      "$type": "dimension"
+    },
+    "font-sans": {
+      "$value": [
+        "Space Grotesk",
+        "system-ui",
+        "-apple-system",
+        "Segoe UI",
+        "Roboto",
+        "sans-serif"
+      ],
+      "$type": "fontFamily"
+    },
+    "font-mono": {
+      "$value": [
+        "JetBrains Mono",
+        "ui-monospace",
+        "SF Mono",
+        "Fira Code",
+        "monospace"
+      ],
+      "$type": "fontFamily"
+    },
+    "accent-alt": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.65,
+          0.18,
+          285
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "Superseded by the primary accent token. Removal in v1.0.0."
+    },
+    "text": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.96,
+          0.005,
+          270
+        ]
+      },
+      "$type": "color"
+    },
+    "glass-border-hover": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          1,
+          0.01,
+          240
+        ],
+        "alpha": 0.15
+      },
+      "$type": "color",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": {
+            "min": 0.075,
+            "max": 0.225
+          },
+          "unit": "alpha"
+        }
+      }
+    },
+    "glass-bg-strong": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          1,
+          0.01,
+          75
+        ],
+        "alpha": 0.22
+      },
+      "$type": "color",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": {
+            "min": 0.11,
+            "max": 0.33
+          },
+          "unit": "alpha"
+        }
+      }
+    },
+    "glass-bg-overlay": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          1,
+          0.01,
+          75
+        ],
+        "alpha": 0.1
+      },
+      "$type": "color",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": {
+            "min": 0.05,
+            "max": 0.15
+          },
+          "unit": "alpha"
+        }
+      }
+    },
+    "glass-bg-light": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          1,
+          0.01,
+          75
+        ],
+        "alpha": 0.1
+      },
+      "$type": "color",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": {
+            "min": 0.05,
+            "max": 0.15
+          },
+          "unit": "alpha"
+        }
+      }
+    },
+    "glass-border-strong": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          1,
+          0.01,
+          75
+        ],
+        "alpha": 0.16
+      },
+      "$type": "color",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": {
+            "min": 0.08,
+            "max": 0.24
+          },
+          "unit": "alpha"
+        }
+      }
+    },
+    "glass-border-strong-hover": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          1,
+          0.01,
+          75
+        ],
+        "alpha": 0.25
+      },
+      "$type": "color",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": {
+            "min": 0.125,
+            "max": 0.375
+          },
+          "unit": "alpha"
+        }
+      }
+    },
+    "neon": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.905,
+          0.155,
+          194.8
+        ]
+      },
+      "$type": "color"
+    },
+    "neon-dim": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.905,
+          0.155,
+          194.8
+        ],
+        "alpha": 0.35
+      },
+      "$type": "color",
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": {
+            "min": 0.175,
+            "max": 0.525
+          },
+          "unit": "alpha"
+        }
+      }
+    },
+    "neon-faint": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.905,
+          0.155,
+          194.8
+        ],
+        "alpha": 0.08
+      },
+      "$type": "color",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": {
+            "min": 0.04,
+            "max": 0.12
+          },
+          "unit": "alpha"
+        }
+      }
+    },
+    "neon-ghost": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.905,
+          0.155,
+          194.8
+        ],
+        "alpha": 0.03
+      },
+      "$type": "color",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": {
+            "min": 0.015,
+            "max": 0.045
+          },
+          "unit": "alpha"
+        }
+      }
+    },
+    "neon-cyan": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.905,
+          0.155,
+          194.8
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
+    },
+    "neon-magenta": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.7020000000000001,
+          0.322,
+          328.4
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
+    },
+    "neon-violet": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.67,
+          0.234,
+          309.1
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
+    },
+    "neon-amber": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.887,
+          0.182,
+          95.3
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
+    },
+    "neon-mint": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.8759999999999999,
+          0.228,
+          152.5
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
+    },
+    "neon-coral": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.7120000000000001,
+          0.181,
+          22.8
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
+    },
+    "neon-orange": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.754,
+          0.164,
+          50.4
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
+    },
+    "neon-blue": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.804,
+          0.146,
+          219.5
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
+    },
+    "neon-lavender": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.62,
+          0.279,
+          290.8
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
+    },
+    "neon-pink": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.674,
+          0.293,
+          340.4
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "No consumer. Superseded by the --p31-accent-* palette. Removal in v1.0.0."
+    },
+    "surface-s1": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0,
+          0,
+          0
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "surface-s2": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.049,
+          0,
+          0
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "surface-s3": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.069,
+          0,
+          0
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "surface-s4": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.105,
+          0,
+          0
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "status-online": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.65,
+          0.18,
+          105
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "status-offline": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.78,
+          0.01,
+          240
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "status-warning": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.65,
+          0.18,
+          15
+        ]
+      },
+      "$type": "color"
+    },
+    "status-error": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.65,
+          0.18,
+          20
+        ]
+      },
+      "$type": "color"
+    },
+    "status-info": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.65,
+          0.18,
+          195
+        ]
+      },
+      "$type": "color"
+    },
+    "font-display": {
+      "$value": [
+        "system-ui",
+        "-apple-system",
+        "BlinkMacSystemFont",
+        "Segoe UI",
+        "Roboto",
+        "Helvetica Neue",
+        "Arial",
+        "sans-serif"
+      ],
+      "$type": "fontFamily",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "duration-fast": {
+      "$value": {
+        "value": 100,
+        "unit": "ms"
+      },
+      "$type": "duration",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": {
+            "min": 0,
+            "max": 100
+          },
+          "unit": "ms"
+        }
+      }
+    },
+    "duration-normal": {
+      "$value": {
+        "value": 300,
+        "unit": "ms"
+      },
+      "$type": "duration",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": {
+            "min": 0,
+            "max": 300
+          },
+          "unit": "ms"
+        }
+      }
+    },
+    "duration-slow": {
+      "$value": {
+        "value": 500,
+        "unit": "ms"
+      },
+      "$type": "duration",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": {
+            "min": 0,
+            "max": 500
+          },
+          "unit": "ms"
+        }
+      }
+    },
+    "easing-smooth": {
+      "$value": [
+        0.4,
+        0,
+        0.2,
+        1
+      ],
+      "$type": "cubicBezier",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "easing-snappy": {
+      "$value": [
+        0.34,
+        1.56,
+        0.64,
+        1
+      ],
+      "$type": "cubicBezier",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "speed-factor": {
+      "$value": 1,
+      "$type": "number",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "spring-expressive-fast-spatial": {
+      "$value": [
+        0.42,
+        1.67,
+        0.21,
+        0.9
+      ],
+      "$type": "cubicBezier",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "spring-expressive-fast-spatial-ms": {
+      "$value": {
+        "value": 350,
+        "unit": "ms"
+      },
+      "$type": "duration",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": {
+            "min": 0,
+            "max": 350
+          },
+          "unit": "ms"
+        }
+      }
+    },
+    "spring-expressive-fast-effects": {
+      "$value": [
+        0.31,
+        0.8,
+        0.34,
+        1
+      ],
+      "$type": "cubicBezier",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "spring-expressive-fast-effects-ms": {
+      "$value": {
+        "value": 150,
+        "unit": "ms"
+      },
+      "$type": "duration",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": {
+            "min": 0,
+            "max": 150
+          },
+          "unit": "ms"
+        }
+      }
+    },
+    "spring-expressive-default-spatial": {
+      "$value": [
+        0.38,
+        1.21,
+        0.22,
+        1
+      ],
+      "$type": "cubicBezier",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "spring-expressive-default-spatial-ms": {
+      "$value": {
+        "value": 500,
+        "unit": "ms"
+      },
+      "$type": "duration",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": {
+            "min": 0,
+            "max": 500
+          },
+          "unit": "ms"
+        }
+      }
+    },
+    "spring-expressive-default-effects": {
+      "$value": [
+        0.34,
+        0.8,
+        0.34,
+        1
+      ],
+      "$type": "cubicBezier",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "spring-expressive-default-effects-ms": {
+      "$value": {
+        "value": 200,
+        "unit": "ms"
+      },
+      "$type": "duration",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": {
+            "min": 0,
+            "max": 200
+          },
+          "unit": "ms"
+        }
+      }
+    },
+    "spring-expressive-slow-spatial": {
+      "$value": [
+        0.38,
+        0.86,
+        0.22,
+        1
+      ],
+      "$type": "cubicBezier",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "spring-expressive-slow-spatial-ms": {
+      "$value": {
+        "value": 650,
+        "unit": "ms"
+      },
+      "$type": "duration",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": {
+            "min": 0,
+            "max": 650
+          },
+          "unit": "ms"
+        }
+      }
+    },
+    "spring-expressive-slow-effects": {
+      "$value": [
+        0.34,
+        0.8,
+        0.34,
+        1
+      ],
+      "$type": "cubicBezier",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "spring-expressive-slow-effects-ms": {
+      "$value": {
+        "value": 300,
+        "unit": "ms"
+      },
+      "$type": "duration",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": {
+            "min": 0,
+            "max": 300
+          },
+          "unit": "ms"
+        }
+      }
+    },
+    "spring-standard-spatial": {
+      "$value": [
+        0.2,
+        0,
+        0,
+        1
+      ],
+      "$type": "cubicBezier",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "spring-standard-spatial-ms": {
+      "$value": {
+        "value": 300,
+        "unit": "ms"
+      },
+      "$type": "duration",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": {
+            "min": 0,
+            "max": 300
+          },
+          "unit": "ms"
+        }
+      }
+    },
+    "elevation-level1-tint": {
+      "$value": 0.05,
+      "$type": "number",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver surface class",
+          "bounds": {
+            "min": 0.03,
+            "max": 0.15
+          },
+          "unit": "number"
+        }
+      }
+    },
+    "elevation-level2-tint": {
+      "$value": 0.08,
+      "$type": "number",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver surface class",
+          "bounds": {
+            "min": 0.03,
+            "max": 0.15
+          },
+          "unit": "number"
+        }
+      }
+    },
+    "elevation-level3-tint": {
+      "$value": 0.11,
+      "$type": "number",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver surface class",
+          "bounds": {
+            "min": 0.03,
+            "max": 0.15
+          },
+          "unit": "number"
+        }
+      }
+    },
+    "starfield-hearth": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.55,
+          0.15,
+          35
+        ]
+      },
+      "$type": "color"
+    },
+    "starfield-teal": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.6,
+          0.08,
+          185
+        ]
+      },
+      "$type": "color"
+    },
+    "starfield-remembrance": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.95,
+          0.01,
+          80
+        ]
+      },
+      "$type": "color"
+    },
+    "starfield-particle-teal": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.7,
+          0.12,
+          185
+        ],
+        "alpha": 0.6
+      },
+      "$type": "color",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": {
+            "min": 0.3,
+            "max": 0.9
+          },
+          "unit": "alpha"
+        }
+      }
+    },
+    "starfield-particle-coral": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.65,
+          0.14,
+          40
+        ],
+        "alpha": 0.5
+      },
+      "$type": "color",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": {
+            "min": 0.25,
+            "max": 0.75
+          },
+          "unit": "alpha"
+        }
+      }
+    },
+    "blur-subtle": {
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "blur-standard": {
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "blur-strong": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "space-tiny": {
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": {
+            "min": 1.5,
+            "max": 3
+          },
+          "unit": "px"
+        }
+      }
+    },
+    "radius-candy": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$type": "dimension"
+    },
+    "touch-min": {
+      "$value": {
+        "value": 48,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "touch-recommended": {
+      "$value": {
+        "value": 56,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "touch-large": {
+      "$value": {
+        "value": 64,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "z-starfield": {
+      "$value": 0,
+      "$type": "number"
+    },
+    "z-topbar": {
+      "$value": 10,
+      "$type": "number"
+    },
+    "z-toast": {
+      "$value": 9999,
+      "$type": "number",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "z-crisis": {
+      "$value": 99999,
+      "$type": "number"
+    },
+    "z-skip-link": {
+      "$value": 100,
+      "$type": "number"
+    },
+    "topbar-height": {
+      "$value": {
+        "value": 64,
+        "unit": "px"
+      },
+      "$type": "dimension"
+    },
+    "z-content": {
+      "$value": 1,
+      "$type": "number"
+    },
+    "z-floating": {
+      "$value": 60,
+      "$type": "number"
+    },
+    "space-3xl": {
+      "$value": {
+        "value": 64,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": {
+            "min": 48,
+            "max": 96
+          },
+          "unit": "px"
+        }
+      }
+    },
+    "glass-surface": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          1,
+          0.01,
+          240
+        ],
+        "alpha": 0.04
+      },
+      "$type": "color",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": {
+            "min": 0.02,
+            "max": 0.06
+          },
+          "unit": "alpha"
+        }
+      }
+    },
+    "glass-surface-hover": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          1,
+          0.01,
+          240
+        ],
+        "alpha": 0.06
+      },
+      "$type": "color",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": {
+            "min": 0.03,
+            "max": 0.09
+          },
+          "unit": "alpha"
+        }
+      }
+    },
+    "glass-radius": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$type": "dimension"
+    },
+    "spacing-xs": {
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": {
+            "min": 3,
+            "max": 6
+          },
+          "unit": "px"
+        }
+      }
+    },
+    "spacing-sm": {
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": {
+            "min": 6,
+            "max": 12
+          },
+          "unit": "px"
+        }
+      }
+    },
+    "spacing-md": {
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": {
+            "min": 12,
+            "max": 24
+          },
+          "unit": "px"
+        }
+      }
+    },
+    "spacing-lg": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": {
+            "min": 18,
+            "max": 36
+          },
+          "unit": "px"
+        }
+      }
+    },
+    "spacing-xl": {
+      "$value": {
+        "value": 32,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": {
+            "min": 24,
+            "max": 48
+          },
+          "unit": "px"
+        }
+      }
+    },
+    "spacing-xxl": {
+      "$value": {
+        "value": 64,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": {
+            "min": 48,
+            "max": 96
+          },
+          "unit": "px"
+        }
+      }
+    },
+    "radius-none": {
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "h1": {
+      "$value": {
+        "value": 51,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "clamp",
+          "resolvedBy": "window-size class + user text-size adjustment",
+          "bounds": {
+            "preferred": "3.1875rem",
+            "min": "2.7891rem",
+            "max": "3.9844rem"
+          },
+          "unit": "rem"
+        }
+      }
+    },
+    "h2": {
+      "$value": {
+        "value": 38,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "clamp",
+          "resolvedBy": "window-size class + user text-size adjustment",
+          "bounds": {
+            "preferred": "2.375rem",
+            "min": "2.0781rem",
+            "max": "2.9688rem"
+          },
+          "unit": "rem"
+        }
+      }
+    },
+    "h3": {
+      "$value": {
+        "value": 28,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "clamp",
+          "resolvedBy": "window-size class + user text-size adjustment",
+          "bounds": {
+            "preferred": "1.75rem",
+            "min": "1.5313rem",
+            "max": "2.1875rem"
+          },
+          "unit": "rem"
+        }
+      }
+    },
+    "h4": {
+      "$value": {
+        "value": 21,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "clamp",
+          "resolvedBy": "window-size class + user text-size adjustment",
+          "bounds": {
+            "preferred": "1.3125rem",
+            "min": "1.1484rem",
+            "max": "1.6406rem"
+          },
+          "unit": "rem"
+        }
+      }
+    },
+    "body": {
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "clamp",
+          "resolvedBy": "window-size class + user text-size adjustment",
+          "bounds": {
+            "preferred": "1rem",
+            "min": "0.875rem",
+            "max": "1.25rem"
+          },
+          "unit": "rem"
+        }
+      }
+    },
+    "body-sm": {
+      "$value": {
+        "value": 14,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "clamp",
+          "resolvedBy": "window-size class + user text-size adjustment",
+          "bounds": {
+            "preferred": "0.875rem",
+            "min": "0.7656rem",
+            "max": "1.0938rem"
+          },
+          "unit": "rem"
+        }
+      }
+    },
+    "label": {
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "clamp",
+          "resolvedBy": "window-size class + user text-size adjustment",
+          "bounds": {
+            "preferred": "0.75rem",
+            "min": "0.6563rem",
+            "max": "0.9375rem"
+          },
+          "unit": "rem"
+        }
+      }
+    },
+    "caption": {
+      "$value": {
+        "value": 7,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "clamp",
+          "resolvedBy": "window-size class + user text-size adjustment",
+          "bounds": {
+            "preferred": "0.4375rem",
+            "min": "0.3828rem",
+            "max": "0.5469rem"
+          },
+          "unit": "rem"
+        }
+      }
+    },
+    "duration-instant": {
+      "$value": {
+        "value": 62.5,
+        "unit": "ms"
+      },
+      "$type": "duration",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": {
+            "min": 0,
+            "max": 62.5
+          },
+          "unit": "ms"
+        }
+      }
+    },
+    "duration-standard": {
+      "$value": {
+        "value": 250,
+        "unit": "ms"
+      },
+      "$type": "duration",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": {
+            "min": 0,
+            "max": 250
+          },
+          "unit": "ms"
+        }
+      }
+    },
+    "duration-slower": {
+      "$value": {
+        "value": 1000,
+        "unit": "ms"
+      },
+      "$type": "duration",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": {
+            "min": 0,
+            "max": 1000
+          },
+          "unit": "ms"
+        }
+      }
+    },
+    "easing-standard": {
+      "$value": [
+        0.4,
+        0,
+        0.2,
+        1
+      ],
+      "$type": "cubicBezier"
+    },
+    "easing-decelerate": {
+      "$value": [
+        0,
+        0,
+        0.2,
+        1
+      ],
+      "$type": "cubicBezier",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "easing-accelerate": {
+      "$value": [
+        0.4,
+        0,
+        1,
+        1
+      ],
+      "$type": "cubicBezier",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "card-padding": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "duration-base": {
+      "$value": {
+        "value": 431,
+        "unit": "ms"
+      },
+      "$type": "duration",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": {
+            "min": 0,
+            "max": 431
+          },
+          "unit": "ms"
+        }
+      }
+    },
+    "font-base": {
+      "$value": [
+        "13px"
+      ],
+      "$type": "fontFamily"
+    },
+    "font-scale": {
+      "$value": [
+        "1.333"
+      ],
+      "$type": "fontFamily"
+    },
+    "glass-bg-dark": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.1,
+          0.01,
+          60
+        ],
+        "alpha": 0.6
+      },
+      "$type": "color",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": {
+            "min": 0.3,
+            "max": 0.9
+          },
+          "unit": "alpha"
+        }
+      }
+    },
+    "quantum-cyan": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.87,
+          0.148,
+          203
+        ]
+      },
+      "$type": "color"
+    },
+    "space-base": {
+      "$value": {
+        "value": 1,
+        "unit": "rem"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": {
+            "min": 0.75,
+            "max": 1.5
+          },
+          "unit": "rem"
+        }
+      }
+    },
+    "space-micro": {
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      },
+      "$type": "dimension"
+    },
+    "space-2xs": {
+      "$value": {
+        "value": 6,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": {
+            "min": 4.5,
+            "max": 9
+          },
+          "unit": "px"
+        }
+      }
+    },
+    "space-2": {
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": {
+            "min": 6,
+            "max": 12
+          },
+          "unit": "px"
+        }
+      }
+    },
+    "space-3": {
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": {
+            "min": 9,
+            "max": 18
+          },
+          "unit": "px"
+        }
+      }
+    },
+    "space-5": {
+      "$value": {
+        "value": 32,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": {
+            "min": 24,
+            "max": 48
+          },
+          "unit": "px"
+        }
+      }
+    },
+    "space-7": {
+      "$value": {
+        "value": 48,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": {
+            "min": 36,
+            "max": 72
+          },
+          "unit": "px"
+        }
+      }
+    },
+    "accent-glow": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.7148399999999999,
+          0.126,
+          215.221
+        ],
+        "alpha": 0.15
+      },
+      "$type": "color",
+      "$extensions": {
+        "p31": {
+          "policy": "range",
+          "resolvedBy": "resolver.flags + user.slider",
+          "bounds": {
+            "min": 0.075,
+            "max": 0.225
+          },
+          "unit": "alpha"
+        }
+      }
+    },
+    "z-dropdown": {
+      "$value": 100,
+      "$type": "number"
+    },
+    "color-amber": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.72,
+          0.15,
+          50
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "color-emerald": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.6,
+          0.13,
+          155
+        ]
+      },
+      "$type": "color",
+      "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+    },
+    "space-6": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$type": "dimension",
+      "$extensions": {
+        "p31": {
+          "policy": "density",
+          "resolvedBy": "resolver tier + M3 adaptive spacing",
+          "bounds": {
+            "min": 18,
+            "max": 36
+          },
+          "unit": "px"
+        }
+      }
+    },
+    "color": {
+      "action": {
+        "primary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.15,
+              200
+            ]
+          },
+          "$type": "color",
+          "$extensions": {
+            "p31": {
+              "themes": {
+                "cipher": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.65,
+                    0.18,
+                    195
+                  ]
+                },
+                "garden": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.7,
+                    0.15,
+                    145
+                  ]
+                },
+                "retro": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.75,
+                    0.18,
+                    80
+                  ]
+                },
+                "sunset": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.72,
+                    0.18,
+                    40
+                  ]
+                },
+                "mono": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.8,
+                    0,
+                    0
+                  ]
+                },
+                "aurora": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.72,
+                    0.16,
+                    250
+                  ]
+                },
+                "zen": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.72,
+                    0.1,
+                    75
+                  ]
+                },
+                "volt": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.75,
+                    0.17,
+                    190
+                  ]
+                },
+                "family": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.8,
+                    0.16,
+                    75
+                  ]
+                },
+                "sunlight": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.55,
+                    0.15,
+                    40
+                  ]
+                }
+              }
+            }
+          },
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        },
+        "primary-hover": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.15,
+              200
+            ],
+            "alpha": 0.8
+          },
+          "$type": "color",
+          "$extensions": {
+            "p31": {
+              "themes": {
+                "cipher": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.65,
+                    0.18,
+                    195
+                  ],
+                  "alpha": 0.8
+                },
+                "garden": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.7,
+                    0.15,
+                    145
+                  ],
+                  "alpha": 0.8
+                },
+                "retro": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.75,
+                    0.18,
+                    80
+                  ],
+                  "alpha": 0.8
+                },
+                "sunset": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.72,
+                    0.18,
+                    40
+                  ],
+                  "alpha": 0.8
+                },
+                "mono": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.8,
+                    0,
+                    0
+                  ],
+                  "alpha": 0.8
+                },
+                "aurora": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.72,
+                    0.16,
+                    250
+                  ],
+                  "alpha": 0.8
+                },
+                "zen": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.72,
+                    0.1,
+                    75
+                  ],
+                  "alpha": 0.8
+                },
+                "volt": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.75,
+                    0.17,
+                    190
+                  ],
+                  "alpha": 0.8
+                },
+                "family": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.8,
+                    0.16,
+                    75
+                  ],
+                  "alpha": 0.8
+                },
+                "sunlight": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.55,
+                    0.15,
+                    40
+                  ],
+                  "alpha": 0.8
+                }
+              },
+              "policy": "range",
+              "resolvedBy": "resolver.flags + user.slider",
+              "bounds": {
+                "min": 0.4,
+                "max": 1
+              },
+              "unit": "alpha"
+            }
+          },
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        },
+        "primary-text": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.95,
+              0.02,
+              230
+            ]
+          },
+          "$type": "color",
+          "$extensions": {
+            "p31": {
+              "themes": {
+                "cipher": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.96,
+                    0.005,
+                    240
+                  ]
+                },
+                "garden": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.95,
+                    0.02,
+                    120
+                  ]
+                },
+                "retro": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.95,
+                    0.05,
+                    80
+                  ]
+                },
+                "sunset": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.95,
+                    0.03,
+                    50
+                  ]
+                },
+                "mono": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.95,
+                    0,
+                    0
+                  ]
+                },
+                "aurora": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.95,
+                    0.03,
+                    260
+                  ]
+                },
+                "zen": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.93,
+                    0.01,
+                    75
+                  ]
+                },
+                "volt": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.96,
+                    0.01,
+                    270
+                  ]
+                },
+                "family": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.97,
+                    0.02,
+                    70
+                  ]
+                },
+                "sunlight": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.22,
+                    0.015,
+                    80
+                  ]
+                }
+              }
+            }
+          },
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        },
+        "secondary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.22,
+              0.045,
+              240
+            ]
+          },
+          "$type": "color",
+          "$extensions": {
+            "p31": {
+              "themes": {
+                "cipher": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.22,
+                    0.02,
+                    240
+                  ]
+                },
+                "garden": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.25,
+                    0.03,
+                    140
+                  ]
+                },
+                "retro": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.18,
+                    0.03,
+                    60
+                  ]
+                },
+                "sunset": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.23,
+                    0.04,
+                    30
+                  ]
+                },
+                "mono": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.2,
+                    0,
+                    0
+                  ]
+                },
+                "aurora": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.2,
+                    0.04,
+                    260
+                  ]
+                },
+                "zen": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.25,
+                    0.015,
+                    75
+                  ]
+                },
+                "volt": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.25,
+                    0.03,
+                    270
+                  ]
+                },
+                "family": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.29,
+                    0.045,
+                    55
+                  ]
+                },
+                "sunlight": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.94,
+                    0.012,
+                    85
+                  ]
+                }
+              }
+            }
+          },
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        },
+        "secondary-text": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.95,
+              0.02,
+              230
+            ]
+          },
+          "$type": "color",
+          "$extensions": {
+            "p31": {
+              "themes": {
+                "cipher": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.96,
+                    0.005,
+                    240
+                  ]
+                },
+                "garden": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.95,
+                    0.02,
+                    120
+                  ]
+                },
+                "retro": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.95,
+                    0.05,
+                    80
+                  ]
+                },
+                "sunset": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.95,
+                    0.03,
+                    50
+                  ]
+                },
+                "mono": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.95,
+                    0,
+                    0
+                  ]
+                },
+                "aurora": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.95,
+                    0.03,
+                    260
+                  ]
+                },
+                "zen": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.93,
+                    0.01,
+                    75
+                  ]
+                },
+                "volt": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.96,
+                    0.01,
+                    270
+                  ]
+                },
+                "family": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.97,
+                    0.02,
+                    70
+                  ]
+                },
+                "sunlight": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.22,
+                    0.015,
+                    80
+                  ]
+                }
+              }
+            }
+          },
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        },
+        "ghost": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0,
+              0
+            ],
+            "alpha": 0
+          },
+          "$type": "color",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+          "$extensions": {
+            "p31": {
+              "policy": "range",
+              "resolvedBy": "resolver.flags + user.slider",
+              "bounds": {
+                "min": 0,
+                "max": 0.05
+              },
+              "unit": "alpha"
+            }
+          }
+        },
+        "ghost-hover": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              230
+            ],
+            "alpha": 0.04
+          },
+          "$type": "color",
+          "$extensions": {
+            "p31": {
+              "themes": {
+                "cipher": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    1,
+                    0.01,
+                    240
+                  ],
+                  "alpha": 0.05
+                },
+                "garden": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    1,
+                    0.01,
+                    120
+                  ],
+                  "alpha": 0.04
+                },
+                "retro": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    1,
+                    0.02,
+                    60
+                  ],
+                  "alpha": 0.05
+                },
+                "sunset": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    1,
+                    0.01,
+                    30
+                  ],
+                  "alpha": 0.06
+                },
+                "mono": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    1,
+                    0,
+                    0
+                  ],
+                  "alpha": 0.05
+                },
+                "aurora": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    1,
+                    0.02,
+                    260
+                  ],
+                  "alpha": 0.05
+                },
+                "zen": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    1,
+                    0.01,
+                    75
+                  ],
+                  "alpha": 0.05
+                },
+                "volt": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    1,
+                    0.01,
+                    270
+                  ],
+                  "alpha": 0.05
+                },
+                "family": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    1,
+                    0.02,
+                    60
+                  ],
+                  "alpha": 0.05
+                },
+                "sunlight": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    1,
+                    0.005,
+                    90
+                  ],
+                  "alpha": 0.6
+                }
+              },
+              "policy": "range",
+              "resolvedBy": "resolver.flags + user.slider",
+              "bounds": {
+                "min": 0.02,
+                "max": 0.06
+              },
+              "unit": "alpha"
+            }
+          },
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        }
+      },
+      "text": {
+        "primary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.95,
+              0.02,
+              230
+            ]
+          },
+          "$type": "color",
+          "$extensions": {
+            "p31": {
+              "themes": {
+                "cipher": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.96,
+                    0.005,
+                    240
+                  ]
+                },
+                "garden": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.95,
+                    0.02,
+                    120
+                  ]
+                },
+                "retro": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.95,
+                    0.05,
+                    80
+                  ]
+                },
+                "sunset": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.95,
+                    0.03,
+                    50
+                  ]
+                },
+                "mono": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.95,
+                    0,
+                    0
+                  ]
+                },
+                "aurora": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.95,
+                    0.03,
+                    260
+                  ]
+                },
+                "zen": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.93,
+                    0.01,
+                    75
+                  ]
+                },
+                "volt": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.96,
+                    0.01,
+                    270
+                  ]
+                },
+                "family": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.97,
+                    0.02,
+                    70
+                  ]
+                },
+                "sunlight": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.22,
+                    0.015,
+                    80
+                  ]
+                }
+              }
+            }
+          },
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        },
+        "secondary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.02,
+              235
+            ]
+          },
+          "$type": "color",
+          "$extensions": {
+            "p31": {
+              "themes": {
+                "cipher": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.75,
+                    0.01,
+                    240
+                  ]
+                },
+                "garden": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.78,
+                    0.02,
+                    130
+                  ]
+                },
+                "retro": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.78,
+                    0.04,
+                    75
+                  ]
+                },
+                "sunset": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.78,
+                    0.03,
+                    40
+                  ]
+                },
+                "mono": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.75,
+                    0,
+                    0
+                  ]
+                },
+                "aurora": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.78,
+                    0.03,
+                    260
+                  ]
+                },
+                "zen": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.75,
+                    0.012,
+                    75
+                  ]
+                },
+                "volt": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.8,
+                    0.01,
+                    270
+                  ]
+                },
+                "family": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.82,
+                    0.03,
+                    70
+                  ]
+                },
+                "sunlight": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.38,
+                    0.015,
+                    80
+                  ]
+                }
+              }
+            }
+          },
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        },
+        "muted": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.55,
+              0.02,
+              235
+            ]
+          },
+          "$type": "color",
+          "$extensions": {
+            "p31": {
+              "themes": {
+                "cipher": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.55,
+                    0.01,
+                    240
+                  ]
+                },
+                "garden": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.55,
+                    0.02,
+                    130
+                  ]
+                },
+                "retro": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.52,
+                    0.03,
+                    70
+                  ]
+                },
+                "sunset": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.55,
+                    0.03,
+                    35
+                  ]
+                },
+                "mono": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.5,
+                    0,
+                    0
+                  ]
+                },
+                "aurora": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.55,
+                    0.03,
+                    260
+                  ]
+                },
+                "zen": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.55,
+                    0.01,
+                    75
+                  ]
+                },
+                "volt": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.58,
+                    0.01,
+                    270
+                  ]
+                },
+                "family": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.6,
+                    0.03,
+                    65
+                  ]
+                },
+                "sunlight": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.55,
+                    0.015,
+                    80
+                  ]
+                }
+              }
+            }
+          },
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        }
+      },
+      "accent": {
+        "default": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.15,
+              200
+            ]
+          },
+          "$type": "color",
+          "$extensions": {
+            "p31": {
+              "themes": {
+                "cipher": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.65,
+                    0.18,
+                    195
+                  ]
+                },
+                "garden": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.7,
+                    0.15,
+                    145
+                  ]
+                },
+                "retro": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.75,
+                    0.18,
+                    80
+                  ]
+                },
+                "sunset": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.72,
+                    0.18,
+                    40
+                  ]
+                },
+                "mono": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.8,
+                    0,
+                    0
+                  ]
+                },
+                "aurora": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.72,
+                    0.16,
+                    250
+                  ]
+                },
+                "zen": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.72,
+                    0.1,
+                    75
+                  ]
+                },
+                "volt": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.75,
+                    0.17,
+                    190
+                  ]
+                },
+                "family": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.8,
+                    0.16,
+                    75
+                  ]
+                },
+                "sunlight": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.55,
+                    0.15,
+                    40
+                  ]
+                }
+              }
+            }
+          },
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        },
+        "violet": {
+          "default": {
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.65,
+                0.15,
+                250
+              ]
+            },
+            "$type": "color",
+            "$extensions": {
+              "p31": {
+                "themes": {
+                  "cipher": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.65,
+                      0.18,
+                      285
+                    ]
+                  },
+                  "garden": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.15,
+                      185
+                    ]
+                  },
+                  "retro": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.18,
+                      320
+                    ]
+                  },
+                  "sunset": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.18,
+                      0
+                    ]
+                  },
+                  "mono": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0,
+                      0
+                    ]
+                  },
+                  "aurora": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0.16,
+                      250
+                    ]
+                  },
+                  "zen": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.1,
+                      300
+                    ]
+                  },
+                  "volt": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0.17,
+                      300
+                    ]
+                  },
+                  "family": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0.16,
+                      20
+                    ]
+                  },
+                  "sunlight": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.55,
+                      0.15,
+                      300
+                    ]
+                  }
+                }
+              }
+            },
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+          },
+          "muted": {
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.65,
+                0.05,
+                250
+              ]
+            },
+            "$type": "color",
+            "$extensions": {
+              "p31": {
+                "themes": {
+                  "cipher": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.65,
+                      0.05,
+                      285
+                    ]
+                  },
+                  "garden": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.05,
+                      185
+                    ]
+                  },
+                  "retro": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.05,
+                      320
+                    ]
+                  },
+                  "sunset": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.05,
+                      0
+                    ]
+                  },
+                  "mono": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.05,
+                      0
+                    ]
+                  },
+                  "aurora": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0.05,
+                      250
+                    ]
+                  },
+                  "zen": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.05,
+                      300
+                    ]
+                  },
+                  "volt": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0.05,
+                      300
+                    ]
+                  },
+                  "family": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0.05,
+                      20
+                    ]
+                  },
+                  "sunlight": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.55,
+                      0.05,
+                      300
+                    ]
+                  }
+                }
+              }
+            },
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+          }
+        },
+        "gold": {
+          "default": {
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.72,
+                0.15,
+                40
+              ]
+            },
+            "$type": "color",
+            "$extensions": {
+              "p31": {
+                "themes": {
+                  "cipher": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.65,
+                      0.18,
+                      15
+                    ]
+                  },
+                  "garden": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.75,
+                      0.15,
+                      85
+                    ]
+                  },
+                  "retro": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.78,
+                      0.18,
+                      70
+                    ]
+                  },
+                  "sunset": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.75,
+                      0.18,
+                      60
+                    ]
+                  },
+                  "mono": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.78,
+                      0,
+                      0
+                    ]
+                  },
+                  "aurora": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.75,
+                      0.16,
+                      65
+                    ]
+                  },
+                  "zen": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.75,
+                      0.12,
+                      75
+                    ]
+                  },
+                  "volt": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.78,
+                      0.17,
+                      60
+                    ]
+                  },
+                  "family": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.83,
+                      0.16,
+                      65
+                    ]
+                  },
+                  "sunlight": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.62,
+                      0.14,
+                      80
+                    ]
+                  }
+                }
+              }
+            },
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+          },
+          "muted": {
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.72,
+                0.05,
+                40
+              ]
+            },
+            "$type": "color",
+            "$extensions": {
+              "p31": {
+                "themes": {
+                  "cipher": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.65,
+                      0.05,
+                      15
+                    ]
+                  },
+                  "garden": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.75,
+                      0.05,
+                      85
+                    ]
+                  },
+                  "retro": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.78,
+                      0.05,
+                      70
+                    ]
+                  },
+                  "sunset": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.75,
+                      0.05,
+                      60
+                    ]
+                  },
+                  "mono": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.78,
+                      0.05,
+                      0
+                    ]
+                  },
+                  "aurora": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.75,
+                      0.05,
+                      65
+                    ]
+                  },
+                  "zen": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.75,
+                      0.05,
+                      75
+                    ]
+                  },
+                  "volt": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.78,
+                      0.05,
+                      60
+                    ]
+                  },
+                  "family": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.83,
+                      0.05,
+                      65
+                    ]
+                  },
+                  "sunlight": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.62,
+                      0.05,
+                      80
+                    ]
+                  }
+                }
+              }
+            },
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+          }
+        },
+        "green": {
+          "default": {
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.7,
+                0.15,
+                160
+              ]
+            },
+            "$type": "color",
+            "$extensions": {
+              "p31": {
+                "themes": {
+                  "cipher": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.65,
+                      0.18,
+                      105
+                    ]
+                  },
+                  "garden": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.15,
+                      145
+                    ]
+                  },
+                  "retro": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.65,
+                      0.18,
+                      140
+                    ]
+                  },
+                  "sunset": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.65,
+                      0.18,
+                      140
+                    ]
+                  },
+                  "mono": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0,
+                      0
+                    ]
+                  },
+                  "aurora": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.16,
+                      160
+                    ]
+                  },
+                  "zen": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.68,
+                      0.1,
+                      140
+                    ]
+                  },
+                  "volt": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0.17,
+                      150
+                    ]
+                  },
+                  "family": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0.16,
+                      145
+                    ]
+                  },
+                  "sunlight": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.55,
+                      0.13,
+                      150
+                    ]
+                  }
+                }
+              }
+            },
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+          },
+          "muted": {
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.7,
+                0.05,
+                160
+              ]
+            },
+            "$type": "color",
+            "$extensions": {
+              "p31": {
+                "themes": {
+                  "cipher": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.65,
+                      0.05,
+                      105
+                    ]
+                  },
+                  "garden": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.05,
+                      145
+                    ]
+                  },
+                  "retro": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.65,
+                      0.05,
+                      140
+                    ]
+                  },
+                  "sunset": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.65,
+                      0.05,
+                      140
+                    ]
+                  },
+                  "mono": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0.05,
+                      0
+                    ]
+                  },
+                  "zen": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.68,
+                      0.05,
+                      140
+                    ]
+                  },
+                  "volt": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0.05,
+                      150
+                    ]
+                  },
+                  "family": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0.05,
+                      145
+                    ]
+                  },
+                  "sunlight": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.55,
+                      0.05,
+                      150
+                    ]
+                  }
+                }
+              }
+            },
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+          }
+        },
+        "red": {
+          "default": {
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.7,
+                0.15,
+                20
+              ]
+            },
+            "$type": "color",
+            "$extensions": {
+              "p31": {
+                "themes": {
+                  "cipher": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.65,
+                      0.18,
+                      30
+                    ]
+                  },
+                  "garden": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.65,
+                      0.15,
+                      30
+                    ]
+                  },
+                  "retro": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.18,
+                      30
+                    ]
+                  },
+                  "sunset": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0.18,
+                      25
+                    ]
+                  },
+                  "mono": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.68,
+                      0,
+                      0
+                    ]
+                  },
+                  "aurora": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.16,
+                      25
+                    ]
+                  },
+                  "zen": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.68,
+                      0.12,
+                      25
+                    ]
+                  },
+                  "volt": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0.17,
+                      20
+                    ]
+                  },
+                  "family": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.68,
+                      0.16,
+                      25
+                    ]
+                  },
+                  "sunlight": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.55,
+                      0.15,
+                      25
+                    ]
+                  }
+                }
+              }
+            },
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+          },
+          "muted": {
+            "$value": {
+              "colorSpace": "oklch",
+              "components": [
+                0.7,
+                0.05,
+                20
+              ]
+            },
+            "$type": "color",
+            "$extensions": {
+              "p31": {
+                "themes": {
+                  "cipher": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.65,
+                      0.05,
+                      30
+                    ]
+                  },
+                  "garden": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.65,
+                      0.05,
+                      30
+                    ]
+                  },
+                  "retro": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.05,
+                      30
+                    ]
+                  },
+                  "sunset": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0.05,
+                      25
+                    ]
+                  },
+                  "mono": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.68,
+                      0.05,
+                      0
+                    ]
+                  },
+                  "aurora": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.7,
+                      0.05,
+                      25
+                    ]
+                  },
+                  "zen": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.68,
+                      0.05,
+                      25
+                    ]
+                  },
+                  "volt": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.72,
+                      0.05,
+                      20
+                    ]
+                  },
+                  "family": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.68,
+                      0.05,
+                      25
+                    ]
+                  },
+                  "sunlight": {
+                    "colorSpace": "oklch",
+                    "components": [
+                      0.55,
+                      0.05,
+                      25
+                    ]
+                  }
+                }
+              }
+            },
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+          }
+        },
+        "muted": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.05,
+              200
+            ]
+          },
+          "$type": "color",
+          "$extensions": {
+            "p31": {
+              "themes": {
+                "cipher": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.65,
+                    0.05,
+                    195
+                  ]
+                },
+                "garden": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.7,
+                    0.05,
+                    145
+                  ]
+                },
+                "retro": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.75,
+                    0.05,
+                    80
+                  ]
+                },
+                "sunset": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.72,
+                    0.05,
+                    40
+                  ]
+                },
+                "mono": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.8,
+                    0.05,
+                    0
+                  ]
+                },
+                "aurora": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.72,
+                    0.05,
+                    250
+                  ]
+                },
+                "zen": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.72,
+                    0.05,
+                    75
+                  ]
+                },
+                "volt": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.75,
+                    0.05,
+                    190
+                  ]
+                },
+                "family": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.8,
+                    0.05,
+                    75
+                  ]
+                },
+                "sunlight": {
+                  "colorSpace": "oklch",
+                  "components": [
+                    0.55,
+                    0.05,
+                    40
+                  ]
+                }
+              }
+            }
+          },
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        }
+      }
+    },
+    "space": {
+      "inline": {
+        "sm": {
+          "$value": {
+            "value": 8,
+            "unit": "px"
+          },
+          "$type": "dimension",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+          "$extensions": {
+            "p31": {
+              "policy": "density",
+              "resolvedBy": "resolver tier + M3 adaptive spacing",
+              "bounds": {
+                "min": 6,
+                "max": 12
+              },
+              "unit": "px"
+            }
+          }
+        },
+        "md": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+          "$extensions": {
+            "p31": {
+              "policy": "density",
+              "resolvedBy": "resolver tier + M3 adaptive spacing",
+              "bounds": {
+                "min": 12,
+                "max": 24
+              },
+              "unit": "px"
+            }
+          }
+        },
+        "lg": {
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$type": "dimension",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+          "$extensions": {
+            "p31": {
+              "policy": "density",
+              "resolvedBy": "resolver tier + M3 adaptive spacing",
+              "bounds": {
+                "min": 18,
+                "max": 36
+              },
+              "unit": "px"
+            }
+          }
+        }
+      }
+    },
+    "radius": {
+      "sm": {
+        "$value": {
+          "value": 8,
+          "unit": "px"
+        },
+        "$type": "dimension"
+      },
+      "md": {
+        "$value": {
+          "value": 16,
+          "unit": "px"
+        },
+        "$type": "dimension"
+      },
+      "lg": {
+        "$value": {
+          "value": 24,
+          "unit": "px"
+        },
+        "$type": "dimension"
+      },
+      "full": {
+        "$value": {
+          "value": 9999,
+          "unit": "px"
+        },
+        "$type": "dimension"
+      },
+      "candy": {
+        "$value": {
+          "value": 24,
+          "unit": "px"
+        },
+        "$type": "dimension"
+      }
+    },
+    "status": {
+      "success": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.65,
+            0.18,
+            105
+          ]
+        },
+        "$type": "color"
+      },
+      "warning": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.65,
+            0.18,
+            15
+          ]
+        },
+        "$type": "color",
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+      },
+      "error": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.65,
+            0.18,
+            20
+          ]
+        },
+        "$type": "color"
+      },
+      "info": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.65,
+            0.18,
+            195
+          ]
+        },
+        "$type": "color",
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+      }
+    },
+    "glass": {
+      "background": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.04
+        },
+        "$type": "color",
+        "$extensions": {
+          "p31": {
+            "themes": {
+              "cipher": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.01,
+                  240
+                ],
+                "alpha": 0.05
+              },
+              "garden": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.01,
+                  120
+                ],
+                "alpha": 0.04
+              },
+              "retro": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.02,
+                  60
+                ],
+                "alpha": 0.05
+              },
+              "sunset": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.01,
+                  30
+                ],
+                "alpha": 0.06
+              },
+              "mono": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0,
+                  0
+                ],
+                "alpha": 0.05
+              },
+              "aurora": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.02,
+                  260
+                ],
+                "alpha": 0.05
+              },
+              "zen": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.01,
+                  75
+                ],
+                "alpha": 0.05
+              },
+              "volt": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.01,
+                  270
+                ],
+                "alpha": 0.05
+              },
+              "family": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.02,
+                  60
+                ],
+                "alpha": 0.05
+              },
+              "sunlight": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.005,
+                  90
+                ],
+                "alpha": 0.6
+              }
+            },
+            "policy": "range",
+            "resolvedBy": "resolver.flags + user.slider",
+            "bounds": {
+              "min": 0.02,
+              "max": 0.06
+            },
+            "unit": "alpha"
+          }
+        },
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+      },
+      "border": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            230
+          ],
+          "alpha": 0.08
+        },
+        "$type": "color",
+        "$extensions": {
+          "p31": {
+            "themes": {
+              "cipher": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.01,
+                  240
+                ],
+                "alpha": 0.1
+              },
+              "garden": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.01,
+                  120
+                ],
+                "alpha": 0.1
+              },
+              "retro": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.02,
+                  60
+                ],
+                "alpha": 0.12
+              },
+              "sunset": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.01,
+                  30
+                ],
+                "alpha": 0.1
+              },
+              "mono": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0,
+                  0
+                ],
+                "alpha": 0.1
+              },
+              "aurora": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.02,
+                  260
+                ],
+                "alpha": 0.1
+              },
+              "zen": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.01,
+                  75
+                ],
+                "alpha": 0.1
+              },
+              "volt": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.01,
+                  270
+                ],
+                "alpha": 0.12
+              },
+              "family": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.02,
+                  60
+                ],
+                "alpha": 0.12
+              },
+              "sunlight": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.8,
+                  0.02,
+                  85
+                ],
+                "alpha": 0.25
+              }
+            },
+            "policy": "range",
+            "resolvedBy": "resolver.flags + user.slider",
+            "bounds": {
+              "min": 0.04,
+              "max": 0.12
+            },
+            "unit": "alpha"
+          }
+        }
+      },
+      "surface": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            1,
+            0.01,
+            240
+          ],
+          "alpha": 0.04
+        },
+        "$type": "color",
+        "$extensions": {
+          "p31": {
+            "policy": "range",
+            "resolvedBy": "resolver.flags + user.slider",
+            "bounds": {
+              "min": 0.02,
+              "max": 0.06
+            },
+            "unit": "alpha"
+          }
+        }
+      },
+      "radius": {
+        "$value": {
+          "value": 24,
+          "unit": "px"
+        },
+        "$type": "dimension"
+      }
+    },
+    "surface": {
+      "background": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.1,
+            0.03,
+            240
+          ]
+        },
+        "$type": "color",
+        "$extensions": {
+          "p31": {
+            "themes": {
+              "cipher": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.1,
+                  0.01,
+                  240
+                ]
+              },
+              "garden": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.12,
+                  0.02,
+                  140
+                ]
+              },
+              "retro": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.08,
+                  0.02,
+                  60
+                ]
+              },
+              "sunset": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.12,
+                  0.03,
+                  30
+                ]
+              },
+              "mono": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.08,
+                  0,
+                  0
+                ]
+              },
+              "aurora": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.09,
+                  0.03,
+                  260
+                ]
+              },
+              "zen": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.14,
+                  0.01,
+                  75
+                ]
+              },
+              "volt": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.12,
+                  0.02,
+                  270
+                ]
+              },
+              "family": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.17,
+                  0.03,
+                  55
+                ]
+              },
+              "sunlight": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.97,
+                  0.01,
+                  85
+                ]
+              }
+            }
+          }
+        },
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+      },
+      "raised": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.15,
+            0.04,
+            240
+          ]
+        },
+        "$type": "color",
+        "$extensions": {
+          "p31": {
+            "themes": {
+              "cipher": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.15,
+                  0.015,
+                  240
+                ]
+              },
+              "garden": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.18,
+                  0.025,
+                  140
+                ]
+              },
+              "retro": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.12,
+                  0.025,
+                  60
+                ]
+              },
+              "sunset": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.17,
+                  0.035,
+                  30
+                ]
+              },
+              "mono": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.14,
+                  0,
+                  0
+                ]
+              },
+              "aurora": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.14,
+                  0.035,
+                  260
+                ]
+              },
+              "zen": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.19,
+                  0.012,
+                  75
+                ]
+              },
+              "volt": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.18,
+                  0.025,
+                  270
+                ]
+              },
+              "family": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.23,
+                  0.04,
+                  55
+                ]
+              },
+              "sunlight": {
+                "colorSpace": "oklch",
+                "components": [
+                  1,
+                  0.005,
+                  90
+                ]
+              }
+            }
+          }
+        },
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+      },
+      "overlay": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.22,
+            0.045,
+            240
+          ]
+        },
+        "$type": "color",
+        "$extensions": {
+          "p31": {
+            "themes": {
+              "cipher": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.22,
+                  0.02,
+                  240
+                ]
+              },
+              "garden": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.25,
+                  0.03,
+                  140
+                ]
+              },
+              "retro": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.18,
+                  0.03,
+                  60
+                ]
+              },
+              "sunset": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.23,
+                  0.04,
+                  30
+                ]
+              },
+              "mono": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.2,
+                  0,
+                  0
+                ]
+              },
+              "aurora": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.2,
+                  0.04,
+                  260
+                ]
+              },
+              "zen": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.25,
+                  0.015,
+                  75
+                ]
+              },
+              "volt": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.25,
+                  0.03,
+                  270
+                ]
+              },
+              "family": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.29,
+                  0.045,
+                  55
+                ]
+              },
+              "sunlight": {
+                "colorSpace": "oklch",
+                "components": [
+                  0.94,
+                  0.012,
+                  85
+                ]
+              }
+            }
+          }
+        },
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+      }
+    },
+    "font": {
+      "size": {
+        "sm": {
+          "$value": {
+            "value": 14,
+            "unit": "px"
+          },
+          "$type": "dimension",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        },
+        "md": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        },
+        "lg": {
+          "$value": {
+            "value": 20,
+            "unit": "px"
+          },
+          "$type": "dimension",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        }
+      },
+      "family": {
+        "sans": {
+          "$value": [
+            "Space Grotesk",
+            "system-ui",
+            "-apple-system",
+            "Segoe UI",
+            "Roboto",
+            "sans-serif"
+          ],
+          "$type": "fontFamily",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        },
+        "mono": {
+          "$value": [
+            "JetBrains Mono",
+            "ui-monospace",
+            "SF Mono",
+            "Fira Code",
+            "monospace"
+          ],
+          "$type": "fontFamily",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        }
+      }
+    },
+    "motion": {
+      "duration": {
+        "fast": {
+          "$value": {
+            "value": 150,
+            "unit": "ms"
+          },
+          "$type": "duration",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+          "$extensions": {
+            "p31": {
+              "policy": "speed",
+              "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+              "bounds": {
+                "min": 0,
+                "max": 150
+              },
+              "unit": "ms"
+            }
+          }
+        }
+      },
+      "easing": {
+        "standard": {
+          "$value": [
+            0.4,
+            0,
+            0.2,
+            1
+          ],
+          "$type": "cubicBezier",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        }
+      },
+      "spring": {
+        "expressive": {
+          "fast": {
+            "spatial": {
+              "$value": [
+                0.42,
+                1.67,
+                0.21,
+                0.9
+              ],
+              "$type": "cubicBezier",
+              "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+            },
+            "effects": {
+              "$value": [
+                0.31,
+                0.8,
+                0.34,
+                1
+              ],
+              "$type": "cubicBezier",
+              "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+            }
+          },
+          "default": {
+            "spatial": {
+              "$value": [
+                0.38,
+                1.21,
+                0.22,
+                1
+              ],
+              "$type": "cubicBezier",
+              "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+            },
+            "effects": {
+              "$value": [
+                0.34,
+                0.8,
+                0.34,
+                1
+              ],
+              "$type": "cubicBezier",
+              "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+            }
+          },
+          "slow": {
+            "spatial": {
+              "$value": [
+                0.38,
+                0.86,
+                0.22,
+                1
+              ],
+              "$type": "cubicBezier",
+              "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+            },
+            "effects": {
+              "$value": [
+                0.34,
+                0.8,
+                0.34,
+                1
+              ],
+              "$type": "cubicBezier",
+              "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+            }
+          }
+        },
+        "standard": {
+          "spatial": {
+            "$value": [
+              0.2,
+              0,
+              0,
+              1
+            ],
+            "$type": "cubicBezier",
+            "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+          }
+        }
+      },
+      "shapeMorph": {
+        "duration": {
+          "$value": {
+            "value": 300,
+            "unit": "ms"
+          },
+          "$type": "duration",
+          "$extensions": {
+            "p31": {
+              "policy": "speed",
+              "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+              "bounds": {
+                "min": 0,
+                "max": 300
+              },
+              "unit": "ms"
+            }
+          }
+        }
+      }
+    },
+    "elevation": {
+      "level1": {
+        "tint": {
+          "$value": 0.05,
+          "$type": "number",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+          "$extensions": {
+            "p31": {
+              "policy": "range",
+              "resolvedBy": "resolver surface class",
+              "bounds": {
+                "min": 0.03,
+                "max": 0.15
+              },
+              "unit": "number"
+            }
+          }
+        }
+      },
+      "level2": {
+        "tint": {
+          "$value": 0.08,
+          "$type": "number",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+          "$extensions": {
+            "p31": {
+              "policy": "range",
+              "resolvedBy": "resolver surface class",
+              "bounds": {
+                "min": 0.03,
+                "max": 0.15
+              },
+              "unit": "number"
+            }
+          }
+        }
+      },
+      "level3": {
+        "tint": {
+          "$value": 0.11,
+          "$type": "number",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+          "$extensions": {
+            "p31": {
+              "policy": "range",
+              "resolvedBy": "resolver surface class",
+              "bounds": {
+                "min": 0.03,
+                "max": 0.15
+              },
+              "unit": "number"
+            }
+          }
+        }
+      }
+    },
+    "frame": {
+      "structure": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.735,
+            0.117,
+            236.2
+          ]
+        },
+        "$type": "color",
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+      },
+      "connection": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.753,
+            0.158,
+            76.8
+          ]
+        },
+        "$type": "color",
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+      },
+      "rhythm": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.679,
+            0.118,
+            346.3
+          ]
+        },
+        "$type": "color",
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+      },
+      "creation": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.62,
+            0.13,
+            165.5
+          ]
+        },
+        "$type": "color",
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+      }
+    },
+    "layout": {
+      "spacing": {
+        "xs": {
+          "$value": {
+            "value": 4,
+            "unit": "px"
+          },
+          "$type": "dimension",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+          "$extensions": {
+            "p31": {
+              "policy": "density",
+              "resolvedBy": "resolver tier + M3 adaptive spacing",
+              "bounds": {
+                "min": 3,
+                "max": 6
+              },
+              "unit": "px"
+            }
+          }
+        },
+        "sm": {
+          "$value": {
+            "value": 8,
+            "unit": "px"
+          },
+          "$type": "dimension",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+          "$extensions": {
+            "p31": {
+              "policy": "density",
+              "resolvedBy": "resolver tier + M3 adaptive spacing",
+              "bounds": {
+                "min": 6,
+                "max": 12
+              },
+              "unit": "px"
+            }
+          }
+        },
+        "md-tight": {
+          "$value": {
+            "value": 12,
+            "unit": "px"
+          },
+          "$type": "dimension",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+          "$extensions": {
+            "p31": {
+              "policy": "density",
+              "resolvedBy": "resolver tier + M3 adaptive spacing",
+              "bounds": {
+                "min": 9,
+                "max": 18
+              },
+              "unit": "px"
+            }
+          }
+        },
+        "md": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+          "$extensions": {
+            "p31": {
+              "policy": "density",
+              "resolvedBy": "resolver tier + M3 adaptive spacing",
+              "bounds": {
+                "min": 12,
+                "max": 24
+              },
+              "unit": "px"
+            }
+          }
+        },
+        "lg-tight": {
+          "$value": {
+            "value": 20,
+            "unit": "px"
+          },
+          "$type": "dimension",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+          "$extensions": {
+            "p31": {
+              "policy": "density",
+              "resolvedBy": "resolver tier + M3 adaptive spacing",
+              "bounds": {
+                "min": 15,
+                "max": 30
+              },
+              "unit": "px"
+            }
+          }
+        },
+        "lg": {
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$type": "dimension",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+          "$extensions": {
+            "p31": {
+              "policy": "density",
+              "resolvedBy": "resolver tier + M3 adaptive spacing",
+              "bounds": {
+                "min": 18,
+                "max": 36
+              },
+              "unit": "px"
+            }
+          }
+        },
+        "xl": {
+          "$value": {
+            "value": 32,
+            "unit": "px"
+          },
+          "$type": "dimension",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0.",
+          "$extensions": {
+            "p31": {
+              "policy": "density",
+              "resolvedBy": "resolver tier + M3 adaptive spacing",
+              "bounds": {
+                "min": 24,
+                "max": 48
+              },
+              "unit": "px"
+            }
+          }
+        }
+      },
+      "density": {
+        "factor": {
+          "$value": 1,
+          "$type": "number",
+          "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+        }
+      }
+    },
+    "z": {
+      "starfield": {
+        "$value": 0,
+        "$type": "number"
+      },
+      "topbar": {
+        "$value": 10,
+        "$type": "number"
+      },
+      "floating": {
+        "$value": 60,
+        "$type": "number"
+      },
+      "modal": {
+        "$value": 80,
+        "$type": "number",
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+      },
+      "crisis": {
+        "$value": 99999,
+        "$type": "number",
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+      }
+    },
+    "topbar": {
+      "height": {
+        "$value": {
+          "value": 64,
+          "unit": "px"
+        },
+        "$type": "dimension"
+      }
+    },
+    "scale": {
+      "xs": {
+        "$value": {
+          "value": 12,
+          "unit": "px"
+        },
+        "$type": "dimension"
+      }
+    },
+    "starfield": {
+      "hearth": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.55,
+            0.15,
+            35
+          ]
+        },
+        "$type": "color",
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+      },
+      "teal": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.6,
+            0.08,
+            185
+          ]
+        },
+        "$type": "color",
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+      },
+      "remembrance": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [
+            0.95,
+            0.01,
+            80
+          ]
+        },
+        "$type": "color",
+        "$deprecated": "Deprecated: no consumer. Removal in v1.0.0."
+      }
+    }
+  },
+  "themes": {
+    "cipher": {
+      "p31": {
+        "base": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-sm": {
+          "$value": {
+            "value": 8,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-md": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-lg": {
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-full": {
+          "$value": {
+            "value": 9999,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "font-sans": {
+          "$value": [
+            "Space Grotesk",
+            "system-ui",
+            "-apple-system",
+            "Segoe UI",
+            "Roboto",
+            "sans-serif"
+          ],
+          "$type": "fontFamily"
+        },
+        "font-mono": {
+          "$value": [
+            "JetBrains Mono",
+            "ui-monospace",
+            "SF Mono",
+            "Fira Code",
+            "monospace"
+          ],
+          "$type": "fontFamily"
+        },
+        "bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.1,
+              0.01,
+              240
+            ]
+          },
+          "$type": "color"
+        },
+        "surface": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.15,
+              0.015,
+              240
+            ]
+          },
+          "$type": "color"
+        },
+        "surface2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.22,
+              0.02,
+              240
+            ]
+          },
+          "$type": "color"
+        },
+        "accent": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.18,
+              195
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-cyan": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.18,
+              195
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-violet": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.18,
+              285
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-gold": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.18,
+              15
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-green": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.18,
+              105
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-red": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.18,
+              30
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-iris": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.18,
+              255
+            ]
+          },
+          "$type": "color"
+        },
+        "text-primary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.96,
+              0.005,
+              240
+            ]
+          },
+          "$type": "color"
+        },
+        "text-secondary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.75,
+              0.01,
+              240
+            ]
+          },
+          "$type": "color"
+        },
+        "text-tertiary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.55,
+              0.01,
+              240
+            ]
+          },
+          "$type": "color"
+        },
+        "glass-bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              240
+            ],
+            "alpha": 0.05
+          },
+          "$type": "color"
+        },
+        "glass-border": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              240
+            ],
+            "alpha": 0.1
+          },
+          "$type": "color"
+        }
+      }
+    },
+    "garden": {
+      "p31": {
+        "base": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-sm": {
+          "$value": {
+            "value": 8,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-md": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-lg": {
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-full": {
+          "$value": {
+            "value": 9999,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "font-sans": {
+          "$value": [
+            "Space Grotesk",
+            "system-ui",
+            "-apple-system",
+            "Segoe UI",
+            "Roboto",
+            "sans-serif"
+          ],
+          "$type": "fontFamily"
+        },
+        "font-mono": {
+          "$value": [
+            "JetBrains Mono",
+            "ui-monospace",
+            "SF Mono",
+            "Fira Code",
+            "monospace"
+          ],
+          "$type": "fontFamily"
+        },
+        "bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.12,
+              0.02,
+              140
+            ]
+          },
+          "$type": "color"
+        },
+        "surface": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.18,
+              0.025,
+              140
+            ]
+          },
+          "$type": "color"
+        },
+        "surface2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.25,
+              0.03,
+              140
+            ]
+          },
+          "$type": "color"
+        },
+        "accent": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.15,
+              145
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-cyan": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.15,
+              145
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-violet": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.15,
+              185
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-gold": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.75,
+              0.15,
+              85
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-green": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.15,
+              145
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-red": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.15,
+              30
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-iris": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.15,
+              220
+            ]
+          },
+          "$type": "color"
+        },
+        "text-primary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.95,
+              0.02,
+              120
+            ]
+          },
+          "$type": "color"
+        },
+        "text-secondary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.02,
+              130
+            ]
+          },
+          "$type": "color"
+        },
+        "text-tertiary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.55,
+              0.02,
+              130
+            ]
+          },
+          "$type": "color"
+        },
+        "glass-bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              120
+            ],
+            "alpha": 0.04
+          },
+          "$type": "color"
+        },
+        "glass-border": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              120
+            ],
+            "alpha": 0.1
+          },
+          "$type": "color"
+        }
+      }
+    },
+    "retro": {
+      "p31": {
+        "base": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-sm": {
+          "$value": {
+            "value": 8,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-md": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-lg": {
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-full": {
+          "$value": {
+            "value": 9999,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "font-sans": {
+          "$value": [
+            "Space Grotesk",
+            "system-ui",
+            "-apple-system",
+            "Segoe UI",
+            "Roboto",
+            "sans-serif"
+          ],
+          "$type": "fontFamily"
+        },
+        "font-mono": {
+          "$value": [
+            "JetBrains Mono",
+            "ui-monospace",
+            "SF Mono",
+            "Fira Code",
+            "monospace"
+          ],
+          "$type": "fontFamily"
+        },
+        "bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.08,
+              0.02,
+              60
+            ]
+          },
+          "$type": "color"
+        },
+        "surface": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.12,
+              0.025,
+              60
+            ]
+          },
+          "$type": "color"
+        },
+        "surface2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.18,
+              0.03,
+              60
+            ]
+          },
+          "$type": "color"
+        },
+        "accent": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.75,
+              0.18,
+              80
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-cyan": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.75,
+              0.18,
+              80
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-violet": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.18,
+              320
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-gold": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.18,
+              70
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-green": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.18,
+              140
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-red": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.18,
+              30
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-iris": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.18,
+              310
+            ]
+          },
+          "$type": "color"
+        },
+        "text-primary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.95,
+              0.05,
+              80
+            ]
+          },
+          "$type": "color"
+        },
+        "text-secondary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.04,
+              75
+            ]
+          },
+          "$type": "color"
+        },
+        "text-tertiary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.52,
+              0.03,
+              70
+            ]
+          },
+          "$type": "color"
+        },
+        "glass-bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.02,
+              60
+            ],
+            "alpha": 0.05
+          },
+          "$type": "color"
+        },
+        "glass-border": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.02,
+              60
+            ],
+            "alpha": 0.12
+          },
+          "$type": "color"
+        }
+      }
+    },
+    "ocean": {
+      "p31": {
+        "base": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-sm": {
+          "$value": {
+            "value": 8,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-md": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-lg": {
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-full": {
+          "$value": {
+            "value": 9999,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "font-sans": {
+          "$value": [
+            "Space Grotesk",
+            "system-ui",
+            "-apple-system",
+            "Segoe UI",
+            "Roboto",
+            "sans-serif"
+          ],
+          "$type": "fontFamily"
+        },
+        "font-mono": {
+          "$value": [
+            "JetBrains Mono",
+            "ui-monospace",
+            "SF Mono",
+            "Fira Code",
+            "monospace"
+          ],
+          "$type": "fontFamily"
+        },
+        "bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.1,
+              0.03,
+              240
+            ]
+          },
+          "$type": "color"
+        },
+        "surface": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.15,
+              0.04,
+              240
+            ]
+          },
+          "$type": "color"
+        },
+        "surface2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.22,
+              0.045,
+              240
+            ]
+          },
+          "$type": "color"
+        },
+        "accent": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.15,
+              200
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-cyan": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.15,
+              200
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-violet": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.15,
+              250
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-gold": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.72,
+              0.15,
+              40
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-green": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.15,
+              160
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-red": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.15,
+              20
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-iris": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.15,
+              230
+            ]
+          },
+          "$type": "color"
+        },
+        "text-primary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.95,
+              0.02,
+              230
+            ]
+          },
+          "$type": "color"
+        },
+        "text-secondary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.02,
+              235
+            ]
+          },
+          "$type": "color"
+        },
+        "text-tertiary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.55,
+              0.02,
+              235
+            ]
+          },
+          "$type": "color"
+        },
+        "glass-bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              230
+            ],
+            "alpha": 0.04
+          },
+          "$type": "color"
+        },
+        "glass-border": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              230
+            ],
+            "alpha": 0.08
+          },
+          "$type": "color"
+        }
+      }
+    },
+    "sunset": {
+      "p31": {
+        "base": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-sm": {
+          "$value": {
+            "value": 8,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-md": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-lg": {
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-full": {
+          "$value": {
+            "value": 9999,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "font-sans": {
+          "$value": [
+            "Space Grotesk",
+            "system-ui",
+            "-apple-system",
+            "Segoe UI",
+            "Roboto",
+            "sans-serif"
+          ],
+          "$type": "fontFamily"
+        },
+        "font-mono": {
+          "$value": [
+            "JetBrains Mono",
+            "ui-monospace",
+            "SF Mono",
+            "Fira Code",
+            "monospace"
+          ],
+          "$type": "fontFamily"
+        },
+        "bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.12,
+              0.03,
+              30
+            ]
+          },
+          "$type": "color"
+        },
+        "surface": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.17,
+              0.035,
+              30
+            ]
+          },
+          "$type": "color"
+        },
+        "surface2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.23,
+              0.04,
+              30
+            ]
+          },
+          "$type": "color"
+        },
+        "accent": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.72,
+              0.18,
+              40
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-cyan": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.72,
+              0.18,
+              40
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-violet": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.18,
+              0
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-gold": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.75,
+              0.18,
+              60
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-green": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.18,
+              140
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-red": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.72,
+              0.18,
+              25
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-iris": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.18,
+              340
+            ]
+          },
+          "$type": "color"
+        },
+        "text-primary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.95,
+              0.03,
+              50
+            ]
+          },
+          "$type": "color"
+        },
+        "text-secondary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.03,
+              40
+            ]
+          },
+          "$type": "color"
+        },
+        "text-tertiary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.55,
+              0.03,
+              35
+            ]
+          },
+          "$type": "color"
+        },
+        "glass-bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              30
+            ],
+            "alpha": 0.06
+          },
+          "$type": "color"
+        },
+        "glass-border": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              30
+            ],
+            "alpha": 0.1
+          },
+          "$type": "color"
+        }
+      }
+    },
+    "mono": {
+      "p31": {
+        "base": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-sm": {
+          "$value": {
+            "value": 8,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-md": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-lg": {
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-full": {
+          "$value": {
+            "value": 9999,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "font-sans": {
+          "$value": [
+            "Space Grotesk",
+            "system-ui",
+            "-apple-system",
+            "Segoe UI",
+            "Roboto",
+            "sans-serif"
+          ],
+          "$type": "fontFamily"
+        },
+        "font-mono": {
+          "$value": [
+            "JetBrains Mono",
+            "ui-monospace",
+            "SF Mono",
+            "Fira Code",
+            "monospace"
+          ],
+          "$type": "fontFamily"
+        },
+        "bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.08,
+              0,
+              0
+            ]
+          },
+          "$type": "color"
+        },
+        "surface": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.14,
+              0,
+              0
+            ]
+          },
+          "$type": "color"
+        },
+        "surface2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.2,
+              0,
+              0
+            ]
+          },
+          "$type": "color"
+        },
+        "accent": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.8,
+              0,
+              0
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-cyan": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.75,
+              0,
+              0
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-violet": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0,
+              0
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-gold": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0,
+              0
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-green": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.72,
+              0,
+              0
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-red": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.68,
+              0,
+              0
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-iris": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.74,
+              0,
+              0
+            ]
+          },
+          "$type": "color"
+        },
+        "text-primary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.95,
+              0,
+              0
+            ]
+          },
+          "$type": "color"
+        },
+        "text-secondary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.75,
+              0,
+              0
+            ]
+          },
+          "$type": "color"
+        },
+        "text-tertiary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.5,
+              0,
+              0
+            ]
+          },
+          "$type": "color"
+        },
+        "glass-bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0,
+              0
+            ],
+            "alpha": 0.05
+          },
+          "$type": "color"
+        },
+        "glass-border": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0,
+              0
+            ],
+            "alpha": 0.1
+          },
+          "$type": "color"
+        }
+      }
+    },
+    "aurora": {
+      "p31": {
+        "base": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-sm": {
+          "$value": {
+            "value": 8,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-md": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-lg": {
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-full": {
+          "$value": {
+            "value": 9999,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "font-sans": {
+          "$value": [
+            "Space Grotesk",
+            "system-ui",
+            "-apple-system",
+            "Segoe UI",
+            "Roboto",
+            "sans-serif"
+          ],
+          "$type": "fontFamily"
+        },
+        "font-mono": {
+          "$value": [
+            "JetBrains Mono",
+            "ui-monospace",
+            "SF Mono",
+            "Fira Code",
+            "monospace"
+          ],
+          "$type": "fontFamily"
+        },
+        "bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.09,
+              0.03,
+              260
+            ]
+          },
+          "$type": "color"
+        },
+        "surface": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.14,
+              0.035,
+              260
+            ]
+          },
+          "$type": "color"
+        },
+        "surface2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.2,
+              0.04,
+              260
+            ]
+          },
+          "$type": "color"
+        },
+        "accent": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.72,
+              0.16,
+              250
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-cyan": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.16,
+              225
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-violet": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.72,
+              0.16,
+              250
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-gold": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.75,
+              0.16,
+              65
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-green": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.16,
+              160
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-red": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.16,
+              25
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-iris": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.72,
+              0.16,
+              290
+            ]
+          },
+          "$type": "color"
+        },
+        "text-primary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.95,
+              0.03,
+              260
+            ]
+          },
+          "$type": "color"
+        },
+        "text-secondary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.03,
+              260
+            ]
+          },
+          "$type": "color"
+        },
+        "text-tertiary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.55,
+              0.03,
+              260
+            ]
+          },
+          "$type": "color"
+        },
+        "glass-bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.02,
+              260
+            ],
+            "alpha": 0.05
+          },
+          "$type": "color"
+        },
+        "glass-border": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.02,
+              260
+            ],
+            "alpha": 0.1
+          },
+          "$type": "color"
+        }
+      }
+    },
+    "zen": {
+      "p31": {
+        "base": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-sm": {
+          "$value": {
+            "value": 8,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-md": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-lg": {
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-full": {
+          "$value": {
+            "value": 9999,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "font-sans": {
+          "$value": [
+            "Space Grotesk",
+            "system-ui",
+            "-apple-system",
+            "Segoe UI",
+            "Roboto",
+            "sans-serif"
+          ],
+          "$type": "fontFamily"
+        },
+        "font-mono": {
+          "$value": [
+            "JetBrains Mono",
+            "ui-monospace",
+            "SF Mono",
+            "Fira Code",
+            "monospace"
+          ],
+          "$type": "fontFamily"
+        },
+        "bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.14,
+              0.01,
+              75
+            ]
+          },
+          "$type": "color"
+        },
+        "surface": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.19,
+              0.012,
+              75
+            ]
+          },
+          "$type": "color"
+        },
+        "surface2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.25,
+              0.015,
+              75
+            ]
+          },
+          "$type": "color"
+        },
+        "accent": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.72,
+              0.1,
+              75
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-cyan": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.68,
+              0.1,
+              190
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-violet": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.1,
+              300
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-gold": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.75,
+              0.12,
+              75
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-green": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.68,
+              0.1,
+              140
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-red": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.68,
+              0.12,
+              25
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-iris": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.7,
+              0.1,
+              250
+            ]
+          },
+          "$type": "color"
+        },
+        "text-primary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.93,
+              0.01,
+              75
+            ]
+          },
+          "$type": "color"
+        },
+        "text-secondary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.75,
+              0.012,
+              75
+            ]
+          },
+          "$type": "color"
+        },
+        "text-tertiary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.55,
+              0.01,
+              75
+            ]
+          },
+          "$type": "color"
+        },
+        "glass-bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              75
+            ],
+            "alpha": 0.05
+          },
+          "$type": "color"
+        },
+        "glass-border": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              75
+            ],
+            "alpha": 0.1
+          },
+          "$type": "color"
+        }
+      }
+    },
+    "volt": {
+      "p31": {
+        "base": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-sm": {
+          "$value": {
+            "value": 8,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-md": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-lg": {
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-full": {
+          "$value": {
+            "value": 9999,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "font-sans": {
+          "$value": [
+            "Space Grotesk",
+            "system-ui",
+            "-apple-system",
+            "Segoe UI",
+            "Roboto",
+            "sans-serif"
+          ],
+          "$type": "fontFamily"
+        },
+        "font-mono": {
+          "$value": [
+            "JetBrains Mono",
+            "ui-monospace",
+            "SF Mono",
+            "Fira Code",
+            "monospace"
+          ],
+          "$type": "fontFamily"
+        },
+        "bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.12,
+              0.02,
+              270
+            ]
+          },
+          "$type": "color"
+        },
+        "surface": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.18,
+              0.025,
+              270
+            ]
+          },
+          "$type": "color"
+        },
+        "surface2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.25,
+              0.03,
+              270
+            ]
+          },
+          "$type": "color"
+        },
+        "accent": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.75,
+              0.17,
+              190
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-cyan": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.75,
+              0.17,
+              190
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-violet": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.72,
+              0.17,
+              300
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-gold": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.17,
+              60
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-green": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.72,
+              0.17,
+              150
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-red": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.72,
+              0.17,
+              20
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-iris": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.73,
+              0.17,
+              260
+            ]
+          },
+          "$type": "color"
+        },
+        "text-primary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.96,
+              0.01,
+              270
+            ]
+          },
+          "$type": "color"
+        },
+        "text-secondary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.8,
+              0.01,
+              270
+            ]
+          },
+          "$type": "color"
+        },
+        "text-tertiary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.58,
+              0.01,
+              270
+            ]
+          },
+          "$type": "color"
+        },
+        "glass-bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              270
+            ],
+            "alpha": 0.05
+          },
+          "$type": "color"
+        },
+        "glass-border": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.01,
+              270
+            ],
+            "alpha": 0.12
+          },
+          "$type": "color"
+        }
+      }
+    },
+    "family": {
+      "p31": {
+        "base": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-sm": {
+          "$value": {
+            "value": 8,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-md": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-lg": {
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-full": {
+          "$value": {
+            "value": 9999,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "font-sans": {
+          "$value": [
+            "Space Grotesk",
+            "system-ui",
+            "-apple-system",
+            "Segoe UI",
+            "Roboto",
+            "sans-serif"
+          ],
+          "$type": "fontFamily"
+        },
+        "font-mono": {
+          "$value": [
+            "JetBrains Mono",
+            "ui-monospace",
+            "SF Mono",
+            "Fira Code",
+            "monospace"
+          ],
+          "$type": "fontFamily"
+        },
+        "bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.17,
+              0.03,
+              55
+            ]
+          },
+          "$type": "color"
+        },
+        "surface": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.23,
+              0.04,
+              55
+            ]
+          },
+          "$type": "color"
+        },
+        "surface2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.29,
+              0.045,
+              55
+            ]
+          },
+          "$type": "color"
+        },
+        "accent": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.8,
+              0.16,
+              75
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-cyan": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.8,
+              0.16,
+              75
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-violet": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.72,
+              0.16,
+              20
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-gold": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.83,
+              0.16,
+              65
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-green": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.72,
+              0.16,
+              145
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-red": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.68,
+              0.16,
+              25
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-iris": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.72,
+              0.16,
+              320
+            ]
+          },
+          "$type": "color"
+        },
+        "text-primary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.97,
+              0.02,
+              70
+            ]
+          },
+          "$type": "color"
+        },
+        "text-secondary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.82,
+              0.03,
+              70
+            ]
+          },
+          "$type": "color"
+        },
+        "text-tertiary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.6,
+              0.03,
+              65
+            ]
+          },
+          "$type": "color"
+        },
+        "glass-bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.02,
+              60
+            ],
+            "alpha": 0.05
+          },
+          "$type": "color"
+        },
+        "glass-border": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.02,
+              60
+            ],
+            "alpha": 0.12
+          },
+          "$type": "color"
+        }
+      }
+    },
+    "sunlight": {
+      "p31": {
+        "base": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-sm": {
+          "$value": {
+            "value": 8,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-md": {
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-lg": {
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "radius-full": {
+          "$value": {
+            "value": 9999,
+            "unit": "px"
+          },
+          "$type": "dimension"
+        },
+        "font-sans": {
+          "$value": [
+            "Space Grotesk",
+            "system-ui",
+            "-apple-system",
+            "Segoe UI",
+            "Roboto",
+            "sans-serif"
+          ],
+          "$type": "fontFamily"
+        },
+        "font-mono": {
+          "$value": [
+            "JetBrains Mono",
+            "ui-monospace",
+            "SF Mono",
+            "Fira Code",
+            "monospace"
+          ],
+          "$type": "fontFamily"
+        },
+        "bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.97,
+              0.01,
+              85
+            ]
+          },
+          "$type": "color"
+        },
+        "surface": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.005,
+              90
+            ]
+          },
+          "$type": "color"
+        },
+        "surface2": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.94,
+              0.012,
+              85
+            ]
+          },
+          "$type": "color"
+        },
+        "accent": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.55,
+              0.15,
+              40
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-cyan": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.62,
+              0.14,
+              190
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-violet": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.55,
+              0.15,
+              300
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-gold": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.62,
+              0.14,
+              80
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-green": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.55,
+              0.13,
+              150
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-red": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.55,
+              0.15,
+              25
+            ]
+          },
+          "$type": "color"
+        },
+        "accent-iris": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.55,
+              0.15,
+              250
+            ]
+          },
+          "$type": "color"
+        },
+        "text": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.22,
+              0.015,
+              80
+            ]
+          },
+          "$type": "color"
+        },
+        "text-primary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.22,
+              0.015,
+              80
+            ]
+          },
+          "$type": "color"
+        },
+        "text-secondary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.38,
+              0.015,
+              80
+            ]
+          },
+          "$type": "color"
+        },
+        "text-tertiary": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.55,
+              0.015,
+              80
+            ]
+          },
+          "$type": "color"
+        },
+        "glass-bg": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              1,
+              0.005,
+              90
+            ],
+            "alpha": 0.6
+          },
+          "$type": "color"
+        },
+        "glass-border": {
+          "$value": {
+            "colorSpace": "oklch",
+            "components": [
+              0.8,
+              0.02,
+              85
+            ],
+            "alpha": 0.25
+          },
+          "$type": "color"
+        }
+      }
+    }
+  },
+  "component": {}
+}

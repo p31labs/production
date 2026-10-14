@@ -1,0 +1,27 @@
+---
+import { tabsTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface TabItem {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  items?: TabItem[];
+  activeId?: string;
+  ariaLabel?: string;
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { items = [], activeId, ariaLabel = 'Tabs', class: cls = '', style } = Astro.props;
+
+const html = renderHtml(tabsTree({
+  items,
+  activeId,
+  ariaLabel,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

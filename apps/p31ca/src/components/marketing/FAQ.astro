@@ -2,6 +2,9 @@
 /**
  * FAQ — answers the objections before they're asked (dev-tool conversion
  * pattern). Renders as <details>/<summary> accordions.
+ * Unified with the about/team rhythm (p31ca-unification-badge-2026-10-13):
+ * full container width, start-aligned sans-bold h2. Spacing comes from the
+ * FlagshipPage section wrapper — no per-section bottom margin here.
  */
 interface Props {
   items: { q: string; a: string }[];
@@ -9,16 +12,14 @@ interface Props {
 const { items } = Astro.props;
 ---
 
-<section class="mb-20">
-  <div class="max-w-3xl mx-auto">
-    <h2 class="text-2xl mb-6" style="font-family: var(--p31-font-serif, Georgia, serif); font-weight: 400; color: var(--p31-text);">Questions people ask</h2>
-    <div class="space-y-3">
-      {items.map((item) => (
-        <details class="rounded-xl border px-5 py-4" style="border-color: var(--p31-glass-border); background: var(--p31-surface);">
-          <summary class="text-sm font-semibold cursor-pointer" style="color: var(--p31-text);">{item.q}</summary>
-          <p class="mt-3 text-sm leading-relaxed" style="color: var(--p31-text-secondary);">{item.a}</p>
-        </details>
-      ))}
-    </div>
+<section>
+  <h2 class="fa-text-2xl fa-font-bold fa-mb-6" style="color: var(--p31-text);">Questions people ask</h2>
+  <div class="fa-space-y-3">
+    {items.map((item) => (
+      <details class="fa-rounded-xl fa-border fa-px-5 fa-py-4" style="border-color: var(--p31-glass-border); background: var(--p31-surface);">
+        <summary class="fa-text-sm fa-font-semibold fa-cursor-pointer" style="color: var(--p31-text);">{item.q}</summary>
+        <p class="fa-mt-3 fa-text-sm fa-leading-relaxed" style="color: var(--p31-text-secondary);">{item.a}</p>
+      </details>
+    ))}
   </div>
 </section>

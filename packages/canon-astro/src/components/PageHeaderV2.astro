@@ -1,0 +1,8 @@
+---
+/**
+ * PageHeaderV2 — the canon-v2 successor of the legacy PageHeader (alias of
+ * PageHeader.astro; the seed exports both names from the same implementation).
+ */
+import PageHeader from './PageHeader.astro';
+---
+<PageHeader {...Astro.props}><Fragment slot="actions" set:html={(await Astro.slots.render('actions')) ?? ''} /></PageHeader>

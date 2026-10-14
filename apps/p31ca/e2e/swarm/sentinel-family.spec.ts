@@ -10,7 +10,7 @@ import { test, expect } from "@playwright/test";
 
 const nav = { waitUntil: "domcontentloaded" as const, timeout: 90_000 };
 
-test.describe("SENTINEL:FAMILY — family mesh user", () => {
+test.describe.skip("SENTINEL:FAMILY — family mesh user (RETIRED 2026-10-13: fleet-portal.html/passport-generator.html 301 into retired surfaces)", () => {
   // ── Fleet portal ──────────────────────────────────────────────────
 
   test("fleet portal loads", async ({ page }) => {

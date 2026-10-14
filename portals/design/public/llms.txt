@@ -8,6 +8,25 @@
 - [Tokens JSON](https://design.p31ca.org/tokens) — machine source: `@p31ca/canon/tokens/tokens.dtc.json`.
 - Color, typography, spacing, motion, radius — see `/tokens` for the live explorer.
 
+## Device tiers
+
+Capability → tier, never device brand. Manifest contract:
+`production/design-workflow/B-device-tiers/device-tiers.json` (+ resolver
+`device-tiers.mjs` — pure ESM, zero deps, fail-closed).
+
+- embedded — Node Zero (ESP32-S3 + LVGL): `windowSizeClass: null`, no pointer/hover,
+  `touchTargetMin: 44`, `navigation: minimal-html`, `delivery: [embedded-css, lvgl-c]`,
+  SPIFFS assets partition, budget ≤ 100 KB gzip (web) / ≤ 8 KB raw (`p31_theme.h`).
+- mobile — compact (<600dp): coarse/none, 44px floor, bottom-nav, css-mobile, safe-area.
+- tablet — medium (600–840dp): mixed/mixed, 44px floor, nav-rail, css-full, safe-area.
+- desktop — expanded (≥840dp): fine/hover, 34px floor under pointer:fine ONLY, sidebar, css-full.
+
+Rules: tiers are semantic value swaps, never component forks (subset, not fork);
+320px litmus with @media disabled; 44px touch floor on coarse; `dvh`/`svh`, no bare
+`100vh`; pointer/hover are independent flags — surfaced, never collapsed (a 1200px
+coarse device is desktop WITH `flags.coarse: true`). Unknown capability values fail
+closed (TypeError → ask a human, never a guess).
+
 ## Components
 
 32 compositions in `@p31ca/design-core/compositions`, rendered live in the catalog.

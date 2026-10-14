@@ -1,0 +1,42 @@
+<!doctype html>
+<!-- P31-HEADER
+     id: p31_c_fixture_page_html_20261011_v1.0
+     type: fixture
+     component: design-workflow/C-mobile-audit
+     status: live
+     retention: keep-forever
+     created: 2026-10-11T00:00:00Z
+     owner: half-sour
+-->
+<!-- DOM-level NEGATIVE CONTROL for dom-check.mjs — deliberately bad.
+     One good section (48px button) + one 28px button + one 400px fixed container.
+     At viewport 320x844 with @media neutralized:
+       (a) .wide-card overflows -> document.scrollWidth (400) > innerWidth (320) -> FAIL
+       (b) .tiny-button is 28px < 44px -> FAIL
+     Both assertions MUST fail here; that failure is the negative control. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>P31 lane C dom-check fixture (deliberately bad)</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+    .good-section { width: 100%; padding: 16px; background: #f4f4f2; }
+    .good-section button { min-height: 48px; }
+    .tiny-button { min-height: 28px; }
+    .wide-card { width: 400px; background: #ffe9e9; }
+    @media (min-width: 30rem) {
+      .desktop-note { display: block; }
+    }
+    .desktop-note { display: none; }
+  </style>
+</head>
+<body>
+  <section class="good-section">
+    <button class="good-button">Good 48px target</button>
+  </section>
+  <button class="tiny-button">28px tiny target</button>
+  <div class="wide-card">400px fixed container (overflow risk at 320px)</div>
+  <div class="desktop-note">media-neutralization marker: visible only when @media is stripped</div>
+</body>
+</html>

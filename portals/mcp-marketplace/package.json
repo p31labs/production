@@ -17,28 +17,30 @@
     "gate": "pnpm typecheck && pnpm lint && pnpm test && pnpm build && pnpm v:gate"
   },
   "dependencies": {
-    "@p31ca/design-core": "file:vendor/p31-design-core-3.0.0.tgz",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "zustand": "^5.0.14",
+    "@p31ca/canon": "file:vendor/p31ca-canon-0.2.0.tgz",
+    "@p31ca/design-core": "file:vendor/p31-design-core-3.0.1.tgz",
+    "@p31ca/sovereign-core": "file:vendor/p31ca-sovereign-core-0.1.0.tgz",
     "@p31ca/sovereign-primitives": "file:vendor/p31ca-sovereign-primitives-0.0.1.tgz",
     "@p31ca/ui": "file:vendor/p31ca-ui-1.3.1.tgz",
-    "@p31ca/sovereign-core": "file:vendor/p31ca-sovereign-core-0.1.0.tgz"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.64.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^4.7.0",
+    "@vitejs/plugin-react": "^5.2.0",
     "eslint": "^10.8.1",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "jsdom": "^30.0.1",
     "typescript": "^5.7.0",
     "typescript-eslint": "^8.67.0",
-    "vite": "^6.4.2",
-    "vitest": "^3.0.0"
+    "vite": "^7.3.7",
+    "vitest": "^3.2.4"
   }
 }

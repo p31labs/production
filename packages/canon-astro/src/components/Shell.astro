@@ -1,0 +1,32 @@
+---
+/**
+ * Shell — canon v2 app frame (Astro world). Slots: topbar / sidebar / default.
+ * Renders from the shared @p31ca/canon-parts markup tree (set:html) so the
+ * Astro and React worlds emit byte-identical HTML for the same props.
+ */
+import { shellTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  mainId?: string;
+  skipLabel?: string;
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { mainId, skipLabel = 'Skip to content', class: cls = '', style } = Astro.props;
+
+const topbar = await Astro.slots.render('topbar');
+const sidebar = await Astro.slots.render('sidebar');
+const main = await Astro.slots.render('default');
+
+const html = renderHtml(shellTree({
+  topbar: topbar ? { raw: topbar } : null,
+  sidebar: sidebar ? { raw: sidebar } : null,
+  children: main ? { raw: main } : null,
+  mainId,
+  skipLabel,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

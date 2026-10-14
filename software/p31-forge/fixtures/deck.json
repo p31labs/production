@@ -1,0 +1,9 @@
+{
+  "type": "deck",
+  "meta": { "title": "Sovereign Stack", "kicker": "P31 LABS // DECK", "thesis": "Four nodes, six edges, one unbreakable mesh.", "date": "2026-10-12", "source": "slides" },
+  "blocks": [
+    { "kind": "section", "id": "geometry", "title": "Universal Geometry of Care", "children": [ { "kind": "prose", "data": { "text": "Four nodes in a complete mesh form the minimum structure that cannot be broken by removing any single point." } } ] },
+    { "kind": "section", "id": "stack", "title": "What We Built", "children": [ { "kind": "list", "data": { "items": ["Post-quantum cryptography", "Privacy payments", "Sovereign identity"] } } ] },
+    { "kind": "section", "id": "ask", "title": "The Ask", "children": [ { "kind": "prose", "data": { "text": "Working capital bridge of $27,000 for three months, repaid by the first grant award." } } ] }
+  ]
+}

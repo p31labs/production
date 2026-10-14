@@ -1,5 +1,7 @@
 import { createPrivateKey, createPublicKey, sign, verify } from 'node:crypto';
 import * as jose from 'jose';
+import { Client, StreamableHTTPClientTransport } from '@modelcontextprotocol/client';
+import { McpServer, createMcpHandler, fromJsonSchema } from '@modelcontextprotocol/server';
 import { scanToolSurface } from './scanner';
 import { validateArgs, validateBodySize } from './sanitizer';
 import { LedgerLog } from './ledger-do';
@@ -28,13 +30,18 @@ export { LedgerLog };
  *   POST /servers                 Register a community server (rate-limited)
  *   POST /servers/:name/call      Proxy tools/call to the server
  *
- * Protocol version used for probes: 2025-11-25 (latest supported by the
- * ecosystem; servers advertising fabricated versions like 2026-07-28 are
- * reported degraded until fixed).
+ * Protocol probing is stateless-first (MCP 2026-07-28, SEP-2575):
+ * probes send `server/discover` (and `tools/list`) carrying the
+ * `_meta` envelope with io.modelcontextprotocol/protocolVersion 2026-07-28,
+ * plus the SEP-2243 Mcp-Method / Mcp-Name headers on every POST. Servers
+ * advertising 2026-07-28 are fully supported; servers that only speak the
+ * 2025-era initialize handshake fall back to the legacy probe path.
  */
 
+const PROTOCOL_VERSION = '2026-07-28';
 const PROBE_PROTOCOL_VERSION = '2025-11-25';
 const SUPPORTED_PROTOCOL_VERSIONS = new Set([
+  '2026-07-28',
   '2025-11-25', '2025-06-18', '2025-03-26', '2024-11-05', '2024-10-07',
 ]);
 
@@ -75,13 +82,43 @@ interface Env {
   CF_ACCESS_AUD?: string;
   /** When "1", reject anonymous write-risk proxy calls (strict deployments). */
   REQUIRE_AUTH_WRITE?: string;
+  /** OAuth 2.1 resource-server (RFC 8707). Optional — when unset, bearer validation is disabled and the server stays open (runbook §6). */
+  OAUTH_JWKS_URL?: string;
+  /** RFC 9207 expected token issuer (optional; falls back to the JWKS URL origin). */
+  OAUTH_ISSUER?: string;
+  /** RFC 8707 resource URI that a bearer token's `aud` claim MUST match. */
+  RESOURCE_ID?: string;
+  /** D1 database backing per-tool usage counters (E-2). Optional — usage
+   *  endpoints degrade to 503 when unbound. */
+  USAGE_DB?: D1Database;
+  /** Shared admin secret gating POST /servers/:id/approve + GET /analytics/tools
+   *  (E-1/E-2). Set via `wrangler secret put` — never committed. When unset,
+   *  the governed endpoints answer 503 (not configured) rather than silently
+   *  opening. Cloudflare Access is the planned successor (see fix-plan). */
+  ADMIN_SECRET?: string;
+  /** Internal bridge secret gating POST /internal/usage (E-2). The bridge
+   *  write-side POSTs {server, tool} with header `X-Internal-Usage-Key`. */
+  INTERNAL_USAGE_KEY?: string;
 }
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
-type Category = 'design' | 'crypto' | 'government' | 'finance' | 'social' | 'infra' | 'local';
+type Category = 'design' | 'crypto' | 'government' | 'finance' | 'social' | 'infra' | 'local' | 'external';
 type Status = 'live' | 'unverified' | 'degraded' | 'down';
-type Health = 'up' | 'degraded' | 'down';
+type Health = 'up' | 'degraded' | 'down' | 'unknown';
+/** Governance approval state (E-1). Public lens shows verified status only;
+ *  the governed lens (auth flag) renders this. */
+type Approval = 'approved' | 'pending' | 'blocked';
+/** Catalog provenance (A-2): P31 fleet, official upstream registry, or
+ *  self-registered external community server. */
+type Source = 'p31' | 'official' | 'external';
+
+/** OAuth 2.1 governance metadata per catalog entry (A-2). */
+interface OAuthMeta {
+  enabled: boolean;
+  resource: string | null;
+  authorization_servers: string[];
+}
 
 interface VerifyMeta {
   alg: 'ML-DSA-65';
@@ -144,11 +181,32 @@ interface McpServerEntry {
   binding?: keyof Env;
   tools?: ToolDef[];
   localNote?: string;
+  /** Governance approval state (E-1) — persisted for registered entries,
+   *  derived at merge time for the curated fleet. */
+  approval?: Approval;
+  /** Protocol revision or transport label ('2026-07-28', 'stdio',
+   *  'streamable-http', …) captured at registration / curated for the fleet. */
+  protocol?: string;
+  /** Free-form role label ('p31 fleet server', 'community server', …). */
+  role?: string;
+  /** MCP conformance badge — live-probed (see probeConformance). */
+  conformance?: ConformanceRecord;
 }
 
 interface HealthRecord {
   status: Health;
   latencyMs: number;
+  checkedAt: string;
+  detail?: string;
+}
+
+/** Live-probed MCP conformance badge (2026-07-28 stateless contract).
+ *  Populated lazily by probeConformance (KV-cached, CONFORMANCE_TTL) —
+ *  derived data, never curated by hand. */
+interface ConformanceRecord {
+  discover: boolean;
+  resultType: boolean;
+  headerEnforced: boolean;
   checkedAt: string;
   detail?: string;
 }
@@ -267,12 +325,14 @@ const OFFICIAL_CATALOG: McpServerEntry[] = [
     endpoint: 'https://roblox-bridge.trimtab-signal.workers.dev/mcp',
     kind: 'remote',
     category: 'social',
-    description: 'Roblox bridge — create, deploy, terrain, worlds, skin (14 tools).',
+    description: 'Roblox bridge — REST bridge (create, deploy, terrain, worlds, skin; 15 HTTP tools over /tools/list + /tools/call). No MCP surface — relabeled as a non-MCP connector.',
     tags: ['roblox', 'gaming', 'worlds'],
     author: 'P31 Labs, Inc.',
     icon: '🧱',
     status: 'live',
     verify: { alg: 'ML-DSA-65', checkedAt: '2026-09-23T00:00:00Z' },
+    role: 'roblox bridge (not MCP)',
+    protocol: 'n/a — not an MCP server',
     readOnlySafe: false,
     binding: 'ROBLOX_BRIDGE',
   },
@@ -432,12 +492,14 @@ const OFFICIAL_CATALOG: McpServerEntry[] = [
     endpoint: 'https://phos-ai-proxy.trimtab-signal.workers.dev/vision',
     kind: 'remote',
     category: 'design',
-    description: 'Workers AI vision specialist (Llama 3.2 11B + Moondream 3.1) — judges UI screenshots against the P31 anti-slop rubric: layout novelty, visual-identity distinctiveness, component-pattern novelty. Also geometry detection (point/detect) for element locations.',
+    description: 'Workers AI vision specialist (Llama 3.2 11B + Moondream 3.1) — judges UI screenshots against the P31 anti-slop rubric: layout novelty, visual-identity distinctiveness, component-pattern novelty. Also geometry detection (point/detect) for element locations. AI vision POST endpoint, not an MCP surface.',
     tags: ['vision', 'design', 'review', 'screenshot'],
     author: 'P31 Labs, Inc.',
     icon: '👁️',
     status: 'live',
     verify: { alg: 'ML-DSA-65', checkedAt: '2026-09-23T00:00:00Z' },
+    role: 'vision reviewer (not MCP)',
+    protocol: 'n/a — not an MCP server',
     capabilities: {
       tools: ['vision_review', 'vision_detect'],
       dataSources: ['image/url', 'image/base64'],
@@ -453,12 +515,14 @@ const OFFICIAL_CATALOG: McpServerEntry[] = [
     endpoint: 'https://phos-ai-proxy.trimtab-signal.workers.dev/vision',
     kind: 'remote',
     category: 'design',
-    description: 'Layout parity reviewer — compares a UI screenshot against a reference (sidebar proportion, brand placement, primary-action prominence, footer composition). Read-only vision review.',
+    description: 'Layout parity reviewer — compares a UI screenshot against a reference (sidebar proportion, brand placement, primary-action prominence, footer composition). AI vision POST endpoint, not an MCP surface.',
     tags: ['vision', 'layout', 'parity', 'design'],
     author: 'P31 Labs, Inc.',
     icon: '📐',
     status: 'live',
     verify: { alg: 'ML-DSA-65', checkedAt: '2026-09-23T00:00:00Z' },
+    role: 'vision layout parity (not MCP)',
+    protocol: 'n/a — not an MCP server',
     capabilities: {
       tools: ['vision_review'],
       dataSources: ['image/url', 'image/base64'],
@@ -474,12 +538,14 @@ const OFFICIAL_CATALOG: McpServerEntry[] = [
     endpoint: 'https://phos-ai-proxy.trimtab-signal.workers.dev/vision',
     kind: 'remote',
     category: 'design',
-    description: 'Neurodivergent sensory reviewer — starfield opacity/density, text contrast over ambient layers, reduced-stimulation and reduced-motion states. P31 neuroinclusive lens.',
+    description: 'Neurodivergent sensory reviewer — starfield opacity/density, text contrast over ambient layers, reduced-stimulation and reduced-motion states. P31 neuroinclusive lens. AI vision POST endpoint, not an MCP surface.',
     tags: ['vision', 'sensory', 'neurodivergent', 'contrast', 'design'],
     author: 'P31 Labs, Inc.',
     icon: '🧘',
     status: 'live',
     verify: { alg: 'ML-DSA-65', checkedAt: '2026-09-23T00:00:00Z' },
+    role: 'vision sensory safety (not MCP)',
+    protocol: 'n/a — not an MCP server',
     capabilities: {
       tools: ['vision_review'],
       dataSources: ['image/url', 'image/base64'],
@@ -495,12 +561,14 @@ const OFFICIAL_CATALOG: McpServerEntry[] = [
     endpoint: 'https://phos-ai-proxy.trimtab-signal.workers.dev/vision',
     kind: 'remote',
     category: 'design',
-    description: 'Sovereign identity surface reviewer — user-chip legibility (pickle name, short DID at tertiary contrast), hover/focus affordance, spoon dial placement, pre-mint state. Read-only vision review.',
+    description: 'Sovereign identity surface reviewer — user-chip legibility (pickle name, short DID at tertiary contrast), hover/focus affordance, spoon dial placement, pre-mint state. AI vision POST endpoint, not an MCP surface.',
     tags: ['vision', 'identity', 'did', 'design'],
     author: 'P31 Labs, Inc.',
     icon: '🪪',
     status: 'live',
     verify: { alg: 'ML-DSA-65', checkedAt: '2026-09-23T00:00:00Z' },
+    role: 'vision identity surface (not MCP)',
+    protocol: 'n/a — not an MCP server',
     capabilities: {
       tools: ['vision_review'],
       dataSources: ['image/url', 'image/base64'],
@@ -512,10 +580,105 @@ const OFFICIAL_CATALOG: McpServerEntry[] = [
   },
 ];
 
+// ─── A: Data federation — provenance, roles, OAuth, pricing ────────────────
+// Lane A (runbook §4): each catalog entry gains `source`, governance `role`,
+// `oauth`, `protocol`, `approval`, live-probed tools + health, and `price_tier`
+// mapped from the x402 gateway PRICING table (static export — see
+// workers/mcp-x402-gateway/src/index.ts; kept in lockstep here).
+
+const OFFICIAL_IDS = new Set(OFFICIAL_CATALOG.map((e) => e.id));
+
+/** Non-MCP connector marker — relabeled catalog entries that are NOT MCP
+ *  servers (HTTP/REST/AI endpoints). Same relabel-not-remove precedent as the
+ *  federation-bridge/ledger-bridge fix (docs/fix-plans/false-mcp-members-relabel.md):
+ *  role + protocol strings, rows stay visible. Probes skip them. */
+const isNonMcpConnector = (e: McpServerEntry): boolean => e.protocol === 'n/a — not an MCP server';
+
+/** Curated role labels for the P31 fleet (used by the merge + summary). */
+const P31_ROLES: Record<string, string> = {
+  'p31-crypto': 'post-quantum crypto',
+  'p31-justice-hub': 'legal evidence + ODR',
+  'bros': 'family care relay',
+  'dads': 'trust + task engine',
+  'marketplace-mcp': 'sovereign commerce',
+  'phenix-wallet': 'wallet + credentials',
+  'music-maker-mcp': 'family spatial music',
+  'roblox-bridge': 'roblox bridge (not MCP)',
+  'p31-mcp-server': 'front-door toolset',
+  'p31-shell': 'sovereign shell',
+  'x402-gateway': 'payment gateway',
+  'spaceship-relay': 'dome telemetry relay',
+  'design-mcp': 'design system',
+  'soulsafe': 'governance verification',
+  'oasis': 'CLI session',
+  'phos-forge': 'cognitive toolkit',
+  'component-registry': 'component registry',
+  'ground-truth': 'verify registry',
+  'vision-reviewer': 'vision reviewer (not MCP)',
+  'vision-layout': 'vision layout parity (not MCP)',
+  'vision-sensory': 'vision sensory safety (not MCP)',
+  'vision-identity': 'vision identity surface (not MCP)',
+};
+
+/** Fleet servers with OAuth 2.1 deployed on their public HTTP surface
+ *  (docs/enterprise/api/mcp-server-protocol-status.md, 2026-10-11 wave). */
+const P31_OAUTH_ENABLED = new Set([
+  'bros',
+  'dads',
+  'p31-justice-hub',
+  'p31-crypto-mcp',
+  'phenix-wallet-mcp',
+  'marketplace-mcp',
+]);
+
+/** x402 gateway PRICING (static mirror — keep in lockstep with
+ *  workers/mcp-x402-gateway/src/index.ts). Tool name → price spec. */
+const GATEWAY_PRICING: Record<string, { price: string; network: string; description: string }> = {
+  'oasis_execute': { price: '0.05', network: 'base-sepolia', description: 'Host command execution (sandboxed)' },
+  'phos-adopt': { price: '0.05', network: 'base-sepolia', description: 'File adoption (spoon-gated)' },
+  'phos-learn': { price: '0.05', network: 'base-sepolia', description: 'Filesystem scan + learn' },
+  'phos-rollback': { price: '0.05', network: 'base-sepolia', description: 'Revert adopted moves' },
+  'phos-watch': { price: '0.05', network: 'base-sepolia', description: 'Background file watcher' },
+  'bus-emit': { price: '0.05', network: 'base-sepolia', description: 'Emit event-bus message' },
+  'phos-deploy': { price: '0.05', network: 'base-sepolia', description: 'Cloudflare deploy (spoon-gated)' },
+  'healer-remediate': { price: '0.05', network: 'base-sepolia', description: 'Autonomous remediation' },
+  'jitterbug-run': { price: '0.25', network: 'base-sepolia', description: 'Ambient exocortex LLM orchestration (spoon-gated)' },
+  'brain-dump': { price: '0.25', network: 'base-sepolia', description: 'LLM elaboration (premium-high)' },
+  'soulsafe_gate1_self_review': { price: '0.01', network: 'base-sepolia', description: 'SOULSAFE Gate 1 self-review checklist' },
+  'soulsafe_gate2_cross_review': { price: '0.01', network: 'base-sepolia', description: 'SOULSAFE Gate 2 cross-review (information barrier)' },
+  'truth_verify_baseline': { price: '0.01', network: 'base-sepolia', description: 'Verify-suite baseline payload' },
+  'truth_register_fact': { price: '0.01', network: 'base-sepolia', description: 'Write a verified fact to ground-truth registry' },
+  'soulsafe_gate3_full': { price: '0.05', network: 'base-sepolia', description: 'SOULSAFE Gate 3 architect verification (full suite)' },
+  'soulsafe_run_protocol': { price: '0.05', network: 'base-sepolia', description: 'SOULSAFE full 3-gate protocol run' },
+  'neo_pixel_control': { price: '0.01', network: 'base-sepolia', description: 'Set NeoPixel LED mode/color/brightness (spaceship)' },
+};
+
+function tierFromPrice(price: string): string | null {
+  if (price === '0.01') return 'metered-low';
+  if (price === '0.05') return 'premium';
+  if (price === '0.25') return 'premium-high';
+  return null;
+}
+
+const TIER_RANK: Record<string, number> = { 'metered-low': 1, 'premium': 2, 'premium-high': 3 };
+
+/** Map a server's live tool names to its x402 price tier (the highest tier
+ *  among tools that appear in the gateway PRICING table, else null). */
+function priceTierFor(toolNames: string[]): { tier: string | null; pricedTools: string[] } {
+  const pricedTools = toolNames.filter((n) => Boolean(GATEWAY_PRICING[n]));
+  let tier: string | null = null;
+  for (const name of pricedTools) {
+    const t = tierFromPrice(GATEWAY_PRICING[name].price);
+    if (t && (!tier || TIER_RANK[t] > TIER_RANK[tier])) tier = t;
+  }
+  return { tier, pricedTools };
+}
+
 // ─── Storage keys ───────────────────────────────────────────────────────────
 
 const KV_SCHEMAS_PREFIX = 'schemas:';
 const KV_HEALTH_PREFIX = 'health:';
+const KV_CONFORMANCE_PREFIX = 'conformance:';
 const KV_SCAN_PREFIX = 'scan:';
 const KV_CAPS_PREFIX = 'caps:';
 const KV_REGISTERED = 'servers:registered';
@@ -533,8 +696,10 @@ const KV_ROLES_PREFIX = 'roles:authn:';
 const KV_GROUP_ROLES_PREFIX = 'roles:mapping:';
 const KV_TOOLRATE_PREFIX = 'ratelimit:tool:';
 const KV_REJECTIONS_PREFIX = 'rejections:';
+const KV_UPSTREAM_OFFICIAL = 'upstream:official';
 const KV_TTL = 300; // 5 minutes for tool schemas
 const HEALTH_TTL = 120; // 2 minutes for health probes
+const CONFORMANCE_TTL = 300; // 5 minutes for conformance probes (3 POSTs per server)
 const RATE_LIMIT_MAX = 5;
 const RATE_LIMIT_WINDOW = 3600; // 1 hour
 const AUDIT_MAX = 2000; // bounded audit chain (rolling)
@@ -555,10 +720,455 @@ function json(data: unknown, status = 200, extraHeaders: Record<string, string> 
   return Response.json(data, { status, headers: { ...corsHeaders(), ...extraHeaders } });
 }
 
+// ──────────────────────────────────────────────────────────────────────────────
+// OAuth 2.1 resource-server (RFC 8707 audience binding + RFC 9207 `iss`).
+// Ported from workers/p31-capital-machine-mcp/src/index.ts (fleet
+// reference, 2026-10-12 wave). WebCrypto only (RS256/ES256/Ed25519), zero
+// new dependencies, 15-minute JWKS cache. Active only when
+// OAUTH_JWKS_URL is configured (env opt-in): any supplied
+// `Authorization: Bearer` token then MUST validate (alg/kid/signature/exp,
+// aud == RESOURCE_ID, iss == fleet AS issuer) or the call is rejected with
+// HTTP 401 — never silently ignored. Without a Bearer header, behavior is
+// unchanged: public tool discovery stays open (runbook §6 do-nots).
+// ──────────────────────────────────────────────────────────────────────────────
+
+const OAUTH_AS_ISSUER = 'https://oauth-relay.trimtab-signal.workers.dev';
+const OAUTH_AS_JWKS_URL = 'https://oauth-relay.trimtab-signal.workers.dev/.well-known/jwks.json';
+const RESOURCE_URI = 'https://mcp-registry.trimtab-signal.workers.dev/mcp';
+const JWKS_CACHE_TTL_MS = 15 * 60 * 1000;
+
+let jwksCache: { source: string; fetchedAt: number; keys: Record<string, JsonWebKey> } | null = null;
+
+/** Base64url → base64, then decode to a string. */
+function b64urlDecode(s: string): string {
+  const base64 = s.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((4 - (s.length % 4)) % 4);
+  return atob(base64);
+}
+
+/** Base64url → bytes. */
+function b64urlToBytes(s: string): Uint8Array {
+  const binary = b64urlDecode(s);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+}
+
+/** Decode (without verifying) a JWT into header + payload. Returns null on malformed input. */
+function decodeJwt(token: string): { header: { kid?: string; alg?: string }; payload: Record<string, unknown> } | null {
+  const parts = token.split('.');
+  if (parts.length !== 3) return null;
+  try {
+    const header = JSON.parse(b64urlDecode(parts[0])) as { kid?: string; alg?: string };
+    const payload = JSON.parse(b64urlDecode(parts[1])) as Record<string, unknown>;
+    if (!header || typeof header !== 'object' || !payload || typeof payload !== 'object') return null;
+    return { header, payload };
+  } catch {
+    return null;
+  }
+}
+
+/** Fetch (with 15-min module-level cache) the JWKS for the fleet AS, keyed by kid. */
+async function fetchJwksKeys(source: string): Promise<Record<string, JsonWebKey>> {
+  const now = Date.now();
+  if (jwksCache && jwksCache.source === source && now - jwksCache.fetchedAt < JWKS_CACHE_TTL_MS) {
+    return jwksCache.keys;
+  }
+  const res = await fetch(source);
+  if (!res.ok) return {};
+  const body = (await res.json().catch(() => ({}))) as { keys?: unknown[] };
+  const keys: Record<string, JsonWebKey> = {};
+  for (const raw of body.keys ?? []) {
+    const jwk = raw as JsonWebKey & { kid?: string };
+    if (jwk && typeof jwk.kid === 'string') keys[jwk.kid] = jwk;
+  }
+  jwksCache = { source, fetchedAt: now, keys };
+  return keys;
+}
+
+/** WebCrypto algorithm descriptor for a supported JWS alg. */
+function webAlg(jwk: JsonWebKey, alg: string): { name: string; hash?: string; namedCurve?: string } {
+  if (alg === 'ES256') return { name: 'ECDSA', namedCurve: (jwk.crv as string) || 'P-256' };
+  if (alg === 'Ed25519') return { name: 'Ed25519' };
+  return { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' };
+}
+
+/** Verify a JWS signature over `signedData` with WebCrypto. Never throws. */
+async function verifySignature(jwk: JsonWebKey, alg: string, signedData: Uint8Array, signature: Uint8Array): Promise<boolean> {
+  const algSpec = webAlg(jwk, alg);
+  try {
+    const key = await crypto.subtle.importKey('jwk', jwk, algSpec as any, false, ['verify']);
+    return await crypto.subtle.verify(algSpec as any, key, signature, signedData);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Validate an RFC 8707-bound OAuth 2.1 bearer token.
+ * Returns { sub, scope? } on success, or null when:
+ *  - no Bearer header present,
+ *  - OAUTH_JWKS_URL / RESOURCE_ID unset,
+ *  - token malformed, unknown alg/kid, bad signature, expired,
+ *  - `aud` ≠ RESOURCE_ID (RFC 8707), or
+ *  - `iss` ≠ OAUTH_ISSUER / issuer derived from the JWKS URL (RFC 9207 mix-up defense).
+ * All wrapped in try/catch — never throws.
+ */
+async function verifyOAuthBearer(request: Request, env: Env): Promise<{ sub: string; scope?: string } | null> {
+  try {
+    const auth = request.headers.get('Authorization');
+    if (!auth || !auth.startsWith('Bearer ')) return null;
+    const token = auth.slice(7).trim();
+    if (!token || !env.OAUTH_JWKS_URL || !env.RESOURCE_ID) return null;
+
+    const decoded = decodeJwt(token);
+    if (!decoded) return null;
+
+    const alg = decoded.header.alg ?? '';
+    if (alg !== 'RS256' && alg !== 'ES256' && alg !== 'Ed25519') return null;
+    const kid = decoded.header.kid;
+    if (!kid) return null;
+
+    const keys = await fetchJwksKeys(env.OAUTH_JWKS_URL);
+    const jwk = keys[kid];
+    if (!jwk) return null;
+
+    const parts = token.split('.');
+    const signedData = new TextEncoder().encode(`${parts[0]}.${parts[1]}`);
+    const signature = b64urlToBytes(parts[2]);
+    if (!(await verifySignature(jwk, alg, signedData, signature))) return null;
+
+    const payload = decoded.payload;
+    const exp = payload.exp;
+    if (typeof exp !== 'number' || exp <= Math.floor(Date.now() / 1000)) return null;
+
+    // RFC 8707: the token's audience MUST be bound to our resource.
+    const aud = payload.aud;
+    const audOk = Array.isArray(aud) ? aud.includes(env.RESOURCE_ID) : aud === env.RESOURCE_ID;
+    if (!audOk) return null;
+
+    // RFC 9207: the token's issuer MUST match the fleet AS (explicit
+    // OAUTH_ISSUER wins; otherwise derive from the JWKS URL origin).
+    const iss = payload.iss;
+    const expectedIssuer = env.OAUTH_ISSUER ?? issuerFromJwks(env.OAUTH_JWKS_URL) ?? null;
+    if (typeof iss !== 'string' || !expectedIssuer || iss !== expectedIssuer) return null;
+
+    return { sub: String(payload.sub ?? ''), scope: typeof payload.scope === 'string' ? payload.scope : undefined };
+  } catch {
+    return null;
+  }
+}
+
+/** Derive the IdP issuer (origin) from a JWKS URL, or null. */
+function issuerFromJwks(jwksUrl: string): string | null {
+  try {
+    return new URL(jwksUrl).origin;
+  } catch {
+    return null;
+  }
+}
+
+/** RFC 8414 authorization-server metadata — points at the fleet AS (oauth-relay). */
+function oauthAsMetadata(resource: string): Record<string, unknown> {
+  return {
+    issuer: OAUTH_AS_ISSUER,
+    authorization_endpoint: `${OAUTH_AS_ISSUER}/authorize`,
+    token_endpoint: `${OAUTH_AS_ISSUER}/token`,
+    jwks_uri: OAUTH_AS_JWKS_URL,
+    response_types_supported: ['code'],
+    grant_types_supported: ['authorization_code'],
+    token_endpoint_auth_methods_supported: ['none'],
+    code_challenge_methods_supported: ['S256'],
+    authorization_response_iss_parameter_supported: true,
+    resource,
+  };
+}
+
+/** RFC 9728 protected-resource metadata for this resource server. */
+function protectedResourceMetadata(env: Env, resource: string, scopes: string[]): Record<string, unknown> {
+  return {
+    resource: env.RESOURCE_ID ?? resource,
+    authorization_servers: [OAUTH_AS_ISSUER],
+    scopes_supported: scopes,
+  };
+}
+
+/** Envelope-shaped 401 body for a rejected bearer token (capital-machine mcpResult shape). */
+function oauthGateError(id: unknown): Record<string, unknown> {
+  return {
+    jsonrpc: '2.0',
+    id: id ?? null,
+    _meta: { 'io.modelcontextprotocol/protocolVersion': PROTOCOL_VERSION },
+    result: {
+      resultType: 'complete',
+      content: [{ type: 'text', text: JSON.stringify({ error: 'invalid or unauthorized bearer token (RFC 8707 aud binding)' }) }],
+      isError: true,
+    },
+  };
+}
+
 async function getAllEntries(env: Env): Promise<McpServerEntry[]> {
   const registeredRaw = await env.REGISTRY_KV.get(KV_REGISTERED);
   const registered: McpServerEntry[] = registeredRaw ? JSON.parse(registeredRaw) : [];
   return [...OFFICIAL_CATALOG, ...registered];
+}
+
+// ─── A-1: official MCP Registry upstream federation ─────────────────────────
+// The official registry (registry.modelcontextprotocol.io) is a read-only
+// REST metadata standard. FEDERATE-DON'T-COMPETE (runbook §2): we scrape it
+// hourly (KV-cached, ~1h TTL), never per request, and consume it as a
+// reference upstream — P31 listings always win on id collision.
+// Failure policy (negative control): malformed payload / non-OK status /
+// network error → log to the error ring and SKIP. Never throws, never blocks
+// the P31 catalog.
+
+const OFFICIAL_REGISTRY_URL = 'https://registry.modelcontextprotocol.io/v0/servers';
+const UPSTREAM_TTL = 3600; // 1 hour — aggregator etiquette
+const UPSTREAM_MAX = 300; // bound the federated response size
+
+/** Normalized official-registry server record (one per isLatest version). */
+interface OfficialUpstreamServer {
+  name: string;
+  title?: string;
+  description?: string;
+  version?: string;
+  remotes: Array<{ type: string; url: string }>;
+  repository?: { url: string; source?: string };
+  isLatest?: boolean;
+  updatedAt?: string;
+}
+
+/**
+ * Normalize + validate the official registry payload. Returns null when the
+ * shape is malformed (never throws) — the caller logs and skips.
+ * Dedupes by qualified name, preferring the `isLatest` version.
+ */
+function normalizeOfficialServers(body: unknown): OfficialUpstreamServer[] | null {
+  if (!body || typeof body !== 'object') return null;
+  const servers = (body as { servers?: unknown }).servers;
+  if (!Array.isArray(servers)) return null;
+  const out: OfficialUpstreamServer[] = [];
+  for (const raw of servers) {
+    if (!raw || typeof raw !== 'object') continue;
+    const server = (raw as { server?: unknown }).server;
+    if (!server || typeof server !== 'object') continue;
+    const s = server as Record<string, unknown>;
+    if (typeof s.name !== 'string' || !s.name) continue;
+    if (!Array.isArray(s.remotes)) continue;
+    const remotes = s.remotes
+      .filter((r): r is { type: string; url: string } => Boolean(r) && typeof (r as any)?.type === 'string' && typeof (r as any)?.url === 'string');
+    if (remotes.length === 0) continue;
+    const meta = (raw as { _meta?: Record<string, { isLatest?: boolean; updatedAt?: string }> })._meta;
+    const officialMeta = meta?.['io.modelcontextprotocol.registry/official'];
+    const isLatest = Boolean(officialMeta?.isLatest);
+    // The upstream payload carries every published version of a server name —
+    // keep one record per name, preferring the isLatest version.
+    const idx = out.findIndex((e) => e.name === s.name);
+    if (idx !== -1) {
+      if (isLatest) out[idx] = normalizeUpstreamRecord(s, remotes, isLatest, officialMeta?.updatedAt);
+      continue;
+    }
+    out.push(normalizeUpstreamRecord(s, remotes, isLatest, officialMeta?.updatedAt));
+  }
+  return out;
+}
+
+function normalizeUpstreamRecord(s: Record<string, unknown>, remotes: Array<{ type: string; url: string }>, isLatest: boolean, updatedAt?: string): OfficialUpstreamServer {
+  return {
+    name: s.name as string,
+    title: typeof s.title === 'string' ? s.title : undefined,
+    description: typeof s.description === 'string' ? s.description : undefined,
+    version: typeof s.version === 'string' ? s.version : undefined,
+    remotes,
+    repository: s.repository && typeof s.repository === 'object' ? s.repository as { url: string; source?: string } : undefined,
+    isLatest,
+    updatedAt,
+  };
+}
+
+/**
+ * Fetch the official upstream catalog (KV-cached ~1h). Returns [] on any
+ * failure after logging — never throws (negative control).
+ */
+async function fetchOfficialUpstream(env: Env): Promise<OfficialUpstreamServer[]> {
+  const cached = await env.REGISTRY_KV.get(KV_UPSTREAM_OFFICIAL).catch(() => null);
+  if (cached) {
+    try {
+      const parsed = JSON.parse(cached);
+      if (Array.isArray(parsed)) return parsed as OfficialUpstreamServer[];
+    } catch { /* corrupted cache — refetch below */ }
+  }
+  try {
+    const res = await fetch(OFFICIAL_REGISTRY_URL, { headers: { Accept: 'application/json' } });
+    if (!res.ok) {
+      await appendError(env, { source: 'official-registry', message: `upstream fetch HTTP ${res.status}`, url: OFFICIAL_REGISTRY_URL });
+      return [];
+    }
+    const body: unknown = await res.json().catch(() => null);
+    const servers = normalizeOfficialServers(body);
+    if (!servers) {
+      await appendError(env, { source: 'official-registry', message: 'malformed upstream payload — skipped (negative control)', url: OFFICIAL_REGISTRY_URL });
+      return [];
+    }
+    if (servers.length === 0) {
+      await appendError(env, { source: 'official-registry', message: 'upstream payload empty — skipped', url: OFFICIAL_REGISTRY_URL });
+      return [];
+    }
+    // Cache only a successful, non-empty parse — transient failures retry on
+    // the next request instead of being cached.
+    await env.REGISTRY_KV.put(KV_UPSTREAM_OFFICIAL, JSON.stringify(servers), { expirationTtl: UPSTREAM_TTL }).catch(() => {});
+    await appendLog(env, { level: 'info', method: 'GET', path: '/v0/servers (upstream)', status: 200, latencyMs: 0, serverId: `upstream:${servers.length}` });
+    return servers;
+  } catch (e: any) {
+    await appendError(env, { source: 'official-registry', message: `upstream fetch failed: ${String(e?.message ?? e)}`, url: OFFICIAL_REGISTRY_URL });
+    return [];
+  }
+}
+
+// ─── A-2: merge — every catalog entry gains source + governance metadata ────
+
+/** A catalog entry after federation enrichment (summary-ready). */
+interface FederatedEntry extends McpServerEntry {
+  source: Source;
+  approval: Approval;
+  role: string;
+  protocol: string;
+  oauth: OAuthMeta;
+  /** Provenance for official-upstream listings (reference metadata). */
+  upstream?: {
+    name: string;
+    version: string | null;
+    repository: string | null;
+    updatedAt: string | null;
+  };
+}
+
+function oauthMetaFor(entry: McpServerEntry): OAuthMeta {
+  const enabled = P31_OAUTH_ENABLED.has(entry.id);
+  return {
+    enabled,
+    resource: enabled ? entry.endpoint : null,
+    authorization_servers: enabled ? [OAUTH_AS_ISSUER] : [],
+  };
+}
+
+/** Enrich a P31/registered entry with federation metadata (source/role/approval). */
+function enrichEntry(entry: McpServerEntry, source: Source, approval: Approval): FederatedEntry {
+  return {
+    ...entry,
+    source,
+    approval: entry.approval ?? approval,
+    role: entry.role ?? P31_ROLES[entry.id] ?? (entry.kind === 'local' ? 'local stdio tool' : source === 'p31' ? 'p31 fleet server' : 'community server'),
+    protocol: entry.protocol ?? (entry.kind === 'local' ? 'stdio' : '2026-07-28'),
+    oauth: oauthMetaFor(entry),
+  };
+}
+
+/** Convert an official-upstream record into a reference catalog entry.
+ *  Reference-only: not live-probed, not callable through the proxy, approval
+ *  stays 'pending' until P31 governance adopts it. */
+function upstreamToEntry(u: OfficialUpstreamServer): FederatedEntry {
+  const id = u.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || `upstream-${u.name.length}`;
+  return {
+    id,
+    name: u.title ?? u.name,
+    endpoint: u.remotes[0].url,
+    kind: 'remote',
+    category: 'external',
+    description: u.description ?? '',
+    tags: ['upstream', 'official-registry'],
+    author: 'Official MCP Registry',
+    icon: undefined,
+    status: 'unverified',
+    readOnlySafe: false,
+    source: 'official',
+    approval: 'pending',
+    role: 'upstream community server',
+    protocol: u.remotes[0].type || 'unknown',
+    oauth: { enabled: false, resource: null, authorization_servers: [] },
+    upstream: { name: u.name, version: u.version ?? null, repository: u.repository?.url ?? null, updatedAt: u.updatedAt ?? null },
+  };
+}
+
+/** P31 + registered + official upstream, deduped by id (p31 wins first,
+ *  registered second, upstream listings last). */
+async function getFederatedEntries(env: Env): Promise<FederatedEntry[]> {
+  const raw = await getAllEntries(env);
+  const upstream = (await fetchOfficialUpstream(env)).slice(0, UPSTREAM_MAX);
+  const federated: FederatedEntry[] = raw.map((e) =>
+    enrichEntry(e, OFFICIAL_IDS.has(e.id) ? 'p31' : 'external', OFFICIAL_IDS.has(e.id) ? 'approved' : 'pending'));
+  const seen = new Set(federated.map((e) => e.id));
+  for (const u of upstream) {
+    const entry = upstreamToEntry(u);
+    if (seen.has(entry.id)) continue;
+    seen.add(entry.id);
+    federated.push(entry);
+  }
+  return federated;
+}
+
+/** Find any entry (including official upstream listings) by id or name. */
+async function findFederatedEntry(env: Env, id: string): Promise<FederatedEntry | null> {
+  const entries = await getFederatedEntries(env);
+  return entries.find((e) => e.id === id || e.name === id) ?? null;
+}
+
+// ─── MCP client (SDK v2) — outbound probes + call proxy ─────────────────────
+// The hand-rolled stateless POST client was reimplemented on
+// `@modelcontextprotocol/client` v2: `Client` +
+// `StreamableHTTPClientTransport` with `versionNegotiation: { mode: 'auto' }`
+// (server/discover probe first, plain legacy initialize fallback). The SDK
+// emits the SEP-2575 `_meta` envelope and SEP-2243
+// MCP-Protocol-Version/Mcp-Method/Mcp-Name headers on modern exchanges;
+// `Mcp-Name` is set on every transport request via `requestInit`.
+
+type FetchLikeFn = (input: string | URL | Request, init?: RequestInit) => Promise<Response>;
+
+interface ConnectOutcome {
+  client?: Client;
+  error?: string;
+}
+
+async function connectMcpClient(
+  env: Env,
+  entry: McpServerEntry,
+  timeoutMs = 6000,
+  extraHeaders: Record<string, string> = {},
+): Promise<ConnectOutcome> {
+  const binding = entry.binding ? (env[entry.binding] as Fetcher | undefined) : undefined;
+  const fetchFn: FetchLikeFn = (input, init) => {
+    if (binding) {
+      const req = typeof input === 'string' || input instanceof URL ? new Request(input, init ?? {}) : input;
+      return binding.fetch(req);
+    }
+    return fetch(input, init);
+  };
+  const transport = new StreamableHTTPClientTransport(new URL(entry.endpoint), {
+    fetch: fetchFn,
+    requestInit: {
+      headers: {
+        // SEP-2243: identify the probed server on every POST.
+        'Mcp-Name': entry.name,
+        ...extraHeaders,
+      },
+    },
+  });
+  const client = new Client(
+    { name: 'p31-mcp-registry', version: '2.0.0' },
+    { versionNegotiation: { mode: 'auto', probe: { timeoutMs } } },
+  );
+  try {
+    await client.connect(transport, { timeout: timeoutMs });
+    return { client };
+  } catch (e: any) {
+    try { await client.close(); } catch { /* ignore */ }
+    return { error: String(e?.message ?? e) };
+  }
+}
+
+/** Extract a `YYYY-MM-DD` protocol revision from a negotiation failure message. */
+function extractAdvertisedVersion(text: string): string | null {
+  const m = /\b(\d{4}-\d{2}-\d{2})\b/.exec(text);
+  return m ? m[1] : null;
 }
 
 async function rpcCall(
@@ -568,103 +1178,112 @@ async function rpcCall(
   params: unknown,
   timeoutMs = 6000,
   extraHeaders: Record<string, string> = {},
+  _stateless = false,
 ): Promise<{ result?: any; error?: any }> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  const body = JSON.stringify({ jsonrpc: '2.0', id: 1, method, params: params ?? {} });
-  const headers = { 'Content-Type': 'application/json', Accept: 'application/json, text/event-stream', ...extraHeaders };
-
-  let res: Response;
-  const binding = entry.binding ? (env[entry.binding] as Fetcher | undefined) : undefined;
+  const connected = await connectMcpClient(env, entry, timeoutMs, extraHeaders);
+  if (!connected.client) return { error: { code: -32000, message: connected.error } };
+  const client = connected.client;
   try {
-    if (binding) {
-      res = await binding.fetch(new Request(entry.endpoint, { method: 'POST', headers, body, signal: controller.signal }));
-    } else {
-      res = await fetch(entry.endpoint, { method: 'POST', headers, body, signal: controller.signal });
+    if (method === 'server/discover') {
+      const discover = client.getDiscoverResult();
+      if (discover) return { result: discover };
+      return { error: { code: -32601, message: 'server/discover unsupported by remote' } };
     }
+    if (method === 'tools/list') {
+      const list = await client.listTools({}, { timeout: timeoutMs });
+      return { result: { tools: list.tools } };
+    }
+    if (method === 'tools/call') {
+      const p = (params ?? {}) as { name?: string; arguments?: Record<string, unknown> };
+      const result = await client.callTool(
+        { name: p.name ?? '', arguments: p.arguments ?? {} },
+        { timeout: timeoutMs, headers: extraHeaders },
+      );
+      return { result };
+    }
+    return { error: { code: -32601, message: `method not supported via the v2 client: ${method}` } };
   } catch (e: any) {
-    clearTimeout(timer);
     return { error: { code: -32000, message: String(e?.message ?? e) } };
+  } finally {
+    try { await client.close(); } catch { /* ignore */ }
   }
-  clearTimeout(timer);
-
-  let text = '';
-  try { text = await res.text(); } catch { return { error: { code: -32000, message: 'empty response' } }; }
-
-  let parsed: any = null;
-  // SSE unwrap: MCP Streamable HTTP may return `data: {...}` and/or
-  // `event: message\ndata: {...}` frames — strip both the event + data
-  // prefixes from each line, then parse (single frame or last JSON frame).
-  const stripSse = (s: string) => s.replace(/^event:\s*[^\n]*\n?/gm, '').replace(/^data:\s*/gm, '').trim();
-  try {
-    parsed = JSON.parse(stripSse(text));
-  } catch {
-    const frames = text.split('\n\n').map(stripSse).filter(Boolean);
-    for (let i = frames.length - 1; i >= 0; i--) {
-      try { parsed = JSON.parse(frames[i]); break; } catch { /* skip */ }
-    }
-  }
-  if (!parsed) return { error: { code: -32000, message: `unparseable response (HTTP ${res.status})` } };
-  if (parsed.error) return { error: parsed.error };
-  return { result: parsed.result };
 }
 
 async function probeTools(env: Env, entry: McpServerEntry): Promise<ToolDef[] | null> {
   if (entry.kind === 'local') return entry.tools ?? null;
+  // Non-MCP connectors are never tool-probed (relabeled 2026-10-13).
+  if (isNonMcpConnector(entry)) return null;
 
-  const first = await rpcCall(env, entry, 'tools/list', {});
-  if (!first.error) {
-    const tools = first.result?.tools;
-    return Array.isArray(tools) ? tools : null;
+  // Stateless-first (SEP-2575): the v2 client auto-negotiates via
+  // server/discover and falls back to the 2025-era initialize handshake.
+  const connected = await connectMcpClient(env, entry, 6000);
+  if (!connected.client) return null;
+  const client = connected.client;
+  try {
+    const list = await client.listTools({}, { timeout: 6000 });
+    const tools = list.tools;
+    return Array.isArray(tools) ? (tools as ToolDef[]) : null;
+  } catch {
+    return null;
+  } finally {
+    try { await client.close(); } catch { /* ignore */ }
   }
-  // Some stateless servers require an initialize handshake first.
-  const init = await rpcCall(env, entry, 'initialize', {
-    protocolVersion: PROBE_PROTOCOL_VERSION,
-    capabilities: {},
-    clientInfo: { name: 'p31-mcp-registry', version: '1.0.0' },
-  });
-  if (init.error) return null;
-  const second = await rpcCall(env, entry, 'tools/list', {});
-  if (second.error) return null;
-  const tools = second.result?.tools;
-  return Array.isArray(tools) ? tools : null;
 }
 
 /**
- * Full endpoint probe: initialize handshake (validates the advertised
- * protocol version) then tools/list. Returns tools plus a diagnostics record
- * used by both health and registration.
+ * Full endpoint probe: the v2 client negotiates the era (server/discover
+ * first, then the 2025-era initialize handshake for legacy servers) and
+ * fetches tools/list. The negotiated protocol version is validated against
+ * SUPPORTED_PROTOCOL_VERSIONS (2026-07-28 included); a fabricated revision
+ * that breaks negotiation surfaces through the failure message.
  */
 async function probeEndpoint(
   env: Env,
   entry: McpServerEntry,
-): Promise<{ tools: ToolDef[] | null; detail?: string }> {
-  const init = await rpcCall(env, entry, 'initialize', {
-    protocolVersion: PROBE_PROTOCOL_VERSION,
-    capabilities: {},
-    clientInfo: { name: 'p31-mcp-registry', version: '1.0.0' },
-  });
-  if (init.error) {
-    return { tools: null, detail: `initialize failed: ${JSON.stringify(init.error)}` };
+): Promise<{ tools: ToolDef[] | null; detail?: string; protocol?: string }> {
+  const connected = await connectMcpClient(env, entry, 6000);
+  if (!connected.client) {
+    // A 2025-era initialize result naming an unsupported (or fabricated)
+    // revision surfaces through the legacy-handshake error — extract the
+    // advertised version to keep the registration gate message identical.
+    const claimed = extractAdvertisedVersion(connected.error ?? '');
+    if (claimed && !SUPPORTED_PROTOCOL_VERSIONS.has(claimed)) {
+      return { tools: null, detail: `unsupported protocol version ${claimed} — server must advertise one of ${[...SUPPORTED_PROTOCOL_VERSIONS].join(', ')}` };
+    }
+    return { tools: null, detail: `initialize failed: ${JSON.stringify({ code: -32000, message: connected.error })}` };
   }
-  const advertised = init.result?.protocolVersion as string | undefined;
-  if (advertised && !SUPPORTED_PROTOCOL_VERSIONS.has(advertised)) {
-    return { tools: null, detail: `unsupported protocol version ${advertised} — server must advertise one of ${[...SUPPORTED_PROTOCOL_VERSIONS].join(', ')}` };
+  const client = connected.client;
+  try {
+    const advertised = client.getNegotiatedProtocolVersion();
+    if (advertised && !SUPPORTED_PROTOCOL_VERSIONS.has(advertised)) {
+      return { tools: null, detail: `unsupported protocol version ${advertised} — server must advertise one of ${[...SUPPORTED_PROTOCOL_VERSIONS].join(', ')}` };
+    }
+    const list = await client.listTools({}, { timeout: 6000 });
+    const tools = list.tools;
+    if (!Array.isArray(tools)) {
+      return { tools: null, detail: 'tools/list returned no tool array', protocol: advertised ?? undefined };
+    }
+    return { tools: tools as ToolDef[], protocol: advertised ?? undefined };
+  } catch (e: any) {
+    return { tools: null, detail: `tools/list failed: ${JSON.stringify({ code: -32000, message: String(e?.message ?? e) })}` };
+  } finally {
+    try { await client.close(); } catch { /* ignore */ }
   }
-  const list = await rpcCall(env, entry, 'tools/list', {});
-  if (list.error) {
-    return { tools: null, detail: `tools/list failed: ${JSON.stringify(list.error)}` };
-  }
-  const tools = list.result?.tools;
-  if (!Array.isArray(tools)) {
-    return { tools: null, detail: 'tools/list returned no tool array' };
-  }
-  return { tools };
 }
 
 async function probeHealth(env: Env, entry: McpServerEntry): Promise<HealthRecord> {
   if (entry.kind === 'local') {
     return { status: 'up', latencyMs: 0, checkedAt: new Date().toISOString(), detail: 'local — not probed from the edge' };
+  }
+  // Non-MCP connectors: no MCP surface to probe (relabeled 2026-10-13).
+  if (isNonMcpConnector(entry)) {
+    return { status: 'unknown', latencyMs: 0, checkedAt: new Date().toISOString(), detail: 'non-MCP connector — not probed (relabeled)' };
+  }
+  // Official-upstream listings are reference-only: never probed (aggregator
+  // etiquette — we scrape the upstream API hourly, we do not probe each
+  // listed server per request).
+  if ((entry as FederatedEntry).source === 'official') {
+    return { status: 'unknown', latencyMs: 0, checkedAt: new Date().toISOString(), detail: 'upstream listing — not probed (federation reference)' };
   }
   const cached = await env.REGISTRY_KV.get(KV_HEALTH_PREFIX + entry.id);
   if (cached) return JSON.parse(cached) as HealthRecord;
@@ -682,8 +1301,165 @@ async function probeHealth(env: Env, entry: McpServerEntry): Promise<HealthRecor
   return rec;
 }
 
+// ─── Conformance probe — the 2026-07-28 stateless contract badge ───────────
+// Raw-fetch probe, not the v2 SDK client: the SDK always emits Mcp-* headers,
+// and one of the three checks is that a headerless request must FAIL. Same
+// pattern as probeHealth — lazy, KV-cached (CONFORMANCE_TTL), service binding
+// preferred over public fetch (workers.dev → workers.dev DNS 1042). The three
+// booleans mirror scripts/verify-mcp-conformance.mjs (a)(b)(d):
+//
+//   discover        — server/discover returns protocolVersion +
+//                     supportedProtocolVersions + serverInfo under the full
+//                     stateless envelope (SEP-2243 headers + params._meta).
+//   resultType      — tools/list returns resultType "complete".
+//   headerEnforced  — a request WITHOUT the Mcp-Method header fails cleanly
+//                     (JSON-RPC error or HTTP 4xx/5xx). A silent 2xx result
+//                     is a conformance gap.
+
+/** Parse an MCP endpoint response: single JSON body or SSE `data:` frames. */
+async function parseMcpProbeResponse(res: Response): Promise<Record<string, any>> {
+  const text = await res.text();
+  const strip = (s: string) => s.replace(/^event:\s*[^\n]*\n?/gm, '').replace(/^data:\s*/gm, '').trim();
+  const stripped = strip(text);
+  if (stripped.startsWith('{')) {
+    try { return JSON.parse(stripped); } catch { /* fall through */ }
+  }
+  const frames = text.split('\n\n').map(strip).filter(Boolean);
+  for (let i = frames.length - 1; i >= 0; i--) {
+    try { return JSON.parse(frames[i]); } catch { /* skip */ }
+  }
+  try { return JSON.parse(text); } catch { return {}; }
+}
+
+function conformanceProbeBody(method: string, id: number) {
+  return {
+    jsonrpc: '2.0',
+    id,
+    method,
+    params: {
+      _meta: {
+        'io.modelcontextprotocol/protocolVersion': PROTOCOL_VERSION,
+        'io.modelcontextprotocol/clientInfo': { name: 'p31-mcp-registry-conformance', version: '2.0.0' },
+        'io.modelcontextprotocol/clientCapabilities': {},
+      },
+    },
+  };
+}
+
+function conformanceHeaders(method: string, name: string): Record<string, string> {
+  return {
+    'Content-Type': 'application/json',
+    Accept: 'application/json, text/event-stream',
+    'Mcp-Method': method,
+    'Mcp-Name': name,
+    'MCP-Protocol-Version': PROTOCOL_VERSION,
+  };
+}
+
+async function conformanceCheck(
+  fetchFn: FetchLikeFn,
+  entry: McpServerEntry,
+  method: string,
+  id: number,
+  headers: Record<string, string>,
+): Promise<{ status: number; body: Record<string, any> }> {
+  const res = await fetchFn(entry.endpoint, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(conformanceProbeBody(method, id)),
+    signal: AbortSignal.timeout(8000),
+  });
+  return { status: res.status, body: await parseMcpProbeResponse(res) };
+}
+
+async function probeConformance(env: Env, entry: McpServerEntry): Promise<ConformanceRecord | null> {
+  if (entry.kind === 'local') return null;
+  // Non-MCP connectors have no MCP surface — excluded from the badge (relabeled 2026-10-13).
+  if (isNonMcpConnector(entry)) return null;
+  // Upstream listings are reference-only: never probed.
+  if ((entry as FederatedEntry).source === 'official') return null;
+
+  const cached = await env.REGISTRY_KV.get(KV_CONFORMANCE_PREFIX + entry.id);
+  if (cached) return JSON.parse(cached) as ConformanceRecord;
+
+  const binding = entry.binding ? (env[entry.binding] as Fetcher | undefined) : undefined;
+  const fetchFn: FetchLikeFn = (input, init) => {
+    if (binding) {
+      const req = typeof input === 'string' || input instanceof URL ? new Request(input, init ?? {}) : input;
+      return binding.fetch(req);
+    }
+    return fetch(input, init);
+  };
+
+  const rec: ConformanceRecord = {
+    discover: false,
+    resultType: false,
+    headerEnforced: false,
+    checkedAt: new Date().toISOString(),
+  };
+  const gaps: string[] = [];
+
+  // (a) server/discover under the full stateless contract.
+  try {
+    const { status, body } = await conformanceCheck(fetchFn, entry, 'server/discover', 1, conformanceHeaders('server/discover', entry.name));
+    const result = (body?.result ?? {}) as Record<string, any>;
+    const protocolVersion = result.protocolVersion ?? result._meta?.['io.modelcontextprotocol/protocolVersion'];
+    const supported = result.supportedProtocolVersions ?? result.supportedVersions;
+    const serverInfo = result.serverInfo ?? result._meta?.['io.modelcontextprotocol/serverInfo'];
+    if (protocolVersion && Array.isArray(supported) && serverInfo) {
+      rec.discover = true;
+    } else if (body?.error) {
+      gaps.push(`discover: rejected ${body.error.code ?? '?'} ${String(body.error.message ?? '').slice(0, 100)}`);
+    } else {
+      gaps.push(`discover: incomplete response (http ${status})`);
+    }
+  } catch (e: any) {
+    gaps.push(`discover: probe error ${String(e?.message ?? e).slice(0, 100)}`);
+  }
+
+  // (b) resultType "complete" on tools/list.
+  try {
+    const { body } = await conformanceCheck(fetchFn, entry, 'tools/list', 2, conformanceHeaders('tools/list', entry.name));
+    const result = body?.result;
+    if (result && typeof result === 'object' && (result as any).resultType === 'complete') {
+      rec.resultType = true;
+    } else {
+      gaps.push(`resultType: ${(result as any)?.resultType ?? '<absent>'}`);
+    }
+  } catch (e: any) {
+    gaps.push(`resultType: probe error ${String(e?.message ?? e).slice(0, 100)}`);
+  }
+
+  // (c) headerless request must fail cleanly — never silently succeed.
+  try {
+    const { status, body } = await conformanceCheck(fetchFn, entry, 'server/discover', 3, {
+      'Content-Type': 'application/json',
+      Accept: 'application/json, text/event-stream',
+    });
+    if (body?.error && typeof body.error === 'object') {
+      rec.headerEnforced = true;
+    } else if (status >= 400) {
+      rec.headerEnforced = true;
+    } else if (body?.result) {
+      gaps.push(`headerEnforced: succeeded without Mcp-Method header (http ${status})`);
+    } else {
+      rec.headerEnforced = true; // clean failure (no result, no error)
+    }
+  } catch (e: any) {
+    gaps.push(`headerEnforced: probe error ${String(e?.message ?? e).slice(0, 100)}`);
+  }
+
+  if (gaps.length > 0) rec.detail = gaps.join('; ');
+  await env.REGISTRY_KV.put(KV_CONFORMANCE_PREFIX + entry.id, JSON.stringify(rec), { expirationTtl: CONFORMANCE_TTL });
+  return rec;
+}
+
 async function getToolSchemas(env: Env, entry: McpServerEntry): Promise<ToolDef[]> {
   if (entry.kind === 'local') return entry.tools ?? [];
+  // Non-MCP connectors have no MCP tool surface (relabeled 2026-10-13).
+  if (isNonMcpConnector(entry)) return [];
+  // Upstream listings are never tool-probed (federation reference only).
+  if ((entry as FederatedEntry).source === 'official') return [];
 
   const cached = await env.REGISTRY_KV.get(KV_SCHEMAS_PREFIX + entry.id);
   if (cached) return JSON.parse(cached) as ToolDef[];
@@ -900,12 +1676,23 @@ async function verifyAuditChain(env: Env, log?: AuditEntry[]): Promise<{ ok: boo
 interface TransparencyEntry {
   seq: number;
   ts: string;
-  event: 'registered' | 'approved' | 'rejected' | 'drifted' | 'tool-changed' | 'reviewed';
+  event: 'registered' | 'approved' | 'rejected' | 'drifted' | 'tool-changed' | 'reviewed' | 'blocked' | 'pending' | 'usage-admin';
   serverId: string;
   detail?: string;
+  /** SIEM fields (E-3): acting identity, tool in scope, outcome. */
+  principal?: string;
+  tool?: string;
+  outcome?: string;
   prev: string;
   hash: string;
   sig?: string;
+}
+
+/** Deterministic canonical body for transparency entries — MUST be used by
+ *  both the appender and the verifier (added fields with undefined values are
+ *  dropped by JSON.stringify, so old chains keep verifying). */
+function transparencyBody(prev: string, seq: number, ts: string, ev: Omit<TransparencyEntry, 'seq' | 'ts' | 'prev' | 'hash' | 'sig'>): Record<string, unknown> {
+  return { prev, seq, ts, event: ev.event, serverId: ev.serverId, detail: ev.detail, principal: ev.principal, tool: ev.tool, outcome: ev.outcome };
 }
 
 async function appendTransparency(env: Env, ev: Omit<TransparencyEntry, 'seq' | 'ts' | 'prev' | 'hash' | 'sig'>): Promise<void> {
@@ -914,7 +1701,7 @@ async function appendTransparency(env: Env, ev: Omit<TransparencyEntry, 'seq' | 
   const head = (await env.REGISTRY_KV.get(KV_TRANSPARENCY_HEAD)) ?? 'GENESIS';
   const seq = log.length > 0 ? log[log.length - 1].seq + 1 : 1;
   const ts = new Date().toISOString();
-  const body = { prev: head, seq, ts, event: ev.event, serverId: ev.serverId, detail: ev.detail };
+  const body = transparencyBody(head, seq, ts, ev);
   const hash = await sha256Hex(canonical(body));
   const signed = await ed25519Sign(env, body);
   const entry: TransparencyEntry = { seq, ts, prev: head, hash, ...ev, ...(signed ? { sig: signed.signature } : {}) };
@@ -1220,7 +2007,7 @@ async function ed25519Verify(env: Env, payload: Record<string, unknown>, signatu
   return false
 }
 
-async function ed25519VerifyWithSeed(env: Env, seed: Buffer, data: Uint8Array, sig: Buffer): Promise<boolean> {
+async function ed25519VerifyWithSeed(env: Env, seed: Buffer, data: Uint8Array, sig: Uint8Array): Promise<boolean> {
   // Path 1: node:crypto.
   try {
     const key = ed25519PrivateKeyFromB64(seed.toString('base64'));
@@ -1296,11 +2083,15 @@ function inferReadOnlySafe(tools: ToolDef[]): boolean {
 }
 
 async function summary(env: Env, entry: McpServerEntry, schemas: ToolDef[], health: HealthRecord) {
-  const [drift, scan, capabilities] = await Promise.all([
+  const [drift, scan, capabilities, conformance] = await Promise.all([
     checkDrift(env, entry, schemas),
     getScanMeta(env, entry, schemas),
     getCapabilityMeta(env, entry, schemas),
+    probeConformance(env, entry),
   ]);
+  const fed = entry as FederatedEntry;
+  const src: Source = fed.source ?? (OFFICIAL_IDS.has(entry.id) ? 'p31' : 'external');
+  const priced = priceTierFor(schemas.map((t) => t.name));
   return {
     id: entry.id,
     name: entry.name,
@@ -1318,10 +2109,21 @@ async function summary(env: Env, entry: McpServerEntry, schemas: ToolDef[], heal
     needsReview: entry.needsReview,
     capabilities,
     readOnlySafe: entry.readOnlySafe,
+    // A-2 federation + governance metadata.
+    source: src,
+    role: fed.role ?? P31_ROLES[entry.id] ?? (entry.kind === 'local' ? 'local stdio tool' : src === 'p31' ? 'p31 fleet server' : 'community server'),
+    oauth: fed.oauth ?? oauthMetaFor(entry),
+    protocol: fed.protocol ?? (entry.kind === 'local' ? 'stdio' : '2026-07-28'),
+    approval: fed.approval ?? (src === 'p31' ? 'approved' : 'pending'),
+    priceTier: priced.tier,
+    pricedTools: priced.pricedTools,
+    probed: src !== 'official',
+    upstream: fed.upstream ?? null,
     health: health.status,
     healthDetail: health.detail,
     latencyMs: health.latencyMs,
     checkedAt: health.checkedAt,
+    conformance: conformance ?? entry.conformance ?? null,
     toolCount: schemas.length,
     tools: schemas.map((t) => t.name),
     localNote: entry.localNote,
@@ -1348,6 +2150,7 @@ async function handleHealth(env: Env): Promise<Response> {
   const live = (await Promise.all(remote.map((e) => probeHealth(env, e)))).filter((h) => h.status === 'up').length;
   const categories: Record<string, number> = {};
   for (const e of entries) categories[e.category] = (categories[e.category] ?? 0) + 1;
+  const upstream = (await fetchOfficialUpstream(env)).length;
   return json({
     status: 'ok',
     service: 'mcp-registry',
@@ -1356,6 +2159,7 @@ async function handleHealth(env: Env): Promise<Response> {
     local: entries.length - remote.length,
     liveUp: live,
     categories,
+    federation: { upstream: upstream, synced: upstream > 0 },
   });
 }
 
@@ -1364,25 +2168,27 @@ async function handleListServers(env: Env, url: URL): Promise<Response> {
   const category = url.searchParams.get('category');
   const status = url.searchParams.get('status');
   const kind = url.searchParams.get('kind');
+  const source = url.searchParams.get('source');
 
-  const entries = await getAllEntries(env);
+  const entries = await getFederatedEntries(env);
   const filtered = entries.filter((e) => {
+    if (source && e.source !== source) return false;
     if (category && e.category !== category) return false;
     if (status && e.status !== status) return false;
     if (kind && e.kind !== kind) return false;
     if (q) {
-      const hay = `${e.name} ${e.description} ${e.tags.join(' ')} ${e.id}`.toLowerCase();
+      const hay = `${e.name} ${e.description} ${e.tags.join(' ')} ${e.id} ${e.role} ${e.source}`.toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
   });
 
   const summaries = await buildSummaries(env, filtered);
-  return json({ servers: summaries, count: summaries.length, filters: { q, category, status, kind } });
+  return json({ servers: summaries, count: summaries.length, filters: { q, category, status, kind, source } });
 }
 
 async function handleCategories(env: Env): Promise<Response> {
-  const entries = await getAllEntries(env);
+  const entries = await getFederatedEntries(env);
   const summaries = await buildSummaries(env, entries);
   const byCat = new Map<Category, { id: Category; count: number; toolCount: number }>();
   for (const s of summaries) {
@@ -1401,7 +2207,7 @@ async function findEntry(env: Env, id: string): Promise<McpServerEntry | null> {
 }
 
 async function handleServerDetail(env: Env, id: string): Promise<Response> {
-  const entry = await findEntry(env, id);
+  const entry = await findFederatedEntry(env, id);
   if (!entry) return json({ error: 'server not found' }, 404);
   const [schemas, health] = await Promise.all([getToolSchemas(env, entry), probeHealth(env, entry)]);
   const baselineRaw = await env.REGISTRY_KV.get(KV_BASELINE_SCHEMAS_PREFIX + entry.id);
@@ -1410,17 +2216,34 @@ async function handleServerDetail(env: Env, id: string): Promise<Response> {
 }
 
 async function handleServerTools(env: Env, id: string): Promise<Response> {
-  const entry = await findEntry(env, id);
+  const entry = await findFederatedEntry(env, id);
   if (!entry) return json({ error: 'server not found' }, 404);
   const schemas = await getToolSchemas(env, entry);
   return json({ server: entry.id, tools: schemas.map((t) => ({ ...t, risk: toolRisk(t) })) });
 }
 
 async function handleServerHealth(env: Env, id: string): Promise<Response> {
-  const entry = await findEntry(env, id);
+  const entry = await findFederatedEntry(env, id);
   if (!entry) return json({ error: 'server not found' }, 404);
   const health = await probeHealth(env, entry);
-  return json({ id: entry.id, status: entry.status, health, readOnlySafe: entry.readOnlySafe, category: entry.category });
+  return json({ id: entry.id, status: entry.status, health, readOnlySafe: entry.readOnlySafe, category: entry.category, source: entry.source });
+}
+
+/**
+ * Resolve a same-account workers.dev hostname to its service binding so the
+ * liveness probe bypasses Cloudflare's DNS 1042 (workers.dev → workers.dev
+ * public fetch is refused; a service binding routes internally).
+ */
+function resolveSameAccountBinding(endpoint: string): keyof Env | undefined {
+  try {
+    const host = new URL(endpoint).hostname;
+    const hit = OFFICIAL_CATALOG.find((e) => {
+      try { return new URL(e.endpoint).hostname === host; } catch { return false; }
+    });
+    return hit?.binding;
+  } catch {
+    return undefined;
+  }
 }
 
 async function handleRegister(env: Env, request: Request): Promise<Response> {
@@ -1466,13 +2289,16 @@ async function handleRegister(env: Env, request: Request): Promise<Response> {
     quota,
     monetized: Boolean(monetized),
     readOnlySafe: false,
+    approval: 'pending',
+    binding: resolveSameAccountBinding(endpoint),
   };
 
-  const { tools, detail } = await probeEndpoint(env, candidate);
+  const { tools, detail, protocol } = await probeEndpoint(env, candidate);
   if (tools === null) {
     return json({ error: `liveness check failed: ${detail ?? 'tools/list did not return a tool list'}` }, 400);
   }
   candidate.readOnlySafe = inferReadOnlySafe(tools);
+  candidate.protocol = protocol ?? 'streamable-http';
 
   // A1 — tool-description scanner (tool poisoning defense).
   const scan = scanToolSurface(tools as Array<{ name: string; description?: string }>);
@@ -1483,7 +2309,7 @@ async function handleRegister(env: Env, request: Request): Promise<Response> {
     const rejected: McpServerEntry[] = rejectedRaw ? JSON.parse(rejectedRaw) : [];
     rejected.push({ ...candidate, status: 'down', review: undefined, verify: { alg: 'ML-DSA-65', checkedAt: new Date().toISOString() } });
     await env.REGISTRY_KV.put(KV_REJECTED, JSON.stringify(rejected.slice(-200)));
-    void appendTransparency(env, { event: 'rejected', serverId: candidate.id, detail: `scanner verdict: malicious (${scan.maliciousCount} tools)` }).catch(() => {});
+    void appendTransparency(env, { event: 'rejected', serverId: candidate.id, detail: `scanner verdict: malicious (${scan.maliciousCount} tools)`, principal: await resolvePrincipal(env, request), outcome: 'blocked' }).catch(() => {});
     return json({ error: 'registration rejected — tool-description scanner flagged malicious content', scan: candidate.scan }, 400);
   }
   if (scan.worst === 'suspicious') candidate.needsReview = true;
@@ -1514,7 +2340,7 @@ async function handleRegister(env: Env, request: Request): Promise<Response> {
   await env.REGISTRY_KV.put(KV_REGISTERED, JSON.stringify(registered));
   await env.REGISTRY_KV.delete(KV_SCHEMAS_PREFIX + candidate.id);
   await env.REGISTRY_KV.delete(KV_HEALTH_PREFIX + candidate.id);
-  void appendTransparency(env, { event: 'registered', serverId: candidate.id, detail: `${scan.worst} scan · ${observedNames.length} tools` }).catch(() => {});
+  void appendTransparency(env, { event: 'registered', serverId: candidate.id, detail: `${scan.worst} scan · ${observedNames.length} tools`, principal: await resolvePrincipal(env, request), outcome: 'registered' }).catch(() => {});
 
   return json(
     { ...(await summary(env, candidate, tools as ToolDef[], await probeHealth(env, candidate))), note: 'registered as unverified — pending P31 review', scan: candidate.scan, needsReview: candidate.needsReview, manifestMismatch },
@@ -1524,7 +2350,14 @@ async function handleRegister(env: Env, request: Request): Promise<Response> {
 
 async function handleCall(env: Env, id: string, request: Request): Promise<Response> {
   const entry = await findEntry(env, id);
-  if (!entry) return json({ error: 'server not found' }, 404);
+  if (!entry) {
+    // Distinguish official-upstream reference listings from unknown ids:
+    // listings are visible + inspectable, but never callable through the
+    // marketplace proxy (register the server to enable proxied calls).
+    const fed = await findFederatedEntry(env, id);
+    if (fed) return json({ error: 'upstream reference listing — register this server (POST /servers) to enable proxied calls' }, 403);
+    return json({ error: 'server not found' }, 404);
+  }
   if (entry.kind === 'local') return json({ error: 'local server not reachable from the edge' }, 503);
 
   const bodyText = await request.text().catch(() => '');
@@ -1602,11 +2435,16 @@ async function proxyToolCall(
   if (clientAccept && clientAccept.includes('application/json') && clientAccept.includes('text/event-stream')) {
     extraHeaders['Accept'] = clientAccept;
   }
+  // SEP-2243: forward client tool-parameter headers (`x-mcp-header: <name>`)
+  // through to the upstream server, lowercased — header names are
+  // case-insensitive and SEP-2243 requires lowercase parameter names.
+  const xMcpHeaders = request.headers.get('x-mcp-header');
+  if (xMcpHeaders) extraHeaders['x-mcp-header'] = xMcpHeaders;
   if (risk === 'write') {
     capToken = await mintCapabilityToken(env, { serverId: entry.id, tool: toolName, principal: await resolvePrincipal(env, request) });
     if (capToken) extraHeaders['X-Capability-Token'] = capToken.token;
   }
-  const res = await rpcCall(env, entry, 'tools/call', { name: toolName, arguments: args }, 10000, extraHeaders);
+  const res = await rpcCall(env, entry, 'tools/call', { name: toolName, arguments: args }, 10000, extraHeaders, true);
   const latencyMs = Date.now() - start;
   const ok = !res.error;
 
@@ -1652,10 +2490,11 @@ async function handleReview(env: Env, id: string, request: Request): Promise<Res
     await env.REGISTRY_KV.put(KV_REGISTERED, JSON.stringify(registered));
     const rejectedRaw = await env.REGISTRY_KV.get(KV_REJECTED);
     const rejected: McpServerEntry[] = rejectedRaw ? JSON.parse(rejectedRaw) : [];
-    rejected.push({ ...entry, status: 'down', verify: { alg: 'ML-DSA-65', checkedAt: new Date().toISOString() } });
+    rejected.push({ ...entry, status: 'down', approval: 'blocked', verify: { alg: 'ML-DSA-65', checkedAt: new Date().toISOString() } });
     await env.REGISTRY_KV.put(KV_REJECTED, JSON.stringify(rejected.slice(-200)));
     await env.REGISTRY_KV.delete(KV_SCHEMAS_PREFIX + entry.id);
     await env.REGISTRY_KV.delete(KV_HEALTH_PREFIX + entry.id);
+    void appendTransparency(env, { event: 'rejected', serverId: entry.id, detail: `reviewer reject${body?.note ? ` — ${body.note}` : ''}`, principal: await resolveActingPrincipal(env, request), outcome: 'blocked' }).catch(() => {});
     void appendLog(env, { level: 'info', method: 'POST', path: `/servers/${id}/review`, status: 200, latencyMs: 0, serverId: id });
     return json({ id: entry.id, action: 'rejected', note: body?.note ?? null });
   }
@@ -1666,6 +2505,7 @@ async function handleReview(env: Env, id: string, request: Request): Promise<Res
   registered[idx] = {
     ...entry,
     status: 'live',
+    approval: 'approved',
     verify: { alg: 'ML-DSA-65', checkedAt },
     review: signed ? { ...signed, signedBy: 'p31-registry', checkedAt } : undefined,
   };
@@ -1676,9 +2516,160 @@ async function handleReview(env: Env, id: string, request: Request): Promise<Res
   const current = await getToolSchemas(env, entry);
   await env.REGISTRY_KV.put(KV_BASELINE_PREFIX + entry.id, toolsHash(current));
   await env.REGISTRY_KV.put(KV_BASELINE_SCHEMAS_PREFIX + entry.id, JSON.stringify(current.map((t) => ({ name: t.name, description: t.description ?? '' }))));
-  void appendTransparency(env, { event: 'approved', serverId: entry.id, detail: `signed by ${signed?.alg ?? 'none'} @ ${checkedAt}` }).catch(() => {});
+  void appendTransparency(env, { event: 'approved', serverId: entry.id, detail: `signed by ${signed?.alg ?? 'none'} @ ${checkedAt}`, principal: await resolveActingPrincipal(env, request), outcome: 'approved' }).catch(() => {});
   void appendLog(env, { level: 'info', method: 'POST', path: `/servers/${id}/review`, status: 200, latencyMs: 0, serverId: id });
   return json({ id: entry.id, action: 'approved', status: 'live', review: registered[idx].review ?? null });
+}
+
+// ─── E: Enterprise governance — approval gate + usage counters ─────────────
+// E-1: `approval` state flips are admin-gated by the shared ADMIN_SECRET
+// (header X-Admin-Secret or Authorization: Bearer). Cloudflare Access is the
+// planned successor — filed as a fix-plan (see docs/fix-plans).
+// E-2: the bridge write-side POSTs {server, tool} to /internal/usage with
+// header X-Internal-Usage-Key (INTERNAL_USAGE_KEY); counters upsert into D1
+// (migration 0001). GET /analytics/tools serves them behind ADMIN_SECRET.
+// E-3: every approval/publish/usage-admin event appends to the hash-chained
+// transparency ledger with SIEM fields (timestamp, identity, server, tool,
+// outcome).
+
+/** Constant-time string comparison (secrets never leak through timing). */
+function timingSafeEqualStr(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
+/** True when the request carries the shared admin secret (header or bearer). */
+function adminSecretOk(request: Request, env: Env): boolean {
+  const secret = env.ADMIN_SECRET;
+  if (!secret) return false;
+  const header = request.headers.get('X-Admin-Secret')?.trim();
+  if (header && timingSafeEqualStr(header, secret)) return true;
+  const bearer = request.headers.get('Authorization')?.replace(/^Bearer\s+/i, '').trim();
+  if (bearer && timingSafeEqualStr(bearer, secret)) return true;
+  return false;
+}
+
+/** Identity recorded in SIEM audit fields for admin-secret requests. */
+function secretIdentity(request: Request): string {
+  return request.headers.get('X-Principal')?.trim() || 'admin-secret';
+}
+
+async function handleApprove(env: Env, id: string, request: Request): Promise<Response> {
+  if (!env.ADMIN_SECRET) {
+    return json({ error: 'admin secret not configured — approval gate closed (Cloudflare Access follow-up filed)' }, 503);
+  }
+  if (!adminSecretOk(request, env)) {
+    return json({ error: 'forbidden — valid admin secret required' }, 403);
+  }
+  const body: any = await request.json().catch(() => null);
+  const action = body?.action ?? 'approve';
+  if (action !== 'approve' && action !== 'block' && action !== 'pending') {
+    return json({ error: 'action must be "approve", "block", or "pending"' }, 400);
+  }
+
+  const registeredRaw = await env.REGISTRY_KV.get(KV_REGISTERED);
+  const registered: McpServerEntry[] = registeredRaw ? JSON.parse(registeredRaw) : [];
+  const idx = registered.findIndex((e) => e.id === id || e.name === id);
+  if (idx === -1) return json({ error: 'server not found (must be a registered community entry)' }, 404);
+  const entry = registered[idx];
+
+  const next: Approval = action === 'approve' ? 'approved' : action === 'block' ? 'blocked' : 'pending';
+  registered[idx] = {
+    ...entry,
+    approval: next,
+    ...(action === 'approve' ? { status: 'live' as Status } : action === 'block' ? { status: 'down' as Status } : {}),
+  };
+  await env.REGISTRY_KV.put(KV_REGISTERED, JSON.stringify(registered));
+  await env.REGISTRY_KV.delete(KV_SCHEMAS_PREFIX + entry.id);
+  await env.REGISTRY_KV.delete(KV_HEALTH_PREFIX + entry.id);
+  const identity = secretIdentity(request);
+  await appendTransparency(env, {
+    event: action === 'approve' ? 'approved' : action === 'block' ? 'blocked' : 'pending',
+    serverId: entry.id,
+    detail: `approval gate: ${entry.approval ?? 'pending'} → ${next} (action ${action})`,
+    principal: identity,
+    outcome: next,
+  });
+  void appendLog(env, { level: 'info', method: 'POST', path: `/servers/${id}/approve`, status: 200, latencyMs: 0, serverId: id });
+  return json({ id: entry.id, action, approval: next, status: registered[idx].status });
+}
+
+/**
+ * E-2 — bridge write-side contract. POST {server: string, tool: string}
+ * (optional count: number, default 1) with header `X-Internal-Usage-Key`.
+ * Upserts {server, tool, count, last_called} into the D1 usage_events table.
+ */
+async function handleInternalUsage(env: Env, request: Request): Promise<Response> {
+  if (!env.INTERNAL_USAGE_KEY) {
+    return json({ error: 'internal usage key not configured' }, 503);
+  }
+  const key = request.headers.get('X-Internal-Usage-Key')?.trim();
+  if (!key || !timingSafeEqualStr(key, env.INTERNAL_USAGE_KEY)) {
+    return json({ error: 'forbidden — valid internal usage key required' }, 403);
+  }
+  if (!env.USAGE_DB) {
+    return json({ error: 'usage database unavailable (D1 unbound)' }, 503);
+  }
+  const body: any = await request.json().catch(() => null);
+  const server = String(body?.server ?? '').trim().slice(0, 120);
+  const tool = String(body?.tool ?? '').trim().slice(0, 200);
+  if (!server || !tool) {
+    return json({ error: 'required: {server: string, tool: string}' }, 400);
+  }
+  const rawCount = Number(body?.count);
+  const count = Number.isFinite(rawCount) ? Math.max(1, Math.min(1000, Math.floor(rawCount))) : 1;
+  const lastCalled = new Date().toISOString();
+  try {
+    await env.USAGE_DB.prepare(
+      `INSERT INTO usage_events (server, tool, count, last_called) VALUES (?, ?, ?, ?)
+       ON CONFLICT (server, tool) DO UPDATE SET count = count + excluded.count, last_called = excluded.last_called`,
+    ).bind(server, tool, count, lastCalled).run();
+  } catch (e: any) {
+    await appendError(env, { source: 'usage-upsert', message: `D1 upsert failed: ${String(e?.message ?? e)}` });
+    return json({ error: 'usage upsert failed' }, 500);
+  }
+  return json({ ok: true, server, tool, count });
+}
+
+/** E-2 — governed-lens analytics: per-server/tool counters (admin secret). */
+async function handleAnalyticsTools(env: Env, request: Request): Promise<Response> {
+  if (!env.ADMIN_SECRET) {
+    return json({ error: 'admin secret not configured' }, 503);
+  }
+  if (!adminSecretOk(request, env)) {
+    return json({ error: 'forbidden — valid admin secret required' }, 403);
+  }
+  if (!env.USAGE_DB) {
+    return json({ error: 'usage database unavailable (D1 unbound)' }, 503);
+  }
+  const url = new URL(request.url);
+  const limit = Math.min(Number(url.searchParams.get('limit') ?? '100') || 100, 500);
+  const server = (url.searchParams.get('server') ?? '').trim();
+  try {
+    const rows = server
+      ? await env.USAGE_DB.prepare(
+          'SELECT server, tool, count, last_called FROM usage_events WHERE server = ? ORDER BY count DESC, last_called DESC LIMIT ?',
+        ).bind(server, limit).all()
+      : await env.USAGE_DB.prepare(
+          'SELECT server, tool, count, last_called FROM usage_events ORDER BY count DESC, last_called DESC LIMIT ?',
+        ).bind(limit).all();
+    const totals = await env.USAGE_DB.prepare('SELECT COUNT(*) AS tools, COALESCE(SUM(count), 0) AS calls FROM usage_events').first();
+    // E-3 — audit the admin analytics read (low volume, SIEM-relevant).
+    const identity = secretIdentity(request);
+    await appendTransparency(env, {
+      event: 'usage-admin',
+      serverId: server || '*',
+      detail: `analytics read by ${identity} (limit ${limit})`,
+      principal: identity,
+      outcome: 'ok',
+    });
+    return json({ tools: rows.results ?? [], totals: totals ?? { tools: 0, calls: 0 }, checkedAt: new Date().toISOString() });
+  } catch (e: any) {
+    await appendError(env, { source: 'usage-analytics', message: `D1 query failed: ${String(e?.message ?? e)}` });
+    return json({ error: 'analytics query failed' }, 500);
+  }
 }
 
 // ─── Observability: audit, structured logs, error ingestion ────────────────
@@ -1722,7 +2713,7 @@ async function handleTransparency(env: Env, request: Request): Promise<Response>
   let prev = 'GENESIS';
   let ok = true;
   for (const e of log) {
-    const body = { prev, seq: e.seq, ts: e.ts, event: e.event, serverId: e.serverId, detail: e.detail };
+    const body = transparencyBody(prev, e.seq, e.ts, { event: e.event, serverId: e.serverId, detail: e.detail, principal: e.principal, tool: e.tool, outcome: e.outcome });
     const recomputed = await sha256Hex(canonical(body));
     if (recomputed !== e.hash) { ok = false; break; }
     prev = e.hash;
@@ -1880,53 +2871,96 @@ const MCP_SURFACE_TOOLS = [
 ]
 
 async function handleMcpSurface(env: Env, request: Request): Promise<Response> {
-  const bodyText = await request.text().catch(() => '')
-  let body: any = null
-  try { body = JSON.parse(bodyText || 'null') } catch { body = null }
-  const rpcId = body?.id ?? null
-  const method = body?.method ?? ''
-  const params = body?.params ?? {}
+  // OAuth 2.1 resource-server gate: if a Bearer token was supplied on a
+  // tools/call it MUST validate (RFC 8707 audience binding) — invalid ⇒
+  // 401 MCP error result, never silently ignored.
+  const auth = request.headers.get('Authorization') ?? '';
+  if (auth.startsWith('Bearer ')) {
+    let body: any = null;
+    try { body = await request.clone().json(); } catch { body = null; }
+    if (body?.method === 'tools/call') {
+      const bearer = await verifyOAuthBearer(request, env);
+      if (bearer === null) {
+        return json(oauthGateError(body?.id ?? null), 401);
+      }
+    }
+  }
+  // Served by the SDK v2 stateless handler: modern 2026-07-28 requests
+  // (server/discover, `_meta` envelope, resultType, ttlMs/cacheScope,
+  // -32022 mismatches) and — via the default `legacy: 'stateless'`
+  // fallback — 2025-era clients (initialize handshake + SSE-streamed
+  // responses), equivalent to the previous hand-rolled legacy branch.
+  const handler = createMcpHandler(() => buildRegistryServer(env));
+  const res = await handler.fetch(request);
+  // The SDK handler does not add CORS headers — re-apply the worker's own.
+  const headers = new Headers(res.headers);
+  for (const [k, v] of Object.entries(corsHeaders())) headers.set(k, v);
+  return new Response(res.body, { status: res.status, headers });
+}
 
-  if (method === 'initialize') {
-    return json({ jsonrpc: '2.0', id: rpcId, result: { protocolVersion: PROBE_PROTOCOL_VERSION, capabilities: { tools: {} }, serverInfo: { name: 'p31-mcp-marketplace', version: '2.0.0' } } })
-  }
-  if (method === 'notifications/initialized') {
-    return new Response(null, { status: 200, headers: corsHeaders() })
-  }
-  if (method === 'tools/list') {
-    return json({ jsonrpc: '2.0', id: rpcId, result: { tools: MCP_SURFACE_TOOLS } })
-  }
-  if (method === 'tools/call') {
-    const name = params?.name
-    const args = params?.arguments ?? {}
-    if (name === 'list_servers') {
-      const u = new URL('https://registry.local/servers')
-      if (args.category) u.searchParams.set('category', args.category)
-      if (args.status) u.searchParams.set('status', args.status)
-      const res = await handleListServers(env, u)
-      const data: any = await res.json()
-      return json({ jsonrpc: '2.0', id: rpcId, result: { content: [{ type: 'text', text: JSON.stringify(data.servers ?? []) }] } })
-    }
-    if (name === 'get_server') {
-      const entry = await findEntry(env, args.id)
-      if (!entry) return json({ jsonrpc: '2.0', id: rpcId, result: { content: [{ type: 'text', text: JSON.stringify({ error: 'server not found' }) }], isError: true } })
-      const schemas = await getToolSchemas(env, entry)
-      const health = await probeHealth(env, entry)
-      const gov = await summary(env, entry, schemas, health)
-      return json({ jsonrpc: '2.0', id: rpcId, result: { content: [{ type: 'text', text: JSON.stringify({ id: gov.id, name: gov.name, endpoint: gov.endpoint, status: gov.status, health: gov.health, toolCount: gov.toolCount, scan: gov.scan, review: gov.review, capabilities: gov.capabilities, drifted: gov.drifted, readOnlySafe: gov.readOnlySafe, tools: schemas.map((t) => ({ name: t.name, description: t.description, inputSchema: t.inputSchema })) }) }] } })
-    }
-    if (name === 'call_tool') {
-      const entry = await findEntry(env, args.server)
-      if (!entry) return json({ jsonrpc: '2.0', id: rpcId, result: { content: [{ type: 'text', text: JSON.stringify({ error: 'server not found' }) }], isError: true } })
-      const r = await proxyToolCall(env, entry, String(args.tool ?? ''), (args.arguments ?? {}) as Record<string, unknown>, request)
-      if (!r.ok) return json({ jsonrpc: '2.0', id: rpcId, result: { content: [{ type: 'text', text: JSON.stringify(r.body) }], isError: true } })
-      const content = (r.body as any)?.content ?? [{ type: 'text', text: JSON.stringify(r.body) }]
-      return json({ jsonrpc: '2.0', id: rpcId, result: { content } })
-    }
-    return json({ jsonrpc: '2.0', id: rpcId, error: { code: -32602, message: `unknown tool: ${name}` } })
-  }
-  if (method === 'ping') return json({ jsonrpc: '2.0', id: rpcId, result: {} })
-  return json({ jsonrpc: '2.0', id: rpcId, error: { code: -32601, message: `method not found: ${method}` } })
+function buildRegistryServer(env: Env): McpServer {
+  const server = new McpServer(
+    { name: 'p31-mcp-marketplace', version: '2.0.0' },
+    {
+      capabilities: { tools: {} },
+      cacheHints: { 'tools/list': { ttlMs: 60_000, cacheScope: 'public' } },
+    },
+  );
+
+  server.registerTool(
+    'list_servers',
+    { description: 'List the MCP marketplace catalog (optional category/status filter).', inputSchema: fromJsonSchema(MCP_SURFACE_TOOLS[0].inputSchema as unknown as Parameters<typeof fromJsonSchema>[0]) },
+    async (args) => {
+      const a = (args ?? {}) as Record<string, unknown>;
+      const u = new URL('https://registry.local/servers');
+      if (a.category) u.searchParams.set('category', String(a.category));
+      if (a.status) u.searchParams.set('status', String(a.status));
+      const res = await handleListServers(env, u);
+      const data: any = await res.json();
+      return { content: [{ type: 'text', text: JSON.stringify(data.servers ?? []) }] };
+    },
+  );
+
+  server.registerTool(
+    'get_server',
+    { description: "Get a server's detail + tool schemas by id.", inputSchema: fromJsonSchema(MCP_SURFACE_TOOLS[1].inputSchema as unknown as Parameters<typeof fromJsonSchema>[0]) },
+    async (args) => {
+      const a = (args ?? {}) as Record<string, unknown>;
+      const entry = await findFederatedEntry(env, String(a.id ?? ''));
+      if (!entry) return { content: [{ type: 'text', text: JSON.stringify({ error: 'server not found' }) }], isError: true };
+      const schemas = await getToolSchemas(env, entry);
+      const health = await probeHealth(env, entry);
+      const gov = await summary(env, entry, schemas, health);
+      return {
+        content: [{
+          type: 'text',
+          text: JSON.stringify({
+            id: gov.id, name: gov.name, endpoint: gov.endpoint, status: gov.status, health: gov.health,
+            toolCount: gov.toolCount, scan: gov.scan, review: gov.review, capabilities: gov.capabilities,
+            drifted: gov.drifted, readOnlySafe: gov.readOnlySafe,
+            tools: schemas.map((t) => ({ name: t.name, description: t.description, inputSchema: t.inputSchema })),
+          }),
+        }],
+      };
+    },
+  );
+
+  server.registerTool(
+    'call_tool',
+    { description: 'Invoke a tool on a registered server through the marketplace proxy (sanitized, audited, quota-gated).', inputSchema: fromJsonSchema(MCP_SURFACE_TOOLS[2].inputSchema as unknown as Parameters<typeof fromJsonSchema>[0]) },
+    async (args, ctx) => {
+      const a = (args ?? {}) as Record<string, unknown>;
+      const entry = await findEntry(env, String(a.server ?? ''));
+      if (!entry) return { content: [{ type: 'text', text: JSON.stringify({ error: 'server not found' }) }], isError: true };
+      const req = ctx.http?.req ?? new Request('https://registry.local/');
+      const r = await proxyToolCall(env, entry, String(a.tool ?? ''), (a.arguments ?? {}) as Record<string, unknown>, req);
+      if (!r.ok) return { content: [{ type: 'text', text: JSON.stringify(r.body) }], isError: true };
+      const content = (r.body as any)?.content ?? [{ type: 'text', text: JSON.stringify(r.body) }];
+      return { content };
+    },
+  );
+
+  return server;
 }
 
 function wellKnownCard() {
@@ -1935,11 +2969,17 @@ function wellKnownCard() {
     name: 'p31-mcp-marketplace',
     version: '2.0.0',
     description: 'P31 MCP Marketplace — governed catalog of MCP servers with live health, tool schemas, scanner verdicts, and a sandboxed call proxy. Discover via list_servers/get_server, invoke via call_tool.',
-    protocolVersion: PROBE_PROTOCOL_VERSION,
+    protocolVersion: PROTOCOL_VERSION,
     serverInfo: { name: 'p31-mcp-marketplace', version: '2.0.0' },
     transport: { type: 'streamable-http', endpoint: 'https://mcp-registry.trimtab-signal.workers.dev/mcp' },
     capabilities: { tools: true },
     authentication: { required: false },
+    oauth: {
+      resource: RESOURCE_URI,
+      authorizationServer: '/.well-known/oauth-authorization-server',
+      protectedResource: '/.well-known/oauth-protected-resource',
+      rfc8707: true,
+    },
     repository: 'https://github.com/p31labs/production',
     homepage: 'https://mcp.p31ca.org',
     keywords: ['mcp', 'marketplace', 'registry', 'sovereign', 'post-quantum'],
@@ -1983,6 +3023,8 @@ async function handleAiCatalog(env: Env): Promise<Response> {
       { type: 'application/mcp-server-card+json', url: 'https://mcp-registry.trimtab-signal.workers.dev/.well-known/mcp/server-card.json' },
       { type: 'application/ard+json', url: 'https://mcp-registry.trimtab-signal.workers.dev/.well-known/ard.json' },
       { type: 'mcp', endpoint: 'https://mcp-registry.trimtab-signal.workers.dev/mcp' },
+      { type: 'application/oauth-authorization-server-metadata+json', url: 'https://mcp-registry.trimtab-signal.workers.dev/.well-known/oauth-authorization-server' },
+      { type: 'application/oauth-protected-resource-metadata+json', url: 'https://mcp-registry.trimtab-signal.workers.dev/.well-known/oauth-protected-resource' },
     ],
   }
   return json(catalog)
@@ -2064,10 +3106,27 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
 
     if (url.pathname === '/health') return handleHealth(env);
 
+  // RFC 8414 — authorization-server metadata (points at the fleet AS).
+  if (url.pathname === '/.well-known/oauth-authorization-server' && request.method === 'GET') {
+    return json(oauthAsMetadata(env.RESOURCE_ID ?? RESOURCE_URI));
+  }
+
+  // RFC 9728 — protected-resource metadata (canonical path + alias).
+  if ((url.pathname === '/.well-known/oauth-protected-resource' || url.pathname === '/.well-known/resource-server') && request.method === 'GET') {
+    return json(protectedResourceMetadata(env, RESOURCE_URI, ['registry:read', 'registry:write']));
+  }
+
   // MCP-native discovery surface + well-known card
   if (url.pathname === '/mcp' && request.method === 'POST') return handleMcpSurface(env, request);
   if (url.pathname === '/mcp' && request.method === 'GET') {
-    return new Response('event: endpoint\ndata: {"mcp":"p31-mcp-marketplace"}\n\n', { headers: { 'Content-Type': 'text/event-stream', ...corsHeaders() } });
+    // Stateless 2026-07-28: GET /mcp returns endpoint metadata (SSE removed).
+    return Response.json({
+      service: 'p31-mcp-marketplace',
+      transport: 'streamable-http',
+      protocol: '2026-07-28',
+      mcp: '/mcp',
+      tools: 'POST /mcp {method:"tools/list"}',
+    }, { headers: corsHeaders() });
   }
   // Server card served at every SEP-1649/SEP-2127 well-known alias.
   if (url.pathname === '/.well-known/mcp/server-card.json' || url.pathname === '/.well-known/mcp/server.json' || url.pathname === '/.well-known/mcp.json' || url.pathname === '/.well-known/mcp') return handleWellKnownMcp(env);
@@ -2093,6 +3152,10 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   // Moderation queue
   if (url.pathname === '/servers/pending' && request.method === 'GET') return handlePending(env, request);
 
+  // E — Enterprise governance: approval gate + usage counters + analytics
+  if (url.pathname === '/internal/usage' && request.method === 'POST') return handleInternalUsage(env, request);
+  if (url.pathname === '/analytics/tools' && request.method === 'GET') return handleAnalyticsTools(env, request);
+
   // RBAC identity + role management
   if (url.pathname === '/me' && request.method === 'GET') return handleMe(env, request);
   if (url.pathname === '/roles' && request.method === 'POST') return handleRoles(env, request);
@@ -2110,6 +3173,9 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
 
   const reviewMatch = url.pathname.match(/^\/servers\/([^/]+)\/review$/);
   if (reviewMatch && request.method === 'POST') return handleReview(env, decodeURIComponent(reviewMatch[1]), request);
+
+  const approveMatch = url.pathname.match(/^\/servers\/([^/]+)\/approve$/);
+  if (approveMatch && request.method === 'POST') return handleApprove(env, decodeURIComponent(approveMatch[1]), request);
 
   const detailMatch = url.pathname.match(/^\/servers\/([^/]+)$/);
   if (detailMatch && request.method === 'GET') return handleServerDetail(env, decodeURIComponent(detailMatch[1]));
@@ -2161,6 +3227,7 @@ export const __internal = {
   probeTools,
   probeEndpoint,
   probeHealth,
+  probeConformance,
   getToolSchemas,
   sha256Hex,
   appendAudit,
@@ -2188,7 +3255,18 @@ export const __internal = {
   resolvePrincipal,
   requireRole,
   verifyAccessJwt,
+  fetchOfficialUpstream,
+  normalizeOfficialServers,
+  priceTierFor,
+  enrichEntry,
+  upstreamToEntry,
+  getFederatedEntries,
+  findFederatedEntry,
+  adminSecretOk,
+  timingSafeEqualStr,
+  GATEWAY_PRICING,
   OFFICIAL_CATALOG,
+  PROTOCOL_VERSION,
   PROBE_PROTOCOL_VERSION,
   SUPPORTED_PROTOCOL_VERSIONS,
 };

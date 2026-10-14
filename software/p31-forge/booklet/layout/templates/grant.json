@@ -1,0 +1,30 @@
+{
+  "name": "grant",
+  "type": "grant",
+  "page": {
+    "widthIn": 8.5,
+    "heightIn": 11,
+    "margin": "22mm 22mm 24mm 22mm",
+    "background": "#ffffff"
+  },
+  "defaultTheme": "ink",
+  "cover": true,
+  "packing": {
+    "mode": "flow"
+  },
+  "gates": {
+    "readability": false,
+    "pageCountRange": [
+      1,
+      20
+    ],
+    "wordBudget": true
+  },
+  "footer": "P31 LABS, INC.",
+  "footerColor": "#8a8a8a",
+  "accent": "#c05621",
+  "themes": [
+    "professional",
+    "ink"
+  ]
+}

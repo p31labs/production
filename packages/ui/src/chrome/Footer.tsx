@@ -19,7 +19,7 @@ export function Footer() {
             </svg>
             <span className="font-bold text-ink">P31 Labs, Inc.</span>
           </div>
-          <p className="text-cloud/80 max-w-sm mb-2">Georgia Nonprofit Corporation. 501(c)(3) application pending.</p>
+          <p className="text-cloud/80 max-w-sm mb-2">Georgia Nonprofit Corporation. 501(c)(3) confirmed (IRS determination 2026-09-23).</p>
           <p className="text-cloud/50 text-sm mb-6">Built by Will Johnson · SE Georgia.</p>
           <div className="flex items-center flex-wrap gap-4 text-sm">
             <a href="https://p31ca.org/" target="_blank" rel="noopener noreferrer" className="text-quantum-cyan hover:text-quantum-cyan/80 font-semibold transition-colors">Technical hub</a>
@@ -35,7 +35,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="font-bold text-quantum-gold mb-4">Products</h4>
+          <h2 className="font-bold text-quantum-gold mb-4">Products</h2>
           <ul className="space-y-3 text-cloud/70 text-sm">
             <li><a href="https://phos.p31ca.org" target="_blank" rel="noopener noreferrer" className="hover:text-cloud transition-colors">PHOS</a></li>
             <li><a href="https://willow.p31ca.org" target="_blank" rel="noopener noreferrer" className="hover:text-cloud transition-colors">Willow</a></li>
@@ -44,7 +44,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="font-bold text-quantum-gold mb-4">Organization</h4>
+          <h2 className="font-bold text-quantum-gold mb-4">Organization</h2>
           <ul className="space-y-3 text-cloud/70 text-sm">
             <li><a href="/#about" className="hover:text-cloud transition-colors">About &amp; Mission</a></li>
             <li><a href="/#research" className="hover:text-cloud transition-colors">Research</a></li>
@@ -54,7 +54,7 @@ export function Footer() {
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-white/10 text-xs text-cloud/50 flex flex-col md:flex-row justify-between items-center">
-        <div>© 2026 P31 Labs, Inc. · Georgia Nonprofit · EIN 42-1888158 · 501(c)(3) pending</div>
+        <div>© 2026 P31 Labs, Inc. · Georgia Nonprofit · EIN 42-1888158 · 501(c)(3) confirmed</div>
         <div className="mt-4 md:mt-0">Open Source under MIT License. No tracking. No ads.</div>
       </div>
     </footer>

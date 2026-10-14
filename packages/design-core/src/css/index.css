@@ -14,6 +14,7 @@
  *   5. utility layers (container/size/link-glow/ambient/a2ui)
  */
 
+@import '@p31ca/canon/css/layers.css';
 @import './canon.css';
 @import './all.css';
 @import '@p31ca/canon/tokens.css';
@@ -27,7 +28,9 @@
 @import './chrome.css';
 @import './container.css';
 @import './size-class.css';
+@import './device.css';
 @import './link-glow.css';
 @import './ambient.css';
 @import './a2ui-datacard.css';
 @import './shell.css';
+@import './canon-v2.css';

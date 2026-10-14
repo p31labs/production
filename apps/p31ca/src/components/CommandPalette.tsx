@@ -3,6 +3,7 @@ import { searchCommands, groupByKind, KIND_LABELS, type Command } from '../lib/c
 import { classifyLumiIntent, LUMI_SUGGESTIONS, type LumiProposal } from '../lib/lumiIntent'
 import { useLedStore, type LedMode } from '../stores/ledStore'
 import { useEffectsStore } from '../stores/effectsStore'
+import { yieldToMain } from '../lib/yieldToMain'
 
 /**
  * CommandPalette — the bottom-left floating command surface.
@@ -28,7 +29,10 @@ export default function CommandPalette() {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault()
-        setOpen((v) => !v)
+        // INP: opening the palette mounts the full panel (tabs, results,
+        // LUMI chips) — yield a frame so the keydown's pressed state paints
+        // before the mount chunk. Same pattern as CanonTopbar theme cycle.
+        void yieldToMain().then(() => setOpen((v) => !v))
       } else if (e.key === 'Escape' && open) {
         setOpen(false)
       }
@@ -119,7 +123,11 @@ export default function CommandPalette() {
       <button
         type="button"
         className="command-fab"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          // INP: same mount cost as the ⌘K path — yield a frame so the
+          // click's pressed state paints before the panel renders.
+          void yieldToMain().then(() => setOpen(true))
+        }}
         aria-label="Open command palette (⌘K)"
         title="Command palette (⌘K)"
       >
@@ -164,7 +172,13 @@ export default function CommandPalette() {
           type="text"
           className="command-panel__input"
           value={query}
-          onChange={(e) => { setQuery(e.target.value); setActiveIndex(0) }}
+          onChange={(e) => {
+            // INP: each keystroke re-filters the whole results list — yield
+            // a frame first so the keystroke paints before the re-render
+            // chunk (the harness measured this surface at p75 ≈1072 ms lab).
+            const next = e.target.value
+            void yieldToMain().then(() => { setQuery(next); setActiveIndex(0) })
+          }}
           onKeyDown={onInputKey}
           placeholder={mode === 'search' ? 'Type a destination…' : 'Tell LUMI what to do…'}
           aria-label={mode === 'search' ? 'Search destinations' : 'Ask LUMI'}

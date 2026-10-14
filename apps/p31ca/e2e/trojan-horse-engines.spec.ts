@@ -2,7 +2,14 @@ import { test, expect } from "@playwright/test";
 
 const nav = { waitUntil: "domcontentloaded" as const, timeout: 120_000 };
 
-test.describe("Trojan Horse Self-Care Engines", () => {
+/**
+ * RETIRED 2026-10-13: every engine route this spec exercises was retired
+ * before the perf+hygiene wave — /quantum-lattice, /abyssal-node, and
+ * /cybernetic-bonsai all 404 live. The engines themselves were archived.
+ * The spec stays on disk (no-delete rule) as a skipped record. Filed in
+ * docs/fix-plans/p31ca-inp-lighthouse-budgets.md §e2e (stale-spec sweep).
+ */
+test.describe.skip("Trojan Horse Self-Care Engines (RETIRED 2026-10-13)", () => {
   test("quantum-lattice route loads with canvas and UI", async ({ page }) => {
     page.on("console", msg => {
       if (msg.type() === "error") {

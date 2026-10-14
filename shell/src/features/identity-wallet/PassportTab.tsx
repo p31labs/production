@@ -4,7 +4,7 @@ import GlassCard from '../../components/ui/GlassCard';
 import { CardDataRow } from '../../components/ui/CardDataRow';
 import { CardToggle } from '../../components/ui/CardToggle';
 import PageHeader from '../../components/PageHeader';
-import { useThemeStore, type ThemeId, type AgeTier } from '@p31ca/shell-chrome';
+import { useThemeStore, type ThemeId, type AgeTier } from '../../store/useThemeStore';
 import { useSensoryStore, type FontMode, type TextScale } from '../../store/useSensoryStore';
 import { useEffectsStore, type EffectLevel } from '../../store/useEffectsStore';
 import { useHistoryStore } from '../../store/useHistoryStore';

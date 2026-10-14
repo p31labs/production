@@ -1,6 +1,10 @@
 ---
 /**
  * FinalCTA — the one action, repeated at the bottom (dev-tool conversion).
+ * Unified with the about/team rhythm (p31ca-unification-badge-2026-10-13):
+ * centered card like /about's closing CTA section, sans-bold heading.
+ * Spacing comes from the FlagshipPage section wrapper — no extra bottom
+ * padding here.
  */
 interface Props {
   headline: string;
@@ -10,12 +14,12 @@ interface Props {
 const { headline, href, label } = Astro.props;
 ---
 
-<section class="pb-16">
-  <div class="rounded-2xl border p-10 text-center" style="border-color: var(--p31-glass-border); background: var(--p31-surface);">
-    <h2 class="text-2xl md:text-3xl font-semibold mb-4" style="font-family: var(--p31-font-serif, Georgia, serif); font-weight: 400; color: var(--p31-text);">
+<section>
+  <div class="fc-rounded-2xl fc-border fc-p-10 fc-text-center" style="border-color: var(--p31-glass-border); background: var(--p31-surface);">
+    <h2 class="fc-text-2xl fc-md-text-3xl fc-font-bold fc-mb-4" style="color: var(--p31-text);">
       {headline}
     </h2>
-    <a href={href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-8 py-3 rounded-lg font-semibold no-underline" style="background: var(--p31-accent); color: var(--p31-bg, #141413);">
+    <a href={href} target="_blank" rel="noopener noreferrer" class="fc-inline-flex fc-items-center fc-gap-2 fc-px-8 fc-py-3 fc-rounded-lg fc-font-semibold fc-no-underline" style="background: var(--p31-accent); color: var(--p31-bg, #141413);">
       {label} →
     </a>
   </div>

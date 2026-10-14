@@ -1,6 +1,5 @@
 ---
 import MarketingShell from '../../layouts/MarketingShell.astro';
-import CanonTopbar from '../../components/islands/CanonTopbar.tsx';
 
 import SectionHeader from '../../components/marketing/SectionHeader.astro';
 import Footer from '../../components/marketing/Footer.astro';
@@ -27,25 +26,24 @@ const posts = [...native, ...imported];
 
 <MarketingShell theme="sunlight" title="Blog — P31 Labs" description="Thoughts on sovereign infrastructure, neurodivergent technology, and open science.">
   
-    <CanonTopbar client:load />
-  <main id="main-content" class="section">
-    <div class="max-w-4xl mx-auto px-6 md:px-12 lg:px-16">
-      <SectionHeader title="Blog" description="Thoughts on sovereign infrastructure, neurodivergent technology, and open science." />
+    <main id="main-content" class="section">
+    <div class="in59-max-w-4xl in59-mx-auto in59-px-6 in59-md-px-12 in59-lg-px-16">
+      <SectionHeader level="1" title="Blog" description="Thoughts on sovereign infrastructure, neurodivergent technology, and open science." align="left" />
       
-      <div class="mt-16 space-y-8">
+      <div class="in59-mt-16 in59-space-y-8">
         {posts.map((post, i) => (
-          <a href={post.url} class="glass-card animate-fade-in-up block no-underline" style="animation-delay: {i * 100}ms;">
-            <div class="p-8">
-              <div class="flex items-center gap-3 mb-4">
-                <time class="text-xs font-mono" style="color: var(--p31-text-tertiary);">{post.date}</time>
-                <span class="text-xs" style="color: var(--p31-text-tertiary);">·</span>
-                <span class="text-xs font-medium" style="color: var(--p31-accent);">{post.source === 'substack' ? 'the geodesic self' : 'P31'}</span>
+          <a href={post.url} class="glass-card in59-dead-animate-fade-in-up in59-block in59-no-underline group" style="animation-delay: {i * 100}ms;">
+            <div class="in59-p-8">
+              <div class="in59-flex in59-items-center in59-gap-3 in59-mb-4">
+                <time class="in59-text-xs in59-font-mono" style="color: var(--p31-text-tertiary);">{post.date}</time>
+                <span class="in59-text-xs" style="color: var(--p31-text-tertiary);">·</span>
+                <span class="in59-text-xs in59-font-medium" style="color: var(--p31-accent);">{post.source === 'substack' ? 'the geodesic self' : 'P31'}</span>
               </div>
-              <h3 class="text-xl font-bold mb-3" style="color: var(--p31-text);">{post.title}</h3>
-              <p class="text-sm leading-relaxed mb-4" style="color: var(--p31-text-secondary);">{post.excerpt}</p>
-              <span class="text-sm font-medium inline-flex items-center gap-1" style="color: var(--p31-accent);">
+              <h2 class="in59-text-xl in59-font-bold in59-mb-3" style="color: var(--p31-text);">{post.title}</h2>
+              <p class="in59-text-sm in59-leading-relaxed in59-mb-4" style="color: var(--p31-text-secondary);">{post.excerpt}</p>
+              <span class="in59-text-sm in59-font-medium in59-inline-flex in59-items-center in59-gap-1" style="color: var(--p31-accent);">
                 Read more
-                <span class="group-hover:translate-x-1 transition-transform">→</span>
+                <span class="in59-group-hover-translate-x-1 in59-transition-transform">→</span>
               </span>
             </div>
           </a>

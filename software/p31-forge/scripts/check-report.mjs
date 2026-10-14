@@ -35,6 +35,9 @@ function main() {
   }
   const html = readFileSync(htmlPath, 'utf8')
   const failures = []
+  // Template-awareness: coverless templates (letter, brief, agenda,
+  // table-report, packet) legitimately lack a cover and evidence appendix.
+  const vocabExempt = process.argv.includes('--vocab-exempt')
 
   // 1. double-wrap bold
   const doubleWrap = (html.match(/\*\*\*\*/g) ?? []).length
@@ -47,13 +50,21 @@ function main() {
   // 3. appendix must be a table, not blockquotes
   const hasTable = /<table[^>]*>/.test(html)
   const quoteBlocks = (html.match(/✓ EVIDENCE/g) ?? []).length
-  if (!hasTable) failures.push('evidence appendix is not a table')
-  if (quoteBlocks > 3) failures.push(`evidence wall: ${quoteBlocks} blockquote evidence blocks (should be a table)`)
-  // 3b. the evidence table must carry ledger IDs (researchloop [E#] traceability)
-  if (!/<th>ID<\/th>/.test(html)) failures.push('evidence table missing ledger-ID column ([E#] traceability)')
+  if (vocabExempt) {
+    // non-report templates: no evidence appendix, no ledger-ID requirement
+  } else {
+    if (!hasTable) failures.push('evidence appendix is not a table')
+    if (quoteBlocks > 3) failures.push(`evidence wall: ${quoteBlocks} blockquote evidence blocks (should be a table)`)
+    // 3b. the evidence table must carry ledger IDs (researchloop [E#] traceability)
+    if (!/<th>ID<\/th>/.test(html)) failures.push('evidence table missing ledger-ID column ([E#] traceability)')
+  }
 
-  // 4. styled vocabulary present
-  for (const [name, token] of [['cover', 'class="cover"'], ['methodology', 'class="methodology"'], ['cover-stat', 'cover-stat'], ['appendix', 'Evidence Appendix'], ['paged-footer', '@bottom-center'], ['chapter-kicker', 'chapter-kicker'], ['theme-picker', 'theme-picker']]) {
+  // 4. styled vocabulary present. --vocab-exempt: coverless templates
+  // (letter, brief, agenda, table-report, packet) legitimately lack a cover
+  // and an evidence appendix.
+  const vocab = [['theme-picker', 'theme-picker']]
+  if (!vocabExempt) vocab.unshift(['cover', 'class="cover"'], ['cover-stat', 'cover-stat'], ['appendix', 'Evidence Appendix'], ['methodology', 'class="methodology"'], ['chapter-kicker', 'chapter-kicker'])
+  for (const [name, token] of vocab) {
     if (!html.includes(token)) failures.push(`missing styled element: ${name}`)
   }
 
@@ -75,14 +86,23 @@ function main() {
     failures.push(`CSS-use: classes used in HTML but NOT styled in CSS: ${genuinelyUnstyled.join(', ')} (vocabulary presence, not use — DRAFT)`)
   }
 
-  // 4b. the reusable template file must exist and carry the design vocabulary
+  // 4b. the reusable template files must exist and carry the design vocabulary.
+  // @page lives in pages.css now (unlayered); the rest stays in report.css.
   const cssPath = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'booklet', 'report.css')
+  const pagesCssPath = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'booklet', 'layout', 'pages.css')
   if (!existsSync(cssPath)) {
     failures.push('missing reusable template: booklet/report.css')
   } else {
     const css = readFileSync(cssPath, 'utf8')
-    for (const [name, token] of [['cover-bg', '.cover'], ['paged-footer', '@bottom-center'], ['tabular-nums', 'tabular-nums'], ['widows-orphans', 'widows']]) {
+    for (const [name, token] of [['cover-bg', '.cover'], ['tabular-nums', 'tabular-nums'], ['widows-orphans', 'widows']]) {
       if (!css.includes(token)) failures.push(`template report.css missing ${name}`)
+    }
+  }
+  if (!existsSync(pagesCssPath)) {
+    failures.push('missing unlayered pages template: booklet/layout/pages.css')
+  } else {
+    if (!readFileSync(pagesCssPath, 'utf8').includes('@bottom-center')) {
+      failures.push('template pages.css missing paged-footer (@bottom-center)')
     }
   }
 
@@ -104,8 +124,8 @@ function main() {
   // The research ceiling for a plain-language summary is grade 6-8 (JMIR 2026
   // community-engaged study); a general-audience report targets <= 8.
   const tkMatch = /Takeaway<\/div><div class="value">([^<]+)/.exec(html)
-  const takeawayText = tkMatch ? tkMatch[1] : 'Synthesis of the researched material across facets.'
-  const fk = fkGrade(takeawayText)
+  const takeawayText = tkMatch ? tkMatch[1] : null
+  const fk = takeawayText ? fkGrade(takeawayText) : null
   // Ceiling: grade 10. Research (JMIR 2026 + iHE) — plain exec summaries land
   // at grade 9; "mass consumption" ideal is 7-8. The FK formula's
   // syllable-per-word weighting pushes topical prose (language/model/systems)
@@ -113,8 +133,15 @@ function main() {
   // it rejects dense synthesis (FK ~21) while accepting genuinely plain
   // summaries. Still a hard gate — no advisory escape hatch.
   const ceiling = 10.0
-  if (fk > ceiling) failures.push(`readability: summary Flesch-Kincaid ${fk.toFixed(1)} > ${ceiling} (DRAFT — the plain-language summary must read at grade <=10)`)
-  else console.log(`ℹ  readability: summary FK ${fk.toFixed(1)} (≤${ceiling} OK)`)
+  // FK applies only to templates marked readability:true (reports, briefs).
+  // Letters, grants, agendas, table reports are exempt via --fk-exempt.
+  if (process.argv.includes('--fk-exempt')) {
+    console.log('ℹ  readability: exempt for this template (FK not enforced)')
+  } else if (fk === null) {
+    console.log('ℹ  readability: no takeaway card present — FK skipped')
+  } else if (fk > ceiling) {
+    failures.push(`readability: summary Flesch-Kincaid ${fk.toFixed(1)} > ${ceiling} (DRAFT — the plain-language summary must read at grade <=10)`)
+  } else console.log(`ℹ  readability: summary FK ${fk.toFixed(1)} (≤${ceiling} OK)`)
 
   if (failures.length > 0) {
     console.error('❌ REPORT GATE FAILED:')

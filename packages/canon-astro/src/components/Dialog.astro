@@ -1,0 +1,24 @@
+---
+import { dialogTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  open?: boolean;
+  title: string;
+  labelledBy?: string;
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { open = false, title, labelledBy, class: cls = '', style } = Astro.props;
+const children = await Astro.slots.render('default');
+
+const html = renderHtml(dialogTree({
+  open,
+  title,
+  children: children ? { raw: children } : null,
+  labelledBy,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

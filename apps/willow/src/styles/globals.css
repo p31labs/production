@@ -71,15 +71,14 @@ body {
 
 .willow-header { height: var(--p31-header-h); }
 
-/* WILLOW emerald pill header (inverted Crown) */
+/* WILLOW emerald brand — adapter aliases over canon glass tokens
+   (consume-don't-fork: values reference canon tokens, never invented ones). */
 [data-brand="willow"] {
-  --p31-nav-bg: rgba(52, 211, 153, 0.12);
-  --p31-nav-border: rgba(52, 211, 153, 0.6);
-  --p31-nav-glow: 0 0 30px rgba(52, 211, 153, 0.25);
-  --p31-nav-inset: inset 0 0 20px rgba(52, 211, 153, 0.15);
+  --p31-nav-bg: var(--p31-glass-bg);
+  --p31-nav-border: var(--p31-glass-border-strong);
+  --p31-nav-glow: var(--p31-glass-shadow);
+  --p31-nav-inset: var(--p31-glass-shadow);
 }
 
-/* Safety: ensure --p31-nav-h is always defined for header spacing */
-:root {
-  --p31-nav-h: clamp(3.25rem, 2.75rem + 1.5vw, 4rem);
-}
+/* --p31-nav-h now comes from @p31ca/design-core/css/size-class.css; the local
+   clamp override was removed (canon owns the token). */

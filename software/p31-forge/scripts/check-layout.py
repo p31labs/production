@@ -27,7 +27,9 @@ Exit 0 = clean; 1 = a defect found.
 """
 import sys
 import re
+import json
 import argparse
+import os
 
 try:
     from PyPDF2 import PdfReader
@@ -36,8 +38,25 @@ except ImportError:
     sys.exit(2)
 
 
+def _lin(c):
+    c = c / 255.0
+    return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+
+
+def _lum(hx):
+    hx = hx.lstrip('#')
+    r, g, b = int(hx[0:2], 16), int(hx[2:4], 16), int(hx[4:6], 16)
+    return 0.2126 * _lin(r) + 0.7152 * _lin(g) + 0.0722 * _lin(b)
+
+
+def contrast_ratio(fg, bg):
+    l1, l2 = _lum(fg), _lum(bg)
+    hi, lo = max(l1, l2), min(l1, l2)
+    return (hi + 0.05) / (lo + 0.05)
+
+
 HEADING_RE = re.compile(r"^(Consensus|Divergence|Synthesis|Evidence Appendix|Executive Summary|Methodology)$")
-FOOTER_RE = re.compile(r"(p31ca\.org|CC BY-SA|github\.com/p31labs)")
+FOOTER_RE = re.compile(r"(p31ca\.org|CC BY-SA|github\.com/p31labs|P31 LABS //|P31 LABS, INC|^P31 LABS$|^PAGE \d+$|PAGE \d+)")
 # Card labels in the summary-cards grid — a lone label line is a layout
 # artifact of the card grid, not a paragraph orphan.
 LABEL_RE = re.compile(r"^(QUESTION|TAKEAWAY|KEY FINDINGS)$", re.IGNORECASE)
@@ -67,8 +86,9 @@ def check(pdf_path, max_pages=20, cover_pages=1):
                 findings.append(f"cover leak: footer on cover page {i + 1}")
             continue
 
-        # 1. widow page — fewer than 3 body lines on a content page
-        if len(body) < 3:
+        # 1. widow page — fewer than 3 body lines on a content page.
+        #    The methodology colophon (appendix tail) is a legitimate short page.
+        if len(body) < 3 and "jitterbug research" not in text.lower():
             findings.append(f"widow page: page {i + 1} has {len(body)} body lines")
             continue
 
@@ -94,14 +114,100 @@ def check(pdf_path, max_pages=20, cover_pages=1):
     return pages, findings
 
 
+def check_pack_gates(pack_path, pdf_pages):
+    """Per-template gates from the packer JSON (scripts/pack-pages.mjs output).
+    Failures here are packing defects, not typography defects."""
+    with open(pack_path) as f:
+        pack = json.load(f)
+    gates = pack.get("gates") or {}
+    pages_info = pack.get("pages") or []
+    findings = []
+    is_flow = pack.get("mode") == "flow"
+
+    # Measured-page gates need packer geometry — flow modes skip them.
+    if not is_flow:
+        rng = gates.get("pageCountRange")
+        if rng and not (rng[0] <= pdf_pages <= rng[1]):
+            findings.append(f"page count {pdf_pages} outside {rng}")
+
+        max_pages = gates.get("maxPages")
+        if max_pages and pdf_pages > max_pages:
+            findings.append(f"maxPages: {pdf_pages} > {max_pages}")
+
+        min_fill = gates.get("minFill")
+        exempt = gates.get("minFillExempt") or []
+        for p in pages_info:
+            fill = p.get("fillPct")
+            units = p.get("units") or []
+            if min_fill and fill is not None and fill < min_fill * 100:
+                if "cover" in exempt and p.get("n") == 1:
+                    continue
+                if "colophon" in exempt and any("methodology" in str(u) for u in units):
+                    continue
+                if "figure" in exempt and any("figure" in str(u) for u in units):
+                    continue
+                findings.append(f"fill: page {p.get('n')} at {fill}% < {min_fill * 100:.0f}%")
+
+        if gates.get("noSplitAtoms"):
+            # Atom-level splits are enforced by CSS (break-inside:avoid on cards,
+            # rows, paragraphs, callouts). Oversize units fragment BETWEEN atoms;
+            # verify visually, warn here.
+            for p in pages_info:
+                if p.get("overflow"):
+                    print(f"⚠  fragmented unit on page {p.get('n')} — fragments between atoms (verify visually)", file=sys.stderr)
+
+        if gates.get("appendixOwnPage"):
+            for p in pages_info:
+                units = p.get("units") or []
+                app = [u for u in units if "appendix" in str(u)]
+                if app and units[0] != app[0]:
+                    findings.append(f"appendix own page: appendix on page {p.get('n')} does not start it")
+
+    # Required sections: runbooks must contain the standard seven.
+    if gates.get("requiredSections"):
+        have = [str(s.get("id", "")).lower() for s in pack.get("sections") or []]
+        for req in gates["requiredSections"]:
+            if not any(req.lower() in h or req.lower().replace(" ", "-") in h for h in have):
+                findings.append(f"requiredSection: '{req}' missing from {pack.get('template')}")
+
+    # Word budget: fail sections that exceed their declared budget.
+    if gates.get("wordBudget"):
+        for s in pack.get("sections") or []:
+            if s.get("budget") and s.get("words", 0) > s["budget"]:
+                findings.append(f"wordBudget: {s['id']} {s['words']} words > {s['budget']}")
+
+    # Contrast: WCAG 2.2 pairs for the active theme (contrast-pairs.json).
+    theme = pack.get("theme")
+    if theme:
+        pairs_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "booklet", "layout", "contrast-pairs.json")
+        try:
+            with open(pairs_path) as f:
+                pairs = json.load(f).get(theme) or []
+            for fg, bg, mn in pairs:
+                r = contrast_ratio(fg, bg)
+                if r < mn:
+                    findings.append(f"contrast: {theme} {fg} on {bg} = {r:.2f} < {mn}")
+        except FileNotFoundError:
+            print("⚠  no contrast pairs file — contrast gate skipped", file=sys.stderr)
+
+    return findings
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("pdf")
     ap.add_argument("--max-pages", type=int, default=20)
     ap.add_argument("--cover-pages", type=int, default=1)
+    ap.add_argument("--pack", default=None, help="packer JSON with per-template gates")
     args = ap.parse_args()
 
     pages, findings = check(args.pdf, args.max_pages, args.cover_pages)
+    if args.pack:
+        try:
+            findings += check_pack_gates(args.pack, pages)
+        except Exception as e:
+            findings.append(f"pack gate error: {e}")
+
     if findings:
         print(f"❌ LAYOUT GATE FAILED ({pages} pages):")
         for f in findings:

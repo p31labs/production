@@ -1,0 +1,314 @@
+{
+  "patch-id": "p31_v3c_c3_f2_extensions_themes_11",
+  "target-commit": "packages/canon/tokens/tokens.dtc.json (2026-10-11, 152516 bytes)",
+  "applies-to": "tokens/tokens.dtc.json and mirror tokens/tokens.json",
+  "method": "RFC 6902 (test/add/remove)",
+  "generated-by": "V3-C-canon/canon-diff/gen-patches.mjs (canon READ-ONLY)",
+  "description": "F2: complete the per-token $extensions.p31.themes mirror to 11 packs. Ocean derived exactly from themes.ocean.p31 under the verified uniform rules (exact / alpha:0.8 on action.primary-hover / chroma:0.05 on *-muted); accent.green.muted additionally gains aurora (derived from themes.aurora.p31.accent-green, chroma:0.05).",
+  "operations": [
+    {
+      "op": "add",
+      "path": "/p31/color/action/primary/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.7,
+          0.15,
+          200
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/action/primary-hover/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.7,
+          0.15,
+          200
+        ],
+        "alpha": 0.8
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/action/primary-text/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.95,
+          0.02,
+          230
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/action/secondary/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.22,
+          0.045,
+          240
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/action/secondary-text/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.95,
+          0.02,
+          230
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/action/ghost-hover/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          1,
+          0.01,
+          230
+        ],
+        "alpha": 0.04
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/text/primary/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.95,
+          0.02,
+          230
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/text/secondary/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.78,
+          0.02,
+          235
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/text/muted/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.55,
+          0.02,
+          235
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/accent/default/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.7,
+          0.15,
+          200
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/accent/violet/default/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.65,
+          0.15,
+          250
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/accent/violet/muted/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.65,
+          0.05,
+          250
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/accent/gold/default/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.72,
+          0.15,
+          40
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/accent/gold/muted/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.72,
+          0.05,
+          40
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/accent/green/default/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.7,
+          0.15,
+          160
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/accent/green/muted/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.7,
+          0.05,
+          160
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/accent/green/muted/$extensions/p31/themes/aurora",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.7,
+          0.05,
+          160
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/accent/red/default/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.7,
+          0.15,
+          20
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/accent/red/muted/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.7,
+          0.05,
+          20
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/color/accent/muted/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.7,
+          0.05,
+          200
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/glass/background/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          1,
+          0.01,
+          230
+        ],
+        "alpha": 0.04
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/glass/border/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          1,
+          0.01,
+          230
+        ],
+        "alpha": 0.08
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/surface/background/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.1,
+          0.03,
+          240
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/surface/raised/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.15,
+          0.04,
+          240
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/p31/surface/overlay/$extensions/p31/themes/ocean",
+      "value": {
+        "colorSpace": "oklch",
+        "components": [
+          0.22,
+          0.045,
+          240
+        ]
+      }
+    }
+  ]
+}

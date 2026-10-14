@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "P31 Document IR",
+  "description": "Universal intermediate representation. Every producer (convergence markdown, workspace Docs/Sheets/Slides/Mail/Calendar/Forum/Life/Passports) emits this; one renderer + packer consumes it.",
+  "type": "object",
+  "required": ["type", "meta", "blocks"],
+  "properties": {
+    "type": { "enum": ["report", "brief", "letter", "memo", "deck", "grant", "table-report", "agenda", "digest", "credential", "packet", "runbook", "guide", "family-letter"] },
+    "template": { "type": "string", "description": "optional override; defaults to templates/<type>.json" },
+    "theme": { "type": "string", "default": "ats" },
+    "meta": {
+      "type": "object",
+      "required": ["title"],
+      "properties": {
+        "title": {"type":"string"}, "kicker": {"type":"string"}, "thesis": {"type":"string"},
+        "session": {"type":"string"}, "date": {"type":"string"}, "author": {"type":"string"},
+        "footer": {"type":"string"}, "source": {"enum":["convergence","docs","sheets","slides","mail","calendar","forum","life","passports"]}
+      }
+    },
+    "blocks": { "type": "array", "items": { "$ref": "#/$defs/block" } },
+    "children": { "type": "array", "description": "packet only: nested IR documents", "items": {"$ref": "#"} }
+  },
+  "$defs": {
+    "block": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": { "enum": ["section", "heading", "prose", "list", "kpi-set", "table", "callout", "email", "cards", "quote", "steps", "timeline", "signature", "figure", "methodology", "checklist", "toc", "pagebreak"] },
+        "id": {"type":"string"},
+        "title": {"type":"string"},
+        "role": { "enum": ["summary", "body", "support", "appendix", "colophon"], "default": "body" },
+        "keepWith": {"type":"string"},
+        "columns": {"type":"integer", "minimum": 1, "maximum": 3},
+        "wordBudget": {"type":"integer"},
+        "children": { "type": "array", "items": {"$ref": "#/$defs/block"} },
+        "data": {}
+      }
+    }
+  }
+}

@@ -32,7 +32,7 @@ const JITTERBUG_DIR = '/home/p31/production/tools/phos-forge'
 // or parenthetical author. "Brief N" is the jitterbug's INTERNAL facet label —
 // NOT an external citation — so it is deliberately absent from this regex.
 const CITATION_RE =
-  /\b(FIPS[\s-]*[\d.\/-]+)\b|\b(WCAG[\s-]*[\d.]+)\b|\b(NIST\s*[A-Z]*[\s-]?[\d-]*)\b|\b(ISO[\s-]*\d+)\b|\b(?:\(([A-Z][A-Za-z][^()]*?\d{4}[^()]*?)\))\b|\[(\d+)\]/g
+  /\b(FIPS[\s-]*[\d.\/-]+)\b|\b(WCAG[\s-]*[\d.]+)\b|\b(NIST\s*[A-Z]*[\s-]?[\d-]*)\b|\b(ISO[\s-]*\d+)\b|(?:^|\s)\(([A-Z][A-Za-z][^()]*?\d{4}[^()]*?)\)|\[(\d+)\]/g
 
 function sessionArtifacts(session) {
   const dir = resolve(SESSION_DIR, session)

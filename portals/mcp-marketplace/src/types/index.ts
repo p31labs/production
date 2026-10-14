@@ -60,6 +60,30 @@ export interface MeResponse {
   can: { publish: boolean; review: boolean; admin: boolean }
 }
 
+/** Stream federation source (A-2). */
+export type CatalogSource = 'p31' | 'official' | 'external'
+
+/** x402 price tier surfaced from the gateway PRICING table (Lane A). */
+export interface PriceTier {
+  id?: string
+  tier: string
+  label?: string
+  usdPerCall?: number
+  usdPerMonth?: number
+  currency?: string
+  notes?: string
+}
+
+/** OAuth resource metadata (Lane A). Absent until the registry ships it. */
+export interface OAuthMeta {
+  enabled: boolean
+  resource?: string
+  authorizationServers?: string[]
+}
+
+/** Enterprise approval state (Lane E). Absent until the registry ships it. */
+export type Approval = 'approved' | 'pending' | 'blocked'
+
 export interface ServerSummary {
   id: string
   name: string
@@ -87,6 +111,12 @@ export interface ServerSummary {
   contentHash?: string
   baselineHash?: string | null
   drifted?: boolean
+  /** Governed metadata — optional until the registry federation lanes ship. */
+  source?: CatalogSource
+  protocol?: string | null
+  oauth?: OAuthMeta | null
+  priceTier?: PriceTier | null
+  approval?: Approval | null
 }
 
 export interface ToolSchema {
@@ -125,6 +155,64 @@ export interface SessionEvent {
   result?: unknown
   error?: string
   latencyMs?: number
+  /** Raw JSON-RPC exchange (C-1): exact request body + raw response body. */
+  request?: string
+  response?: string
+  ts: number
+}
+
+// ─── Dual lens (B-3) ────────────────────────────────────────────────────────
+
+/** public = catalog as-is; governed = approvals/private/analytics/publish. */
+export type Lens = 'public' | 'governed'
+
+// ─── Inspect-any-URL (B-2) ──────────────────────────────────────────────────
+
+export interface ExternalServerInfo {
+  name: string
+  version?: string
+}
+
+export interface ExternalProbeResult {
+  url: string
+  /** ok = full handshake + tools/list; degraded = partial; dead = nothing. */
+  status: 'ok' | 'degraded' | 'dead'
+  error?: string
+  latencyMs?: number
+  protocolVersion?: string
+  serverInfo?: ExternalServerInfo
+  tools?: ToolDef[]
+  /** Raw probe transcripts (honesty surface). */
+  initializeRequest?: string
+  initializeResponse?: string
+  toolsRequest?: string
+  toolsResponse?: string
+  probedAt: string
+}
+
+// ─── LLM Test Console (C-4) ─────────────────────────────────────────────────
+
+export type LlmBackend = 'litellm' | 'hosted' | 'disabled'
+
+export interface LlmConfig {
+  backend: LlmBackend
+  litellmUrl: string
+  litellmModel: string
+  hostedBaseUrl: string
+  hostedApiKey: string
+  hostedModel: string
+}
+
+export interface LlmToolCall {
+  tool: string
+  args: Record<string, unknown>
+  reason?: string
+}
+
+export interface LlmConsoleMessage {
+  role: 'user' | 'assistant'
+  text: string
+  calls?: LlmToolCall[]
   ts: number
 }
 

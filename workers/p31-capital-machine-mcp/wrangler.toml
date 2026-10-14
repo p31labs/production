@@ -17,6 +17,9 @@ ENTITLEMENT_URL = "https://entitlement.trimtab-signal.workers.dev"
 # put OAUTH_JWKS_URL` (optional).
 RESOURCE_ID = "https://p31-capital-machine-mcp.trimtab-signal.workers.dev/mcp"
 OAUTH_JWKS_URL = "https://oauth-relay.trimtab-signal.workers.dev/.well-known/jwks.json"
+# RFC 9207 — expected bearer-token issuer. Optional: when unset the verifier
+# derives the issuer from the OAUTH_JWKS_URL origin. Set explicitly to pin a
+# different issuer identifier: OAUTH_ISSUER = "https://oauth-relay.trimtab-signal.workers.dev"
 
 [observability]
 enabled = true

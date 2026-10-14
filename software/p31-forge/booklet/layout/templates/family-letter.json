@@ -1,0 +1,13 @@
+{
+  "name": "family-letter",
+  "type": "family-letter",
+  "page": { "widthIn": 8.5, "heightIn": 11, "margin": "25mm 25mm 25mm 25mm", "background": "#FDF8F0" },
+  "defaultTheme": "family",
+  "themes": ["family", "friends"],
+  "cover": false,
+  "packing": { "mode": "flow" },
+  "gates": { "readability": false, "pageCountRange": [1, 4] },
+  "footer": "P31 FAMILY",
+  "footerColor": "#9c8c7a",
+  "accent": "#b45309"
+}

@@ -14,8 +14,9 @@ export interface ComponentDef {
   description?: string;
   css_class?: string;
   aiGuidance?: {
-    useWhen?: string;
-    avoidWhen?: string;
+    /** Array form is canonical (componentDefs.ts); legacy hand-written yml used strings. */
+    useWhen?: string | string[];
+    avoidWhen?: string | string[];
     examples?: string[];
   };
   props?: Record<string, any>;

@@ -2,7 +2,6 @@ import { useEffect, lazy, Suspense, useRef } from 'react';
 import { useAppStore } from './store/useAppStore';
 import { useShellStore } from './store/useShellStore';
 import { useSensoryStore } from './store/useSensoryStore';
-import { useEffectsStore } from './store/useEffectsStore';
 import { logSpoonChange } from './lib/spoonHistory';
 import { useRegisterShellMCP } from './hooks/useRegisterShellMCP';
 import { useWebMCP } from './hooks/useWebMCP';
@@ -19,7 +18,7 @@ import { useSwipeNav } from './hooks/useSwipeNav';
 import { useDoubleTapAssistant } from './hooks/useDoubleTapAssistant';
 import { createCrossAppState } from './hooks/useCrossAppState';
 import { initSovereignBridge, dispatchSovereignSpoons, dispatchSovereignCoherence } from '@p31ca/sovereign-core/bridge';
-import { StarfieldBackground } from '@p31ca/shell-chrome';
+import StarfieldBackground from './components/StarfieldBackground';
 import PocketCard from './components/PocketCard';
 
 function vibrate(duration = 10): void {
@@ -67,11 +66,7 @@ export default function App() {
   const showToast = useAppStore((s) => s.showToast);
   const sandboxOpen = useShellStore((s) => s.sandboxOpen);
   const setSandboxOpen = useShellStore((s) => s.setSandboxOpen);
-  const lastNotifPulse = useShellStore((s) => s.lastNotifPulse);
-  const unreadCount = useShellStore((s) => s.unreadCount);
   const calm = useSensoryStore((s) => s.calm);
-  const reduceMotion = useAppStore((s) => s.reduceMotion);
-  const effects = useEffectsStore();
   const floatingTriggerRef = useRef<HTMLButtonElement | null>(null);
 
   useAppBootstrap();
@@ -157,19 +152,7 @@ export default function App() {
     <>
       <div className="shell" data-spoons={spoons}>
         <a className="skip-link" href="#main">Skip to main content</a>
-        <StarfieldBackground
-          spoons={spoons}
-          urgent={unreadCount > 0}
-          pulseAt={lastNotifPulse}
-          reduceMotion={reduceMotion}
-          starDensity={effects.starDensity}
-          starSpeed={effects.starSpeed}
-          warmStars={effects.warmStars}
-          domeAccent={effects.domeAccent}
-          cometTrails={effects.cometTrails}
-          aurora={effects.aurora}
-          quantum={effects.quantum}
-        />
+        <StarfieldBackground />
         <Topbar />
         <main className="viewport" id="main">
           <Suspense fallback={<div className="loading-spinner">Loading...</div>}>

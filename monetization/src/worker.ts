@@ -1,6 +1,15 @@
-import { signRoleToken, verifyRoleToken, hasRole, ROLE_LEVEL, ROLE_TTL_SECONDS, type Role } from './roles';
-import { PasskeyError, generateLoginOptions, generateRegisterOptions, verifyLogin, verifyRegister } from './lib/passkeys';
+import { signRoleToken, verifyRoleToken, hasRole, ROLE_LEVEL, ROLE_TTL_SECONDS, type Role, type RoleToken } from './roles';
+import { PasskeyError, generateLoginOptions, generateRegisterOptions, setPasskeyStore, verifyLogin, verifyRegister } from './lib/passkeys';
 import { verifyAccessJwt, type AccessJwtIdentity } from './lib/accessJwt';
+import {
+  signRoleTokenOAuth21,
+  verifyRoleTokenOAuth21,
+  decodeRoleTokenOAuth21,
+  isOAuth21Enabled,
+} from './lib/oauth21';
+import { createD1PasskeyStore } from './lib/passkeyStore';
+import { createOAuthSessionStore } from './lib/oauthSessionStore';
+import type { D1Database } from './lib/d1Types';
 import type { AuthenticationResponseJSON, RegistrationResponseJSON } from '@simplewebauthn/server';
 
 interface ExecutionContext {
@@ -29,6 +38,30 @@ interface Env {
   SBT_ISSUE_TOKEN?: string;
   /** Cloudflare Access team domain (e.g. "trimtab"). When set, a valid `Cf-Access-Jwt-Assertion` is accepted as an RBAC grant. Set via `wrangler secret put ZERO_TRUST_TEAM_DOMAIN`. */
   ZERO_TRUST_TEAM_DOMAIN?: string;
+  /** D1 binding for passkey persistence + OAuth session state (docs/ZERO-TRUST.md §4). */
+  AUTH_DB?: D1Database;
+  /** Feature flag — when 'true', issues/verifies RFC 8707 audience-bound OAuth 2.1 role tokens (src/lib/oauth21.ts). */
+  OAUTH21_ENABLED?: string;
+}
+
+/** Bound once per isolate — the D1 passkey store is recreated only when absent. */
+let d1PasskeyStoreBound = false;
+
+/**
+ * Record an OAuth 2.1 role-token issuance in D1 (audit/session state,
+ * docs/ZERO-TRUST.md §4). Fire-and-forget via waitUntil — never blocks or
+ * fails the auth path.
+ */
+function recordOAuth21Issuance(env: Env, ctx: ExecutionContext, token: string, did: string, role: Role, aud: string) {
+  if (!env.AUTH_DB) return;
+  const jti = decodeRoleTokenOAuth21(token)?.jti;
+  if (!jti) return;
+  const now = Math.floor(Date.now() / 1000);
+  ctx.waitUntil(
+    createOAuthSessionStore(env.AUTH_DB)
+      .record({ jti, did, role, aud, issuedAt: now, expiresAt: now + ROLE_TTL_SECONDS[role] })
+      .catch(() => {}),
+  );
 }
 
 /** Write routes requiring at least the operator role. */
@@ -198,6 +231,13 @@ export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
+    // Bind the durable passkey store once the AUTH_DB binding exists
+    // (docs/ZERO-TRUST.md §Passkey persistence → D1).
+    if (env.AUTH_DB && !d1PasskeyStoreBound) {
+      setPasskeyStore(createD1PasskeyStore(env.AUTH_DB));
+      d1PasskeyStoreBound = true;
+    }
+
     if (url.pathname.startsWith('/api/')) {
       if (url.pathname === '/api/stream') {
         const names = (url.searchParams.get('surfaces') ?? '').split(',').map((s) => s.trim()).filter(Boolean);
@@ -242,11 +282,23 @@ export default {
           if (!did) return new Response(JSON.stringify({ error: 'did required' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
           if (!(role in ROLE_LEVEL)) return new Response(JSON.stringify({ error: `unknown role: ${role}` }), { status: 400, headers: { 'Content-Type': 'application/json' } });
           if (!env.ROLE_JWT_SECRET) return new Response(JSON.stringify({ error: 'ROLE_JWT_SECRET not configured' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
-          const token = await signRoleToken(env.ROLE_JWT_SECRET, did, role);
-          return new Response(JSON.stringify({ token, did, role, ttl: ROLE_LEVEL[role] === 1 ? 3600 : 900 }), {
-            status: 200,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
-          });
+
+          // OAuth 2.1 / RFC 8707: when enabled, bind the token's `aud` to the
+          // requesting origin and record the issuance in D1 (docs/ZERO-TRUST.md §4).
+          const oauth21 = isOAuth21Enabled(env.OAUTH21_ENABLED);
+          const aud = url.origin;
+          const token = oauth21
+            ? await signRoleTokenOAuth21(env.ROLE_JWT_SECRET, did, role, aud)
+            : await signRoleToken(env.ROLE_JWT_SECRET, did, role);
+          if (oauth21) recordOAuth21Issuance(env, ctx, token, did, role, aud);
+
+          return new Response(
+            JSON.stringify({ token, did, role, ttl: ROLE_TTL_SECONDS[role], ...(oauth21 ? { token_type: 'Bearer', aud } : {}) }),
+            {
+              status: 200,
+              headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+            },
+          );
         } catch {
           return new Response(JSON.stringify({ error: 'bad request' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
         }
@@ -292,8 +344,22 @@ export default {
           if (!body.response) return jsonResponse({ error: 'response required' }, 400);
           const result = await verifyLogin(request, body);
           if (!env.ROLE_JWT_SECRET) return jsonResponse({ error: 'ROLE_JWT_SECRET not configured' }, 500);
-          const token = await signRoleToken(env.ROLE_JWT_SECRET, result.did, 'viewer');
-          return jsonResponse({ verified: true, did: result.did, token, role: 'viewer', ttl: ROLE_TTL_SECONDS.viewer });
+          // OAuth 2.1 / RFC 8707: when enabled, the viewer token is audience-bound
+          // to the requesting origin (docs/ZERO-TRUST.md §4).
+          const oauth21 = isOAuth21Enabled(env.OAUTH21_ENABLED);
+          const aud = url.origin;
+          const token = oauth21
+            ? await signRoleTokenOAuth21(env.ROLE_JWT_SECRET, result.did, 'viewer', aud)
+            : await signRoleToken(env.ROLE_JWT_SECRET, result.did, 'viewer');
+          if (oauth21) recordOAuth21Issuance(env, ctx, token, result.did, 'viewer', aud);
+          return jsonResponse({
+            verified: true,
+            did: result.did,
+            token,
+            role: 'viewer',
+            ttl: ROLE_TTL_SECONDS.viewer,
+            ...(oauth21 ? { token_type: 'Bearer', aud } : {}),
+          });
         } catch (error) {
           return webauthnError(error);
         }
@@ -317,7 +383,18 @@ export default {
         const required: Role = ADMIN_ROUTES.has(apiPath) ? 'admin' : 'operator';
         const authHeader = request.headers.get('Authorization') ?? '';
         const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
-        const roleToken = env.ROLE_JWT_SECRET ? await verifyRoleToken(env.ROLE_JWT_SECRET, token) : null;
+        let roleToken: RoleToken | null = null;
+        if (env.ROLE_JWT_SECRET) {
+          if (isOAuth21Enabled(env.OAUTH21_ENABLED)) {
+            // OAuth 2.1 / RFC 8707: enforce audience binding first; fall back to
+            // the legacy (unbound) verifier during the migration window so
+            // pre-existing CI tokens keep working until reissued.
+            roleToken = await verifyRoleTokenOAuth21(env.ROLE_JWT_SECRET, token, url.origin);
+            if (!roleToken) roleToken = await verifyRoleToken(env.ROLE_JWT_SECRET, token);
+          } else {
+            roleToken = await verifyRoleToken(env.ROLE_JWT_SECRET, token);
+          }
+        }
 
         let accessIdentity: AccessJwtIdentity | null = null;
         if (env.ZERO_TRUST_TEAM_DOMAIN) {

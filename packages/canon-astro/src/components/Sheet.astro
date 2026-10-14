@@ -1,0 +1,26 @@
+---
+import { sheetTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  open?: boolean;
+  title: string;
+  side?: 'start' | 'end';
+  labelledBy?: string;
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { open = false, title, side = 'end', labelledBy, class: cls = '', style } = Astro.props;
+const children = await Astro.slots.render('default');
+
+const html = renderHtml(sheetTree({
+  open,
+  title,
+  children: children ? { raw: children } : null,
+  side,
+  labelledBy,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

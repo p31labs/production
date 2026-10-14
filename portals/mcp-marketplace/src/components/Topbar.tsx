@@ -1,70 +1,104 @@
+import { Topbar as CanonTopbar } from '@p31ca/design-core/compositions'
+import { Input } from '@p31ca/design-core/canon-v2'
 import { useWorkspaceStore } from '@/store/workspaceStore'
 import { useMarketplaceStore } from '@/store/marketplaceStore'
-import { useSpoonDial, spoonLabel } from '@/hooks/useSpoonDial'
-import { IdentityChip } from '@/components/IdentityChip'
-import { ROLE_LABEL } from '@/lib/auth'
-import type { SpoonLevel } from '@/types'
+import { PortalIdentity } from '@/components/PortalIdentity'
+import { P31Icon } from '@/components/P31Icon'
 
-const ROLE_COLOR: Record<string, string> = {
-  viewer: 'var(--p31-text-muted)',
-  publisher: 'var(--p31-accent-violet)',
-  reviewer: 'var(--p31-accent-gold)',
-  admin: 'var(--p31-accent-green)',
+/**
+ * Topbar — canon wrapper (consume-don't-fork).
+ *
+ * Exactly four zones (plan W2):
+ *   1. brand        → crown icon + product name
+ *   2. primary nav  → Home / Discover / Playground / Publish (NavLinks)
+ *   3. search       → one canon Input (Ctrl+K hint lives in the title tooltip)
+ *   4. identity     → one chip ("Sign in" or the signed-in name + settings gear)
+ *
+ * The active nav item is a SUBTLE pill (accent-tinted surface, accent text)
+ * — filled cyan is reserved for the single primary action per screen, so
+ * the nav and the page's primary button never read as two primaries.
+ * Removed from the chrome: MAKER badge, public/governed lens switch, spoon
+ * dots, Calm pill, role chip, wordmark. Review stays routable but is not in
+ * the nav. The nav renders through NavLinks so the cognitive-load gate can
+ * cap nav items (R1) and count topbar interactives (R2) separately.
+ */
+
+const NAV_ITEMS = [
+  { id: 'home', label: 'Home' },
+  { id: 'discover', label: 'Discover' },
+  { id: 'playground', label: 'Playground' },
+  { id: 'publish', label: 'Publish' },
+] as const
+
+function NavLinks() {
+  const surface = useWorkspaceStore((s) => s.surface)
+  const setSurface = useWorkspaceStore((s) => s.setSurface)
+  return (
+    <nav aria-label="Main" style={{ display: 'flex', gap: 'var(--p31-space-1)' }}>
+      {NAV_ITEMS.map((item) => {
+        const active = surface === item.id
+        return (
+          <a
+            key={item.id}
+            href={`#/${item.id}`}
+            className="topbar-nav-link"
+            aria-current={active ? 'page' : undefined}
+            onClick={() => setSurface(item.id)}
+            style={{
+              color: active ? 'var(--p31-accent)' : 'var(--p31-text-secondary)',
+              background: active ? 'color-mix(in oklch, var(--p31-accent) 14%, transparent)' : 'transparent',
+              fontWeight: active ? 600 : 500,
+              borderRadius: 'var(--p31-radius-full)',
+              fontSize: 'var(--p31-text-sm)',
+            }}
+          >
+            {item.label}
+          </a>
+        )
+      })}
+    </nav>
+  )
 }
 
 export function Topbar() {
-  const spoons = useSpoonDial()
-  const setSpoons = useWorkspaceStore((s) => s.setSpoons)
-  const mode = useWorkspaceStore((s) => s.mode)
-  const setCalm = useWorkspaceStore((s) => s.setCalm)
-  const togglePalette = useWorkspaceStore((s) => s.togglePalette)
   const setSurface = useWorkspaceStore((s) => s.setSurface)
-  const role = useMarketplaceStore((s) => s.me?.role)
+  const search = useMarketplaceStore((s) => s.search)
+  const setSearch = useMarketplaceStore((s) => s.setSearch)
+
+  const submitSearch = () => {
+    setSurface('discover')
+  }
 
   return (
-    <header className="topbar">
-      <button type="button" className="topbar-brand" onClick={() => setSurface('home')}>
-        <div className="p31-crown-logo">31</div>
-        <span>P31 MCP Marketplace</span>
-      </button>
-
-      <div className="topbar-center">
-        <button type="button" className="search-box" onClick={togglePalette} aria-label="Open Command Palette">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-            <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-          <span>Search servers, tools, categories…</span>
-          <kbd className="search-kbd">⌘K</kbd>
-        </button>
-      </div>
-
-      <div className="topbar-right">
-        <span className={`badge badge-${mode}`}>{mode.toUpperCase()}</span>
-
-        {role && role !== 'viewer' && (
-          <span className="identity-chip" style={{ color: ROLE_COLOR[role], borderColor: 'color-mix(in oklab, ' + ROLE_COLOR[role] + ' 40%, transparent)' }}>
-            {ROLE_LABEL[role]}
-          </span>
-        )}
-
-        <IdentityChip />
-
-        <div className="spoon-dial" aria-label={`Spoon dial: ${spoonLabel(spoons)}`}>
-          <span className="spoon-dial-label">SPOONS</span>
-          {[1, 2, 3, 4, 5].map((n) => (
-            <button
-              key={n}
-              type="button"
-              className={`spoon-dot ${n <= spoons ? 'active' : ''}`}
-              onClick={() => setSpoons(n as SpoonLevel)}
-              aria-label={`Set spoon level ${n}`}
-            />
-          ))}
-          <button type="button" className="spoon-crisis-btn" onClick={() => setCalm(true)}>
-            Calm
-          </button>
-        </div>
-      </div>
-    </header>
+    <CanonTopbar
+      glass={false}
+      brand={
+        <a href="#/home" className="topbar-brand" onClick={() => setSurface('home')} aria-label="P31 Marketplace home">
+          <P31Icon name="sovereign-crown" size={30} />
+          <span>P31 Marketplace</span>
+        </a>
+      }
+      center={<NavLinks />}
+      trailing={
+        <Input
+          type="search"
+          className="topbar-search"
+          placeholder="Search"
+          aria-label="Search"
+          title="Search (Ctrl+K)"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault()
+              submitSearch()
+            }
+          }}
+        />
+      }
+      identity={<PortalIdentity />}
+    />
   )
 }
+
+export default Topbar

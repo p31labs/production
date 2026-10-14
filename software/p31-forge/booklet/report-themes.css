@@ -19,6 +19,7 @@
   --accent: #2BB3D9;
   --accent-soft: #E5F6FB;
   --accent-text: #0E7FA8;
+  --accent-hot: var(--accent);
   --ok: #1F9D55;
   --ok-soft: #EAF2ED;
   --warn: #B7791F;
@@ -114,4 +115,174 @@
 /* Auto-select midnight for dark-mode readers; scene otherwise. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) { color-scheme: dark; }
+}
+
+[data-theme="ink"] {
+  /* ── INK (paper-friendly light: printers, courts, lenders. Same accents,
+     light sheet. Default for letter/grant/brief/table-report templates) ── */
+  --cover-bg: #141416;
+  --cover-text: #ffffff;
+  --cover-muted: #9aa0a6;
+  --page-bg: #ffffff;
+  --page-surface: #f6f4ef;
+  --page-raised: #ece9e1;
+  --text-primary: #1a1a1a;
+  --text-secondary: #4f4b45;
+  --text-muted: #76716a;
+  --border: #e0dcd2;
+  --border-strong: #cfc8ba;
+  --accent: #c05621;
+  --accent-soft: #fbeee6;
+  --accent-text: #a44718;
+  --accent-hot: #b45309;
+  --ok: #1f9d55;
+  --ok-soft: #e8f4ec;
+  --warn: #b7791f;
+  --warn-soft: #fdf3e0;
+  --danger: #c0392b;
+  --danger-soft: #fbe9e7;
+  --font-display: 'DejaVu Serif', Georgia, serif;
+  --font-body: 'DejaVu Sans', system-ui, sans-serif;
+  --font-mono: 'DejaVu Sans Mono', 'Courier New', monospace;
+}
+
+[data-theme="professional"] {
+  /* ── PROFESSIONAL (white paper, navy accent — grants, letters, guides) ── */
+  --cover-bg: #0F172A;
+  --cover-text: #F8FAFC;
+  --cover-muted: #94A3B8;
+  --page-bg: #FFFFFF;
+  --page-surface: #F8FAFC;
+  --page-raised: #EEF2F7;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #4B5563;
+  --border: #E2E8F0;
+  --border-strong: #CBD5E1;
+  --accent: #1E40AF;
+  --accent-soft: #EFF6FF;
+  --accent-text: #1D4ED8;
+  --accent-hot: #1D4ED8;
+  --ok: #16A34A;
+  --ok-soft: #EAF7EF;
+  --warn: #D97706;
+  --warn-soft: #FDF3E3;
+  --danger: #DC2626;
+  --danger-soft: #FDEBEB;
+  --font-display: 'DejaVu Serif', Georgia, serif;
+  --font-body: 'DejaVu Sans', system-ui, sans-serif;
+  --font-mono: 'DejaVu Sans Mono', 'Courier New', monospace;
+}
+
+[data-theme="family"] {
+  /* ── FAMILY (warm cream, amber accent, serif — letters home) ── */
+  --cover-bg: #2D2416;
+  --cover-text: #FDF8F0;
+  --cover-muted: #9C8C7A;
+  --page-bg: #FDF8F0;
+  --page-surface: #FFFFFF;
+  --page-raised: #F3EADC;
+  --text-primary: #2D2416;
+  --text-secondary: #6B5D4F;
+  --text-muted: #7A6B5B;
+  --border: #E8DFD0;
+  --border-strong: #D4C5B0;
+  --accent: #B45309;
+  --accent-soft: #FEF3C7;
+  --accent-text: #92400E;
+  --accent-hot: #92400E;
+  --ok: #4D7C0F;
+  --ok-soft: #F2F7E8;
+  --warn: #B45309;
+  --warn-soft: #FDF1DF;
+  --danger: #B91C1C;
+  --danger-soft: #FBE9E9;
+  --font-display: 'DejaVu Serif', Georgia, serif;
+  --font-body: 'DejaVu Serif', Georgia, serif;
+  --font-mono: 'DejaVu Sans Mono', 'Courier New', monospace;
+}
+
+[data-theme="friends"] {
+  /* ── FRIENDS (warm white, orange accent, sans — casual, intentional) ── */
+  --cover-bg: #1C1917;
+  --cover-text: #FFF7ED;
+  --cover-muted: #A8A29E;
+  --page-bg: #FFF7ED;
+  --page-surface: #FFFFFF;
+  --page-raised: #FFEDD5;
+  --text-primary: #1C1917;
+  --text-secondary: #57534E;
+  --text-muted: #57534E;
+  --border: #FED7AA;
+  --border-strong: #FDBA74;
+  --accent: #EA580C;
+  --accent-soft: #FFF3E4;
+  --accent-text: #C2410C;
+  --accent-hot: #C2410C;
+  --ok: #16A34A;
+  --ok-soft: #EAF7EF;
+  --warn: #D97706;
+  --warn-soft: #FDF3E3;
+  --danger: #DC2626;
+  --danger-soft: #FDEBEB;
+  --font-display: 'DejaVu Sans', system-ui, sans-serif;
+  --font-body: 'DejaVu Sans', system-ui, sans-serif;
+  --font-mono: 'DejaVu Sans Mono', 'Courier New', monospace;
+}
+
+[data-theme="ops"] {
+  /* ── OPS (dark console, sky blue, mono display — runbooks) ── */
+  --cover-bg: #0B1220;
+  --cover-text: #E2E8F0;
+  --cover-muted: #64748B;
+  --page-bg: #0F172A;
+  --page-surface: #1E293B;
+  --page-raised: #16233B;
+  --text-primary: #E2E8F0;
+  --text-secondary: #94A3B8;
+  --text-muted: #94A3B8;
+  --border: rgba(148, 163, 184, 0.16);
+  --border-strong: rgba(56, 189, 248, 0.40);
+  --accent: #38BDF8;
+  --accent-soft: rgba(56, 189, 248, 0.10);
+  --accent-text: #38BDF8;
+  --accent-hot: #7DD3FC;
+  --ok: #4ADE80;
+  --ok-soft: rgba(74, 222, 128, 0.08);
+  --warn: #FBBF24;
+  --warn-soft: rgba(251, 191, 36, 0.08);
+  --danger: #F87171;
+  --danger-soft: rgba(248, 113, 113, 0.08);
+  --font-display: 'DejaVu Sans Mono', 'Courier New', monospace;
+  --font-body: 'DejaVu Sans', system-ui, sans-serif;
+  --font-mono: 'DejaVu Sans Mono', 'Courier New', monospace;
+}
+
+[data-theme="ats"] {
+  /* ── ATS (grounded in the ATS Accelerator 2026 PDF: navy void, teal mint,
+     neon green, slate text, Courier-style mono) ── */
+  --cover-bg: #090d17;
+  --cover-text: #e0e4ec;
+  --cover-muted: #64748b;
+  --page-bg: #090d17;
+  --page-surface: #1d293b;
+  --page-raised: #0e1729;
+  --text-primary: #e0e4ec;
+  --text-secondary: #a5b1c5;
+  --text-muted: #64748b;
+  --border: rgba(148, 163, 184, 0.16);
+  --border-strong: rgba(94, 234, 212, 0.40);
+  --accent: #5eead4;
+  --accent-soft: rgba(94, 234, 212, 0.10);
+  --accent-text: #5eead4;
+  --accent-hot: #39ff14;
+  --ok: #39ff14;
+  --ok-soft: rgba(57, 255, 20, 0.07);
+  --warn: #fbbf24;
+  --warn-soft: rgba(251, 191, 36, 0.08);
+  --danger: #ff6b6b;
+  --danger-soft: rgba(255, 107, 107, 0.08);
+  --font-display: 'DejaVu Sans', system-ui, sans-serif;
+  --font-body: 'DejaVu Sans', system-ui, sans-serif;
+  --font-mono: 'DejaVu Sans Mono', 'Courier New', monospace;
 }

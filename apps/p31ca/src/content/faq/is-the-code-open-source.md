@@ -1,6 +1,6 @@
 ---
 q: Is the code really open source?
-a: Yes — AGPL on GitHub. Research is open on Zenodo with DOIs. You can inspect, fork, and deploy the whole stack yourself; there is no proprietary runtime you must depend on.
+a: Yes. The whole stack is open source under AGPL on GitHub. All 44 registry servers, 22 live, with 124 tools are open. Research is open on Zenodo with DOIs. You can read, fork, and run it all. There is no locked runtime you must buy.
 category: community
 ---
 

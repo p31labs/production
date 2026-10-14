@@ -47,6 +47,23 @@
 .topbar-center { display: flex; align-items: center; flex: 1; max-width: 520px; margin: 0 var(--p31-space-5); }
 .topbar-right { display: flex; align-items: center; gap: var(--p31-space-3); }
 
+/* Canon Topbar section wrappers — shell geometry alignment (Law 1: geometry
+   only). The canon header slots render as .topbar-section divs; these rules
+   restore the three-cluster flex layout around them. */
+.topbar-section {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.topbar-section--brand,
+.topbar-section--trailing {
+  flex-shrink: 0;
+}
+.topbar-section--center {
+  flex: 1;
+  justify-content: center;
+}
+
 .search-box {
   width: 100%;
   height: 40px;
@@ -137,7 +154,7 @@
   position: relative;
 }
 
-.sidebar {
+.workspace-sidebar {
   width: 240px;
   background: color-mix(in oklch, var(--p31-surface) 72%, transparent);
   backdrop-filter: var(--p31-glass-blur);
@@ -215,7 +232,7 @@
 }
 
 @media (max-width: 768px) {
-  .sidebar { display: none; }
+  .workspace-sidebar { display: none; }
   .mobile-bottom-nav { display: flex; }
   .topbar-center { display: none; }
   body { padding-bottom: 64px; }

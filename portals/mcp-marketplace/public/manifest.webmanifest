@@ -1,7 +1,7 @@
 {
-  "name": "MCP Marketplace",
+  "name": "P31 Marketplace",
   "short_name": "marketplace",
-  "description": "P31 sovereign stack surface.",
+  "description": "P31 is your family's toolbox. Find tools, try them, share your own.",
   "id": "/",
   "start_url": "/",
   "scope": "/",

@@ -10,12 +10,12 @@ interface Props {
 const { urls, statusLine = 'Live in production' } = Astro.props;
 ---
 
-<div class="rounded-2xl border p-5" style="border-color: var(--p31-glass-border); background: var(--p31-surface);">
-  <div class="flex items-center gap-2 mb-3">
-    <span class="w-2 h-2 rounded-full" style="background: var(--p31-chain-verified, #788c5d); box-shadow: 0 0 6px rgba(120,140,93,0.6);" aria-hidden="true"></span>
-    <span class="text-sm font-semibold" style="color: var(--p31-text);">{statusLine}</span>
+<div class="lp-rounded-2xl lp-border lp-p-5" style="border-color: var(--p31-glass-border); background: var(--p31-surface);">
+  <div class="lp-flex lp-items-center lp-gap-2 lp-mb-3">
+    <span class="lp-w-2 lp-h-2 lp-rounded-full" style="background: var(--p31-chain-verified, #788c5d); box-shadow: 0 0 6px rgba(120,140,93,0.6);" aria-hidden="true"></span>
+    <span class="lp-text-sm lp-font-semibold" style="color: var(--p31-text);">{statusLine}</span>
   </div>
-  <ul class="space-y-2 text-sm">
+  <ul class="lp-space-y-2 lp-text-sm">
     {urls.map((u) => (
       <li>
         <a href={u.href} target="_blank" rel="noopener noreferrer" style="color: var(--p31-accent); text-decoration: none; word-break: break-all;">

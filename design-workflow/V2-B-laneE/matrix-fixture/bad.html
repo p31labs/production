@@ -1,0 +1,36 @@
+<!doctype html>
+<!-- P31 V2-B laneE matrix negative control (runbook v2.0 §5 B-1, §2.7).
+     DELIBERATELY BAD: a 500px fixed container (overflows every matrix width
+     below 500) and a 28px button (below the 44px coarse touch floor).
+     The matrix MUST fail its 320/375/390px cells against this file.
+     Do not "fix" it — a gate that cannot fail is furniture (Law 2). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>matrix negative control</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, sans-serif; background: #020405; color: #eff2f5; }
+  .fixed-500 {
+    width: 500px;              /* deliberate fixed-width regression */
+    background: #121c23;
+    border: 1px solid #1b1d1e;
+    padding: 8px;
+  }
+  button {
+    width: 28px;               /* deliberate sub-44px target */
+    height: 28px;
+    background: #333;
+    color: #fff;
+    border: 0;
+    margin: 8px;
+  }
+  @media (min-width: 600px) { .fixed-500 { background: #1c2833; } }
+</style>
+</head>
+<body>
+<div class="fixed-500">deliberate 500px fixed container — must overflow 320px</div>
+<button>Go</button>
+</body>
+</html>

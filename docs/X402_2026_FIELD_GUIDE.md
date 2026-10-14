@@ -141,7 +141,10 @@ the P31 LOVE care-credit economy:
 
 ## 3. MCP 2026-07-28 Protocol
 
-The P31 bridge and all 10 CLI servers now speak the **2026-07-28 stateless protocol**:
+**Status (2026-10-11): migration in progress.** The bridge front door answers `initialize`
+with `protocolVersion: '2026-07-28'`, but the CLI backends it fronts still run the
+pre-stateless handshakes. **Migration in progress — 2026-10-11 (enterprise MCP update
+wave)**; tracker: `docs/MCP_MIGRATION_2026-07-28.md`. Target behaviour, per the spec:
 
 - **No session handshake.** `initialize` returns `protocolVersion: '2026-07-28'` with no session ID.
   All state is carried in the request envelope.
@@ -150,8 +153,28 @@ The P31 bridge and all 10 CLI servers now speak the **2026-07-28 stateless proto
 - **Backward compatibility:** The old `2024-11-05` handshake (`initialize` → `initialized`)
   is preserved in some deployed edge servers but is deprecated for new servers.
 
-All P31 CLI servers (BOB, MARGE, SOULSAFE, Ground-Truth) advertise `2026-07-28` and the
-`upgraded: true` flag in server info.
+**Current-vs-target (verified against code, 2026-10-11):**
+
+| Server (bridge backend) | Advertised today (code) | Stateless / server-discover | SDK v2 | OAuth 2.1 | Status |
+|---|---|---|---|---|---|
+| x402 bridge (edge) | `2026-07-28` | Yes / — | No | No | ✅ migrated |
+| oasis — `cli/mcp-server.js:306` | `2024-11-05` | No | No | No | 🟡 migrating |
+| registry — `cli/component-registry.js:295` | `2024-11-05` | No | No | No | 🟡 migrating |
+| love — `cli/love-registry.js:130` | `2024-11-05` | No | No | No | 🟡 migrating |
+| phos-forge — `tools/phos-forge/mcp-server.mjs:684` | `2024-11-05` | No | No | No | 🟡 migrating |
+| cognitive-prosthetic — `cli/cognitive-prosthetic.js:830` | `2024-11-05` | No | No | No | 🟡 migrating |
+| cognitive-comms — `cli/cognitive-comms.js:257` | `2024-11-05` | No | No | No | 🟡 migrating |
+| MARGE — `cli/marge-server.js:765` | `2024-11-05` | No | No | No | 🟡 migrating |
+| BOB — `cli/bob-server.js:819` | `2024-11-05` | No | No | No | 🟡 migrating |
+| SOULSAFE — `cli/soulsafe-server.js:693` | `2025-11-25` | No | No | No | 🟡 migrating |
+| Ground-Truth — `cli/ground-truth-server.js:475` | `2025-11-25` | No | No | No | 🟡 migrating |
+| design — `cli/design-mcp-server.js:644` | `2025-11-25` | No | No | No | 🟡 migrating |
+| spaceship — `cli/spaceship-server.js:371` | `2025-11-25` | No | No | No | 🟡 migrating |
+
+The `upgraded: true` flag present in some `serverInfo` objects (SOULSAFE, Ground-Truth,
+Spaceship) predates the 2026-07-28 migration — it does **not** mean the server speaks the
+stateless protocol. Consolidated per-server evidence:
+`docs/enterprise/api/mcp-server-protocol-status.md`.
 
 ---
 

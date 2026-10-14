@@ -1,0 +1,82 @@
+/* P31 Forge layout layer v2 — universal across all document templates.
+   Inlined by scripts/template.mjs in this exact order (NEVER @import: the
+   HTML is written to /tmp/report/, relative URLs would 404):
+     @layer reset, tokens, base, components, layout, print;
+     @layer tokens     { report-themes.css }
+     @layer base       { report.css  — with every @page block REMOVED }
+     @layer components { components.css (optional) }
+     @layer layout     { this file }
+   then pages.css unlayered. Unlayered CSS beats layered CSS regardless of order.
+   FRAGMENTATION NOTE (verified experiment, 2026-10-12, Chromium 150): grid and
+   flex containers fragment cleanly between rows/items and honor
+   break-inside:avoid on children. display:grid/flex are safe in print here. */
+
+@layer layout {
+  /* ---- Pages emitted by pack-pages.mjs (children of main.page only, so the
+     outer wrapper never breaks and adds a trailing blank page) ---- */
+  main.page > .page { break-after: page; break-inside: avoid; position: relative; }
+  main.page > .page:last-child { break-after: auto; }
+  /* The packed page is the boundary: a unit's inter-section bottom margin is
+     spacing BETWEEN sections, not padding after the page's last unit. Without
+     this, every .page measures ~60px taller than the packer's fill math. */
+  main.page > .page > :last-child { margin-bottom: 0; }
+  main.page > .page.force-break, .chapter.force-break { break-before: page; }
+  .pagebreak { break-before: page; }
+
+  /* ---- Width: the real cap is report.css `.body { max-width: 17cm }` ---- */
+  .chapter .body, .body, .prose, .data-table, .callout, .email, .kpi-strip,
+  .chapter p, .chapter ul, .chapter ol { max-width: none; width: 100%; }
+
+  /* ---- Columns ---- */
+  .cols-2 { column-count: 2; column-gap: 8mm; column-fill: balance; }
+  .cols-3 { column-count: 3; column-gap: 8mm;  column-fill: balance; }
+  .cols-2 > *, .cols-3 > * { break-inside: avoid; margin-top: 0; }
+
+  /* ---- Strips / grids (verified safe by experiment) ---- */
+  .metric-strip { display: grid;
+    grid-template-columns: repeat(var(--kpi-cols, 5), minmax(0, 1fr));
+    gap: 1px; }
+  .card-grid { display: grid; gap: 6mm;
+    grid-template-columns: repeat(var(--card-cols, 2), minmax(0, 1fr));
+    grid-auto-rows: 1fr; }
+
+  /* ---- Atoms never split ---- */
+  .kpi-card, .rec-card, .script-card, .callout, .email, .stat, .quote, .sig, figure, tr, .atom {
+    break-inside: avoid; }
+
+  /* ---- Keep-with ---- */
+  h1, h2, h3, h4, .section-kicker, .chapter-kicker { break-after: avoid; }
+  .section-kicker + h2 { break-before: avoid; }
+  .keep-with-next { break-after: avoid; }
+  .keep-with-prev { break-before: avoid; }
+  p { orphans: 2; widows: 2; }
+
+  /* ---- Tables (workspace Sheets export too) ---- */
+  .data-table { table-layout: fixed; border-collapse: collapse; width: 100%; }
+  .data-table td, .data-table th { overflow-wrap: anywhere; white-space: normal; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+
+  /* ---- Email / letter ---- */
+  .email { padding: 4mm 5mm; border-left: 1mm solid var(--accent); }
+  .email-subject { font-weight: 700; margin-bottom: 2mm; }
+  .email-greeting, .email-signoff { margin: 2mm 0; }
+  .email p { margin: 0 0 2mm; font-style: normal; }
+
+  /* ---- Signature / letter chrome ---- */
+  .letterhead { margin-bottom: 6mm; }
+  .letterhead .eyebrow { font-family: var(--font-mono); font-size: 8pt;
+    text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-muted); }
+  .sig { margin-top: 6mm; }
+  .sig .sig-name { font-weight: 700; }
+  .sig .sig-line { color: var(--text-muted); font-size: 9pt; }
+
+  /* ---- Fit-to-page tiers (brief template): packer sets data-fit="1..3" ---- */
+  .page[data-fit="1"] { font-size: 100%; }
+  .page[data-fit="2"] { font-size: 94%; --gap-scale: .85; }
+  .page[data-fit="3"] { font-size: 88%; --gap-scale: .7; }
+}
+
+@layer print {
+  @media print { html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+}

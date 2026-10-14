@@ -77,7 +77,7 @@ the agent-readable face of the P31 canon. Every value below is generated from
 ## Token map
 
 The base tokens below are the normative values. All are emitted from the
-DTCG export (141 base tokens); semantic slots resolve through
+DTCG export (155 base tokens); semantic slots resolve through
 the theme store.
 
 | Token | Value | Type |
@@ -87,26 +87,26 @@ the theme store.
 | `--p31-radius-md` | `[object Object]` | dimension |
 | `--p31-radius-lg` | `[object Object]` | dimension |
 | `--p31-radius-full` | `[object Object]` | dimension |
-| `--p31-font-sans` | `Space Grotesk,system-ui,-apple-system,Segoe UI,Roboto,sans-serif` | fontFamily |
+| `--p31-font-sans` | `Lexend,system-ui,-apple-system,Segoe UI,Roboto,sans-serif` | fontFamily |
 | `--p31-font-mono` | `JetBrains Mono,ui-monospace,SF Mono,Fira Code,monospace` | fontFamily |
+| `--p31-space-4` | `[object Object]` | dimension |
+| `--p31-control-h` | `[object Object]` | dimension |
+| `--p31-control-h-max` | `[object Object]` | dimension |
+| `--p31-focus-offset` | `[object Object]` | dimension |
+| `--p31-header-height` | `[object Object]` | dimension |
+| `--p31-page-max` | `[object Object]` | dimension |
+| `--p31-form-max` | `[object Object]` | dimension |
+| `--p31-shell-sidebar-w` | `[object Object]` | dimension |
+| `--p31-grid-min-sm` | `[object Object]` | dimension |
+| `--p31-grid-min-md` | `[object Object]` | dimension |
+| `--p31-grid-min-lg` | `[object Object]` | dimension |
+| `--p31-split-min-a` | `[object Object]` | dimension |
+| `--p31-split-min-b` | `[object Object]` | dimension |
+| `--p31-split-handle` | `[object Object]` | dimension |
 | `--p31-accent-alt` | `[object Object]` | color |
 | `--p31-text` | `[object Object]` | color |
 | `--p31-glass-border-hover` | `[object Object]` | color |
-| `--p31-glass-bg-strong` | `[object Object]` | color |
-| `--p31-glass-bg-overlay` | `[object Object]` | color |
-| `--p31-glass-bg-light` | `[object Object]` | color |
-| `--p31-glass-border-strong` | `[object Object]` | color |
-| `--p31-glass-border-strong-hover` | `[object Object]` | color |
-| `--p31-neon` | `[object Object]` | color |
-| `--p31-neon-dim` | `[object Object]` | color |
-| `--p31-neon-faint` | `[object Object]` | color |
-| `--p31-neon-ghost` | `[object Object]` | color |
-| `--p31-neon-cyan` | `[object Object]` | color |
-| `--p31-neon-magenta` | `[object Object]` | color |
-| `--p31-neon-violet` | `[object Object]` | color |
-| `--p31-neon-amber` | `[object Object]` | color |
-| `--p31-neon-mint` | `[object Object]` | color |
-| … | 117 more base tokens | |
+| … | 131 more base tokens | |
 
 ## Themes
 

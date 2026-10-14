@@ -18,6 +18,16 @@ class_name = "LoveTransactionDO"
 tag = "v1"
 new_sqlite_classes = ["LoveTransactionDO"]
 
+# Two-challenge Clause Blind Schnorr (GNU Taler CS) WASM is pre-compiled at
+# deploy time via [[rules]] type = "CompiledWasm" (ES module Workers cannot
+# use [wasm_modules], and runtime WebAssembly code-gen from raw bytes is
+# blocked by workerd). src/taler-cbs/loader.ts imports it as a
+# WebAssembly.Module and instantiates it once. See docs/specs/love-settlement-cbs.md.
+[[rules]]
+type = "CompiledWasm"
+globs = ["**/*.wasm"]
+fallthrough = false
+
 [vars]
 ENVIRONMENT = "production"
 LOVE_REQUIRE_AUTH = "true"
@@ -26,6 +36,9 @@ LOVE_REQUIRE_AUTH = "true"
 #   LOVE_AUTH_SECRET — HMAC-SHA256 for x402 LOVE-path auth
 #   RECEIPT_SIGNER_PRIVATE_KEY — Ed25519 private key for creation receipts
 #   RECEIPT_SIGNER_PUBLIC_KEY — Ed25519 public key for verification
+#   BLIND_ISSUER_PRIVATE_KEY — base64 32-byte scalar for the two-challenge
+#     CBS issuer (generate with ./scripts/gen-cbs-key.mjs; public X is
+#     published by GET /blind-pubkey)
 
 [observability]
 enabled = true

@@ -1,0 +1,16 @@
+{
+  "type": "table-report",
+  "meta": { "title": "Worker Fleet Ledger", "kicker": "P31 LABS", "date": "2026-10-12", "source": "sheets" },
+  "blocks": [
+    { "kind": "table", "data": {
+      "columns": ["Worker", "Status", "Tools"],
+      "rows": [
+        ["p31-crypto", "live", "12"], ["phenix-wallet", "live", "16"], ["bros", "live", "8"],
+        ["dads", "live", "7"], ["p31-justice-hub", "live", "8"], ["ground-truth", "live", "14"],
+        ["marge", "live", "3"], ["spaceship", "live", "4"], ["phos-forge", "live", "29"],
+        ["marketplace-mcp", "live", "10"], ["component-registry", "live", "5"], ["design-mcp", "live", "11"],
+        ["bob", "live", "3"], ["spaceship-relay", "live", "13"], ["p31-crypto-pqc", "staging", "12"]
+      ]
+    } }
+  ]
+}

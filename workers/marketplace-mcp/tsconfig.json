@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "ES2022",
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM"],
     "types": ["@cloudflare/workers-types"],
     "strict": true,
     "noEmit": true,
@@ -11,7 +11,12 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "bundler",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@catalog/*": ["../../marketplace-catalog/src/*"],
+      "@catalog": ["../../marketplace-catalog/src/index.ts"]
+    }
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "../../marketplace-catalog/src/index.ts"]
 }

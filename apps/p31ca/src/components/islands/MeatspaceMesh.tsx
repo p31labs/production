@@ -67,22 +67,22 @@ export default function MeatspaceMesh() {
   }, [present, reduced])
 
   return (
-    <div className="rounded-2xl border p-6 text-center" style={{ borderColor: 'var(--p31-glass-border)', background: 'var(--p31-surface)' }}>
-      <div className="mb-3">
-        <span className="text-lg font-semibold" style={{ color: 'var(--p31-text)' }}>🤝 Meatspace · P2P presence mesh</span>
+    <div className="msh-rounded-2xl msh-border msh-p-6 msh-text-center" style={{ borderColor: 'var(--p31-glass-border)', background: 'var(--p31-surface)' }}>
+      <div className="msh-mb-3">
+        <span className="msh-text-lg msh-font-semibold" style={{ color: 'var(--p31-text)' }}>🤝 Meatspace · P2P presence mesh</span>
       </div>
-      <canvas ref={canvasRef} className="mx-auto" aria-label="K4 family presence mesh" />
-      <div className="mt-3 flex justify-center gap-2">
+      <canvas ref={canvasRef} className="msh-mx-auto" aria-label="K4 family presence mesh" />
+      <div className="msh-mt-3 msh-flex msh-justify-center msh-gap-2">
         {MEMBERS.map((m) => {
           const isIn = present.includes(m.id)
           return (
-            <button key={m.id} onClick={() => setPresent((p) => isIn ? p.filter((x) => x !== m.id) : [...p, m.id])} className="px-3 py-1 rounded text-xs font-mono" style={{ background: isIn ? 'var(--p31-accent)' : 'transparent', color: isIn ? 'var(--p31-bg, #141413)' : 'var(--p31-text)', border: '1px solid var(--p31-glass-border)' }}>
+            <button key={m.id} onClick={() => setPresent((p) => isIn ? p.filter((x) => x !== m.id) : [...p, m.id])} className="msh-px-3 msh-py-1 msh-rounded msh-text-xs msh-font-mono" style={{ background: isIn ? 'var(--p31-accent)' : 'transparent', color: isIn ? 'var(--p31-bg, #141413)' : 'var(--p31-text)', border: '1px solid var(--p31-glass-border)' }}>
               {m.id} {isIn ? '✓' : '…'}
             </button>
           )
         })}
       </div>
-      <p className="mt-3 text-xs" style={{ color: 'var(--p31-text-tertiary)' }}>
+      <p className="msh-mt-3 msh-text-xs" style={{ color: 'var(--p31-text-tertiary)' }}>
         Toggle members on and off — the K₄ complete graph re-forms. Every node touches every other, no central server. DID identity, no accounts, presence only.
       </p>
     </div>

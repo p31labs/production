@@ -1,0 +1,16 @@
+{
+  "type": "guide",
+  "meta": { "title": "Forge Theme Guide", "kicker": "P31 LABS", "date": "2026-10-12", "source": "docs" },
+  "blocks": [
+    { "kind": "toc", "data": { "title": "Contents" } },
+    { "kind": "section", "id": "themes", "title": "Choosing a Theme", "children": [
+      { "kind": "prose", "data": { "text": "Every document type renders in any allowed theme. The template owns structure; the theme owns appearance." } }
+    ] },
+    { "kind": "section", "id": "adding", "title": "Adding a Theme", "children": [
+      { "kind": "steps", "data": { "items": [
+        { "title": "Add a block", "body": "One [data-theme=name] block in report-themes.css with all 22 semantic tokens" },
+        { "title": "Add contrast pairs", "body": "contrast-pairs.json entry — the gate fails below WCAG AA" }
+      ] } }
+    ] }
+  ]
+}

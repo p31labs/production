@@ -5,6 +5,7 @@ compatibility_flags = ["nodejs_compat"]
 
 [[kv_namespaces]]
 binding = "SPACESHIP_TELEMETRY"
+id = "785a943c0af94c4c9b5f9007ab77b243"
 
 [[services]]
 binding = "P31_SHELL"

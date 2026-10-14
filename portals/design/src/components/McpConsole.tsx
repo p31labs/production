@@ -1,29 +1,52 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GlassPanel } from '@p31ca/design-core/compositions';
 
 const MCP_URL = 'https://p31-design-mcp.trimtab-signal.workers.dev/mcp';
 
-const TOOLS = [
-  { name: 'list_tokens', description: 'List all P31 design tokens', args: { category: 'all' } },
-  { name: 'resolve_token', description: 'Resolve a single token path', args: { path: 'color.accent.default' } },
-  { name: 'search_tokens', description: 'Search tokens by keyword', args: { query: 'cyan' } },
-  { name: 'list_components', description: 'List all components', args: {} },
-  { name: 'get_component', description: 'Get component definition', args: { name: 'GlassPanel' } },
-  { name: 'generate_component', description: 'Generate component code', args: { name: 'GlassPanel', framework: 'react' } },
-  { name: 'list_recipes', description: 'List all CSS recipes', args: {} },
-  { name: 'get_recipe', description: 'Get recipe CSS', args: { name: 'glass-panel' } },
-  { name: 'convert_component', description: 'Convert between frameworks', args: { source: 'react', target: 'astro', code: '<div class="glass-panel">Hello</div>', componentName: 'Test' } },
-  { name: 'audit_css', description: 'Audit CSS for compliance', args: { content: '.test { color: var(--p31-accent-red); }', strict: false } },
-  { name: 'validate_parity', description: 'Validate component parity', args: { sourceContent: '<div class="glass-panel">A</div>', targetContent: '<div class="glass-panel">B</div>' } },
-  { name: 'get_ui_principles', description: 'Get P31 UI principles', args: {} },
-  { name: 'get_review_rules', description: 'Get automated review rules', args: {} },
-];
+type ToolSpec = { name: string; description?: string; inputSchema?: Record<string, unknown> };
+
+// Parse a Streamable-HTTP MCP response (JSON body or SSE `data:` frames).
+function parseMcpBody(text: string): any {
+  const lines = text.split('\n');
+  const dataLines = lines.filter((l) => l.startsWith('data:')).map((l) => l.slice(5).trim());
+  if (dataLines.length > 0) {
+    try { return JSON.parse(dataLines.join('')); } catch { return JSON.parse(dataLines[0] ?? 'null'); }
+  }
+  return JSON.parse(text);
+}
 
 function McpConsole() {
-  const [selectedTool, setSelectedTool] = useState(TOOLS[0].name);
-  const [args, setArgs] = useState(JSON.stringify(TOOLS[0].args, null, 2));
+  const [TOOLS, setTOOLS] = useState<ToolSpec[]>([]);
+  const [toolsError, setToolsError] = useState('');
+  const [selectedTool, setSelectedTool] = useState('');
+  const [args, setArgs] = useState('{}');
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Discovery: the tool surface comes from the canonical worker, never a hardcoded list.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(MCP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json, text/event-stream' },
+          body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/list' }),
+        });
+        const data = parseMcpBody(await res.text());
+        const tools: ToolSpec[] = data?.result?.tools ?? [];
+        if (cancelled) return;
+        setTOOLS(tools);
+        if (tools.length > 0) {
+          setSelectedTool(tools[0].name);
+          setArgs('{}');
+        }
+      } catch (e) {
+        if (!cancelled) setToolsError(e instanceof Error ? e.message : String(e));
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   const handleCall = async () => {
     setLoading(true);
@@ -32,7 +55,7 @@ function McpConsole() {
       const parsedArgs = JSON.parse(args);
       const response = await fetch(MCP_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json, text/event-stream' },
         body: JSON.stringify({
           jsonrpc: '2.0',
           id: 1,
@@ -40,7 +63,7 @@ function McpConsole() {
           params: { name: selectedTool, arguments: parsedArgs },
         }),
       });
-      const data = await response.json();
+      const data = parseMcpBody(await response.text());
       const text = data.result?.content?.[0]?.text || JSON.stringify(data, null, 2);
       setResult(text);
     } catch (e) {
@@ -50,14 +73,20 @@ function McpConsole() {
     }
   };
 
-  const handlePreset = (tool: typeof TOOLS[0]) => {
+  const handlePreset = (tool: ToolSpec) => {
     setSelectedTool(tool.name);
-    setArgs(JSON.stringify(tool.args, null, 2));
+    setArgs('{}');
     setResult('');
   };
 
   return (
     <div className="flex flex-col gap-4">
+      {toolsError && (
+        <div className="text-xs text-tertiary font-mono">Tool discovery failed: {toolsError}</div>
+      )}
+      {!toolsError && TOOLS.length === 0 && (
+        <div className="text-xs text-tertiary font-mono">Discovering tools from {MCP_URL}…</div>
+      )}
       <div className="flex flex-wrap gap-2">
         {TOOLS.map(tool => (
           <button

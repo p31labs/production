@@ -1,0 +1,18 @@
+{
+  "patch-id": "p31_v3c_c3_neg_raw_hex",
+  "target-commit": "packages/canon/tokens/tokens.dtc.json (2026-10-11, 152516 bytes)",
+  "applies-to": "tokens/tokens.dtc.json and mirror tokens/tokens.json",
+  "method": "RFC 6902 (test/add/remove)",
+  "generated-by": "V3-C-canon/canon-diff/gen-patches.mjs (canon READ-ONLY)",
+  "description": "NEGATIVE CONTROL: introduces a raw hex color literal (#000000) into the token source. token-audit.mjs MUST fail on the patched copy. Not a real proposal — a gate-control artifact.",
+  "operations": [
+    {
+      "op": "add",
+      "path": "/p31/color/hex-drift",
+      "value": {
+        "$value": "#000000",
+        "$type": "color"
+      }
+    }
+  ]
+}

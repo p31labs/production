@@ -18,20 +18,24 @@ const HERE = dirname(fileURLToPath(import.meta.url))
 const REPORT_DIR = '/tmp/report'
 
 function main() {
-  const si = process.argv.indexOf('--session')
-  const session = si >= 0 ? process.argv[si + 1] : null
-  if (!session) {
-    console.error('usage: node scripts/render-pdf.mjs --session <id> [--out <path>]')
-    process.exit(2)
-  }
-  const htmlPath = resolve(REPORT_DIR, `${session}.report.html`)
-  if (!existsSync(htmlPath)) {
-    console.error(`render-pdf: no report html at ${htmlPath}`)
-    process.exit(1)
-  }
+  const hi = process.argv.indexOf('--html')
+  const htmlPath = hi >= 0 ? process.argv[hi + 1] : null
   const oi = process.argv.indexOf('--out')
-  const pdfPath = oi >= 0 ? process.argv[oi + 1] : resolve(REPORT_DIR, `${session}.report.pdf`)
+  const pdfPath = oi >= 0 ? process.argv[oi + 1] : null
+  if (htmlPath) {
+    if (!existsSync(htmlPath)) { console.error(`render-pdf: no html at ${htmlPath}`); process.exit(1) }
+  } else {
+    const si = process.argv.indexOf('--session')
+    const session = si >= 0 ? process.argv[si + 1] : null
+    if (!session) { console.error('usage: render-pdf.mjs (--session <id> | --html <path>) [--out <path>]'); process.exit(2) }
+    const resolved = resolve(REPORT_DIR, `${session}.report.html`)
+    if (!existsSync(resolved)) { console.error(`render-pdf: no report html at ${resolved}`); process.exit(1) }
+    return renderToPdf(resolved, pdfPath ?? resolve(REPORT_DIR, `${session}.report.pdf`))
+  }
+  return renderToPdf(htmlPath, pdfPath ?? htmlPath.replace(/\.html?$/, '.pdf'))
+}
 
+function renderToPdf(htmlPath, pdfPath) {
   // Headless chromium print-to-pdf. Uses the system chromium if present.
   const chromium = process.env.CHROMIUM_BIN || 'chromium'
   try {
@@ -45,6 +49,7 @@ function main() {
   }
   const size = existsSync(pdfPath) ? statSize(pdfPath) : 0
   console.log(`report pdf -> ${pdfPath} (${size} bytes)`)
+  return pdfPath
 }
 
 function statSize(p) {

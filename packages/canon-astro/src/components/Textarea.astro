@@ -1,0 +1,45 @@
+---
+import { textareaTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  label?: string;
+  hideLabel?: boolean;
+  hint?: string;
+  error?: string;
+  width?: 'form' | 'full';
+  id?: string;
+  class?: string;
+  rows?: number;
+  name?: string;
+  placeholder?: string;
+  autoComplete?: string;
+  required?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+  style?: Record<string, string | number>;
+}
+
+const { label, hideLabel = false, hint, error, width, id, class: cls = '', rows = 3, name, placeholder, autoComplete, required, disabled, readOnly, style } = Astro.props;
+
+const rest: Record<string, unknown> = {};
+if (name !== undefined) rest.name = name;
+if (placeholder !== undefined) rest.placeholder = placeholder;
+if (autoComplete !== undefined) rest.autoComplete = autoComplete;
+if (required !== undefined) rest.required = required;
+if (disabled !== undefined) rest.disabled = disabled;
+if (readOnly !== undefined) rest.readOnly = readOnly;
+
+const html = renderHtml(textareaTree({
+  label,
+  hideLabel,
+  hint,
+  error,
+  width,
+  id,
+  className: cls,
+  rows,
+  style,
+  rest,
+}));
+---
+<Fragment set:html={html} />

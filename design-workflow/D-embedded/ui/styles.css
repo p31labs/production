@@ -1,0 +1,179 @@
+/* P31 Node Zero — served UI styles.
+   Canon colors resolved from production/packages/canon/tokens/tokens.dtc.json
+   (theme: themes.cipher) via D/oklch-to-srgb.mjs — same resolution as
+   D/dist/p31_theme.h. Each custom property cites its canon token path.
+   Font: canon p31.font-sans stack, system-ui subset only (webfont files are
+   omitted from the SPIFFS assets partition to hold the budget). */
+:root {
+  /* canon source: tokens.dtc.json theme themes.cipher, OKLCH→sRGB via D/oklch-to-srgb.mjs */
+  --p31-bg: #020405;              /* themes.cipher.p31.bg oklch(0.1 0.01 240) */
+  --p31-surface: #060C11;         /* themes.cipher.p31.surface oklch(0.15 0.015 240) */
+  --p31-surface2: #121C23;        /* themes.cipher.p31.surface2 oklch(0.22 0.02 240) */
+  --p31-accent: #00AEB1;          /* themes.cipher.p31.accent oklch(0.65 0.18 195) */
+  --p31-accent-violet: #877AF7;   /* themes.cipher.p31.accent-violet oklch(0.65 0.18 285) */
+  --p31-accent-iris: #348FF9;     /* themes.cipher.p31.accent-iris oklch(0.65 0.18 255) */
+  --p31-text-primary: #EFF2F5;    /* themes.cipher.p31.text-primary oklch(0.96 0.005 240) */
+  --p31-text-secondary: #A8AFB4;  /* themes.cipher.p31.text-secondary oklch(0.75 0.01 240) */
+  --p31-text-tertiary: #6D7277;   /* themes.cipher.p31.text-tertiary oklch(0.55 0.01 240) */
+  --p31-status-success: #A19200;  /* p31.status.success oklch(0.65 0.18 105) */
+  --p31-status-warning: #E7566B;  /* themes.cipher.p31.accent-gold ≡ deprecated p31.status.warning oklch(0.65 0.18 15) */
+  --p31-status-error: #E85760;    /* p31.status.error oklch(0.65 0.18 20) */
+  --p31-status-info: #00AEB1;     /* themes.cipher.p31.accent-cyan ≡ deprecated p31.status.info oklch(0.65 0.18 195) */
+  --p31-glass-border: #1B1D1E;    /* themes.cipher.p31.glass-border composited over bg */
+  --p31-space-sm: 8px;            /* p31.spacing-sm */
+  --p31-space-md: 16px;           /* p31.spacing-md */
+  --p31-space-lg: 24px;           /* p31.spacing-lg */
+  --p31-radius-sm: 8px;           /* p31.radius.sm */
+  --p31-radius-md: 16px;          /* p31.radius.md */
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--p31-bg); }
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background: var(--p31-bg);
+  color: var(--p31-text-primary);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+}
+
+/* topbar — title + DID + LoRa dot */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-sm);
+  padding: var(--p31-space-sm) var(--p31-space-md);
+  background: var(--p31-surface);
+  border-bottom: 1px solid var(--p31-glass-border);
+  min-height: 44px; /* touch floor kept even though this is a status surface */
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  color: var(--p31-accent);
+}
+
+.topbar .node { color: var(--p31-text-primary); font-weight: 600; }
+
+.topbar .did {
+  margin: 0 auto 0 0;
+  font-family: ui-monospace, "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  color: var(--p31-text-tertiary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* LoRa status dot (mirrors the LVGL panel dot in main/p31_ui.c) */
+.lora {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--p31-text-tertiary);
+  flex: 0 0 auto;
+}
+.lora--rx    { background: var(--p31-status-success); }
+.lora--tx    { background: var(--p31-status-warning); }
+.lora--error { background: var(--p31-status-error); }
+.lora--idle  { background: var(--p31-text-tertiary); }
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 30rem;
+  margin: 0 auto;
+  padding: var(--p31-space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-md);
+}
+
+h2 {
+  margin: 0 0 var(--p31-space-sm);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--p31-text-tertiary);
+}
+
+/* spoons — value + gauge */
+.spoons {
+  background: var(--p31-surface);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-md);
+  padding: var(--p31-space-md);
+  text-align: center;
+}
+
+.spoons .big {
+  display: block;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--p31-accent);
+}
+
+.spoons progress {
+  width: 100%;
+  height: 12px;
+  margin-top: var(--p31-space-sm);
+  accent-color: var(--p31-accent);
+}
+
+/* status list */
+.status-list {
+  background: var(--p31-surface);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-md);
+  padding: var(--p31-space-md);
+}
+
+.status-list ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--p31-space-sm);
+}
+
+.status-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--p31-space-md);
+  font-size: 0.9375rem;
+  color: var(--p31-text-secondary);
+}
+
+.status-list .v { color: var(--p31-text-primary); font-variant-numeric: tabular-nums; }
+
+.status-line {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--p31-text-tertiary);
+  text-align: center;
+}
+
+footer {
+  padding: var(--p31-space-md);
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--p31-text-tertiary);
+  border-top: 1px solid var(--p31-glass-border);
+}
+
+footer p { margin: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}

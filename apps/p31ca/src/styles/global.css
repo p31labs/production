@@ -1,7 +1,35 @@
+@import "../../tailwind.build.css";
 @import "@p31ca/canon/tokens.css";
 
 :root {
   color-scheme: dark;
+}
+
+/* ── Phase 3 Batch 1 — the rose override becomes the data-theme swap ──
+   D1 (ratified): the hub ships [data-theme="rose"] with the LIVE rose
+   accent set verbatim. The canon tokens.css carries a [data-theme="rose"]
+   mode, but its accent family is clobbered by the later css-emit
+   COMPAT_ROOT :root block in the same layer (filed in
+   p31ca-phase3-batch1-2026-10-14.md §gap-1). Until Phase 1 fixes the
+   emit order, this scoped unlayered block restores the rose accent family
+   for rose-mode pages only. Everything else on rose pages — neutrals
+   (canon hue 270, D2), Lexend (D4), radius 8/16/24 — flows from canon
+   tokens untouched. */
+:root[data-theme="rose"] {
+  --p31-accent: oklch(65% 0.14 45);
+  --p31-accent-alt: oklch(70% 0.09 150);
+  --p31-accent-green: oklch(70% 0.12 152);
+  --p31-accent-red: oklch(64% 0.13 22);
+  --p31-accent-gold: oklch(80% 0.135 88);
+  --p31-accent-violet: oklch(60% 0.1 28);
+}
+
+/* ── Pre-migration surfaces — the legacy hub look pinned ──────────────
+   Every page not yet on the rose mode keeps the legacy value set
+   (rose accent + hue-75 neutrals + Jakarta + 2/4/8 radius) so its
+   rendering does not change until its own Phase 3 batch ports it.
+   This block IS the port queue; it shrinks batch by batch. */
+:root:not([data-theme="rose"]) {
   --p31-bg: oklch(14% 0.014 75);
   --p31-surface: oklch(19% 0.017 74);
   --p31-surface2: oklch(25% 0.02 72);

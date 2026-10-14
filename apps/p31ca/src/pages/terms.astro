@@ -57,27 +57,28 @@ const sections = [
   description="Donation terms, photo release, and the open-source license summary."
 >
   <main id="main-content" class="section">
-    <div class="max-w-3xl mx-auto px-6 md:px-12 lg:px-16">
+    <div class="te90-max-w-3xl te90-mx-auto te90-px-6 te90-md-px-12 te90-lg-px-16">
       <SectionHeader
+        level="1"
         title="Terms"
         description="Donation terms, photo release, and the open-source license summary."
         align="left"
       />
 
-      <div class="mt-16 space-y-6">
+      <div class="te90-mt-16 te90-space-y-6">
         {sections.map((s) => (
           <section class="glass-card" key={s.title}>
-            <div class="p-8 space-y-3">
-              <h3 class="text-xl font-bold" style="color: var(--p31-text);">{s.title}</h3>
-              <p class="text-base leading-relaxed" style="color: var(--p31-text-secondary);">{s.body}</p>
+            <div class="te90-p-8 te90-space-y-3">
+              <h2 class="te90-text-xl te90-font-bold" style="color: var(--p31-text);">{s.title}</h2>
+              <p class="te90-text-base te90-leading-relaxed" style="color: var(--p31-text-secondary);">{s.body}</p>
             </div>
           </section>
         ))}
 
         <section class="glass-card">
-          <div class="p-8 space-y-3">
-            <p class="text-sm" style="color: var(--p31-text-tertiary);">
-              <span class="font-mono">Effective: June 10, 2026</span>
+          <div class="te90-p-8 te90-space-y-3">
+            <p class="te90-text-sm" style="color: var(--p31-text-tertiary);">
+              <span class="te90-font-mono">Effective: June 10, 2026</span>
             </p>
           </div>
         </section>

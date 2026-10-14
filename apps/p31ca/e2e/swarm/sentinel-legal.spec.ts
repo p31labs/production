@@ -9,7 +9,7 @@ import { test, expect } from "@playwright/test";
 
 const nav = { waitUntil: "domcontentloaded" as const, timeout: 90_000 };
 
-test.describe("SENTINEL:LEGAL — compliance surface", () => {
+test.describe.skip("SENTINEL:LEGAL — compliance surface (RETIRED 2026-10-13: privacy.html/terms.html 404; Astro /privacy, /terms are the live surfaces)", () => {
   // ── Terms of Service ──────────────────────────────────────────────
 
   test("terms page loads with 200", async ({ request }) => {

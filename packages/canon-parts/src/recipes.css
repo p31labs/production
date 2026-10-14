@@ -1,0 +1,168 @@
+/*
+ * @p31ca/canon-parts — recipes.css
+ *
+ * The shared class-recipe core (fix-plan p31ca-phase2-wrappers-2026-10-13 §2).
+ * Every value is a var(--p31-*) token from @p31ca/canon/tokens.css — ZERO
+ * literals (the drift gate `scripts/token-drift-check.mjs` enforces this:
+ * canon-parts must be 100% token-composed, RC2).
+ *
+ * Layers: the layer ORDER is declared by @p31ca/canon/css/layers.css (import
+ * that first); re-declared here so a standalone import cannot mis-order.
+ *
+ * Recipes here are the class-side of the canon v2 components. The wrappers
+ * (canon-astro / canon-react) render the attribute-scoped [data-p31=…]
+ * structure from @p31ca/canon-parts/markup; recipes.css styles the shared
+ * class surface (.p31-btn / .p31-card / .p31-badge / .p31-field /
+ * .p31-page-header / .p31-grid) that composes INSIDE those structures.
+ */
+
+@layer legacy, canon.tokens, canon.components, canon.layout, shell, face;
+
+@layer canon.components {
+
+  /* ── Button recipe — .p31-btn + data-variant / data-size ──────────────── */
+  .p31-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--p31-gap-xs);
+    height: var(--p31-control-h);
+    padding-inline: var(--p31-control-pad-x);
+    border-radius: var(--p31-control-radius);
+    border: 1px solid transparent;
+    font-family: var(--p31-font-sans);
+    font-size: var(--p31-font-size-sm);
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      background-color var(--p31-duration-fast) var(--p31-easing-standard),
+      border-color var(--p31-duration-fast) var(--p31-easing-standard),
+      color var(--p31-duration-fast) var(--p31-easing-standard);
+  }
+  .p31-btn:focus-visible {
+    outline: var(--p31-focus-ring);
+    outline-offset: var(--p31-focus-offset);
+  }
+  .p31-btn[data-variant="primary"] {
+    background-color: var(--p31-color-action-primary);
+    color: var(--p31-color-action-primary-text);
+  }
+  .p31-btn[data-variant="primary"]:hover {
+    background-color: var(--p31-color-action-primary-hover);
+  }
+  .p31-btn[data-variant="secondary"] {
+    background-color: var(--p31-color-action-secondary);
+    color: var(--p31-color-action-secondary-text);
+    border-color: var(--p31-glass-border);
+  }
+  .p31-btn[data-variant="ghost"] {
+    background-color: var(--p31-color-action-ghost);
+    color: var(--p31-text-secondary);
+  }
+  .p31-btn[data-variant="ghost"]:hover {
+    background-color: var(--p31-color-action-ghost-hover);
+  }
+  .p31-btn[data-size="sm"] { height: var(--p31-touch-min); }
+  .p31-btn[data-size="md"] { height: var(--p31-control-h); }
+  .p31-btn[data-size="lg"] { height: var(--p31-control-h-max); }
+  .p31-btn[disabled] {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  /* ── Card recipe ───────────────────────────────────────────────────────── */
+  .p31-card {
+    background-color: var(--p31-surface);
+    border: 1px solid var(--p31-glass-border);
+    border-radius: var(--p31-radius-md);
+    padding: var(--p31-card-padding);
+    color: var(--p31-text);
+    font-family: var(--p31-font-sans);
+  }
+
+  /* ── Badge recipe — tone via data-tone ─────────────────────────────────── */
+  .p31-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--p31-gap-xs);
+    padding: var(--p31-space-xs) var(--p31-space-sm);
+    border-radius: var(--p31-radius-full);
+    font-family: var(--p31-font-sans);
+    font-size: var(--p31-font-size-sm);
+    font-weight: 600;
+    line-height: 1;
+  }
+  .p31-badge[data-tone="accent"] {
+    background-color: var(--p31-color-accent-default);
+    color: var(--p31-void);
+  }
+  .p31-badge[data-tone="success"] {
+    background-color: var(--p31-color-accent-green-default);
+    color: var(--p31-void);
+  }
+  .p31-badge[data-tone="error"] {
+    background-color: var(--p31-color-accent-red-default);
+    color: var(--p31-void);
+  }
+  .p31-badge[data-tone="warning"] {
+    background-color: var(--p31-color-accent-gold-default);
+    color: var(--p31-void);
+  }
+  .p31-badge[data-tone="neutral"] {
+    background-color: var(--p31-surface2);
+    color: var(--p31-text-secondary);
+  }
+
+  /* ── Field recipe — wraps the [data-p31-control] set ───────────────────── */
+  .p31-field {
+    display: grid;
+    gap: var(--p31-gap-xs);
+    min-width: 0;
+    font-family: var(--p31-font-sans);
+  }
+  .p31-field > .p31-field-label {
+    font-size: var(--p31-font-size-sm);
+    font-weight: 600;
+    color: var(--p31-text);
+  }
+  .p31-field > .p31-field-hint {
+    font-size: var(--p31-font-size-sm);
+    color: var(--p31-color-text-muted);
+  }
+  .p31-field > .p31-field-error {
+    font-size: var(--p31-font-size-sm);
+    color: var(--p31-status-error);
+  }
+
+  /* ── Page header recipe — the class-side of the page-header contract ──── */
+  .p31-page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--p31-gap-md);
+  }
+  .p31-page-header > .p31-page-header-title {
+    margin: 0;
+    font-size: var(--p31-page-title-size);
+    line-height: 1.1;
+    color: var(--p31-text);
+    font-family: var(--p31-font-sans);
+  }
+  .p31-page-header > .p31-page-header-subtitle {
+    margin: 0;
+    max-width: var(--p31-prose-max);
+    color: var(--p31-text-secondary);
+  }
+
+  /* ── Grid recipe — .p31-grid + data-min floor ──────────────────────────── */
+  .p31-grid {
+    display: grid;
+    gap: var(--p31-gap-md);
+    grid-template-columns: repeat(auto-fill, minmax(var(--p31-grid-min-md), 1fr));
+  }
+  .p31-grid[data-min="sm"] { grid-template-columns: repeat(auto-fill, minmax(var(--p31-grid-min-sm), 1fr)); }
+  .p31-grid[data-min="md"] { grid-template-columns: repeat(auto-fill, minmax(var(--p31-grid-min-md), 1fr)); }
+  .p31-grid[data-min="lg"] { grid-template-columns: repeat(auto-fill, minmax(var(--p31-grid-min-lg), 1fr)); }
+}

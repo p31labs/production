@@ -1,3 +1,87 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind CSS v4 entry (Astro v6 migration — replaced tailwind.config.mjs).
+ * Imported by src/styles/global.css so every MarketingShell page carries the
+ * utilities. Theme tokens below mirror the retired v3 setup: the
+ * @p31ca/shared/theme/tailwind-preset (p31Preset) palette + the hub-specific
+ * hubRose/hubNav accents from the old tailwind.config.mjs extend block.
+ *
+ * Tailwind v4 reads camelCase class names (bg-hubRose) as kebab-case theme
+ * keys (--color-hub-rose), so the existing markup keeps working unchanged.
+ */
+@import "tailwindcss";
+
+@source "./src";
+
+@theme {
+  /* hub-specific accents (old tailwind.config.mjs extend) — the hub markup
+   * uses camelCase classes (text-hubRose/90, hover:text-hubRose), which only
+   * resolve against camelCase theme keys in Tailwind v4; kebab aliases are
+   * provided for kebab-style markup. */
+  --color-hubRose: #e8636f;
+  --color-hub-rose: #e8636f;
+  --color-hubNav: #080810;
+  --color-hub-nav: #080810;
+
+  /* brand palette — from @p31ca/shared/theme/tailwind-preset (CANON_PALETTE).
+   * v3 nested keys (brand.coral) compiled to kebab classes (text-brand-coral);
+   * camelCase aliases keep both markup styles resolving. */
+  --color-brand-coral: #fb7185;
+  --color-brandCoral: #fb7185;
+  --color-brand-teal: #34d399;
+  --color-brandTeal: #34d399;
+  --color-brand-cyan: #00f0ff;
+  --color-brandCyan: #00f0ff;
+  --color-brand-amber: #fbbf24;
+  --color-brandAmber: #fbbf24;
+  --color-brand-lavender: #a78bfa;
+  --color-brandLavender: #a78bfa;
+  --color-brand-phosphorus: #34d399;
+  --color-brandPhosphorus: #34d399;
+  --color-brand-phosphor: #00f0ff;
+  --color-brandPhosphor: #00f0ff;
+  --color-brand-fuchsia: #a78bfa;
+  --color-brandFuchsia: #a78bfa;
+
+  /* hub appearance (dark) — CANON_APPEARANCES.hub */
+  --color-hub-void-deep: #0a0a0f;
+  --color-hub-void: #0a0a0f;
+  --color-hub-surface: #12121a;
+  --color-hub-surface2: #1c1c2a;
+  --color-hub-cloud: #a1a1aa;
+  --color-hub-ink: #0a0a0f;
+  --color-hub-muted: #6b7280;
+  --color-hub-paper: #f5f5f7;
+  --color-hub-coral: #fb7185;
+  --color-hub-teal: #34d399;
+  --color-hub-cyan: #00f0ff;
+  --color-hub-amber: #fbbf24;
+  --color-hub-lavender: #a78bfa;
+  --color-hub-phosphor: #00f0ff;
+  --color-hub-phosphorus: #34d399;
+  --color-hub-fuchsia: #a78bfa;
+  --color-hub-glass: rgba(255, 255, 255, 0.04);
+  --color-hub-glass-border: rgba(255, 255, 255, 0.08);
+
+  /* org appearance — dark-only since the light appearance retired */
+  --color-org-void-deep: #0a0a0f;
+  --color-org-void: #0a0a0f;
+  --color-org-surface: #12121a;
+  --color-org-surface2: #1c1c2a;
+  --color-org-cloud: #a1a1aa;
+  --color-org-ink: #0a0a0f;
+  --color-org-muted: #6b7280;
+  --color-org-paper: #f5f5f7;
+  --color-org-coral: #fb7185;
+  --color-org-teal: #34d399;
+  --color-org-cyan: #00f0ff;
+  --color-org-amber: #fbbf24;
+  --color-org-lavender: #a78bfa;
+  --color-org-phosphor: #00f0ff;
+  --color-org-phosphorus: #34d399;
+  --color-org-fuchsia: #a78bfa;
+  --color-org-glass: rgba(255, 255, 255, 0.04);
+  --color-org-glass-border: rgba(255, 255, 255, 0.08);
+
+  /* fonts — from the preset (CANON_FONTS) */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}

@@ -1,0 +1,4396 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:670c6fe7-0e68-406e-a4fc-77c082574f62",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-10-12T01:59:22.435Z",
+    "tools": [
+      {
+        "vendor": "p31",
+        "name": "gen-sbom",
+        "version": "1.0.0"
+      }
+    ],
+    "component": {
+      "type": "application",
+      "bom-ref": "p31:fleet",
+      "name": "p31-production-fleet",
+      "version": "1.0.0",
+      "description": "P31 production fleet SBOM (workers/* + packages/*)"
+    }
+  },
+  "components": [
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/_template",
+      "name": "_template",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/worker-template"
+        }
+      ],
+      "version": "0.0.1"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/agent-engine",
+      "name": "agent-engine",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/agent-engine"
+        }
+      ],
+      "version": "0.1.0",
+      "description": "Core engine for creating and managing personalized AI agents in the P31 ecosystem",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/agent-runtime",
+      "name": "agent-runtime",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/agent-runtime",
+      "name": "agent-runtime",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/agent-runtime"
+        }
+      ],
+      "version": "0.1.1",
+      "description": "P31 family orchestration kernel — the agentic pipeline that connects the QPJ workspace, the Forge, and the Loom. Chief-of-staff coordinator, drafting agents, scoped memory, and a risk-class policy gate. Open source, community-funded, family-first.",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/andromeda-gateway",
+      "name": "andromeda-gateway",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/app-supervisor",
+      "name": "app-supervisor",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/arcade-room",
+      "name": "arcade-room",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/arcade-room)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/arcade-room"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/arcade-room)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/artifact-registry",
+      "name": "artifact-registry",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/artifact-registry)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/artifact-registry"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/artifact-registry)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/ble",
+      "name": "ble",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/ble"
+        }
+      ],
+      "version": "0.1.0",
+      "description": "Bluetooth Low Energy / Hardware module for the P31 Labs ecosystem",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/bonding",
+      "name": "bonding",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/bonding"
+        }
+      ],
+      "version": "0.1.1"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/bouncer",
+      "name": "bouncer",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "p31-bouncer"
+        }
+      ],
+      "version": "0.0.0-unknown"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/brain-dump-orchestrator",
+      "name": "brain-dump-orchestrator",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/brain-dump-orchestrator"
+        }
+      ],
+      "version": "0.1.0",
+      "description": "Jitterbug Quantum Brain Dump orchestration: parallel axis execution with convergence gates",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/bros",
+      "name": "bros",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/btcpay-gateway",
+      "name": "btcpay-gateway",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/canon",
+      "name": "canon",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/canon"
+        }
+      ],
+      "version": "0.2.0",
+      "description": "P31 CANON — the agent-native design system. Tokens + contracts + CSS, generated exports only; a family-first, tamper-evident design canon (Apache-2.0).",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/canon-mcp",
+      "name": "canon-mcp",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/canon-mcp"
+        }
+      ],
+      "version": "0.0.1",
+      "description": "MCP server exposing @p31ca/canon's component contracts to agents. Agents call list_components → get_contract → validate_contract before writing code against the canon."
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/capital-allocator",
+      "name": "capital-allocator",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/capital-allocator)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/capital-allocator"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/capital-allocator)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/care-api",
+      "name": "care-api",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/care-api)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/care-api"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/care-api)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/care-mesh",
+      "name": "care-mesh",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/chat-sandbox",
+      "name": "chat-sandbox",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/chat-sandbox)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/chat-sandbox"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/chat-sandbox)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/cognitive-passport",
+      "name": "cognitive-passport",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/cognitive-passport"
+        }
+      ],
+      "version": "0.0.1",
+      "description": "Cognitive Passport schema, profiles, and scoring for the P31 Labs ecosystem",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/command-center",
+      "name": "command-center",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "epcp-command-center-tests"
+        }
+      ],
+      "version": "1.0.0",
+      "description": "EPCP Command Center — End-to-End Test Suite"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/component-registry",
+      "name": "component-registry",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "p31-component-registry"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/config-gateway",
+      "name": "config-gateway",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/contract-engine",
+      "name": "contract-engine",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/controls",
+      "name": "controls",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/controls"
+        }
+      ],
+      "version": "0.1.0",
+      "description": "P31 control-surface primitives — Knob, Fader, Switch. ARIA slider pattern, pointer + keyboard, gesture lifecycle for MIDI-learn. The quantum-material look via canon tokens.",
+      "licenses": [
+        {
+          "license": {
+            "name": "AGPL-3.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/creation-accountant",
+      "name": "creation-accountant",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/creation-accountant"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/dads",
+      "name": "dads",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/design-core",
+      "name": "design-core",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/design-core"
+        }
+      ],
+      "version": "3.0.1",
+      "description": "P31 Unified Design System — Quantum Material (OKLCH/color-mix) token stance, tokens, primitives, compositions, recipes, MCP server, agentic intent pipeline.",
+      "licenses": [
+        {
+          "license": {
+            "name": "AGPL-3.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/design-mcp",
+      "name": "design-mcp",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "p31-design-mcp"
+        }
+      ],
+      "version": "0.1.0",
+      "description": "P31 Design System MCP Server — Token resolution, component schemas, layout generation, icon search, UI auditing for the P31 quantum design system"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/design-mcp-v3",
+      "name": "design-mcp-v3",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/design-mcp-v3"
+        }
+      ],
+      "version": "3.0.1",
+      "description": "Canonical P31 design MCP server (2026-07-28 stateless spec). Merge target for p31-design-mcp (workers/design-mcp) tool surface. Hub-readied spoke; gateway added at 3+ spokes."
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/design-system",
+      "name": "design-system",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/design-system"
+        }
+      ],
+      "version": "1.0.0-deprecated",
+      "description": "DEPRECATED — use @p31ca/design-core instead"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/design-validator",
+      "name": "design-validator",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/design-validator"
+        }
+      ],
+      "version": "0.1.1"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/device-registry",
+      "name": "device-registry",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/device-registry)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/device-registry"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/device-registry)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/dispatch-router",
+      "name": "dispatch-router",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/docs",
+      "name": "docs",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/docs)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/docs"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/docs)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/economy",
+      "name": "economy",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/economy"
+        }
+      ],
+      "version": "0.1.0",
+      "description": "LOVE Ledger + Dual Currency economy for the P31 Labs ecosystem",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/edge-render",
+      "name": "edge-render",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "p31-edge-render"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/entitlement",
+      "name": "entitlement",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/env-proxy",
+      "name": "env-proxy",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/env-proxy"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/federation-bridge",
+      "name": "federation-bridge",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/fhir-bridge",
+      "name": "fhir-bridge",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/field",
+      "name": "field",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/field"
+        }
+      ],
+      "version": "0.1.0",
+      "description": "P31 Field — a stigmergic trace ecology over the canon graph. The executable runtime for the structural-informational layer of the P31 research papers; the physical-biological layer is cited, never computed.",
+      "licenses": [
+        {
+          "license": {
+            "name": "AGPL-3.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/forge-mcp",
+      "name": "forge-mcp",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/forge-mcp"
+        }
+      ],
+      "version": "0.1.0",
+      "description": "MCP server for the P31 Forge — generate themed, evidence-blocked documents from any MCP client.",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/forge-sdk",
+      "name": "forge-sdk",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/forge-sdk"
+        }
+      ],
+      "version": "1.0.0",
+      "description": "Embed P31 Forge panels — terminal, MCP tools, dockview workspace — into any React app",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/forum-api",
+      "name": "forum-api",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/forum-api)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/forum-api"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/forum-api)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/game-builder",
+      "name": "game-builder",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/game-engine",
+      "name": "game-engine",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/game-engine"
+        }
+      ],
+      "version": "0.2.0-alpha.0",
+      "description": "P31 game engine — Maxwell rigidity, jitterbug geometry, geodesic primitives, spoon-gated game runtime, Roblox adapter.",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/game-generator",
+      "name": "game-generator",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/game-generator"
+        }
+      ],
+      "version": "0.1.0-alpha.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/gamification",
+      "name": "gamification",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/gamification"
+        }
+      ],
+      "version": "1.0.0",
+      "description": "Shared gamification engine for P31 surfaces — sound, confetti, haptics, achievements, growth rings, voice feedback, economy store"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/genesis-spark-worker",
+      "name": "genesis-spark-worker",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/geodesic-core",
+      "name": "geodesic-core",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/geodesic-core"
+        }
+      ],
+      "version": "0.0.1",
+      "description": "3D geodesic and campaign systems for the P31 Labs ecosystem",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/govern",
+      "name": "govern",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/govern"
+        }
+      ],
+      "version": "0.1.0",
+      "description": "The P31 universal governance runtime — the seam every domain constitution conforms to. Governs any system (design, monetization, justice, and beyond) via the same seven primitives: canonical source, gates, negative controls, ratchets, runbooks, lessons, fleet registration.",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/governance",
+      "name": "governance",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/governance"
+        }
+      ],
+      "version": "0.1.1",
+      "description": "P31 governance components — the visual vocabulary of the audit/agent layer: ChainTimeline, VerifyButton, EnforcementGauge, RefusalFeed, ProposalQueue, SovereignBadge, LumiIdentityCard.",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/governance-engine",
+      "name": "governance-engine",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/grant-pipeline",
+      "name": "grant-pipeline",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/grant-pipeline)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/grant-pipeline"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/grant-pipeline)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/harmonic-linter",
+      "name": "harmonic-linter",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/harmonic-linter"
+        }
+      ],
+      "version": "0.1.0-alpha.0",
+      "description": "Samson's Law V2 PID controller for code entropy analysis — halstead volume, cyclomatic complexity, and harmonic correction signals",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/intent-resolver",
+      "name": "intent-resolver",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/intent-resolver"
+        }
+      ],
+      "version": "0.1.1"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/interface-generator",
+      "name": "interface-generator",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/interface-generator"
+        }
+      ],
+      "version": "0.1.1",
+      "description": "P31 Universal Interface Generator — adaptive UI from Cognitive Passport + data"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/jitterbug-api",
+      "name": "jitterbug-api",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/jitterbug-api"
+        }
+      ],
+      "version": "0.1.0",
+      "description": "Cloudflare Worker API for Jitterbug ambient exocortex"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/jitterbug-pwa",
+      "name": "jitterbug-pwa",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/jitterbug-pwa"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/k4-mesh-core",
+      "name": "k4-mesh-core",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/k4-mesh-core"
+        }
+      ],
+      "version": "1.0.0",
+      "description": "Shared K4 scoped mesh (family + Sierpiński) for k4-cage and k4-personal Workers"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/kill-switch",
+      "name": "kill-switch",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.1"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/ledger-bridge",
+      "name": "ledger-bridge",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/llm-proxy",
+      "name": "llm-proxy",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/llm-proxy)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/llm-proxy"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/llm-proxy)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/love-ledger",
+      "name": "love-ledger",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/love-ledger",
+      "name": "love-ledger",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/love-ledger"
+        }
+      ],
+      "version": "0.1.0-alpha.0",
+      "description": "L.O.V.E. — Ledger of Ontological Volume and Entropy. Economic layer for the P31 assistive technology ecosystem.",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/marketplace",
+      "name": "marketplace",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/marketplace-catalog",
+      "name": "marketplace-catalog",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/marketplace-mcp",
+      "name": "marketplace-mcp",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/mcp-justice",
+      "name": "mcp-justice",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/mcp-justice"
+        }
+      ],
+      "version": "1.0.0",
+      "description": "P31 Sovereign Justice MCP Server — evidence vault, escrow, ODR, and Daubert tools for legal AI agents",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/mcp-membrane",
+      "name": "mcp-membrane",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/mcp-membrane"
+        }
+      ],
+      "version": "1.0.0",
+      "description": "MCP server for post-deploy verification — DORA metrics, deploy checks, gamified XP/LOVE, and artifact minting",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/mcp-registry",
+      "name": "mcp-registry",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/mcp-registry"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/mcp-x402-gateway",
+      "name": "mcp-x402-gateway",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/membrane-coordinator",
+      "name": "membrane-coordinator",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/membrane-coordinator)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/membrane-coordinator"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/membrane-coordinator)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/mercury-balance-alert",
+      "name": "mercury-balance-alert",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/mercury-balance-alert)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/mercury-balance-alert"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/mercury-balance-alert)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/mercury-cards",
+      "name": "mercury-cards",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/mercury-cards)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/mercury-cards"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/mercury-cards)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/mercury-mcp",
+      "name": "mercury-mcp",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/mercury-mcp)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/mercury-mcp"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/mercury-mcp)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/mercury-payments",
+      "name": "mercury-payments",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/mercury-payments)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/mercury-payments"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/mercury-payments)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/mercury-treasury-snapshot",
+      "name": "mercury-treasury-snapshot",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/mercury-treasury-snapshot)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/mercury-treasury-snapshot"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/mercury-treasury-snapshot)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/mercury-webhook",
+      "name": "mercury-webhook",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/mercury-webhook)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/mercury-webhook"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/mercury-webhook)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/meshy-bridge",
+      "name": "meshy-bridge",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/meshy-bridge)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/meshy-bridge"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/meshy-bridge)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/mev-arbitrage",
+      "name": "mev-arbitrage",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/multiplayer-room",
+      "name": "multiplayer-room",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/multiplayer-room)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/multiplayer-room"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/multiplayer-room)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/music-maker-mcp",
+      "name": "music-maker-mcp",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/music-maker-mcp",
+      "name": "music-maker-mcp",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/music-maker-mcp"
+        }
+      ],
+      "version": "0.0.2",
+      "description": "MCP server exposing the spatial music maker to agents. Agents call music_observe → music_place/clear/name (committed through the canon gate) → music_trigger (ephemeral presence), over HTTP to the deployed worker."
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/node-one-firmware",
+      "name": "node-one-firmware",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/packages/node-one-firmware)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:packages/node-one-firmware"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/packages/node-one-firmware)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/node-zero",
+      "name": "node-zero",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/node-zero"
+        }
+      ],
+      "version": "0.2.0-alpha.0",
+      "description": "Node Zero Protocol — identity, state, bond, and vault primitives for assistive mesh networks. Zero runtime dependencies. WebCrypto P-256 ECDSA/ECDH, AES-256-GCM, HKDF. Runs in browser and Node.js.",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/notification-queue",
+      "name": "notification-queue",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/oauth-relay",
+      "name": "oauth-relay",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "p31-oauth-relay"
+        }
+      ],
+      "version": "0.0.1"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/observatory",
+      "name": "observatory",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/observatory"
+        }
+      ],
+      "version": "0.1.0",
+      "description": "Graph Data Engine for the P31 Labs ecosystem",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/oracle-terminal",
+      "name": "oracle-terminal",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/oracle-terminal"
+        }
+      ],
+      "version": "1.0.0",
+      "description": "P31 Oracle Terminal - Sovereign RAG Search Engine for Medical Device Cognitive Prosthetic",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/p31-auto-compounder",
+      "name": "p31-auto-compounder",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/p31-capital-machine-mcp",
+      "name": "p31-capital-machine-mcp",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/p31-ci",
+      "name": "p31-ci",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/p31-crypto-mcp",
+      "name": "p31-crypto-mcp",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0",
+      "description": "P31 Post-Quantum Crypto MCP Server — ML-DSA-65 keygen/sign/verify, ML-KEM-768, SLH-DSA-128s, hybrid signatures, SD-JWT, x402 payment"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/p31-dispatch",
+      "name": "p31-dispatch",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/workers-p31-dispatch"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/p31-gateway",
+      "name": "p31-gateway",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/p31-gateway)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/p31-gateway"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/p31-gateway)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/p31-gumroad-webhook",
+      "name": "p31-gumroad-webhook",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/p31-justice-hub",
+      "name": "p31-justice-hub",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/p31-mcp",
+      "name": "p31-mcp",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/mcp-vibe"
+        }
+      ],
+      "version": "1.0.0",
+      "description": "P31 Vibe Coding MCP Server — generate and deploy apps via MCP tools for neurodivergent families",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/p31-mcp-server",
+      "name": "p31-mcp-server",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/p31-passport",
+      "name": "p31-passport",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/workers-p31-passport"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/p31-revenue-ledger",
+      "name": "p31-revenue-ledger",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/p31-revenue-ledger)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/p31-revenue-ledger"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/p31-revenue-ledger)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/p31-sbt",
+      "name": "p31-sbt",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/personal-swarm",
+      "name": "personal-swarm",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/phenix-wallet",
+      "name": "phenix-wallet",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/phenix-wallet-mcp",
+      "name": "phenix-wallet-mcp",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/phos",
+      "name": "phos",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "p31-phos-worker"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/phos-backup",
+      "name": "phos-backup",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/phos-backup)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/phos-backup"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/phos-backup)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/phos-triad",
+      "name": "phos-triad",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "p31-phos-triad"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/phosphorus31",
+      "name": "phosphorus31",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "p31-phosphorus31"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/pilot-dashboard",
+      "name": "pilot-dashboard",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/portal-chat",
+      "name": "portal-chat",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/portal-worker",
+      "name": "portal-worker",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/portal-worker)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/portal-worker"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/portal-worker)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/protocol-commons",
+      "name": "protocol-commons",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/protocol-commons"
+        }
+      ],
+      "version": "0.0.1",
+      "description": "Wire protocols and telemetry for the P31 Labs ecosystem",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/q-distribution",
+      "name": "q-distribution",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/q-distribution"
+        }
+      ],
+      "version": "1.0.0",
+      "description": "P31 Labs - Fisher-Escolà Q Statistical Distribution for cognitive capacity modelling",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/q-factor",
+      "name": "q-factor",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/q-factor)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/q-factor"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/q-factor)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/quantum-core",
+      "name": "quantum-core",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/quantum-core"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/quantum-edge",
+      "name": "quantum-edge",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/quantum-edge"
+        }
+      ],
+      "version": "1.0.0",
+      "description": "P31 Labs Quantum Edge Worker - SIC-POVM Swarm at the Edge"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/revenue-ledger",
+      "name": "revenue-ledger",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/revenue-sink",
+      "name": "revenue-sink",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/revenue-sink"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/roblox-bridge",
+      "name": "roblox-bridge",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/rules",
+      "name": "rules",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/rules"
+        }
+      ],
+      "version": "0.1.0",
+      "description": "Constitution Engine + Cognitive Shield for the P31 Labs ecosystem",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/scripts",
+      "name": "scripts",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/scripts)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/scripts"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/scripts)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/secret-rotator",
+      "name": "secret-rotator",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/secret-rotator)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/secret-rotator"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/secret-rotator)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/shadow-bridge",
+      "name": "shadow-bridge",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0",
+      "description": "Roblox → Genesis Gate telemetry bridge. Receives LOVE events from Roblox via HttpService and routes them through KV into Genesis Gate for court-admissible hash chains.",
+      "licenses": [
+        {
+          "license": {
+            "name": "AGPL-3.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/shared",
+      "name": "shared",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/shared"
+        }
+      ],
+      "version": "0.0.2",
+      "description": "System-wide shared modules for the P31 Labs ecosystem (DEPRECATED: use @p31ca/shared-core, @p31ca/sovereign-primitives, @p31ca/cognitive-passport, @p31ca/protocol-commons, @p31ca/geodesic-core)",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/shared-core",
+      "name": "shared-core",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/shared-core"
+        }
+      ],
+      "version": "0.0.1",
+      "description": "Core utilities and base types for the P31 Labs ecosystem",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/shared-identity",
+      "name": "shared-identity",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/shared-identity"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/shell-chrome",
+      "name": "shell-chrome",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/shell-chrome"
+        }
+      ],
+      "version": "1.0.1"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/signaling",
+      "name": "signaling",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/signaling)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/signaling"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/signaling)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/skin-apex",
+      "name": "skin-apex",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/skin-apex"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/skin-phos",
+      "name": "skin-phos",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/skin-phos"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/skin-system",
+      "name": "skin-system",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/skin-system"
+        }
+      ],
+      "version": "1.0.0",
+      "description": "Runtime skin system for the P31 design ecossystem. applySkin() injects CSS variable overrides for live catalog previews."
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/skin-tetra",
+      "name": "skin-tetra",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/skin-tetra"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/skin-willow",
+      "name": "skin-willow",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/skin-willow"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/social-drop-automation",
+      "name": "social-drop-automation",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "p31-social-worker"
+        }
+      ],
+      "version": "2.0.0",
+      "description": "P31 Unified Social Worker — Multi-platform posting, scheduling, and Discord notifications",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/sovereign",
+      "name": "sovereign",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/sovereign"
+        }
+      ],
+      "version": "0.0.2"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/sovereign-agent",
+      "name": "sovereign-agent",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/sovereign-core",
+      "name": "sovereign-core",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/sovereign-core"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/sovereign-primitives",
+      "name": "sovereign-primitives",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/sovereign-primitives"
+        }
+      ],
+      "version": "0.0.2",
+      "description": "Identity and cryptographic primitives for the P31 Labs ecosystem",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/sovereign-sdk",
+      "name": "sovereign-sdk",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/sovereign-sdk"
+        }
+      ],
+      "version": "1.0.0",
+      "description": "P31 Labs W3C DID Layer with Post-Quantum Cryptography"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/spaceship-earth",
+      "name": "spaceship-earth",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/spaceship-earth"
+        }
+      ],
+      "version": "1.1.1"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/standard-site-projection",
+      "name": "standard-site-projection",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/standard-site-projection)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/standard-site-projection"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/standard-site-projection)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/swarm-router",
+      "name": "swarm-router",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.1"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/taler-bridge-billing",
+      "name": "taler-bridge-billing",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/taler-bridge-billing)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/taler-bridge-billing"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/taler-bridge-billing)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/terminal-relay",
+      "name": "terminal-relay",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/tetra-tools",
+      "name": "tetra-tools",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/ui",
+      "name": "ui",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/ui"
+        }
+      ],
+      "version": "1.2.1"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/ui-astro",
+      "name": "ui-astro",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/ui-astro"
+        }
+      ],
+      "version": "2.1.1"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/ui-forge",
+      "name": "ui-forge",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/ui-forge"
+        }
+      ],
+      "version": "0.1.0",
+      "description": "Tetrahedral SIC-POVM UI engine — Grounder/Dreamer/Governor/Shaper generation tetrahedron + the four-axis completeness gate, plus the canon→schema constrained-decoding path.",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/ui-mcp",
+      "name": "ui-mcp",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/ui-mcp"
+        }
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/ui-react",
+      "name": "ui-react",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/ui-react"
+        }
+      ],
+      "version": "2.1.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/vibe-generate",
+      "name": "vibe-generate",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.1"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/vibe-sandbox",
+      "name": "vibe-sandbox",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:packages/vibe-sdk",
+      "name": "vibe-sdk",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "packages"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "@p31ca/vibe-sdk"
+        }
+      ],
+      "version": "1.0.0",
+      "description": "P31 Vibe Coding SDK — programmatic code generation, deployment, and management for neurodivergent families",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/willow",
+      "name": "willow",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        },
+        {
+          "name": "p31:package-name",
+          "value": "p31-willow"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/willow-chat",
+      "name": "willow-chat",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/willow-safety",
+      "name": "willow-safety",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.0.0-unknown",
+      "comment": "incomplete: missing package.json (/home/p31/production/workers/willow-safety)",
+      "annotations": [
+        {
+          "subjects": [
+            "p31:workers/willow-safety"
+          ],
+          "annotator": {
+            "organization": {
+              "name": "p31"
+            },
+            "tool": "gen-sbom@1.0.0"
+          },
+          "text": "incomplete: missing package.json (/home/p31/production/workers/willow-safety)",
+          "timestamp": "2026-10-12T01:59:22.435Z"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "p31:workers/yield-vault",
+      "name": "yield-vault",
+      "properties": [
+        {
+          "name": "p31:kind",
+          "value": "workers"
+        }
+      ],
+      "version": "0.1.0"
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "p31:workers/_template",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260514.0",
+        "pkg:npm/hono@^4.6.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/vitest@^3.0.0",
+        "pkg:npm/wrangler@^4.97.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/agent-engine",
+      "dependsOn": [
+        "pkg:npm/@p31ca/canon@workspace:*",
+        "pkg:npm/@p31ca/sovereign-primitives@workspace:*",
+        "pkg:npm/@types/node@^20.14.0",
+        "pkg:npm/@types/uuid@^10.0.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/uuid@^10.0.0",
+        "pkg:npm/vite@^8.0.1",
+        "pkg:npm/vitest@^4.1.0",
+        "pkg:npm/zod@^3.24.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/agent-runtime",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.0.0",
+        "pkg:npm/agents@^0.17.3",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/wrangler@^4.107.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/agent-runtime",
+      "dependsOn": [
+        "pkg:npm/@p31ca/agent-engine@workspace:*",
+        "pkg:npm/@types/node@^20.14.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/vitest@^3.0.0",
+        "pkg:npm/zod@^3.23.8"
+      ]
+    },
+    {
+      "ref": "p31:packages/andromeda-gateway",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.6.0",
+        "pkg:npm/wrangler@^4.107.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/app-supervisor",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260317.1",
+        "pkg:npm/wrangler@^4.85.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/arcade-room",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/artifact-registry",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:packages/ble",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.5.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/bonding",
+      "dependsOn": [
+        "pkg:npm/@p31ca/interface-generator@workspace:*",
+        "pkg:npm/@p31ca/shared@workspace:*",
+        "pkg:npm/@playwright/test@^1.58.2",
+        "pkg:npm/@react-three/drei@^9.0.0",
+        "pkg:npm/@react-three/fiber@^8.0.0",
+        "pkg:npm/@react-three/postprocessing@^2.0.0",
+        "pkg:npm/@sentry/react@^8.0.0",
+        "pkg:npm/@tailwindcss/vite@^4.2.1",
+        "pkg:npm/@testing-library/jest-dom@^6.9.1",
+        "pkg:npm/@testing-library/react@^16.3.2",
+        "pkg:npm/@types/react-dom@^18.3.0",
+        "pkg:npm/@types/react@^18.3.0",
+        "pkg:npm/@types/three@^0.170.0",
+        "pkg:npm/@typescript-eslint/eslint-plugin@^8.0.0",
+        "pkg:npm/@typescript-eslint/parser@^8.0.0",
+        "pkg:npm/@vitejs/plugin-react@^4.3.0",
+        "pkg:npm/@webgpu/types@^0.1.69",
+        "pkg:npm/eslint-plugin-react-hooks@^5.2.0",
+        "pkg:npm/eslint-plugin-react@^7.37.5",
+        "pkg:npm/eslint@^9.0.0",
+        "pkg:npm/idb-keyval@^6.2.1",
+        "pkg:npm/jsdom@^24.1.3",
+        "pkg:npm/react-dom@^18.3.1",
+        "pkg:npm/react@^18.3.1",
+        "pkg:npm/tailwindcss@^4.0.0",
+        "pkg:npm/three@^0.170.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/vite-plugin-pwa@^0.19.8",
+        "pkg:npm/vite@^8.0.1",
+        "pkg:npm/vitest@^4.1.0",
+        "pkg:npm/zustand@^5.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/bouncer",
+      "dependsOn": [
+        "pkg:npm/wrangler@^3.114.17"
+      ]
+    },
+    {
+      "ref": "p31:packages/brain-dump-orchestrator",
+      "dependsOn": [
+        "pkg:npm/@p31ca/shared@workspace:*",
+        "pkg:npm/@types/node@^20.14.0",
+        "pkg:npm/commander@^12.0.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/vitest@^4.1.0",
+        "pkg:npm/zod@^3.24.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/bros",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.20260722.1",
+        "pkg:npm/@modelcontextprotocol/server@^2.0.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/btcpay-gateway",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260702.1",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.0.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/canon",
+      "dependsOn": [
+        "pkg:npm/@p31ca/sovereign-primitives@workspace:*",
+        "pkg:npm/culori@^4.0.2",
+        "pkg:npm/style-dictionary@^4.4.0",
+        "pkg:npm/zod@^4.6.5"
+      ]
+    },
+    {
+      "ref": "p31:packages/canon-mcp",
+      "dependsOn": [
+        "pkg:npm/@modelcontextprotocol/server@^2.0.0",
+        "pkg:npm/@p31ca/canon@file:../canon",
+        "pkg:npm/@p31ca/design-core@file:../design-core",
+        "pkg:npm/@types/node@^22.20.4",
+        "pkg:npm/tsx@^4.19.0",
+        "pkg:npm/typescript@^5.9.3",
+        "pkg:npm/zod@^4.6.5"
+      ]
+    },
+    {
+      "ref": "p31:workers/capital-allocator",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/care-api",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/care-mesh",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.0.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/wrangler@^4.110.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/chat-sandbox",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:packages/cognitive-passport",
+      "dependsOn": [
+        "pkg:npm/@p31ca/shared-core@workspace:*",
+        "pkg:npm/typescript@^5.5.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/command-center",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/ai@^1.2.2",
+        "pkg:npm/@playwright/test@^1.59.1",
+        "pkg:npm/artillery@^2.0.26",
+        "pkg:npm/jest-environment-node@^29.7.0",
+        "pkg:npm/jest@^29.7.0",
+        "pkg:npm/supertest@^6.3.4",
+        "pkg:npm/wrangler@^4.85.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/component-registry",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.20260722.1",
+        "pkg:npm/@modelcontextprotocol/server@^2.0.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/config-gateway",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260702.1",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/contract-engine",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20250630.0",
+        "pkg:npm/wrangler@^4.102.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/controls",
+      "dependsOn": [
+        "pkg:npm/@testing-library/jest-dom@^6.6.3",
+        "pkg:npm/@testing-library/react@^16.1.0",
+        "pkg:npm/@types/react-dom@^18.3.0",
+        "pkg:npm/@types/react@^18.3.0",
+        "pkg:npm/@vitejs/plugin-react@^4.7.0",
+        "pkg:npm/jsdom@^25.0.1",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/vitest@^3.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/creation-accountant",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.0.0",
+        "pkg:npm/@hono/zod-validator@^0.4.0",
+        "pkg:npm/hono@^4.6.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/wrangler@^4.0.0",
+        "pkg:npm/zod@^3.23.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/dads",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.20260722.1",
+        "pkg:npm/@modelcontextprotocol/server@^2.0.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/design-core",
+      "dependsOn": [
+        "pkg:npm/@modelcontextprotocol/sdk@^1.6.1",
+        "pkg:npm/@storybook/addon-a11y@^10.6.0",
+        "pkg:npm/@storybook/addon-docs@^10.6.0",
+        "pkg:npm/@storybook/addon-mcp@^10.6.0",
+        "pkg:npm/@storybook/react-vite@^10.6.0",
+        "pkg:npm/@tokens-studio/sd-transforms@1.3.0",
+        "pkg:npm/@types/css-tree@^3.0.1",
+        "pkg:npm/@types/culori@^4.0.1",
+        "pkg:npm/@types/esprima@^4.0.3",
+        "pkg:npm/@types/fs-extra@^11.0.4",
+        "pkg:npm/@types/jsdom@^30.0.0",
+        "pkg:npm/@types/node@^20.0.0",
+        "pkg:npm/@types/react@^19.0.0",
+        "pkg:npm/ajv@^8.20.0",
+        "pkg:npm/astro@^5.18.1",
+        "pkg:npm/css-tree@^3.1.0",
+        "pkg:npm/culori@^4.0.2",
+        "pkg:npm/esprima@^4.0.1",
+        "pkg:npm/fs-extra@^11.2.0",
+        "pkg:npm/jsdom@^25.0.1",
+        "pkg:npm/postcss@^8.4.49",
+        "pkg:npm/storybook@^10.6.0",
+        "pkg:npm/style-dictionary@^5.5.3",
+        "pkg:npm/tsx@^4.19.2",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/vitest@^3.0.0",
+        "pkg:npm/yaml@^2.6.1",
+        "pkg:npm/zod@^3.23.8",
+        "pkg:npm/zustand@^5.0.15"
+      ]
+    },
+    {
+      "ref": "p31:workers/design-mcp",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260317.1",
+        "pkg:npm/@modelcontextprotocol/server@^2.0.0",
+        "pkg:npm/wrangler@^4.114.0",
+        "pkg:npm/yaml@^2.3.1"
+      ]
+    },
+    {
+      "ref": "p31:workers/design-mcp-v3",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260317.1",
+        "pkg:npm/@p31ca/design-core@workspace:*",
+        "pkg:npm/@p31ca/design-validator@workspace:*",
+        "pkg:npm/agents@^0.20.0",
+        "pkg:npm/typescript@^5.9.0",
+        "pkg:npm/wrangler@^4.130.0",
+        "pkg:npm/yaml@^2.3.1",
+        "pkg:npm/zod@^4.4.3"
+      ]
+    },
+    {
+      "ref": "p31:packages/design-system",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:packages/design-validator",
+      "dependsOn": [
+        "pkg:npm/@p31ca/design-core@workspace:*",
+        "pkg:npm/tsx@^4.7.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/vitest@^2.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/device-registry",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/dispatch-router",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260317.1",
+        "pkg:npm/wrangler@^4.85.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/docs",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:packages/economy",
+      "dependsOn": [
+        "pkg:npm/idb-keyval@^6.2.1",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/zustand@^5.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/edge-render",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/entitlement",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260702.1",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/env-proxy",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.0.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/wrangler@^4.97.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/federation-bridge",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.0.0",
+        "pkg:npm/@noble/post-quantum@^0.6.1",
+        "pkg:npm/hono@^4.6.0",
+        "pkg:npm/typescript@^5.9.0",
+        "pkg:npm/vitest@^3.0.0",
+        "pkg:npm/wrangler@^4.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/fhir-bridge",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20240705.0",
+        "pkg:npm/hono@^4.6.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/vitest@^3.0.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/field",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.7.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/forge-mcp",
+      "dependsOn": [
+        "pkg:npm/@modelcontextprotocol/sdk@^1.29.0",
+        "pkg:npm/@types/node@^20.14.0",
+        "pkg:npm/tsx@^4.19.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/vitest@^3.0.0",
+        "pkg:npm/zod@^3.23.8"
+      ]
+    },
+    {
+      "ref": "p31:packages/forge-sdk",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/sandbox@^0.8.0",
+        "pkg:npm/@types/react-dom@^19.0.0",
+        "pkg:npm/@types/react@^19.0.0",
+        "pkg:npm/@xterm/addon-fit@^0.10.0",
+        "pkg:npm/@xterm/xterm@^5.5.0",
+        "pkg:npm/dockview@^1.7.0",
+        "pkg:npm/react-dom@^19.0.0",
+        "pkg:npm/react@^19.0.0",
+        "pkg:npm/typescript@^5.7.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/forum-api",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/game-builder",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20240705.0",
+        "pkg:npm/hono@^4.6.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/vitest@^3.0.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/game-engine",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/vitest@^3.0.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/game-generator",
+      "dependsOn": [
+        "pkg:npm/@p31ca/game-engine@workspace:*",
+        "pkg:npm/typescript@^5.7.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/gamification",
+      "dependsOn": [
+        "pkg:npm/idb-keyval@^6.2.1",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/zustand@^5.0.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/genesis-spark-worker",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.6.0",
+        "pkg:npm/wrangler@^4.107.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/geodesic-core",
+      "dependsOn": [
+        "pkg:npm/@p31ca/shared-core@workspace:*",
+        "pkg:npm/three@^0.170.0",
+        "pkg:npm/typescript@^5.5.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/govern",
+      "dependsOn": [
+        "pkg:npm/@types/node@^22.0.0",
+        "pkg:npm/typescript@^5.7.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/governance",
+      "dependsOn": [
+        "pkg:npm/@p31ca/design-core@workspace:*",
+        "pkg:npm/typescript@^5.5.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/governance-engine",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20250630.0",
+        "pkg:npm/wrangler@^4.102.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/grant-pipeline",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:packages/harmonic-linter",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/vite@^8.0.1",
+        "pkg:npm/vitest@^4.1.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/intent-resolver",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.0.0",
+        "pkg:npm/@hono/zod-validator@^0.4.0",
+        "pkg:npm/@p31ca/interface-generator@workspace:*",
+        "pkg:npm/hono@^4.6.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/wrangler@^4.0.0",
+        "pkg:npm/zod@^3.23.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/interface-generator",
+      "dependsOn": [
+        "pkg:npm/@p31ca/design-core@workspace:*",
+        "pkg:npm/@p31ca/quantum-core@workspace:*",
+        "pkg:npm/@types/react-dom@^18.2.0",
+        "pkg:npm/@types/react@^18.2.0",
+        "pkg:npm/react-dom@^18.2.0",
+        "pkg:npm/react@^18.2.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/vitest@^2.0.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/jitterbug-api",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/vitest-pool-workers@^0.16.18",
+        "pkg:npm/@cloudflare/workers-types@^4.20240620.0",
+        "pkg:npm/@p31ca/brain-dump-orchestrator@workspace:*",
+        "pkg:npm/@p31ca/interface-generator@workspace:*",
+        "pkg:npm/@p31ca/shared@workspace:*",
+        "pkg:npm/itty-router@^5.0.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/vitest@^3.2.0",
+        "pkg:npm/wrangler@^3.60.0",
+        "pkg:npm/zod@^3.24.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/jitterbug-pwa",
+      "dependsOn": [
+        "pkg:npm/@p31ca/brain-dump-orchestrator@workspace:*",
+        "pkg:npm/@p31ca/interface-generator@workspace:*",
+        "pkg:npm/@p31ca/shared@workspace:*",
+        "pkg:npm/@tailwindcss/vite@^4.0.0",
+        "pkg:npm/@testing-library/react@^16.3.2",
+        "pkg:npm/@types/react-dom@^18.2.0",
+        "pkg:npm/@types/react@^18.2.0",
+        "pkg:npm/@vitejs/plugin-react@^4.0.0",
+        "pkg:npm/jsdom@^24.1.3",
+        "pkg:npm/react-dom@^18.2.0",
+        "pkg:npm/react@^18.2.0",
+        "pkg:npm/tailwindcss@^4.0.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/vite-plugin-pwa@^0.20.0",
+        "pkg:npm/vite@^5.0.0",
+        "pkg:npm/vitest@^1.6.1",
+        "pkg:npm/zod@^3.24.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/k4-mesh-core",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/kill-switch",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.0.0",
+        "pkg:npm/@p31ca/shared@workspace:*",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/wrangler@^3.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/ledger-bridge",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.0.0",
+        "pkg:npm/@noble/curves@^1.8.0",
+        "pkg:npm/@noble/hashes@^1.8.0",
+        "pkg:npm/@noble/post-quantum@^0.6.1",
+        "pkg:npm/@sd-jwt/core@^0.20.0",
+        "pkg:npm/typescript@^5.9.0",
+        "pkg:npm/viem@^2.21.0",
+        "pkg:npm/vitest@^3.0.0",
+        "pkg:npm/wrangler@^4.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/llm-proxy",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/love-ledger",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.20260722.1",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/love-ledger",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.6.0",
+        "pkg:npm/vite@^8.0.1",
+        "pkg:npm/vitest@^4.1.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/marketplace",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20240705.0",
+        "pkg:npm/hono@^4.6.0",
+        "pkg:npm/typescript@^5.5.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/marketplace-catalog",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.20260722.1",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/marketplace-mcp",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.20260722.1",
+        "pkg:npm/@modelcontextprotocol/server@^2.0.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/mcp-justice",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.7.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/mcp-membrane",
+      "dependsOn": [
+        "pkg:npm/@types/node@^20.14.0",
+        "pkg:npm/node-fetch@^3.3.0",
+        "pkg:npm/typescript@^5.7.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/mcp-registry",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.0.0",
+        "pkg:npm/@modelcontextprotocol/client@^2.0.0",
+        "pkg:npm/@modelcontextprotocol/server@^2.0.0",
+        "pkg:npm/jose@^5.9.0",
+        "pkg:npm/typescript@^5.9.0",
+        "pkg:npm/vitest@^2.1.0",
+        "pkg:npm/wrangler@^4.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/mcp-x402-gateway",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.0.0",
+        "pkg:npm/@coinbase/x402@^2.1.0",
+        "pkg:npm/hono@^4.6.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/wrangler@^4.0.0",
+        "pkg:npm/x402-hono@^1.2.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/membrane-coordinator",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/mercury-balance-alert",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/mercury-cards",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/mercury-mcp",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/mercury-payments",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/mercury-treasury-snapshot",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/mercury-webhook",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/meshy-bridge",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/mev-arbitrage",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260702.1",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/multiplayer-room",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/music-maker-mcp",
+      "dependsOn": [
+        "pkg:npm/@modelcontextprotocol/server@^2.0.0",
+        "pkg:npm/@p31ca/music-maker-mcp@workspace:*",
+        "pkg:npm/zod@^4.6.5"
+      ]
+    },
+    {
+      "ref": "p31:packages/music-maker-mcp",
+      "dependsOn": [
+        "pkg:npm/@modelcontextprotocol/server@^2.0.0",
+        "pkg:npm/@p31ca/canon@workspace:*",
+        "pkg:npm/@types/node@^22.20.4",
+        "pkg:npm/tsx@^4.19.0",
+        "pkg:npm/typescript@^5.9.3",
+        "pkg:npm/zod@^4.6.5"
+      ]
+    },
+    {
+      "ref": "p31:packages/node-one-firmware",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:packages/node-zero",
+      "dependsOn": [
+        "pkg:npm/@types/node@^25.3.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/vite@^8.0.1",
+        "pkg:npm/vitest@^4.1.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/notification-queue",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.20260722.1",
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/oauth-relay",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260514.0",
+        "pkg:npm/hono@^4.6.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.97.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/observatory",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.5.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/oracle-terminal",
+      "dependsOn": [
+        "pkg:npm/@types/cors@^2.8.19",
+        "pkg:npm/@types/express@^4.17.21",
+        "pkg:npm/@types/jest@^29.5.8",
+        "pkg:npm/@types/node@^20.10.5",
+        "pkg:npm/@types/uuid@^10.0.0",
+        "pkg:npm/axios@^1.6.2",
+        "pkg:npm/cors@^2.8.5",
+        "pkg:npm/dotenv@^16.3.1",
+        "pkg:npm/eslint@^8.55.0",
+        "pkg:npm/express@^4.18.2",
+        "pkg:npm/helmet@^7.1.0",
+        "pkg:npm/ioredis@^5.3.2",
+        "pkg:npm/jest@^29.7.0",
+        "pkg:npm/prettier@^3.1.1",
+        "pkg:npm/typescript@^5.3.3",
+        "pkg:npm/uuid@^9.0.1"
+      ]
+    },
+    {
+      "ref": "p31:workers/p31-auto-compounder",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260702.1",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/p31-capital-machine-mcp",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.0.0",
+        "pkg:npm/@coinbase/x402@^2.1.0",
+        "pkg:npm/@modelcontextprotocol/server@^2.0.0",
+        "pkg:npm/@x402/extensions@^2.27.0",
+        "pkg:npm/hono@^4.6.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/wrangler@^4.0.0",
+        "pkg:npm/x402-hono@^1.2.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/p31-ci",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.0.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/wrangler@^4.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/p31-crypto-mcp",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.20260722.1",
+        "pkg:npm/@modelcontextprotocol/server@^2.0.0",
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/p31-dispatch",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@4.131.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/p31-gateway",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/p31-gumroad-webhook",
+      "dependsOn": [
+        "pkg:npm/wrangler@^4.104.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/p31-justice-hub",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.20260722.1",
+        "pkg:npm/@modelcontextprotocol/server@^2.0.0",
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/p31-mcp",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.7.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/p31-mcp-server",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.0.0",
+        "pkg:npm/@modelcontextprotocol/server@^2.0.0",
+        "pkg:npm/typescript@^5.9.0",
+        "pkg:npm/wrangler@^4.0.0",
+        "pkg:npm/zod@^4.4.3"
+      ]
+    },
+    {
+      "ref": "p31:workers/p31-passport",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/sandbox@0.13.0-next.751.1",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@4.131.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/p31-revenue-ledger",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/p31-sbt",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.0.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/wrangler@^4.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/personal-swarm",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20250320.0",
+        "pkg:npm/@electric-sql/pglite@^0.5.3",
+        "pkg:npm/hono@^4.7.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/vitest@^3.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/phenix-wallet",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.20260722.1",
+        "pkg:npm/esbuild@^0.21.5",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/phenix-wallet-mcp",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.20260722.1",
+        "pkg:npm/@modelcontextprotocol/server@^2.0.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/phos",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.20260726.1",
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/phos-backup",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/phos-triad",
+      "dependsOn": [
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/phosphorus31",
+      "dependsOn": [
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/pilot-dashboard",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.0.0",
+        "pkg:npm/hono@^4.6.0",
+        "pkg:npm/typescript@^5.9.0",
+        "pkg:npm/wrangler@^4.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/portal-chat",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260317.1",
+        "pkg:npm/@sentry/cloudflare@^10.63.0",
+        "pkg:npm/wrangler@^4.85.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/portal-worker",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:packages/protocol-commons",
+      "dependsOn": [
+        "pkg:npm/@p31ca/shared-core@workspace:*",
+        "pkg:npm/typescript@^5.5.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/q-distribution",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.4.0",
+        "pkg:npm/vitest@^2.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/q-factor",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:packages/quantum-core",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.7.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/quantum-edge",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20240320.0",
+        "pkg:npm/@p31ca/quantum-core@workspace:*",
+        "pkg:npm/@p31ca/sovereign-sdk@workspace:*",
+        "pkg:npm/wrangler@^3.28.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/revenue-ledger",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260702.1",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/revenue-sink",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.20260925.0",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.97.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/roblox-bridge",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20240705.0",
+        "pkg:npm/hono@^4.6.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/vitest@^3.0.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/rules",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.5.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/scripts",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/secret-rotator",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/shadow-bridge",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:packages/shared",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260317.1",
+        "pkg:npm/@noble/ed25519@^3.1.0",
+        "pkg:npm/@noble/post-quantum@^0.2.1",
+        "pkg:npm/@p31ca/design-core@workspace:*",
+        "pkg:npm/@sentry/types@^7.81.1",
+        "pkg:npm/@types/node@^20.0.0",
+        "pkg:npm/@types/react@^19.0.0",
+        "pkg:npm/@types/three@^0.170.0",
+        "pkg:npm/@typescript-eslint/eslint-plugin@^8.0.0",
+        "pkg:npm/@typescript-eslint/parser@^8.0.0",
+        "pkg:npm/@vitest/coverage-v8@4.1.1",
+        "pkg:npm/class-variance-authority@^0.7.1",
+        "pkg:npm/clsx@^2.1.1",
+        "pkg:npm/eslint@^9.0.0",
+        "pkg:npm/idb-keyval@^6.2.1",
+        "pkg:npm/pino-pretty@^11.0.0",
+        "pkg:npm/pino@^9.0.0",
+        "pkg:npm/react@^18.2.0",
+        "pkg:npm/tailwind-merge@^2.6.1",
+        "pkg:npm/three@^0.170.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/vite@^8.0.1",
+        "pkg:npm/vitest@^4.1.0",
+        "pkg:npm/zustand@^5.0.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/shared-core",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.5.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/shared-identity",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:packages/shell-chrome",
+      "dependsOn": [
+        "pkg:npm/@p31ca/shared@workspace:*",
+        "pkg:npm/zustand@^5.0.15"
+      ]
+    },
+    {
+      "ref": "p31:workers/signaling",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:packages/skin-apex",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:packages/skin-phos",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:packages/skin-system",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:packages/skin-tetra",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:packages/skin-willow",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/social-drop-automation",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20240612.0",
+        "pkg:npm/wrangler@^3.114.17"
+      ]
+    },
+    {
+      "ref": "p31:packages/sovereign",
+      "dependsOn": [
+        "pkg:npm/bs58@^5.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/sovereign-agent",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^5.0.0",
+        "pkg:npm/hono@^4.6.0",
+        "pkg:npm/typescript@^5.9.0",
+        "pkg:npm/wrangler@^4.0.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/sovereign-core",
+      "dependsOn": [
+        "pkg:npm/ethers@^6.17.0",
+        "pkg:npm/peerjs@^1.5.5",
+        "pkg:npm/zustand@^5.0.14"
+      ]
+    },
+    {
+      "ref": "p31:packages/sovereign-primitives",
+      "dependsOn": [
+        "pkg:npm/@noble/post-quantum@^0.6.1",
+        "pkg:npm/typescript@^5.5.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/sovereign-sdk",
+      "dependsOn": [
+        "pkg:npm/@p31ca/quantum-core@workspace:*",
+        "pkg:npm/crypto@^1.0.1",
+        "pkg:npm/typescript@^5.3.3",
+        "pkg:npm/vitest@^1.3.1"
+      ]
+    },
+    {
+      "ref": "p31:packages/spaceship-earth",
+      "dependsOn": [
+        "pkg:npm/@electric-sql/pglite@^0.1.0",
+        "pkg:npm/@mediapipe/tasks-vision@^1.0.1",
+        "pkg:npm/@noble/curves@^2.2.0",
+        "pkg:npm/@p31ca/bonding@workspace:*",
+        "pkg:npm/@p31ca/design-core@workspace:*",
+        "pkg:npm/@p31ca/quantum-core@workspace:*",
+        "pkg:npm/@p31ca/shared@workspace:*",
+        "pkg:npm/@p31ca/sovereign@workspace:*",
+        "pkg:npm/@react-three/drei@^10.7.7",
+        "pkg:npm/@react-three/fiber@^9.6.1",
+        "pkg:npm/@react-three/postprocessing@^3.0.4",
+        "pkg:npm/@scopelift/stealth-address-sdk@1.0.0-beta.5",
+        "pkg:npm/@sentry/react@^8.55.0",
+        "pkg:npm/@tailwindcss/vite@^4.2.1",
+        "pkg:npm/@types/react-dom@^19.0.0",
+        "pkg:npm/@types/react@^19.0.0",
+        "pkg:npm/@types/three@^0.170.0",
+        "pkg:npm/@types/web-bluetooth@^0.0.21",
+        "pkg:npm/@vitejs/plugin-react@^4.3.0",
+        "pkg:npm/@webgpu/types@^0.1.69",
+        "pkg:npm/idb-keyval@^6.2.1",
+        "pkg:npm/lucide-react@^0.468.0",
+        "pkg:npm/r3f-perf@^7.2.3",
+        "pkg:npm/react-dom@^19.0.0",
+        "pkg:npm/react@^19.0.0",
+        "pkg:npm/rollup-plugin-visualizer@^7.0.1",
+        "pkg:npm/tailwindcss@^4.2.1",
+        "pkg:npm/three@^0.172.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/vite-plugin-pwa@^0.19.8",
+        "pkg:npm/vite@^8.0.1",
+        "pkg:npm/vitest@^4.1.0",
+        "pkg:npm/y-indexeddb@^9.0.12",
+        "pkg:npm/y-webrtc@^10.3.0",
+        "pkg:npm/yjs@^13.6.30",
+        "pkg:npm/zustand@^5.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/standard-site-projection",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/swarm-router",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.0.0",
+        "pkg:npm/@p31ca/shared@workspace:*",
+        "pkg:npm/hono@^4.0.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/wrangler@^3.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/taler-bridge-billing",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/terminal-relay",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/sandbox@^0.8.0",
+        "pkg:npm/wrangler@^4.0.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/tetra-tools",
+      "dependsOn": [
+        "pkg:npm/wrangler@*"
+      ]
+    },
+    {
+      "ref": "p31:packages/ui",
+      "dependsOn": [
+        "pkg:npm/@p31ca/design-core@workspace:*",
+        "pkg:npm/react@^19.0.0",
+        "pkg:npm/typescript@^5.7.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/ui-astro",
+      "dependsOn": [
+        "pkg:npm/@p31ca/design-core@workspace:*",
+        "pkg:npm/astro@^5.18.1",
+        "pkg:npm/typescript@^5.7.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/ui-forge",
+      "dependsOn": [
+        "pkg:npm/@types/node@^25.0.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/ui-mcp",
+      "dependsOn": [
+        "pkg:npm/@modelcontextprotocol/server@^2.0.0",
+        "pkg:npm/@types/node@^22.0.0",
+        "pkg:npm/tsx@^4.0.0",
+        "pkg:npm/typescript@^5.5.0",
+        "pkg:npm/zod@^4.0.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/ui-react",
+      "dependsOn": [
+        "pkg:npm/@p31ca/design-core@file:../design-core",
+        "pkg:npm/@types/react@^19.0.0",
+        "pkg:npm/react@^19.0.0",
+        "pkg:npm/typescript@^5.7.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/vibe-generate",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260317.1",
+        "pkg:npm/@p31ca/interface-generator@workspace:*",
+        "pkg:npm/react-dom@^19.2.4",
+        "pkg:npm/react@^19.2.4",
+        "pkg:npm/wrangler@^4.85.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/vibe-sandbox",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260317.1",
+        "pkg:npm/wrangler@^4.85.0"
+      ]
+    },
+    {
+      "ref": "p31:packages/vibe-sdk",
+      "dependsOn": [
+        "pkg:npm/typescript@^5.7.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/willow",
+      "dependsOn": [
+        "pkg:npm/wrangler@^4.114.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/willow-chat",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260317.1",
+        "pkg:npm/wrangler@^4.85.0"
+      ]
+    },
+    {
+      "ref": "p31:workers/willow-safety",
+      "dependsOn": []
+    },
+    {
+      "ref": "p31:workers/yield-vault",
+      "dependsOn": [
+        "pkg:npm/@cloudflare/workers-types@^4.20260702.1",
+        "pkg:npm/typescript@^5.7.0",
+        "pkg:npm/wrangler@^4.0.0"
+      ]
+    }
+  ],
+  "annotations": [
+    {
+      "subjects": [
+        "p31:fleet"
+      ],
+      "annotator": {
+        "organization": {
+          "name": "p31"
+        },
+        "tool": "gen-sbom@1.0.0"
+      },
+      "text": "honesty note: 31 component(s) marked incomplete (missing or unparseable package.json)",
+      "timestamp": "2026-10-12T01:59:22.435Z"
+    }
+  ]
+}

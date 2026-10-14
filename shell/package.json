@@ -2,14 +2,6 @@
   "name": "p31-shell",
   "version": "1.0.0",
   "private": true,
-  "pnpm": {
-    "overrides": {
-      "@types/three": "0.185.4",
-      "three": "0.185.1",
-      "@types/react": "19.2.14",
-      "@types/react-dom": "19.2.3"
-    }
-  },
   "type": "module",
   "scripts": {
     "dev": "vite",

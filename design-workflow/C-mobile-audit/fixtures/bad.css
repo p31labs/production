@@ -1,0 +1,56 @@
+/* P31-HEADER
+ * id: p31_c_fixture_bad_css_20261011_v1.0
+ * type: fixture
+ * component: design-workflow/C-mobile-audit
+ * status: live
+ * retention: keep-forever
+ * created: 2026-10-11T00:00:00Z
+ * owner: half-sour
+ */
+
+/* NEGATIVE CONTROL for mobile-first-audit.mjs — violates EVERY check on purpose.
+   A gate that cannot fail is furniture (P31 doctrine); this file proves it can.
+   1. clamp() with no rem term (pure vw — WCAG F94)
+   2. literal 100vh
+   3. fixed bottom chrome with no env(safe-area-inset-*) anywhere
+   4. raw-px min/max-width breakpoints
+   5. 28px targets under (pointer: coarse)/(hover: none) + a WARN outside
+   6. width: 400px outside any min-width media query (WARN by spec) */
+
+/* 1 */
+h1 { font-size: clamp(1vw, 1vw + 0.5vw, 2vw); }
+
+/* 2 */
+.hero { height: 100vh; }
+
+/* 3 */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+}
+
+/* 4 */
+@media (min-width: 600px) {
+  .desktop-grid { display: grid; }
+}
+
+@media (max-width: 599px) {
+  .mobile-grid { display: block; }
+}
+
+/* 5 */
+@media (pointer: coarse) {
+  button.icon-btn { min-height: 28px; }
+}
+
+@media (hover: none) {
+  a.nav-link { height: 28px; }
+}
+
+input.small { min-height: 30px; }
+
+/* 6 */
+.card { width: 400px; }

@@ -9,7 +9,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { spawn } from 'node:child_process';
 
 const CONFIG = '/home/p31/.config/opencode/opencode.jsonc';
-const TIMEOUT_MS = 5000;
+const TIMEOUT_MS = 10000;
 
 function readMcpConfig() {
   const raw = readFileSync(CONFIG, 'utf8');
@@ -75,8 +75,49 @@ for (const { name, ok } of results) {
   console.log(`${ok ? 'HEALTHY' : 'UNHEALTHY'}  ${name}`);
 }
 
-if (fail) {
-  console.error(`\nmcp:health FAIL — ${fail}/${names.length} servers unhealthy`);
+// N5.1 — registry↔dispatch parity on the canonical design surface (live).
+// /health advertises `tools: N`; tools/list must return exactly N. The same
+// drift check that caught 17-vs-13 in design-core, now on the deployed worker.
+const LIVE_DESIGN_MCP = 'https://p31-design-mcp.trimtab-signal.workers.dev/mcp';
+async function designMcpParity(name, def) {
+  const isDesign = /design-mcp/i.test(name);
+  if (!isDesign) return { ok: true, skip: true };
+  const url = def.url || LIVE_DESIGN_MCP; // the config entry is a local stdio server; parity targets the deployed surface
+  const base = url.replace(/\/mcp$/, '');
+  try {
+    const health = await fetch(`${base}/health`, { signal: AbortSignal.timeout(TIMEOUT_MS) }).then((r) => r.json());
+    const advertised = health?.tools;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json, text/event-stream' },
+      body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/list' }),
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    }).then((r) => r.text());
+    const dataLines = res.split('\n').filter((l) => l.startsWith('data:')).map((l) => l.slice(5).trim());
+    const body = dataLines.length ? JSON.parse(dataLines.join('')) : JSON.parse(res);
+    const listed = body?.result?.tools?.length;
+    const ok = typeof advertised === 'number' && listed === advertised;
+    return { ok, skip: false, advertised, listed };
+  } catch (e) {
+    return { ok: false, skip: false, error: String(e).slice(0, 120) };
+  }
+}
+
+let parityFail = 0;
+for (const { name, ok } of results) {
+  const def = mcp[name];
+  const p = await designMcpParity(name, def);
+  if (p.skip) continue;
+  if (!p.ok) {
+    parityFail++;
+    console.error(`PARITY FAIL  ${name}: /health tools=${p.advertised} vs tools/list=${p.listed}${p.error ? ` (${p.error})` : ''}`);
+  } else {
+    console.log(`PARITY OK    ${name}: /health tools=${p.advertised} == tools/list=${p.listed}`);
+  }
+}
+
+if (fail || parityFail) {
+  console.error(`\nmcp:health FAIL — ${fail}/${names.length} servers unhealthy, ${parityFail} parity failure(s)`);
   process.exit(1);
 }
 console.log(`\nmcp:health pass — ${names.length}/${names.length} servers healthy`);

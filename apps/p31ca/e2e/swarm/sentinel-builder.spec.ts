@@ -9,7 +9,7 @@ import { test, expect } from "@playwright/test";
 
 const nav = { waitUntil: "domcontentloaded" as const, timeout: 90_000 };
 
-test.describe("SENTINEL:BUILDER — developer / technical operator", () => {
+test.describe.skip("SENTINEL:BUILDER — developer / technical operator (RETIRED 2026-10-13: legacy HTML surface retired — agents.html, fleet-portal.html 301 into retired /ops)", () => {
   // ── Agents hub ────────────────────────────────────────────────────
 
   test("agents hub loads and shows K₄ tetrahedron heading", async ({ page }) => {

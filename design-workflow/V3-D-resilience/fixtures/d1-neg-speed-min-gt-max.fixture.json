@@ -1,0 +1,18 @@
+{
+  "name": "d1-neg-speed-min-gt-max",
+  "note": "NEGATIVE CONTROL: speed min > max must FAIL validation",
+  "tokens": {
+    "duration-base": {
+      "$value": { "value": 431, "unit": "ms" },
+      "$type": "duration",
+      "$extensions": {
+        "p31": {
+          "policy": "speed",
+          "resolvedBy": "media context (prefers-reduced-motion) + runtime speed factor",
+          "bounds": { "min": 500, "max": 0 },
+          "unit": "ms"
+        }
+      }
+    }
+  }
+}

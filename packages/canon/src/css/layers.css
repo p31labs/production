@@ -1,0 +1,29 @@
+/*
+ * @p31ca/canon — layers.css
+ *
+ * The cascade-layer contract (canon v2 — docs/plans/canon-v2-contract.md).
+ * This one statement IS the order. Import it FIRST — before tokens.css and
+ * before any stylesheet that emits layered rules — because the first
+ * `@layer` order declaration in a document wins and later declarations are
+ * ignored.
+ *
+ *   @layer legacy, canon.tokens, canon.components, canon.layout, shell, face;
+ *
+ *   legacy          pre-canon CSS quarantined here (workspace.css
+ *                   surface-panel / setup-input / step-row classes); deleted
+ *                   face-by-face as portals port.
+ *   canon.tokens    token custom properties — a sublayer of its own so a
+ *                   token override can never out-rank a component rule.
+ *   canon.components  attribute-scoped [data-p31=…] component CSS.
+ *   canon.layout    canon layout primitives (Shell/Page/Stack/Grid/Split).
+ *   shell           portal shell-only chrome (geometry; canon owns appearance).
+ *   face            RESERVED — faces ship NO CSS. A stylesheet landing here
+ *                   is a visible violation of the vessel contract.
+ *
+ * Later layers win. Unlayered CSS beats every layer, which is why unlayered
+ * imports are forbidden by the canon-lint gate: the ONLY sanctioned unlayered
+ * runtime-conditional overrides live in tokens.css (data-spoons /
+ * data-dark-mode / data-theme / data-portal) so they beat every layer.
+ */
+
+@layer legacy, canon.tokens, canon.components, canon.layout, shell, face;

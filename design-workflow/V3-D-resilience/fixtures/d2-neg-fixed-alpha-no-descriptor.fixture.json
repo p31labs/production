@@ -1,0 +1,10 @@
+{
+  "name": "d2-neg-fixed-alpha-no-descriptor",
+  "note": "NEGATIVE CONTROL: fixed-alpha token WITHOUT a policy descriptor must be FLAGGED (rule A)",
+  "tokens": {
+    "glass-bg": {
+      "$value": { "colorSpace": "oklch", "components": [1, 0.01, 240], "alpha": 0.05 },
+      "$type": "color"
+    }
+  }
+}

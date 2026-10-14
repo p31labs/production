@@ -52,7 +52,7 @@ const JourneyHub: React.FC = () => {
         <h2 id="destinations-title" className="journey-h2">Your destinations</h2>
         <p className="journey-hint">Six doors. One family. Pick your moment.</p>
 
-        <div className="journey-grid">
+        <div className="journey-grid" data-p31="grid" data-cols="3" data-even>
           {DESTINATIONS.map((d) => (
             <a
               key={d.id}

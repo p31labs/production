@@ -29,7 +29,21 @@ P31 is an open-source, 5-layer protocol stack purpose-built for **trusted AI-age
 - **12 stdio CLI servers** — Oasis (11 tools), Component Registry (5), LOVE Ledger (4), Cognitive Prosthetic (47), Cognitive Comms (20), MARGE (14), BOB (14), PHOS Forge (32), SOULSAFE (14), Ground-Truth (14), Design System (8), Spaceship (4)
 - **5 edge MCP workers** — BROS (8 tools), DADS (7), p31-crypto-mcp (12), justice-hub (8), p31-mcp-server (9)
 - **Gateway proxy** (`apps/gateway/src/mcp/proxy.ts`) — 5 aggregated tools, trust-tier filtering, D1 audit logging, DID extraction from Bearer JWT
-- **Protocol version:** `2026-07-28` (SEP-2575 stateless), migrating from `2024-11-05` — all 12 servers aligned
+- **Protocol version:** **Target** `2026-07-28` (SEP-2575 stateless). As of 2026-10-11 only 3 of 26 servers advertise it — the rest still run the `2024-11-05`/`2025-11-25` handshake. **Migration in progress — 2026-10-11 (enterprise MCP update wave)**; tracker: `docs/MCP_MIGRATION_2026-07-28.md`.
+
+  | Server | Advertised today (code) | Stateless / server-discover | SDK v2 | OAuth 2.1 | Status |
+  |---|---|---|---|---|---|
+  | p31-design-mcp (edge) | `2026-07-28` | Yes / Yes | No | No | ✅ migrated |
+  | x402 bridge (edge) | `2026-07-28` | Yes / — | No | No | ✅ migrated |
+  | p31-mcp-server (edge) | SDK-managed (`createMcpHandler`) | SDK-managed | Yes | No | ✅ migrated |
+  | BROS / DADS / marketplace-mcp / justice-hub (edge) | `2025-11-25` | No | No | No | 🟡 migrating |
+  | p31-crypto-mcp (edge) | `2024-11-05` | No | No | No | 🟡 migrating |
+  | phenix-wallet-mcp (edge) | `2025-11-25` | No | No | No | 🟡 migrating |
+  | p31-capital-machine-mcp (edge) | `2025-06-18` | No | No | Partial | 🟡 migrating |
+  | component-registry (edge) | none (`initialize` → `-32601`) | No | No | No | 🟡 migrating |
+  | 12 CLI servers (bridge backends) | `2024-11-05` ×8, `2025-11-25` ×4 | No | No | No | 🟡 migrating |
+
+  Full per-server rows with file:line evidence: `docs/enterprise/api/mcp-server-protocol-status.md`.
 - **Monetisation spec:** x402 (HTTP 402) payment for premium tools, dual settlement in USDC or LOVE credits
 
 **OIS alignment:** Trusted transactions infrastructure — auditable, authenticated, tier-gated AI tool access with payment settlement.
@@ -128,7 +142,7 @@ P31 is an open-source, 5-layer protocol stack purpose-built for **trusted AI-age
 | CLI servers | 8 (open source, stdio JSON-RPC 2.0) |
 | Edge workers | 5 MCP workers + 7 portal deployments |
 | Portals | 7 (willow, tetra, sixseven, meatspace, p31ca, phosphorus31, design) |
-| Protocol version alignment | 10+ servers all on `2026-07-28` |
+| Protocol version alignment | 3/26 on `2026-07-28` (design-mcp, x402 bridge, p31-mcp-server); 23 still on `2024-11-05`/`2025-11-25`/`2025-06-18` — migration in progress 2026-10-11 (see §2.1) |
 
 ---
 
@@ -173,9 +187,11 @@ P31 is an open-source, 5-layer protocol stack purpose-built for **trusted AI-age
 ├────────────────────────────────────────────────────────────────┤
 │                     CLI / Stdio Layer                          │
 │  8 MCP servers: Oasis, LOVE, Cognitive, PHOS Forge, etc.      │
-│  ≈139 tools total, JSON-RPC 2.0, protocolVersion 2026-07-28   │
+│  ≈139 tools total, JSON-RPC 2.0, protocolVersion 2024-11-05   │
 └────────────────────────────────────────────────────────────────┘
 ```
+
+> **Protocol status (2026-10-11):** the CLI layer advertises `2024-11-05`/`2025-11-25` today; migration to `2026-07-28` is in progress (enterprise MCP update wave) — see §2.1 and `docs/enterprise/api/mcp-server-protocol-status.md`.
 
 ### Cross-Layer Data Flow
 
@@ -252,7 +268,7 @@ P31 is currently a **single-developer project** (Phosphorus31). The OIS call req
 
 | Item | Status |
 |------|--------|
-| Protocol version alignment (10+ servers) | ✅ `2026-07-28` |
+| Protocol version alignment (26 servers) | 🟡 3 migrated, 23 still on old handshakes — migration in progress 2026-10-11 (see §2.1) |
 | RCE sanitisation (CLI MCP servers) | ✅ Shell metacharacter filtering (`/;&|\`\n|\$\(/`) |
 | Audit log fallback (gateway) | ✅ `console.error` fallback when D1 unavailable |
 | Session file permissions | ✅ `{ mode: 0o600 }` on all session files |

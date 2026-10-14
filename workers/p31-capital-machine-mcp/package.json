@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@coinbase/x402": "^2.1.0",
+    "@modelcontextprotocol/server": "^2.0.0",
     "@x402/extensions": "^2.27.0",
     "hono": "^4.6.0",
     "x402-hono": "^1.2.0"

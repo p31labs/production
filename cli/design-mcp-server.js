@@ -618,98 +618,110 @@ function executeTool(name, args) {
   }
 }
 
-// ─── MCP stdio transport ─────────────────────────────────────────────────────
+// ─── MCP stdio transport — SDK v2 (@modelcontextprotocol/server 2.3.1) ─────
+// The hand-rolled stdio JSON-RPC loop was replaced by the v2 SDK's serveStdio
+// entry (stdio subpath). Opening-era routing is the SDK's: modern stateless
+// clients (2026-07-28) negotiate via server/discover with per-request `_meta`
+// envelopes and get resultType/ttlMs/cacheScope on cacheable results; legacy
+// clients (initialize/notifications/initialized, 2024-11-05..2025-11-25) are
+// served a 2025-era instance from the same factory. See
+// docs/fix-plans/design-mcp-server-sdk-v2-remainder.md.
+//
+// Byte-identical tool surface: tools are registered from the TOOLS table
+// above via fromJsonSchema, so tools/list emits exactly the hand-rolled
+// inputSchema objects, and tool results keep the exact legacy payload shapes.
+// The two design:// resources and three prompts are re-registered with the
+// SDK's resource/prompt APIs, preserving names, descriptions, and payloads.
 
-let buffer = '';
+const { serveStdio } = require('@modelcontextprotocol/server/stdio');
+const { McpServer, fromJsonSchema, ResourceTemplate, ProtocolError, ProtocolErrorCode } = require('@modelcontextprotocol/server');
 
-process.stdin.on('data', (chunk) => {
-  buffer += chunk;
-  const lines = buffer.split('\n');
-  buffer = lines.pop();
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed) continue;
-    try {
-      handleRequest(JSON.parse(trimmed));
-    } catch (_) { /* ignore malformed */ }
-  }
-});
+const SERVER_INFO = { name: 'p31-design-system', version: '1.0.0' };
+const LIST_TTL_MS = 300000;
+const LIST_CACHE_HINT = { ttlMs: LIST_TTL_MS, cacheScope: 'public' };
 
-function handleRequest(req) {
-  const { id, method, params } = req;
+function createServer() {
+  const server = new McpServer(SERVER_INFO, {
+    capabilities: { tools: {}, resources: {}, prompts: {} },
+    cacheHints: {
+      'tools/list': LIST_CACHE_HINT,
+      'resources/list': LIST_CACHE_HINT,
+      'resources/read': LIST_CACHE_HINT,
+      'prompts/list': LIST_CACHE_HINT,
+    },
+  });
 
-  switch (method) {
-    case 'initialize':
-      respond(id, {
-        protocolVersion: '2025-11-25',
-        capabilities: { tools: {} },
-        serverInfo: { name: 'p31-design-system', version: '1.0.0' },
-      });
-      break;
-
-    case 'notifications/initialized':
-      break;
-
-    case 'resources/list':
-      respond(id, {
-        resources: [
-          { uri: 'design://tokens', name: 'Design Tokens', description: 'P31 design tokens (DTCG 2.0). Append /path for a specific token.', mimeType: 'application/json' },
-          { uri: 'design://components', name: 'Component Registry', description: 'P31 component definitions with props, slots, and tokens.', mimeType: 'application/json' },
-        ],
-      });
-      break;
-
-    case 'resources/read': {
-      const uri = params?.uri || '';
-      if (uri === 'design://tokens' || uri.startsWith('design://tokens/')) {
-        const pathStr = uri.replace('design://tokens/', '').replace('design://tokens', '');
-        if (pathStr) {
-          const value = dt(pathStr);
-          respond(id, { contents: [{ uri, mimeType: 'application/json', text: value !== undefined ? JSON.stringify(value, null, 2) : 'null' }] });
-        } else {
-          const topLevel = Object.keys(tokens).filter(k => !k.startsWith('$') && k !== 'version' && k !== 'metadata');
-          respond(id, { contents: [{ uri, mimeType: 'application/json', text: JSON.stringify({ version: tokens.version, metadata: tokens.metadata, sections: topLevel }, null, 2) }] });
-        }
-      } else if (uri === 'design://components' || uri.startsWith('design://components/')) {
-        const name = uri.replace('design://components/', '').replace('design://components', '');
-        if (name) {
-          const comp = COMPONENTS.find(c => c.name.toLowerCase() === name.toLowerCase());
-          if (!comp) respondError(id, -32602, `Component not found: ${name}`);
-          else respond(id, { contents: [{ uri, mimeType: 'application/json', text: JSON.stringify(comp, null, 2) }] });
-        } else {
-          const summaries = COMPONENTS.map(c => ({ name: c.name, description: c.description, css_class: c.css_class }));
-          respond(id, { contents: [{ uri, mimeType: 'application/json', text: JSON.stringify({ total: summaries.length, components: summaries }, null, 2) }] });
-        }
-      } else {
-        respondError(id, -32602, `Unknown resource URI: ${uri}`);
+  for (const tool of TOOLS) {
+    server.registerTool(tool.name, {
+      description: tool.description,
+      inputSchema: fromJsonSchema(tool.inputSchema),
+    }, async (args) => {
+      try {
+        const out = await executeTool(tool.name, args || {});
+        return { content: [{ type: 'text', text: JSON.stringify(out, null, 2) }] };
+      } catch (e) {
+        return {
+          content: [{ type: 'text', text: JSON.stringify({ error: e.message, status: 'error' }) }],
+          isError: true,
+        };
       }
-      break;
-    }
+    });
+  }
 
-    case 'prompts/list':
-      respond(id, {
-        prompts: [
-          { name: 'generate_landing_page', description: 'Generate a landing page layout with hero section, product grid, and CTA block.' },
-          { name: 'generate_product_grid', description: 'Generate a responsive card grid of products.' },
-          { name: 'generate_research_page', description: 'Generate a card grid of research papers.' },
-        ],
-      });
-      break;
+  // ── Resources (design://tokens, design://components, with /path reads) ────
 
-    case 'prompts/get': {
-      const promptName = params?.name;
-      if (promptName === 'generate_landing_page') {
-        const msg = `Generate a landing page layout using P31 design system components.
+  const TOKENS_META = { description: 'P31 design tokens (DTCG 2.0). Append /path for a specific token.', mimeType: 'application/json', cacheHint: LIST_CACHE_HINT };
+  const COMPONENTS_META = { description: 'P31 component definitions with props, slots, and tokens.', mimeType: 'application/json', cacheHint: LIST_CACHE_HINT };
+
+  server.registerResource('Design Tokens', 'design://tokens', TOKENS_META, async () => {
+    const topLevel = Object.keys(tokens).filter(k => !k.startsWith('$') && k !== 'version' && k !== 'metadata');
+    return {
+      contents: [{ uri: 'design://tokens', mimeType: 'application/json', text: JSON.stringify({ version: tokens.version, metadata: tokens.metadata, sections: topLevel }, null, 2) }],
+    };
+  });
+  server.registerResource('Design Tokens path', new ResourceTemplate('design://tokens/{path*}', { list: undefined }), { mimeType: 'application/json', cacheHint: LIST_CACHE_HINT }, async (uri, variables) => {
+    const pathStr = typeof variables?.path === 'string' ? variables.path : '';
+    const value = dt(pathStr);
+    return {
+      contents: [{ uri: uri.toString(), mimeType: 'application/json', text: value !== undefined ? JSON.stringify(value, null, 2) : 'null' }],
+    };
+  });
+  server.registerResource('Component Registry', 'design://components', COMPONENTS_META, async () => {
+    const summaries = COMPONENTS.map(c => ({ name: c.name, description: c.description, css_class: c.css_class }));
+    return {
+      contents: [{ uri: 'design://components', mimeType: 'application/json', text: JSON.stringify({ total: summaries.length, components: summaries }, null, 2) }],
+    };
+  });
+  server.registerResource('Component Registry path', new ResourceTemplate('design://components/{path*}', { list: undefined }), { mimeType: 'application/json', cacheHint: LIST_CACHE_HINT }, async (uri, variables) => {
+    const name = typeof variables?.path === 'string' ? variables.path : '';
+    const comp = COMPONENTS.find(c => c.name.toLowerCase() === name.toLowerCase());
+    if (!comp) throw new ProtocolError(ProtocolErrorCode.InvalidParams, `Component not found: ${name}`);
+    return {
+      contents: [{ uri: uri.toString(), mimeType: 'application/json', text: JSON.stringify(comp, null, 2) }],
+    };
+  });
+
+  // ── Prompts ───────────────────────────────────────────────────────────────
+
+  const PROMPTS = [
+    {
+      name: 'generate_landing_page',
+      listDescription: 'Generate a landing page layout with hero section, product grid, and CTA block.',
+      getDescription: 'Generate a landing page layout',
+      text: `Generate a landing page layout using P31 design system components.
 
 Call layout_generate twice:
 1. A "hero" layout with title, subtitle, cta buttons, and stats (use format: "a2ui")
 2. A "card-grid" layout with the products as GlassCard items
 
 Map products to: { component: "GlassCard", props: { title: ..., description: ..., color: ..., href: ... } }
-Rotate accent colors: cyan, violet, gold, green for visual variety.`;
-        respond(id, { description: 'Generate a landing page layout', messages: [{ role: 'user', content: { type: 'text', text: msg } }] });
-      } else if (promptName === 'generate_product_grid') {
-        const msg = `Generate a responsive card grid of products using P31 design system components.
+Rotate accent colors: cyan, violet, gold, green for visual variety.`,
+    },
+    {
+      name: 'generate_product_grid',
+      listDescription: 'Generate a responsive card grid of products.',
+      getDescription: 'Generate a product grid',
+      text: `Generate a responsive card grid of products using P31 design system components.
 
 Call layout_generate with:
   type: "card-grid"
@@ -718,10 +730,13 @@ Call layout_generate with:
   columns: 2-4 (default 3)
   items: array of { component: "GlassCard", props: { title, description, color, href } }
 
-Use accent colors: accent (cyan), violet, gold, green.`;
-        respond(id, { description: 'Generate a product grid', messages: [{ role: 'user', content: { type: 'text', text: msg } }] });
-      } else if (promptName === 'generate_research_page') {
-        const msg = `Generate a research papers page using P31 design system components.
+Use accent colors: accent (cyan), violet, gold, green.`,
+    },
+    {
+      name: 'generate_research_page',
+      listDescription: 'Generate a card grid of research papers.',
+      getDescription: 'Generate a research page',
+      text: `Generate a research papers page using P31 design system components.
 
 Call layout_generate with:
   type: "card-grid"
@@ -731,51 +746,17 @@ Call layout_generate with:
   items: array of { component: "GlassCard", props: { title, description, color, href } }
 
 For status, add a StatusBadge component inside each card description.
-Published = green, In-review = gold, Preprint = violet.`;
-        respond(id, { description: 'Generate a research page', messages: [{ role: 'user', content: { type: 'text', text: msg } }] });
-      } else {
-        respondError(id, -32602, `Prompt not found: ${promptName}`);
-      }
-      break;
-    }
-
-    case 'tools/list':
-      respond(id, { tools: TOOLS });
-      break;
-
-    case 'tools/call': {
-      const toolName = params?.name;
-      const toolArgs = params?.arguments || {};
-      const tool = TOOLS.find(t => t.name === toolName);
-      if (!tool) {
-        respondError(id, -32602, `Unknown tool: ${toolName}`);
-        break;
-      }
-      try {
-        const out = executeTool(toolName, toolArgs);
-        respond(id, { content: [{ type: 'text', text: JSON.stringify(out, null, 2) }] });
-      } catch (e) {
-        respond(id, {
-          content: [{ type: 'text', text: JSON.stringify({ error: e.message, status: 'error' }) }],
-          isError: true,
-        });
-      }
-      break;
-    }
-
-    case 'ping':
-      respond(id, {});
-      break;
-
-    default:
-      if (id !== undefined) respondError(id, -32601, `Method not found: ${method}`);
+Published = green, In-review = gold, Preprint = violet.`,
+    },
+  ];
+  for (const p of PROMPTS) {
+    server.registerPrompt(p.name, { description: p.listDescription }, async () => ({
+      description: p.getDescription,
+      messages: [{ role: 'user', content: { type: 'text', text: p.text } }],
+    }));
   }
+
+  return server;
 }
 
-function respond(id, result) {
-  process.stdout.write(JSON.stringify({ jsonrpc: '2.0', id, result }) + '\n');
-}
-
-function respondError(id, code, message) {
-  process.stdout.write(JSON.stringify({ jsonrpc: '2.0', id, error: { code, message } }) + '\n');
-}
+serveStdio(createServer);

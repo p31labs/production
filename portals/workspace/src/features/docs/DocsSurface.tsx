@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { MCP_TOOLS } from '@/lib/mcpTools'
 import { pickleName } from '@/lib/pickleNames'
+import { forgeRender, downloadArtifact } from '@/lib/forgeClient'
+import { fromDocsHtml } from '@/lib/ir-builders'
 
 interface Doc {
   id: string
@@ -25,11 +27,27 @@ export function DocsSurface() {
   const [activeId, setActiveId] = useState(SEED_DOCS[0]!.id)
   const [title, setTitle] = useState(SEED_DOCS[0]!.title)
   const [body, setBody] = useState(SEED_DOCS[0]!.body)
+  const [exporting, setExporting] = useState(false)
+  const [exportError, setExportError] = useState<string | null>(null)
 
   function selectDoc(doc: Doc) {
     setActiveId(doc.id)
     setTitle(doc.title)
     setBody(doc.body)
+  }
+
+  async function exportDoc(format: 'pdf' | 'docx', theme: string) {
+    setExporting(true)
+    setExportError(null)
+    try {
+      const ir = fromDocsHtml({ title, body })
+      const artifact = await forgeRender(ir, { format, theme })
+      downloadArtifact(artifact)
+    } catch (e) {
+      setExportError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setExporting(false)
+    }
   }
 
   return (
@@ -56,7 +74,25 @@ export function DocsSurface() {
             <button className="tb-btn" type="button" title="Bold"><b>B</b></button>
             <button className="tb-btn" type="button" title="Italic"><i>I</i></button>
             <button className="tb-btn" type="button" title="Underline"><u>U</u></button>
+            <span style={{ flex: 1 }} />
+            <button
+              className="tb-btn"
+              type="button"
+              disabled={exporting}
+              onClick={() => void exportDoc('docx', 'professional')}
+            >
+              {exporting ? '…' : 'Export DOCX'}
+            </button>
+            <button
+              className="tb-btn"
+              type="button"
+              disabled={exporting}
+              onClick={() => void exportDoc('pdf', 'professional')}
+            >
+              {exporting ? '…' : 'Export PDF'}
+            </button>
           </div>
+          {exportError ? <p className="export-error">{exportError}</p> : null}
 
           <div className="docs-body">
             <input

@@ -19,6 +19,7 @@ import { Hono } from "hono";
 import { paymentMiddleware } from "x402-hono";
 import { createFacilitatorConfig } from "@coinbase/x402";
 import { verifyLoveHmac, resolveSecret } from "./love-auth";
+import { issueLoveSettlement } from "./cbs-settlement";
 import { meterGlm } from "./llm-meter";
 import { runAgent } from "./orchestrator";
 
@@ -54,9 +55,201 @@ interface Env {
   NEEDLE?: Fetcher;
   // CWP-2026-015 (A) — agent-runtime built-in tool executor.
   AGENT_RUNTIME?: Fetcher;
+  /** OAuth 2.1 resource-server (RFC 8707). Optional — when unset, bearer validation is disabled and the server stays open (runbook §6). */
+  OAUTH_JWKS_URL?: string;
+  /** RFC 9207 expected token issuer (optional; falls back to the JWKS URL origin). */
+  OAUTH_ISSUER?: string;
+  /** RFC 8707 resource URI that a bearer token's `aud` claim MUST match. */
+  RESOURCE_ID?: string;
 }
 
 type AppContext = { Bindings: Env };
+
+// ───────────────────────────────────────────────────────────────────────
+// OAuth 2.1 resource-server (RFC 8707 audience binding + RFC 9207 `iss`).
+// Ported from workers/p31-capital-machine-mcp/src/index.ts (fleet
+// reference, 2026-10-12 wave). WebCrypto only (RS256/ES256/Ed25519), zero
+// new dependencies, 15-minute JWKS cache. Active only when
+// OAUTH_JWKS_URL is configured (env opt-in): any supplied
+// `Authorization: Bearer` token then MUST validate (alg/kid/signature/exp,
+// aud == RESOURCE_ID, iss == fleet AS issuer) or the call is rejected with
+// HTTP 401 — never silently ignored. Without a Bearer header, behavior is
+// unchanged: public tool discovery stays open (runbook §6 do-nots).
+// ───────────────────────────────────────────────────────────────────────
+
+const OAUTH_AS_ISSUER = "https://oauth-relay.trimtab-signal.workers.dev";
+const OAUTH_AS_JWKS_URL = "https://oauth-relay.trimtab-signal.workers.dev/.well-known/jwks.json";
+const RESOURCE_URI = "https://mcp-x402-gateway.trimtab-signal.workers.dev/mcp";
+const JWKS_CACHE_TTL_MS = 15 * 60 * 1000;
+
+let jwksCache: { source: string; fetchedAt: number; keys: Record<string, JsonWebKey> } | null = null;
+
+/** Base64url → base64, then decode to a string. */
+function b64urlDecode(s: string): string {
+  const base64 = s.replace(/-/g, "+").replace(/_/g, "/") + "=".repeat((4 - (s.length % 4)) % 4);
+  return atob(base64);
+}
+
+/** Base64url → bytes. */
+function b64urlToBytes(s: string): Uint8Array {
+  const binary = b64urlDecode(s);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+}
+
+/** Decode (without verifying) a JWT into header + payload. Returns null on malformed input. */
+function decodeJwt(token: string): { header: { kid?: string; alg?: string }; payload: Record<string, unknown> } | null {
+  const parts = token.split(".");
+  if (parts.length !== 3) return null;
+  try {
+    const header = JSON.parse(b64urlDecode(parts[0])) as { kid?: string; alg?: string };
+    const payload = JSON.parse(b64urlDecode(parts[1])) as Record<string, unknown>;
+    if (!header || typeof header !== "object" || !payload || typeof payload !== "object") return null;
+    return { header, payload };
+  } catch {
+    return null;
+  }
+}
+
+/** Fetch (with 15-min module-level cache) the JWKS for the fleet AS, keyed by kid. */
+async function fetchJwksKeys(source: string): Promise<Record<string, JsonWebKey>> {
+  const now = Date.now();
+  if (jwksCache && jwksCache.source === source && now - jwksCache.fetchedAt < JWKS_CACHE_TTL_MS) {
+    return jwksCache.keys;
+  }
+  const res = await fetch(source);
+  if (!res.ok) return {};
+  const body = (await res.json().catch(() => ({}))) as { keys?: unknown[] };
+  const keys: Record<string, JsonWebKey> = {};
+  for (const raw of body.keys ?? []) {
+    const jwk = raw as JsonWebKey & { kid?: string };
+    if (jwk && typeof jwk.kid === "string") keys[jwk.kid] = jwk;
+  }
+  jwksCache = { source, fetchedAt: now, keys };
+  return keys;
+}
+
+/** WebCrypto algorithm descriptor for a supported JWS alg. */
+function webAlg(jwk: JsonWebKey, alg: string): { name: string; hash?: string; namedCurve?: string } {
+  if (alg === "ES256") return { name: "ECDSA", namedCurve: (jwk.crv as string) || "P-256" };
+  if (alg === "Ed25519") return { name: "Ed25519" };
+  return { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" };
+}
+
+/** Verify a JWS signature over `signedData` with WebCrypto. Never throws. */
+async function verifySignature(jwk: JsonWebKey, alg: string, signedData: Uint8Array, signature: Uint8Array): Promise<boolean> {
+  const algSpec = webAlg(jwk, alg);
+  try {
+    const key = await crypto.subtle.importKey("jwk", jwk, algSpec as any, false, ["verify"]);
+    return await crypto.subtle.verify(algSpec as any, key, signature, signedData);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Validate an RFC 8707-bound OAuth 2.1 bearer token.
+ * Returns { sub, scope? } on success, or null when:
+ *  - no Bearer header present,
+ *  - OAUTH_JWKS_URL / RESOURCE_ID unset,
+ *  - token malformed, unknown alg/kid, bad signature, expired,
+ *  - `aud` ≠ RESOURCE_ID (RFC 8707), or
+ *  - `iss` ≠ OAUTH_ISSUER / issuer derived from the JWKS URL (RFC 9207 mix-up defense).
+ * All wrapped in try/catch — never throws.
+ */
+async function verifyOAuthBearer(request: Request, env: Env): Promise<{ sub: string; scope?: string } | null> {
+  try {
+    const auth = request.headers.get("Authorization");
+    if (!auth || !auth.startsWith("Bearer ")) return null;
+    const token = auth.slice(7).trim();
+    if (!token || !env.OAUTH_JWKS_URL || !env.RESOURCE_ID) return null;
+
+    const decoded = decodeJwt(token);
+    if (!decoded) return null;
+
+    const alg = decoded.header.alg ?? "";
+    if (alg !== "RS256" && alg !== "ES256" && alg !== "Ed25519") return null;
+    const kid = decoded.header.kid;
+    if (!kid) return null;
+
+    const keys = await fetchJwksKeys(env.OAUTH_JWKS_URL);
+    const jwk = keys[kid];
+    if (!jwk) return null;
+
+    const parts = token.split(".");
+    const signedData = new TextEncoder().encode(`${parts[0]}.${parts[1]}`);
+    const signature = b64urlToBytes(parts[2]);
+    if (!(await verifySignature(jwk, alg, signedData, signature))) return null;
+
+    const payload = decoded.payload;
+    const exp = payload.exp;
+    if (typeof exp !== "number" || exp <= Math.floor(Date.now() / 1000)) return null;
+
+    // RFC 8707: the token's audience MUST be bound to our resource.
+    const aud = payload.aud;
+    const audOk = Array.isArray(aud) ? aud.includes(env.RESOURCE_ID) : aud === env.RESOURCE_ID;
+    if (!audOk) return null;
+
+    // RFC 9207: the token's issuer MUST match the fleet AS (explicit
+    // OAUTH_ISSUER wins; otherwise derive from the JWKS URL origin).
+    const iss = payload.iss;
+    const expectedIssuer = env.OAUTH_ISSUER ?? issuerFromJwks(env.OAUTH_JWKS_URL) ?? null;
+    if (typeof iss !== "string" || !expectedIssuer || iss !== expectedIssuer) return null;
+
+    return { sub: String(payload.sub ?? ""), scope: typeof payload.scope === "string" ? payload.scope : undefined };
+  } catch {
+    return null;
+  }
+}
+
+/** Derive the IdP issuer (origin) from a JWKS URL, or null. */
+function issuerFromJwks(jwksUrl: string): string | null {
+  try {
+    return new URL(jwksUrl).origin;
+  } catch {
+    return null;
+  }
+}
+
+/** RFC 8414 authorization-server metadata — points at the fleet AS (oauth-relay). */
+function oauthAsMetadata(resource: string): Record<string, unknown> {
+  return {
+    issuer: OAUTH_AS_ISSUER,
+    authorization_endpoint: `${OAUTH_AS_ISSUER}/authorize`,
+    token_endpoint: `${OAUTH_AS_ISSUER}/token`,
+    jwks_uri: OAUTH_AS_JWKS_URL,
+    response_types_supported: ["code"],
+    grant_types_supported: ["authorization_code"],
+    token_endpoint_auth_methods_supported: ["none"],
+    code_challenge_methods_supported: ["S256"],
+    authorization_response_iss_parameter_supported: true,
+    resource,
+  };
+}
+
+/** RFC 9728 protected-resource metadata for this resource server. */
+function protectedResourceMetadata(env: Env, resource: string, scopes: string[]): Record<string, unknown> {
+  return {
+    resource: env.RESOURCE_ID ?? resource,
+    authorization_servers: [OAUTH_AS_ISSUER],
+    scopes_supported: scopes,
+  };
+}
+
+/** Envelope-shaped 401 body for a rejected bearer token (capital-machine mcpResult shape). */
+function oauthGateError(id: unknown): Record<string, unknown> {
+  return {
+    jsonrpc: "2.0",
+    id: id ?? null,
+    _meta: { "io.modelcontextprotocol/protocolVersion": "2026-07-28" },
+    result: {
+      resultType: "complete",
+      content: [{ type: "text", text: JSON.stringify({ error: "invalid or unauthorized bearer token (RFC 8707 aud binding)" }) }],
+      isError: true,
+    },
+  };
+}
 
 const app = new Hono<AppContext>();
 
@@ -78,6 +271,32 @@ function facilitator(c: Env, version: 'v1' | 'v2') {
   }
   if (version === 'v2') {
     return { url, version: 'v2' as const };
+  }
+  return { url };
+}
+
+/**
+ * v1-only facilitator config for `paymentMiddleware`. Keeping this a
+ * separate v1-typed entry point avoids feeding the v2 union branch into
+ * x402-hono's `FacilitatorConfig` parameter — a pre-existing type error
+ * that blocked `tsc --noEmit`. The `createAuthHeaders` cast papers over a
+ * version skew between the installed @x402/core@2 (optional
+ * verify/settle/supported) and x402@1.2's expected CreateHeaders
+ * (required); at runtime both shapes are plain header records.
+ */
+function facilitatorV1(c: Env): {
+  url: `${string}://${string}`;
+  createAuthHeaders?: () => Promise<{
+    verify: Record<string, string>;
+    settle: Record<string, string>;
+    supported: Record<string, string>;
+    list?: Record<string, string>;
+  }>;
+} {
+  const url = c.FACILITATOR_URL as `${string}://${string}`;
+  if (c.FACILITATOR_KEY_ID && c.FACILITATOR_SECRET_KEY) {
+    const cfg = createFacilitatorConfig(c.FACILITATOR_KEY_ID, c.FACILITATOR_SECRET_KEY);
+    return { url, createAuthHeaders: cfg.createAuthHeaders as any };
   }
   return { url };
 }
@@ -171,14 +390,43 @@ app.use(async (c, next) => {
   if (!bal || bal.balance < parseFloat(price)) {
     return c.json({ error: "Insufficient LOVE balance" }, 402);
   }
-  // TODO: GNU Taler Clause Blind Schnorr issuance.
-  const blindSig = `blindsig-${crypto.randomUUID()}`;
-  c.header("X-LOVE-Signature", blindSig);
+  // Real two-challenge Clause Blind Schnorr settlement issuance
+  // (docs/specs/love-settlement-cbs.md §5). The gateway blinds a canonical
+  // settlement message, the ledger signs both challenges, and the bridge
+  // verifies + consumes. Fail closed: any issuance failure -> 502.
+  // Free tools (price "0") carry no signature — nothing to settle.
+  let sigB64: string | null = null;
+  let settlementB64: string | null = null;
+  if (parseFloat(price) > 0) {
+    try {
+      const issuance = await issueLoveSettlement(c.env.LOVE_LEDGER_URL ?? "", {
+        did,
+        tool: body?.params?.name ?? "",
+        amount: price,
+      });
+      sigB64 = issuance.signatureB64;
+      settlementB64 = issuance.settlementB64;
+      c.header("X-LOVE-Signature", sigB64);
+      c.header("X-LOVE-Settlement", settlementB64);
+    } catch {
+      return c.json({ error: "LOVE settlement issuance unavailable", x402_version: "2.0" }, 502);
+    }
+  }
   // LOVE-settled: bypass x402 gate, forward straight to the bridge.
   try {
+    // SEP-2243: forward client tool-parameter headers (x-mcp-header) through
+    // to the bridge so they survive the hop to the L3.4 MCP servers.
+    const fwdHeaders: Record<string, string> = { "Content-Type": "application/json" };
+    const xMcpHeader = c.req.header("x-mcp-header");
+    if (xMcpHeader) fwdHeaders["x-mcp-header"] = xMcpHeader;
     const upstream = await fetch(c.env.BRIDGE_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json", "X-LOVE-Signature": blindSig, "X-DID": did },
+      headers: {
+        ...fwdHeaders,
+        ...(sigB64 ? { "X-LOVE-Signature": sigB64 } : {}),
+        ...(settlementB64 ? { "X-LOVE-Settlement": settlementB64 } : {}),
+        "X-DID": did,
+      },
       body: JSON.stringify(body),
     });
     return new Response(await upstream.text(), {
@@ -316,7 +564,7 @@ app.use("/mcp", async (c, next) => {
         config: { description: priced.description },
       },
     },
-    facilitator(c.env, 'v1')
+    facilitatorV1(c.env)
   );
   return mw(c, next);
 });
@@ -373,18 +621,72 @@ app.post("/mcp", async (c) => {
   const priced = PRICING[toolName];
   const did = c.req.header("X-DID") || c.req.header("X-User-DID");
 
+  // 2026-07-28 stateless contract (SEP-2243): every /mcp POST must name its
+  // method via the Mcp-Method header — EXCEPT the legacy `initialize` /
+  // `notifications/initialized` handshake, which the SDK-v2 ladder keeps
+  // serving headerless for 2025-era clients (and the fleet health gate).
+  // A headerless modern request that silently succeeds is a conformance gap
+  // — fail cleanly with the same JSON-RPC -32020 the SDK-v2 servers return.
+  // This guard sits at the bridge-forward route only; the payment/settlement
+  // middlewares above it are untouched.
+  const isLegacyHandshake = body?.method === 'initialize' || body?.method === 'notifications/initialized';
+  if (!isLegacyHandshake && !c.req.header("Mcp-Method")) {
+    return c.json({
+      jsonrpc: "2.0",
+      id: body?.id ?? null,
+      error: {
+        code: -32020,
+        message: "Bad Request: the required Mcp-Method header is absent",
+        data: { header: "(missing)" },
+      },
+    }, 400);
+  }
+
+  // OAuth 2.1 resource-server gate (RFC 8707): a supplied Bearer token on a
+  // tools/call MUST validate (alg/kid/sig/exp, aud == RESOURCE_ID,
+  // iss == fleet AS) — invalid ⇒ 401 MCP error, never silently ignored.
+  const auth = c.req.header("Authorization") ?? "";
+  if (auth.startsWith("Bearer ") && body?.method === "tools/call") {
+    const bearer = await verifyOAuthBearer(c.req.raw, c.env);
+    if (bearer === null) {
+      return c.json(oauthGateError(body?.id ?? null), 401);
+    }
+  }
+
+  // SEP-2243: forward client tool-parameter headers (x-mcp-header) to the
+  // upstream bridge so they survive the hop to the L3.4 MCP servers.
+  const fwdHeaders: Record<string, string> = { "Content-Type": "application/json" };
+  const xMcpHeader = c.req.header("x-mcp-header");
+  if (xMcpHeader) fwdHeaders["x-mcp-header"] = xMcpHeader;
+
   let upstreamText: string;
   let upstreamStatus: number;
   try {
     const upstream = await fetch(c.env.BRIDGE_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: fwdHeaders,
       body: bodyText,
     });
     upstreamText = await upstream.text();
     upstreamStatus = upstream.status;
   } catch {
     return c.json({ error: "Bridge service unavailable", x402_version: "2.0" }, 502);
+  }
+
+  // The L3.4 bridge's `server/discover` returns protocolVersion + capabilities
+  // + serverInfo but omits `supportedProtocolVersions`. Add the missing array
+  // at the gateway (additive, 2026-07-28 stateless contract) so the fleet's
+  // conformance badge sees the full discover shape. Bridge-forward only —
+  // settlement/payment payloads pass through verbatim.
+  if (body?.method === 'server/discover') {
+    try {
+      const upstreamJson = JSON.parse(upstreamText);
+      if (upstreamJson?.result && typeof upstreamJson.result === 'object' &&
+          !Array.isArray(upstreamJson.result.supportedProtocolVersions)) {
+        upstreamJson.result.supportedProtocolVersions = ['2026-07-28'];
+        upstreamText = JSON.stringify(upstreamJson);
+      }
+    } catch { /* non-JSON body — leave verbatim */ }
   }
 
   if (priced && did) {
@@ -502,6 +804,19 @@ app.post("/classify", async (c) => {
 });
 
 app.get("/health", (c) => c.json({ status: "ok", service: "mcp-x402-gateway", network: c.env.NETWORK, timestamp: Date.now() }));
+
+// RFC 8414 — authorization-server metadata (points at the fleet AS).
+app.get("/.well-known/oauth-authorization-server", (c) =>
+  c.json(oauthAsMetadata(c.env.RESOURCE_ID ?? RESOURCE_URI)),
+);
+
+// RFC 9728 — protected-resource metadata (canonical path + alias).
+app.get("/.well-known/oauth-protected-resource", (c) =>
+  c.json(protectedResourceMetadata(c.env, RESOURCE_URI, ["gateway:read", "gateway:write"])),
+);
+app.get("/.well-known/resource-server", (c) =>
+  c.json(protectedResourceMetadata(c.env, RESOURCE_URI, ["gateway:read", "gateway:write"])),
+);
 
 // CWP-2026-014 — Agent Orchestrator. Natural-language query → classify (needle
 // → GLM fallback) → plan → execute via bridge → settle as a PQC care contract

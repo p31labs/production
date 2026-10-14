@@ -1,0 +1,18 @@
+---
+import { skeletonBarTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  shape?: 'bar' | 'block';
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { shape = 'bar', class: cls = '', style } = Astro.props;
+
+const html = renderHtml(skeletonBarTree({
+  shape,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

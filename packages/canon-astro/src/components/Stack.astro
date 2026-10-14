@@ -1,0 +1,23 @@
+---
+import { stackTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  dir?: 'row' | 'column';
+  gap?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  align?: 'start' | 'center' | 'end' | 'stretch';
+  justify?: 'start' | 'center' | 'end' | 'between';
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { dir = 'column', gap = 'md', align, justify, class: cls = '', style } = Astro.props;
+const children = await Astro.slots.render('default');
+
+const html = renderHtml(stackTree({
+  dir, gap, align, justify,
+  children: children ? { raw: children } : null,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

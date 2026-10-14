@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSensoryStore } from '../store/useSensoryStore';
-import { useThemeStore } from '@p31ca/shell-chrome';
+import { useThemeStore } from '../store/useThemeStore';
 
 export function useSensorySync() {
   useEffect(() => {

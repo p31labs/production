@@ -10,20 +10,31 @@
  *
  * The chrome (CanonTopbar, CommandPalette, LedController) lives HERE, not in
  * the slot, so the three-act navigation + instrument persist across navigations.
- * Astro View Transitions (transition:persist) keeps the ambient dome/starfield
- * and chrome alive between pages — no remount, no state loss. The swap-fade
- * script dims the ambient layer during the transition to hide the WebGL
- * one-frame stutter the View Transitions API causes.
+ *
+ * The dome is the PERSISTENT-CANVAS overlay (fix-plan
+ * p31ca-visual-nav-fix-2026-10-13.md): #p31-dome-host is a fixed overlay
+ * owned by the shell and marked data-astro-transition-persist, so the WebGL
+ * canvas lives OUTSIDE the swapped page body — mounted once per session,
+ * kept alive across ClientRouter navigations, no per-page re-initialization
+ * or context loss. The persist attribute sits on the wrapper DIV, never on
+ * the astro-island (persist-on-island triggers React 19 hydration rejections
+ * #423/#425). Every dome-theme page shows the live dome; non-dome pages
+ * hide the host via the ambient meta + prefs script. Boot is client:idle
+ * with the static SVG fallback visible until the first frame.
  */
 import { resolveTheme } from '@p31ca/shared/theme/ids';
 import { pageTheme } from '@p31ca/canon/theming/page-themes';
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import MolecularHeart from '../components/background/MolecularHeart.tsx';
 import Starfield from '../components/background/Starfield.tsx';
 import HeartPulse from '../components/islands/HeartPulse.tsx';
 import CanonTopbar from '../components/islands/CanonTopbar.tsx';
 import LedController from '../components/LedController.tsx';
 import CommandPalette from '../components/CommandPalette.tsx';
+import { WEB_VITALS_V6 } from '../lib/web-vitals-v6';
+// NOTE: ProductRow (tier-2 strip) retired 2026-10-12 — its products merged
+// into JourneyNav's dropdown ("Products" section). The .astro file stays on
+// disk per the no-delete rule but is no longer rendered.
 
 interface Props {
   title?: string;
@@ -42,11 +53,75 @@ const {
 } = Astro.props;
 
 const cfg = pageTheme(Astro.url.pathname);
-const resolvedTheme = resolveTheme(theme ?? cfg.theme);
+// Phase 3 Batch 1 (D1): 'rose' is the ratified hub theme id emitted by
+// [data-theme="rose"] in @p31ca/canon/tokens.css. resolveTheme() (shared
+// package) does not know it yet — filed in p31ca-phase3-batch1-2026-10-14.md
+// §gap-2 — so the shell passes it through verbatim; everything else keeps
+// the registry/resolver path unchanged.
+const rawTheme = theme ?? cfg.theme;
+const resolvedTheme = rawTheme === 'rose' ? 'rose' : resolveTheme(rawTheme);
 const ambient = background ?? cfg.background;
 
+// ── JSON-LD (void-fill item 6): Organization on every surface, BreadcrumbList
+// on inner pages. FAQPage lives in /faq, SoftwareApplication in FlagshipPage.
+const SITE_URL = 'https://p31ca.org';
+const orgJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'P31 Labs',
+  url: SITE_URL,
+  logo: `${SITE_URL}/favicon.svg`,
+  taxID: '42-1888158',
+  nonprofitStatus: 'Nonprofit501c3',
+  foundingDate: '2026',
+  sameAs: [
+    'https://github.com/p31labs',
+    'https://zenodo.org/communities/p31labs',
+  ],
+};
+
+// BreadcrumbList from the pathname; the last crumb borrows the page title
+// (minus the " — P31 Labs" suffix) when one exists, e.g. /apps/mcp → MCP,
+// /blog/<slug> → the post title. Emitted only on inner pages.
+const pageTitleClean = title.replace(/\s*—\s*P31 Labs\s*$/, '');
+const pathSegments = Astro.url.pathname.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean);
+const breadcrumbs = [{ name: 'Home', item: `${SITE_URL}/` }];
+{
+  let acc = `${SITE_URL}/`;
+  pathSegments.forEach((seg, i) => {
+    acc += `${seg}/`;
+    const isLast = i === pathSegments.length - 1;
+    const label = isLast && pageTitleClean
+      ? pageTitleClean
+      : seg.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+    breadcrumbs.push({ name: label, item: acc });
+  });
+}
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.name,
+    item: c.item,
+  })),
+};
+
 import '@p31ca/canon/css/all.css';
+import '../styles/global.css';
+import '../styles/topbar.css';
+import '../styles/molecular-dome.css';
 import '../styles/p31-style.css';
+import '../styles/sweep-legacy.css';
+// Lexend (D4, ratified) — self-hosted via @fontsource/lexend so rose-mode
+// pages serve the canon font without a Google request. The Google Fonts
+// <link> below keeps Lora + JetBrains Mono (and Jakarta for pre-migration
+// pages).
+import '@fontsource/lexend/400.css';
+import '@fontsource/lexend/500.css';
+import '@fontsource/lexend/600.css';
+import '@fontsource/lexend/700.css';
 ---
 
 <!doctype html>
@@ -69,72 +144,212 @@ import '../styles/p31-style.css';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
     <title>{title}</title>
-    <ViewTransitions />
+    {/* Per-page ambient type — the prefs script reads this to show/hide the
+        persistent dome host after every ClientRouter swap (head elements
+        are swapped; the persisted body element is not). */}
+    <meta name="p31-ambient" content={ambient} />
+    <ClientRouter />
+    <script type="application/ld+json" set:html={JSON.stringify(orgJsonLd)} />
+    {pathSegments.length > 0 && (
+      <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+    )}
     <slot name="head" />
-    <!-- WS-3 WebMCP origin-trial (Chrome 149-156, expires 2026-11-17) — token for https://p31ca.org, Match subdomains: yes (2026-09-27). -->
+    {/* WS-3 WebMCP origin-trial (Chrome 149-156, expires 2026-11-17) — token for https://p31ca.org, Match subdomains: yes (2026-09-27). */}
     <meta http-equiv="origin-trial" content="A3QM4uvLcgyK4QZHzgTE0VPzYaR73dFbaZixrIq7eIq1PuxvEm+LxlyrgJYUm0JRAhMzhHOvLS7j5wevh2IV2gYAAABweyJvcmlnaW4iOiJodHRwczovL3AzMWNhLm9yZzo0NDMiLCJmZWF0dXJlIjoiV2ViTUNQIiwiZXhwaXJ5IjoxNzk0ODczNjAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ==" />
   </head>
   <body class="min-h-screen antialiased" style="background: transparent; color: var(--p31-text, #e2e8f0); font-family: var(--p31-font-sans, 'Plus Jakarta Sans', system-ui, sans-serif); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;">
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- Ambient background layer (calm, spoon-aware) — owned by the shell,
-         persisted across navigations via transition:persist -->
+    {/* Ambient background layer (calm, spoon-aware) — owned by the shell.
+        #p31-ambient carries the per-page static layers (heart, gradient).
+        #p31-dome-host is the PERSISTENT canvas overlay: always rendered,
+        always marked data-astro-transition-persist, so the live dome mounts
+        once per session and survives every ClientRouter swap. */}
     <div id="p31-ambient" class="p31-ambient">
-      {ambient === 'dome' && <Starfield client:load transition:persist />}
-      {ambient === 'dome' && <MolecularHeart client:only="react" transition:persist />}
-      {ambient === 'heart' && <HeartPulse client:load transition:persist spoons={3} />}
+      {ambient === 'heart' && <HeartPulse client:load spoons={3} />}
       {ambient === 'calm-gradient' && <div class="fixed inset-0 pointer-events-none p31-cal-gradient" aria-hidden="true"></div>}
     </div>
+    <div id="p31-dome-host" class="p31-ambient" data-astro-transition-persist="p31-dome-host" aria-hidden="true">
+      <Starfield client:idle />
+      <MolecularHeart client:idle />
+    </div>
 
-    <!-- The chrome — persists across navigations, never in the slot -->
-    <CanonTopbar client:load transition:persist />
+    {/* The chrome — persists across navigations, never in the slot.
+        CanonTopbar is client:load WITHOUT transition:persist: the persist root
+        keeps Astro's astro:end SSR marker inside the island, which React
+        19 hydration rejects (#423/#425). Its state lives in zustand + storage,
+        so nothing is lost across navigations. */}
+    <CanonTopbar client:load />
 
     <div id="main-content" class="relative" style="z-index: var(--p31-content, 10);">
       <slot />
     </div>
 
-    <!-- Bottom-left: command palette. Bottom-right: LED controller. -->
-    <CommandPalette client:load transition:persist />
-    <LedController client:load transition:persist />
+    {/* Bottom-left: command palette (idle — non-critical chrome). Bottom-right: LED controller (visible — hydrates when scrolled into view). */}
+    <CommandPalette client:idle transition:persist />
+    <LedController client:visible transition:persist />
 
-    <script is:inline>
+    <script is:inline data-astro-rerun>
       (function () {
-        var spoons = parseInt(localStorage.getItem('p31:spoons') || '3', 10);
-        document.documentElement.setAttribute('data-spoons', String(spoons));
+        // Prefs + ambient re-apply, AbortController + astro:after-swap pattern
+        // (fix-plan p31ca-visual-nav-fix-2026-10-13.md).
+        //
+        // ClientRouter's swapRootAttributes copies the SSR data-theme /
+        // data-spoons over the live ones on every navigation, and the
+        // persisted dome host keeps the PREVIOUS page's ambient content —
+        // so both must be re-applied per swap. data-astro-rerun re-runs
+        // this script on every page; the AbortController replaces the
+        // previous run's listeners so nothing accumulates.
+        var SWATCH = { cipher: '#22d3ee', garden: '#22c55e', retro: '#f472b6', ocean: '#06b6d4', sunset: '#fb923c', mono: '#9ca3af', aurora: '#a78bfa', zen: '#94a3b8', volt: '#f59e0b' };
+        function read(key) {
+          try { return localStorage.getItem(key); } catch (e) { return null; }
+        }
+        function applyPrefs() {
+          var theme = read('p31:theme');
+          if (theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.style.setProperty('--p31-theme-dot', SWATCH[theme] || '#06b6d4');
+          }
+          var spoons = read('p31:spoons');
+          if (spoons) document.documentElement.setAttribute('data-spoons', String(spoons));
+          var meta = document.querySelector('meta[name="p31-ambient"]');
+          var host = document.getElementById('p31-dome-host');
+          if (host) host.style.display = meta && meta.getAttribute('content') === 'dome' ? '' : 'none';
+        }
+        applyPrefs();
+        if (window.__p31PrefsAbort) { try { window.__p31PrefsAbort.abort(); } catch (e) { /* replaced below */ } }
+        var ac = new AbortController();
+        window.__p31PrefsAbort = ac;
+        // before-swap: pin the stored prefs so the outgoing frame doesn't
+        // flash the SSR values; after-swap: swapRootAttributes has already
+        // overwritten them with the new page's SSR values — re-apply.
+        document.addEventListener('astro:before-swap', applyPrefs, { signal: ac.signal });
+        document.addEventListener('astro:after-swap', applyPrefs, { signal: ac.signal });
+        // Swap-fade: dim the dome overlay during the view transition so the
+        // WebGL renderer's one-frame pause is invisible.
+        document.addEventListener('astro:before-swap', function () {
+          var host = document.getElementById('p31-dome-host');
+          if (host) host.classList.add('is-swapping');
+        }, { signal: ac.signal });
+        document.addEventListener('astro:after-swap', function () {
+          var host = document.getElementById('p31-dome-host');
+          if (host) {
+            host.classList.remove('is-swapping');
+            host.style.opacity = '1';
+          }
+        }, { signal: ac.signal });
       })();
     </script>
 
-    <!-- Swap-fade: dim the ambient layer during the view transition so the
-         WebGL renderer's one-frame pause is hidden. -->
+    {/* RUM: field web-vitals → p31-rum collector.
+        Spec: docs/fix-plans/p31ca-rum-wiring-2026-10-13.md.
+        Privacy: payload is name/value/page/ts only — no cookies, no IP, no
+        user-agent, no referrer. Verified contract of the collector. */}
+    <script is:inline set:html={WEB_VITALS_V6} />
     <script is:inline>
       (function () {
-        var ambient = document.getElementById('p31-ambient');
-        if (!ambient) return;
-        document.addEventListener('astro:before-swap', function () {
-          if (ambient) ambient.classList.add('is-swapping');
-        });
-        document.addEventListener('astro:after-swap', function () {
-          if (ambient) {
-            ambient.classList.remove('is-swapping');
-            ambient.style.opacity = '1';
+        if (!('sendBeacon' in navigator)) return;
+        // Production origins only — local previews are http and the collector
+        // rejects their Origin, which would log CORS console errors in dev,
+        // e2e, and the runtime WCAG gate. Live surfaces are always https.
+        if (location.protocol !== 'https:') return;
+        var COLLECT = 'https://p31-rum.trimtab-signal.workers.dev/collect';
+        var queue = [];
+        function flush(metric) {
+          queue.push({
+            name: metric.name,
+            value: metric.value,
+            page: location.href,   // origin-validated by the collector
+            ts: Date.now(),
+          });
+          var ok = navigator.sendBeacon(
+            COLLECT,
+            // text/plain keeps this a CORS-simple request: sendBeacon always
+            // sends credentials "include", and the collector's preflight does
+            // not return Access-Control-Allow-Credentials — an application/
+            // json body would be blocked before leaving the browser. The
+            // collector parses the JSON body regardless of content-type.
+            new Blob([JSON.stringify(queue)], { type: 'text/plain;charset=UTF-8' })
+          );
+          if (ok) queue = [];
+        }
+        // Pagehide safety net: re-send anything a failed beacon left queued.
+        window.addEventListener('pagehide', function () {
+          if (!queue.length) return;
+          try {
+            navigator.sendBeacon(
+              COLLECT,
+              new Blob([JSON.stringify(queue)], { type: 'text/plain;charset=UTF-8' })
+            );
+          } catch (e) {
+            /* RUM is best-effort; never break the page */
           }
         });
+        try {
+          window.webVitals.onINP(flush);  // field INP — the real INP source
+          window.webVitals.onLCP(flush);
+          window.webVitals.onCLS(flush);
+          window.webVitals.onFCP(flush);
+          window.webVitals.onTTFB(flush);
+        } catch (e) {
+          /* RUM is best-effort; never break the page */
+        }
       })();
     </script>
 
-    <!-- Mermaid: render <pre class="mermaid"> blocks client-side with a
-         graceful fallback (the source stays visible if rendering fails).
-         rehype-mermaid-lite produces the pre.mermaid elements from markdown
-         fences; .astro pages can write them directly. -->
+    {/* Mermaid: render pre.mermaid blocks client-side with a
+        graceful fallback (the source stays visible if rendering fails).
+        rehype-mermaid-lite produces the pre.mermaid elements from markdown
+        fences; .astro pages can write them directly.
+        Phase 3 Batch 1: diagram palettes are token-driven — classDef lines
+        carry named-color placeholders (mermaid's parser rejects var()), and
+        this substitution replaces them with the live computed token values
+        before render (mermaid applies classDef as inline !important styles,
+        so page CSS cannot override them). Pages outside the batch keep
+        their own classDef values: only the placeholder names are replaced. */}
     <script>
       import mermaid from 'mermaid';
       window.addEventListener('DOMContentLoaded', () => {
         const blocks = document.querySelectorAll('pre.mermaid:not([data-rendered])');
         if (!blocks.length) return;
+        const cs = getComputedStyle(document.documentElement);
+        // Resolve a token value to plain sRGB hex: classDef rejects anything
+        // with parens (oklch()/var()), and mermaid applies classDef values as
+        // inline !important styles — so the token colors must be computed
+        // here, not referenced.
+        const canvas = document.createElement('canvas');
+        const c2d = canvas.getContext('2d');
+        const toHex = (name) => {
+          const value = cs.getPropertyValue(name).trim();
+          if (!value) return null;
+          try {
+            c2d.fillStyle = value;
+            c2d.fillRect(0, 0, 1, 1);
+            const d = c2d.getImageData(0, 0, 1, 1).data;
+            return '#' + [d[0], d[1], d[2]].map((x) => x.toString(16).padStart(2, '0')).join('');
+          } catch {
+            return null;
+          }
+        };
+        const DIAGRAM_TOKENS = {
+          royalblue: toHex('--p31-accent'),
+          navy: toHex('--p31-accent-alt'),
+          slategray: toHex('--p31-surface2'),
+          darkslategray: toHex('--p31-text-secondary'),
+          goldenrod: toHex('--p31-accent-gold'),
+          darkgoldenrod: toHex('--p31-accent-gold'),
+          white: toHex('--p31-text'),
+          black: toHex('--p31-void'),
+        };
         mermaid.initialize({ startOnLoad: false, theme: 'base', securityLevel: 'strict' });
         blocks.forEach((block, i) => {
+          let source = block.textContent || '';
+          for (const [name, value] of Object.entries(DIAGRAM_TOKENS)) {
+            if (!value) continue;
+            source = source.replace(new RegExp('\\b' + name + '\\b', 'g'), value);
+          }
           mermaid
-            .render(`mermaid-${Date.now()}-${i}`, block.textContent || '')
+            .render(`mermaid-${Date.now()}-${i}`, source)
             .then(({ svg }) => {
               block.innerHTML = svg;
               block.setAttribute('data-rendered', '1');
@@ -149,6 +364,31 @@ import '../styles/p31-style.css';
 </html>
 
 <style>
+  /* ═══ HEADER-HEIGHT CONTRACT ═══
+   * One token owns the topbar height; consumers reference it as
+   * var(--p31-header-height, 4rem) so an upstream canon token wins when it
+   * is wired. The product row is tier 2 of the same sticky stack.
+   * scroll-padding-top + scroll-margin-top keep anchor targets clear of the
+   * sticky header — the "OVERLAP" fix. */
+  :root {
+    --p31-header-height: 4rem;
+  }
+  html {
+    scroll-padding-top: calc(var(--p31-header-height, 4rem) + 0.5rem);
+  }
+  [id] {
+    scroll-margin-top: calc(var(--p31-header-height, 4rem) + 0.5rem);
+  }
+
+  /* ═══ CENTERED PAGE CONTAINER ═══
+   * Every page's content column is centered and capped at 80rem — no
+   * left-stuck content, consistent with max-w-7xl pages (80rem). */
+  #main-content {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+  }
+
   .p31-ambient {
     position: fixed;
     inset: 0;
@@ -156,8 +396,13 @@ import '../styles/p31-style.css';
     pointer-events: none;
     transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
+  /* The persistent dome overlay (survives ClientRouter swaps via the
+     data-astro-transition-persist attribute on the host div). */
+  #p31-dome-host {
+    z-index: 0;
+  }
   /* During a view transition the WebGL renderer pauses one frame; the swap
-     fade dims the ambient layer so the stutter is invisible. */
+     fade dims the dome overlay so the stutter is invisible. */
   .p31-ambient.is-swapping {
     opacity: 0.35;
   }

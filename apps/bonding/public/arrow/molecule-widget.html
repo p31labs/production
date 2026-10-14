@@ -116,7 +116,7 @@
 <body>
   <div class="app" data-mcp-tool="arrowMoleculePage" data-mcp-state="loaded" data-mcp-target="arrow-root">
     <div class="card">
-      <h2>BONDING × ArrowJS</h2>
+      <h1>BONDING × ArrowJS</h1>
       <p>Agent-generated chemistry components, executed safely in a WASM sandbox. Paste ArrowJS code or use one of the examples below.</p>
 
       <div class="examples" data-mcp-tool="exampleButtons" data-mcp-target="example-buttons">
@@ -129,7 +129,7 @@
 function addAtom(el) { state.atoms.push(el); }
 return html`
   <div data-mcp-tool="moleculeBuilder" data-mcp-type="surface" data-mcp-target="molecule-builder">
-    <h3 style="margin:0 0 8px 0;font-weight:600;">Water Molecule</h3>
+    <h2 style="margin:0 0 8px 0;font-weight:600;">Water Molecule</h2>
     <div class="atom-grid">
       ${state.atoms.map(function(a) { return html`<div class="atom" data-element="${a}">${a}</div>`; })}
     </div>

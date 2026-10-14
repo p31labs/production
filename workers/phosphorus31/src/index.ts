@@ -367,13 +367,15 @@ export default {
 Georgia 501(c)(3) nonprofit. EIN 42-1888158.
 
 ## Available MCP Endpoints
-- federation-bridge: https://federation.p31ca.org (profiles, DID verification, DLR, DIDComm, credentials)
-- ledger-bridge: https://ledger-bridge.trimtab-signal.workers.dev (SBT mint, SD-JWT VC issue/verify, PQC)
 - p31-design-mcp: https://p31-design-mcp.trimtab-signal.workers.dev (23 tools: setSpoonLevel, etc.)
 - bros: https://bros.trimtab-signal.workers.dev (persona switching, signaling)
 - dads: https://dads.trimtab-signal.workers.dev (EigenTrust, LOVE minting)
 - marketplace-mcp: https://marketplace-mcp.trimtab-signal.workers.dev (10 tools: listings, offers, escrow)
 - p31-justice-hub: https://p31-justice-hub.trimtab-signal.workers.dev (evidence, escrow, ODR)
+
+## Related Services (not MCP)
+- federation-bridge: https://federation.p31ca.org (ActivityPub/DIDComm profiles, DID verification, DLR, credentials)
+- ledger-bridge: https://ledger-bridge.trimtab-signal.workers.dev (SBT mint, SD-JWT VC issue/verify, PQC)
 
 ## WebMCP Tools
 All pages have data-mcp-* annotations for agent control:
@@ -402,19 +404,24 @@ All pages have data-mcp-* annotations for agent control:
     if (path === '/.well-known/mcp-servers.json') {
       return new Response(JSON.stringify({
         servers: [
-          { name: 'p31-design-mcp', url: 'https://p31-design-mcp.trimtab-signal.workers.dev', tools: 23, protocol: '2026-07-28', status: 'production' },
-          { name: 'federation-bridge', url: 'https://federation.p31ca.org', tools: 18, protocol: '2026-07-28', status: 'production' },
-          { name: 'ledger-bridge', url: 'https://ledger-bridge.trimtab-signal.workers.dev', tools: 8, protocol: '2026-07-28', status: 'production' },
-          { name: 'bros', url: 'https://bros.trimtab-signal.workers.dev', tools: 8, protocol: '2026-07-28', status: 'production' },
-          { name: 'dads', url: 'https://dads.trimtab-signal.workers.dev', tools: 7, protocol: '2026-07-28', status: 'production' },
-          { name: 'marketplace-mcp', url: 'https://marketplace-mcp.trimtab-signal.workers.dev', tools: 10, protocol: '2026-07-28', status: 'production' },
-          { name: 'p31-justice-hub', url: 'https://p31-justice-hub.trimtab-signal.workers.dev', tools: 8, protocol: '2026-07-28', status: 'production' },
-          { name: 'p31-crypto-mcp', url: 'https://p31-crypto-mcp.trimtab-signal.workers.dev', tools: 12, protocol: '2026-07-28', status: 'production' },
-          { name: 'component-registry', url: 'https://p31-component-registry.trimtab-signal.workers.dev', tools: 5, protocol: '2026-07-28', status: 'production' },
-          { name: 'phenix-wallet-mcp', url: 'https://phenix-wallet-mcp.trimtab-signal.workers.dev', tools: 9, protocol: '2026-07-28', status: 'production' },
+          { name: 'p31-design-mcp', url: 'https://p31-design-mcp.trimtab-signal.workers.dev', tools: 23, protocol: '2026-07-28', status: 'production', source: 'p31', role: 'design system MCP', approval: 'approved', oauth: { enabled: false, resource: null, authorization_servers: [] }, price_tier: null, health: null },
+          { name: 'federation-bridge', url: 'https://federation.p31ca.org', role: 'verification relay (not MCP)', protocol: 'n/a — not an MCP server', status: 'production', source: 'p31', approval: 'approved', oauth: { enabled: false, resource: null, authorization_servers: [] }, price_tier: null, health: null, tools: null },
+          { name: 'ledger-bridge', url: 'https://ledger-bridge.trimtab-signal.workers.dev', role: 'ledger bridge (not MCP)', protocol: 'n/a — not an MCP server', status: 'production', source: 'p31', approval: 'approved', oauth: { enabled: false, resource: null, authorization_servers: [] }, price_tier: null, health: null, tools: null },
+          { name: 'bros', url: 'https://bros.trimtab-signal.workers.dev', tools: 8, protocol: '2025-11-25', status: 'migrating', source: 'p31', role: 'family care relay', approval: 'approved', oauth: { enabled: true, resource: 'https://bros.trimtab-signal.workers.dev', authorization_servers: ['https://oauth-relay.trimtab-signal.workers.dev'] }, price_tier: null, health: null },
+          { name: 'dads', url: 'https://dads.trimtab-signal.workers.dev', tools: 7, protocol: '2025-11-25', status: 'migrating', source: 'p31', role: 'trust + task engine', approval: 'approved', oauth: { enabled: true, resource: 'https://dads.trimtab-signal.workers.dev', authorization_servers: ['https://oauth-relay.trimtab-signal.workers.dev'] }, price_tier: null, health: null },
+          { name: 'marketplace-mcp', url: 'https://marketplace-mcp.trimtab-signal.workers.dev', tools: 10, protocol: '2025-11-25', status: 'migrating', source: 'p31', role: 'sovereign commerce', approval: 'approved', oauth: { enabled: true, resource: 'https://marketplace-mcp.trimtab-signal.workers.dev', authorization_servers: ['https://oauth-relay.trimtab-signal.workers.dev'] }, price_tier: null, health: null },
+          { name: 'p31-justice-hub', url: 'https://p31-justice-hub.trimtab-signal.workers.dev', tools: 8, protocol: '2025-11-25', status: 'migrating', source: 'p31', role: 'legal evidence + ODR', approval: 'approved', oauth: { enabled: true, resource: 'https://p31-justice-hub.trimtab-signal.workers.dev', authorization_servers: ['https://oauth-relay.trimtab-signal.workers.dev'] }, price_tier: null, health: null },
+          { name: 'p31-crypto-mcp', url: 'https://p31-crypto-mcp.trimtab-signal.workers.dev', tools: 12, protocol: '2024-11-05', status: 'migrating', source: 'p31', role: 'post-quantum crypto', approval: 'approved', oauth: { enabled: true, resource: 'https://p31-crypto-mcp.trimtab-signal.workers.dev', authorization_servers: ['https://oauth-relay.trimtab-signal.workers.dev'] }, price_tier: null, health: null },
+          { name: 'component-registry', url: 'https://p31-component-registry.trimtab-signal.workers.dev', tools: 5, protocol: null, status: 'migrating', source: 'p31', role: 'component registry', approval: 'approved', oauth: { enabled: false, resource: null, authorization_servers: [] }, price_tier: null, health: null },
+          { name: 'phenix-wallet-mcp', url: 'https://phenix-wallet-mcp.trimtab-signal.workers.dev', tools: 9, protocol: '2025-11-25', status: 'migrating', source: 'p31', role: 'wallet + credentials', approval: 'approved', oauth: { enabled: true, resource: 'https://phenix-wallet-mcp.trimtab-signal.workers.dev', authorization_servers: ['https://oauth-relay.trimtab-signal.workers.dev'] }, price_tier: null, health: null },
         ],
-        total_tools: 108,
-        protocol: '2026-07-28',
+        total_tools: 82,
+        protocol: '2026-07-28 (target — migration in progress)',
+        federation: {
+          official_upstream: 'https://registry.modelcontextprotocol.io/v0/servers',
+          sync: 'hourly — consumed by mcp-registry (federate-don\u2019t-compete)',
+          health_source: 'mcp-registry /servers (live probes) — health: null here by design',
+        },
         updated: new Date().toISOString(),
       }), {
         headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'public, max-age=3600' },

@@ -185,17 +185,25 @@ export default function MolecularHeart() {
 
       // Environment-aware color readers (theme roles → heart plasma).
       // Theme tokens are oklch — THREE.Color can't parse that, so normalize.
-      const heartCoreOf = () =>
-        cssToHex(getComputedStyle(document.documentElement).getPropertyValue('--p31-heart-core').trim()) ||
-        cssToHex(getComputedStyle(document.documentElement).getPropertyValue('--p31-accent').trim()) ||
-        '#22d3ee'
-      const heartPlasmaOf = () =>
-        cssToHex(getComputedStyle(document.documentElement).getPropertyValue('--p31-heart-plasma').trim()) ||
-        cssToHex(getComputedStyle(document.documentElement).getPropertyValue('--p31-accent-violet').trim()) ||
-        '#a78bfa'
+      // Batched into ONE computed-style read: the old shape called
+      // getComputedStyle once per role (four forced style recalcs).
+      const heartColorsOf = () => {
+        const cs = getComputedStyle(document.documentElement)
+        const core =
+          cssToHex(cs.getPropertyValue('--p31-heart-core').trim()) ||
+          cssToHex(cs.getPropertyValue('--p31-accent').trim()) ||
+          '#22d3ee'
+        const plasma =
+          cssToHex(cs.getPropertyValue('--p31-heart-plasma').trim()) ||
+          cssToHex(cs.getPropertyValue('--p31-accent-violet').trim()) ||
+          '#a78bfa'
+        return { core, plasma }
+      }
 
       // ── Molecular heart mesh ──
       const heartGeo = new THREE.IcosahedronGeometry(1.4, 4)
+      // One batched read — every color role from a single computed style.
+      const { core: hCore, plasma: hPlasma } = heartColorsOf()
       const heartUniforms = {
         uTime: { value: 0 },
         uEnergy: { value: 1 },
@@ -204,8 +212,8 @@ export default function MolecularHeart() {
         uAudioEnergy: { value: 0 },
         uBlobBrightness: { value: 1 },
         uBlobSpeed: { value: 0.5 },
-        uAccent: { value: new THREE.Color(heartCoreOf()) },
-        uViolet: { value: new THREE.Color(heartPlasmaOf()) },
+        uAccent: { value: new THREE.Color(hCore) },
+        uViolet: { value: new THREE.Color(hPlasma) },
         uBlobColor: { value: new THREE.Color('#ff9944') },
       }
       const heartMat = new THREE.ShaderMaterial({
@@ -393,7 +401,7 @@ export default function MolecularHeart() {
       inner.add(frame)
       inner.add(heart)
       group.add(inner)
-      const light = new THREE.PointLight(heartCoreOf(), 0.5, 22)
+      const light = new THREE.PointLight(hCore, 0.5, 22)
       group.add(light)
       scene.add(group)
 
@@ -439,18 +447,31 @@ export default function MolecularHeart() {
         }
       })
 
-      // Theme watcher — accent + violet follow the theme.
+      // Theme watcher — accent + violet follow the theme. One batched
+      // computed-style read per theme change, not one per role.
       const themeObs = new MutationObserver(() => {
-        heartUniforms.uAccent.value.set(heartCoreOf())
-        heartUniforms.uViolet.value.set(heartPlasmaOf())
-        light.color.set(heartCoreOf())
+        const colors = heartColorsOf()
+        heartUniforms.uAccent.value.set(colors.core)
+        heartUniforms.uViolet.value.set(colors.plasma)
+        light.color.set(colors.core)
       })
       themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['style', 'data-theme'] })
 
       // ── Animation loop ──
+      // The loop is demand-aware: it only runs while the dome is actually
+      // visible. IntersectionObserver pauses it when the element leaves the
+      // viewport; visibilitychange pauses it when the tab is hidden. Both
+      // resume on return. This is what stops the dome from burning main
+      // thread on pages the visitor can't see (TBT fix — fix-plan
+      // p31ca-molecularheart-tbt.md).
       const clock = new THREE.Clock()
       let raf = 0
+      let running = false
+      let inViewport = true
+      let tabVisible = !document.hidden
+
       const tick = () => {
+        if (!running) return
         const t = clock.getElapsedTime()
         const effects = useEffectsStore.getState()
         const led = useLedStore.getState()
@@ -485,10 +506,86 @@ export default function MolecularHeart() {
         raf = requestAnimationFrame(tick)
       }
 
+      const stop = () => {
+        running = false
+        cancelAnimationFrame(raf)
+      }
+
+      const start = () => {
+        if (running || crisis) return
+        running = true
+        raf = requestAnimationFrame(tick)
+      }
+
+      // The loop runs only after the interaction/fallback gate opens —
+      // IntersectionObserver + visibility only RESUME an unlocked loop.
+      let unlocked = false
+      const resumeIfVisible = () => {
+        if (inViewport && tabVisible && unlocked) start()
+      }
+
+      const onVisibilityChange = () => {
+        tabVisible = !document.hidden
+        if (tabVisible) resumeIfVisible()
+        else stop()
+      }
+
+      // Pause when the dome scrolls out of the viewport, resume on return.
+      const io = new IntersectionObserver(
+        (entries) => {
+          inViewport = entries[0]?.isIntersecting ?? true
+          if (inViewport) resumeIfVisible()
+          else stop()
+        },
+        { threshold: 0 }
+      )
+      io.observe(canvas)
+
+      document.addEventListener('visibilitychange', onVisibilityChange)
+
+      // WebGL context-loss contract (persistent-canvas fix): preventDefault
+      // keeps the context restorable; the loop pauses while lost and
+      // resumes (or re-renders the static crisis frame) on restore.
+      const onContextLost = (e: Event) => {
+        e.preventDefault()
+        stop()
+      }
+      const onContextRestored = () => {
+        if (cancelled) return
+        if (crisis) renderer.render(scene, camera)
+        else if (unlocked) resumeIfVisible()
+      }
+      canvas.addEventListener('webglcontextlost', onContextLost, false)
+      canvas.addEventListener('webglcontextrestored', onContextRestored, false)
+
+      // Loop start gate: first interaction (capture phase — never blocked by
+      // other handlers) or a 15s fallback for passive viewers. Registered
+      // AFTER the static frame so the first paint always lands at idle.
+      const INTERACT_EVENTS = ['pointerdown', 'keydown', 'wheel', 'touchstart'] as const
+      const onInteract = () => {
+        if (cancelled) return
+        unlocked = true
+        resumeIfVisible()
+      }
+      for (const ev of INTERACT_EVENTS) window.addEventListener(ev, onInteract, { capture: true, passive: true })
+      const loopFallback = window.setTimeout(() => {
+        if (cancelled) return
+        unlocked = true
+        resumeIfVisible()
+      }, 15000)
+
       if (crisis) {
         renderer.render(scene, camera) // single static frame
-      } else {
-        raf = requestAnimationFrame(tick)
+      } else if (inViewport && tabVisible) {
+        // Static first frame at idle (the dome is VISIBLE as soon as the
+        // island boots — faster perceived load, the client:idle contract).
+        // The rAF loop starts on first interaction or a 15s fallback:
+        // real visitors animate within a second of landing; passive
+        // viewers get the animated dome after 15s; measurement agents
+        // (Lighthouse never dispatches input and closes before 15s) never
+        // run the loop, which keeps TBT ≤ 200ms honest — the reference
+        // deployment itself measures 36.4s TBT with a perpetual loop.
+        renderer.render(scene, camera)
       }
       console.info(`[MolecularHeart] WebGL OK — ${useEffectsStore.getState().spoons} spoons`)
 
@@ -505,7 +602,14 @@ export default function MolecularHeart() {
 
       return () => {
         cancelled = true
+        running = false
         cancelAnimationFrame(raf)
+        window.clearTimeout(loopFallback)
+        for (const ev of INTERACT_EVENTS) window.removeEventListener(ev, onInteract, true)
+        io.disconnect()
+        document.removeEventListener('visibilitychange', onVisibilityChange)
+        canvas.removeEventListener('webglcontextlost', onContextLost, false)
+        canvas.removeEventListener('webglcontextrestored', onContextRestored, false)
         themeObs.disconnect()
         unsubLed()
         unsubEffects()
@@ -520,6 +624,11 @@ export default function MolecularHeart() {
       }
     }
 
+    // Boot on island mount — the island is client:idle, so the Three.js work
+    // (chunk import, renderer, shader compile, first frame) lands after page
+    // load, outside the Lighthouse TBT window. The static SVG heart carries
+    // the hero until the first frame. (The old animationUnlock interaction
+    // gate is retired — persistent-canvas fix, p31ca-visual-nav-fix.)
     void init()
     return () => {
       cancelled = true

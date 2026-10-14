@@ -1,8 +1,9 @@
-@import "@p31ca/design-core/css/tokens.css";
+@import "@p31ca/canon/tokens.css";
 @import "@p31ca/design-core/css/a2ui-datacard.css";
 @import "@p31ca/design-core/css/container.css";
+@import "@p31ca/design-core/css/recipes.css";
 @import "@p31ca/ui/chrome.css";
-@import "@p31ca/shell-chrome/chrome.css";
+@import "@p31ca/design-core/css/chrome.css";
 
 /* ─── P31 Sovereign Stack Design System — Tokens (derived from Maxwell, SIC-POVM 1/3, Kuramoto, Larmor 863 Hz) ─── */
 :root {
@@ -255,6 +256,9 @@ html, body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Runbook §8 — sticky topbar contract: anchor targets clear the header. */
+html { scroll-padding-top: var(--p31-header-height); }
 
 body { margin: 0; }
 
@@ -1061,6 +1065,153 @@ button, [role="button"], input[type="checkbox"], input[type="radio"], select {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* ─── Professional-clean topbar (runbook §8) ────────────────────────────
+   Composed against the canon slot Topbar (@p31ca/design-core/compositions).
+   Canon owns appearance (recipes.css .topbar pill + tokens). The shell owns
+   GEOMETRY ONLY here: position/size/flow/flex/grid/gap/padding/width/
+   height/overflow (Seven Laws §1). The more-menu dropdown is absolute, so
+   the pill's overflow:hidden recipe must be relaxed (overflow is geometry). */
+.topbar {
+  overflow: visible;
+}
+.topbar--sticky {
+  position: sticky;
+  top: 0;
+}
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.topbar__spacer {
+  flex: 1;
+}
+.topbar__center {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+.topbar__status {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-tiny);
+  min-width: 0;
+}
+.topbar__trailing {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-tiny);
+  position: relative;
+}
+.topbar__identity {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.topbar-spoons {
+  display: inline-flex;
+  margin-right: var(--p31-space-tiny);
+}
+
+/* Primary nav — 3–7 items; everything else lives in the more menu. */
+.topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--p31-space-tiny);
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+.topbar-nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 4px 10px;
+  border: none;
+  border-radius: var(--p31-radius-full);
+  background: none;
+  color: var(--p31-text-secondary);
+  font-size: var(--p31-scale-xs);
+  font-family: var(--p31-font-sans);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--p31-duration-instant), background var(--p31-duration-instant);
+}
+.topbar-nav-item:hover {
+  color: var(--p31-text);
+  background: var(--p31-glass-bg);
+}
+.topbar-nav-item.active {
+  color: var(--p31-accent);
+  background: var(--p31-glass-bg);
+}
+.topbar-nav-icon { font-size: 14px; line-height: 1; }
+
+/* More menu — secondary destinations + secondary actions. */
+.topbar-more { position: relative; }
+.topbar-more-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: calc(var(--p31-z-topbar) + 4);
+  width: 240px;
+  max-width: 84vw;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--p31-space-tiny);
+  background: var(--p31-surface);
+  border: 1px solid var(--p31-glass-border);
+  border-radius: var(--p31-radius-md);
+  box-shadow: var(--p31-glass-shadow);
+}
+.topbar-more-menu__label {
+  font-size: var(--p31-scale-xs);
+  color: var(--p31-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 6px 10px 2px;
+}
+.topbar-more-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: var(--p31-radius-sm);
+  background: none;
+  color: var(--p31-text-secondary);
+  font-size: var(--p31-scale-sm);
+  font-family: var(--p31-font-sans);
+  text-align: left;
+  cursor: pointer;
+}
+.topbar-more-menu__item:hover {
+  color: var(--p31-text);
+  background: var(--p31-glass-bg);
+}
+.topbar-more-menu__item.active { color: var(--p31-accent); }
+.topbar-more-menu__status {
+  padding: 6px 10px;
+  font-size: var(--p31-scale-xs);
+  color: var(--p31-text-tertiary);
+  font-family: var(--p31-font-mono);
+}
+
+@media (max-width: 900px) {
+  .topbar__status { display: none; }
+  .topbar-nav-icon { display: none; }
+}
+@media (max-width: 768px) {
+  .topbar-nav-item { padding: 4px 8px; }
+  .topbar-spoons { display: none; }
+}
+@media (max-width: 640px) {
+  .topbar__center { flex-wrap: wrap; justify-content: center; }
 }
 
 /* ─── Home Page ─── */

@@ -31,47 +31,47 @@ const wmUrl = `https://forum-api.trimtab-signal.workers.dev/threads/${slug}/webm
   description={excerpt}
 >
   <main id="main-content" class="section">
-    <div class="max-w-3xl mx-auto px-6 md:px-12">
-      <SectionHeader title={title} description={`${date} · ${author}`} />
-      <!-- h-entry microformats — IndieWeb: makes this post a first-class
+    <div class="bs-max-w-3xl bs-mx-auto bs-px-6 bs-md-px-12">
+      <SectionHeader level="1" title={title} description={`${date} · ${author}`} align="left" />
+      {/* h-entry microformats — IndieWeb: makes this post a first-class
            entry that webmentions and POSSE (Mastodon/Bluesky bridges) can
-           parse and reply to. role="main" is the landmark (Phase A). -->
-      <article class="h-entry prose prose-invert mt-10" role="main">
+           parse and reply to. role="main" is the landmark (Phase A). */}
+      <article class="h-entry prose bs-dead-prose-invert bs-mt-10" role="main">
         <a class="u-url" href={`${site}/blog/${slug}`} hidden></a>
         <h1 class="p-name" hidden>{title}</h1>
         <div class="e-content" set:html={post.body} />
       </article>
 
       {isImported && (
-        <p class="text-xs mt-4" style="color: var(--p31-text-tertiary);">
+        <p class="bs-text-xs bs-mt-4" style="color: var(--p31-text-tertiary);">
           Originally published on <a href={sourceUrl} rel="noopener">the geodesic self</a> ·
           this copy is the canonical archive.
         </p>
       )}
 
-      <!-- Webmention endpoint link — tells other sites where to send mentions -->
+      {/* Webmention endpoint link — tells other sites where to send mentions */}
       <link rel="webmention" href="https://forum-api.trimtab-signal.workers.dev/webmention" hidden />
 
-      <!-- Standard.site (Phase G) — the ATProto record link + publication
+      {/* Standard.site (Phase G) — the ATProto record link + publication
            verification. Tells Bluesky/Bluesky apps where this post's record
            lives; the projection worker serves the other half of the loop at
-           /.well-known/site.standard.publication. -->
+           /.well-known/site.standard.publication. */}
       <link rel="site.standard.document" href={`https://standard-site-projection.trimtab-signal.workers.dev/site.standard.document/${slug}`} hidden />
       <link rel="site.standard.publication" href="https://standard-site-projection.trimtab-signal.workers.dev/.well-known/site.standard.publication" hidden />
 
-      <aside class="glass-card p-6 mt-12">
+      <aside class="glass-card bs-p-6 bs-mt-12">
         <p style="color: var(--p31-text-secondary);">
           Discuss this post — questions, corrections, and accepted answers live
           in the forum. Replies from other sites arrive here as webmentions.
         </p>
-        <a class="btn btn-primary mt-3" href={discussUrl} rel="noopener">
+        <a class="btn btn-primary bs-mt-3" href={discussUrl} rel="noopener">
           Open thread →
         </a>
       </aside>
 
-      <!-- Webmentions: remote replies/likes/reposts, fetched from the forum's
-           D1. Rendered client-side (the forum API is a live Worker). -->
-      <aside class="glass-card p-6 mt-12" data-webmentions data-src={wmUrl} aria-label="Replies from the web">
+      {/* Webmentions: remote replies/likes/reposts, fetched from the forum's
+           D1. Rendered client-side (the forum API is a live Worker). */}
+      <aside class="glass-card bs-p-6 bs-mt-12" data-webmentions data-src={wmUrl} aria-label="Replies from the web">
         <p style="color: var(--p31-text-secondary);">Replies from across the web</p>
         <div id="webmentions-list" style="margin-top: var(--p31-space-3);">
           <span style="color: var(--p31-cloud); font-size: var(--p31-text-sm);">loading…</span>

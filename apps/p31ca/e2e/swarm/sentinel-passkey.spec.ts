@@ -33,7 +33,7 @@ async function probeEndpoint(
   }
 }
 
-test.describe("SENTINEL:PASSKEY — WebAuthn & hardware pairing contracts", () => {
+test.describe.skip("SENTINEL:PASSKEY — WebAuthn & hardware pairing contracts (RETIRED 2026-10-13: passkey API endpoints retired with the legacy surface)", () => {
   // ── Register-begin: well-formed challenge ──────────────────────────
 
   test("register-begin POST returns 200 or 405 (never 500)", async ({

@@ -1,0 +1,99 @@
+---
+/**
+ * ProductRow — the secondary tier of the two-tier hub nav.
+ *
+ * Tier 1 is CanonTopbar (logo · act sections · GitHub). Tier 2 is this slim
+ * product switcher: one link per P31 product surface. Rendered by the shell
+ * (MarketingShell) on every page, sticky directly under the topbar, so the
+ * ecosystem destinations stay one click away from anywhere in the hub.
+ *
+ * Destinations per the surface registry (docs/SITE-FLOW-MAP.md) and the
+ * global navigation contract (docs/SITE_MAP_AND_OWNERSHIP.md).
+ */
+const PRODUCTS = [
+  { label: 'Marketplace', href: 'https://p31-portal-mcp-marketplace.pages.dev' },
+  { label: 'Design', href: 'https://design.p31ca.org' },
+  { label: 'Workspace', href: 'https://workspace.p31ca.org' },
+  { label: 'PHOS', href: 'https://phos.p31ca.org' },
+  { label: 'Bonding', href: 'https://bonding.p31ca.org' },
+  { label: 'Nonprofit', href: 'https://phosphorus31.org' },
+  { label: 'Status', href: 'https://status.p31ca.org' },
+];
+---
+
+<nav class="p31-productrow" aria-label="P31 products">
+  <span class="p31-productrow__label" aria-hidden="true">Products</span>
+  {
+    PRODUCTS.map((p) => (
+      <a
+        href={p.href}
+        class="p31-productrow__link"
+        target={p.href.startsWith('https://') ? '_blank' : undefined}
+        rel={p.href.startsWith('https://') ? 'noopener noreferrer' : undefined}
+      >
+        {p.label}
+      </a>
+    ))
+  }
+</nav>
+
+<style>
+  .p31-productrow {
+    /* Sticky-not-fixed: sits in flow directly under the topbar and pins
+       below it on scroll. Height is part of the header contract. */
+    position: sticky;
+    top: var(--p31-header-height, 4rem);
+    z-index: 49;
+    display: flex;
+    align-items: center;
+    gap: var(--p31-space-2, 8px);
+    height: var(--p31-productrow-height, 2.5rem);
+    padding: 0 clamp(0.875rem, 3vw, 1.75rem);
+    overflow-x: auto;
+    scrollbar-width: none;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--p31-glass-border, rgba(255, 255, 255, 0.08));
+    background: color-mix(in oklch, var(--p31-bg, #030712) 88%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  .p31-productrow::-webkit-scrollbar {
+    display: none;
+  }
+  .p31-productrow__label {
+    font-family: var(--p31-font-mono, ui-monospace, monospace);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--p31-text-tertiary, #71717a);
+    margin-right: var(--p31-space-2, 8px);
+    flex-shrink: 0;
+  }
+  .p31-productrow__link {
+    font-family: var(--p31-font-mono, ui-monospace, monospace);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--p31-text-secondary, #a1a1aa);
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: var(--p31-radius-full, 9999px);
+    flex-shrink: 0;
+  }
+  .p31-productrow__link:hover,
+  .p31-productrow__link:focus-visible {
+    color: var(--p31-text, #e2e8f0);
+    background: var(--p31-surface2, #1a1a22);
+  }
+  /* Sensory-rest + sanctuary modes: the topbar hides (see CanonTopbar) —
+     the row takes the top edge instead of floating 4rem down. */
+  [data-spoons='0'] .p31-productrow,
+  [data-spoons='1'] .p31-productrow {
+    top: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .p31-productrow {
+      backdrop-filter: none;
+    }
+  }
+</style>

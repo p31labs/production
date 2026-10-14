@@ -1,0 +1,12 @@
+{
+  "name": "packet",
+  "type": "packet",
+  "page": { "widthIn": 8.5, "heightIn": 11, "margin": "20mm 20mm 22mm 20mm", "background": "#ffffff" },
+  "defaultTheme": "ink",
+  "cover": true,
+  "packing": { "mode": "flow", "children": "appended" },
+  "gates": { "readability": false, "pageCountRange": [2, 60], "contentsMatch": true },
+  "footer": "P31 LABS",
+  "footerColor": "#8a8a8a",
+  "accent": "#c05621"
+}

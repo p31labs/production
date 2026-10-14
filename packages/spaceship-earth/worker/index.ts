@@ -947,6 +947,15 @@ async function handleMcp(request: Request, env: Env): Promise<Response> {
 
   const { id, method, params } = body || {};
 
+  // 2026-07-28 stateless contract (SEP-2243): every /mcp POST must name its
+  // method via the Mcp-Method header — EXCEPT the legacy `initialize` /
+  // `notifications/initialized` handshake, which the SDK-v2 ladder keeps
+  // serving headerless for 2025-era clients (and the fleet health gate).
+  const isLegacyHandshake = method === 'initialize' || method === 'notifications/initialized';
+  if (!isLegacyHandshake && !request.headers.get('Mcp-Method')) {
+    return mcpError(request, id, -32020, 'Bad Request: the required Mcp-Method header is absent');
+  }
+
   switch (method) {
     case 'initialize': {
       const protocolVersion = ['2026-07-28', '2025-11-25', '2025-06-18', '2025-03-26', '2024-11-05'].includes(params?.protocolVersion)
@@ -964,11 +973,32 @@ async function handleMcp(request: Request, env: Env): Promise<Response> {
     case 'notifications/initialized': {
       return corsResponse(request, JSON.stringify({ jsonrpc: '2.0', id: id ?? null, result: {} }));
     }
+    // 2026-07-28 stateless contract: `ping` is a removed method — answer
+    // with a proper JSON-RPC error object, never a silent 200 result.
     case 'ping': {
-      return corsResponse(request, JSON.stringify({ jsonrpc: '2.0', id, result: {} }));
+      return mcpError(request, id, -32601, 'Method not found: ping');
+    }
+    // 2026-07-28 stateless contract: `server/discover` returns
+    // protocolVersion + capabilities + serverInfo (+ supported versions).
+    case 'server/discover': {
+      return corsResponse(request, JSON.stringify({
+        jsonrpc: '2.0',
+        id,
+        result: {
+          protocolVersion: MCP_PROTOCOL_VERSION,
+          supportedProtocolVersions: [MCP_PROTOCOL_VERSION],
+          supportedVersions: [MCP_PROTOCOL_VERSION],
+          capabilities: { tools: {}, resources: {}, prompts: {} },
+          serverInfo: { name: 'spaceship-relay', version: '2.0.0' },
+        },
+      }));
     }
     case 'tools/list': {
-      return corsResponse(request, JSON.stringify({ jsonrpc: '2.0', id, result: { tools: MCP_TOOLS } }));
+      return corsResponse(request, JSON.stringify({
+        jsonrpc: '2.0',
+        id,
+        result: { resultType: 'complete', tools: MCP_TOOLS },
+      }));
     }
     case 'tools/call': {
       const name = params?.name;

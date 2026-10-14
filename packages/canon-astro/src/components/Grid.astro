@@ -1,0 +1,20 @@
+---
+import { gridTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  min?: 'sm' | 'md' | 'lg';
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const { min = 'md', class: cls = '', style } = Astro.props;
+const children = await Astro.slots.render('default');
+
+const html = renderHtml(gridTree({
+  min,
+  children: children ? { raw: children } : null,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

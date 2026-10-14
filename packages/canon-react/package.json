@@ -1,0 +1,33 @@
+{
+  "name": "@p31ca/canon-react",
+  "version": "0.1.0",
+  "description": "P31 canon v2 — React 19 wrapper world (components over @p31ca/canon-parts).",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@p31ca/canon-parts": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "typescript": "^5.9.3"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}

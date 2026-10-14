@@ -1,65 +1,155 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { PageHeaderV2, Grid, Stack } from '@p31ca/design-core/canon-v2'
 import { useMarketplaceStore } from '@/store/marketplaceStore'
+import { useWorkspaceStore } from '@/store/workspaceStore'
+import { listServers } from '@/lib/registryClient'
 import { ServerCard } from './components'
+import type { ServerSummary } from '@/types'
+
+const HOME_CARDS = [
+  { icon: '🧭', title: 'Find a tool', desc: 'Browse the list of servers.', to: 'discover' },
+  { icon: '🛠️', title: 'Try a tool', desc: 'Open the playground and run one.', to: 'playground' },
+  { icon: '📤', title: 'Share a tool', desc: 'Tell us about your server.', to: 'publish' },
+]
+
+const HOW_IT_WORKS = [
+  { title: 'Find', line: 'Pick a tool from the catalog.' },
+  { title: 'Try', line: 'Run it in the playground.' },
+  { title: 'Share', line: 'Add your own server.' },
+]
+
+/** Featured row cap — the cognitive-load gate caps grid renders at 7. */
+const FEATURED_MAX = 3
+
+interface CatalogStats {
+  servers: number
+  live: number
+  tools: number
+  checkedAgoMin: number | null
+}
+
+function computeStats(servers: ServerSummary[]): CatalogStats {
+  const live = servers.filter((s) => s.status === 'live').length
+  const tools = servers.reduce((a, s) => a + (s.toolCount ?? 0), 0)
+  const times = servers.map((s) => new Date(s.checkedAt).getTime()).filter((t) => Number.isFinite(t))
+  const newest = times.length > 0 ? Math.max(...times) : null
+  const checkedAgoMin = newest === null ? null : Math.max(1, Math.round((Date.now() - newest) / 60_000))
+  return { servers: servers.length, live, tools, checkedAgoMin }
+}
 
 /**
- * Home — the launcher. Live stats from the real registry, then the fleet.
- * No invented metrics: counts are what the registry reports right now.
+ * Home — the launcher, filled with structure (H2 composition density):
+ * one hero sentence, a LIVE stats row from the registry catalog (with a
+ * graceful fallback), a 3-step "How it works" strip, the three big cards,
+ * and a featured row of up to 3 real catalog servers. Every grid stays
+ * ≤7 cards; the stats row never fabricates a number it did not fetch.
  */
 export function HomeSurface() {
-  const { servers, categories, loading, error, loadedAt, refresh } = useMarketplaceStore()
+  const setSurface = useWorkspaceStore((s) => s.setSurface)
+  const refresh = useMarketplaceStore((s) => s.refresh)
+  const servers = useMarketplaceStore((s) => s.servers)
+
+  const [catalog, setCatalog] = useState<ServerSummary[] | null>(null)
+  const [statsFailed, setStatsFailed] = useState(false)
 
   useEffect(() => {
     if (servers.length === 0) void refresh()
   }, [servers.length, refresh])
 
-  const live = servers.filter((s) => s.health === 'up').length
-  const totalTools = servers.reduce((a, s) => a + s.toolCount, 0)
+  // The LIVE stats row: the full, unfiltered catalog — never Discover's
+  // filtered slice, so the home numbers stay true no matter what was
+  // searched last. Unreachable registry → the plain fallback line.
+  useEffect(() => {
+    let alive = true
+    listServers()
+      .then((s) => {
+        if (alive) {
+          setCatalog(s)
+          setStatsFailed(false)
+        }
+      })
+      .catch(() => {
+        if (alive) setStatsFailed(true)
+      })
+    return () => {
+      alive = false
+    }
+  }, [])
+
+  const stats = catalog ? computeStats(catalog) : null
+  const checkedLabel =
+    stats?.checkedAgoMin == null
+      ? ''
+      : stats.checkedAgoMin === 1
+        ? ' — checked 1 minute ago'
+        : ` — checked ${stats.checkedAgoMin} minutes ago`
+  const featured = (catalog ?? []).filter((s) => s.status === 'live').slice(0, FEATURED_MAX)
+  const featuredRow = featured.length > 0 ? featured : (catalog ?? []).slice(0, FEATURED_MAX)
 
   return (
-    <div className="home-container">
-      <section className="home-hero">
-        <h1 className="greeting-h1">MCP <span style={{ background: 'linear-gradient(135deg, var(--p31-accent), var(--p31-accent-violet), var(--p31-accent-gold))', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent', color: 'transparent' }}>Marketplace</span></h1>
-        <p className="landing-sub">Sovereign MCP servers, live-probed and verified. Discover any tool, open it in the playground, call it for real.</p>
-      </section>
+    <>
+      <PageHeaderV2
+        title="P31"
+        subtitle="Your family's toolbox, checked for you."
+      />
 
-      <section className="launcher-grid" aria-label="Live fleet stats">
-        <div className="surface-card">
-          <div className="surface-card-icon">🛰️</div>
-          <div className="surface-card-title">{servers.length}</div>
-          <div className="surface-card-desc">servers in catalog</div>
+      {statsFailed ? (
+        <div className="landing-sub" role="status">We couldn't check right now.</div>
+      ) : stats && (
+        <div className="landing-sub" role="status" style={{ marginTop: 'var(--p31-space-3)' }}>
+          {`${stats.servers} server${stats.servers === 1 ? '' : 's'} · ${stats.live} live · ${stats.tools} tools${checkedLabel}`}
         </div>
-        <div className="surface-card">
-          <div className="surface-card-icon">🟢</div>
-          <div className="surface-card-title">{live}</div>
-          <div className="surface-card-desc">live right now</div>
-        </div>
-        <div className="surface-card">
-          <div className="surface-card-icon">🧰</div>
-          <div className="surface-card-title">{totalTools}</div>
-          <div className="surface-card-desc">tools exposed</div>
-        </div>
-        <div className="surface-card">
-          <div className="surface-card-icon">🏷️</div>
-          <div className="surface-card-title">{categories.length}</div>
-          <div className="surface-card-desc">categories</div>
-        </div>
-      </section>
+      )}
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--p31-space-3)', margin: 'var(--p31-space-5) 0 var(--p31-space-3)' }}>
-        <h2 style={{ color: 'var(--p31-text-primary)' }}>The fleet</h2>
-        <button type="button" className="btn-sm" onClick={() => void refresh()} disabled={loading}>
-          {loading ? 'probing…' : '↻ refresh'}
-        </button>
-        {loadedAt && <span className="chip" style={{ color: 'var(--p31-text-muted)', fontFamily: 'var(--p31-font-mono)', fontSize: 'var(--p31-text-xs)' }}>probed {new Date(loadedAt).toISOString().slice(0, 19)}Z</span>}
-        <a href="#/discover" style={{ marginLeft: 'auto', color: 'var(--p31-accent)' }}>Browse all →</a>
-      </div>
+      <Stack gap="md" style={{ marginTop: 'var(--p31-space-5)' }}>
+        <h2 style={{ color: 'var(--p31-text-primary)', margin: 0, fontSize: 'var(--p31-text-lg)' }}>How it works</h2>
+        <div style={{ display: 'flex', gap: 'var(--p31-space-4)', flexWrap: 'wrap' }}>
+          {HOW_IT_WORKS.map((s, i) => (
+            <div key={s.title} style={{ flex: 1, minWidth: 160, display: 'flex', gap: 'var(--p31-space-2)', alignItems: 'baseline' }}>
+              <span className="step-badge" style={{ background: 'var(--p31-accent)', color: 'var(--p31-void)', fontWeight: 700, borderRadius: 'var(--p31-radius-full)' }} aria-hidden="true">
+                {i + 1}
+              </span>
+              <span style={{ display: 'flex', flexDirection: 'column', gap: 'var(--p31-space-1)' }}>
+                <span style={{ color: 'var(--p31-text-primary)', fontWeight: 600 }}>{s.title}</span>
+                <span className="surface-card-desc">{s.line}</span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </Stack>
 
-      {error && <div className="setup-err" style={{ marginBottom: 'var(--p31-space-3)' }}>Registry unreachable: {error} — this is the live state, not a mock.</div>}
+      <Grid min="sm" style={{ marginTop: 'var(--p31-space-5)' }}>
+        {HOME_CARDS.map((c) => (
+          <button
+            key={c.to}
+            type="button"
+            className="surface-card"
+            onClick={() => setSurface(c.to as 'discover' | 'playground' | 'publish')}
+            style={{ display: 'flex', flexDirection: 'column', gap: 'var(--p31-space-2)', textAlign: 'left', padding: 'var(--p31-space-5)' }}
+          >
+            <span className="surface-card-icon" aria-hidden="true" style={{ fontSize: 28 }}>{c.icon}</span>
+            <span className="surface-card-title">{c.title}</span>
+            <span className="surface-card-desc">{c.desc}</span>
+          </button>
+        ))}
+      </Grid>
 
-      <div className="launcher-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))' }}>
-        {servers.slice(0, 12).map((s) => <ServerCard key={s.id} server={s} />)}
-      </div>
-    </div>
+      {featuredRow.length > 0 && (
+        <Stack gap="md" style={{ marginTop: 'var(--p31-space-5)' }}>
+          <h2 style={{ color: 'var(--p31-text-primary)', margin: 0, fontSize: 'var(--p31-text-lg)' }}>Try one now</h2>
+          <Grid min="sm">
+            {featuredRow.slice(0, FEATURED_MAX).map((s) => (
+              <ServerCard key={s.id} server={s} />
+            ))}
+          </Grid>
+        </Stack>
+      )}
+
+      <footer style={{ marginTop: 'var(--p31-space-6)', textAlign: 'center' }}>
+        <a href="#/docs" onClick={() => setSurface('docs')} style={{ color: 'var(--p31-text-muted)', fontSize: 'var(--p31-text-sm)' }}>
+          Help and docs
+        </a>
+      </footer>
+    </>
   )
 }

@@ -1,0 +1,41 @@
+---
+/**
+ * Split — two panes + handle (Astro world, static initial state). The React
+ * wrapper owns the pointer/keyboard interaction; this server-only component
+ * renders the same markup at the initial ratio.
+ */
+import { splitTree, renderHtml } from '@p31ca/canon-parts/markup';
+
+interface Props {
+  collapsed?: boolean;
+  collapsible?: boolean;
+  defaultRatio?: number;
+  ariaLabelA?: string;
+  ariaLabelB?: string;
+  class?: string;
+  style?: Record<string, string | number>;
+}
+
+const MIN_RATIO = 0.2;
+const MAX_RATIO = 0.8;
+
+const { collapsed = false, collapsible = false, defaultRatio = 0.5, ariaLabelA, ariaLabelB, class: cls = '', style } = Astro.props;
+const ratio = Math.min(MAX_RATIO, Math.max(MIN_RATIO, defaultRatio));
+
+const a = await Astro.slots.render('a');
+const b = await Astro.slots.render('b');
+
+const html = renderHtml(splitTree({
+  a: a ? { raw: a } : null,
+  b: b ? { raw: b } : null,
+  ratio,
+  collapsed,
+  collapsible,
+  dragging: false,
+  ariaLabelA,
+  ariaLabelB,
+  className: cls,
+  style,
+}));
+---
+<Fragment set:html={html} />

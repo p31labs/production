@@ -19,6 +19,16 @@ new_sqlite_classes = ["MarketplaceCatalogDO"]
 
 [vars]
 ENVIRONMENT = "production"
+# OAuth 2.1 resource server (RFC 8707) — the resource URI that bearer-token
+# `aud` claims MUST match (single source of truth with the RFC 9728 metadata).
+# When RESOURCE_ID + OAUTH_JWKS_URL are set, the bearer gate activates on
+# tools/call; unset → open access (opt-in). See
+# docs/enterprise/api/oauth-21-rollout-runbook.md.
+RESOURCE_ID = "https://marketplace-mcp.trimtab-signal.workers.dev/mcp"
+OAUTH_JWKS_URL = "https://oauth-relay.trimtab-signal.workers.dev/.well-known/jwks.json"
+# RFC 9207 — expected bearer-token issuer. Optional: when unset the verifier
+# derives the issuer from the OAUTH_JWKS_URL origin. Set explicitly to pin a
+# different issuer identifier: OAUTH_ISSUER = "https://oauth-relay.trimtab-signal.workers.dev"
 
 [observability]
 enabled = true

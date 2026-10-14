@@ -1,0 +1,290 @@
+---
+/**
+ * /verify — the Loom public verify surface.
+ *
+ * Reads the Loom's live public verify endpoint
+ * (https://loom-verify.pages.dev/api/loom/verify — the dedicated loom-verify
+ * Pages project bound to the same D1 database as the gated app, outside
+ * Cloudflare Access so no account is needed). Shows chain length, last
+ * verified block (head), and the server's checkedAt. The "Verify now" button
+ * fetches the provenance chain and replays the SHA-256 (RFC 8785 JCS) hash
+ * chain IN THIS BROWSER, then compares the recomputed head with the server's.
+ *
+ * The hash preimage is canonical JSON of { seq, ts, data, prev_hash } with
+ * keys sorted — byte-identical to @p31ca/canon/loom/hash-chain.ts on the
+ * edge, so an in-browser head that matches is a real independent check.
+ *
+ * Honest states only: verified / broken (naming the seq) / unreachable
+ * ("We couldn't reach the ledger right now."). Personal records come back
+ * redacted (data: null) — the browser replays the verifiable prefix and says
+ * so; the server verdict covers the full chain.
+ *
+ * The portal-shell bus ledger (GET /api/bus/verify-chain on
+ * p31-portal-shell.pages.dev) is a SEPARATE chain — the workspace event bus,
+ * not the family log. It sends no CORS headers for this origin, so the page
+ * links it instead of fetching it (a blocked fetch would pollute the
+ * console; links never do).
+ */
+import MarketingShell from '../layouts/MarketingShell.astro';
+import SectionHeader from '../components/marketing/SectionHeader.astro';
+import Footer from '../components/marketing/Footer.astro';
+import constants from '../data/p31-mesh-constants.json';
+import { papers } from '../data/p31-research.ts';
+
+const LOOM_VERIFY = 'https://loom-verify.pages.dev/api/loom/verify';
+const LOOM_PROVENANCE = 'https://loom-verify.pages.dev/api/loom/provenance/';
+const BUS_VERIFY = 'https://p31-portal-shell.pages.dev/api/bus/verify-chain';
+
+// Named research anchors (verified against the Zenodo API 2026-09-23).
+const genesisPaper = papers.find((p) => p.id === 'zenodo-genesis-whitepaper');
+const tetrahedronPaper = papers.find((p) => p.id === 'zenodo-tetrahedron-grand-unified');
+---
+
+<MarketingShell
+  title="Verify the Loom — P31 Labs"
+  description="The Loom's hash-chained log, verified live from the public endpoint — and replayed in your browser, not ours."
+>
+  <main id="main-content" class="section">
+    <div class="vea1-max-w-4xl vea1-mx-auto vea1-px-6 vea1-md-px-12 vea1-lg-px-16">
+      <SectionHeader
+        level="1"
+        title="Verify the Loom"
+        description="The Loom records every shared family action in a hash-chained log on D1. Anyone can check the chain, no account needed. This page reads the public verdict — and replays the chain in your browser."
+      />
+
+      {/* Answer-first opening: what this page proves, in one breath. */}
+      <p class="vea1-mt-5 vea1-text-lg vea1-leading-relaxed" style="color: var(--p31-text);">
+        The Loom is P31 Labs' hash-chained log of shared family actions, stored on Cloudflare D1. Anyone can check it — no account, no permission. This page reads the live verdict from the public endpoint, then replays the SHA-256 chain in your browser so you can confirm the head yourself.
+      </p>
+
+      <div class="vea1-mt-12 vea1-space-y-8">
+        <div class="glass-card vea1-p-8" role="status" aria-live="polite">
+          <h2 class="vea1-text-lg vea1-font-bold vea1-mb-4" style="color: var(--p31-text);">Is the chain intact right now?</h2>
+          <div id="loom-status" class="vea1-text-sm vea1-mb-4" style="color: var(--p31-text-secondary);">Reading the ledger…</div>
+          <div data-p31="grid" data-cols="3" data-even class="vea1-gap-4">
+            <div class="vea1-p-4 vea1-rounded-xl vea1-text-center" style="background: var(--p31-surface);">
+              <div class="vea1-text-xs vea1-uppercase vea1-tracking-widest vea1-mb-1" style="color: var(--p31-text-tertiary, #a1a1a1);">Chain length</div>
+              <div id="loom-checked" class="vea1-text-3xl vea1-font-bold" style="color: var(--p31-accent);">—</div>
+            </div>
+            <div class="vea1-p-4 vea1-rounded-xl vea1-text-center" style="background: var(--p31-surface);">
+              <div class="vea1-text-xs vea1-uppercase vea1-tracking-widest vea1-mb-1" style="color: var(--p31-text-tertiary, #a1a1a1);">Last verified block</div>
+              <div id="loom-head" class="vea1-text-sm vea1-font-mono vea1-font-bold vea1-break-all" style="color: var(--p31-accent);">—</div>
+            </div>
+            <div class="vea1-p-4 vea1-rounded-xl vea1-text-center" style="background: var(--p31-surface);">
+              <div class="vea1-text-xs vea1-uppercase vea1-tracking-widest vea1-mb-1" style="color: var(--p31-text-tertiary, #a1a1a1);">Checked at</div>
+              <div id="loom-at" class="vea1-text-sm vea1-font-semibold" style="color: var(--p31-text);">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card vea1-p-8">
+          <h2 class="vea1-text-lg vea1-font-bold vea1-mb-3" style="color: var(--p31-text);">Can I check it without trusting P31 Labs?</h2>
+          <p class="vea1-text-sm vea1-leading-relaxed vea1-mb-5" style="color: var(--p31-text-secondary);">
+            This button fetches the chain records and replays the hash chain in your browser with the same canonical serialization the edge uses. If the recomputed head matches the server's, you just checked the ledger yourself — no trust required.
+          </p>
+          <button
+            id="verify-now"
+            type="button"
+            class="vea1-px-6 vea1-py-3 vea1-rounded-lg vea1-font-semibold vea1-text-sm vea1-transition"
+            style="background: var(--p31-accent); color: #0a0a0f;"
+          >
+            Verify now
+          </button>
+          <div id="verify-result" class="vea1-mt-5 vea1-text-sm vea1-leading-relaxed" style="color: var(--p31-text-secondary);">
+            Not run yet.
+          </div>
+        </div>
+
+        <div class="glass-card vea1-p-8">
+          <h2 class="vea1-text-lg vea1-font-bold vea1-mb-3" style="color: var(--p31-text);">Where does the Loom come from?</h2>
+          <ul class="vea1-space-y-2 vea1-text-sm" style="color: var(--p31-text-secondary);">
+            <li><strong style="color: var(--p31-text);">Built by P31 Labs</strong> — the Georgia nonprofit behind p31ca.org, EIN 42-1888158.</li>
+            <li><strong style="color: var(--p31-text);">Design in open research</strong> — the {genesisPaper?.title ?? 'P31 Labs Genesis Whitepaper'} (Zenodo DOI <a href={`${constants.zenodoDoiBase}/${genesisPaper?.doi ?? ''}`} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">{genesisPaper?.doi}</a>) is the founding design document; the hash-chain audit pattern sits in the same research program as the {tetrahedronPaper?.title ?? 'Tetrahedron Protocol'} (<a href={`${constants.zenodoDoiBase}/${tetrahedronPaper?.doi ?? ''}`} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">DOI {tetrahedronPaper?.doi}</a>).</li>
+            <li><strong style="color: var(--p31-text);">Published, not private</strong> — {papers.length} DOI-verified papers are open on the <a href={constants.zenodoCommunityUrl} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">P31 Labs Zenodo community</a> (every DOI verified live, 2026-09-23).</li>
+          </ul>
+        </div>
+
+        <div class="glass-card vea1-p-8">
+          <h2 class="vea1-text-lg vea1-font-bold vea1-mb-3" style="color: var(--p31-text);">Is there another chain?</h2>
+          <p class="vea1-text-sm vea1-leading-relaxed vea1-mb-4" style="color: var(--p31-text-secondary);">
+            The workspace event bus keeps its own hash-chained ledger, independent from the Loom's family log. It is read-only public, but it does not send CORS headers for this origin, so we link it instead of fetching it here — open it and the verdict is in the JSON.
+          </p>
+          <a
+            href={BUS_VERIFY}
+            target="_blank"
+            rel="noopener"
+            class="vea1-inline-flex vea1-items-center vea1-gap-1 vea1-text-sm vea1-font-medium vea1-px-4 vea1-py-2 vea1-rounded-lg vea1-border"
+            style="border-color: var(--p31-glass-border); color: var(--p31-accent);"
+          >
+            Open the bus verify-chain endpoint ↗
+          </a>
+        </div>
+
+        <div class="glass-card vea1-p-8">
+          <h2 class="vea1-text-lg vea1-font-bold vea1-mb-3" style="color: var(--p31-text);">What are the raw endpoints?</h2>
+          <ul class="vea1-space-y-2 vea1-text-sm" style="color: var(--p31-text-secondary);">
+            <li><a href={LOOM_VERIFY} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">{LOOM_VERIFY}</a> — the aggregate verdict, recomputed from D1 on every request, never cached.</li>
+            <li><a href={LOOM_PROVENANCE + '15'} target="_blank" rel="noopener" style="color: var(--p31-accent); text-decoration: underline;">{LOOM_PROVENANCE}15</a> — the chain from genesis with raw record data, so a client can recompute the linkage. Personal records are redacted.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+
+  <script is:inline>
+    (function () {
+      var LOOM_VERIFY = 'https://loom-verify.pages.dev/api/loom/verify';
+      var LOOM_PROVENANCE = 'https://loom-verify.pages.dev/api/loom/provenance/';
+      var UNREACHABLE = 'We couldn\u2019t reach the ledger right now.';
+
+      function $id(id) { return document.getElementById(id); }
+
+      function canonicalize(v) {
+        if (v === null) return 'null';
+        var t = typeof v;
+        if (t === 'boolean') return v ? 'true' : 'false';
+        if (t === 'number') return JSON.stringify(v);
+        if (t === 'string') return JSON.stringify(v);
+        if (Array.isArray(v)) return '[' + v.map(canonicalize).join(',') + ']';
+        if (t === 'object') {
+          var keys = Object.keys(v).sort();
+          return '{' + keys.map(function (k) { return JSON.stringify(k) + ':' + canonicalize(v[k]); }).join(',') + '}';
+        }
+        throw new Error('cannot canonicalize ' + t);
+      }
+
+      function preimage(r) {
+        return canonicalize({ seq: r.seq, ts: r.ts, data: r.data, prev_hash: r.prev_hash });
+      }
+
+      function sha256Hex(s) {
+        var buf = new TextEncoder().encode(s);
+        return crypto.subtle.digest('SHA-256', buf).then(function (d) {
+          return Array.from(new Uint8Array(d)).map(function (b) {
+            return b.toString(16).padStart(2, '0');
+          }).join('');
+        });
+      }
+
+      function replay(chain) {
+        if (!chain.length) {
+          return Promise.resolve({ ok: true, head: '', walked: 0, redacted: 0 });
+        }
+        var redacted = chain.filter(function (r) { return r.data === null; }).length;
+        if (chain[0].prev_hash !== '') {
+          return Promise.resolve({ ok: false, brokenAt: chain[0].seq, walked: 0, redacted: redacted, head: '' });
+        }
+        var prev = chain[0];
+        var walked = 1;
+        var i = 0;
+        function step() {
+          if (i >= chain.length - 1) {
+            return sha256Hex(preimage(prev)).then(function (head) {
+              return { ok: true, head: head, walked: walked, redacted: redacted };
+            });
+          }
+          i += 1;
+          var cur = chain[i];
+          if (cur.data === null) {
+            return Promise.resolve({ ok: 'partial', walked: walked, redacted: redacted, head: null });
+          }
+          return sha256Hex(preimage(prev)).then(function (expected) {
+            if (cur.prev_hash !== expected) {
+              return { ok: false, brokenAt: cur.seq, walked: walked, redacted: redacted, head: '' };
+            }
+            prev = cur;
+            walked += 1;
+            return step();
+          });
+        }
+        return step();
+      }
+
+      function shortHead(h) {
+        if (!h) return '—';
+        if (h.length <= 16) return h;
+        return h.slice(0, 16) + '…';
+      }
+
+      function renderVerdict(v) {
+        var status = $id('loom-status');
+        if (!v) {
+          status.textContent = UNREACHABLE;
+          status.style.color = 'var(--p31-text-secondary)';
+          return;
+        }
+        $id('loom-checked').textContent = String(v.checked ?? 0) + ' records';
+        $id('loom-head').textContent = shortHead(v.head);
+        $id('loom-at').textContent = v.checkedAt ? new Date(v.checkedAt).toLocaleString() : '—';
+        if (v.valid === true) {
+          status.textContent = 'Chain verified — ' + v.checked + ' records replayed by the server, head ' + shortHead(v.head) + '.';
+          status.style.color = '#22c55e';
+        } else if (v.valid === false) {
+          status.textContent = 'Chain broken at seq ' + (v.brokenAt ?? '?') + ' — the ledger reports an integrity gap.';
+          status.style.color = '#ef4444';
+        } else {
+          status.textContent = UNREACHABLE;
+          status.style.color = 'var(--p31-text-secondary)';
+        }
+      }
+
+      function loadVerdict() {
+        return fetch(LOOM_VERIFY, { cache: 'no-store' })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .catch(function () { return null; });
+      }
+
+      loadVerdict().then(renderVerdict);
+
+      var btn = $id('verify-now');
+      var result = $id('verify-result');
+      btn.addEventListener('click', function () {
+        result.textContent = 'Fetching the chain and replaying it in your browser…';
+        loadVerdict().then(function (v) {
+          renderVerdict(v);
+          if (!v || v.valid !== true) {
+            if (!v) {
+              result.textContent = UNREACHABLE;
+            } else if (v.valid === false) {
+              result.textContent = 'The server reports a broken chain at seq ' + (v.brokenAt ?? '?') + ' — nothing more to recompute here.';
+            } else {
+              result.textContent = UNREACHABLE;
+            }
+            return;
+          }
+          var lastSeq = v.checked - 1;
+          if (lastSeq < 0) {
+            result.textContent = 'The ledger has no records yet — nothing to replay.';
+            return;
+          }
+          return fetch(LOOM_PROVENANCE + lastSeq, { cache: 'no-store' })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (prov) {
+              if (!prov || !Array.isArray(prov.chain) || !prov.chain.length) {
+                result.textContent = UNREACHABLE;
+                return;
+              }
+              return replay(prov.chain).then(function (mine) {
+                if (mine.ok === true) {
+                  if (mine.head === v.head) {
+                    result.textContent = 'Verified in your browser — ' + mine.walked + ' records replayed, recomputed head ' + shortHead(mine.head) + ' matches the server verdict. This chain is intact.';
+                  } else {
+                    result.textContent = 'Your replay finished (' + mine.walked + ' records) but its head ' + shortHead(mine.head) + ' does not match the server\u2019s ' + shortHead(v.head) + ' — treat the ledger as broken and tell us.';
+                  }
+                } else if (mine.ok === 'partial') {
+                  result.textContent = 'Replayed the first ' + mine.walked + ' records in your browser; ' + mine.redacted + ' record(s) are personal and redacted, so only the server can cover the full chain. Server verdict: valid \u00b7 ' + v.checked + ' records.';
+                } else {
+                  result.textContent = 'Your replay broke at seq ' + (mine.brokenAt ?? '?') + ' — the stored prev_hash does not match the recomputed one.';
+                }
+              });
+            })
+            .catch(function () {
+              result.textContent = UNREACHABLE;
+            });
+        });
+      });
+    })();
+  </script>
+</MarketingShell>

@@ -7,8 +7,17 @@ not things the agent believes. If a fact is not here and not in the last
 
 ## Active facet
 
-`Facet B` — human anchor (Thread A). Built: approve.ts, `design approve`,
-`design audit --canon`. Next: commit + synthesis.
+`design-workflow` — v6.0 executed (2026-10-11). "Execute the Rehearsed Moves":
+firmware builds clean ON-BOX (ESP-IDF v5.5.3 installed; p31-node-zero.bin
+1,277,280 B; 17/17 lv_color_hex → P31_COLOR_*; single-header web assets 2,958 B
+gz; /api/status wired from real telemetry; 12 pre-existing defects fixed
+in-facet, uncommitted for operator review). Task-completion gate (DeskCert
+model) closes RFC-0006 §8.5. Adoption baseline: 239 files scanned, 168
+flagged; portal color-clean, p31ca-public = drift target (2045 hex). MCP
+surface RATIFIED 17. V6 suite ALL GREEN. Next: operator packet
+(V6-A-operator/operator-packet.md) — canon merge a07f6702 → handlers PR →
+deploy → repoint; then close-the-loop groups 1-2; flash remains
+hardware-gated.
 
 ## Verified facts (checked this session)
 
@@ -495,3 +504,36 @@ node tools/system-test/run.mjs --fast
 2. **Byte-identical extraction is sacred.** Renaming vocabulary changes every
    derived value. Pickle determinism was preserved by matching byte-for-byte.
 3. **The build must be on disk.** A narrated build is not a build.
+## Verified facts (design-workflow parallel lanes, 2026-10-11)
+
+| Fact | Verification command | Result |
+|---|---|---|
+| Lane A delta: canon has 448 tokens, 0 clamp/var/breakpoint mentions | Lane A delta-table.md (node one-liners pasted) | ✅ function-value exclusion verified |
+| Lane A emitter: 5 targets, 116 emitted tokens | `node tier-emitter.mjs --target all` | ✅ exit 0 |
+| Lane B resolver: 13/13 assertions | `node --test device-tiers.test.mjs` | ✅ pass 13, fail 0 |
+| Lane B negative control (sabotaged resolver) | `node --test negative-control.mjs` | ✅ fails at flags.coarse assertion |
+| Lane C audit good/bad fixtures | `node mobile-first-audit.mjs fixtures/good.css` / `bad.css` | ✅ exit 0 / exit 1 (8 FAIL + 2 WARN) |
+| Lane C dom-check (system chromium, 320px, media neutralized) | `node dom-check.mjs` | ✅ FAIL on deliberately-bad fixture (exit 1) |
+| Lane C audit vs Lane A css-mobile tokens | `node mobile-first-audit.mjs A-token-pipeline/dist/css-mobile/tokens.mobile.css` | ✅ PASS 6/6 |
+| Lane D budget gate | `node embedded-budget.mjs` | ✅ web 2,960 B gz ≤ 102,400; header 8,018 ≤ 8,192 |
+| Lane D oversized fixture negative control | `node embedded-budget.mjs fixtures …` | ✅ FAIL exit 1 (109,493 gz) |
+| Lane D header compiles vs real LVGL 8.4 tree | `cc -fsyntax-only -Wall -Werror -I …components/lvgl -I …main dist/p31_theme.h` | ✅ exit 0, zero warnings |
+| Breakpoints single-source (B canonical, A consumes) | `grep breakpoint A-token-pipeline/dist/css-full/tokens.css` | ✅ `--p31-breakpoint-*: 37.5/52.5/75rem` |
+| Aggregate suite: 10 gates, 6 negative controls | `node design-workflow/run-all-gates.mjs` | ✅ ALL GATES PASS, exit 0 |
+| Firmware gap filed | `ls docs/fix-plans/nodezero-embedded-ui-gap.md` | ✅ no HTTP server / SPIFFS mount in node-zero main/* (grep evidence) |
+
+## Open loop (this facet) — updated 2026-10-11
+
+- v2.0 runbook sealed: `P31-local-workspace/DESIGN-SYSTEM-PARALLEL-PATHS-RUNBOOK-V2.md`.
+  On-box roots: Lane B (matrix/doctrine/MCP/llms.txt) + Lane C (CI enforcement);
+  Lane D (design v2) parallel; Lane A (firmware) hardware-gated per fix-plan.
+- Corrections sealed: 17 (not 16) lv_color_hex hardcodes in p31_ui.c; MCP surface
+  fragmented (4/13/35 tools) — resolve before extending; portal `pnpm gate` chain
+  is the CI anchor; APCA via zero-dep port of apca-w3 math, WCAG 2.2 floor, no
+  WCAG 3 claims; esp_http_server file_serving example + FLASH_IN_PROJECT pattern.
+
+- Lane E not started: regression matrix (320/375/390/768/1440/4K × spoons ×
+  reduced-motion × pointer × 200% zoom), DESIGN.md tier doctrine, MCP
+  `resolve_device_tier` exposure, llms.txt — blocked on human go-ahead.
+- Firmware fix-plan hardware-gated (no toolchain, no device, disk 97%).
+- Disk 97% finding unresolved (needs Will: rclone + stale blobs, per STATE.md).

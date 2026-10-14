@@ -1,6 +1,6 @@
 ---
 q: Can I deploy P31 for my own organization?
-a: Yes. The stack is open source and deployable — the flagships are running on Cloudflare Pages + Workers, and the enterprise package documents the architecture as deployed. A pilot with a small engineering team can stand up the core in days.
+a: Yes. The stack is open source and deployable — 44 registry servers, 22 live today, run on Cloudflare Pages + Workers. The enterprise package documents the architecture as deployed. A pilot with a small engineering team can stand up the core in days.
 category: commercial
 ---
 

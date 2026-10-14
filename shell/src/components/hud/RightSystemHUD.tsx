@@ -1,7 +1,7 @@
 import { useAppStore } from '../../store/useAppStore';
 import { useEffectsStore } from '../../store/useEffectsStore';
 import { useSensoryStore } from '../../store/useSensoryStore';
-import { useThemeStore } from '@p31ca/shell-chrome';
+import { useThemeStore } from '../../store/useThemeStore';
 import { coherenceForSpoons } from '../../lib/coherence';
 
 const DENSITY_OPTIONS = ['low', 'medium', 'high'] as const;

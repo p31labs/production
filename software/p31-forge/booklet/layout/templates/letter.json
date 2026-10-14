@@ -1,0 +1,31 @@
+{
+  "name": "letter",
+  "type": "letter",
+  "page": {
+    "widthIn": 8.5,
+    "heightIn": 11,
+    "margin": "25mm 25mm 25mm 25mm",
+    "background": "#ffffff"
+  },
+  "defaultTheme": "ink",
+  "cover": false,
+  "packing": {
+    "mode": "flow"
+  },
+  "gates": {
+    "readability": false,
+    "pageCountRange": [
+      1,
+      4
+    ]
+  },
+  "footer": "P31 LABS, INC.",
+  "footerColor": "#8a8a8a",
+  "accent": "#c05621",
+  "themes": [
+    "professional",
+    "family",
+    "friends",
+    "ink"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "pos-control-valid-child",
+  "extends": ["Base"],
+  "tokens": {
+    "radius-sm": {
+      "$value": { "value": 10, "unit": "px" },
+      "$type": "dimension"
+    },
+    "accent": {
+      "$value": { "colorSpace": "oklch", "components": [0.66, 0.18, 200] },
+      "$type": "color"
+    }
+  }
+}

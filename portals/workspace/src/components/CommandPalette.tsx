@@ -1,70 +1,37 @@
-import { useEffect, useRef, useState } from 'react'
+import { CommandPalette as CanonCommandPalette, type CommandItem } from '@p31ca/design-core/compositions'
 import { useWorkspaceStore } from '@/store/workspaceStore'
 import { useModeGate } from '@/hooks/useModeGate'
 import { ROUTES } from '@/lib/routes'
+import type { SurfaceId } from '@/types'
 
+/**
+ * CommandPalette — consumer wrapper over the canon CommandPalette
+ * composition. The canon owns the overlay chrome, filtering and keyboard
+ * navigation; the portal supplies the surface list and owns routing on
+ * select.
+ */
 export function CommandPalette() {
   const open = useWorkspaceStore((s) => s.paletteOpen)
   const closePalette = useWorkspaceStore((s) => s.closePalette)
   const { navigate } = useModeGate()
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [query, setQuery] = useState('')
 
-  useEffect(() => {
-    if (open) {
-      setQuery('')
-      setTimeout(() => inputRef.current?.focus(), 0)
-    }
-  }, [open])
-
-  if (!open) return null
-
-  const results = ROUTES.filter((r) => r.label.toLowerCase().includes(query.toLowerCase()))
+  const items: CommandItem[] = ROUTES.map((route) => ({
+    id: route.id,
+    label: route.label,
+    icon: route.icon,
+    description: `Jump to ${route.label}`,
+  }))
 
   return (
-    <div
-      className="modal-backdrop active"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Command palette"
-      onClick={(e) => { if (e.target === e.currentTarget) closePalette() }}
-    >
-      <div className="modal-box palette-box">
-        <div className="palette-input-wrap">
-          <input
-            ref={inputRef}
-            type="text"
-            className="palette-input"
-            placeholder="Type a surface name or command…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && results[0]) {
-                closePalette()
-                navigate(results[0].id)
-              }
-            }}
-          />
-        </div>
-        <div className="palette-results">
-          {results.map((r, i) => (
-            <button
-              key={r.id}
-              type="button"
-              className="palette-item"
-              onClick={() => { closePalette(); navigate(r.id) }}
-            >
-              <span>{r.icon} Jump to {r.label}</span>
-              <kbd className="search-kbd">⌘{i + 1}</kbd>
-            </button>
-          ))}
-          {results.length === 0 && (
-            <div style={{ padding: 16, color: 'var(--p31-cloud)', textAlign: 'center' }}>
-              No matching surfaces.
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+    <CanonCommandPalette
+      open={open}
+      onClose={closePalette}
+      items={items}
+      onSelect={(id) => {
+        closePalette()
+        navigate(id as SurfaceId)
+      }}
+      placeholder="Type a surface name or command…"
+    />
   )
 }

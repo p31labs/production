@@ -74,23 +74,23 @@ export default function SpaceshipDome() {
   }, [spoons, coherence, reduced])
 
   return (
-    <div className="rounded-2xl border p-6 text-center" style={{ borderColor: 'var(--p31-glass-border)', background: 'var(--p31-surface)' }}>
-      <div className="mb-3">
-        <span className="text-lg font-semibold" style={{ color: 'var(--p31-text)' }}>🌍 Spaceship Earth · coherence</span>
+    <div className="sd-rounded-2xl sd-border sd-p-6 sd-text-center" style={{ borderColor: 'var(--p31-glass-border)', background: 'var(--p31-surface)' }}>
+      <div className="sd-mb-3">
+        <span className="sd-text-lg sd-font-semibold" style={{ color: 'var(--p31-text)' }}>🌍 Spaceship Earth · coherence</span>
       </div>
-      <canvas ref={canvasRef} className="mx-auto" aria-label="Geodesic dome coherence visualization" />
-      <div className="mt-3 flex items-center justify-center gap-3 text-xs">
+      <canvas ref={canvasRef} className="sd-mx-auto" aria-label="Geodesic dome coherence visualization" />
+      <div className="sd-mt-3 sd-flex sd-items-center sd-justify-center sd-gap-3 sd-text-xs">
         <span style={{ color: 'var(--p31-text-tertiary)' }}>Coherence {(coherence * 100).toFixed(0)}%</span>
-        <span className="font-mono px-2 py-0.5 rounded-full" style={{ background: 'color-mix(in oklab, var(--p31-chain-verified, #788c5d) 15%, transparent)', color: 'var(--p31-chain-verified, #788c5d)' }}>{spoons} spoons</span>
+        <span className="sd-font-mono sd-px-2 sd-py-0-5 sd-rounded-full" style={{ background: 'color-mix(in oklab, var(--p31-chain-verified, #788c5d) 15%, transparent)', color: 'var(--p31-chain-verified, #788c5d)' }}>{spoons} spoons</span>
       </div>
-      <div className="mt-3 flex justify-center gap-2">
+      <div className="sd-mt-3 sd-flex sd-justify-center sd-gap-2">
         {([1, 3, 5] as const).map((s) => (
-          <button key={s} onClick={() => setSpoons(s)} className="px-2 py-1 rounded text-xs" style={{ background: spoons === s ? 'var(--p31-accent)' : 'transparent', color: spoons === s ? 'var(--p31-bg, #141413)' : 'var(--p31-text)', border: '1px solid var(--p31-glass-border)' }}>
+          <button key={s} onClick={() => setSpoons(s)} className="sd-px-2 sd-py-1 sd-rounded sd-text-xs" style={{ background: spoons === s ? 'var(--p31-accent)' : 'transparent', color: spoons === s ? 'var(--p31-bg, #141413)' : 'var(--p31-text)', border: '1px solid var(--p31-glass-border)' }}>
             {s} spoons
           </button>
         ))}
       </div>
-      <p className="mt-3 text-xs" style={{ color: 'var(--p31-text-tertiary)' }}>
+      <p className="sd-mt-3 sd-text-xs" style={{ color: 'var(--p31-text-tertiary)' }}>
         More spoons = more visual richness. The real dome follows the same rule — bloom, segments, and star count scale with cognitive energy.
       </p>
     </div>

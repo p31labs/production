@@ -18,6 +18,7 @@
     "scan:mcp": "node ../../scripts/scan-mcp-annotations.mjs"
   },
   "dependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
     "yaml": "^2.3.1"
   },
   "devDependencies": {

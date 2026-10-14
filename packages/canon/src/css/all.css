@@ -5,6 +5,7 @@
  * component/layout CSS canon now owns. Import this instead of
  * @p31ca/design-core/css/all.css.
  */
+@import './layers.css';
 @import './tokens.css';
 @import './base.css';
 @import './layout.css';

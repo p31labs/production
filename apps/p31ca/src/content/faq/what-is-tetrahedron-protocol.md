@@ -4,4 +4,4 @@ a: The founding paper — a geometric framework connecting SIC-POVM quantum meas
 category: stack
 ---
 
-The Tetrahedron Protocol is the anchor of P31's research. It's published on Zenodo with a live DOI, along with twenty-plus papers covering sovereign identity, the care economy, and the audit chain. All papers are open-access and citable.
+The Tetrahedron Protocol is the anchor of P31's research. It is published on Zenodo with a live DOI, along with 21 more — 22 DOI-verified papers total, covering sovereign identity, the care economy, and the audit chain. All papers are open-access and citable.
