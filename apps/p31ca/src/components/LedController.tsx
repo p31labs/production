@@ -462,12 +462,9 @@ export default function LedController() {
                   type="button"
                   className={`devpanel__env${active ? ' is-active' : ''}`}
                   onClick={() => {
-                    const store = useThemeStore.getState() as unknown as { setTheme?: (x: string) => void }
-                    if (typeof store.setTheme === 'function') store.setTheme(id)
-                    else {
-                      localStorage.setItem('p31:theme', id)
-                      document.documentElement.setAttribute('data-theme', id)
-                    }
+                    // Canonical write path (the chameleon store) — same as
+                    // ThemePicker + topbar cycle: one store, one persistence.
+                    useThemeStore.getState().setTheme(id)
                   }}
                 >
                   <svg viewBox="0 0 40 40" aria-hidden="true">

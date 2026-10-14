@@ -364,16 +364,6 @@ export const CanonTopbar: React.FC<CanonTopbarProps> = () => {
                 <a className="posner-overflow__item" href="/treasury" onClick={closeMenu}>
                   <span aria-hidden="true">💠</span> Treasury
                 </a>
-                <a className="posner-overflow__item" href="/arcade" onClick={closeMenu}>
-                  <span aria-hidden="true">🎮</span> Arcade
-                </a>
-                <div className="posner-overflow__sep" />
-                <a className="posner-overflow__item" href="https://phosphorus31.org" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
-                  <span aria-hidden="true">🫀</span> Nonprofit portal
-                </a>
-                <a className="posner-overflow__item" href="https://github.com/p31labs" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
-                  <span aria-hidden="true">🐙</span> GitHub
-                </a>
               </div>
             )}
           </div>

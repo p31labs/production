@@ -6,6 +6,7 @@ interface ThemeState {
   theme: ThemeId;
   syncFromDom: () => void;
   applyTheme: () => void;
+  setTheme: (theme: ThemeId) => void;
   cycleTheme: () => ThemeId;
 }
 
@@ -22,6 +23,15 @@ export const useThemeStore = create<ThemeState>((set, get) => ({
     if (typeof document !== 'undefined') {
       document.documentElement.setAttribute('data-theme', theme);
     }
+  },
+  // Canonical theme write: one path for every switcher (ThemePicker,
+  // LedController env tab, topbar cycle) — set state, persist, apply DOM.
+  setTheme: (theme) => {
+    set({ theme });
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('p31:theme', theme);
+    }
+    get().applyTheme();
   },
   cycleTheme: () => {
     const current = get().theme;

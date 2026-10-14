@@ -3,9 +3,9 @@ import { DESTINATIONS, destinationFor } from '../../portalRouter'
 
 describe('portalRouter', () => {
   it('exposes every destination', () => {
-    expect(DESTINATIONS).toHaveLength(6)
+    expect(DESTINATIONS).toHaveLength(5)
     expect(DESTINATIONS.map((d) => d.id)).toEqual([
-      'workspace', 'qpj', 'arcade', 'chat', 'tetra', 'passports',
+      'workspace', 'qpj', 'arcade', 'chat', 'passports',
     ])
   })
 

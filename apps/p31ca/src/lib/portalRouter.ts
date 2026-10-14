@@ -6,7 +6,7 @@
  * (verified live); the live dot only shows on destinations we've confirmed.
  */
 
-export type PortalId = 'workspace' | 'qpj' | 'arcade' | 'chat' | 'tetra' | 'passports'
+export type PortalId = 'workspace' | 'qpj' | 'arcade' | 'chat' | 'passports'
 
 export interface PortalDestination {
   id: PortalId
@@ -61,16 +61,6 @@ export const DESTINATIONS: PortalDestination[] = [
     description: 'Family chat with the P31 community.',
     live: true,
     access: 'open',
-    external: true,
-  },
-  {
-    id: 'tetra',
-    label: 'Tetra',
-    icon: '💠',
-    url: 'https://tetra.p31ca.org/',
-    description: 'The parent portal — coordination, care, and the tetrahedron identity.',
-    live: true,
-    access: 'caregiver',
     external: true,
   },
   {

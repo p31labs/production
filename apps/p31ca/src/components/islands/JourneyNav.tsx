@@ -6,11 +6,12 @@ import { yieldToMain } from '../../lib/yieldToMain'
 /**
  * JourneyNav — self-contained cross-portal dropdown.
  *
- * Sections (per the nav-consolidation decision, 2026-10-12):
+ * Sections (per the nav-consolidation decision, 2026-10-14):
  *   Hub → the hub's own journey page
- *   PRODUCTS → the 7 product surfaces (formerly the tier-2 ProductRow strip;
- *              merged here so cross-product travel lives in ONE menu)
- *   DOORS → the six portalRouter destinations (cross-portal travel)
+ *   DOORS → every portal surface in ONE menu: the product links
+ *           (formerly the tier-2 ProductRow strip / PRODUCTS section) plus
+ *           the portalRouter destinations. No PHOS, Status, or Tetra (per
+ *           the nav cleanup); the Nonprofit product link is Institutional.
  *
  * All positioning is inline (works on every page without a page-scoped
  * stylesheet). Registers with menuStore so opening Journey closes the act
@@ -18,17 +19,13 @@ import { yieldToMain } from '../../lib/yieldToMain'
  */
 
 /** The product surfaces — formerly ProductRow.astro (retired, kept on disk
- *  per the no-delete rule). One source now, rendered as the menu's
- *  middle section. NOTE: Workspace lives in the DOORS section (portalRouter
- *  DESTINATIONS) — it was listed here too, which rendered the destination
- *  twice in one dropdown (owner-reported double entry). */
-const PRODUCTS = [
-  { label: 'Marketplace', href: 'https://p31-portal-mcp-marketplace.pages.dev' },
-  { label: 'Design', href: 'https://design.p31ca.org' },
-  { label: 'PHOS', href: 'https://phos.p31ca.org' },
-  { label: 'Bonding', href: 'https://bonding.p31ca.org' },
-  { label: 'Nonprofit', href: 'https://phosphorus31.org' },
-  { label: 'Status', href: 'https://status.p31ca.org' },
+ *  per the no-delete rule). Folded under DOORS so cross-portal travel lives
+ *  in ONE section. Each carries an emoji (diamonds retired 2026-10-14). */
+const PRODUCT_LINKS = [
+  { label: 'Marketplace', href: 'https://p31-portal-mcp-marketplace.pages.dev', icon: '🛒' },
+  { label: 'Design', href: 'https://design.p31ca.org', icon: '🎨' },
+  { label: 'Bonding', href: 'https://bonding.p31ca.org', icon: '🔗' },
+  { label: 'Institutional', href: 'https://phosphorus31.org', icon: '🏛️' },
 ]
 
 const sectionLabelStyle: React.CSSProperties = {
@@ -87,7 +84,7 @@ const JourneyNav: React.FC<{ current?: string }> = ({ current }) => {
         aria-expanded={open}
         aria-controls="journey-menu"
         onClick={() => {
-          // INP: the journey panel renders 7 product links + 6 door links —
+          // INP: the journey panel renders 4 product links + 5 door links —
           // yield a frame so the button's pressed state paints first.
           void yieldToMain().then(() => toggleMenu('journey'))
         }}
@@ -141,8 +138,8 @@ const JourneyNav: React.FC<{ current?: string }> = ({ current }) => {
           </a>
           <div style={{ height: 1, background: 'rgba(255,255,255,0.08)', margin: '6px 4px' }} />
 
-          <div style={sectionLabelStyle}>Products</div>
-          {PRODUCTS.map((p) => (
+          <div style={sectionLabelStyle}>Doors</div>
+          {PRODUCT_LINKS.map((p) => (
             <a
               key={p.label}
               role="menuitem"
@@ -152,12 +149,9 @@ const JourneyNav: React.FC<{ current?: string }> = ({ current }) => {
               style={itemStyle}
               onClick={closeMenu}
             >
-              <span aria-hidden="true" style={{ opacity: 0.8, fontSize: 10 }}>◆</span> {p.label}
+              <span aria-hidden="true">{p.icon}</span> {p.label}
             </a>
           ))}
-
-          <div style={{ height: 1, background: 'rgba(255,255,255,0.08)', margin: '6px 4px' }} />
-          <div style={sectionLabelStyle}>Doors</div>
           {DESTINATIONS.map((d) => {
             const isCurrent = current === d.id
             return (

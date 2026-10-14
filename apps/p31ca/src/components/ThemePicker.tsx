@@ -18,14 +18,9 @@ export default function ThemePicker() {
   }, [])
 
   function pick(id: EnvironmentId) {
-    const store = useThemeStore.getState()
-    const setTheme = (store as unknown as { setTheme?: (id: string) => void }).setTheme
-    if (typeof setTheme === 'function') {
-      setTheme(id)
-    } else {
-      localStorage.setItem('p31:theme', id)
-      document.documentElement.setAttribute('data-theme', id)
-    }
+    // Canonical write path (the chameleon store): state + persistence +
+    // data-theme application are one store call now — no local fallback.
+    useThemeStore.getState().setTheme(id)
     setCurrent(id)
   }
 
