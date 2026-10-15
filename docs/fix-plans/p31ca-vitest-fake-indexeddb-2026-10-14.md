@@ -15,6 +15,7 @@ portalRouter test modified this session could not be executed)
 **Discovered at:** 2026-10-14
 **Severity:** high (the arc discipline "every change is verified by
 execution" is broken — build passes, but no test suite can run at all)
+**Status: RESOLVED 2026-10-14** — see ## Resolution below.
 
 ## Symptom
 
@@ -67,6 +68,21 @@ phos-v2, passport) are all gated behind this broken setup file.
 None needed — this restores intended behavior (tests should run). The risk is
 purely additive: a new devDependency + the first real test run in this
 workspace.
+
+## Resolution (2026-10-14)
+
+- `fake-indexeddb@^3.1.8` added to `apps/p31ca` devDependencies; `pnpm
+  install --filter p31ca` (the package was never a dependency anywhere —
+  `pnpm-lock.yaml` had 0 hits; only `software/package.json` declared it).
+- `npx vitest run` now executes: **15 test files, 85 tests, all passing**.
+- The session's `portalRouter.test.ts` (6→5 destinations, Tetra removal) is
+  now verified by execution, not just inspection.
+- One latent break surfaced once the suite could run: `ledStore.test.ts`
+  asserted `LED_MODES).toHaveLength(7)` but the store has 8 modes (all 8
+  labeled, `sigh` present since the store was first tracked) — the test was
+  stale, never executed. Corrected to 8. No store regression.
+- If a future suite change breaks under the now-working setup, file a new
+  follow-up plan rather than marking the suite red.
 
 ## Related
 

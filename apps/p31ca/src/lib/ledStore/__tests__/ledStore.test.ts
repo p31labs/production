@@ -18,7 +18,7 @@ describe('useLedStore', () => {
   })
 
   it('exposes every LED mode with a label', () => {
-    expect(LED_MODES).toHaveLength(7)
+    expect(LED_MODES).toHaveLength(8)
     for (const m of LED_MODES) expect(MODE_LABELS[m]).toBeTruthy()
   })
 
