@@ -2,7 +2,7 @@
 id: p31_fix_plan_capital_machine_standalone_repo_hygiene_20261014_v1.0
 type: fix-plan
 component: production
-status: open
+status: resolved
 retention: archive-90d
 created: 2026-10-14T00:00:00Z
 owner: will
@@ -77,8 +77,12 @@ parent `git status`/scans no longer surface the nested repo as `??`.
 - `scripts/push.sh` (capital-machine) pushes both repos via the `gh` CLI
   credential helper (auth lives in `~/.config/gh/hosts.yml`; a stale `GH_TOKEN`
   env var was shadowing it — the script reads `gh auth token`).
-- **Parent repo pushed**: `bde3459..7834457 main -> main` on
+- **Parent repo pushed**: `bde3459..7834457` then `7834457..2fbd87b` on
   `github.com/p31labs/production` (2026-10-15).
-- capital-machine has no upstream repo yet — `push.sh` prints the owner steps
-  to create it (`gh repo create p31labs/p31-capital-machine --private`) and
-  push via `CM_REMOTE=origin`.
+- **Capital-machine repo created + pushed**: `p31labs/p31-capital-machine`
+  (public, per owner decision) at `github.com/p31labs/p31-capital-machine`;
+  `origin` remote configured, `main -> main` pushed (2026-10-15).
+- History rewritten to purge two oversized blobs (6.7 GB sed temp + 589 MB
+  index.ts) that exceeded GitHub's 100 MB limit; `.git` shrank 88 MB → 500 KB.
+  Incident: the untracked `docs/NBXPLORER_RUNBOOK.md` was lost in that rewrite
+  — see `docs/fix-plans/nbxplorer-runbook-lost.md`.
