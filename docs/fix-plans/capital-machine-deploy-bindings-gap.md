@@ -79,3 +79,9 @@ that keeps the live workers healthy today.
 - Created `workers/capital-machine/wrangler.toml` so the orchestrator deploys
   with its `CAPITAL_DB`/`CAPITAL_KV` bindings.
 - CI `deploy.yml` routes through the same fixed script.
+
+## Deploy verification (2026-10-15)
+
+- `scripts/deploy-live.sh` redeployed revenue-ledger, entitlement,
+  capital-allocator, config-gateway, and the portal from per-worker tomls;
+  all health checks 200.

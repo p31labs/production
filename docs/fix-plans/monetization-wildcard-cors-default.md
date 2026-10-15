@@ -80,3 +80,12 @@ the change on auth, write, and config routes first.
 
 Re-verify the origin inventory after the next deploy; add any new consumer
 origin (e.g. a redeployed Astro dashboard) to each worker's `ALLOWED_ORIGINS`.
+
+## Live verification (2026-10-15)
+
+- `curl -H "Origin: https://evil.example" revenue-ledger/health` → no
+  `Access-Control-Allow-Origin` header.
+- `curl -H "Origin: https://p31ca.org" revenue-ledger/health` →
+  `access-control-allow-origin: https://p31ca.org`.
+- Portal `/api/health/invariants` with an unknown origin → no ACAO header.
+- All five workers redeployed with `ALLOWED_ORIGINS` var set.

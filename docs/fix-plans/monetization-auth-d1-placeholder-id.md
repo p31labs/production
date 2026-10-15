@@ -2,7 +2,7 @@
 id: p31_fix_plan_monetization_auth_d1_placeholder_id_20261014_v1.0
 type: fix-plan
 component: monetization
-status: open
+status: resolved
 retention: keep-forever
 created: 2026-10-14T00:00:00Z
 owner: will
@@ -71,3 +71,13 @@ unavailable, so `wrangler d1 create` cannot run). The placeholder remains
 documented in `wrangler.toml:68` with the required command. Owner step: create
 `p31-monetization-auth`, paste the UUID, apply `migrations/0001_auth.sql`, and
 redeploy from the committed config. Optionally add a placeholder gate to CI.
+
+## Resolution (2026-10-15)
+
+- `scripts/d1-auth-bootstrap.mjs` automates the whole step (create if missing,
+  patch placeholder, apply migration; idempotent). Wired as
+  `pnpm bootstrap:auth-d1`.
+- Executed: `p31-monetization-auth` created (uuid `ecb91dbf-…`), placeholder
+  replaced in `wrangler.toml`, `migrations/0001_auth.sql` applied.
+- Portal redeployed with `AUTH_DB: p31-monetization-auth (ecb91dbf-…)` binding
+  confirmed in the deploy output (2026-10-15); passkey persistence is now live.

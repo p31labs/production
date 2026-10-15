@@ -71,3 +71,10 @@ parent `git status`/scans no longer surface the nested repo as `??`.
   `origin/main`).
 - If a pinned cross-repo reference is desired later, upgrade to a submodule
   (option a) or fold the repo into the parent (option b).
+
+## Automation (2026-10-15)
+
+`scripts/push.sh` (capital-machine) pushes the parent (`git push origin main`)
+and the capital-machine repo (via `CM_REMOTE`). GitHub credentials are not
+available in this environment (`git push --dry-run` → authentication failed),
+so pushes remain an owner step once a PAT/credential helper is configured.

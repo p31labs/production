@@ -2,7 +2,7 @@
 id: p31_fix_plan_capital_machine_d1_ids_three_sources_drift_20261014_v1.0
 type: fix-plan
 component: p31-capital-machine
-status: open
+status: resolved
 retention: keep-forever
 created: 2026-10-14T00:00:00Z
 owner: will
@@ -79,3 +79,12 @@ is currently consistent; the drift is in config/docs.
   single source of truth.
 - Remaining (owner): verify ids against `wrangler d1 list` on the production
   account and add a drift-gate comparing committed ids to live ones.
+
+## Resolution (2026-10-15)
+
+- `verify-d1.mjs` run against the account: **D1 guard PASS — all 5 bound
+  databases exist** (`fd439548`, `d12543b9`, `7cb8d8fb`, `e9e18c25`,
+  `1f219ab8`). The per-worker tomls are confirmed correct; the README/infra
+  values they replaced were stale.
+- The drift gate (`verify-d1.mjs`) now ships with the repo
+  (`pnpm check:d1`) and fails if any committed `database_id` is deleted.

@@ -72,3 +72,9 @@ summary will show internally contradictory numbers until fixed.
 - New test `should reconcile summary totals with source breakdown`
   (mixed USDC/EUR/LOVE fixtures). Live ledger (all USDC) now reports
   `total_usdc = 11.79` instead of the broken `0.01`.
+
+## Live verification (2026-10-15)
+
+- `GET /revenue/summary?range=90d` → `total_usdc: 11.79`, breakdown sums to
+  11.79 (was 0.01 with an 11.79 breakdown).
+- `POST /revenue/record` with `source: "nonsense"` → 400.

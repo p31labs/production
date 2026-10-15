@@ -88,3 +88,10 @@ Nothing else depends on the keystore content; the web/PWA path is unaffected.
 Regenerate a **new** keystore with `keytool` when a JDK/Android toolchain is
 available (the moved keystore is still the burned key) and re-patch
 `public/.well-known/assetlinks.json` with the new fingerprint.
+
+## Automation (2026-10-15)
+
+`mobile/scripts/rotate-keystore.sh` automates the rotation: generates a new
+keystore in `~/.secrets/`, stores a random password (0600) outside the repo,
+backs up the burned key, and patches `assetlinks.json`. Wired as
+`pnpm rotate:keystore`. Not runnable in this environment (no JDK/keytool).

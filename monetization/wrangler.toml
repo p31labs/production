@@ -70,5 +70,5 @@ service = "p31-ci"
 [[d1_databases]]
 binding = "AUTH_DB"
 database_name = "p31-monetization-auth"
-database_id = "REPLACE_ME_WITH_D1_ID"
+database_id = "ecb91dbf-1be9-4c54-91b6-f29f7253bfe1"
 migrations_dir = "migrations"

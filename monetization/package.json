@@ -17,6 +17,8 @@
     "gate": "pnpm token-audit && pnpm typecheck && pnpm lint && pnpm test && pnpm build && pnpm v:gate",
     "bootstrap:check": "node scripts/bootstrap-check.mjs",
     "bootstrap": "node scripts/bootstrap-orchestrator.mjs",
+    "bootstrap:auth-d1": "node scripts/d1-auth-bootstrap.mjs",
+    "rotate:keystore": "bash mobile/scripts/rotate-keystore.sh",
     "grants": "node scripts/grants.mjs",
     "settle": "node scripts/first-settle.mjs"
   },
