@@ -1,9 +1,11 @@
 /**
- * @file themeEnvironments.ts — the 9 P31 theme environments.
+ * @file themeEnvironments.ts — the 5 P31 canon theme environments.
  *
- * Each theme is a complete "place" — hull, mesh, heart plasma, and star
- * tint — not just an accent color swap. Role-based naming (Astryx/Eufemia):
- * the token describes the role, the theme supplies the value.
+ * The design portal's theming set, verbatim: garden, ocean, aurora, zen,
+ * volt. This is the single user-facing environment list — the overflow
+ * ThemePicker and the LED controller ENV tab both read it. Page themes
+ * (rose/sunlight/cipher…) are resolved separately by the shell and are NOT
+ * offered as user choices here.
  *
  * Pure + edge-safe. The CSS in molecular-dome.css carries the same tokens
  * as data-theme blocks; this module is the source of truth for TS consumers
@@ -11,8 +13,7 @@
  */
 
 export type EnvironmentId =
-  | 'cipher' | 'garden' | 'retro' | 'ocean' | 'sunset'
-  | 'mono' | 'aurora' | 'zen' | 'volt'
+  | 'garden' | 'ocean' | 'aurora' | 'zen' | 'volt'
 
 export interface Environment {
   id: EnvironmentId
@@ -36,17 +37,6 @@ export interface Environment {
 }
 
 export const ENVIRONMENTS: Record<EnvironmentId, Environment> = {
-  cipher: {
-    id: 'cipher', label: 'Cipher',
-    hull: 'oklch(0.62 0.14 220)',
-    mesh: 'oklch(0.72 0.16 210)',
-    heartCore: 'oklch(0.72 0.20 200)',
-    heartPlasma: 'oklch(0.55 0.18 260)',
-    starWarm: 'oklch(0.85 0.08 220)',
-    starCool: 'oklch(0.65 0.12 240)',
-    accent: 'oklch(0.72 0.18 210)',
-    perimeter: 'oklch(0.72 0.20 200)',
-  },
   garden: {
     id: 'garden', label: 'Garden',
     hull: 'oklch(0.58 0.12 130)',
@@ -58,17 +48,6 @@ export const ENVIRONMENTS: Record<EnvironmentId, Environment> = {
     accent: 'oklch(0.72 0.16 130)',
     perimeter: 'oklch(0.75 0.18 130)',
   },
-  retro: {
-    id: 'retro', label: 'Retro',
-    hull: 'oklch(0.60 0.18 340)',
-    mesh: 'oklch(0.74 0.20 340)',
-    heartCore: 'oklch(0.78 0.20 350)',
-    heartPlasma: 'oklch(0.58 0.20 300)',
-    starWarm: 'oklch(0.86 0.12 60)',
-    starCool: 'oklch(0.66 0.16 320)',
-    accent: 'oklch(0.72 0.18 340)',
-    perimeter: 'oklch(0.75 0.20 340)',
-  },
   ocean: {
     id: 'ocean', label: 'Ocean',
     hull: 'oklch(0.55 0.12 230)',
@@ -79,28 +58,6 @@ export const ENVIRONMENTS: Record<EnvironmentId, Environment> = {
     starCool: 'oklch(0.62 0.14 240)',
     accent: 'oklch(0.72 0.16 210)',
     perimeter: 'oklch(0.72 0.16 210)',
-  },
-  sunset: {
-    id: 'sunset', label: 'Sunset',
-    hull: 'oklch(0.60 0.16 40)',
-    mesh: 'oklch(0.72 0.18 50)',
-    heartCore: 'oklch(0.82 0.16 60)',
-    heartPlasma: 'oklch(0.60 0.18 20)',
-    starWarm: 'oklch(0.88 0.10 60)',
-    starCool: 'oklch(0.66 0.14 30)',
-    accent: 'oklch(0.75 0.16 50)',
-    perimeter: 'oklch(0.78 0.18 50)',
-  },
-  mono: {
-    id: 'mono', label: 'Mono',
-    hull: 'oklch(0.55 0.00 0)',
-    mesh: 'oklch(0.70 0.00 0)',
-    heartCore: 'oklch(0.78 0.00 0)',
-    heartPlasma: 'oklch(0.50 0.00 0)',
-    starWarm: 'oklch(0.85 0.00 0)',
-    starCool: 'oklch(0.65 0.00 0)',
-    accent: 'oklch(0.72 0.00 0)',
-    perimeter: 'oklch(0.80 0.00 0)',
   },
   aurora: {
     id: 'aurora', label: 'Aurora',
@@ -138,7 +95,7 @@ export const ENVIRONMENTS: Record<EnvironmentId, Environment> = {
 }
 
 export const ENVIRONMENT_IDS: EnvironmentId[] = [
-  'cipher', 'garden', 'retro', 'ocean', 'sunset', 'mono', 'aurora', 'zen', 'volt',
+  'garden', 'ocean', 'aurora', 'zen', 'volt',
 ]
 
 export function environmentFor(id: string): Environment {

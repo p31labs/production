@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { ThemeId } from '@p31ca/shared/theme/ids';
-import { ALL_THEME_IDS, resolveTheme } from '@p31ca/shared/theme/ids';
+import { CANON_THEME_IDS, resolveTheme } from '@p31ca/shared/theme/ids';
 
 interface ThemeState {
   theme: ThemeId;
@@ -35,8 +35,8 @@ export const useThemeStore = create<ThemeState>((set, get) => ({
   },
   cycleTheme: () => {
     const current = get().theme;
-    const idx = ALL_THEME_IDS.indexOf(current);
-    const next = ALL_THEME_IDS[(idx + 1) % ALL_THEME_IDS.length]!;
+    const idx = CANON_THEME_IDS.indexOf(current);
+    const next = CANON_THEME_IDS[(idx + 1) % CANON_THEME_IDS.length]!;
     set({ theme: next });
     if (typeof window !== 'undefined') {
       localStorage.setItem('p31:theme', next);

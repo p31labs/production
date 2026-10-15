@@ -19,7 +19,7 @@ export const SCENE_PRESETS: ScenePreset[] = [
     id: 'cinematic',
     label: 'Cinematic',
     value: {
-      dome: { rotation: 18, tilt: 0.14, scale: 1.8 },
+      dome: { rotation: 18, tilt: 0.14 },
       starfield: { density: 180, twinkle: 0.8, flare: 6 },
     },
   },
@@ -27,7 +27,7 @@ export const SCENE_PRESETS: ScenePreset[] = [
     id: 'orbit',
     label: 'Orbit',
     value: {
-      dome: { rotation: 55, tilt: 0.38, scale: 1.4 },
+      dome: { rotation: 55, tilt: 0.38 },
       starfield: { density: 140, twinkle: 1.2, flare: 4 },
     },
   },
@@ -35,7 +35,7 @@ export const SCENE_PRESETS: ScenePreset[] = [
     id: 'static',
     label: 'Static',
     value: {
-      dome: { rotation: 0, tilt: 0.21, scale: 1.6 },
+      dome: { rotation: 0, tilt: 0.21 },
       starfield: { density: 220, twinkle: 0.4, flare: 2 },
     },
   },
@@ -43,7 +43,7 @@ export const SCENE_PRESETS: ScenePreset[] = [
     id: 'live',
     label: 'Live',
     value: {
-      dome: { rotation: 35, tilt: 0.31, scale: 1.5 },
+      dome: { rotation: 35, tilt: 0.31 },
       starfield: { density: 300, twinkle: 1.8, flare: 12 },
     },
   },

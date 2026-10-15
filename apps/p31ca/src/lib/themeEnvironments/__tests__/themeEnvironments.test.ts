@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest'
 import { ENVIRONMENTS, ENVIRONMENT_IDS, environmentFor } from '../../themeEnvironments'
 
 describe('theme environments', () => {
-  it('has all 9', () => {
-    expect(ENVIRONMENT_IDS).toHaveLength(9)
+  it('has all 5 canon environments', () => {
+    expect(ENVIRONMENT_IDS).toHaveLength(5)
     for (const id of ENVIRONMENT_IDS) {
       expect(ENVIRONMENTS[id]).toBeTruthy()
     }

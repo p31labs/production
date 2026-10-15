@@ -11,7 +11,10 @@ import { persist } from 'zustand/middleware'
  */
 
 export interface ScenePresetValue {
-  dome: { rotation: number; tilt: number; scale: number }
+  /** scale is OPTIONAL in presets: scene presets change composition/motion,
+   *  never the dome's physical size. When omitted, the current scale is kept
+   *  (see applyPreset). SCENE_DEFAULTS always carries it. */
+  dome: { rotation: number; tilt: number; scale?: number }
   starfield: { density: number; twinkle: number; flare: number }
 }
 
@@ -79,7 +82,8 @@ function clampPreset(p: ScenePresetValue): ScenePresetValue {
     dome: {
       rotation: clamp(p.dome.rotation, 0, 100),
       tilt: clamp(p.dome.tilt, 0, 0.6),
-      scale: clamp(p.dome.scale, 1.0, 2.5),
+      // scale preserved (not clamped) — presets never set it
+      scale: p.dome.scale,
     },
     starfield: {
       density: Math.round(clamp(p.starfield.density, 60, 500)),
@@ -100,7 +104,18 @@ export const useSceneStore = create<SceneState>()(
       setDensity: (v) => set({ starfield: { ...get().starfield, density: Math.round(clamp(v, 60, 500)) } }),
       setTwinkle: (v) => set({ starfield: { ...get().starfield, twinkle: clamp(v, 0, 3) } }),
       setFlare: (v) => set({ starfield: { ...get().starfield, flare: Math.round(clamp(v, 0, 12)) } }),
-      applyPreset: (preset) => set(clampPreset(preset)),
+      applyPreset: (preset) => set((state) => {
+        const p = clampPreset(preset)
+        return {
+          dome: {
+            rotation: p.dome.rotation,
+            tilt: p.dome.tilt,
+            // Presets never resize the dome — keep the user's current scale.
+            scale: p.dome.scale ?? state.dome.scale,
+          },
+          starfield: { ...p.starfield },
+        }
+      }),
       reset: () => set(readSceneFromCss()),
     }),
     {

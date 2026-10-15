@@ -71,7 +71,12 @@
   @media (max-width: 720px) { .posner-act__trigger { padding: 8px 10px; font-size: 12px; } }
 
   .posner-act__panel {
-    position: absolute; top: calc(100% + 10px); left: 50%;
+    /* Centered on the SCREEN, not the trigger (per the nav decision): fixed
+       positioning escapes the act button; left:50% + translateX(-50%) centers
+       horizontally in the viewport, and top sits just below the header. */
+    position: fixed;
+    top: calc(var(--p31-header-height, 4rem) + 10px);
+    left: 50%;
     transform: translateX(-50%);
     min-width: 220px; padding: 8px;
     background: rgba(12, 12, 18, 0.98);

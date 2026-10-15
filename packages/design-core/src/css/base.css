@@ -94,7 +94,10 @@ h3 { font-size: var(--p31-h3); font-weight: 600; line-height: 1.3; }
 h4 { font-size: var(--p31-h4); font-weight: 600; line-height: 1.3; }
 
 a { color: var(--p31-accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
+/* No underline on hover — per the ecosystem decision (2026-10-15). Link
+   affordance comes from color, position/context, and the always-on underline
+   that prose surfaces add (WCAG 1.4.1). The hover underline (Tailwind-preflight
+   style) is retired everywhere. */
 
 code, pre {
   font-family: var(--p31-font-mono);

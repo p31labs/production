@@ -10,11 +10,12 @@ describe('scenePresets — catalog', () => {
     }
   })
 
-  it('every preset defines all 6 controls', () => {
+  it('every preset defines composition + starfield controls (no scale)', () => {
     for (const p of SCENE_PRESETS) {
       expect(typeof p.value.dome.rotation).toBe('number')
       expect(typeof p.value.dome.tilt).toBe('number')
-      expect(typeof p.value.dome.scale).toBe('number')
+      // Presets must NOT resize the dome — scale stays out of preset values.
+      expect(p.value.dome.scale).toBeUndefined()
       expect(typeof p.value.starfield.density).toBe('number')
       expect(typeof p.value.starfield.twinkle).toBe('number')
       expect(typeof p.value.starfield.flare).toBe('number')
@@ -28,8 +29,6 @@ describe('scenePresets — catalog', () => {
       expect(dome.rotation).toBeLessThanOrEqual(100)
       expect(dome.tilt).toBeGreaterThanOrEqual(0)
       expect(dome.tilt).toBeLessThanOrEqual(0.6)
-      expect(dome.scale).toBeGreaterThanOrEqual(1.0)
-      expect(dome.scale).toBeLessThanOrEqual(2.5)
       expect(starfield.density).toBeGreaterThanOrEqual(60)
       expect(starfield.density).toBeLessThanOrEqual(500)
       expect(starfield.twinkle).toBeGreaterThanOrEqual(0)

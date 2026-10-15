@@ -36,6 +36,19 @@ export const THEME_ALIASES: Record<string, ThemeId> = {
 
 export const DEFAULT_THEME: ThemeId = 'ocean';
 
+/** The canon theming set — the 5 environments the design portal ships and
+ *  every user-facing switcher offers (garden, ocean, aurora, zen, volt).
+ *  Cycle/switcher lists use THIS, never the full resolvable registry below,
+ *  so page themes (rose/sunlight/cipher...) stay valid for SSR but are not
+ *  offered as user choices. */
+export const CANON_THEME_IDS: readonly ThemeId[] = [
+  'garden',
+  'ocean',
+  'aurora',
+  'zen',
+  'volt',
+];
+
 export const ALL_THEME_IDS: readonly ThemeId[] = [
   'cipher',
   'garden',
