@@ -18,10 +18,12 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file(System.getenv('P31_KEYSTORE') ?: project.file('../../p31-release.keystore'))
-            storePassword System.getenv('P31_KEYSTORE_PASS') ?: 'p31-release'
+            // Signing credentials are env-required — never hardcode (the old
+            // p31-release keystore was burned by being committed; regenerate).
+            storeFile System.getenv('P31_KEYSTORE') != null ? file(System.getenv('P31_KEYSTORE')) : null
+            storePassword System.getenv('P31_KEYSTORE_PASS')
             keyAlias System.getenv('P31_KEYSTORE_ALIAS') ?: 'p31'
-            keyPassword System.getenv('P31_KEYSTORE_PASS') ?: 'p31-release'
+            keyPassword System.getenv('P31_KEYSTORE_PASS')
         }
     }
     buildTypes {

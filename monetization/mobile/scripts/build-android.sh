@@ -15,9 +15,11 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 VERSION="${P31_APP_VERSION:-1.0.0}"
-KEYSTORE="${P31_KEYSTORE:-$(pwd)/p31-release.keystore}"
+# Keystore lives outside the repo (never commit signing keys). The old
+# p31-release.keystore was burned by being committed — regenerate a fresh one.
+KEYSTORE="${P31_KEYSTORE:-${HOME}/.secrets/p31-release.keystore}"
 KEYSTORE_ALIAS="${P31_KEYSTORE_ALIAS:-p31}"
-KEYSTORE_PASS="${P31_KEYSTORE_PASS:-p31-release}"
+KEYSTORE_PASS="${P31_KEYSTORE_PASS:?P31_KEYSTORE_PASS is required (release signing password)}"
 WEB_DIR="${P31_WEB_DIR:-..}"
 
 log() { echo "[build-android] $*"; }

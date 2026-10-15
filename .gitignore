@@ -65,3 +65,17 @@ logs/
 # Service credentials & MCP auth keys
 .smithery.key
 .mcp-auth/
+
+# Android release keystores — never track signing keys (see docs/fix-plans/monetization-android-release-keystore-committed)
+*.keystore
+*.jks
+
+# Bootstrap wallet material — contains private keys (see docs/fix-plans/monetization-bootstrap-payer-private-key)
+.bootstrap-payer.json
+.bootstrap-*.json
+
+# Standalone nested repo — p31-capital-machine has its own .git (see docs/fix-plans/capital-machine-standalone-repo-hygiene)
+p31-capital-machine/
+
+# Regenerable Gradle wrapper (build tooling, not source)
+monetization/mobile/android/gradle/wrapper/

@@ -42,10 +42,31 @@ interface Env {
   AUTH_DB?: D1Database;
   /** Feature flag — when 'true', issues/verifies RFC 8707 audience-bound OAuth 2.1 role tokens (src/lib/oauth21.ts). */
   OAUTH21_ENABLED?: string;
+  /** CORS allowlist — comma-separated origins. When set, responses reflect
+   *  Access-Control-Allow-Origin only for listed origins; unset = legacy
+   *  wildcard (docs/fix-plans/monetization-wildcard-cors-default). */
+  ALLOWED_ORIGINS?: string;
 }
 
 /** Bound once per isolate — the D1 passkey store is recreated only when absent. */
 let d1PasskeyStoreBound = false;
+
+/**
+ * CORS headers for a request. When `ALLOWED_ORIGINS` is configured, reflect
+ * the origin only if it is listed (returns {} for disallowed origins so no
+ * CORS header leaks). When unset, keep the legacy wildcard behavior.
+ */
+function corsHeaders(request: Request, env: Env): Record<string, string> {
+  const origin = request.headers.get('Origin');
+  const allowed = (env.ALLOWED_ORIGINS || '').split(',').map((s) => s.trim()).filter(Boolean);
+  if (allowed.length > 0) {
+    if (origin && allowed.includes(origin)) {
+      return { 'Access-Control-Allow-Origin': origin, 'Vary': 'Origin' };
+    }
+    return {};
+  }
+  return { 'Access-Control-Allow-Origin': '*' };
+}
 
 /**
  * Record an OAuth 2.1 role-token issuance in D1 (audit/session state,
@@ -213,18 +234,19 @@ function trackUsage(env: Env, ctx: ExecutionContext, endpoint: string, method: s
   );
 }
 
-function jsonResponse(body: unknown, status = 200): Response {
+function jsonResponse(body: unknown, status = 200, request?: Request, env?: Env): Response {
+  const cors = request && env ? corsHeaders(request, env) : {};
   return new Response(JSON.stringify(body), {
     status,
-    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    headers: { 'Content-Type': 'application/json', ...cors },
   });
 }
 
-function webauthnError(error: unknown): Response {
+function webauthnError(error: unknown, request: Request, env: Env): Response {
   if (error instanceof PasskeyError) {
-    return jsonResponse({ error: error.message }, error.status);
+    return jsonResponse({ error: error.message }, error.status, request, env);
   }
-  return jsonResponse({ error: error instanceof Error ? error.message : 'webauthn failure' }, 400);
+  return jsonResponse({ error: error instanceof Error ? error.message : 'webauthn failure' }, 400, request, env);
 }
 
 export default {
@@ -245,7 +267,7 @@ export default {
         if (sources.length === 0) {
           return new Response('stream: no valid surfaces (revenue|positions|opportunities)', {
             status: 400,
-            headers: { 'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*' },
+            headers: { 'Content-Type': 'text/plain', ...corsHeaders(request, env) },
           });
         }
         const stream = buildSseStream(request, env, sources);
@@ -254,7 +276,7 @@ export default {
             'Content-Type': 'text/event-stream',
             'Cache-Control': 'no-cache, no-transform',
             'Connection': 'keep-alive',
-            'Access-Control-Allow-Origin': '*',
+            ...corsHeaders(request, env),
           },
         });
       }
@@ -263,7 +285,7 @@ export default {
         const result = await checkInvariants(env);
         return new Response(JSON.stringify(result), {
           status: result.healthy ? 200 : 503,
-          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+          headers: { 'Content-Type': 'application/json', ...corsHeaders(request, env) },
         });
       }
 
@@ -272,16 +294,16 @@ export default {
         if (!env.ADMIN_TOKEN || adminToken !== env.ADMIN_TOKEN) {
           return new Response(JSON.stringify({ error: 'admin token required (X-Admin-Token)' }), {
             status: 401,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+            headers: { 'Content-Type': 'application/json', ...corsHeaders(request, env) },
           });
         }
         try {
           const body = (await request.json()) as { did?: string; role?: string };
           const did = body.did ?? '';
           const role = (body.role ?? 'viewer') as Role;
-          if (!did) return new Response(JSON.stringify({ error: 'did required' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
-          if (!(role in ROLE_LEVEL)) return new Response(JSON.stringify({ error: `unknown role: ${role}` }), { status: 400, headers: { 'Content-Type': 'application/json' } });
-          if (!env.ROLE_JWT_SECRET) return new Response(JSON.stringify({ error: 'ROLE_JWT_SECRET not configured' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+          if (!did) return jsonResponse({ error: 'did required' }, 400, request, env);
+          if (!(role in ROLE_LEVEL)) return jsonResponse({ error: `unknown role: ${role}` }, 400, request, env);
+          if (!env.ROLE_JWT_SECRET) return jsonResponse({ error: 'ROLE_JWT_SECRET not configured' }, 500, request, env);
 
           // OAuth 2.1 / RFC 8707: when enabled, bind the token's `aud` to the
           // requesting origin and record the issuance in D1 (docs/ZERO-TRUST.md §4).
@@ -296,11 +318,11 @@ export default {
             JSON.stringify({ token, did, role, ttl: ROLE_TTL_SECONDS[role], ...(oauth21 ? { token_type: 'Bearer', aud } : {}) }),
             {
               status: 200,
-              headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+              headers: { 'Content-Type': 'application/json', ...corsHeaders(request, env) },
             },
           );
         } catch {
-          return new Response(JSON.stringify({ error: 'bad request' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+          return jsonResponse({ error: 'bad request' }, 400, request, env);
         }
       }
 
@@ -308,22 +330,22 @@ export default {
       if (url.pathname === '/api/webauthn/register/options' && request.method === 'POST') {
         try {
           const body = (await request.json()) as { did?: string; username?: string };
-          if (!body.did) return jsonResponse({ error: 'did required' }, 400);
+          if (!body.did) return jsonResponse({ error: 'did required' }, 400, request, env);
           const options = await generateRegisterOptions(request, { did: body.did, username: body.username });
-          return jsonResponse(options);
+          return jsonResponse(options, 200, request, env);
         } catch (error) {
-          return webauthnError(error);
+          return webauthnError(error, request, env);
         }
       }
 
       if (url.pathname === '/api/webauthn/register/verify' && request.method === 'POST') {
         try {
           const body = (await request.json()) as { did?: string; response: RegistrationResponseJSON };
-          if (!body.response) return jsonResponse({ error: 'response required' }, 400);
+          if (!body.response) return jsonResponse({ error: 'response required' }, 400, request, env);
           const result = await verifyRegister(request, body);
-          return jsonResponse({ verified: true, did: result.did, credentialID: result.credentialID });
+          return jsonResponse({ verified: true, did: result.did, credentialID: result.credentialID }, 200, request, env);
         } catch (error) {
-          return webauthnError(error);
+          return webauthnError(error, request, env);
         }
       }
 
@@ -332,18 +354,18 @@ export default {
         try {
           const body = (await request.json()) as { did?: string };
           const options = await generateLoginOptions(request, body);
-          return jsonResponse(options);
+          return jsonResponse(options, 200, request, env);
         } catch (error) {
-          return webauthnError(error);
+          return webauthnError(error, request, env);
         }
       }
 
       if (url.pathname === '/api/webauthn/login/verify' && request.method === 'POST') {
         try {
           const body = (await request.json()) as { response: AuthenticationResponseJSON };
-          if (!body.response) return jsonResponse({ error: 'response required' }, 400);
+          if (!body.response) return jsonResponse({ error: 'response required' }, 400, request, env);
           const result = await verifyLogin(request, body);
-          if (!env.ROLE_JWT_SECRET) return jsonResponse({ error: 'ROLE_JWT_SECRET not configured' }, 500);
+          if (!env.ROLE_JWT_SECRET) return jsonResponse({ error: 'ROLE_JWT_SECRET not configured' }, 500, request, env);
           // OAuth 2.1 / RFC 8707: when enabled, the viewer token is audience-bound
           // to the requesting origin (docs/ZERO-TRUST.md §4).
           const oauth21 = isOAuth21Enabled(env.OAUTH21_ENABLED);
@@ -359,9 +381,9 @@ export default {
             role: 'viewer',
             ttl: ROLE_TTL_SECONDS.viewer,
             ...(oauth21 ? { token_type: 'Bearer', aud } : {}),
-          });
+          }, 200, request, env);
         } catch (error) {
-          return webauthnError(error);
+          return webauthnError(error, request, env);
         }
       }
 
@@ -373,7 +395,7 @@ export default {
         trackUsage(env, ctx, apiPath, request.method, 404, Date.now() - start);
         return new Response(`API route not found: ${apiPath}`, {
           status: 404,
-          headers: { 'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*' },
+          headers: { 'Content-Type': 'text/plain', ...corsHeaders(request, env) },
         });
       }
 
@@ -411,7 +433,7 @@ export default {
           trackUsage(env, ctx, apiPath, request.method, roleToken || accessIdentity ? 403 : 401, Date.now() - start);
           return new Response(JSON.stringify({ error: insufficient }), {
             status: roleToken || accessIdentity ? 403 : 401,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+            headers: { 'Content-Type': 'application/json', ...corsHeaders(request, env) },
           });
         }
       }
@@ -442,14 +464,14 @@ export default {
           status: response.status,
           headers: {
             'Content-Type': response.headers.get('content-type') || 'application/json',
-            'Access-Control-Allow-Origin': '*',
+            ...corsHeaders(request, env),
           },
         });
       } catch (error) {
         trackUsage(env, ctx, apiPath, request.method, 502, Date.now() - start);
         return new Response(`Proxy error: ${error instanceof Error ? error.message : 'Unknown'}`, {
           status: 502,
-          headers: { 'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*' },
+          headers: { 'Content-Type': 'text/plain', ...corsHeaders(request, env) },
         });
       }
     }
