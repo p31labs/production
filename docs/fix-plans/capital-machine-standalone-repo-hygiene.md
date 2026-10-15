@@ -74,7 +74,11 @@ parent `git status`/scans no longer surface the nested repo as `??`.
 
 ## Automation (2026-10-15)
 
-`scripts/push.sh` (capital-machine) pushes the parent (`git push origin main`)
-and the capital-machine repo (via `CM_REMOTE`). GitHub credentials are not
-available in this environment (`git push --dry-run` → authentication failed),
-so pushes remain an owner step once a PAT/credential helper is configured.
+- `scripts/push.sh` (capital-machine) pushes both repos via the `gh` CLI
+  credential helper (auth lives in `~/.config/gh/hosts.yml`; a stale `GH_TOKEN`
+  env var was shadowing it — the script reads `gh auth token`).
+- **Parent repo pushed**: `bde3459..7834457 main -> main` on
+  `github.com/p31labs/production` (2026-10-15).
+- capital-machine has no upstream repo yet — `push.sh` prints the owner steps
+  to create it (`gh repo create p31labs/p31-capital-machine --private`) and
+  push via `CM_REMOTE=origin`.

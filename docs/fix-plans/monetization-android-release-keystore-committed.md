@@ -91,7 +91,16 @@ available (the moved keystore is still the burned key) and re-patch
 
 ## Automation (2026-10-15)
 
-`mobile/scripts/rotate-keystore.sh` automates the rotation: generates a new
-keystore in `~/.secrets/`, stores a random password (0600) outside the repo,
-backs up the burned key, and patches `assetlinks.json`. Wired as
-`pnpm rotate:keystore`. Not runnable in this environment (no JDK/keytool).
+`mobile/scripts/rotate-keystore.sh` automates the rotation **using the in-house
+key rotation system** (`docs/enterprise/operations/secret-rotation-runbook.md`):
+key material comes from `p31-key-rotator` `/genkey` (when `ROTATOR_SHARED_SECRET`
+is provisioned) or falls back to `scripts/key-rotate.mjs keygen` — the same
+32-byte base64url encoding. It generates the new keystore in `~/.secrets/` with
+that key as password, backs up the burned key, patches `assetlinks.json`, stores
+the password 0600, and appends a rotation record. Wired as `pnpm rotate:keystore`.
+Not runnable in this environment (no JDK/keytool) and owner-executed per runbook
+(production key material must be vaulted).
+
+To use the remote rotator path, the owner must first provision the shared secret
+(manifest: `scripts/mirror-secrets.p31-key-rotator.manifest.json`, source `gha`,
+env `CF_ROTATOR_SHARED_SECRET`).
